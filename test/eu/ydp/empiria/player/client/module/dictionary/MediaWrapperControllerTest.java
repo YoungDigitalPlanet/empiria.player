@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.module.dictionary;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.List;
-
+import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,14 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
 
-import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MediaWrapperControllerTest {
@@ -32,23 +30,11 @@ public class MediaWrapperControllerTest {
 	@Mock
 	private EventsBus eventsBus;
 
-	@Mock
-	private HideNativeMediaControlsManager hideNativeMediaControlsManager;
-
 	@Captor
 	private ArgumentCaptor<MediaEvent> mediaEventCaptor;
 
 	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
-
-	@Test
-	public void shouldAddMediaWrapperControls() {
-		// when
-		testObj.addMediaWrapperControls(mediaWrapper);
-
-		// then
-		verify(hideNativeMediaControlsManager).addToDocumentAndHideControls(mediaWrapper);
-	}
 
 	@Test
 	public void shouldPlay() {

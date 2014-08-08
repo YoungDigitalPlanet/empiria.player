@@ -1,22 +1,9 @@
 package eu.ydp.empiria.player.client.module.dictionary;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.MocksCollector;
+import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
@@ -33,6 +20,14 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExplanationDescriptionSoundControllerTest {
@@ -65,6 +60,9 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Mock
 	private Entry entryWithValidFileName;
+
+	@Mock
+	private HideNativeMediaControlsManager hideNativeMediaControlsManager;
 
 	private final MocksCollector mocksCollector = new MocksCollector();
 
@@ -107,7 +105,7 @@ public class ExplanationDescriptionSoundControllerTest {
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_STOP, currentPageScope);
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PLAY, currentPageScope);
 
-		inOrder.verify(mediaWrapperController).addMediaWrapperControls(mediaWrapper);
+		inOrder.verify(hideNativeMediaControlsManager).addToDocumentAndHideControls(mediaWrapper);
 		inOrder.verify(mediaWrapperController).play(mediaWrapper);
 	}
 

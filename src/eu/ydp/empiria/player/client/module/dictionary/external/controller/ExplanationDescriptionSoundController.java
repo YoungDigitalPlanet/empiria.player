@@ -1,12 +1,10 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
-
+import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
@@ -19,25 +17,29 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+
 public class ExplanationDescriptionSoundController {
 
 	private final ExplanationView explanationView;
 	private final EventsBus eventsBus;
 	private final MediaWrapperController mediaWrapperController;
-	private final MediaWrapperCreator mediaWrapperCreator;
+	private final HideNativeMediaControlsManager hideNativeMediaControlsManager;
 
+	private final MediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapper<Widget> mediaWrapper;
 	private boolean playing;
 	private final Provider<CurrentPageScope> currentPageScopeProvider;
 
 	@Inject
 	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
-			Provider<CurrentPageScope> currentPageScopeProvider, MediaWrapperCreator mediaWrapperCreator) {
+	                                             Provider<CurrentPageScope> currentPageScopeProvider, MediaWrapperCreator mediaWrapperCreator, HideNativeMediaControlsManager hideNativeMediaControlsManager) {
 		this.explanationView = explanationView;
 		this.eventsBus = eventsBus;
 		this.mediaWrapperController = mediaWrapperController;
 		this.currentPageScopeProvider = currentPageScopeProvider;
 		this.mediaWrapperCreator = mediaWrapperCreator;
+		this.hideNativeMediaControlsManager = hideNativeMediaControlsManager;
 	}
 
 	private void playDescriptionSound(String filePath) {
@@ -56,7 +58,7 @@ public class ExplanationDescriptionSoundController {
 		explanationView.setPlayingButtonStyle();
 		AbstractMediaEventHandler handler = createDescriptionSoundMediaHandler();
 		addMediaHandlers(handler);
-		mediaWrapperController.addMediaWrapperControls(mediaWrapper);
+		hideNativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
 		playing = true;
 		mediaWrapperController.play(mediaWrapper);
 	}
