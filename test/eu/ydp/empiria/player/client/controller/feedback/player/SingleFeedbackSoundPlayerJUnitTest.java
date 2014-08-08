@@ -1,22 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.player;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -24,6 +9,19 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -34,7 +32,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class });
+		setUp(new Class<?>[]{}, new Class<?>[]{}, new Class<?>[]{EventsBus.class});
 		eventsBus = injector.getInstance(EventsBus.class);
 		mediaWrapper = mock(MediaWrapper.class);
 		instance = getInstance(mediaWrapper);
@@ -47,7 +45,7 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
 
 	@SuppressWarnings("all")
 	@Test
-	public void postConstructTest() {
+	public void constructorTest() {
 		// prepare
 		Function<Type, MediaEventTypes> typeToMediaType = new Function<Type, MediaEventTypes>() {
 			@Override

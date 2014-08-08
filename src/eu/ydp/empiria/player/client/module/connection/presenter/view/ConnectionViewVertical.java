@@ -59,7 +59,7 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	}
 
 	private Type<TouchHandler, TouchTypes>[] getTouchTypes() {
-		Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END);
+		Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_CANCEL);
 		if (isDrawFollowTouch()) {
 			types = ObjectArrays.concat(types, TouchEvent.getType(TouchTypes.TOUCH_MOVE));
 		}
