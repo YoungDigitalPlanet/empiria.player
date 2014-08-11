@@ -83,14 +83,14 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 		String previousItemid = targetClient.getDragItemId();
 		sourcelist.restockItem(previousItemid);
 
-		targetClient.setDragItem(itemId);
-
 		if (model.containsClient(sourceModuleId)) {
 			SourcelistClient sourceClient = model.getClientById(sourceModuleId);
 			sourceClient.removeDragItem();
 		} else {
 			sourcelist.useItem(itemId);
 		}
+
+		targetClient.setDragItem(itemId);
 
 		unlockAll();
 	}

@@ -151,6 +151,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 				onTouchCancel(nativeEvent);
 			}
 			break;
+		case TOUCH_CANCEL:
 		case TOUCH_END:
 			onTouchEnd(nativeEvent);
 			break;

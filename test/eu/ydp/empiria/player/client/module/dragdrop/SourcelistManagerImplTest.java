@@ -8,6 +8,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -114,9 +115,10 @@ public class SourcelistManagerImplTest {
 		manager.dragEnd(newId, CLIENT_2_ID, CLIENT_3_ID);
 
 		// then
-		verify(client3).setDragItem(newId);
-		verify(client2).removeDragItem();
-		verify(sourcelist2).restockItem(oldId);
+		InOrder inOrder = inOrder(client2, client3, sourcelist2);
+		inOrder.verify(sourcelist2).restockItem(oldId);
+		inOrder.verify(client2).removeDragItem();
+		inOrder.verify(client3).setDragItem(newId);
 	}
 
 	@Test

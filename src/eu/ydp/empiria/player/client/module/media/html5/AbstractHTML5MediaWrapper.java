@@ -1,16 +1,8 @@
 package eu.ydp.empiria.player.client.module.media.html5;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_DURATION_CHANGE;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
@@ -21,6 +13,13 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.ON_DURATION_CHANGE;
+
 /**
  * Wrapper dla elemntow audio i elementow wspolnych audio i video html5 TODO: wydzielic HTML5AudioMediaWrapper a ten zostawic jako HTML5MediaWrapperBase
  */
@@ -29,7 +28,7 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 	private String uniqId = null;
 
 	private final EventsBus eventsBus;
-	private final HTML5MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
+	private MediaAvailableOptions availableOptions = new HTML5MediaAvailableOptions();
 	private boolean ready = false;
 	private final Map<MediaEventTypes, HandlerRegistration> handlerRegistrations = new HashMap<MediaEventTypes, HandlerRegistration>();
 	private AbstractHTML5MediaExecutor mediaExecutor;
@@ -53,6 +52,10 @@ public abstract class AbstractHTML5MediaWrapper implements MediaWrapper<MediaBas
 	@Override
 	public MediaAvailableOptions getMediaAvailableOptions() {
 		return availableOptions;
+	}
+
+	public void setMediaAvailableOptions(MediaAvailableOptions options) {
+		availableOptions = options;
 	}
 
 	@Override

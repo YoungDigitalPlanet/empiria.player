@@ -1,5 +1,13 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Map;
+
 import static eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertyName.*;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.NONE;
@@ -7,15 +15,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class FeedbackPropertiesCreatorJUnitTest {
 
@@ -83,6 +82,16 @@ public class FeedbackPropertiesCreatorJUnitTest {
 		assertThat("todo", properties.getIntegerProperty(TODO), is(equalTo(2)));
 		assertThat("errors", properties.getIntegerProperty(ERRORS), is(equalTo(1)));
 		assertThat("result", properties.getDoubleProperty(RESULT), is(equalTo(50.0)));
+	}
+
+	@Test
+	public void shouldApplyModuleResultWhen_thereIsZero() {
+		OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createDoneOutcome(0)).put(creator.createErrorsOutcome(0))
+				.put(creator.createTodoOutcome(0));
+		FeedbackProperties properties = getProperties(builder);
+
+		assertThat("not null", properties, is(notNullValue()));
+		assertThat("allOk", properties.getBooleanProperty(ALL_OK), is(equalTo(true)));
 	}
 
 	@Test
