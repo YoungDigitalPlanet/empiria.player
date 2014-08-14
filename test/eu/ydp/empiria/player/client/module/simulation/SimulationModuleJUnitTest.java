@@ -1,117 +1,79 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
+import com.google.common.base.Optional;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule.TouchReservationHandler;
-import eu.ydp.empiria.player.client.preloader.Preloader;
-import eu.ydp.empiria.player.client.preloader.view.ProgressView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
 import eu.ydp.gwtcreatejs.client.handler.ManifestLoadHandler;
-import eu.ydp.gwtcreatejs.client.loader.CreateJsContent;
 import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
 import eu.ydp.gwtcreatejs.client.loader.Manifest;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.*;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(CreateJsLoader.class)
-public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class SimulationModuleJUnitTest {
 
 	private static final String URL = "http://dummyurl/";
 
-	private class CustomGinModule implements Module {
-		@Override
-		public void configure(Binder binder) {
-			binder.bind(ProgressView.class).toInstance(createProgressViewMock());
-			binder.bind(SimulationModuleView.class).toInstance(mock(SimulationModuleView.class));
-			binder.bind(CreateJsLoader.class).toInstance(createJsLoaderMock());
-			binder.bind(SimulationPreloader.class).toInstance(mock(SimulationPreloader.class));
-			binder.bind(SimulationController.class).toInstance(mock(SimulationController.class));
-			binder.bind(TouchController.class).toInstance(mock(TouchController.class));
-		}
+	@InjectMocks
+	private SimulationModule testObj;
 
-		private ProgressView createProgressViewMock() {
-			ProgressView progressView = mock(ProgressView.class);
-			when(progressView.asWidget()).thenReturn(mock(Widget.class));
-			return progressView;
-		}
-
-		private CreateJsLoader createJsLoaderMock() {
-			CreateJsLoader loader = mock(CreateJsLoader.class);
-			CreateJsContent content = mock(CreateJsContent.class);
-			Canvas canvas = mock(Canvas.class);
-			when(canvas.getElement()).thenReturn(mock(com.google.gwt.user.client.Element.class));
-			when(content.getCanvas()).thenReturn(canvas);
-			doReturn(content).when(loader).getContent();
-			return loader;
-		}
-	}
-
-	private SimulationModule instance;
-	private CreateJsLoader createJsLoader;
-	private SimulationModuleView moduleView;
-	private SimulationPreloader preloader;
-	private SimulationController simulationController;
+	@Mock
+	private EventsBus eventBus;
+	@Mock
 	private TouchController touchController;
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
+	@Mock
+	private Instance<SimulationModuleView> viewInstance;
+	@Mock
+	private SimulationModuleView moduleView;
+	@Mock
+	private SimulationPreloader preloader;
+	@Mock
+	private Instance<CreateJsLoader> createJsLoaderInstance;
+	@Mock
+	private CreateJsLoader createJsLoader;
+	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
+	private PageScopeFactory pageScopeFactory;
+	@Mock
+	private SimulationController simulationController;
+	@Mock
+	private SimulationCanvasProvider simulationCanvasProvider;
+	@Mock
+	private com.google.gwt.user.client.Element element;
 
 	private Element createElementMock() {
 		Element element = mock(Element.class);
-		doReturn(URL).when(element).getAttribute(Matchers.anyString());
+		doReturn(URL).when(element)
+					 .getAttribute(Matchers.anyString());
 		return element;
 	}
 
 	@Before
 	public void before() {
-		GuiceModuleConfiguration config = new GuiceModuleConfiguration();
-		config.addClassWithDisabledPostConstruct(Preloader.class);
-		config.addAllClassToSpy(EventsBus.class);
-		setUpAndOverrideMainModule(config, new CustomGinModule());
-		instance = spy(injector.getInstance(SimulationModule.class));
-		createJsLoader = injector.getInstance(CreateJsLoader.class);
-		moduleView = injector.getInstance(SimulationModuleView.class);
-		preloader = injector.getInstance(SimulationPreloader.class);
-		touchController = injector.getInstance(TouchController.class);
-		simulationController = injector.getInstance(SimulationController.class);
+		when(createJsLoaderInstance.get()).thenReturn(createJsLoader);
+		when(viewInstance.get()).thenReturn(moduleView);
+		Optional<com.google.gwt.user.client.Element> elementOptional = Optional.of(element);
+		when(simulationCanvasProvider.getSimulationCanvasElement(createJsLoader)).thenReturn(elementOptional);
 	}
 
 	@Test
 	public void testInitModuleElement() {
-		instance.initModule(createElementMock());
+		testObj.initModule(createElementMock());
 		verify(createJsLoader).addManifestLoadHandler(Matchers.any(ManifestLoadHandler.class));
 		verify(createJsLoader).setLibraryURL(Matchers.eq("http://dummyurl/../../../common/jslibs/"));
 		verify(createJsLoader).addCompleteHandler(Matchers.any(CompleteHandler.class));
@@ -120,42 +82,14 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 
 	@Test
 	public void testGetView() {
-		instance.getView();
+		testObj.getView();
 		verify(moduleView).asWidget();
 	}
 
 	@Test
-	public void testOnBodyLoad() {
-		instance.onBodyLoad();
-		verify(instance).onBodyLoad();
-		Mockito.verifyNoMoreInteractions(instance);
-	}
-
-	@Test
-	public void testOnBodyUnload() {
-		instance.onBodyUnload();
-		verify(instance).onBodyUnload();
-		Mockito.verifyNoMoreInteractions(instance);
-	}
-
-	@Test
-	public void testOnSetUp() {
-		instance.onSetUp();
-		verify(instance).onSetUp();
-		Mockito.verifyNoMoreInteractions(instance);
-	}
-
-	@Test
-	public void testOnStart() {
-		instance.onStart();
-		verify(instance).onStart();
-		Mockito.verifyNoMoreInteractions(instance);
-	}
-
-	@Test
 	public void testOnClose() {
-		instance.initModule(createElementMock());
-		instance.onClose();
+		testObj.initModule(createElementMock());
+		testObj.onClose();
 		verify(createJsLoader).stopSounds();
 	}
 
@@ -163,11 +97,13 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 	public void testOnManifestLoad() {
 		Manifest manifest = mock(Manifest.class);
 		double width = 50d;
-		doReturn(width).when(manifest).getWidth();
+		doReturn(width).when(manifest)
+					   .getWidth();
 		double height = 70d;
-		doReturn(height).when(manifest).getHeight();
+		doReturn(height).when(manifest)
+						.getHeight();
 
-		instance.onManifestLoad(manifest);
+		testObj.onManifestLoad(manifest);
 		verify(moduleView).add(Matchers.eq(preloader));
 		verify(preloader).show(Matchers.eq((int) width), Matchers.eq((int) height));
 
@@ -175,21 +111,21 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 
 	@Test
 	public void initializeCanvasTest() {
-		Canvas canvas = Mockito.mock(Canvas.class);
-		instance.initializeCanvas(canvas);
+		Canvas canvas = mock(Canvas.class);
+		testObj.initializeCanvas(canvas);
 
 		verify(canvas).addTouchStartHandler(Matchers.any(TouchStartHandler.class));
-		verify(instance).addChildView(Matchers.eq(canvas));
+		verify(moduleView).add(canvas);
 		verify(preloader).hidePreloaderAndRemoveFromParent();
 
 	}
 
 	@Test
 	public void touchReservationTest() {
-		Canvas canvas = Mockito.mock(Canvas.class);
+		Canvas canvas = mock(Canvas.class);
 		ArgumentCaptor<TouchReservationHandler> touchReservationCaptor = ArgumentCaptor.forClass(TouchReservationHandler.class);
 
-		instance.initializeCanvas(canvas);
+		testObj.initializeCanvas(canvas);
 		verify(canvas).addTouchStartHandler(touchReservationCaptor.capture());
 		TouchReservationHandler reservationHandler = touchReservationCaptor.getValue();
 		reservationHandler.onTouchStart(null);
@@ -200,33 +136,33 @@ public class SimulationModuleJUnitTest extends AbstractTestBaseWithoutAutoInject
 
 	@Test
 	public void onPlayerEventNoInteractionTest() {
-		instance.initModule(createElementMock());
+		testObj.initModule(createElementMock());
 		for (PlayerEventTypes eventType : PlayerEventTypes.values()) {
 			if (eventType != PlayerEventTypes.PAGE_CHANGE) {
 				PlayerEvent event = new PlayerEvent(eventType);
-				instance.onPlayerEvent(event);
+				testObj.onPlayerEvent(event);
 			}
 		}
-		Mockito.verifyNoMoreInteractions(simulationController);
+		verifyNoMoreInteractions(simulationController);
 	}
 
 	@Test
 	public void onPlayerEventPageNotChangeTest() {
-		instance.initModule(createElementMock());
-		Canvas canvas = Mockito.mock(Canvas.class);
-		instance.initializeCanvas(canvas);
+		testObj.initModule(createElementMock());
+		Canvas canvas = mock(Canvas.class);
+		testObj.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 0, null);
-		instance.onPlayerEvent(event);
-		Mockito.verify(simulationController).resumeAnimation(Matchers.any(JavaScriptObject.class));
+		testObj.onPlayerEvent(event);
+		verify(simulationController).resumeAnimation(Matchers.any(JavaScriptObject.class));
 	}
 
 	@Test
 	public void onPlayerEventPageChangeTest() {
-		instance.initModule(createElementMock());
-		Canvas canvas = Mockito.mock(Canvas.class);
-		instance.initializeCanvas(canvas);
+		testObj.initModule(createElementMock());
+		Canvas canvas = mock(Canvas.class);
+		testObj.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 1, null);
-		instance.onPlayerEvent(event);
-		Mockito.verify(simulationController).pauseAnimation(Matchers.any(JavaScriptObject.class));
+		testObj.onPlayerEvent(event);
+		verify(simulationController).pauseAnimation(element);
 	}
 }

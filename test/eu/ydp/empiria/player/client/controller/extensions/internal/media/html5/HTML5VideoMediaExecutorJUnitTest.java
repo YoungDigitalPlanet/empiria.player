@@ -1,31 +1,24 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
-
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 
-@SuppressWarnings("PMD")
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ MediaBase.class, HTML5MediaEvent.class, Video.class })
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
 
 	private static final String NARRATION_TEXT = "text";

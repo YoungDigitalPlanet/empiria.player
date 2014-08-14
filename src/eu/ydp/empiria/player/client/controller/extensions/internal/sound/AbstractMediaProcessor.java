@@ -1,13 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
@@ -22,8 +16,13 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static eu.ydp.gwtutil.client.util.UserAgentChecker.isUserAgent;
 
 public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler, MediaProcessorExtension {
 	private final Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();

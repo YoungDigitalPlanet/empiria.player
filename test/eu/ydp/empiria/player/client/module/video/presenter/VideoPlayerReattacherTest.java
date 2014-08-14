@@ -1,23 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -26,11 +10,19 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(VideoPlayer.class)
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class VideoPlayerReattacherTest {
 
 	@InjectMocks
@@ -47,15 +39,8 @@ public class VideoPlayerReattacherTest {
 	private PlayerEventHandler playerEventHandler;
 	private CurrentPageScope currentPageScope;
 
-	@BeforeClass
-	public static void before() {
-		GWTMockUtilities.disarm();
-	}
-
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-
 		preparePageScope();
 		prepareHandler();
 	}
@@ -90,12 +75,7 @@ public class VideoPlayerReattacherTest {
 			}
 
 		};
-		doAnswer(answer).when(eventsBus).addHandler(eq(eventType), any(PlayerEventHandler.class), eq(currentPageScope));
+		doAnswer(answer).when(eventsBus)
+						.addHandler(eq(eventType), any(PlayerEventHandler.class), eq(currentPageScope));
 	}
-
-	@AfterClass
-	public static void after() {
-		GWTMockUtilities.restore();
-	}
-
 }

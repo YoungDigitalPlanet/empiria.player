@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.style.CssHelper;
+import eu.ydp.gwtutil.client.xml.XMLParser;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,22 +15,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
+import java.util.HashMap;
+import java.util.Map;
 
-import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.style.CssHelper;
-import eu.ydp.gwtutil.client.xml.XMLParser;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("PMD")
-@PrepareForTest({ NodeList.class, Node.class, Style.class, CssHelper.class })
 public class ConnectionStyleCheckerJUnitTest {
 
 	@Mock
