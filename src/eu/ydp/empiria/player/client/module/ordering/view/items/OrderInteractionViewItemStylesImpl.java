@@ -39,7 +39,9 @@ public class OrderInteractionViewItemStylesImpl implements OrderInteractionViewI
 		String itemStyle = styleNames.QP_ORDERED_ITEM();
 		String answerTypeStyle = stylesMap.get(orderingItem.getAnswerType());
 
-		Set<String> styles = Sets.newHashSet(itemStyle, answerTypeStyle);
+		Set<String> styles = Sets.newLinkedHashSet();
+		styles.add(itemStyle);
+		styles.add(answerTypeStyle);
 
 		if (orderingItem.isLocked()) {
 			styles.add(styleNames.QP_ORDERED_ITEM_LOCKED());
