@@ -1,44 +1,27 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.ImageData;
-import com.google.gwt.junit.GWTMockUtilities;
-
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageDataSlower;
 import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Context2d.class, ImageData.class, Canvas.class })
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class CanvasImageDataProviderJUnitTest {
 
 	private CanvasImageDataProvider canvasImageDataProvider;
 	private UserAgentUtil userAgentUtil;
 	private final CanvasImageView canvasStubView = Mockito.mock(CanvasImageView.class);
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Before
 	public void setUp() throws Exception {

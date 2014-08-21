@@ -1,24 +1,17 @@
 package eu.ydp.empiria.player.client.module.colorfill.fill;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.ImageData;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
-import com.google.gwt.canvas.dom.client.CanvasPixelArray;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.ImageData;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.module.model.color.ColorModel;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Context2d.class, ImageData.class, CanvasPixelArray.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class CanvasImageDataSlowerJUnitTest {
 
 	private CanvasImageDataSlower imageDataSlower;
@@ -29,8 +22,8 @@ public class CanvasImageDataSlowerJUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		context = Mockito.mock(Context2d.class);
-		imageData = Mockito.mock(ImageData.class);
+		context = mock(Context2d.class);
+		imageData = mock(ImageData.class);
 
 		when(context.getImageData(0, 0, width, height)).thenReturn(imageData);
 

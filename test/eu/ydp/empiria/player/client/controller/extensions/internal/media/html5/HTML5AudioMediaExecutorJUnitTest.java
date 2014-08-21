@@ -1,30 +1,22 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.configuration.MockitoConfiguration;
 
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.media.client.Audio;
-import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
-import com.google.gwt.user.client.ui.RootPanel;
+import java.util.Map;
 
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
-import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import static org.mockito.Mockito.*;
 
-@SuppressWarnings("PMD")
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ MediaBase.class, HTML5MediaEvent.class, RootPanel.class, TouchStartEvent.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
 
 	@Override

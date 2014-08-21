@@ -1,49 +1,30 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.junit.GWTMockUtilities;
-
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(VideoPlayer.class)
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class VideoPlayerAttachHandlerTest {
 
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
 	private VideoPlayer videoPlayer;
-
+	@InjectMocks
 	private VideoPlayerAttachHandler testObj;
-
-	@BeforeClass
-	public static void before() {
-		GWTMockUtilities.disarm();
-	}
-
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		testObj = new VideoPlayerAttachHandler(videoPlayer, eventsBus);
-	}
 
 	@Test
 	public void shouldRegisterHandlerAtFirstAttachEvent() {
@@ -86,10 +67,4 @@ public class VideoPlayerAttachHandlerTest {
 
 		return handlerRegistration;
 	}
-
-	@AfterClass
-	public static void after() {
-		GWTMockUtilities.restore();
-	}
-
 }
