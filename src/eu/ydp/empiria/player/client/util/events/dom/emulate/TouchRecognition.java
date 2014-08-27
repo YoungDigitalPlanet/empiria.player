@@ -21,39 +21,56 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerDownEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerMoveEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerUpEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerDownHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerUpHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 //TODO dopisac rozpoznawanie gestow
 public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
-		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
+		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler, PointerDownHandler, PointerUpHandler,
+		PointerMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
+	private final UserAgentUtil userAgentUtil;
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, UserAgentUtil userAgentUtil) {
 		this.listenOn = listenOn;
+		this.userAgentUtil = userAgentUtil;
 	}
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch, UserAgentUtil userAgentUtil) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
+		this.userAgentUtil = userAgentUtil;
 	}
 
 	@AssistedInject
 	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
-			@Assisted("globalTouchEnd") Boolean globalTouchEnd) {
+			@Assisted("globalTouchEnd") Boolean globalTouchEnd, UserAgentUtil userAgentUtil) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 		this.globalTouchEnd = globalTouchEnd.booleanValue();
+		this.userAgentUtil = userAgentUtil;
 	}
 
 	private void addTouchMoveHandlers() {
 		if (!touchMoveHandlers) {
-			listenOn.addDomHandler(this, TouchMoveEvent.getType());
+			if (userAgentUtil.isIE()) {
+				listenOn.addDomHandler(this, PointerMoveEvent.getType());
+			} else {
+				listenOn.addDomHandler(this, TouchMoveEvent.getType());
+			}
+
 			if (emulateClickAsTouch) {
 				listenOn.addDomHandler(this, MouseMoveEvent.getType());
 			}
@@ -62,14 +79,23 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	}
 
 	private void addTouchEndHandlers() {
-		listenOn.addDomHandler(this, TouchEndEvent.getType());
+		if (userAgentUtil.isIE()) {
+			listenOn.addDomHandler(this, PointerUpEvent.getType());
+		} else {
+			listenOn.addDomHandler(this, TouchEndEvent.getType());
+		}
+
 		if (emulateClickAsTouch) {
 			((globalTouchEnd) ? RootPanel.get() : listenOn).addDomHandler(this, MouseUpEvent.getType());
 		}
 	}
 
 	private void addTouchStartHandlers() {
-		listenOn.addDomHandler(this, TouchStartEvent.getType());
+		if (userAgentUtil.isIE()) {
+			listenOn.addDomHandler(this, PointerDownEvent.getType());
+		} else {
+			listenOn.addDomHandler(this, TouchStartEvent.getType());
+		}
 		if (emulateClickAsTouch) {
 			listenOn.addDomHandler(this, MouseDownEvent.getType());
 		}
@@ -169,4 +195,27 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		touchCancel(event.getNativeEvent());
 	}
 
+	@Override
+	public void onPointerMove(PointerMoveEvent event) {
+		if (!event.isTouchEvent()) {
+			return;
+		}
+		touchMove(event.getNativeEvent());
+	}
+
+	@Override
+	public void onPointerUp(PointerUpEvent event) {
+		if (!event.isTouchEvent()) {
+			return;
+		}
+		touchEnd(event.getNativeEvent());
+	}
+
+	@Override
+	public void onPointerDown(PointerDownEvent event) {
+		if (!event.isTouchEvent()) {
+			return;
+		}
+		touchStart(event.getNativeEvent());
+	}
 }
