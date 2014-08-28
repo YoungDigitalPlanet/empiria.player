@@ -13,10 +13,10 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchCancelHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchStartHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnCancelHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnStartHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
@@ -150,8 +150,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		touchStart(event.getNativeEvent());
 	}
 
-	private CreateTouchMoveHandler createTouchMoveHandler() {
-		return new CreateTouchMoveHandler() {
+	private TouchOnMoveHandler createTouchMoveHandler() {
+		return new TouchOnMoveHandler() {
 
 			@Override
 			public void onMove(NativeEvent nativeEvent) {
@@ -161,8 +161,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		};
 	}
 
-	private CreateTouchEndHandler createTouchEndHandler() {
-		return new CreateTouchEndHandler() {
+	private TouchOnEndHandler createTouchEndHandler() {
+		return new TouchOnEndHandler() {
 
 			@Override
 			public void onEnd(NativeEvent nativeEvent) {
@@ -171,8 +171,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		};
 	}
 
-	private CreateTouchStartHandler createTouchStartHandler() {
-		return new CreateTouchStartHandler() {
+	private TouchOnStartHandler createTouchStartHandler() {
+		return new TouchOnStartHandler() {
 
 			@Override
 			public void onStart(NativeEvent nativeEvent) {
@@ -181,8 +181,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		};
 	}
 
-	private CreateTouchCancelHandler createTouchCancelHandler() {
-		return new CreateTouchCancelHandler() {
+	private TouchOnCancelHandler createTouchCancelHandler() {
+		return new TouchOnCancelHandler() {
 
 			@Override
 			public void onCancel(NativeEvent nativeEvent) {

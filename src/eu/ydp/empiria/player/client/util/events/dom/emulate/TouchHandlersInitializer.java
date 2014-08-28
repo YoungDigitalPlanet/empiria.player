@@ -11,10 +11,10 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchCancelHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchStartHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnCancelHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnStartHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerDownEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerUpEvent;
@@ -28,7 +28,7 @@ public class TouchHandlersInitializer {
 	@Inject
 	private UserAgentUtil userAgentUtil;
 
-	public void addTouchMoveHandler(final CreateTouchMoveHandler touchMoveHandler, Widget listenOn) {
+	public void addTouchMoveHandler(final TouchOnMoveHandler touchMoveHandler, Widget listenOn) {
 		if (userAgentUtil.isIE()) {
 			listenOn.addDomHandler(createPointerMoveHandler(touchMoveHandler), PointerMoveEvent.getType());
 		} else {
@@ -36,7 +36,7 @@ public class TouchHandlersInitializer {
 		}
 	}
 
-	public void addTouchStartHandler(final CreateTouchStartHandler touchStartHandler, Widget listenOn) {
+	public void addTouchStartHandler(final TouchOnStartHandler touchStartHandler, Widget listenOn) {
 		if (userAgentUtil.isIE()) {
 			listenOn.addDomHandler(createPointerStartHandler(touchStartHandler), PointerDownEvent.getType());
 		} else {
@@ -44,7 +44,7 @@ public class TouchHandlersInitializer {
 		}
 	}
 
-	public void addTouchEndHandler(final CreateTouchEndHandler touchEndHandler, Widget listenOn) {
+	public void addTouchEndHandler(final TouchOnEndHandler touchEndHandler, Widget listenOn) {
 		if (userAgentUtil.isIE()) {
 			listenOn.addDomHandler(createPointerEndHandler(touchEndHandler), PointerUpEvent.getType());
 		} else {
@@ -52,11 +52,11 @@ public class TouchHandlersInitializer {
 		}
 	}
 
-	public void addTouchCancelHandler(final CreateTouchCancelHandler touchCancelHandler, Widget listenOn) {
+	public void addTouchCancelHandler(final TouchOnCancelHandler touchCancelHandler, Widget listenOn) {
 		listenOn.addDomHandler(createTouchCancelHandler(touchCancelHandler), TouchCancelEvent.getType());
 	}
 
-	private TouchMoveHandler createTouchMoveHandler(final CreateTouchMoveHandler touchMoveHandler) {
+	private TouchMoveHandler createTouchMoveHandler(final TouchOnMoveHandler touchMoveHandler) {
 		return new TouchMoveHandler() {
 
 			@Override
@@ -66,7 +66,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private PointerMoveHandler createPointerMoveHandler(final CreateTouchMoveHandler touchMoveHandler) {
+	private PointerMoveHandler createPointerMoveHandler(final TouchOnMoveHandler touchMoveHandler) {
 		return new PointerMoveHandler() {
 
 			@Override
@@ -79,7 +79,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private TouchStartHandler createTouchStartHandler(final CreateTouchStartHandler touchStartHandler) {
+	private TouchStartHandler createTouchStartHandler(final TouchOnStartHandler touchStartHandler) {
 		return new TouchStartHandler() {
 
 			@Override
@@ -89,7 +89,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private PointerDownHandler createPointerStartHandler(final CreateTouchStartHandler touchStartHandler) {
+	private PointerDownHandler createPointerStartHandler(final TouchOnStartHandler touchStartHandler) {
 		return new PointerDownHandler() {
 
 			@Override
@@ -101,7 +101,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private TouchEndHandler createTouchEndHandler(final CreateTouchEndHandler touchEndHandler) {
+	private TouchEndHandler createTouchEndHandler(final TouchOnEndHandler touchEndHandler) {
 		return new TouchEndHandler() {
 
 			@Override
@@ -111,7 +111,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private PointerUpHandler createPointerEndHandler(final CreateTouchEndHandler touchEndHandler) {
+	private PointerUpHandler createPointerEndHandler(final TouchOnEndHandler touchEndHandler) {
 		return new PointerUpHandler() {
 
 			@Override
@@ -123,7 +123,7 @@ public class TouchHandlersInitializer {
 		};
 	}
 
-	private TouchCancelHandler createTouchCancelHandler(final CreateTouchCancelHandler touchCancelHandler) {
+	private TouchCancelHandler createTouchCancelHandler(final TouchOnCancelHandler touchCancelHandler) {
 		return new TouchCancelHandler() {
 
 			@Override
