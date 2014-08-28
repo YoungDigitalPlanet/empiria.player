@@ -7,7 +7,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.configuration.MockitoConfiguration;
 
@@ -57,7 +56,7 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 	}
 
 	@Override
-	public void verifyMediaPreloadType() {
-		verify(mediaBase).setPreload(Matchers.eq(MediaElement.PRELOAD_AUTO));
+	public String getAssumedMediaPreloadType() {
+		return MediaElement.PRELOAD_AUTO;
 	}
 }

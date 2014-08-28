@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper
 
 public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements HTML5MediaEventHandler, MediaExecutor<MediaBase> {
 
-	protected H media;
+	private H media;
 	private MediaWrapper<MediaBase> mediaDescriptor;
 	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
@@ -42,15 +42,15 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		}
 	}
 
-	protected void setMediaPreload() {
-		media.setPreload(MediaElement.PRELOAD_METADATA);
+	protected String getMediaPreloadType() {
+		return MediaElement.PRELOAD_METADATA;
 	}
 
 	private void configureMediaBase() {
 		for (Map.Entry<String, String> entry : baseMediaConfiguration.getSources().entrySet()) {
 			media.addSource(entry.getKey(), entry.getValue());
 		}
-		setMediaPreload();
+		media.setPreload(getMediaPreloadType());
 		media.setControls(!baseMediaConfiguration.isTemplate());
 	}
 

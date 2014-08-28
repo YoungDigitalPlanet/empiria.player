@@ -59,9 +59,4 @@ public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 			media.setWidth(baseMediaConfiguration.getWidth() + "px");
 		}
 	}
-
-	@Override
-	protected void setMediaPreload() {
-		media.setPreload(MediaElement.PRELOAD_METADATA);
-	}
 }

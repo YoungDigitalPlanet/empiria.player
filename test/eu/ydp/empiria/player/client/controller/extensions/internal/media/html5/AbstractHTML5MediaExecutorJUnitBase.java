@@ -83,7 +83,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		mediaConfiguration = new BaseMediaConfiguration(new HashMap<String, String>(), false);
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
-		verifyMediaPreloadType();
+		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(true));
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	public void testInit() {
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
-		verifyMediaPreloadType();
+		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(false));
 	}
 
@@ -282,16 +282,18 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	}
 
 	@Test
-	public void shouldSetMediaPreloadType() {
+	public void shouldGetMediaPreloadType() {
+		// given
+		String expected = getAssumedMediaPreloadType();
+
 		// when
-		instance.setMediaPreload();
+		String result = instance.getMediaPreloadType();
 
 		// then
-		verifyMediaPreloadType();
+		assertEquals(expected, result);
 	}
 
-	public void verifyMediaPreloadType() {
-		verify(mediaBase).setPreload(Matchers.eq(MediaElement.PRELOAD_METADATA));
+	protected String getAssumedMediaPreloadType() {
+		return MediaElement.PRELOAD_METADATA;
 	}
-
 }

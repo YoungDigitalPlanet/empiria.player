@@ -10,7 +10,7 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 	}
 
 	@Override
-	protected void setMediaPreload() {
-		media.setPreload(MediaElement.PRELOAD_AUTO);
+	protected String getMediaPreloadType() {
+		return MediaElement.PRELOAD_AUTO;
 	}
 }
