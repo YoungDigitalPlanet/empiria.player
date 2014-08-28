@@ -1,20 +1,24 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
+import static org.mockito.Mockito.*;
+
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.mockito.configuration.MockitoConfiguration;
+
+import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.Audio;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.configuration.MockitoConfiguration;
-
-import java.util.Map;
-
-import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
@@ -52,4 +56,8 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 		verifyNoMoreInteractions(instance);
 	}
 
+	@Override
+	public void verifyMediaPreloadType() {
+		verify(mediaBase).setPreload(Matchers.eq(MediaElement.PRELOAD_AUTO));
+	}
 }

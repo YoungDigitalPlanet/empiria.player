@@ -1,22 +1,24 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
+import static org.mockito.Mockito.*;
+
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-
-import java.util.Map;
-
-import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
@@ -63,7 +65,5 @@ public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 		verify((Video) mediaBase).setPoster(Matchers.eq(POSTER_URL));
 		verify((Video) mediaBase).addTrack(Matchers.eq(TextTrackKind.SUBTITLES));
 		verify(track).addCue(Matchers.any(TextTrackCue.class));
-
 	}
-
 }
