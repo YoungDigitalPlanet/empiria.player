@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.PointerEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.PointerEventsConstants;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerUpHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.PointerEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.PointerEventsConstants;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.handlers.PointerUpHandler;
 
 public class PointerUpEvent extends PointerEvent<PointerUpHandler> {
 

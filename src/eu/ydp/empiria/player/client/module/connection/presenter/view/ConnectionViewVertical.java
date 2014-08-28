@@ -18,8 +18,8 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveE
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 

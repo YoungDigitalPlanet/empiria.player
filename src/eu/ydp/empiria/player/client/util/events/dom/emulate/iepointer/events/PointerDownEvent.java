@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.PointerEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.PointerEventsConstants;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerDownHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.PointerEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.PointerEventsConstants;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.handlers.PointerDownHandler;
 
 public class PointerDownEvent extends PointerEvent<PointerDownHandler> {
 

@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;

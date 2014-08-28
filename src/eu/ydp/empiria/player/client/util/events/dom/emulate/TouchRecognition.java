@@ -7,83 +7,62 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchCancelEvent;
-import com.google.gwt.event.dom.client.TouchCancelHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerDownEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerMoveEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerUpEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerDownHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers.PointerUpHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchCancelHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.CreateTouchStartHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 //TODO dopisac rozpoznawanie gestow
-public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
-		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler, PointerDownHandler, PointerUpHandler,
-		PointerMoveHandler {
+public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, MouseDownHandler, MouseUpHandler,
+		MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
-	private final UserAgentUtil userAgentUtil;
+	private final TouchHandlersInitializer touchHandlersInitializer;
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn, UserAgentUtil userAgentUtil) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, UserAgentUtil userAgentUtil, TouchHandlersInitializer touchHandlersInitializer) {
 		this.listenOn = listenOn;
-		this.userAgentUtil = userAgentUtil;
-	}
-
-	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch, UserAgentUtil userAgentUtil) {
-		this.listenOn = listenOn;
-		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
-		this.userAgentUtil = userAgentUtil;
+		this.touchHandlersInitializer = touchHandlersInitializer;
 	}
 
 	@AssistedInject
 	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
-			@Assisted("globalTouchEnd") Boolean globalTouchEnd, UserAgentUtil userAgentUtil) {
+			TouchHandlersInitializer touchHandlersInitializer) {
+		this.listenOn = listenOn;
+		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
+		this.touchHandlersInitializer = touchHandlersInitializer;
+	}
+
+	@AssistedInject
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
+			@Assisted("globalTouchEnd") Boolean globalTouchEnd, TouchHandlersInitializer touchHandlersInitializer) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 		this.globalTouchEnd = globalTouchEnd.booleanValue();
-		this.userAgentUtil = userAgentUtil;
+		this.touchHandlersInitializer = touchHandlersInitializer;
 	}
 
 	private void addTouchMoveHandlers() {
 		if (!touchMoveHandlers) {
-			if (userAgentUtil.isIE()) {
-				listenOn.addDomHandler(this, PointerMoveEvent.getType());
-			} else {
-				listenOn.addDomHandler(this, TouchMoveEvent.getType());
-			}
-
-			if (emulateClickAsTouch) {
-				listenOn.addDomHandler(this, MouseMoveEvent.getType());
-			}
+			touchHandlersInitializer.addTouchMoveHandler(createTouchMoveHandler(), listenOn);
 			touchMoveHandlers = true;
 		}
 	}
 
 	private void addTouchEndHandlers() {
-		if (userAgentUtil.isIE()) {
-			listenOn.addDomHandler(this, PointerUpEvent.getType());
-		} else {
-			listenOn.addDomHandler(this, TouchEndEvent.getType());
-		}
+		touchHandlersInitializer.addTouchEndHandler(createTouchEndHandler(), listenOn);
 
 		if (emulateClickAsTouch) {
 			((globalTouchEnd) ? RootPanel.get() : listenOn).addDomHandler(this, MouseUpEvent.getType());
@@ -91,18 +70,15 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	}
 
 	private void addTouchStartHandlers() {
-		if (userAgentUtil.isIE()) {
-			listenOn.addDomHandler(this, PointerDownEvent.getType());
-		} else {
-			listenOn.addDomHandler(this, TouchStartEvent.getType());
-		}
+		touchHandlersInitializer.addTouchStartHandler(createTouchStartHandler(), listenOn);
+
 		if (emulateClickAsTouch) {
 			listenOn.addDomHandler(this, MouseDownEvent.getType());
 		}
 	}
 
 	private void addTouchCancelHandlers() {
-		listenOn.addDomHandler(this, TouchCancelEvent.getType());
+		touchHandlersInitializer.addTouchCancelHandler(createTouchCancelHandler(), listenOn);
 	}
 
 	private void touchStart(NativeEvent event) {
@@ -174,48 +150,44 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		touchStart(event.getNativeEvent());
 	}
 
-	@Override
-	public void onTouchMove(TouchMoveEvent event) {
-		touchMove(event.getNativeEvent());
+	private CreateTouchMoveHandler createTouchMoveHandler() {
+		return new CreateTouchMoveHandler() {
+
+			@Override
+			public void onMove(NativeEvent nativeEvent) {
+				touchMove(nativeEvent);
+
+			}
+		};
 	}
 
-	@Override
-	public void onTouchEnd(TouchEndEvent event) {
-		touchEnd(event.getNativeEvent());
+	private CreateTouchEndHandler createTouchEndHandler() {
+		return new CreateTouchEndHandler() {
 
+			@Override
+			public void onEnd(NativeEvent nativeEvent) {
+				touchEnd(nativeEvent);
+			}
+		};
 	}
 
-	@Override
-	public void onTouchStart(TouchStartEvent event) {
-		touchStart(event.getNativeEvent());
+	private CreateTouchStartHandler createTouchStartHandler() {
+		return new CreateTouchStartHandler() {
+
+			@Override
+			public void onStart(NativeEvent nativeEvent) {
+				touchStart(nativeEvent);
+			}
+		};
 	}
 
-	@Override
-	public void onTouchCancel(TouchCancelEvent event) {
-		touchCancel(event.getNativeEvent());
-	}
+	private CreateTouchCancelHandler createTouchCancelHandler() {
+		return new CreateTouchCancelHandler() {
 
-	@Override
-	public void onPointerMove(PointerMoveEvent event) {
-		if (!event.isTouchEvent()) {
-			return;
-		}
-		touchMove(event.getNativeEvent());
-	}
-
-	@Override
-	public void onPointerUp(PointerUpEvent event) {
-		if (!event.isTouchEvent()) {
-			return;
-		}
-		touchEnd(event.getNativeEvent());
-	}
-
-	@Override
-	public void onPointerDown(PointerDownEvent event) {
-		if (!event.isTouchEvent()) {
-			return;
-		}
-		touchStart(event.getNativeEvent());
+			@Override
+			public void onCancel(NativeEvent nativeEvent) {
+				touchCancel(nativeEvent);
+			}
+		};
 	}
 }

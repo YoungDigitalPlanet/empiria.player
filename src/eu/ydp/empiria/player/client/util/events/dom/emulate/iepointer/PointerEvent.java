@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer;
 
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.shared.EventHandler;

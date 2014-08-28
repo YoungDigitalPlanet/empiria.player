@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer;
 
 public class PointerEventsConstants {
 	private PointerEventsConstants() {

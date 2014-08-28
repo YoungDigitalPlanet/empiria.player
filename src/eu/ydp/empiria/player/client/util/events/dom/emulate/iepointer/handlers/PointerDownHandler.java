@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.handlers;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.handlers;
 
 import com.google.gwt.event.shared.EventHandler;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.pointerevent.events.PointerDownEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerDownEvent;
 
 public interface PointerDownHandler extends EventHandler {
 	void onPointerDown(PointerDownEvent event);
