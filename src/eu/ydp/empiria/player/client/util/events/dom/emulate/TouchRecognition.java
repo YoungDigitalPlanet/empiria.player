@@ -13,11 +13,11 @@ import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnCancelHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchOnStartHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnCancelHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
