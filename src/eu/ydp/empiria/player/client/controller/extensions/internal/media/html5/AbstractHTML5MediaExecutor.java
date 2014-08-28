@@ -42,11 +42,15 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		}
 	}
 
+	protected String getMediaPreloadType() {
+		return MediaElement.PRELOAD_METADATA;
+	}
+
 	private void configureMediaBase() {
 		for (Map.Entry<String, String> entry : baseMediaConfiguration.getSources().entrySet()) {
 			media.addSource(entry.getKey(), entry.getValue());
 		}
-		media.setPreload(MediaElement.PRELOAD_METADATA);
+		media.setPreload(getMediaPreloadType());
 		media.setControls(!baseMediaConfiguration.isTemplate());
 	}
 

@@ -1,20 +1,23 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import com.google.gwt.media.client.Audio;
-import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
-import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
-import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
+import static org.mockito.Mockito.*;
+
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.configuration.MockitoConfiguration;
 
-import java.util.Map;
+import com.google.gwt.dom.client.MediaElement;
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
-import static org.mockito.Mockito.*;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
+import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
@@ -52,4 +55,8 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 		verifyNoMoreInteractions(instance);
 	}
 
+	@Override
+	public String getAssumedMediaPreloadType() {
+		return MediaElement.PRELOAD_AUTO;
+	}
 }
