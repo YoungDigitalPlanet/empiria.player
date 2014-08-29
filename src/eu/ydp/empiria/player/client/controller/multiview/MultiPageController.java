@@ -1,5 +1,10 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.gwt.dom.client.Element;
@@ -13,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
@@ -34,11 +40,6 @@ import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class MultiPageController extends InternalExtension implements FlowRequestSocketUserExtension, IMultiPageController {
 
@@ -97,7 +98,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	private boolean focusDropped;
 
 	private static final Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel> keyPanelExtractor = new Function<KeyValue<FlowPanel, FlowPanel>, FlowPanel>() {
-		@Override public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
+		@Override
+		public FlowPanel apply(KeyValue<FlowPanel, FlowPanel> keyValue) {
 			return keyValue.getKey();
 		}
 	};
@@ -180,7 +182,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	}
 
 	/**
-	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie. Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
+	 * Na androidzie podczas swipe gapy zle sie rysowaly nachodzac na siebie.
+	 * Pozbycie sie z nich focusa na czas swipe rozwiazalo problem
 	 */
 	private void dropFocus() {
 		focusDropped = true;
@@ -254,7 +257,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
 	public boolean isZoomed() {
 		int clientWidth = windowDelegate.getClientWidth();
 		int innerWidth = windowDelegate.getInnerWidth();
-		return innerWidth != clientWidth && innerWidth - 1 != clientWidth;
+		return innerWidth < clientWidth;
 	}
 
 	@Override
