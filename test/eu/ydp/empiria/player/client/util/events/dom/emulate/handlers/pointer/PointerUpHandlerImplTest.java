@@ -44,4 +44,17 @@ public class PointerUpHandlerImplTest {
 		// then
 		verify(touchOnEndHandler).onEnd(nativeEvent);
 	}
+
+	@Test
+	public void shouldntCallOnStart() {
+		// given
+		when(pointerUpEvent.getNativeEvent()).thenReturn(nativeEvent);
+		when(pointerUpEvent.isTouchEvent()).thenReturn(false);
+
+		// when
+		testObj.onPointerUp(pointerUpEvent);
+
+		// then
+		verify(touchOnEndHandler, never()).onEnd(nativeEvent);
+	}
 }

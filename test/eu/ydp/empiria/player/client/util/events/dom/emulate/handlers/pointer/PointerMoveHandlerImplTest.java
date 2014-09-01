@@ -43,4 +43,17 @@ public class PointerMoveHandlerImplTest {
 		// then
 		verify(touchMoveHandler).onMove(nativeEvent);
 	}
+
+	@Test
+	public void shouldntCallOnStart() {
+		// given
+		when(pointerMoveEvent.getNativeEvent()).thenReturn(nativeEvent);
+		when(pointerMoveEvent.isTouchEvent()).thenReturn(false);
+
+		// when
+		testObj.onPointerMove(pointerMoveEvent);
+
+		// then
+		verify(touchMoveHandler, never()).onMove(nativeEvent);
+	}
 }

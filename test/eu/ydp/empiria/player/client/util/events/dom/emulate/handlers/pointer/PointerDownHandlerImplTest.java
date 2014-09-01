@@ -44,4 +44,17 @@ public class PointerDownHandlerImplTest {
 		// then
 		verify(touchOnStartHandler).onStart(nativeEvent);
 	}
+
+	@Test
+	public void shouldntCallOnStart() {
+		// given
+		when(pointerDownEvent.getNativeEvent()).thenReturn(nativeEvent);
+		when(pointerDownEvent.isTouchEvent()).thenReturn(false);
+
+		// when
+		testObj.onPointerDown(pointerDownEvent);
+
+		// then
+		verify(touchOnStartHandler, never()).onStart(nativeEvent);
+	}
 }
