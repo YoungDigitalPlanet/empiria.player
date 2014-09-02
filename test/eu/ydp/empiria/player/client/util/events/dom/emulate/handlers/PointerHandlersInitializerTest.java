@@ -20,16 +20,12 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerDownEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerUpEvent;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class PointerHandlersInitializerTest {
 
 	@InjectMocks
 	private PointerHandlersInitializer testObj;
-
-	@Mock
-	private UserAgentUtil userAgentUtil;
 
 	@Mock
 	private Widget listenOn;

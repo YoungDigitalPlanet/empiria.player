@@ -23,7 +23,6 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 //TODO dopisac rozpoznawanie gestow
 public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, MouseDownHandler, MouseUpHandler,
@@ -35,7 +34,7 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 	private final ITouchHandlerInitializer touchHandlerInitializer;
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn, UserAgentUtil userAgentUtil, TouchHandlerProvider touchHandlersProvider) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, TouchHandlerProvider touchHandlersProvider) {
 		this.listenOn = listenOn;
 		this.touchHandlerInitializer = touchHandlersProvider.getTouchHandlersInitializer();
 	}

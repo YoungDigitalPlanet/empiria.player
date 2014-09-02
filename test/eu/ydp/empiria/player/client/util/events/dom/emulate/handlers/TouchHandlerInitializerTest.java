@@ -23,16 +23,12 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TouchHandlerInitializerTest {
 
 	@InjectMocks
 	private TouchHandlersInitializer testObj;
-
-	@Mock
-	private UserAgentUtil userAgentUtil;
 
 	@Mock
 	private Widget listenOn;
