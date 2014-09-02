@@ -7,76 +7,80 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchCancelEvent;
-import com.google.gwt.event.dom.client.TouchCancelHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.ITouchHandlerInitializer;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandlerProvider;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnCancelHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 import eu.ydp.gwtutil.client.event.AbstractEventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 //TODO dopisac rozpoznawanie gestow
-public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, TouchStartHandler,
-		TouchEndHandler, TouchMoveHandler, TouchCancelHandler, MouseDownHandler, MouseUpHandler, MouseMoveHandler {
+public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, MouseDownHandler, MouseUpHandler,
+		MouseMoveHandler {
 	private final Widget listenOn;
 	private boolean touchMoveHandlers = false;
 	private boolean emulateClickAsTouch = true;
 	private boolean globalTouchEnd;
+	private final ITouchHandlerInitializer touchHandlerInitializer;
 
 	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn) {
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, TouchHandlerProvider touchHandlersProvider) {
 		this.listenOn = listenOn;
-	}
-
-	@AssistedInject
-	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch) {
-		this.listenOn = listenOn;
-		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
+		this.touchHandlerInitializer = touchHandlersProvider.getTouchHandlersInitializer();
 	}
 
 	@AssistedInject
 	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
-			@Assisted("globalTouchEnd") Boolean globalTouchEnd) {
+			TouchHandlerProvider touchHandlersInitializer) {
+		this.listenOn = listenOn;
+		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
+		this.touchHandlerInitializer = touchHandlersInitializer.getTouchHandlersInitializer();
+	}
+
+	@AssistedInject
+	public TouchRecognition(@Assisted("listenOn") Widget listenOn, @Assisted("emulateClickAsTouch") Boolean emulateClickAsTouch,
+			@Assisted("globalTouchEnd") Boolean globalTouchEnd, TouchHandlerProvider touchHandlersInitializer) {
 		this.listenOn = listenOn;
 		this.emulateClickAsTouch = emulateClickAsTouch.booleanValue();
 		this.globalTouchEnd = globalTouchEnd.booleanValue();
+		this.touchHandlerInitializer = touchHandlersInitializer.getTouchHandlersInitializer();
 	}
 
 	private void addTouchMoveHandlers() {
 		if (!touchMoveHandlers) {
-			listenOn.addDomHandler(this, TouchMoveEvent.getType());
-			if (emulateClickAsTouch) {
-				listenOn.addDomHandler(this, MouseMoveEvent.getType());
-			}
+			touchHandlerInitializer.addTouchMoveHandler(createTouchMoveHandler(), listenOn);
 			touchMoveHandlers = true;
 		}
 	}
 
 	private void addTouchEndHandlers() {
-		listenOn.addDomHandler(this, TouchEndEvent.getType());
+		touchHandlerInitializer.addTouchEndHandler(createTouchEndHandler(), listenOn);
+
 		if (emulateClickAsTouch) {
 			((globalTouchEnd) ? RootPanel.get() : listenOn).addDomHandler(this, MouseUpEvent.getType());
 		}
 	}
 
 	private void addTouchStartHandlers() {
-		listenOn.addDomHandler(this, TouchStartEvent.getType());
+		touchHandlerInitializer.addTouchStartHandler(createTouchStartHandler(), listenOn);
+
 		if (emulateClickAsTouch) {
 			listenOn.addDomHandler(this, MouseDownEvent.getType());
 		}
 	}
 
 	private void addTouchCancelHandlers() {
-		listenOn.addDomHandler(this, TouchCancelEvent.getType());
+		touchHandlerInitializer.addTouchCancelHandler(createTouchCancelHandler(), listenOn);
 	}
 
 	private void touchStart(NativeEvent event) {
@@ -148,25 +152,44 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		touchStart(event.getNativeEvent());
 	}
 
-	@Override
-	public void onTouchMove(TouchMoveEvent event) {
-		touchMove(event.getNativeEvent());
+	private TouchOnMoveHandler createTouchMoveHandler() {
+		return new TouchOnMoveHandler() {
+
+			@Override
+			public void onMove(NativeEvent nativeEvent) {
+				touchMove(nativeEvent);
+
+			}
+		};
 	}
 
-	@Override
-	public void onTouchEnd(TouchEndEvent event) {
-		touchEnd(event.getNativeEvent());
+	private TouchOnEndHandler createTouchEndHandler() {
+		return new TouchOnEndHandler() {
 
+			@Override
+			public void onEnd(NativeEvent nativeEvent) {
+				touchEnd(nativeEvent);
+			}
+		};
 	}
 
-	@Override
-	public void onTouchStart(TouchStartEvent event) {
-		touchStart(event.getNativeEvent());
+	private TouchOnStartHandler createTouchStartHandler() {
+		return new TouchOnStartHandler() {
+
+			@Override
+			public void onStart(NativeEvent nativeEvent) {
+				touchStart(nativeEvent);
+			}
+		};
 	}
 
-	@Override
-	public void onTouchCancel(TouchCancelEvent event) {
-		touchCancel(event.getNativeEvent());
-	}
+	private TouchOnCancelHandler createTouchCancelHandler() {
+		return new TouchOnCancelHandler() {
 
+			@Override
+			public void onCancel(NativeEvent nativeEvent) {
+				touchCancel(nativeEvent);
+			}
+		};
+	}
 }

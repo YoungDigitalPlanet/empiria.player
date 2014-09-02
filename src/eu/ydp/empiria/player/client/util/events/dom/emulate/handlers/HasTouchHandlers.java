@@ -1,7 +1,8 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate;
+package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 public interface HasTouchHandlers {
