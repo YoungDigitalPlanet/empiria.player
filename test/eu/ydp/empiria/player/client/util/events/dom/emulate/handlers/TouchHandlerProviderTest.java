@@ -20,6 +20,12 @@ public class TouchHandlerProviderTest {
 	private TouchHandlerProvider testObj;
 
 	@Mock
+	private PointerHandlersInitializer pointerHandlersInitializer;
+
+	@Mock
+	private TouchHandlersInitializer touchHandlersInitializer;
+
+	@Mock
 	private UserAgentUtil userAgentUtil;
 
 	@Test
