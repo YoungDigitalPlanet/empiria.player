@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.img;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -15,12 +14,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window.Navigator;
@@ -35,6 +28,11 @@ import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.EventsCoordinates;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.ITouchHandlerInitializer;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
@@ -65,10 +63,13 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private final TouchController touchController;
 
+	private final ITouchHandlerInitializer<EventsCoordinates> touchHandlerInitializer;
+
 	public ExplorableImgWindowCanvas() {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
+		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerProvider().getTouchHandlersInitializer();
 	}
 
 	@Override
@@ -133,14 +134,96 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	private void addHandlersToCanvas(FocusWidget focusCanvas) {
-		addTouchStartHandler(focusCanvas);
-		addTouchMoveHandler(focusCanvas);
-		addTouchEndHandler(focusCanvas);
+		touchHandlerInitializer.addTouchStartHandler(createTouchStartHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchMoveHandler(createTouchMoveHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchEndHandler(createTouchEndHandler(), focusCanvas);
+
 		addMouseDownHandler(focusCanvas);
 		addMouseMoveHandler(focusCanvas);
 		addMouseUpHandler(focusCanvas);
 		addMouseOutHandler(focusCanvas);
 	}
+
+	private TouchOnMoveHandler<EventsCoordinates> createTouchMoveHandler() {
+		return new TouchOnMoveHandler<EventsCoordinates>() {
+
+			@Override
+			public void onMove(EventsCoordinates eventCoordinates) {
+				if (eventCoordinates.getLength() == 1) {
+					onMoveMove(eventCoordinates.getEvent(0).getX(), eventCoordinates.getEvent(0).getY());
+				} else if (eventCoordinates.getLength() == 2) {
+					onMoveScale(eventCoordinates.getEvent(0).getX(), eventCoordinates.getEvent(0).getY(), eventCoordinates.getEvent(1).getX(),
+							eventCoordinates.getEvent(1).getY());
+				}
+			}
+		};
+	}
+
+	private TouchOnEndHandler<EventsCoordinates> createTouchEndHandler() {
+		return new TouchOnEndHandler<EventsCoordinates>() {
+
+			@Override
+			public void onEnd(EventsCoordinates eventCoordinates) {
+				onMoveEnd();
+			}
+		};
+	}
+
+	private TouchOnStartHandler<EventsCoordinates> createTouchStartHandler() {
+		return new TouchOnStartHandler<EventsCoordinates>() {
+
+			@Override
+			public void onStart(EventsCoordinates eventCoordinates) {
+				onMoveStart(eventCoordinates.getEvent(0).getX(), eventCoordinates.getEvent(0).getY());
+			}
+		};
+	}
+
+	// private void addPointerDownHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addDomHandler(new PointerDownHandler() {
+	//
+	// @Override
+	// public void onPointerDown(PointerDownEvent event) {
+	// event.getTouchesManager().addEvent(event);
+	// onMoveStart(event.getTouchesManager().getEvent(0).getX(),
+	// event.getTouchesManager().getEvent(0).getY());
+	// event.preventDefault();
+	// }
+	// }, PointerDownEvent.getType());
+	// }
+	//
+	// private void addPointerUpHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addDomHandler(new PointerUpHandler() {
+	//
+	// @Override
+	// public void onPointerUp(PointerUpEvent event) {
+	// onMoveEnd();
+	// event.preventDefault();
+	// }
+	// }, PointerUpEvent.getType());
+	//
+	// }
+	//
+	// private void addPointerMoveHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addDomHandler(new PointerMoveHandler() {
+	//
+	// @Override
+	// public void onPointerMove(PointerMoveEvent event) {
+	// event.getTouchesManager().addEvent(event);
+	// if (event.getTouchesManager().getLength() == 1) {
+	// onMoveMove(event.getTouchesManager().getEvent(0).getX(),
+	// event.getTouchesManager().getEvent(0).getY());
+	// } else if (event.getTouchesManager().getLength() == 2) {
+	// onMoveScale(event.getTouchesManager().getEvent(0).getX(),
+	// event.getTouchesManager().getEvent(0).getY(),
+	// event.getTouchesManager().getEvent(1).getX(),
+	// event.getTouchesManager().getEvent(1).getY());
+	// }
+	// event.preventDefault();
+	//
+	// }
+	// }, PointerMoveEvent.getType());
+	// }
 
 	private void addMouseOutHandler(FocusWidget focusCanvas) {
 		focusCanvas.addMouseOutHandler(new MouseOutHandler() {
@@ -182,45 +265,47 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		});
 	}
 
-	private void addTouchEndHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchEndHandler(new TouchEndHandler() {
-
-			@Override
-			public void onTouchEnd(TouchEndEvent event) {
-				onMoveEnd();
-				event.preventDefault();
-			}
-		});
-	}
-
-	private void addTouchMoveHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchMoveHandler(new TouchMoveHandler() {
-
-			@Override
-			public void onTouchMove(TouchMoveEvent event) {
-				if (event.getTouches().length() == 1) {
-					onMoveMove(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY());
-				} else if (event.getTouches().length() == 2) {
-					onMoveScale(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY(), event.getTouches().get(1).getClientX(), event
-							.getTouches().get(1).getClientY());
-				}
-				event.preventDefault();
-			}
-
-		});
-	}
-
-	private void addTouchStartHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
-
-			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				Touch firstTouch = event.getTouches().get(0);
-				onMoveStart(firstTouch.getClientX(), firstTouch.getClientY());
-				event.preventDefault();
-			}
-		});
-	}
+	// private void addTouchEndHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addTouchEndHandler(new TouchEndHandler() {
+	//
+	// @Override
+	// public void onTouchEnd(TouchEndEvent event) {
+	// onMoveEnd();
+	// event.preventDefault();
+	// }
+	// });
+	// }
+	//
+	// private void addTouchMoveHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addTouchMoveHandler(new TouchMoveHandler() {
+	//
+	// @Override
+	// public void onTouchMove(TouchMoveEvent event) {
+	// if (event.getTouches().length() == 1) {
+	// onMoveMove(event.getTouches().get(0).getClientX(),
+	// event.getTouches().get(0).getClientY());
+	// } else if (event.getTouches().length() == 2) {
+	// onMoveScale(event.getTouches().get(0).getClientX(),
+	// event.getTouches().get(0).getClientY(),
+	// event.getTouches().get(1).getClientX(),
+	// event.getTouches().get(1).getClientY());
+	// }
+	// event.preventDefault();
+	// }
+	// });
+	// }
+	//
+	// private void addTouchStartHandler(FocusWidget focusCanvas) {
+	// focusCanvas.addTouchStartHandler(new TouchStartHandler() {
+	//
+	// @Override
+	// public void onTouchStart(TouchStartEvent event) {
+	// Touch firstTouch = event.getTouches().get(0);
+	// onMoveStart(firstTouch.getClientX(), firstTouch.getClientY());
+	// event.preventDefault();
+	// }
+	// });
+	// }
 
 	private void onMoveStart(int x, int y) {// NOPMD
 		disableSwype();
@@ -231,7 +316,6 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private void onMoveScale(int x1, int y1, int x2, int y2) {// NOPMD
 		double currDistance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-
 		if (prevDistance != -1) {
 			scaleBy(currDistance / prevDistance);
 			redraw(true);

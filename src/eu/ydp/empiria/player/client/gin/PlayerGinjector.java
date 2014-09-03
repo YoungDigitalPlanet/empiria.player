@@ -44,6 +44,7 @@ import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
 import eu.ydp.empiria.player.client.gin.module.VideoGinModule;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
+import eu.ydp.empiria.player.client.module.img.handlers.TouchHandlerProvider;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -124,4 +125,6 @@ public interface PlayerGinjector extends Ginjector {
 	StyleSocket getStyleSocket();
 
 	Logger getLogger();
+
+	TouchHandlerProvider getTouchHandlerProvider();
 }

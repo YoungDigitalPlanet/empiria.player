@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
@@ -24,9 +23,6 @@ public class TouchMoveHandlerImplTest {
 	@Mock
 	private TouchMoveEvent touchMoveEvent;
 
-	@Mock
-	private NativeEvent nativeEvent;
-
 	@Before
 	public void setUp() {
 		testObj = new TouchMoveHandlerImpl(touchOnMoveHandler);
@@ -35,12 +31,11 @@ public class TouchMoveHandlerImplTest {
 	@Test
 	public void shouldCallOnMove() {
 		// given
-		when(touchMoveEvent.getNativeEvent()).thenReturn(nativeEvent);
 
 		// when
 		testObj.onTouchMove(touchMoveEvent);
 
 		// then
-		verify(touchOnMoveHandler).onMove(nativeEvent);
+		verify(touchOnMoveHandler).onMove(touchMoveEvent);
 	}
 }

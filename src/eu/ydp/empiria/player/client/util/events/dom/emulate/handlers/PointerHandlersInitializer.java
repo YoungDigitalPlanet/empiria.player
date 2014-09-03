@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers;
 
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerDownHandlerImpl;
@@ -13,24 +14,24 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.Poi
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerUpEvent;
 
-public class PointerHandlersInitializer implements ITouchHandlerInitializer {
+public class PointerHandlersInitializer implements ITouchHandlerInitializer<NativeEvent> {
 
 	@Override
-	public void addTouchMoveHandler(final TouchOnMoveHandler touchOnMoveHandler, Widget listenOn) {
+	public void addTouchMoveHandler(final TouchOnMoveHandler<NativeEvent> touchOnMoveHandler, Widget listenOn) {
 		listenOn.addDomHandler(new PointerMoveHandlerImpl(touchOnMoveHandler), PointerMoveEvent.getType());
 	}
 
 	@Override
-	public void addTouchStartHandler(final TouchOnStartHandler touchStartHandler, Widget listenOn) {
+	public void addTouchStartHandler(final TouchOnStartHandler<NativeEvent> touchStartHandler, Widget listenOn) {
 		listenOn.addDomHandler(new PointerDownHandlerImpl(touchStartHandler), PointerDownEvent.getType());
 	}
 
 	@Override
-	public void addTouchEndHandler(final TouchOnEndHandler touchEndHandler, Widget listenOn) {
+	public void addTouchEndHandler(final TouchOnEndHandler<NativeEvent> touchEndHandler, Widget listenOn) {
 		listenOn.addDomHandler(new PointerUpHandlerImpl(touchEndHandler), PointerUpEvent.getType());
 	}
 
 	@Override
-	public void addTouchCancelHandler(final TouchOnCancelHandler touchCancelHandler, Widget listenOn) {
+	public void addTouchCancelHandler(final TouchOnCancelHandler<NativeEvent> touchCancelHandler, Widget listenOn) {
 	}
 }

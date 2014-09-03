@@ -7,12 +7,12 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 
-public interface ITouchHandlerInitializer {
-	public void addTouchMoveHandler(final TouchOnMoveHandler touchOnMoveHandler, Widget listenOn);
+public interface ITouchHandlerInitializer<E> {
+	public void addTouchMoveHandler(final TouchOnMoveHandler<E> touchOnMoveHandler, Widget listenOn);
 
-	public void addTouchStartHandler(final TouchOnStartHandler touchStartHandler, Widget listenOn);
+	public void addTouchStartHandler(final TouchOnStartHandler<E> touchStartHandler, Widget listenOn);
 
-	public void addTouchEndHandler(final TouchOnEndHandler touchEndHandler, Widget listenOn);
+	public void addTouchEndHandler(final TouchOnEndHandler<E> touchEndHandler, Widget listenOn);
 
-	public void addTouchCancelHandler(final TouchOnCancelHandler touchCancelHandler, Widget listenOn);
+	public void addTouchCancelHandler(final TouchOnCancelHandler<E> touchCancelHandler, Widget listenOn);
 }

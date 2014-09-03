@@ -8,6 +8,17 @@ public class PointerNativeMethods {
 	static final PointerNativeMethods methods = GWT.create(PointerNativeMethods.class);
 
 	public native String pointerType(NativeEvent elem) /*-{
+		console.log(elem);
 		return elem.pointerType;
+	}-*/;
+
+	public native boolean isPrimary(NativeEvent elem) /*-{
+		console.log(elem);
+		return elem.isPrimary;
+	}-*/;
+
+	public native Long getPointerId(NativeEvent elem) /*-{
+		console.log(elem);
+		return elem.pointerId;
 	}-*/;
 }

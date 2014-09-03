@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon;
 
-import com.google.gwt.dom.client.NativeEvent;
 
-public interface TouchOnStartHandler {
-	void onStart(NativeEvent nativeEvent);
+public interface TouchOnStartHandler<E> {
+	void onStart(E event);
 }

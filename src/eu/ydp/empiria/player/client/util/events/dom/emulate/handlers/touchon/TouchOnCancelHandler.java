@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon;
 
-import com.google.gwt.dom.client.NativeEvent;
-
-public interface TouchOnCancelHandler {
-	void onCancel(NativeEvent nativeEvent);
+public interface TouchOnCancelHandler<E> {
+	void onCancel(E event);
 }
