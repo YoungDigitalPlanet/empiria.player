@@ -1,26 +1,17 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
+import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import com.google.gwt.junit.GWTMockUtilities;
+import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
-import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
-import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest(VideoPlayer.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class VideoPlayerBuilderTest {
 
 	@InjectMocks
@@ -31,16 +22,6 @@ public class VideoPlayerBuilderTest {
 	private VideoModuleFactory moduleFactory;
 	@Mock
 	private VideoBean videoBean;
-
-	@BeforeClass
-	public static void before() {
-		GWTMockUtilities.disarm();
-	}
-
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
 
 	@Test
 	public void shouldCreateVideoPlayer() {
@@ -60,8 +41,4 @@ public class VideoPlayerBuilderTest {
 
 	}
 
-	@AfterClass
-	public static void after() {
-		GWTMockUtilities.restore();
-	}
 }

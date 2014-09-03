@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.controller.multiview.animation;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,17 +14,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.FlowPanel;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Element.class, Style.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class NoAnimationTest {
 
 	private final NoAnimation instance = new NoAnimation();
@@ -34,16 +30,6 @@ public class NoAnimationTest {
 	private Style style;
 	@Mock
 	private AnimationEndCallback animationEndCallback;
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Before
 	public void before() {

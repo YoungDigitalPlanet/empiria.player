@@ -1,26 +1,18 @@
 package eu.ydp.empiria.player.client.module.model.image;
 
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.gwtutil.client.util.geom.Size;
+import eu.ydp.gwtutil.client.util.geom.WidgetSize;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Widget;
+import static org.mockito.Mockito.*;
 
-import eu.ydp.gwtutil.client.util.geom.Size;
-import eu.ydp.gwtutil.client.util.geom.WidgetSize;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Style.class, Element.class, Widget.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class ImageShowDelegateTest {
 
 	private Widget widget;
@@ -30,18 +22,9 @@ public class ImageShowDelegateTest {
 	public void setUp() throws Exception {
 		widget = mock(Widget.class, Mockito.RETURNS_DEEP_STUBS);
 		style = mock(Style.class);
-		when(widget.getElement().getStyle()).thenReturn(style);
+		when(widget.getElement()
+				   .getStyle()).thenReturn(style);
 		when(widget.asWidget()).thenReturn(widget);
-	}
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
 	}
 
 	@Test

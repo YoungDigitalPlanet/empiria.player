@@ -1,48 +1,57 @@
 package eu.ydp.empiria.player.client.module.ordering.view.items;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
+import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+
+import java.util.Map;
+import java.util.Set;
 
 public class OrderInteractionViewItemStylesImpl implements OrderInteractionViewItemStyles {
 
 	@Inject
 	private StyleNameConstants styleNames;
-	private Map<UserAnswerType, String> stylesMap;
+	private Map<UserAnswerType, String> stylesMap = Maps.newHashMap();
+	private static final String SEPARATOR = " ";
 
-	@PostConstruct
-	public void postConstruct() {
-		stylesMap = Maps.newHashMap();
+	@Inject
+	public OrderInteractionViewItemStylesImpl(StyleNameConstants styleNames) {
+		this.styleNames = styleNames;
 
 		stylesMap.put(UserAnswerType.CORRECT, styleNames.QP_ORDERED_ITEM_CORRECT());
 		stylesMap.put(UserAnswerType.WRONG, styleNames.QP_ORDERED_ITEM_WRONG());
 		stylesMap.put(UserAnswerType.NONE, styleNames.QP_ORDERED_ITEM_NONE());
 		stylesMap.put(UserAnswerType.DEFAULT, styleNames.QP_ORDERED_ITEM_DEFAULT());
-
 	}
 
 	@Override
 	public void applyStylesOnWidget(OrderingItem orderingItem, OrderInteractionViewItem viewItem) {
 		String styleToApply = buildStyleName(orderingItem);
-		viewItem.asWidget().setStyleName(styleToApply);
+		viewItem.asWidget()
+				.setStyleName(styleToApply);
 	}
 
 	private String buildStyleName(OrderingItem orderingItem) {
-		StringBuilder styleToApply = new StringBuilder(styleNames.QP_ORDERED_ITEM());
-		styleToApply.append(" ").append(stylesMap.get(orderingItem.getAnswerType()));
+		String itemStyle = styleNames.QP_ORDERED_ITEM();
+		String answerTypeStyle = stylesMap.get(orderingItem.getAnswerType());
+
+		Set<String> styles = Sets.newLinkedHashSet();
+		styles.add(itemStyle);
+		styles.add(answerTypeStyle);
+
 		if (orderingItem.isLocked()) {
-			styleToApply.append(" ").append(styleNames.QP_ORDERED_ITEM_LOCKED());
+			styles.add(styleNames.QP_ORDERED_ITEM_LOCKED());
 		}
+
 		if (orderingItem.isSelected()) {
-			styleToApply.append(" ").append(styleNames.QP_ORDERED_ITEM_SELECTED());
+			styles.add(styleNames.QP_ORDERED_ITEM_SELECTED());
 		}
-		return styleToApply.toString();
+
+		return Joiner.on(SEPARATOR)
+					 .join(styles);
 	}
 }

@@ -1,11 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.external;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
@@ -17,12 +14,12 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class ExternalMediaProcessor extends AbstractMediaProcessor implements MediaProcessorExtension {
 
 	@Inject
 	private Provider<ExternalMediaProxy> proxyProvider;
-	@Inject
-	private MediaConnector connector;
 	@Inject
 	private ExternalMediaEngine engine;
 	protected MediaInteractionSoundEventCallback callback;
