@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touch;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 
@@ -8,9 +7,9 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 
 public class TouchStartHandlerImpl implements TouchStartHandler {
 
-	private final TouchOnStartHandler<NativeEvent> touchStartHandler;
+	private final TouchOnStartHandler touchStartHandler;
 
-	public TouchStartHandlerImpl(final TouchOnStartHandler<NativeEvent> touchStartHandler) {
+	public TouchStartHandlerImpl(final TouchOnStartHandler touchStartHandler) {
 		this.touchStartHandler = touchStartHandler;
 	}
 

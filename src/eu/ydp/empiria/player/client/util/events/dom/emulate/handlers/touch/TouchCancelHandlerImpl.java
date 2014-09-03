@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touch;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchCancelHandler;
 
@@ -8,9 +7,9 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 
 public class TouchCancelHandlerImpl implements TouchCancelHandler {
 
-	private final TouchOnCancelHandler<NativeEvent> touchOnCancelHandler;
+	private final TouchOnCancelHandler touchOnCancelHandler;
 
-	public TouchCancelHandlerImpl(final TouchOnCancelHandler<NativeEvent> touchOnCancelHandler) {
+	public TouchCancelHandlerImpl(final TouchOnCancelHandler touchOnCancelHandler) {
 		this.touchOnCancelHandler = touchOnCancelHandler;
 	}
 

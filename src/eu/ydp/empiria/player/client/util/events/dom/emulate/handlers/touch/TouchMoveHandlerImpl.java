@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touch;
 
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchMoveHandler;
 
@@ -8,9 +7,9 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.Tou
 
 public class TouchMoveHandlerImpl implements TouchMoveHandler {
 
-	private final TouchOnMoveHandler<NativeEvent> touchOnMoveHandler;
+	private final TouchOnMoveHandler touchOnMoveHandler;
 
-	public TouchMoveHandlerImpl(TouchOnMoveHandler<NativeEvent> touchOnMoveHandler) {
+	public TouchMoveHandlerImpl(TouchOnMoveHandler touchOnMoveHandler) {
 		this.touchOnMoveHandler = touchOnMoveHandler;
 	}
 

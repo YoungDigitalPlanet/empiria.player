@@ -1,17 +1,18 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.PointerEvent;
+import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 
-public class PointerEventsCoordinates implements EventsCoordinates<PointerEvent> {
+public class PointerEventsCoordinates {
 
 	private final Map<Long, Point> pointerPoints = new LinkedHashMap<Long, Point>();
 
-	@Override
-	public void addEvent(PointerEvent pointerEvent) {
+	public void addEvent(PointerEvent<?> pointerEvent) {
 		if (pointerEvent.isPrimary() && !pointerPoints.containsKey(pointerEvent.getPointerId())) {
 			pointerPoints.clear();
 		}
@@ -19,24 +20,25 @@ public class PointerEventsCoordinates implements EventsCoordinates<PointerEvent>
 
 	}
 
-	@Override
-	public Point getEvent(int index) {
+	public Point getPoint(int index) {
 		return (Point) pointerPoints.values().toArray()[index];
 	}
 
-	@Override
-	public void removeEvent(PointerEvent pointerEvent) {
+	public void removeEvent(PointerEvent<?> pointerEvent) {
 
 		pointerPoints.remove(pointerEvent.getPointerId());
 	}
 
-	@Override
 	public int getLength() {
 		return pointerPoints.size();
 	}
 
 	public boolean isMultiTouch() {
 		return getLength() > 1;
+	}
+
+	public TouchOnImageEvent getTouchOnImageEvent() {
+		return new TouchOnImageEvent(new ArrayList<Point>(pointerPoints.values()));
 	}
 
 }
