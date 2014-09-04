@@ -238,7 +238,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	private boolean isZoomed() {
-		return getScale() > getScaleMin();
+		return getScale() >= getScaleMin();
 	}
 
 	private void disableSwype() {
