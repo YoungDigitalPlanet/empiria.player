@@ -1,10 +1,10 @@
-package eu.ydp.empiria.player.client.module.img.handlers.touch;
+package eu.ydp.empiria.player.client.module.img.events.handlers.touch;
 
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEndHandler;
 
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 
 public class TouchEndHandlerOnImage implements TouchEndHandler {
 
@@ -12,9 +12,9 @@ public class TouchEndHandlerOnImage implements TouchEndHandler {
 
 	private final TouchOnImageEndHandler touchOnEndHandler;
 
-	public TouchEndHandlerOnImage(final TouchOnImageEndHandler touchOnEndHandler, final TouchToImageEvent touchEventsCoordinates) {
+	public TouchEndHandlerOnImage(final TouchOnImageEndHandler touchOnEndHandler, final TouchToImageEvent touchToImageEvent) {
 		this.touchOnEndHandler = touchOnEndHandler;
-		this.touchToImageEvent = touchEventsCoordinates;
+		this.touchToImageEvent = touchToImageEvent;
 	}
 
 	@Override

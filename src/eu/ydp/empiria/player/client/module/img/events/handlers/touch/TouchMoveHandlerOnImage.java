@@ -1,26 +1,26 @@
-package eu.ydp.empiria.player.client.module.img.handlers.touch;
+package eu.ydp.empiria.player.client.module.img.events.handlers.touch;
 
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchMoveHandler;
 
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 
 public class TouchMoveHandlerOnImage implements TouchMoveHandler {
 
 	private final TouchToImageEvent touchToImageEvent;
 
-	private final TouchOnImageMoveHandler touchOnMoveHandler;
+	private final TouchOnImageMoveHandler touchOnImageMoveHandler;
 
 	public TouchMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler, final TouchToImageEvent touchEventsCoordinates) {
-		this.touchOnMoveHandler = touchOnMoveHandler;
+		this.touchOnImageMoveHandler = touchOnMoveHandler;
 		this.touchToImageEvent = touchEventsCoordinates;
 	}
 
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		event.preventDefault();
-		touchOnMoveHandler.onMove(touchToImageEvent.getTouchOnImageEvent(event));
+		touchOnImageMoveHandler.onMove(touchToImageEvent.getTouchOnImageEvent(event));
 	}
 
 }

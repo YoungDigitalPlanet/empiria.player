@@ -28,11 +28,11 @@ import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
-import eu.ydp.empiria.player.client.module.img.handlers.ITouchHandlerOnImageInitializer;
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEvent;
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.ITouchHandlerOnImageInitializer;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
@@ -69,7 +69,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
-		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().getTouchHandlersInitializer();
+		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().getTouchHandlersOnImageInitializer();
 	}
 
 	@Override
@@ -134,9 +134,9 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	private void addHandlersToCanvas(FocusWidget focusCanvas) {
-		touchHandlerInitializer.addTouchStartHandler(createTouchOnImageStartHandler(), focusCanvas);
-		touchHandlerInitializer.addTouchMoveHandler(createTouchOnImageMoveHandler(), focusCanvas);
-		touchHandlerInitializer.addTouchEndHandler(createTouchOnImageEndHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchOnImageStartHandler(createTouchOnImageStartHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchOnImageMoveHandler(createTouchOnImageMoveHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchOnImageEndHandler(createTouchOnImageEndHandler(), focusCanvas);
 
 		addMouseDownHandler(focusCanvas);
 		addMouseMoveHandler(focusCanvas);

@@ -1,7 +1,7 @@
-package eu.ydp.empiria.player.client.module.img.handlers.pointer;
+package eu.ydp.empiria.player.client.module.img.events.handlers.pointer;
 
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.PointerEventsCoordinates;
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerUpHandler;
 

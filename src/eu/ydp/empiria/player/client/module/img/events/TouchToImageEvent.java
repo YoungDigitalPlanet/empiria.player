@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates;
+package eu.ydp.empiria.player.client.module.img.events;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.TouchEvent;
 import com.google.gwt.event.shared.EventHandler;
 
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class TouchToImageEvent {
@@ -19,9 +19,6 @@ public class TouchToImageEvent {
 	}
 
 	private int getLength(TouchEvent<? extends EventHandler> touchEvent) {
-		if (touchEvent == null) {
-			return 0;
-		}
 		return touchEvent.getTouches().length();
 	}
 

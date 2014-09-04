@@ -1,10 +1,10 @@
-package eu.ydp.empiria.player.client.module.img.handlers.touch;
+package eu.ydp.empiria.player.client.module.img.events.handlers.touch;
 
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 
-import eu.ydp.empiria.player.client.module.img.handlers.touchonimage.TouchOnImageStartHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.TouchToImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
 
 public class TouchStartHandlerOnImage implements TouchStartHandler {
 

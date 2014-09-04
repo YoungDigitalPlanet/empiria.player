@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.coordinates.PointerEventsCoordinates;
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 
 public abstract class PointerEvent<H extends EventHandler> extends MouseEvent<H> {
 
