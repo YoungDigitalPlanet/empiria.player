@@ -1,15 +1,5 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.*;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.mockito.Matchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,7 +10,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
@@ -36,13 +25,7 @@ import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
-import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactoryMock;
-import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
-import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
-import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
-import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
@@ -79,8 +62,16 @@ import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
 import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
-import eu.ydp.gwtutil.test.mock.GwtPanelFactoryMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
+import org.mockito.Matchers;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
@@ -105,15 +96,20 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 	}
 
 	private void init() {
-		bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class).to(SchedulerMockImpl.class).in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class));
+		bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class)
+														   .to(SchedulerMockImpl.class)
+														   .in(Singleton.class));
+		bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class)
+														   .to(PlayerEventsBus.class)
+														   .in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
-																			.to(ConnectionModuleFactoryMock.class)
-																			.in(Singleton.class));
+																		 .to(ConnectionModuleFactoryMock.class)
+																		 .in(Singleton.class));
 		// bindDescriptors.add(new
 		// BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
 		bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
-		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class).to(FeedbackParserFactoryMock.class));
+		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class)
+																	   .to(FeedbackParserFactoryMock.class));
 	}
 
 	@Override
@@ -146,10 +142,13 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
 		bind(FlowDataSupplier.class).toInstance(mock(FlowDataSupplier.class));
 		bind(SessionDataSupplier.class).toInstance(mock(SessionDataSupplier.class));
-		binder.bind(IJSONService.class).to(NativeJSONService.class);
+		binder.bind(IJSONService.class)
+			  .to(NativeJSONService.class);
 		binder.requestStaticInjection(XMLProxyFactory.class);
-		bind(ResponseSocket.class).annotatedWith(PageScoped.class).toInstance(mock(ResponseSocket.class));
-		bind(String.class).annotatedWith(UniqueId.class).toInstance("id");
+		bind(ResponseSocket.class).annotatedWith(PageScoped.class)
+								  .toInstance(mock(ResponseSocket.class));
+		bind(String.class).annotatedWith(UniqueId.class)
+						  .toInstance("id");
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
@@ -192,7 +191,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 
 	@Provides
 	public GWTPanelFactory gwtPanelFactory() {
-		return new GwtPanelFactoryMock();
+		return mock(GWTPanelFactory.class);
 	}
 
 	@Provides

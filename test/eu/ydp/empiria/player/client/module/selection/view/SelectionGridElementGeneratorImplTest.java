@@ -1,8 +1,12 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
-import static org.mockito.Mockito.mock;
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import junit.framework.Assert;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,18 +15,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.user.client.ui.Widget;
+import static org.mockito.Mockito.mock;
 
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Widget.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class SelectionGridElementGeneratorImplTest {
 
 	@Mock
@@ -37,16 +32,6 @@ public class SelectionGridElementGeneratorImplTest {
 	private SelectionGridElementGeneratorImpl selectionGridElementGeneratorImpl;
 
 	private SelectionGridElementGeneratorImpl gridElementGenerator;
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Before
 	public void setup() {
