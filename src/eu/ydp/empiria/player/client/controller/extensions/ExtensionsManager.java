@@ -1,38 +1,19 @@
 package eu.ydp.empiria.player.client.controller.extensions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentFooterViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.DefaultAssessmentHeaderViewExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentFooterViewExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsAssessmentHeaderViewExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsBonusExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDataSourceDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsDeliveryEventsListenerExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowCommandSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowRequestProcessorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsFlowRequestSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsInteractionEventSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsMediaProcessorExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPageInterferenceSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsPlayerJsObjectUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsProgressBonusExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsSessionDataSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStatefulExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsStyleSocketUserExtension;
-import eu.ydp.empiria.player.client.controller.extensions.jswrappers.JsTutorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.jswrappers.*;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.module.IStateful;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExtensionsManager implements IStateful {
 
@@ -145,10 +126,10 @@ public class ExtensionsManager implements IStateful {
 	}
 
 	private native String getFieldType(JavaScriptObject jsObject)/*-{
-																	if (typeof jsObject.getType == 'function')
-																	return jsObject.getType();
-																	return null;
-																	}-*/;
+        if (typeof jsObject.getType == 'function')
+            return jsObject.getType();
+        return null;
+    }-*/;
 
 	public List<Extension> getExtensions() {
 		return extensions;

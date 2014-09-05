@@ -1,29 +1,29 @@
 package eu.ydp.empiria.player.client.module.bookmark;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
-import java.util.Arrays;
-import java.util.List;
-
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import eu.ydp.gwtutil.junit.runners.ParameterizedMethodsRunner;
-import eu.ydp.gwtutil.junit.runners.ParameterizedMethodsRunner.MethodParameters;
+import static junitparams.JUnitParamsRunner.$;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-@RunWith(ParameterizedMethodsRunner.class)
+@RunWith(JUnitParamsRunner.class)
 public class BookmarkingHelperJUnitTest {
 
-	@MethodParameters(forMethod = "getDefaultBookmarkTitle")
-	public static List<String[]> getParams() {
-		return Arrays.asList(new String[][] { { "aaaaaaaa", "aaaaaaaa" }, { "1234 6789 1234 6789 1234 6789 ", "1234 6789 1234 6789 1234 6789 " },
-				{ "1234 6789 1234 6789 1234 6789 ABCD", "1234 6789 1234 6789 1234..." },
-				{ "123456789012345678901234567890", "123456789012345678901234567890" },
-				{ "123456789012345678901234567890ABCD", "123456789012345678901234567..." } });
+	public Object[] params() {
+		return $(
+				$("aaaaaaaa", "aaaaaaaa"),
+				$("1234 6789 1234 6789 1234 6789 ", "1234 6789 1234 6789 1234 6789 "),
+				$("1234 6789 1234 6789 1234 6789 ABCD", "1234 6789 1234 6789 1234..."),
+				$("123456789012345678901234567890", "123456789012345678901234567890"),
+				$("123456789012345678901234567890ABCD", "123456789012345678901234567...")
+		);
 	}
 
 	@Test
+	@Parameters(method = "params")
 	public void getDefaultBookmarkTitle(String in, String out) {
 		String result = BookmarkingHelper.getDefaultBookmarkTitle(in);
 		assertThat(result, is(out));

@@ -1,5 +1,21 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorActionJs;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorCommandJs;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorConfigJs;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorJs;
+import eu.ydp.empiria.player.client.module.tutor.ActionType;
+import eu.ydp.gwtutil.client.util.geom.Size;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
 import static eu.ydp.empiria.player.client.module.tutor.ActionType.DEFAULT;
 import static eu.ydp.empiria.player.client.module.tutor.ActionType.ON_PAGE_ALL_OK;
 import static eu.ydp.empiria.player.client.module.tutor.CommandType.ANIMATION;
@@ -8,41 +24,10 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.junit.GWTMockUtilities;
-
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorActionJs;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorCommandJs;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorConfigJs;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.js.TutorJs;
-import eu.ydp.empiria.player.client.module.tutor.ActionType;
-import eu.ydp.gwtutil.client.util.geom.Size;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ JsArray.class, JavaScriptObject.class, TutorCommandJs.class, TutorConfigJs.class, TutorActionJs.class, TutorJs.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class TutorConfigTest {
 
 	private final TutorConfig tutorConfig = new TutorConfig(createTutorConfigJs());
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Test
 	public void supportsAction_supported() {
