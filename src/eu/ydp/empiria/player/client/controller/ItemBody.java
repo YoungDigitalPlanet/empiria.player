@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.controller.variables.processor.global.IsIgnoredModule;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -26,6 +27,7 @@ import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.WorkModeClient;
@@ -53,10 +55,12 @@ public class ItemBody implements WidgetWorkflowListener {
 	private boolean stateIsLoaded = false;
 
 	private final ModulesStateLoader modulesStateLoader;
+	private final IsIgnoredModule isIgnoredModule;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
-			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader) {
+			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
+			IsIgnoredModule isIgnoredModule) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -67,7 +71,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		parenthood = new ParenthoodManager();
 
 		this.interactionEventsListener = interactionEventsListener;
-
+		this.isIgnoredModule = isIgnoredModule;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -119,6 +123,12 @@ public class ItemBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onSetUp();
+			}
+			if (currModule instanceof InteractionModuleBase) {
+				InteractionModuleBase moduleBase = (InteractionModuleBase) currModule;
+				if (moduleBase.isIgnored()) {
+					isIgnoredModule.addIgnoredID(moduleBase.getIdentifier());
+				}
 			}
 		}
 	}
@@ -267,13 +277,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-													var socket = {};
-													var instance = this;
-													socket.getModuleSockets = function() {
-													return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-													}
-													return socket;
-													}-*/;
+		var socket = {};
+		var instance = this;
+		socket.getModuleSockets = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+		}
+		return socket;
+	}-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();
