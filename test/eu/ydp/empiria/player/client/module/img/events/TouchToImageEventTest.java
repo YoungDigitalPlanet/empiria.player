@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.img.events;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -33,14 +32,16 @@ public class TouchToImageEventTest {
 		when(touch.getClientY()).thenReturn(y);
 		JsArray<Touch> array = mock(JsArray.class);
 		when(touchEvent.getTouches()).thenReturn(array);
-		when(array.get(anyInt())).thenReturn(touch);
+		when(array.get(0)).thenReturn(touch);
 		when(array.length()).thenReturn(1);
+
+		Point assumedPoint = new Point(x, y);
 
 		// when
 		TouchOnImageEvent result = testObj.getTouchOnImageEvent(touchEvent);
 
 		// then
 		assertNotNull(result);
-		assertEquals(result.getPoint(0), new Point(x, y));
+		assertEquals(result.getPoint(0), assumedPoint);
 	}
 }

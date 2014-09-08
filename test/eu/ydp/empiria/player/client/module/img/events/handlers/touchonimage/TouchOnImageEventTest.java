@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.util.position.Point;
 public class TouchOnImageEventTest {
 
 	private final List<Point> coordinatesList = mock(List.class);
-
 	private final TouchOnImageEvent testObj = new TouchOnImageEvent(coordinatesList);
 
 	@Test

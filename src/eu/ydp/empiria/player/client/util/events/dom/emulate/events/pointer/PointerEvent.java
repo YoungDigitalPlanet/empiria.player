@@ -26,13 +26,4 @@ public abstract class PointerEvent<H extends EventHandler> extends MouseEvent<H>
 	public PointerEventsCoordinates getTouchesManager() {
 		return this.pointerEventsCoordinates;
 	}
-
-	@Override
-	public int hashCode() {
-		int code = 1;
-		code = 31 * code + this.getClientX();
-		code = 31 * code + this.getClientY();
-		return code;
-	}
-
 }

@@ -49,7 +49,7 @@ public class PointerEventsCoordinatesTest {
 	}
 
 	@Test
-	public void shouldAddEvent_ifIsNotFirstTouch_ifAlreadyContainsEvent() {
+	public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent() {
 		// given
 		int x = 1;
 		int y = 1;
@@ -67,7 +67,7 @@ public class PointerEventsCoordinatesTest {
 	}
 
 	@Test
-	public void shouldAddEvent_ifIsNotFirstTouch_ifAlreadyContainsEvent_ifIsPrimary() {
+	public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent_ifIsPrimary() {
 		// given
 		int x = 1;
 		int y = 1;

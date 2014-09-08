@@ -27,10 +27,8 @@ public class TouchHandlersOnImageInitializerTest {
 
 	@InjectMocks
 	private TouchHandlersOnImageInitializer testObj;
-
 	@Mock
 	private TouchToImageEvent touchEventsCoordinates;
-
 	@Mock
 	private Widget listenOn;
 

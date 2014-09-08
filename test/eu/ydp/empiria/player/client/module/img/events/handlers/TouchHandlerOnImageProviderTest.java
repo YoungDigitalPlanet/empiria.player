@@ -18,13 +18,10 @@ public class TouchHandlerOnImageProviderTest {
 
 	@InjectMocks
 	private TouchHandlerOnImageProvider testObj;
-
 	@Mock
 	private PointerHandlersOnImageInitializer pointerHandlersOnImageInitializer;
-
 	@Mock
 	private TouchHandlersOnImageInitializer touchHandlersInitializer;
-
 	@Mock
 	private UserAgentUtil userAgentUtil;
 

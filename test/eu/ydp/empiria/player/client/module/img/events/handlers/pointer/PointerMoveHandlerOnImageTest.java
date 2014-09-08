@@ -12,9 +12,7 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 public class PointerMoveHandlerOnImageTest {
 
 	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
 	private final TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
-
 	private final PointerMoveHandlerOnImage testObj = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
 
 	@Test

@@ -27,10 +27,8 @@ public class PointerHandlersOnImageInitializerTest {
 
 	@InjectMocks
 	private PointerHandlersOnImageInitializer testObj;
-
 	@Mock
 	private PointerEventsCoordinates pointerEventsCoordinates;
-
 	@Mock
 	private Widget listenOn;
 

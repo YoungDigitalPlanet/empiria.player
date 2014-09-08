@@ -11,10 +11,8 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 
 public class PointerUpHandlerOnImageTest {
 
-	PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-	TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
-
+	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
+	private final TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
 	private final PointerUpHandlerOnImage testObj = new PointerUpHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 
 	@Test
@@ -36,7 +34,7 @@ public class PointerUpHandlerOnImageTest {
 	}
 
 	@Test
-	public void shouldntRunOnEnd_ifIsNotTouchEvent() {
+	public void shouldNotRunOnEnd_ifIsNotTouchEvent() {
 		// given
 		PointerUpEvent event = mock(PointerUpEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);

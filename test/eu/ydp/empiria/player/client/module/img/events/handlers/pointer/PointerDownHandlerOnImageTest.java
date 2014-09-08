@@ -12,9 +12,7 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 public class PointerDownHandlerOnImageTest {
 
 	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
 	private final TouchOnImageStartHandler touchOnStartHandler = mock(TouchOnImageStartHandler.class);
-
 	private final PointerDownHandlerOnImage testObj = new PointerDownHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 
 	@Test
@@ -36,7 +34,7 @@ public class PointerDownHandlerOnImageTest {
 	}
 
 	@Test
-	public void shouldntRunOnStart_ifIsNotTouchEvent() {
+	public void shouldNotRunOnStart_ifIsNotTouchEvent() {
 		// givens
 		PointerDownEvent event = mock(PointerDownEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);
