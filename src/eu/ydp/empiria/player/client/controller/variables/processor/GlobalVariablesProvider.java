@@ -9,14 +9,13 @@ import eu.ydp.empiria.player.client.controller.variables.processor.global.Global
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public class GlobalVariablesProvider {
 
 	@Inject
 	private GlobalVariablesProcessor globalVariablesProcessor;
 
-	public GlobalVariables retrieveGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses, IUniqueModule sender) {
+	public GlobalVariables retrieveGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses) {
 
 		return calculateGlobalVariables(modulesProcessingResults, responses);
 	}
