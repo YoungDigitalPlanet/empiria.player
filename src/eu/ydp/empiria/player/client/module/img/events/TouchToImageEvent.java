@@ -12,24 +12,23 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class TouchToImageEvent {
 
-	private Point getPoint(TouchEvent<? extends EventHandler> touchEvent, int index) {
-		Touch touch = touchEvent.getTouches().get(index);
-
-		return new Point(touch.getClientX(), touch.getClientY());
-	}
-
-	private int getLength(TouchEvent<? extends EventHandler> touchEvent) {
-		return touchEvent.getTouches().length();
-	}
-
 	public TouchOnImageEvent getTouchOnImageEvent(TouchEvent<? extends EventHandler> touchEvent) {
-		List<Point> pointsList = new ArrayList<>();
-		if (touchEvent != null) {
+		List<Point> pointsList = getPoints(touchEvent);
 
-			for (int i = 0; i < getLength(touchEvent); i++) {
-				pointsList.add(getPoint(touchEvent, i));
-			}
-		}
 		return new TouchOnImageEvent(pointsList);
+	}
+
+	private List<Point> getPoints(TouchEvent<? extends EventHandler> touchEvent) {
+		List<Point> points = new ArrayList<>();
+		int touchesCount = touchEvent.getTouches().length();
+
+		for (int i = 0; i < touchesCount; i++) {
+			Touch touch = touchEvent.getTouches().get(i);
+			Point point = new Point(touch.getClientX(), touch.getClientY());
+
+			points.add(point);
+		}
+
+		return points;
 	}
 }

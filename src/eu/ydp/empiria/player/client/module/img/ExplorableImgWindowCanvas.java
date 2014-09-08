@@ -237,15 +237,10 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	}
 
-	private boolean isZoomed() {
-		return getScale() >= getScaleMin();
-	}
-
 	private void disableSwype() {
-		touchController.setTouchReservation(isZoomed());
+		touchController.setTouchReservation(true);
 	}
 
-	@SuppressWarnings("PMD")
 	private void onMoveMove(int x, int y) {
 		disableSwype();
 

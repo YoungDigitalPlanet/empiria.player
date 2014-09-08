@@ -21,28 +21,19 @@ public class PointerHandlersOnImageInitializer implements ITouchHandlerOnImageIn
 
 	@Override
 	public void addTouchOnImageMoveHandler(final TouchOnImageMoveHandler touchOnImageMoveHandler, Widget listenOn) {
-		listenOn.addDomHandler(createTochOnImageMoveHandler(touchOnImageMoveHandler), PointerMoveEvent.getType());
-	}
-
-	private PointerMoveHandlerOnImage createTochOnImageMoveHandler(final TouchOnImageMoveHandler touchOnImageMoveHandler) {
-		return new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
+		PointerMoveHandlerOnImage touchOnImageMoveHanlder = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
+		listenOn.addDomHandler(touchOnImageMoveHanlder, PointerMoveEvent.getType());
 	}
 
 	@Override
 	public void addTouchOnImageStartHandler(final TouchOnImageStartHandler touchOnImageStartHandler, Widget listenOn) {
-		listenOn.addDomHandler(createTouchOnImageStartHandler(touchOnImageStartHandler), PointerDownEvent.getType());
-	}
-
-	private PointerDownHandlerOnImage createTouchOnImageStartHandler(final TouchOnImageStartHandler touchOnImageStartHandler) {
-		return new PointerDownHandlerOnImage(touchOnImageStartHandler, pointerEventsCoordinates);
+		PointerDownHandlerOnImage pointerDownHandlerOnImage = new PointerDownHandlerOnImage(touchOnImageStartHandler, pointerEventsCoordinates);
+		listenOn.addDomHandler(pointerDownHandlerOnImage, PointerDownEvent.getType());
 	}
 
 	@Override
 	public void addTouchOnImageEndHandler(final TouchOnImageEndHandler touchOnImageEndHandler, Widget listenOn) {
-		listenOn.addDomHandler(createTouchOnImageEndHandler(touchOnImageEndHandler), PointerUpEvent.getType());
-	}
-
-	private PointerUpHandlerOnImage createTouchOnImageEndHandler(final TouchOnImageEndHandler touchOnImageEndHandler) {
-		return new PointerUpHandlerOnImage(touchOnImageEndHandler, pointerEventsCoordinates);
+		PointerUpHandlerOnImage pointerUpHandlerOnImage = new PointerUpHandlerOnImage(touchOnImageEndHandler, pointerEventsCoordinates);
+		listenOn.addDomHandler(pointerUpHandlerOnImage, PointerUpEvent.getType());
 	}
 }
