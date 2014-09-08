@@ -6,17 +6,20 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
+import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TextEditorModule extends SimpleModuleBase implements IStateful, IUniqueModule, IActivity, ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
 	private final StateEncoder stateEncoder;
+	private final TextEditorBean textEditorBean;
 
 	@Inject
-	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, StateEncoder stateEncoder) {
+	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, StateEncoder stateEncoder, TextEditorBean textEditorBean) {
 		this.presenter = presenter;
 		this.stateEncoder = stateEncoder;
+		this.textEditorBean = textEditorBean;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public String getIdentifier() {
-		return "textEditorId";
+		return textEditorBean.getIdentifier();
 	}
 
 	@Override
