@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
@@ -83,7 +83,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		mediaConfiguration = new BaseMediaConfiguration(new HashMap<String, String>(), false);
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
-		verify(mediaBase).setPreload(Matchers.eq(MediaElement.PRELOAD_METADATA));
+		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(true));
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	public void testInit() {
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
-		verify(mediaBase).setPreload(Matchers.eq(MediaElement.PRELOAD_METADATA));
+		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(false));
 	}
 
@@ -209,11 +209,16 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
-				.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY).put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
-				.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE).put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END)
-				.put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR).put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE)
-				.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE).put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
-				.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY).build();
+																			.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY)
+																			.put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
+																			.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE)
+																			.put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END)
+																			.put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR)
+																			.put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE)
+																			.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE)
+																			.put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
+																			.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY)
+																			.build();
 		return pairMap;
 	}
 
@@ -239,7 +244,6 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		instance.stop();
 		verify(mediaBase).pause();
 		verify(mediaBase).setCurrentTime(Matchers.eq(0d));
-
 	}
 
 	@Test
@@ -254,7 +258,6 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		verify(mediaBase).setMuted(Matchers.eq(true));
 		instance.setMuted(false);
 		verify(mediaBase).setMuted(Matchers.eq(false));
-
 	}
 
 	@Test
@@ -278,4 +281,19 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		verify(mediaBase, times(0)).setCurrentTime(Matchers.anyDouble());
 	}
 
+	@Test
+	public void shouldGetMediaPreloadType() {
+		// given
+		String expected = getAssumedMediaPreloadType();
+
+		// when
+		String result = instance.getMediaPreloadType();
+
+		// then
+		assertEquals(expected, result);
+	}
+
+	protected String getAssumedMediaPreloadType() {
+		return MediaElement.PRELOAD_METADATA;
+	}
 }

@@ -1,22 +1,14 @@
 package eu.ydp.empiria.player.client.controller.style;
 
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import eu.ydp.gwtutil.client.PathUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.controller.item.ItemXMLWrapper;
-import eu.ydp.gwtutil.client.PathUtil;
-
 public class StyleLinkDeclaration {
-
-	@Inject
-	public StyleLinkDeclaration(ItemXMLWrapper xmlMapper) {
-		this(xmlMapper.getStyleDeclaration(), xmlMapper.getBaseURL());
-	}
 
 	public StyleLinkDeclaration(NodeList styleNodes, String pbaseUrl) {
 
@@ -33,8 +25,8 @@ public class StyleLinkDeclaration {
 			for (int n = 0; n < styleLinkNodes.getLength(); n++) {
 				Node styleLinkNode = styleLinkNodes.item(n);
 				try {
-					StyleLink sd = new StyleLink(styleLinkNode.getAttributes().getNamedItem("href").getNodeValue(), styleLinkNode.getAttributes()
-							.getNamedItem("userAgent").getNodeValue());
+					StyleLink sd = new StyleLink(styleLinkNode.getAttributes().getNamedItem("href").getNodeValue(),
+							styleLinkNode.getAttributes().getNamedItem("userAgent").getNodeValue());
 					styles.add(sd);
 				} catch (Exception e) {
 				}
@@ -51,7 +43,8 @@ public class StyleLinkDeclaration {
 		List<String> links = new ArrayList<String>();
 
 		for (int s = 0; s < styles.size(); s++) {
-			if (userAgent.matches(styles.get(s).userAgent)) {
+			String userAgentFromStyle = styles.get(s).userAgent;
+			if (userAgent.toLowerCase().matches(userAgentFromStyle.toLowerCase())) {
 				links.add(PathUtil.normalizePath(createAbsolutePath(styles.get(s).href)));
 			}
 		}

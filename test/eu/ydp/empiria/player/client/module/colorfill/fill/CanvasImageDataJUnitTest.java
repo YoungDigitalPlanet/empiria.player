@@ -1,28 +1,20 @@
 package eu.ydp.empiria.player.client.module.colorfill.fill;
 
+import com.google.gwt.canvas.dom.client.CanvasPixelArray;
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.ImageData;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.model.color.ColorModel;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.gwt.canvas.dom.client.CanvasPixelArray;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.ImageData;
-import com.google.gwt.junit.GWTMockUtilities;
-
-import eu.ydp.empiria.player.client.module.model.color.ColorModel;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Context2d.class, ImageData.class, CanvasPixelArray.class })
-@SuppressWarnings("PMD")
+@RunWith(GwtMockitoTestRunner.class)
 public class CanvasImageDataJUnitTest {
 
 	private static final int PIXEL_VALUE = 127;
@@ -32,24 +24,17 @@ public class CanvasImageDataJUnitTest {
 	private ImageData imageData;
 	private CanvasPixelArray pixelArray;
 
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
-
 	@Before
 	public void before() {
 		Context2d context2d = mock(Context2d.class);
 		imageData = mock(ImageData.class);
 		pixelArray = mock(CanvasPixelArray.class);
-		doReturn(PIXEL_VALUE).when(pixelArray).get(anyInt());
-		doReturn(pixelArray).when(imageData).getData();
-		doReturn(imageData).when(context2d).getImageData(anyInt(), anyInt(), anyInt(), anyInt());
+		doReturn(PIXEL_VALUE).when(pixelArray)
+							 .get(anyInt());
+		doReturn(pixelArray).when(imageData)
+							.getData();
+		doReturn(imageData).when(context2d)
+						   .getImageData(anyInt(), anyInt(), anyInt(), anyInt());
 		instance = new CanvasImageData(context2d, WIDTH, HEIGHT);
 	}
 

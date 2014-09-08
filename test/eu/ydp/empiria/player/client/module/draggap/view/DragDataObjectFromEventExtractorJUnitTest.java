@@ -1,25 +1,21 @@
 package eu.ydp.empiria.player.client.module.draggap.view;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import com.google.common.base.Optional;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
+import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
-import com.google.common.base.Optional;
-import com.google.gwt.event.dom.client.DropEvent;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
-import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
-
-@RunWith(ExMockRunner.class)
-@PrepareForTest(value = { DropEvent.class, NativeDragDataObject.class })
+@RunWith(GwtMockitoTestRunner.class)
 public class DragDataObjectFromEventExtractorJUnitTest {
 
 	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;

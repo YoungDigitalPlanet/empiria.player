@@ -1,25 +1,17 @@
 package eu.ydp.empiria.player.client.module.gap;
 
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@SuppressWarnings("PMD")
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Widget.class })
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class DropZoneGuardianJUnitTest extends AbstractTestBase {
 
 	private DropZoneGuardian dropZoneGuardian;
@@ -29,16 +21,6 @@ public class DropZoneGuardianJUnitTest extends AbstractTestBase {
 	private StyleNameConstants styleNames;
 
 	private final String DROP_ZONE_LOCKED_STYLE = "qp-drop-zone-locked";
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Override
 	@Before

@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveS
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -151,6 +151,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 				onTouchCancel(nativeEvent);
 			}
 			break;
+		case TOUCH_CANCEL:
 		case TOUCH_END:
 			onTouchEnd(nativeEvent);
 			break;

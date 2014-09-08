@@ -1,31 +1,23 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
-import static org.mockito.Mockito.*;
-import junit.framework.Assert;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest({ Widget.class, Panel.class, Grid.class })
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class SelectionModuleViewImplTest {
 
 	private Grid grid;
@@ -36,16 +28,6 @@ public class SelectionModuleViewImplTest {
 	private SelectionElementGenerator gridGenerator;
 
 	private SelectionModuleViewImpl selectionView;
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Before
 	public void setup() {

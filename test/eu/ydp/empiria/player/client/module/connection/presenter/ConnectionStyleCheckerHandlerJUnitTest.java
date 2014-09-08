@@ -1,43 +1,24 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
-import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
-import eu.ydp.gwtutil.junit.runners.ExMockRunner;
-import eu.ydp.gwtutil.junit.runners.PrepareForTest;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 
-@RunWith(ExMockRunner.class)
-@PrepareForTest(Element.class)
-@SuppressWarnings("PMD")
+import static org.mockito.Mockito.*;
+
+@RunWith(GwtMockitoTestRunner.class)
 public class ConnectionStyleCheckerHandlerJUnitTest {
 
 	private IsWidget view;
 	private ConnectionStyleChecker connectionStyleChecker;
 	private ConnectionStyleCheckerHandler instance;
 	private Element element;
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
 
 	@Before
 	public void before() {

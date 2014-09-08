@@ -118,8 +118,8 @@ import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHackImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
@@ -219,7 +219,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(LabellingView.class).to(LabellingViewImpl.class);
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
-		bind(SwipeType.class).toProvider(SwipeTypeProvider.class);
+		bind(SwipeType.class).toProvider(SwipeTypeProvider.class).in(Singleton.class);
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
