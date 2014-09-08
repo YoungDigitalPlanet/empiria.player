@@ -21,18 +21,30 @@ public class TouchHandlersOnImageInitializer implements ITouchHandlerOnImageInit
 
 	@Override
 	public void addTouchOnImageMoveHandler(final TouchOnImageMoveHandler touchOnMoveHandler, Widget listenOn) {
-		listenOn.addDomHandler(new TouchMoveHandlerOnImage(touchOnMoveHandler, touchEventsCoordinates), TouchMoveEvent.getType());
+		listenOn.addDomHandler(createTouchOnImageMoveHandler(touchOnMoveHandler), TouchMoveEvent.getType());
+	}
+
+	private TouchMoveHandlerOnImage createTouchOnImageMoveHandler(final TouchOnImageMoveHandler touchOnMoveHandler) {
+		return new TouchMoveHandlerOnImage(touchOnMoveHandler, touchEventsCoordinates);
 	}
 
 	@Override
 	public void addTouchOnImageStartHandler(final TouchOnImageStartHandler touchStartHandler, Widget listenOn) {
-		listenOn.addDomHandler(new TouchStartHandlerOnImage(touchStartHandler, touchEventsCoordinates), TouchStartEvent.getType());
+		listenOn.addDomHandler(createTouchOnImageStartHandler(touchStartHandler), TouchStartEvent.getType());
 
+	}
+
+	private TouchStartHandlerOnImage createTouchOnImageStartHandler(final TouchOnImageStartHandler touchStartHandler) {
+		return new TouchStartHandlerOnImage(touchStartHandler, touchEventsCoordinates);
 	}
 
 	@Override
 	public void addTouchOnImageEndHandler(final TouchOnImageEndHandler touchEndHandler, Widget listenOn) {
-		listenOn.addDomHandler(new TouchEndHandlerOnImage(touchEndHandler, touchEventsCoordinates), TouchEndEvent.getType());
+		listenOn.addDomHandler(createTouchOnImageEndHandler(touchEndHandler), TouchEndEvent.getType());
 
+	}
+
+	private TouchEndHandlerOnImage createTouchOnImageEndHandler(final TouchOnImageEndHandler touchEndHandler) {
+		return new TouchEndHandlerOnImage(touchEndHandler, touchEventsCoordinates);
 	}
 }

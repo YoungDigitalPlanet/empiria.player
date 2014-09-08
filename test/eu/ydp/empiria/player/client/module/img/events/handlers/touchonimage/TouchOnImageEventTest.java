@@ -13,18 +13,17 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class TouchOnImageEventTest {
 
-	private TouchOnImageEvent testObj;
+	private final List<Point> coordinatesList = mock(List.class);
+
+	private final TouchOnImageEvent testObj = new TouchOnImageEvent(coordinatesList);
 
 	@Test
-	public void should_return_Point() {
+	public void shouldReturnPoint() {
 		// given
-		List<Point> coordinatesList = mock(List.class);
 		int sampleValue = 0;
 		Point point = new Point(sampleValue, sampleValue);
 
 		when(coordinatesList.get(anyInt())).thenReturn(point);
-
-		testObj = new TouchOnImageEvent(coordinatesList);
 
 		// when
 		Point result = testObj.getPoint(anyInt());
@@ -34,14 +33,10 @@ public class TouchOnImageEventTest {
 	}
 
 	@Test
-	public void should_return_Length() {
+	public void shouldReturnLength() {
 		// given
-		List<Point> coordinatesList = mock(List.class);
 		int length = 2;
-
 		when(coordinatesList.size()).thenReturn(length);
-
-		testObj = new TouchOnImageEvent(coordinatesList);
 
 		// when
 		int result = testObj.getLength();

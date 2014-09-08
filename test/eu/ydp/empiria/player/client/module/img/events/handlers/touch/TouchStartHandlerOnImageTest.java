@@ -12,22 +12,20 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.Touc
 
 public class TouchStartHandlerOnImageTest {
 
-	private TouchStartHandlerOnImage testObj;
+	private final TouchToImageEvent touchToImageEvent = mock(TouchToImageEvent.class);
+
+	private final TouchOnImageStartHandler touchOnImageStartHandler = mock(TouchOnImageStartHandler.class);
+
+	private final TouchStartHandlerOnImage testObj = new TouchStartHandlerOnImage(touchOnImageStartHandler, touchToImageEvent);
 
 	@Test
-	public void should_run_oStart() {
+	public void shouldRunOnStart() {
 		// given
-		TouchToImageEvent touchToImageEvent = mock(TouchToImageEvent.class);
-
-		TouchOnImageStartHandler touchOnImageStartHandler = mock(TouchOnImageStartHandler.class);
-
 		TouchStartEvent event = mock(TouchStartEvent.class);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 
 		when(touchToImageEvent.getTouchOnImageEvent(event)).thenReturn(touchOnImageEvent);
-
-		testObj = new TouchStartHandlerOnImage(touchOnImageStartHandler, touchToImageEvent);
 
 		// when
 		testObj.onTouchStart(event);
@@ -36,5 +34,4 @@ public class TouchStartHandlerOnImageTest {
 		verify(touchOnImageStartHandler).onStart(touchOnImageEvent);
 		verify(event).preventDefault();
 	}
-
 }

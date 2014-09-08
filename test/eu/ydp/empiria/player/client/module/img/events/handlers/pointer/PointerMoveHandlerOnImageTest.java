@@ -11,22 +11,21 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 
 public class PointerMoveHandlerOnImageTest {
 
-	private PointerMoveHandlerOnImage testObj;
+	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
+
+	private final TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
+
+	private final PointerMoveHandlerOnImage testObj = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
 
 	@Test
-	public void should_run_onStart_if_isTouchEvent() {
+	public void shouldRunOnStart_ifIsTouchEvent() {
 		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
-
 		PointerMoveEvent event = mock(PointerMoveEvent.class);
 		when(event.isTouchEvent()).thenReturn(true);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerMove(event);
 
@@ -37,19 +36,14 @@ public class PointerMoveHandlerOnImageTest {
 	}
 
 	@Test
-	public void shouldnt_run_onStart_if_isNotTouchEvent() {
+	public void shouldNotRunOnStart_ifIsNotTouchEvent() {
 		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
-
 		PointerMoveEvent event = mock(PointerMoveEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerMove(event);
 

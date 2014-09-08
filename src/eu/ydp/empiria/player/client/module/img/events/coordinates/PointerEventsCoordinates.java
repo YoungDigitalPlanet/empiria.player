@@ -16,7 +16,8 @@ public class PointerEventsCoordinates {
 		if (isFirstTouch(pointerEvent)) {
 			pointersPoints.clear();
 		}
-		pointersPoints.put(pointerEvent.getPointerId(), new Point(pointerEvent.getClientX(), pointerEvent.getClientY()));
+		Point coordinates = new Point(pointerEvent.getClientX(), pointerEvent.getClientY());
+		pointersPoints.put(pointerEvent.getPointerId(), coordinates);
 	}
 
 	public Point getPoint(int index) {

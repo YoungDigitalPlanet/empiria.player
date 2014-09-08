@@ -11,22 +11,21 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 
 public class PointerDownHandlerOnImageTest {
 
-	private PointerDownHandlerOnImage testObj;
+	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
+
+	private final TouchOnImageStartHandler touchOnStartHandler = mock(TouchOnImageStartHandler.class);
+
+	private final PointerDownHandlerOnImage testObj = new PointerDownHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 
 	@Test
-	public void should_run_onStart_if_isTouchEvent() {
+	public void shouldRunOnStart_ifIsTouchEvent() {
 		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageStartHandler touchOnStartHandler = mock(TouchOnImageStartHandler.class);
-
 		PointerDownEvent event = mock(PointerDownEvent.class);
 		when(event.isTouchEvent()).thenReturn(true);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerDownHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerDown(event);
 
@@ -37,19 +36,14 @@ public class PointerDownHandlerOnImageTest {
 	}
 
 	@Test
-	public void shouldnt_run_onStart_if_isNotTouchEvent() {
-		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageStartHandler touchOnStartHandler = mock(TouchOnImageStartHandler.class);
-
+	public void shouldntRunOnStart_ifIsNotTouchEvent() {
+		// givens
 		PointerDownEvent event = mock(PointerDownEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerDownHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerDown(event);
 

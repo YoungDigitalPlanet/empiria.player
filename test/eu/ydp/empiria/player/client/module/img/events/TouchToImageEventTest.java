@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.TouchEvent;
@@ -19,15 +18,14 @@ import eu.ydp.empiria.player.client.util.position.Point;
 @RunWith(GwtMockitoTestRunner.class)
 public class TouchToImageEventTest {
 
-	private TouchToImageEvent touchToImageEvent;
+	private final TouchToImageEvent testObj = new TouchToImageEvent();
 
 	@Test
-	public void should_return_TouchOnImageEvent() {
+	public void shouldReturnTouchOnImageEvent() {
 		// given
 		TouchEvent<?> touchEvent = mock(TouchEvent.class);
 
-		com.google.gwt.dom.client.Touch touch = mock(com.google.gwt.dom.client.Touch.class);
-		JavaScriptObject js = touch;
+		Touch touch = mock(Touch.class);
 
 		int x = 1;
 		int y = 1;
@@ -38,10 +36,8 @@ public class TouchToImageEventTest {
 		when(array.get(anyInt())).thenReturn(touch);
 		when(array.length()).thenReturn(1);
 
-		touchToImageEvent = new TouchToImageEvent();
-
 		// when
-		TouchOnImageEvent result = touchToImageEvent.getTouchOnImageEvent(touchEvent);
+		TouchOnImageEvent result = testObj.getTouchOnImageEvent(touchEvent);
 
 		// then
 		assertNotNull(result);

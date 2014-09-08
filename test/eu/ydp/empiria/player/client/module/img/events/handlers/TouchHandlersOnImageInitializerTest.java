@@ -35,7 +35,7 @@ public class TouchHandlersOnImageInitializerTest {
 	private Widget listenOn;
 
 	@Test
-	public void should_add_TouchMoveHandlerOnImage() {
+	public void shouldAddTouchMoveHandlerOnImage() {
 		// given
 		TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
 
@@ -47,7 +47,7 @@ public class TouchHandlersOnImageInitializerTest {
 	}
 
 	@Test
-	public void should_add_TouchStartHandlerOnImage() {
+	public void shouldAddTouchStartHandlerOnImage() {
 		// given
 		TouchOnImageStartHandler touchOnImageStartHandler = mock(TouchOnImageStartHandler.class);
 
@@ -59,7 +59,7 @@ public class TouchHandlersOnImageInitializerTest {
 	}
 
 	@Test
-	public void should_add_TouchEndHandlerOnImage() {
+	public void shouldAddTouchEndHandlerOnImage() {
 		// given
 		TouchOnImageEndHandler touchOnImageEndHandler = mock(TouchOnImageEndHandler.class);
 

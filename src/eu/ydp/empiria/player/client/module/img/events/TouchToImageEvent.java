@@ -23,7 +23,7 @@ public class TouchToImageEvent {
 	}
 
 	public TouchOnImageEvent getTouchOnImageEvent(TouchEvent<? extends EventHandler> touchEvent) {
-		List<Point> pointsList = new ArrayList<Point>();
+		List<Point> pointsList = new ArrayList<>();
 		if (touchEvent != null) {
 
 			for (int i = 0; i < getLength(touchEvent); i++) {

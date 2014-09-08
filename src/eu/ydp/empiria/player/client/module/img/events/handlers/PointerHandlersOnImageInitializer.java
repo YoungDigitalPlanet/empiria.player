@@ -21,16 +21,28 @@ public class PointerHandlersOnImageInitializer implements ITouchHandlerOnImageIn
 
 	@Override
 	public void addTouchOnImageMoveHandler(final TouchOnImageMoveHandler touchOnImageMoveHandler, Widget listenOn) {
-		listenOn.addDomHandler(new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates), PointerMoveEvent.getType());
+		listenOn.addDomHandler(createTochOnImageMoveHandler(touchOnImageMoveHandler), PointerMoveEvent.getType());
+	}
+
+	private PointerMoveHandlerOnImage createTochOnImageMoveHandler(final TouchOnImageMoveHandler touchOnImageMoveHandler) {
+		return new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
 	}
 
 	@Override
 	public void addTouchOnImageStartHandler(final TouchOnImageStartHandler touchOnImageStartHandler, Widget listenOn) {
-		listenOn.addDomHandler(new PointerDownHandlerOnImage(touchOnImageStartHandler, pointerEventsCoordinates), PointerDownEvent.getType());
+		listenOn.addDomHandler(createTouchOnImageStartHandler(touchOnImageStartHandler), PointerDownEvent.getType());
+	}
+
+	private PointerDownHandlerOnImage createTouchOnImageStartHandler(final TouchOnImageStartHandler touchOnImageStartHandler) {
+		return new PointerDownHandlerOnImage(touchOnImageStartHandler, pointerEventsCoordinates);
 	}
 
 	@Override
 	public void addTouchOnImageEndHandler(final TouchOnImageEndHandler touchOnImageEndHandler, Widget listenOn) {
-		listenOn.addDomHandler(new PointerUpHandlerOnImage(touchOnImageEndHandler, pointerEventsCoordinates), PointerUpEvent.getType());
+		listenOn.addDomHandler(createTouchOnImageEndHandler(touchOnImageEndHandler), PointerUpEvent.getType());
+	}
+
+	private PointerUpHandlerOnImage createTouchOnImageEndHandler(final TouchOnImageEndHandler touchOnImageEndHandler) {
+		return new PointerUpHandlerOnImage(touchOnImageEndHandler, pointerEventsCoordinates);
 	}
 }

@@ -11,22 +11,21 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 
 public class PointerUpHandlerOnImageTest {
 
-	private PointerUpHandlerOnImage testObj;
+	PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
+
+	TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
+
+	private final PointerUpHandlerOnImage testObj = new PointerUpHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 
 	@Test
-	public void should_run_onEnd_if_isTouchEvent() {
+	public void shouldRunOnEnd_ifIsTouchEvent() {
 		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
-
 		PointerUpEvent event = mock(PointerUpEvent.class);
 		when(event.isTouchEvent()).thenReturn(true);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerUpHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerUp(event);
 
@@ -37,19 +36,14 @@ public class PointerUpHandlerOnImageTest {
 	}
 
 	@Test
-	public void shouldnt_run_onEnd_if_isNotTouchEvent() {
+	public void shouldntRunOnEnd_ifIsNotTouchEvent() {
 		// given
-		PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-
-		TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
-
 		PointerUpEvent event = mock(PointerUpEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
-		testObj = new PointerUpHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
 		// when
 		testObj.onPointerUp(event);
 

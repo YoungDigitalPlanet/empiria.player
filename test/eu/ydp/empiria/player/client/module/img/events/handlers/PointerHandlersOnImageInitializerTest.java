@@ -35,7 +35,7 @@ public class PointerHandlersOnImageInitializerTest {
 	private Widget listenOn;
 
 	@Test
-	public void should_add_PointerMoveHandlerOnImage() {
+	public void shouldAddPointerMoveHandlerOnImage() {
 		// given
 		TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
 
@@ -47,7 +47,7 @@ public class PointerHandlersOnImageInitializerTest {
 	}
 
 	@Test
-	public void should_add_PointerDownHandlerOnImage() {
+	public void shouldAddPointerDownHandlerOnImage() {
 		// given
 		TouchOnImageStartHandler touchOnImageStartHandler = mock(TouchOnImageStartHandler.class);
 
@@ -59,7 +59,7 @@ public class PointerHandlersOnImageInitializerTest {
 	}
 
 	@Test
-	public void should_add_PointerUpHandlerOnImage() {
+	public void shouldAddPointerUpHandlerOnImage() {
 		// given
 		TouchOnImageEndHandler touchOnImageEndHandler = mock(TouchOnImageEndHandler.class);
 

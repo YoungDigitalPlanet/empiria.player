@@ -31,22 +31,24 @@ public class PointerEventsCoordinatesTest {
 	}
 
 	@Test
-	public void should_addEvent() {
+	public void shouldAddEvent() {
 		// given
 		int x = 1;
 		int y = 1;
 		when(pointerEvent.getClientX()).thenReturn(x);
 		when(pointerEvent.getClientY()).thenReturn(y);
 
+		Point assumedPoint = new Point(x, y);
+
 		// when
 		testObj.addEvent(pointerEvent);
 
 		// then
-		assertEquals(new Point(x, y), testObj.getPoint(0));
+		assertEquals(assumedPoint, testObj.getPoint(0));
 	}
 
 	@Test
-	public void should_return_length() {
+	public void shouldReturnLength() {
 		// given
 
 		// when
@@ -57,7 +59,7 @@ public class PointerEventsCoordinatesTest {
 	}
 
 	@Test
-	public void should_removeEvent() {
+	public void shouldRemoveEvent() {
 		// given
 
 		// when
@@ -69,7 +71,7 @@ public class PointerEventsCoordinatesTest {
 	}
 
 	@Test
-	public void should_return_TouchOnImageEvent() {
+	public void shouldReturnTouchOnImageEvent() {
 		// given
 
 		// when

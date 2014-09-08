@@ -12,22 +12,20 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.Touc
 
 public class TouchEndHandlerOnImageTest {
 
-	private TouchEndHandlerOnImage testObj;
+	private final TouchToImageEvent touchToImageEvent = mock(TouchToImageEvent.class);
+
+	private final TouchOnImageEndHandler touchOnImageEndHandler = mock(TouchOnImageEndHandler.class);
+
+	private final TouchEndHandlerOnImage testObj = new TouchEndHandlerOnImage(touchOnImageEndHandler, touchToImageEvent);
 
 	@Test
-	public void should_run_onEnd() {
+	public void shouldRunOnEnd() {
 		// given
-		TouchToImageEvent touchToImageEvent = mock(TouchToImageEvent.class);
-
-		TouchOnImageEndHandler touchOnImageEndHandler = mock(TouchOnImageEndHandler.class);
-
 		TouchEndEvent event = mock(TouchEndEvent.class);
 
 		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 
 		when(touchToImageEvent.getTouchOnImageEvent(event)).thenReturn(touchOnImageEvent);
-
-		testObj = new TouchEndHandlerOnImage(touchOnImageEndHandler, touchToImageEvent);
 
 		// when
 		testObj.onTouchEnd(event);
