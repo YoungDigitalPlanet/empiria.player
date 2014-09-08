@@ -30,7 +30,7 @@ public class TextEditorModuleTest {
 	@Test
 	public void shouldConvertEditorOnBodyUnload() {
 		// when
-		testObj.onBodyLoad();
+		testObj.onBodyUnload();
 
 		// then
 		verify(presenter).convertEditor();

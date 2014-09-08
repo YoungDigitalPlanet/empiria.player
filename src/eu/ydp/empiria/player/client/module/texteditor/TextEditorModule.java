@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.texteditor;
 
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -12,10 +11,12 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class TextEditorModule extends SimpleModuleBase implements IStateful, IUniqueModule, IActivity, ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
+	private final StateEncoder stateEncoder;
 
 	@Inject
-	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter) {
+	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, StateEncoder stateEncoder) {
 		this.presenter = presenter;
+		this.stateEncoder = stateEncoder;
 	}
 
 	@Override
@@ -34,16 +35,14 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public JSONArray getState() {
-		JSONArray state = new JSONArray();
-		JSONString value = new JSONString(presenter.getContent());
-		state.set(0, value);
-		return state;
+		String content = presenter.getContent();
+		return stateEncoder.encodeState(content);
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		String value = newState.get(0).toString();
-		presenter.setContent(value);
+		String state = stateEncoder.decodeState(newState);
+		presenter.setContent(state);
 	}
 
 	@Override
