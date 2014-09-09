@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.variables.processor.global.IsIgnoredModule;
+import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
@@ -55,12 +55,12 @@ public class ItemBody implements WidgetWorkflowListener {
 	private boolean stateIsLoaded = false;
 
 	private final ModulesStateLoader modulesStateLoader;
-	private final IsIgnoredModule isIgnoredModule;
+	private final IgnoredModules ignoredModules;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IsIgnoredModule isIgnoredModule) {
+			IgnoredModules isIgnoredModule) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -71,7 +71,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		parenthood = new ParenthoodManager();
 
 		this.interactionEventsListener = interactionEventsListener;
-		this.isIgnoredModule = isIgnoredModule;
+		this.ignoredModules = isIgnoredModule;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -127,7 +127,7 @@ public class ItemBody implements WidgetWorkflowListener {
 			if (currModule instanceof InteractionModuleBase) {
 				InteractionModuleBase moduleBase = (InteractionModuleBase) currModule;
 				if (moduleBase.isIgnored()) {
-					isIgnoredModule.addIgnoredID(moduleBase.getIdentifier());
+					ignoredModules.addIgnoredID(moduleBase.getIdentifier());
 				}
 			}
 		}

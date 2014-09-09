@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class IsIgnoredModuleTest {
+public class IgnoredModulesTest {
 
-	private final IsIgnoredModule testObj = new IsIgnoredModule();
+	private final IgnoredModules testObj = new IgnoredModules();
 
 	@Test
-	public void shouldReturnTrue_ifListContainsId() {
+	public void shouldReturnTrue_whenListContainsId() {
 		// given
 		String id = "sample_id";
 		testObj.addIgnoredID(id);
@@ -23,7 +23,7 @@ public class IsIgnoredModuleTest {
 	}
 
 	@Test
-	public void shouldReturnFalse_ifListNotContainsId() {
+	public void shouldReturnFalse_whenListNotContainsId() {
 		// given
 		String id = "sample_id";
 		boolean expected = false;

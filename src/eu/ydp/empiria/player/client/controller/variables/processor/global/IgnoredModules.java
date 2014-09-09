@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IsIgnoredModule {
+public class IgnoredModules {
 
 	private final List<String> ignoredList = new ArrayList<>();
 

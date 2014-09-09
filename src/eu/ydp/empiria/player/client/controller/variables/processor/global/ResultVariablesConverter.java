@@ -34,7 +34,7 @@ public class ResultVariablesConverter {
 	private ExpressionBeanResultsToResultVariableTransformation expressionBeanToResultVariableTransformation;
 
 	@Inject
-	private IsIgnoredModule isIgnoredModule;
+	private IgnoredModules ignoredModules;
 
 	public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = combineToResponseResultMap(modulesProcessingResults, responses);
@@ -62,7 +62,7 @@ public class ResultVariablesConverter {
 		Map<Response, DtoModuleProcessingResult> combined = Maps.newHashMap();
 		for (String id : responses.keySet()) {
 
-			if (!isIgnoredModule.isIgnored(id)) {
+			if (!ignoredModules.isIgnored(id)) {
 				combined.put(responses.get(id), modulesProcessingResults.get(id));
 			}
 		}
