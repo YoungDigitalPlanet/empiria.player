@@ -14,6 +14,14 @@ public class TextEditorJSWrapper {
 		return getContentNative(moduleId);
 	}
 
+	public void lock(String moduleId) {
+		lockNative(moduleId);
+	}
+
+	public void unlock(String moduleId) {
+		unlockNative(moduleId);
+	}
+
 	private native final void convertNative(String moduleId) /*-{
         var options = {
             link: false,
@@ -33,5 +41,13 @@ public class TextEditorJSWrapper {
 
 	private native final String getContentNative(String moduleId) /*-{
         return $wnd.$("#" + moduleId + " textarea").val();
+    }-*/;
+
+	private native final void lockNative(String moduleId) /*-{
+        $wnd.$('#' + moduleId + ' .jqte_editor').attr('contenteditable', 'false');
+    }-*/;
+
+	private native final void unlockNative(String moduleId) /*-{
+        $wnd.$('#' + moduleId + ' .jqte_editor').attr('contenteditable', 'true');
     }-*/;
 }

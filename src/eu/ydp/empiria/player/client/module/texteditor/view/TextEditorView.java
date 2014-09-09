@@ -5,5 +5,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface TextEditorView extends IsWidget {
 	void lock();
 
+	void unlock();
+
 	void init();
 }

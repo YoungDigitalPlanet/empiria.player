@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class TextEditorViewImpl extends Composite implements TextEditorView {
 
@@ -15,7 +17,6 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 
 	@UiTemplate("TextEditorView.ui.xml")
 	interface TextEditorViewUiBinder extends UiBinder<Widget, TextEditorViewImpl> {
-
 	}
 
 	@UiField
@@ -24,17 +25,20 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 	@UiField
 	TextArea textEditor;
 
+	@Inject
+	private StyleNameConstants styleNameConstants;
+
 	public void init() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
-	public Widget asWidget() {
-		return mainPanel;
+	public void lock() {
+		mainPanel.addStyleName(styleNameConstants.QP_TEXT_EDITOR_LOCKED());
 	}
 
 	@Override
-	public void lock() {
-		textEditor.setEnabled(false);
+	public void unlock() {
+		mainPanel.removeStyleName(styleNameConstants.QP_TEXT_EDITOR_LOCKED());
 	}
 }

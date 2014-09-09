@@ -36,7 +36,13 @@ public class TextEditorPresenter {
 	}
 
 	public void lock() {
+		textEditorJSWrapper.lock(moduleId);
 		view.lock();
+	}
+
+	public void unlock() {
+		textEditorJSWrapper.unlock(moduleId);
+		view.unlock();
 	}
 
 	public Widget getView() {

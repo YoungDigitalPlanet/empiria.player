@@ -28,8 +28,12 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 	}
 
 	@Override
-	public void lock(boolean lo) {
+	public void lock(boolean lock) {
+		if (lock) {
 		presenter.lock();
+		} else {
+			presenter.unlock();
+		}
 	}
 
 	@Override
