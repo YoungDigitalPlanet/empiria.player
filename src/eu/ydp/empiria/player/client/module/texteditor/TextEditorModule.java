@@ -30,7 +30,7 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 	@Override
 	public void lock(boolean lock) {
 		if (lock) {
-		presenter.lock();
+			presenter.lock();
 		} else {
 			presenter.unlock();
 		}
@@ -38,6 +38,7 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void reset() {
+		presenter.setContent("");
 	}
 
 	@Override
