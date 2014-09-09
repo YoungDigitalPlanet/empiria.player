@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.texteditor.model.Model;
+import eu.ydp.empiria.player.client.module.texteditor.model.ModelEncoder;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -12,13 +14,13 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class TextEditorModule extends SimpleModuleBase implements IStateful, IUniqueModule, IActivity, ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
-	private final StateEncoder stateEncoder;
+	private final ModelEncoder modelEncoder;
 	private final TextEditorBean textEditorBean;
 
 	@Inject
-	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, StateEncoder stateEncoder, TextEditorBean textEditorBean) {
+	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, ModelEncoder modelEncoder, TextEditorBean textEditorBean) {
 		this.presenter = presenter;
-		this.stateEncoder = stateEncoder;
+		this.modelEncoder = modelEncoder;
 		this.textEditorBean = textEditorBean;
 	}
 
@@ -38,19 +40,20 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void reset() {
-		presenter.setContent("");
+		Model emptyModel = Model.createEmpty();
+		presenter.setModel(emptyModel);
 	}
 
 	@Override
 	public JSONArray getState() {
-		String content = presenter.getContent();
-		return stateEncoder.encodeState(content);
+		Model model = presenter.getModel();
+		return modelEncoder.encodeModel(model);
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		String state = stateEncoder.decodeState(newState);
-		presenter.setContent(state);
+		Model model = modelEncoder.decodeModel(newState);
+		presenter.setModel(model);
 	}
 
 	@Override

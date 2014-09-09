@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.texteditor.presenter;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.texteditor.model.Model;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
 import org.junit.Before;
@@ -7,24 +10,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class TextEditorPresenterTest {
 
 	@InjectMocks
 	private TextEditorPresenter testObj;
 
 	@Mock
-	private TextEditorView textEditorView;
-	@Mock
 	private TextEditorJSWrapper textEditorJSWrapper;
+	@Mock
+	private TextEditorView view;
 
 	private static final String MODULE_ID = "MODULE_ID";
 	private static final String CONTENT = "CONTENT";
@@ -37,7 +36,7 @@ public class TextEditorPresenterTest {
 	@Test
 	public void shouldInitView() {
 		// then
-		verify(textEditorView).init();
+		verify(view).init();
 	}
 
 	@Test
@@ -50,33 +49,61 @@ public class TextEditorPresenterTest {
 	}
 
 	@Test
-	public void shouldSetContentToEditor() {
+	public void shouldSetContentFromModel() {
+		// given
+		Model model = new Model(CONTENT);
+
 		// when
-		testObj.setContent(CONTENT);
+		testObj.setModel(model);
 
 		// then
 		verify(textEditorJSWrapper).setContent(MODULE_ID, CONTENT);
 	}
 
 	@Test
-	public void shouldGetContentFromEditor() {
+	public void shouldGetModelWithContent() {
 		// given
-		String expected = "expected";
-		when(textEditorJSWrapper.getContent(MODULE_ID)).thenReturn(expected);
+		Model expectedModel = new Model(CONTENT);
+
+		when(textEditorJSWrapper.getContent(MODULE_ID)).thenReturn(CONTENT);
 
 		// when
-		String actual = testObj.getContent();
+		Model actual = testObj.getModel();
 
 		// then
-		assertThat(actual, is(equalTo(expected)));
+		assertThat(actual).isEqualTo(expectedModel);
 	}
 
 	@Test
-	public void shouldLockView() {
+	public void shouldLockViewAndEditor() {
 		// when
 		testObj.lock();
 
 		// then
-		verify(textEditorView).lock();
+		verify(textEditorJSWrapper).lock(MODULE_ID);
+		verify(view).lock();
+	}
+
+	@Test
+	public void shouldUnlockViewAndEditor() {
+		// when
+		testObj.unlock();
+
+		// then
+		verify(textEditorJSWrapper).unlock(MODULE_ID);
+		verify(view).unlock();
+	}
+
+	@Test
+	public void shouldReturnViewWidget() {
+		// given
+		Widget widget = mock(Widget.class);
+		when(view.asWidget()).thenReturn(widget);
+
+		// when
+		Widget actual = testObj.getView();
+
+		// then
+		assertThat(actual).isEqualTo(widget);
 	}
 }
