@@ -12,11 +12,6 @@ public class IgnoredModules {
 	}
 
 	public boolean isIgnored(String id) {
-
-		if (ignoredList.contains(id)) {
-			return true;
-		} else {
-			return false;
-		}
+		return ignoredList.contains(id);
 	}
 }

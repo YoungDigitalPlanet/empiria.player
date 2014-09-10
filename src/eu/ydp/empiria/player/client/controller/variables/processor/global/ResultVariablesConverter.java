@@ -60,10 +60,12 @@ public class ResultVariablesConverter {
 	private Map<Response, DtoModuleProcessingResult> combineToResponseResultMap(Map<String, DtoModuleProcessingResult> modulesProcessingResults,
 			Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = Maps.newHashMap();
-		for (String id : responses.keySet()) {
 
+		for (Map.Entry<String, Response> entry : responses.entrySet()) {
+			String id = entry.getKey();
 			if (!ignoredModules.isIgnored(id)) {
-				combined.put(responses.get(id), modulesProcessingResults.get(id));
+				Response responseValue = entry.getValue();
+				combined.put(responseValue, modulesProcessingResults.get(id));
 			}
 		}
 		return combined;

@@ -60,7 +60,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules isIgnoredModule) {
+			IgnoredModules ignoredModules) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -71,7 +71,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		parenthood = new ParenthoodManager();
 
 		this.interactionEventsListener = interactionEventsListener;
-		this.ignoredModules = isIgnoredModule;
+		this.ignoredModules = ignoredModules;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -126,10 +126,14 @@ public class ItemBody implements WidgetWorkflowListener {
 			}
 			if (currModule instanceof InteractionModuleBase) {
 				InteractionModuleBase moduleBase = (InteractionModuleBase) currModule;
-				if (moduleBase.isIgnored()) {
-					ignoredModules.addIgnoredID(moduleBase.getIdentifier());
-				}
+				processIgnoredModule(moduleBase);
 			}
+		}
+	}
+
+	private void processIgnoredModule(InteractionModuleBase moduleBase) {
+		if (moduleBase.isIgnored()) {
+			ignoredModules.addIgnoredID(moduleBase.getIdentifier());
 		}
 	}
 

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static org.junit.Assert.*;
+import static org.fest.assertions.api.Assertions.*;
 
 import org.junit.Test;
 
@@ -13,25 +13,23 @@ public class IgnoredModulesTest {
 		// given
 		String id = "sample_id";
 		testObj.addIgnoredID(id);
-		boolean expected = true;
 
 		// when
 		boolean result = testObj.isIgnored(id);
 
 		// then
-		assertEquals(expected, result);
+		assertThat(result).isTrue();
 	}
 
 	@Test
 	public void shouldReturnFalse_whenListNotContainsId() {
 		// given
 		String id = "sample_id";
-		boolean expected = false;
 
 		// when
 		boolean result = testObj.isIgnored(id);
 
 		// then
-		assertEquals(expected, result);
+		assertThat(result).isFalse();
 	}
 }
