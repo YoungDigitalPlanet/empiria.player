@@ -62,6 +62,7 @@ import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
@@ -233,6 +234,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(VideoPlayerFactory.class).in(Singleton.class);
 		bind(FileRequest.class).to(StandardFileRequest.class);
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+		bind(IgnoredModules.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
