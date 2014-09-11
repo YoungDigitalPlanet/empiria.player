@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.module.texteditor.model;
 
-public class Model {
+public class TextEditorModel {
 
 	private final String content;
 
-	public Model(String content) {
+	public TextEditorModel(String content) {
 		this.content = content;
 	}
 
@@ -12,8 +12,8 @@ public class Model {
 		return content;
 	}
 
-	public static Model createEmpty() {
-		return new Model("");
+	public static TextEditorModel createEmpty() {
+		return new TextEditorModel("");
 	}
 
 	@Override
@@ -25,9 +25,9 @@ public class Model {
 			return false;
 		}
 
-		Model model = (Model) o;
+		TextEditorModel textEditorModel = (TextEditorModel) o;
 
-		if (!content.equals(model.content)) {
+		if (!content.equals(textEditorModel.content)) {
 			return false;
 		}
 

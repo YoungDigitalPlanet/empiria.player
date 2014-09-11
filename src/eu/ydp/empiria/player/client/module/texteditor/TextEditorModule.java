@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.module.texteditor.model.Model;
-import eu.ydp.empiria.player.client.module.texteditor.model.ModelEncoder;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -14,13 +14,13 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class TextEditorModule extends SimpleModuleBase implements IStateful, IUniqueModule, IActivity, ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
-	private final ModelEncoder modelEncoder;
+	private final TextEditorModelEncoder textEditorModelEncoder;
 	private final TextEditorBean textEditorBean;
 
 	@Inject
-	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, ModelEncoder modelEncoder, TextEditorBean textEditorBean) {
+	public TextEditorModule(@ModuleScoped TextEditorPresenter presenter, TextEditorModelEncoder textEditorModelEncoder, TextEditorBean textEditorBean) {
 		this.presenter = presenter;
-		this.modelEncoder = modelEncoder;
+		this.textEditorModelEncoder = textEditorModelEncoder;
 		this.textEditorBean = textEditorBean;
 	}
 
@@ -40,20 +40,20 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 
 	@Override
 	public void reset() {
-		Model emptyModel = Model.createEmpty();
-		presenter.setModel(emptyModel);
+		TextEditorModel emptyTextEditorModel = TextEditorModel.createEmpty();
+		presenter.setTextEditorModel(emptyTextEditorModel);
 	}
 
 	@Override
 	public JSONArray getState() {
-		Model model = presenter.getModel();
-		return modelEncoder.encodeModel(model);
+		TextEditorModel textEditorModel = presenter.getTextEditorModel();
+		return textEditorModelEncoder.encodeModel(textEditorModel);
 	}
 
 	@Override
 	public void setState(JSONArray newState) {
-		Model model = modelEncoder.decodeModel(newState);
-		presenter.setModel(model);
+		TextEditorModel textEditorModel = textEditorModelEncoder.decodeModel(newState);
+		presenter.setTextEditorModel(textEditorModel);
 	}
 
 	@Override

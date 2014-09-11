@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.texteditor.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.texteditor.model.Model;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
 import org.junit.Before;
@@ -51,10 +51,10 @@ public class TextEditorPresenterTest {
 	@Test
 	public void shouldSetContentFromModel() {
 		// given
-		Model model = new Model(CONTENT);
+		TextEditorModel textEditorModel = new TextEditorModel(CONTENT);
 
 		// when
-		testObj.setModel(model);
+		testObj.setTextEditorModel(textEditorModel);
 
 		// then
 		verify(textEditorJSWrapper).setContent(MODULE_ID, CONTENT);
@@ -63,15 +63,15 @@ public class TextEditorPresenterTest {
 	@Test
 	public void shouldGetModelWithContent() {
 		// given
-		Model expectedModel = new Model(CONTENT);
+		TextEditorModel expectedTextEditorModel = new TextEditorModel(CONTENT);
 
 		when(textEditorJSWrapper.getContent(MODULE_ID)).thenReturn(CONTENT);
 
 		// when
-		Model actual = testObj.getModel();
+		TextEditorModel actual = testObj.getTextEditorModel();
 
 		// then
-		assertThat(actual).isEqualTo(expectedModel);
+		assertThat(actual).isEqualTo(expectedTextEditorModel);
 	}
 
 	@Test

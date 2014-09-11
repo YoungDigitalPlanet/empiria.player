@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.texteditor.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.texteditor.model.Model;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -28,12 +28,12 @@ public class TextEditorPresenter {
 		textEditorJSWrapper.convert(moduleId);
 	}
 
-	public void setModel(Model model) {
-		setContent(model.getContent());
+	public void setTextEditorModel(TextEditorModel textEditorModel) {
+		setContent(textEditorModel.getContent());
 	}
 
-	public Model getModel() {
-		return new Model(getContent());
+	public TextEditorModel getTextEditorModel() {
+		return new TextEditorModel(getContent());
 	}
 
 	private void setContent(String text) {

@@ -3,20 +3,20 @@ package eu.ydp.empiria.player.client.module.texteditor.model;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 
-public class ModelEncoder {
+public class TextEditorModelEncoder {
 
-	public JSONArray encodeModel(Model model) {
+	public JSONArray encodeModel(TextEditorModel textEditorModel) {
 		JSONArray jsonState = new JSONArray();
-		JSONString value = new JSONString(model.getContent());
+		JSONString value = new JSONString(textEditorModel.getContent());
 		jsonState.set(0, value);
 		return jsonState;
 	}
 
-	public Model decodeModel(JSONArray newState) {
+	public TextEditorModel decodeModel(JSONArray newState) {
 		String content = newState.get(0)
 								 .toString();
 
-		return new Model(content);
+		return new TextEditorModel(content);
 	}
 
 }

@@ -60,7 +60,6 @@ import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControlle
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
-import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBeanProvider;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
@@ -111,7 +110,6 @@ public class ModuleScopedModule extends AbstractGinModule {
 	private void bindTextEditor() {
 		bindModuleScoped(TextEditorBean.class, new TypeLiteral<ModuleScopedProvider<TextEditorBean>>() {
 		});
-		bind(TextEditorBean.class).toProvider(TextEditorBeanProvider.class);
 		bindModuleScoped(TextEditorPresenter.class, new TypeLiteral<ModuleScopedProvider<TextEditorPresenter>>() {
 		});
 		bindModuleScoped(TextEditorView.class, new TypeLiteral<ModuleScopedProvider<TextEditorView>>() {

@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.texteditor;
 
 import com.google.gwt.json.client.JSONArray;
-import eu.ydp.empiria.player.client.module.texteditor.model.Model;
-import eu.ydp.empiria.player.client.module.texteditor.model.ModelEncoder;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class TextEditorModuleTest {
 	@Mock
 	private TextEditorPresenter presenter;
 	@Mock
-	private ModelEncoder modelEncoder;
+	private TextEditorModelEncoder textEditorModelEncoder;
 
 	@Test
 	public void shouldConvertEditorOnBodyLoad() {
@@ -100,26 +100,26 @@ public class TextEditorModuleTest {
 	public void shouldSetStateOnPresenter() {
 		// given
 		String content = "any string";
-		Model expectedModel = new Model(content);
+		TextEditorModel expectedTextEditorModel = new TextEditorModel(content);
 		JSONArray state = mock(JSONArray.class);
 
-		when(modelEncoder.decodeModel(state)).thenReturn(expectedModel);
+		when(textEditorModelEncoder.decodeModel(state)).thenReturn(expectedTextEditorModel);
 
 		// when
 		testObj.setState(state);
 
 		// then
-		verify(presenter).setModel(expectedModel);
+		verify(presenter).setTextEditorModel(expectedTextEditorModel);
 	}
 
 	@Test
 	public void shouldGetStateFromPresenter() {
 		// given
 		String content = "any string";
-		Model model = new Model(content);
-		when(presenter.getModel()).thenReturn(model);
+		TextEditorModel textEditorModel = new TextEditorModel(content);
+		when(presenter.getTextEditorModel()).thenReturn(textEditorModel);
 		JSONArray expectedState = mock(JSONArray.class);
-		when(modelEncoder.encodeModel(model)).thenReturn(expectedState);
+		when(textEditorModelEncoder.encodeModel(textEditorModel)).thenReturn(expectedState);
 
 		// when
 		JSONArray actual = testObj.getState();
@@ -131,12 +131,12 @@ public class TextEditorModuleTest {
 	@Test
 	public void shouldSetEmptyModelOnReset() {
 		// given
-		Model emptyModel = Model.createEmpty();
+		TextEditorModel emptyTextEditorModel = TextEditorModel.createEmpty();
 
 		// when
 		testObj.reset();
 
 		// then
-		verify(presenter).setModel(emptyModel);
+		verify(presenter).setTextEditorModel(emptyTextEditorModel);
 	}
 }
