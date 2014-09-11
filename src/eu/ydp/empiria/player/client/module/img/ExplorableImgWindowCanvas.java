@@ -28,13 +28,17 @@ import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 import eu.ydp.empiria.player.client.module.img.events.handlers.ITouchHandlerOnImageInitializer;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandlerImpl;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandlerImpl;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandlerImpl;
+import eu.ydp.empiria.player.client.util.position.Point;
 
-public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
+public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase implements CanvasMoveEvents {
 
 	private static ExplorableCanvasImgContentUiBinder uiBinder = GWT.create(ExplorableCanvasImgContentUiBinder.class);
 
@@ -69,7 +73,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
-		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().getTouchHandlersOnImageInitializer();
+		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().get();
 	}
 
 	@Override
@@ -145,38 +149,15 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	private TouchOnImageMoveHandler createTouchOnImageMoveHandler() {
-		return new TouchOnImageMoveHandler() {
-
-			@Override
-			public void onMove(TouchOnImageEvent touchOnImageEvent) {
-				if (touchOnImageEvent.getLength() == 1) {
-					onMoveMove(touchOnImageEvent.getPoint(0).getX(), touchOnImageEvent.getPoint(0).getY());
-				} else if (touchOnImageEvent.getLength() == 2) {
-					onMoveScale(touchOnImageEvent.getPoint(0).getX(), touchOnImageEvent.getPoint(0).getY(), touchOnImageEvent.getPoint(1).getX(),
-							touchOnImageEvent.getPoint(1).getY());
-				}
-			}
-		};
+		return new TouchOnImageMoveHandlerImpl(this);
 	}
 
 	private TouchOnImageEndHandler createTouchOnImageEndHandler() {
-		return new TouchOnImageEndHandler() {
-
-			@Override
-			public void onEnd(TouchOnImageEvent touchOnImageEvent) {
-				onMoveEnd();
-			}
-		};
+		return new TouchOnImageEndHandlerImpl(this);
 	}
 
 	private TouchOnImageStartHandler createTouchOnImageStartHandler() {
-		return new TouchOnImageStartHandler() {
-
-			@Override
-			public void onStart(TouchOnImageEvent touchOnImageEvent) {
-				onMoveStart(touchOnImageEvent.getPoint(0).getX(), touchOnImageEvent.getPoint(0).getY());
-			}
-		};
+		return new TouchOnImageStartHandlerImpl(this);
 	}
 
 	private void addMouseOutHandler(FocusWidget focusCanvas) {
@@ -204,7 +185,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 			@Override
 			public void onMouseMove(MouseMoveEvent event) {
-				onMoveMove(event.getClientX(), event.getClientY());
+				Point point = new Point(event.getClientX(), event.getClientY());
+				onMoveMove(point);
 			}
 		});
 	}
@@ -214,34 +196,41 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				onMoveStart(event.getClientX(), event.getClientY());
+				Point point = new Point(event.getClientX(), event.getClientY());
+				onMoveStart(point);
 			}
 		});
 	}
 
-	private void onMoveStart(int x, int y) {// NOPMD
+	@Override
+	public void onMoveStart(Point point) {// NOPMD
 		disableSwype();
 		moving = true;
-		prevX = x;
-		prevY = y;
+		prevX = point.getX();
+		prevY = point.getY();
 	}
 
-	private void onMoveScale(int x1, int y1, int x2, int y2) {// NOPMD
-		double currDistance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	@Override
+	public void onMoveScale(Point firstFinger, Point secondFinger) {// NOPMD
+		double currDistance = firstFinger.distance(secondFinger);
+
 		if (prevDistance != -1) {
 			scaleBy(currDistance / prevDistance);
 			redraw(true);
 		}
 
 		prevDistance = currDistance;
-
 	}
 
 	private void disableSwype() {
 		touchController.setTouchReservation(true);
 	}
 
-	private void onMoveMove(int x, int y) {
+	@Override
+	public void onMoveMove(Point point) {
+		int x = point.getX();
+		int y = point.getX();
+
 		disableSwype();
 
 		if (moving) {
@@ -262,7 +251,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 	}
 
-	private void onMoveEnd() {
+	@Override
+	public void onMoveEnd() {
 		moving = false;
 		prevDistance = -1;
 	}

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img.events.coordinates;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -23,7 +24,7 @@ public class PointerEventsCoordinates {
 	}
 
 	public Point getPoint(int index) {
-		return (Point) pointersPoints.values().toArray()[index];
+		return valuesAsList().get(index);
 	}
 
 	public void removeEvent(PointerEvent<?> pointerEvent) {
@@ -35,10 +36,14 @@ public class PointerEventsCoordinates {
 	}
 
 	public TouchOnImageEvent getTouchOnImageEvent() {
-		return new TouchOnImageEvent(new ArrayList<Point>(pointersPoints.values()));
+		return new TouchOnImageEvent(valuesAsList());
 	}
 
 	private boolean isFirstTouch(PointerEvent<? extends EventHandler> pointerEvent) {
 		return pointerEvent.isPrimary() && !pointersPoints.containsKey(pointerEvent.getPointerId());
+	}
+
+	private List<Point> valuesAsList() {
+		return new ArrayList<Point>(pointersPoints.values());
 	}
 }

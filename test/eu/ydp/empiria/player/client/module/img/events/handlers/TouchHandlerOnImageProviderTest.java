@@ -31,7 +31,7 @@ public class TouchHandlerOnImageProviderTest {
 		when(userAgentUtil.isIE()).thenReturn(true);
 
 		// when
-		ITouchHandlerOnImageInitializer result = testObj.getTouchHandlersOnImageInitializer();
+		ITouchHandlerOnImageInitializer result = testObj.get();
 
 		// then
 		assertThat(result, instanceOf(PointerHandlersOnImageInitializer.class));
@@ -43,7 +43,7 @@ public class TouchHandlerOnImageProviderTest {
 		when(userAgentUtil.isIE()).thenReturn(false);
 
 		// when
-		ITouchHandlerOnImageInitializer result = testObj.getTouchHandlersOnImageInitializer();
+		ITouchHandlerOnImageInitializer result = testObj.get();
 
 		// then
 		assertThat(result, instanceOf(TouchHandlersOnImageInitializer.class));

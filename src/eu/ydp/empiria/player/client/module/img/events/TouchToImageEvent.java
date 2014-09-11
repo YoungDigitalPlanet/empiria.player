@@ -1,16 +1,26 @@
 package eu.ydp.empiria.player.client.module.img.events;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.TouchEvent;
 import com.google.gwt.event.shared.EventHandler;
 
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.gwtutil.client.collections.JsArrayIterable;
 
 public class TouchToImageEvent {
+
+	private final Function<Touch, Point> touchToPointTransforemer = new Function<Touch, Point>() {
+		@Override
+		public Point apply(Touch touch) {
+			return new Point(touch.getClientX(), touch.getClientY());
+		}
+	};
 
 	public TouchOnImageEvent getTouchOnImageEvent(TouchEvent<? extends EventHandler> touchEvent) {
 		List<Point> pointsList = getPoints(touchEvent);
@@ -19,16 +29,9 @@ public class TouchToImageEvent {
 	}
 
 	private List<Point> getPoints(TouchEvent<? extends EventHandler> touchEvent) {
-		List<Point> points = new ArrayList<>();
-		int touchesCount = touchEvent.getTouches().length();
+		JsArray<Touch> touches = touchEvent.getTouches();
+		JsArrayIterable<Touch> iterableTouches = JsArrayIterable.create(touches);
 
-		for (int i = 0; i < touchesCount; i++) {
-			Touch touch = touchEvent.getTouches().get(i);
-			Point point = new Point(touch.getClientX(), touch.getClientY());
-
-			points.add(point);
-		}
-
-		return points;
+		return FluentIterable.from(iterableTouches).transform(touchToPointTransforemer).toList();
 	}
 }

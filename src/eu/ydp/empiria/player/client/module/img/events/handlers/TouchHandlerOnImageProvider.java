@@ -1,10 +1,11 @@
 package eu.ydp.empiria.player.client.module.img.events.handlers;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-public class TouchHandlerOnImageProvider {
+public class TouchHandlerOnImageProvider implements Provider<ITouchHandlerOnImageInitializer> {
 
 	@Inject
 	private UserAgentUtil userAgentUtil;
@@ -15,7 +16,8 @@ public class TouchHandlerOnImageProvider {
 	@Inject
 	private TouchHandlersOnImageInitializer touchHandlersOnImageInitializer;
 
-	public ITouchHandlerOnImageInitializer getTouchHandlersOnImageInitializer() {
+	@Override
+	public ITouchHandlerOnImageInitializer get() {
 		return userAgentUtil.isIE() ? pointerHandlersOnImageInitializer : touchHandlersOnImageInitializer;
 	}
 }
