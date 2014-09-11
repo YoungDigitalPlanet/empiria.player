@@ -1,9 +1,15 @@
 package eu.ydp.empiria.player.client.module.texteditor.wrapper;
 
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Inject;
+
 public class TextEditorJSWrapper {
 
+	@Inject
+	private TextEditorOptions options;
+
 	public void convert(String moduleId) {
-		convertNative(moduleId);
+		convertNative(moduleId, options.getOptions());
 	}
 
 	public void setContent(String moduleId, String text) {
@@ -22,16 +28,7 @@ public class TextEditorJSWrapper {
 		unlockNative(moduleId);
 	}
 
-	private native final void convertNative(String moduleId) /*-{
-        var options = {
-            link: false,
-            indent: false,
-            outdent: false,
-            unlink: false,
-            remove: false,
-            source: false,
-            rule: false
-        };
+	private native final void convertNative(String moduleId, JavaScriptObject options) /*-{
         $wnd.$("#" + moduleId + " textarea").jqte(options);
     }-*/;
 
