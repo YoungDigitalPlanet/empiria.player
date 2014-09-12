@@ -31,11 +31,11 @@ import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 import eu.ydp.empiria.player.client.module.img.events.handlers.ITouchHandlerOnImageInitializer;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandlerImpl;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandlerImpl;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandlerImpl;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase implements CanvasMoveEvents {
@@ -149,15 +149,15 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 	}
 
 	private TouchOnImageMoveHandler createTouchOnImageMoveHandler() {
-		return new TouchOnImageMoveHandlerImpl(this);
+		return new TouchOnImageMoveHandler(this);
 	}
 
 	private TouchOnImageEndHandler createTouchOnImageEndHandler() {
-		return new TouchOnImageEndHandlerImpl(this);
+		return new TouchOnImageEndHandler(this);
 	}
 
 	private TouchOnImageStartHandler createTouchOnImageStartHandler() {
-		return new TouchOnImageStartHandlerImpl(this);
+		return new TouchOnImageStartHandler(this);
 	}
 
 	private void addMouseOutHandler(FocusWidget focusCanvas) {

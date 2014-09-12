@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.img.events.handlers;
 
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.mockito.Mock;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerDownHandlerOnImage;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerMoveHandlerOnImage;
@@ -31,40 +31,48 @@ public class PointerHandlersOnImageInitializerTest {
 	private PointerEventsCoordinates pointerEventsCoordinates;
 	@Mock
 	private Widget listenOn;
+	@Mock
+	private TouchHandlerFactory touchHandlerFactory;
 
 	@Test
 	public void shouldAddPointerMoveHandlerOnImage() {
 		// given
 		TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
+		PointerMoveHandlerOnImage pointerMoveHandlerOnImage = mock(PointerMoveHandlerOnImage.class);
+		when(touchHandlerFactory.createPointerMoveHandlerOnImage(touchOnImageMoveHandler)).thenReturn(pointerMoveHandlerOnImage);
 
 		// when
 		testObj.addTouchOnImageMoveHandler(touchOnImageMoveHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(isA(PointerMoveHandlerOnImage.class), eq(PointerMoveEvent.getType()));
+		verify(listenOn).addDomHandler(pointerMoveHandlerOnImage, PointerMoveEvent.getType());
 	}
 
 	@Test
 	public void shouldAddPointerDownHandlerOnImage() {
 		// given
 		TouchOnImageStartHandler touchOnImageStartHandler = mock(TouchOnImageStartHandler.class);
+		PointerDownHandlerOnImage pointerDownHandlerOnImage = mock(PointerDownHandlerOnImage.class);
+		when(touchHandlerFactory.createPointerDownHandlerOnImage(touchOnImageStartHandler)).thenReturn(pointerDownHandlerOnImage);
 
 		// when
 		testObj.addTouchOnImageStartHandler(touchOnImageStartHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(isA(PointerDownHandlerOnImage.class), eq(PointerDownEvent.getType()));
+		verify(listenOn).addDomHandler(pointerDownHandlerOnImage, PointerDownEvent.getType());
 	}
 
 	@Test
 	public void shouldAddPointerUpHandlerOnImage() {
 		// given
 		TouchOnImageEndHandler touchOnImageEndHandler = mock(TouchOnImageEndHandler.class);
+		PointerUpHandlerOnImage pointerUpHandlerOnImage = mock(PointerUpHandlerOnImage.class);
+		when(touchHandlerFactory.createPointerUpHandlerOnImage(touchOnImageEndHandler)).thenReturn(pointerUpHandlerOnImage);
 
 		// when
 		testObj.addTouchOnImageEndHandler(touchOnImageEndHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(isA(PointerUpHandlerOnImage.class), eq(PointerUpEvent.getType()));
+		verify(listenOn).addDomHandler(pointerUpHandlerOnImage, PointerUpEvent.getType());
 	}
 }

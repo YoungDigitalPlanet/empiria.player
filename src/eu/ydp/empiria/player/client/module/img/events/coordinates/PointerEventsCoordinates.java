@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class PointerEventsCoordinates {
 
-	private final Map<Long, Point> pointersPoints = new LinkedHashMap<Long, Point>();
+	private final Map<Integer, Point> pointersPoints = new LinkedHashMap<>();
 
 	public void addEvent(PointerEvent<? extends EventHandler> pointerEvent) {
 		if (isFirstTouch(pointerEvent)) {
@@ -44,6 +44,6 @@ public class PointerEventsCoordinates {
 	}
 
 	private List<Point> valuesAsList() {
-		return new ArrayList<Point>(pointersPoints.values());
+		return new ArrayList<>(pointersPoints.values());
 	}
 }

@@ -8,15 +8,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 
-@RunWith(GwtMockitoTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class PointerEventsCoordinatesTest {
 
 	@InjectMocks

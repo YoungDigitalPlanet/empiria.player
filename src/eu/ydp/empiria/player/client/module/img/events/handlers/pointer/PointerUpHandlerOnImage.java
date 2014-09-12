@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.img.events.handlers.pointer;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
@@ -11,7 +14,8 @@ public class PointerUpHandlerOnImage implements PointerUpHandler {
 
 	private final TouchOnImageEndHandler touchOnImageEndHandler;
 
-	public PointerUpHandlerOnImage(TouchOnImageEndHandler touchOnImageEndHandler, final PointerEventsCoordinates pointerEventsCoordinates) {
+	@Inject
+	public PointerUpHandlerOnImage(@Assisted TouchOnImageEndHandler touchOnImageEndHandler, final PointerEventsCoordinates pointerEventsCoordinates) {
 		this.touchOnImageEndHandler = touchOnImageEndHandler;
 		this.pointerEventsCoordinates = pointerEventsCoordinates;
 	}

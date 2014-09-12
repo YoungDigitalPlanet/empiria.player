@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.img.events.handlers.touch;
 
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.img.events.TouchToImageEvent;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
@@ -12,7 +14,8 @@ public class TouchStartHandlerOnImage implements TouchStartHandler {
 
 	private final TouchOnImageStartHandler touchStartHandler;
 
-	public TouchStartHandlerOnImage(final TouchOnImageStartHandler touchStartHandler, final TouchToImageEvent touchEventsCoordinates) {
+	@Inject
+	public TouchStartHandlerOnImage(@Assisted final TouchOnImageStartHandler touchStartHandler, final TouchToImageEvent touchEventsCoordinates) {
 		this.touchStartHandler = touchStartHandler;
 		this.touchToImageEvent = touchEventsCoordinates;
 	}

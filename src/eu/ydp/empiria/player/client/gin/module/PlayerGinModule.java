@@ -80,6 +80,7 @@ import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.gin.factory.SlideshowPlayerModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
@@ -260,6 +261,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
 		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
+		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
 	}
 
 	@Provides

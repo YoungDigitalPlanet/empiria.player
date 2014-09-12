@@ -6,17 +6,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 import eu.ydp.empiria.player.client.util.position.Point;
 
-@RunWith(GwtMockitoTestRunner.class)
-public class TouchOnImageMoveHandlerImplTest {
+@RunWith(MockitoJUnitRunner.class)
+public class TouchOnImageMoveHandlerTest {
 
 	@InjectMocks
-	private TouchOnImageMoveHandlerImpl testObj;
+	private TouchOnImageMoveHandler testObj;
 	@Mock
 	private CanvasMoveEvents canvasMoveEvents;
 	@Mock

@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.img.events.handlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerDownHandlerOnImage;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerMoveHandlerOnImage;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerUpHandlerOnImage;
@@ -17,23 +17,23 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 public class PointerHandlersOnImageInitializer implements ITouchHandlerOnImageInitializer {
 
 	@Inject
-	private PointerEventsCoordinates pointerEventsCoordinates;
+	private TouchHandlerFactory touchHandlerFactory;
 
 	@Override
 	public void addTouchOnImageMoveHandler(final TouchOnImageMoveHandler touchOnImageMoveHandler, Widget listenOn) {
-		PointerMoveHandlerOnImage touchOnImageMoveHanlder = new PointerMoveHandlerOnImage(touchOnImageMoveHandler, pointerEventsCoordinates);
-		listenOn.addDomHandler(touchOnImageMoveHanlder, PointerMoveEvent.getType());
+		PointerMoveHandlerOnImage pointerOnImageMoveHandlerOnImage = touchHandlerFactory.createPointerMoveHandlerOnImage(touchOnImageMoveHandler);
+		listenOn.addDomHandler(pointerOnImageMoveHandlerOnImage, PointerMoveEvent.getType());
 	}
 
 	@Override
 	public void addTouchOnImageStartHandler(final TouchOnImageStartHandler touchOnImageStartHandler, Widget listenOn) {
-		PointerDownHandlerOnImage pointerDownHandlerOnImage = new PointerDownHandlerOnImage(touchOnImageStartHandler, pointerEventsCoordinates);
+		PointerDownHandlerOnImage pointerDownHandlerOnImage = touchHandlerFactory.createPointerDownHandlerOnImage(touchOnImageStartHandler);
 		listenOn.addDomHandler(pointerDownHandlerOnImage, PointerDownEvent.getType());
 	}
 
 	@Override
 	public void addTouchOnImageEndHandler(final TouchOnImageEndHandler touchOnImageEndHandler, Widget listenOn) {
-		PointerUpHandlerOnImage pointerUpHandlerOnImage = new PointerUpHandlerOnImage(touchOnImageEndHandler, pointerEventsCoordinates);
+		PointerUpHandlerOnImage pointerUpHandlerOnImage = touchHandlerFactory.createPointerUpHandlerOnImage(touchOnImageEndHandler);
 		listenOn.addDomHandler(pointerUpHandlerOnImage, PointerUpEvent.getType());
 	}
 }
