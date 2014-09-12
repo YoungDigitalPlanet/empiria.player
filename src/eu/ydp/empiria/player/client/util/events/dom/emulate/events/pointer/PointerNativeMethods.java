@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 
 public class PointerNativeMethods {
