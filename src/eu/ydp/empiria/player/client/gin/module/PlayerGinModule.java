@@ -95,6 +95,7 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildViewImpl;
@@ -233,6 +234,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(VideoPlayerFactory.class).in(Singleton.class);
 		bind(FileRequest.class).to(StandardFileRequest.class);
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));

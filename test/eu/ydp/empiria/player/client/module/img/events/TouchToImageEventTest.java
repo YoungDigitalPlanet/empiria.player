@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Touch;
@@ -17,20 +19,22 @@ import eu.ydp.empiria.player.client.util.position.Point;
 @RunWith(GwtMockitoTestRunner.class)
 public class TouchToImageEventTest {
 
-	private final TouchToImageEvent testObj = new TouchToImageEvent();
+	@InjectMocks
+	private TouchToImageEvent testObj;
+	@Mock
+	private JsArray<Touch> array;
+	@Mock
+	private TouchEvent<?> touchEvent;
+	@Mock
+	private Touch touch;
 
 	@Test
 	public void shouldReturnTouchOnImageEvent() {
 		// given
-		TouchEvent<?> touchEvent = mock(TouchEvent.class);
-
-		Touch touch = mock(Touch.class);
-
 		int x = 1;
 		int y = 1;
 		when(touch.getClientX()).thenReturn(x);
 		when(touch.getClientY()).thenReturn(y);
-		JsArray<Touch> array = mock(JsArray.class);
 		when(touchEvent.getTouches()).thenReturn(array);
 		when(array.get(0)).thenReturn(touch);
 		when(array.length()).thenReturn(1);

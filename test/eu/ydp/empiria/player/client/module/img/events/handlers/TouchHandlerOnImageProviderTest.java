@@ -8,12 +8,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-@RunWith(GwtMockitoTestRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TouchHandlerOnImageProviderTest {
 
 	@InjectMocks

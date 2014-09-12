@@ -8,13 +8,21 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.util.position.Point;
 
+@RunWith(GwtMockitoTestRunner.class)
 public class TouchOnImageEventTest {
 
-	private final List<Point> coordinatesList = mock(List.class);
-	private final TouchOnImageEvent testObj = new TouchOnImageEvent(coordinatesList);
+	@InjectMocks
+	private TouchOnImageEvent testObj;
+	@Mock
+	private List<Point> coordinatesList;
 
 	@Test
 	public void shouldReturnPoint() {

@@ -3,26 +3,34 @@ package eu.ydp.empiria.player.client.module.img.events.handlers.touch;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.TouchToImageEvent;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 
+@RunWith(GwtMockitoTestRunner.class)
 public class TouchMoveHandlerOnImageTest {
 
-	private final TouchToImageEvent touchToImageEvent = mock(TouchToImageEvent.class);
-	private final TouchOnImageMoveHandler touchOnImageMoveHandler = mock(TouchOnImageMoveHandler.class);
-	private final TouchMoveHandlerOnImage testObj = new TouchMoveHandlerOnImage(touchOnImageMoveHandler, touchToImageEvent);
+	@InjectMocks
+	private TouchMoveHandlerOnImage testObj;
+	@Mock
+	private TouchToImageEvent touchToImageEvent;
+	@Mock
+	private TouchOnImageMoveHandler touchOnImageMoveHandler;
+	@Mock
+	private TouchMoveEvent event;
+	@Mock
+	private TouchOnImageEvent touchOnImageEvent;
 
 	@Test
 	public void shouldRunOnMove() {
 		// given
-		TouchMoveEvent event = mock(TouchMoveEvent.class);
-
-		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
-
 		when(touchToImageEvent.getTouchOnImageEvent(event)).thenReturn(touchOnImageEvent);
 
 		// when

@@ -3,25 +3,36 @@ package eu.ydp.empiria.player.client.module.img.events.handlers.pointer;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 
+@RunWith(GwtMockitoTestRunner.class)
 public class PointerUpHandlerOnImageTest {
 
-	private final PointerEventsCoordinates pointerEventsCoordinates = mock(PointerEventsCoordinates.class);
-	private final TouchOnImageEndHandler touchOnStartHandler = mock(TouchOnImageEndHandler.class);
-	private final PointerUpHandlerOnImage testObj = new PointerUpHandlerOnImage(touchOnStartHandler, pointerEventsCoordinates);
+	@InjectMocks
+	private PointerUpHandlerOnImage testObj;
+	@Mock
+	private PointerEventsCoordinates pointerEventsCoordinates;
+	@Mock
+	private TouchOnImageEndHandler touchOnStartHandler;
+	@Mock
+	private PointerUpEvent event;
+	@Mock
+	private TouchOnImageEvent touchOnImageEvent;
 
 	@Test
 	public void shouldRunOnEnd_ifIsTouchEvent() {
 		// given
-		PointerUpEvent event = mock(PointerUpEvent.class);
 		when(event.isTouchEvent()).thenReturn(true);
 
-		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
 		// when
@@ -36,10 +47,8 @@ public class PointerUpHandlerOnImageTest {
 	@Test
 	public void shouldNotRunOnEnd_ifIsNotTouchEvent() {
 		// given
-		PointerUpEvent event = mock(PointerUpEvent.class);
 		when(event.isTouchEvent()).thenReturn(false);
 
-		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 		when(pointerEventsCoordinates.getTouchOnImageEvent()).thenReturn(touchOnImageEvent);
 
 		// when

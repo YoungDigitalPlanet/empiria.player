@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwtmockito.GwtMockitoTestRunner;
@@ -20,14 +21,13 @@ public class PointerEventsCoordinatesTest {
 
 	@InjectMocks
 	private PointerEventsCoordinates testObj;
-
+	@Mock
 	private PointerEvent<? extends EventHandler> pointerEvent;
 
 	private final long id = 1;
 
 	@Before
 	public void setup() {
-		pointerEvent = mock(PointerEvent.class);
 		when(pointerEvent.getPointerId()).thenReturn(id);
 	}
 

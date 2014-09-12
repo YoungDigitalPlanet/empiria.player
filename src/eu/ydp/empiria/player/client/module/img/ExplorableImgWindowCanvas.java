@@ -229,7 +229,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 	@Override
 	public void onMoveMove(Point point) {
 		int x = point.getX();
-		int y = point.getX();
+		int y = point.getY();
 
 		disableSwype();
 

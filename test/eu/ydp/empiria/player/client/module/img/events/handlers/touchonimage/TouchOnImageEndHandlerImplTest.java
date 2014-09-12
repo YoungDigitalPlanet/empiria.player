@@ -2,26 +2,28 @@ package eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage;
 
 import static org.mockito.Mockito.*;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 
+@RunWith(GwtMockitoTestRunner.class)
 public class TouchOnImageEndHandlerImplTest {
 
+	@InjectMocks
 	private TouchOnImageEndHandlerImpl testObj;
+	@Mock
 	private CanvasMoveEvents canvasMoveEvents;
-
-	@Before
-	public void setUp() {
-		canvasMoveEvents = mock(CanvasMoveEvents.class);
-		testObj = new TouchOnImageEndHandlerImpl(canvasMoveEvents);
-	}
+	@Mock
+	private TouchOnImageEvent touchOnImageEvent;
 
 	@Test
 	public void shouldRunOnMoveEnd() {
 		// given
-		TouchOnImageEvent touchOnImageEvent = mock(TouchOnImageEvent.class);
 
 		// when
 		testObj.onEnd(touchOnImageEvent);
