@@ -17,6 +17,12 @@ public class Point {
 		return yPos;
 	}
 
+	public double distance(Point pt) {
+		int dx = pt.getX() - this.getX();
+		int dy = pt.getY() - this.getY();
+		return Math.sqrt(dx * dx + dy * dy);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

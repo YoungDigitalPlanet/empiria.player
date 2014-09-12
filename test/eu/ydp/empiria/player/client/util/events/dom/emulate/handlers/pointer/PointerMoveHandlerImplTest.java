@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerMoveEvent;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class PointerMoveHandlerImplTest {

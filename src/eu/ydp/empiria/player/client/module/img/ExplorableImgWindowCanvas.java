@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.img;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.ErrorEvent;
 import com.google.gwt.event.dom.client.ErrorHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -15,12 +14,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchMoveHandler;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window.Navigator;
@@ -35,8 +28,17 @@ import eu.ydp.canvasadapter.client.Context2dAdapter;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
+import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
+import eu.ydp.empiria.player.client.module.img.events.handlers.ITouchHandlerOnImageInitializer;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.util.position.Point;
 
-public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
+public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase implements CanvasMoveEvents {
 
 	private static ExplorableCanvasImgContentUiBinder uiBinder = GWT.create(ExplorableCanvasImgContentUiBinder.class);
 
@@ -65,10 +67,13 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 	private final TouchController touchController;
 
+	private final ITouchHandlerOnImageInitializer touchHandlerInitializer;
+
 	public ExplorableImgWindowCanvas() {
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = imageCanvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
+		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().get();
 	}
 
 	@Override
@@ -133,13 +138,26 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 	}
 
 	private void addHandlersToCanvas(FocusWidget focusCanvas) {
-		addTouchStartHandler(focusCanvas);
-		addTouchMoveHandler(focusCanvas);
-		addTouchEndHandler(focusCanvas);
+		touchHandlerInitializer.addTouchOnImageStartHandler(createTouchOnImageStartHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchOnImageMoveHandler(createTouchOnImageMoveHandler(), focusCanvas);
+		touchHandlerInitializer.addTouchOnImageEndHandler(createTouchOnImageEndHandler(), focusCanvas);
+
 		addMouseDownHandler(focusCanvas);
 		addMouseMoveHandler(focusCanvas);
 		addMouseUpHandler(focusCanvas);
 		addMouseOutHandler(focusCanvas);
+	}
+
+	private TouchOnImageMoveHandler createTouchOnImageMoveHandler() {
+		return new TouchOnImageMoveHandler(this);
+	}
+
+	private TouchOnImageEndHandler createTouchOnImageEndHandler() {
+		return new TouchOnImageEndHandler(this);
+	}
+
+	private TouchOnImageStartHandler createTouchOnImageStartHandler() {
+		return new TouchOnImageStartHandler(this);
 	}
 
 	private void addMouseOutHandler(FocusWidget focusCanvas) {
@@ -167,7 +185,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 			@Override
 			public void onMouseMove(MouseMoveEvent event) {
-				onMoveMove(event.getClientX(), event.getClientY());
+				Point point = new Point(event.getClientX(), event.getClientY());
+				onMoveMove(point);
 			}
 		});
 	}
@@ -177,60 +196,23 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 
 			@Override
 			public void onMouseDown(MouseDownEvent event) {
-				onMoveStart(event.getClientX(), event.getClientY());
+				Point point = new Point(event.getClientX(), event.getClientY());
+				onMoveStart(point);
 			}
 		});
 	}
 
-	private void addTouchEndHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchEndHandler(new TouchEndHandler() {
-
-			@Override
-			public void onTouchEnd(TouchEndEvent event) {
-				onMoveEnd();
-				event.preventDefault();
-			}
-		});
-	}
-
-	private void addTouchMoveHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchMoveHandler(new TouchMoveHandler() {
-
-			@Override
-			public void onTouchMove(TouchMoveEvent event) {
-				if (event.getTouches().length() == 1) {
-					onMoveMove(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY());
-				} else if (event.getTouches().length() == 2) {
-					onMoveScale(event.getTouches().get(0).getClientX(), event.getTouches().get(0).getClientY(), event.getTouches().get(1).getClientX(), event
-							.getTouches().get(1).getClientY());
-				}
-				event.preventDefault();
-			}
-
-		});
-	}
-
-	private void addTouchStartHandler(FocusWidget focusCanvas) {
-		focusCanvas.addTouchStartHandler(new TouchStartHandler() {
-
-			@Override
-			public void onTouchStart(TouchStartEvent event) {
-				Touch firstTouch = event.getTouches().get(0);
-				onMoveStart(firstTouch.getClientX(), firstTouch.getClientY());
-				event.preventDefault();
-			}
-		});
-	}
-
-	private void onMoveStart(int x, int y) {// NOPMD
+	@Override
+	public void onMoveStart(Point point) {// NOPMD
 		disableSwype();
 		moving = true;
-		prevX = x;
-		prevY = y;
+		prevX = point.getX();
+		prevY = point.getY();
 	}
 
-	private void onMoveScale(int x1, int y1, int x2, int y2) {// NOPMD
-		double currDistance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	@Override
+	public void onMoveScale(Point firstFinger, Point secondFinger) {// NOPMD
+		double currDistance = firstFinger.distance(secondFinger);
 
 		if (prevDistance != -1) {
 			scaleBy(currDistance / prevDistance);
@@ -238,19 +220,17 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 
 		prevDistance = currDistance;
-
-	}
-
-	private boolean isZoomed() {
-		return getScale() > getScaleMin();
 	}
 
 	private void disableSwype() {
-		touchController.setTouchReservation(isZoomed());
+		touchController.setTouchReservation(true);
 	}
 
-	@SuppressWarnings("PMD")
-	private void onMoveMove(int x, int y) {
+	@Override
+	public void onMoveMove(Point point) {
+		int x = point.getX();
+		int y = point.getY();
+
 		disableSwype();
 
 		if (moving) {
@@ -271,7 +251,8 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase {
 		}
 	}
 
-	private void onMoveEnd() {
+	@Override
+	public void onMoveEnd() {
 		moving = false;
 		prevDistance = -1;
 	}

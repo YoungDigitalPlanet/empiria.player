@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerUpEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.handlers.PointerUpHandler;
 
 public class PointerUpHandlerImpl implements PointerUpHandler {
 
