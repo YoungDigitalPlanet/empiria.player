@@ -1010,6 +1010,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-text-choice-popup-wrong")
 	public String QP_TEXT_CHOICE_POPUP_WRONG();
 
+	@DefaultStringValue("qp-text-editor")
+	public String QP_TEXT_EDITOR();
+
+	@DefaultStringValue("qp-text-editor-locked")
+	public String QP_TEXT_EDITOR_LOCKED();
+
 	@DefaultStringValue("qp-text-inline")
 	public String QP_TEXT_INLINE();
 

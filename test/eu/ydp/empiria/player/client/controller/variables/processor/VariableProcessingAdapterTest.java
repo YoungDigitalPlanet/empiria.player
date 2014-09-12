@@ -1,14 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
-import com.google.common.collect.ImmutableMap;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFacade;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import static org.mockito.Mockito.*;
+
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 
-import static org.mockito.Mockito.*;
+import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFacade;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VariableProcessingAdapterTest {
@@ -41,9 +42,7 @@ public class VariableProcessingAdapterTest {
 	private Map<String, Response> responses;
 	@Mock
 	private Map<String, Outcome> outcomes;
-	@Mock
-	private IUniqueModule sender;
-	
+
 	private final ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
 
 	@Before
@@ -60,10 +59,10 @@ public class VariableProcessingAdapterTest {
 		when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
 		GlobalVariables globalVariables = mock(GlobalVariables.class);
-		when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responses, sender)).thenReturn(globalVariables);
+		when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responses)).thenReturn(globalVariables);
 
 		// when
-		testObj.processResponseVariables(responses, outcomes, processingMode, sender);
+		testObj.processResponseVariables(responses, outcomes, processingMode);
 
 		// then
 		verify(modulesVariablesProcessor).processVariablesForResponses(responses, processingMode);
@@ -73,7 +72,7 @@ public class VariableProcessingAdapterTest {
 	@Test
 	public void shouldUpdateAnswerEvaluationProvider() throws Exception {
 		// when
-		testObj.processResponseVariables(responses, outcomes, processingMode, sender);
+		testObj.processResponseVariables(responses, outcomes, processingMode);
 
 		// then
 		verify(answerEvaluationProvider).updateModulesProcessingResults(modulesProcessingResults);
