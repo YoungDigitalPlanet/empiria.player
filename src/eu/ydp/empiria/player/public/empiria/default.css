@@ -6,3 +6,7 @@
   display: inline-block;
   height: 1px;
 }
+
+.jqte ol, .jqte ul {
+    padding-left: 40px;
+}
