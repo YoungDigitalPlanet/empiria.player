@@ -15,7 +15,7 @@ public class PointerNativeMethods {
 		return elem.isPrimary;
 	}-*/;
 
-	public native Long getPointerId(NativeEvent elem) /*-{
+	public native Integer getPointerId(NativeEvent elem) /*-{
 		return elem.pointerId;
 	}-*/;
 }

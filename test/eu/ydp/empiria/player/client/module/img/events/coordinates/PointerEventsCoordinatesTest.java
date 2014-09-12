@@ -24,7 +24,7 @@ public class PointerEventsCoordinatesTest {
 	@Mock
 	private PointerEvent<? extends EventHandler> pointerEvent;
 
-	private final long id = 1;
+	private final int id = 1;
 
 	@Before
 	public void setup() {

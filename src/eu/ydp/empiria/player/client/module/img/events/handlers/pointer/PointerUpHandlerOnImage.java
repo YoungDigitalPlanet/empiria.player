@@ -9,10 +9,10 @@ public class PointerUpHandlerOnImage implements PointerUpHandler {
 
 	private final PointerEventsCoordinates pointerEventsCoordinates;
 
-	private final TouchOnImageEndHandler touchOnEndHandler;
+	private final TouchOnImageEndHandler touchOnImageEndHandler;
 
-	public PointerUpHandlerOnImage(TouchOnImageEndHandler touchOnEndHandler, final PointerEventsCoordinates pointerEventsCoordinates) {
-		this.touchOnEndHandler = touchOnEndHandler;
+	public PointerUpHandlerOnImage(TouchOnImageEndHandler touchOnImageEndHandler, final PointerEventsCoordinates pointerEventsCoordinates) {
+		this.touchOnImageEndHandler = touchOnImageEndHandler;
 		this.pointerEventsCoordinates = pointerEventsCoordinates;
 	}
 
@@ -21,8 +21,7 @@ public class PointerUpHandlerOnImage implements PointerUpHandler {
 		if (event.isTouchEvent()) {
 			event.preventDefault();
 			pointerEventsCoordinates.removeEvent(event);
-			touchOnEndHandler.onEnd(pointerEventsCoordinates.getTouchOnImageEvent());
+			touchOnImageEndHandler.onEnd(pointerEventsCoordinates.getTouchOnImageEvent());
 		}
 	}
-
 }

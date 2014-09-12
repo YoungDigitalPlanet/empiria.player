@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerDownHandlerOnImage;
@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.Point
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class PointerHandlersOnImageInitializerTest {
 
 	@InjectMocks
