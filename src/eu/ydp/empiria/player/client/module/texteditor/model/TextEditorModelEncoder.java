@@ -14,7 +14,8 @@ public class TextEditorModelEncoder {
 
 	public TextEditorModel decodeModel(JSONArray newState) {
 		String content = newState.get(0)
-								 .toString();
+								 .isString()
+								 .stringValue();
 
 		return new TextEditorModel(content);
 	}
