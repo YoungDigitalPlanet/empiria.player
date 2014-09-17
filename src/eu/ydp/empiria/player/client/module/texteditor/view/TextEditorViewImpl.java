@@ -41,4 +41,9 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 	public void unlock() {
 		mainPanel.removeStyleName(styleNameConstants.QP_TEXT_EDITOR_LOCKED());
 	}
+
+	@Override
+	public void enablePreviewMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+	}
 }
