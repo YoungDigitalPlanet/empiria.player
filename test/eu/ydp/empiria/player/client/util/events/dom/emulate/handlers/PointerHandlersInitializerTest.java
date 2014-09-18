@@ -11,15 +11,15 @@ import org.mockito.Mock;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerDownEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerDownHandlerImpl;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerMoveHandlerImpl;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerUpHandlerImpl;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerDownEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerMoveEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.iepointer.events.PointerUpEvent;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class PointerHandlersInitializerTest {

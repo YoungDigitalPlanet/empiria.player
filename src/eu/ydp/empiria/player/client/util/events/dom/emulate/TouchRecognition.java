@@ -156,8 +156,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		return new TouchOnMoveHandler() {
 
 			@Override
-			public void onMove(NativeEvent nativeEvent) {
-				touchMove(nativeEvent);
+			public void onMove(NativeEvent event) {
+				touchMove(event);
 
 			}
 		};
@@ -167,8 +167,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		return new TouchOnEndHandler() {
 
 			@Override
-			public void onEnd(NativeEvent nativeEvent) {
-				touchEnd(nativeEvent);
+			public void onEnd(NativeEvent event) {
+				touchEnd(event);
 			}
 		};
 	}
@@ -177,8 +177,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		return new TouchOnStartHandler() {
 
 			@Override
-			public void onStart(NativeEvent nativeEvent) {
-				touchStart(nativeEvent);
+			public void onStart(NativeEvent event) {
+				touchStart(event);
 			}
 		};
 	}
@@ -187,8 +187,8 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
 		return new TouchOnCancelHandler() {
 
 			@Override
-			public void onCancel(NativeEvent nativeEvent) {
-				touchCancel(nativeEvent);
+			public void onCancel(NativeEvent event) {
+				touchCancel(event);
 			}
 		};
 	}
