@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONArray;
@@ -11,7 +8,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
@@ -20,25 +16,20 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.module.WorkModeClient;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
-public class ItemBody implements WidgetWorkflowListener {
+import java.util.ArrayList;
+import java.util.List;
 
-	public List<IModule> modules;
+public class ItemBody implements WidgetWorkflowListener, WorkModeClient {
+
+	protected List<IModule> modules;
 
 	protected ParenthoodManager parenthood;
 
@@ -145,12 +136,23 @@ public class ItemBody implements WidgetWorkflowListener {
 		}
 	}
 
+	@Override
 	public void enablePreviewMode() {
 		for (IModule currModule : modules) {
-			if (currModule instanceof WorkModeClient) {
-				((WorkModeClient) currModule).enablePreviewMode();
+			if (currModule instanceof WorkModePreviewClient) {
+				((WorkModePreviewClient) currModule).enablePreviewMode();
 			}
 		}
+	}
+
+	@Override
+	public void enableTestMode() {
+
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+
 	}
 
 	public void close() {
@@ -167,7 +169,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	/**
 	 * Checks whether the item body contains at least one interactive module
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean hasInteractiveModules() {
@@ -235,7 +237,8 @@ public class ItemBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof IGroup) {
 				lastGroup = (IGroup) currModule;
-				if (lastGroup.getGroupIdentifier().equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
+				if (lastGroup.getGroupIdentifier()
+							 .equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
 					return lastGroup;
 				}
 			}
@@ -281,13 +284,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-		var socket = {};
-		var instance = this;
-		socket.getModuleSockets = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-		}
-		return socket;
-	}-*/;
+        var socket = {};
+        var instance = this;
+        socket.getModuleSockets = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+        }
+        return socket;
+    }-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();

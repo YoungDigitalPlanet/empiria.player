@@ -8,7 +8,7 @@ public class PlayerWorkModeService {
 		return currentWorkMode;
 	}
 
-	public void setCurrentWorkMode(PlayerWorkMode currentWorkMode) {
+	public void updateWorkMode(PlayerWorkMode currentWorkMode) {
 		this.currentWorkMode = currentWorkMode;
 	}
 }
