@@ -2,15 +2,17 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,6 +91,6 @@ public class ExplanationEntrySoundControllerTest {
 		// then
 		InOrder inOrder = inOrder(hideNativeMediaControlsManager, mediaWrapperController);
 		inOrder.verify(hideNativeMediaControlsManager).addToDocumentAndHideControls(mediaWrapper);
-		inOrder.verify(mediaWrapperController).play(mediaWrapper);
+		inOrder.verify(mediaWrapperController).stopAndPlay(mediaWrapper);
 	}
 }

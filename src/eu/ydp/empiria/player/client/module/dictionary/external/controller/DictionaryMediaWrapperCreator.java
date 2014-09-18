@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-public class MediaWrapperCreator {
+public class DictionaryMediaWrapperCreator {
 
 	@Inject
 	private MimeSourceProvider mimeSourceProvider;

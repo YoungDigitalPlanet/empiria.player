@@ -8,8 +8,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.MimeUtil;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 
@@ -22,7 +22,7 @@ public class SoundJsWrapper {
 	@Inject
 	private MediaWrapperController mediaWrapperController;
 
-	private final Map<String, MediaWrapper> wrappers = new HashMap<String, MediaWrapper>();
+	private final Map<String, MediaWrapper<Widget>> wrappers = new HashMap<String, MediaWrapper<Widget>>();
 
 	public SoundJsWrapper() {
 		nativeInit();
@@ -44,12 +44,7 @@ public class SoundJsWrapper {
 			Map<String, String> sourcesWithTypes = Maps.newHashMap();
 			sourcesWithTypes.put(arg, mimeUtil.getMimeTypeFromExtension(arg));
 
-			mediaWrapperCreator.createMediaWrapper(arg, sourcesWithTypes, new CallbackRecevier<MediaWrapper<Widget>>() {
-				@Override
-				public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
-					wrappers.put(arg, wrapper);
-				}
-			});
+			createMediaWrapper(arg, sourcesWithTypes);
 		}
 	}
 
@@ -57,22 +52,35 @@ public class SoundJsWrapper {
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();
 		sourcesWithTypes.put(arg, mimeUtil.getMimeTypeFromExtension(arg));
 
-		MediaWrapper wrapper = wrappers.get(arg);
+		MediaWrapper<Widget> wrapper = wrappers.get(arg);
 
 		if (wrapper != null) {
 			playMediaWrapper(wrapper);
 		} else {
-			mediaWrapperCreator.createMediaWrapper(arg, sourcesWithTypes, new CallbackRecevier<MediaWrapper<Widget>>() {
-				@Override
-				public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
-					wrappers.put(arg, wrapper);
-					playMediaWrapper(wrapper);
-				}
-			});
+			createMediaWrapperAndPlay(arg, sourcesWithTypes);
 		}
 	}
 
+	private void createMediaWrapper(final String arg, Map<String, String> sourcesWithTypes) {
+		mediaWrapperCreator.createMediaWrapper(arg, sourcesWithTypes, new CallbackRecevier<MediaWrapper<Widget>>() {
+			@Override
+			public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
+				wrappers.put(arg, wrapper);
+			}
+		});
+	}
+
+	private void createMediaWrapperAndPlay(final String arg, Map<String, String> sourcesWithTypes) {
+		mediaWrapperCreator.createMediaWrapper(arg, sourcesWithTypes, new CallbackRecevier<MediaWrapper<Widget>>() {
+			@Override
+			public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
+				wrappers.put(arg, wrapper);
+				playMediaWrapper(wrapper);
+			}
+		});
+	}
+
 	private void playMediaWrapper(MediaWrapper<Widget> wrapper) {
-		mediaWrapperController.play(wrapper);
+		mediaWrapperController.stopAndPlay(wrapper);
 	}
 }

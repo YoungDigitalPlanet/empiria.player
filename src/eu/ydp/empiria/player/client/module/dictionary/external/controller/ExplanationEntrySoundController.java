@@ -2,12 +2,13 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -38,7 +39,7 @@ public class ExplanationEntrySoundController {
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
 				hideNativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
-				mediaWrapperController.play(mediaWrapper);
+				mediaWrapperController.stopAndPlay(mediaWrapper);
 			}
 		}));
 	}

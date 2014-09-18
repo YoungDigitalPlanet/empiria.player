@@ -1,11 +1,11 @@
-package eu.ydp.empiria.player.client.module.dictionary;
+package eu.ydp.empiria.player.client.module.media;
 
-import com.google.gwt.user.client.ui.Widget;
-import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,12 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.List;
+import com.google.gwt.user.client.ui.Widget;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MediaWrapperControllerTest {
@@ -42,6 +41,33 @@ public class MediaWrapperControllerTest {
 		testObj.play(mediaWrapper);
 
 		// then
+		verifyMediaEvent(MediaEventTypes.PLAY, mediaWrapper);
+	}
+
+	@Test
+	public void shouldStop() {
+		// when
+		testObj.stop(mediaWrapper);
+
+		// then
+		verifyMediaEvent(MediaEventTypes.STOP, mediaWrapper);
+	}
+
+	@Test
+	public void shouldPause() {
+		// when
+		testObj.pause(mediaWrapper);
+
+		// then
+		verifyMediaEvent(MediaEventTypes.PAUSE, mediaWrapper);
+	}
+
+	@Test
+	public void shouldStopAndPlay() {
+		// when
+		testObj.stopAndPlay(mediaWrapper);
+
+		// then
 		verify(eventsBus, times(2)).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
 
 		List<MediaEvent> calledMediaEvents = mediaEventCaptor.getAllValues();
@@ -52,16 +78,10 @@ public class MediaWrapperControllerTest {
 		assertMediaEvent(calledMediaEvent2, MediaEventTypes.PLAY, mediaWrapper);
 	}
 
-	@Test
-	public void shouldStop() {
-		// when
-		testObj.stop(mediaWrapper);
+	private void verifyMediaEvent(MediaEventTypes assumedEventType, MediaWrapper assumeMediaWrapper) {
+		verify(eventsBus).fireEventFromSource(mediaEventCaptor.capture(), eq(assumeMediaWrapper));
 
-		// then
-		verify(eventsBus).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
-
-		MediaEvent event = mediaEventCaptor.getValue();
-		assertMediaEvent(event, MediaEventTypes.PAUSE, mediaWrapper);
+		assertMediaEvent(mediaEventCaptor.getValue(), assumedEventType, assumeMediaWrapper);
 	}
 
 	private void assertMediaEvent(MediaEvent mediaEvent, MediaEventTypes assumedType, MediaWrapper<Widget> assumedMediaWrapper) {
