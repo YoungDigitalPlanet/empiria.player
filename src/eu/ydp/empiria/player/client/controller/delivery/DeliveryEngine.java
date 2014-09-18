@@ -1,12 +1,25 @@
 package eu.ydp.empiria.player.client.controller.delivery;
 
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
-import eu.ydp.empiria.player.client.controller.communication.*;
+import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
+import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
+import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
+import eu.ydp.empiria.player.client.controller.communication.PageData;
+import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
+import eu.ydp.empiria.player.client.controller.communication.PageReference;
+import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManagerMode;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -24,9 +37,29 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusEx
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.*;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.NextPageButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PageSwitchModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.PrevPageButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ReportModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.controller.extensions.types.*;
+import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentFooterViewExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.AssessmentHeaderViewExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowCommandsSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.ModuleHandlerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.PageInterferenceSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
+import eu.ydp.empiria.player.client.controller.extensions.types.TutorExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowRequestProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -55,8 +88,6 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerViewCarrier;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
-
-import java.util.List;
 
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
@@ -89,10 +120,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
-	                      EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
-	                      SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-	                      ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
-	                      ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil) {
+			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
+			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
+			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
+			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -268,6 +299,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getVideoModule(), ModuleTagName.VIDEO, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDictionaryModule(), ModuleTagName.DICTIONARY, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEditorModule(), ModuleTagName.OPEN_QUESTION, false));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTestPageSubmitButtonModule(), ModuleTagName.TEST_PAGE_SUBMIT, false));
 		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(new ReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
