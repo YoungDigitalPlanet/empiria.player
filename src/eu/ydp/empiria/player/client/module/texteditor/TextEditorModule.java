@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresen
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class TextEditorModule extends SimpleModuleBase implements IStateful, IUniqueModule, IActivity, ILifecycleModule {
+public class TextEditorModule extends SimpleModuleBase implements WorkModeClient, IStateful, IUniqueModule, IActivity, ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
 	private final TextEditorModelEncoder textEditorModelEncoder;
@@ -64,6 +64,11 @@ public class TextEditorModule extends SimpleModuleBase implements IStateful, IUn
 	@Override
 	public void showCorrectAnswers(boolean show) {
 		lock(show);
+	}
+
+	@Override
+	public void enablePreviewMode() {
+		presenter.enablePreviewMode();
 	}
 
 	@Override

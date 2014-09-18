@@ -8,4 +8,6 @@ public interface TextEditorView extends IsWidget {
 	void unlock();
 
 	void init();
+
+	void enablePreviewMode();
 }

@@ -106,4 +106,14 @@ public class TextEditorPresenterTest {
 		// then
 		assertThat(actual).isEqualTo(widget);
 	}
+
+	@Test
+	public void shouldLockViewAndWrapperInPreviewMode() {
+		// when
+		testObj.enablePreviewMode();
+
+		// then
+		verify(textEditorJSWrapper).lock(MODULE_ID);
+		verify(view).enablePreviewMode();
+	}
 }

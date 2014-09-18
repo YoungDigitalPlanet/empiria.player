@@ -54,6 +54,11 @@ public class TextEditorPresenter {
 		view.unlock();
 	}
 
+	public void enablePreviewMode() {
+		textEditorJSWrapper.lock(moduleId);
+		view.enablePreviewMode();
+	}
+
 	public Widget getView() {
 		return view.asWidget();
 	}

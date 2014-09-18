@@ -139,4 +139,13 @@ public class TextEditorModuleTest {
 		// then
 		verify(presenter).setTextEditorModel(emptyTextEditorModel);
 	}
+
+	@Test
+	public void shouldEnablePreviewMode() {
+		// when
+		testObj.enablePreviewMode();
+
+		// then
+		verify(presenter).enablePreviewMode();
+	}
 }
