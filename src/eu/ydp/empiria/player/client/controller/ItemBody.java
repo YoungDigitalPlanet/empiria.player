@@ -20,14 +20,13 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
-import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBody implements WidgetWorkflowListener, WorkModeClient {
+public class ItemBody implements WidgetWorkflowListener {
 
 	protected List<IModule> modules;
 
@@ -134,25 +133,6 @@ public class ItemBody implements WidgetWorkflowListener, WorkModeClient {
 				((ILifecycleModule) currModule).onStart();
 			}
 		}
-	}
-
-	@Override
-	public void enablePreviewMode() {
-		for (IModule currModule : modules) {
-			if (currModule instanceof WorkModePreviewClient) {
-				((WorkModePreviewClient) currModule).enablePreviewMode();
-			}
-		}
-	}
-
-	@Override
-	public void enableTestMode() {
-
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-
 	}
 
 	public void close() {
@@ -325,5 +305,11 @@ public class ItemBody implements WidgetWorkflowListener, WorkModeClient {
 
 	public ParenthoodManager getParenthood() {
 		return parenthood;
+	}
+
+	public void switchWorkMode(WorkModeSwitcher workModeSwitcher) {
+		for (IModule module : modules) {
+			workModeSwitcher.enable(module);
+		}
 	}
 }

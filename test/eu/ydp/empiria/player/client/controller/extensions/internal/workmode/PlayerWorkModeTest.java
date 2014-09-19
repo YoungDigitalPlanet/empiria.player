@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
+import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import static org.mockito.Mockito.*;
 @RunWith(JUnitParamsRunner.class)
 public class PlayerWorkModeTest {
 
-	private WorkModeClient workModeClient = mock(WorkModeClient.class);
+	private IModule module = mock(IModule.class, withSettings().extraInterfaces(WorkModeClient.class));
 
 	@Test
 	@Parameters(method = "validTransitions")
@@ -62,47 +64,51 @@ public class PlayerWorkModeTest {
 	public void shouldDoNothingOnFullMode() {
 		// given
 		PlayerWorkMode testObj = FULL;
+		WorkModeSwitcher workModeSwitcher = testObj.getWorkModeSwitcher();
 
 		// when
-		testObj.changeWorkMode(workModeClient);
+		workModeSwitcher.enable(module);
 
 		// then
-		verifyZeroInteractions(workModeClient);
+		verifyZeroInteractions(module);
 	}
 
 	@Test
 	public void shouldNotifyClientOnPreviewMode() {
 		// given
 		PlayerWorkMode testObj = PREVIEW;
+		WorkModeSwitcher workModeSwitcher = testObj.getWorkModeSwitcher();
 
 		// when
-		testObj.changeWorkMode(workModeClient);
+		workModeSwitcher.enable(module);
 
 		// then
-		verify(workModeClient).enablePreviewMode();
+		verify((WorkModeClient) module).enablePreviewMode();
 	}
 
 	@Test
 	public void shouldNotifyClientOnTestMode() {
 		// given
 		PlayerWorkMode testObj = TEST;
+		WorkModeSwitcher workModeSwitcher = testObj.getWorkModeSwitcher();
 
 		// when
-		testObj.changeWorkMode(workModeClient);
+		workModeSwitcher.enable(module);
 
 		// then
-		verify(workModeClient).enableTestMode();
+		verify((WorkModeClient) module).enableTestMode();
 	}
 
 	@Test
 	public void shouldNotifyClientOnTestSubmittedMode() {
 		// given
 		PlayerWorkMode testObj = TEST_SUBMITTED;
+		WorkModeSwitcher workModeSwitcher = testObj.getWorkModeSwitcher();
 
 		// when
-		testObj.changeWorkMode(workModeClient);
+		workModeSwitcher.enable(module);
 
 		// then
-		verify(workModeClient).enableTestSubmittedMode();
+		verify((WorkModeClient) module).enableTestSubmittedMode();
 	}
 }

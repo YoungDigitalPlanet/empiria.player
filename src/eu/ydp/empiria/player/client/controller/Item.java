@@ -35,6 +35,7 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 import java.util.Map;
@@ -297,7 +298,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private void activateCorrectWorkMode() {
 		PlayerWorkMode workMode = playerWorkModeService.getCurrentWorkMode();
-		workMode.changeWorkMode(itemBody);
+		WorkModeSwitcher workModeSwitcher = workMode.getWorkModeSwitcher();
+		itemBody.switchWorkMode(workModeSwitcher);
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {
