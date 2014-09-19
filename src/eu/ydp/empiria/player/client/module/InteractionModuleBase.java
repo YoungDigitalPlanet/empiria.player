@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -15,7 +16,7 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
 
-public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModeClient, IIgnored {
+public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, IIgnored {
 
 	private InteractionEventsListener interactionEventsListener;
 	private ModuleSocket moduleSocket;
