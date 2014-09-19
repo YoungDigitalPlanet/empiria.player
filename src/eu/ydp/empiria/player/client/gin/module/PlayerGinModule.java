@@ -62,6 +62,7 @@ import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
@@ -80,6 +81,7 @@ import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.gin.factory.SlideshowPlayerModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
@@ -95,6 +97,7 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildViewImpl;
@@ -233,6 +236,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(VideoPlayerFactory.class).in(Singleton.class);
 		bind(FileRequest.class).to(StandardFileRequest.class);
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+		bind(PointerEventsCoordinates.class).in(Singleton.class);
+		bind(IgnoredModules.class).in(Singleton.class);
+
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
 		install(new GinFactoryModuleBuilder().build(PageScopeFactory.class));
@@ -258,6 +264,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
 		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
+		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
 	}
 
 	@Provides

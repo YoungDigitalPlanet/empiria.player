@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Maps.filterEntries;
-import static com.google.common.collect.Maps.transformEntries;
+import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Maps.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -35,6 +33,9 @@ public class ResultVariablesConverter {
 	@Inject
 	private ExpressionBeanResultsToResultVariableTransformation expressionBeanToResultVariableTransformation;
 
+	@Inject
+	private IgnoredModules ignoredModules;
+
 	public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = combineToResponseResultMap(modulesProcessingResults, responses);
 
@@ -59,8 +60,13 @@ public class ResultVariablesConverter {
 	private Map<Response, DtoModuleProcessingResult> combineToResponseResultMap(Map<String, DtoModuleProcessingResult> modulesProcessingResults,
 			Map<String, Response> responses) {
 		Map<Response, DtoModuleProcessingResult> combined = Maps.newHashMap();
-		for (String id : responses.keySet()) {
-			combined.put(responses.get(id), modulesProcessingResults.get(id));
+
+		for (Map.Entry<String, Response> entry : responses.entrySet()) {
+			String id = entry.getKey();
+			if (!ignoredModules.isIgnored(id)) {
+				Response responseValue = entry.getValue();
+				combined.put(responseValue, modulesProcessingResults.get(id));
+			}
 		}
 		return combined;
 	}
