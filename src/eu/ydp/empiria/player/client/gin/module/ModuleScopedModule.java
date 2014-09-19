@@ -66,8 +66,6 @@ import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
-import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitPresenter;
-import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
@@ -117,7 +115,6 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindVideoModule();
 		bindDictionary();
 		bindTextEditor();
-		bindTestPageSubmitModule();
 	}
 
 	private void bindTextEditor() {
@@ -135,13 +132,6 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindModuleScoped(DictionaryButtonView.class, new TypeLiteral<ModuleScopedProvider<DictionaryButtonView>>() {
 		});
 		bindModuleScoped(DictionaryPopupView.class, new TypeLiteral<ModuleScopedProvider<DictionaryPopupView>>() {
-		});
-	}
-
-	private void bindTestPageSubmitModule() {
-		bindModuleScoped(TestPageSubmitPresenter.class, new TypeLiteral<ModuleScopedProvider<TestPageSubmitPresenter>>() {
-		});
-		bindModuleScoped(TestPageSubmitView.class, new TypeLiteral<ModuleScopedProvider<TestPageSubmitView>>() {
 		});
 	}
 

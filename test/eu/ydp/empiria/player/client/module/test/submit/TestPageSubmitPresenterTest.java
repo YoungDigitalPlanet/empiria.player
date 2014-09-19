@@ -49,7 +49,6 @@ public class TestPageSubmitPresenterTest {
 	public void shouldChangePage() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
-		testObj.bindUi();
 		verify(testPageSubmitButtonView).addHandler(clickCaptor.capture());
 
 		// when
@@ -64,7 +63,6 @@ public class TestPageSubmitPresenterTest {
 	public void shouldNotChangePage_whenLocked() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
-		testObj.bindUi();
 		verify(testPageSubmitButtonView).addHandler(clickCaptor.capture());
 		testObj.lock();
 

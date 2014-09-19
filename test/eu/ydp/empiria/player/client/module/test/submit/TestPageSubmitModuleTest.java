@@ -10,11 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-
-import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitModule;
-import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitPresenter;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestPageSubmitModuleTest {
@@ -39,18 +35,6 @@ public class TestPageSubmitModuleTest {
 	}
 
 	@Test
-	public void shouldBindPresenterOnInit() {
-		// given
-		Element element = mock(Element.class);
-
-		// when
-		testObj.initModule(element);
-
-		// then
-		verify(presenter).bindUi();
-	}
-
-	@Test
 	public void shouldLockPresenter() {
 		// given
 
@@ -70,5 +54,35 @@ public class TestPageSubmitModuleTest {
 
 		// then
 		verify(presenter).unlock();
+	}
+
+	@Test
+	public void shouldEnableTestMode() {
+		// given
+
+		// when
+		testObj.enableTestMode();
+		// then
+		verify(presenter).enableTestMode();
+	}
+
+	@Test
+	public void shouldEnableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.enableTestSubmittedMode();
+		// then
+		verify(presenter).enableTestSubmittedMode();
+	}
+
+	@Test
+	public void shouldEnablePreviewMode() {
+		// given
+
+		// when
+		testObj.enablePreviewMode();
+		// then
+		verify(presenter).enablePreviewMode();
 	}
 }

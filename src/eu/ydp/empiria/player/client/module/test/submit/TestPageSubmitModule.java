@@ -23,13 +23,8 @@ public class TestPageSubmitModule extends SimpleModuleBase implements ILockable,
 	}
 
 	@Override
-	protected void initModule(Element element) {
-		presenter.bindUi();
-	}
-
-	@Override
-	public void lock(boolean lo) {
-		if (lo) {
+	public void lock(boolean lock) {
+		if (lock) {
 			presenter.lock();
 		} else {
 			presenter.unlock();
@@ -49,5 +44,9 @@ public class TestPageSubmitModule extends SimpleModuleBase implements ILockable,
 	@Override
 	public void enablePreviewMode() {
 		presenter.enablePreviewMode();
+	}
+
+	@Override
+	protected void initModule(Element element) {
 	}
 }
