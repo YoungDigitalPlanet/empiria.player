@@ -995,14 +995,14 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-test-submit-button")
 	public String QP_TEST_SUBMIT_BUTTON();
 
-	@DefaultStringValue("qp-test-submit-button-disabled")
-	public String QP_TEST_SUBMIT_BUTTON_DISABLED();
+	@DefaultStringValue("qp-test-submit-disabled")
+	public String QP_TEST_SUBMIT_DISABLED();
 
 	@DefaultStringValue("qp-test-submit-submitted-mode")
-	public String QP_TEST_SUBMIT_BUTTON_SUBMITTED_MODE();
+	public String QP_TEST_SUBMIT_SUBMITTED_MODE();
 
 	@DefaultStringValue("qp-test-submit-preview-mode")
-	public String QP_TEST_SUBMIT_BUTTON_PREVIEW_MODE();
+	public String QP_TEST_SUBMIT_PREVIEW_MODE();
 
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();
