@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.testmode.submit;
+package eu.ydp.empiria.player.client.module.test.submit;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -20,13 +20,12 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.testmode.submit.view.TestPageSubmitView;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestPageSubmitPresenterTest {
 
-	// @InjectMocks
 	private TestPageSubmitPresenter testObj;
 
 	@Mock
@@ -62,6 +61,22 @@ public class TestPageSubmitPresenterTest {
 	}
 
 	@Test
+	public void shouldNotChangePage_whenLocked() {
+		// given
+		NativeEvent event = mock(NativeEvent.class);
+		testObj.bindUi();
+		verify(testPageSubmitButtonView).addHandler(clickCaptor.capture());
+		testObj.lock();
+
+		// when
+		Command cmd = clickCaptor.getValue();
+		cmd.execute(event);
+
+		// then
+		verify(flowRequestInvoker, never()).invokeRequest(Mockito.any(FlowRequest.NavigateNextItem.class));
+	}
+
+	@Test
 	public void shouldLockButton() {
 		// given
 
@@ -94,5 +109,41 @@ public class TestPageSubmitPresenterTest {
 
 		// then
 		assertThat(result, is(widget));
+	}
+
+	@Test
+	public void shouldEnableTestMode() {
+		// given
+
+		// when
+		testObj.enableTestMode();
+
+		// then
+		verify(testPageSubmitButtonView).unlock();
+		verify(testPageSubmitButtonView).enableTestMode();
+	}
+
+	@Test
+	public void shouldEnableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.enableTestSubmittedMode();
+
+		// then
+		verify(testPageSubmitButtonView).lock();
+		verify(testPageSubmitButtonView).enableTestSubmittedMode();
+	}
+
+	@Test
+	public void shouldEnablePreviewModeMode() {
+		// given
+
+		// when
+		testObj.enablePreviewMode();
+
+		// then
+		verify(testPageSubmitButtonView).lock();
+		verify(testPageSubmitButtonView).enablePreviewMode();
 	}
 }

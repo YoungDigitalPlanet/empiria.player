@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.testmode.submit.view;
+package eu.ydp.empiria.player.client.module.test.submit.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -39,11 +39,26 @@ public class TestPageSubmitViewImpl extends Composite implements TestPageSubmitV
 
 	@Override
 	public void lock() {
-		this.addStyleName(styleNameConstants.QP_TEST_SUBMIT_DISABLED());
+		addStyleName(styleNameConstants.QP_TEST_SUBMIT_BUTTON_DISABLED());
 	}
 
 	@Override
 	public void unlock() {
-		this.removeStyleName(styleNameConstants.QP_TEST_SUBMIT_DISABLED());
+		removeStyleName(styleNameConstants.QP_TEST_SUBMIT_BUTTON_DISABLED());
+	}
+
+	@Override
+	public void enableTestMode() {
+		removeStyleName(styleNameConstants.QP_TEST_SUBMIT_BUTTON_SUBMITTED_MODE());
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		addStyleName(styleNameConstants.QP_TEST_SUBMIT_BUTTON_SUBMITTED_MODE());
+	}
+
+	@Override
+	public void enablePreviewMode() {
+		addStyleName(styleNameConstants.QP_TEST_SUBMIT_BUTTON_PREVIEW_MODE());
 	}
 }

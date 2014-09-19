@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 
-import eu.ydp.empiria.player.client.module.testmode.submit.view.TestPageSubmitView;
-import eu.ydp.empiria.player.client.module.testmode.submit.view.TestPageSubmitViewImpl;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitViewImpl;
 
 public class TestPageGinModule extends AbstractGinModule {
 

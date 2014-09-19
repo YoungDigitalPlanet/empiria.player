@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.testmode.submit;
+package eu.ydp.empiria.player.client.module.test.submit;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitModule;
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitPresenter;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestPageSubmitModuleTest {

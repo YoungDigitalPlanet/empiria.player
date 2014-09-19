@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.Map;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -11,7 +9,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
@@ -38,7 +35,10 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
+
+import java.util.Map;
 
 public class Item implements IStateful, ItemInterferenceSocket {
 
@@ -88,7 +88,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 		variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
 
-		Node rootNode = xmlMapper.getAssessmentItems().item(0);
+		Node rootNode = xmlMapper.getAssessmentItems()
+								 .item(0);
 		title = ((Element) rootNode).getAttribute("title");
 		scorePanel = new FlowPanel();
 		scorePanel.setStyleName("qp-feedback-hidden");
@@ -238,40 +239,40 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	}
 
 	private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
-		var socket = {};
-		var instance = this;
-		socket.reset = function() {
-			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
-		}
-		socket.showAnswers = function() {
-			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
-		}
-		socket.lock = function() {
-			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
-		}
-		socket.unlock = function() {
-			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
-		}
-		socket.checkItem = function(value) {
-			instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
-		}
-		socket.continueItem = function(value) {
-			instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
-		}
-		socket.getOutcomeVariables = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
-		}
-		socket.getResponseVariables = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
-		}
-		socket.getItemBodySocket = function() {
-			return itemBodySocket;
-		}
-		socket.handleFlowActivityEvent = function(event) {
-			instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
-		}
-		return socket;
-	}-*/;
+        var socket = {};
+        var instance = this;
+        socket.reset = function () {
+            instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
+        }
+        socket.showAnswers = function () {
+            instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
+        }
+        socket.lock = function () {
+            instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
+        }
+        socket.unlock = function () {
+            instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
+        }
+        socket.checkItem = function (value) {
+            instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
+        }
+        socket.continueItem = function (value) {
+            instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
+        }
+        socket.getOutcomeVariables = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
+        }
+        socket.getResponseVariables = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
+        }
+        socket.getItemBodySocket = function () {
+            return itemBodySocket;
+        }
+        socket.handleFlowActivityEvent = function (event) {
+            instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
+        }
+        return socket;
+    }-*/;
 
 	private JavaScriptObject getOutcomeVariablesJsSocket() {
 		return outcomeManager.getJsSocket();
@@ -297,9 +298,8 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	private void activateCorrectWorkMode() {
 		PlayerWorkMode workMode = playerWorkModeService.getCurrentWorkMode();
-		if (workMode == PlayerWorkMode.PREVIEW) {
-			itemBody.enablePreviewMode();
-		}
+		WorkModeSwitcher workModeSwitcher = workMode.getWorkModeSwitcher();
+		itemBody.switchWorkMode(workModeSwitcher);
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {

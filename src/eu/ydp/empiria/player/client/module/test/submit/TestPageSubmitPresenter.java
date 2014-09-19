@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.testmode.submit;
+package eu.ydp.empiria.player.client.module.test.submit;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.testmode.submit.view.TestPageSubmitView;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
@@ -51,5 +51,20 @@ public class TestPageSubmitPresenter {
 	public void unlock() {
 		disabled = false;
 		testPageSubmitButtonView.unlock();
+	}
+
+	public void enableTestMode() {
+		unlock();
+		testPageSubmitButtonView.enableTestMode();
+	}
+
+	public void enableTestSubmittedMode() {
+		lock();
+		testPageSubmitButtonView.enableTestSubmittedMode();
+	}
+
+	public void enablePreviewMode() {
+		lock();
+		testPageSubmitButtonView.enablePreviewMode();
 	}
 }

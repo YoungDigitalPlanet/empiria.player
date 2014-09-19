@@ -46,7 +46,7 @@ import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
-import eu.ydp.empiria.player.client.module.testmode.submit.TestPageSubmitModule;
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitModule;
 import eu.ydp.empiria.player.client.module.texteditor.TextEditorModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;

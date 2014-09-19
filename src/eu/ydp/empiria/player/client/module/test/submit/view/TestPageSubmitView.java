@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.testmode.submit.view;
+package eu.ydp.empiria.player.client.module.test.submit.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -10,4 +10,10 @@ public interface TestPageSubmitView extends IsWidget {
 	public void lock();
 
 	public void unlock();
+
+	public void enableTestMode();
+
+	public void enableTestSubmittedMode();
+
+	public void enablePreviewMode();
 }
