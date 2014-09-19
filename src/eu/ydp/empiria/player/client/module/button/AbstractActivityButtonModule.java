@@ -13,12 +13,12 @@ import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.WorkModeClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule, WorkModeClient {
+public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule, WorkModePreviewClient {
 
 	@Inject
 	private CustomPushButton button;
