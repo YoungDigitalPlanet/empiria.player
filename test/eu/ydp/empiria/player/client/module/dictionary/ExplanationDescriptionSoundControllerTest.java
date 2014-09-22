@@ -18,7 +18,7 @@ import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.MocksCollector;
 import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
@@ -47,7 +47,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	private ExplanationView explanationView;
 
 	@Mock
-	private MimeSourceProvider mimeSourceProvider;
+	private DictionaryMimeSourceProvider mimeSourceProvider;
 
 	@Mock
 	private EventsBus eventsBus;

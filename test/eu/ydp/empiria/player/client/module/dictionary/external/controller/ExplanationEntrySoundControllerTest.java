@@ -4,7 +4,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
-import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
@@ -34,7 +34,7 @@ public class ExplanationEntrySoundControllerTest {
 	private ExplanationEntrySoundController testObj;
 
 	@Mock
-	private MimeSourceProvider mimeSourceProvider;
+	private DictionaryMimeSourceProvider dictionaryMimeSourceProvider;
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
@@ -62,7 +62,7 @@ public class ExplanationEntrySoundControllerTest {
 	public void shouldFireCreateMediaWrapperPlayerEvent() {
 		// given
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();
-		when(mimeSourceProvider.getSourcesWithTypes(FILE_NAME)).thenReturn(sourcesWithTypes);
+		when(dictionaryMimeSourceProvider.getSourcesWithTypes(FILE_NAME)).thenReturn(sourcesWithTypes);
 
 		// when
 		testObj.playEntrySound(entry);

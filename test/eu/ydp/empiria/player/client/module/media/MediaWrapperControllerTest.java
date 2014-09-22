@@ -71,11 +71,11 @@ public class MediaWrapperControllerTest {
 		verify(eventsBus, times(2)).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
 
 		List<MediaEvent> calledMediaEvents = mediaEventCaptor.getAllValues();
-		MediaEvent calledMediaEvent1 = calledMediaEvents.get(0);
-		MediaEvent calledMediaEvent2 = calledMediaEvents.get(1);
+		MediaEvent probablyCalledStopEvent = calledMediaEvents.get(0);
+		MediaEvent probablyCalledPlayEvent = calledMediaEvents.get(1);
 
-		assertMediaEvent(calledMediaEvent1, MediaEventTypes.STOP, mediaWrapper);
-		assertMediaEvent(calledMediaEvent2, MediaEventTypes.PLAY, mediaWrapper);
+		assertMediaEvent(probablyCalledStopEvent, MediaEventTypes.STOP, mediaWrapper);
+		assertMediaEvent(probablyCalledPlayEvent, MediaEventTypes.PLAY, mediaWrapper);
 	}
 
 	private void verifyMediaEvent(MediaEventTypes assumedEventType, MediaWrapper assumeMediaWrapper) {

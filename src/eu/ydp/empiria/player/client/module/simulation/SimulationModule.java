@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -52,6 +53,9 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 	@Inject
 	private SimulationCanvasProvider simulationCanvasProvider;
 	private int pageIndex = -1;
+
+	@Inject
+	private SoundJsNative soundJsWrapper;
 
 	@Override
 	public Widget getView() {
