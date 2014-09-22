@@ -10,4 +10,8 @@ public class PreviewWorkModeSwitcher implements WorkModeSwitcher {
 			((WorkModePreviewClient) module).enablePreviewMode();
 		}
 	}
+
+	@Override
+	public void disable(IModule module) {
+	}
 }
