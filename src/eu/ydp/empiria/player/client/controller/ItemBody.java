@@ -307,9 +307,15 @@ public class ItemBody implements WidgetWorkflowListener {
 		return parenthood;
 	}
 
-	public void switchWorkMode(WorkModeSwitcher workModeSwitcher) {
+	public void enableWorkMode(WorkModeSwitcher currentworkModeSwitcher) {
 		for (IModule module : modules) {
-			workModeSwitcher.enable(module);
+			currentworkModeSwitcher.enable(module);
+		}
+	}
+
+	public void disableWorkMode(WorkModeSwitcher previousWorkModeSwitcher) {
+		for (IModule module : modules) {
+			previousWorkModeSwitcher.disable(module);
 		}
 	}
 }

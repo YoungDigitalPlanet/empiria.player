@@ -8,4 +8,9 @@ public class EmptyWorkModeSwitcher implements WorkModeSwitcher {
 	public void enable(IModule module) {
 
 	}
+
+	@Override
+	public void disable(IModule module) {
+
+	}
 }
