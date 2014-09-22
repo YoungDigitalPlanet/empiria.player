@@ -15,7 +15,7 @@ public class PlayerWorkModeService {
 
 	public void updateWorkMode(PlayerWorkMode newWorkMode) {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
-			previousWorkMode = Optional.of(newWorkMode);
+			previousWorkMode = Optional.of(currentWorkMode);
 			currentWorkMode = newWorkMode;
 		}
 	}
