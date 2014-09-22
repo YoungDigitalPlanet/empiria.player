@@ -47,6 +47,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.test.reset.TestResetButtonModule;
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitModule;
 import eu.ydp.empiria.player.client.module.texteditor.TextEditorModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
@@ -150,6 +151,8 @@ public class ModuleProviderFactory {
 	private Provider<DictionaryModule> dictionaryModule;
 	@Inject
 	private Provider<TextEditorModule> textEditorModule;
+	@Inject
+	private Provider<TestPageSubmitModule> testPageSubmitButtonModule;
 	@Inject
 	private Provider<TestResetButtonModule> testResetButtonModule;
 
@@ -343,6 +346,10 @@ public class ModuleProviderFactory {
 
 	public Provider<TextEditorModule> getTextEditorModule() {
 		return textEditorModule;
+	}
+
+	public Provider<TestPageSubmitModule> getTestPageSubmitButtonModule() {
+		return testPageSubmitButtonModule;
 	}
 
 	public Provider<TestResetButtonModule> getTestResetButtonModule() {
