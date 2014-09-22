@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.module.workmode.*;
 import java.util.EnumSet;
 
 public enum PlayerWorkMode {
-	FULL {
+	FULL(new EmptyWorkModeSwitcher()) {
 		@Override
 		EnumSet<PlayerWorkMode> getAvailableTransitions() {
 			return EnumSet.allOf(PlayerWorkMode.class);
@@ -31,10 +31,6 @@ public enum PlayerWorkMode {
 	};
 
 	private final WorkModeSwitcher workModeSwitcher;
-
-	private PlayerWorkMode() {
-		this(new EmptyWorkModeSwitcher());
-	}
 
 	private PlayerWorkMode(WorkModeSwitcher workModeSwitcher) {
 		this.workModeSwitcher = workModeSwitcher;

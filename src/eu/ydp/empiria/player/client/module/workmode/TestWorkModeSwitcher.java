@@ -10,4 +10,11 @@ public class TestWorkModeSwitcher implements WorkModeSwitcher {
 			((WorkModeTestClient) module).enableTestMode();
 		}
 	}
+
+	@Override
+	public void disable(IModule module) {
+		if (module instanceof WorkModeTestClient) {
+			((WorkModeTestClient) module).disableTestMode();
+		}
+	}
 }
