@@ -1,14 +1,7 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
-
+import com.google.gwt.xml.client.*;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
@@ -18,10 +11,12 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
-	public AssessmentDataSourceManager(AssessmentDataLoaderEventListener loader) {
-		listener = loader;
+	public AssessmentDataSourceManager() {
 		itemsCount = -1;
 		errorMessage = "";
 		skinData = new SkinDataSourceManager(this);
@@ -29,7 +24,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 	private XmlData data;
 	private AssessmentData assessmentData;
-	private final AssessmentDataLoaderEventListener listener;
+	private AssessmentDataLoaderEventListener listener;
 	private StyleLinkDeclaration styleDeclaration;
 	private int itemsCount;
 	private String errorMessage;
@@ -37,6 +32,15 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private final SkinDataSourceManager skinData;
 	private boolean isDefaultData;
 	private List<Element> items = null;
+
+	@Inject
+	private WorkModeReaderForAssessment workModeReader;
+	@Inject
+	private WorkModeUpdaterForAssessment workModeUpdater;
+
+	public void setSkinListener(AssessmentDataLoaderEventListener listener) {
+		this.listener = listener;
+	}
 
 	public void initializeAssessmentData(XmlData data) {
 		if (isItemDocument(data.getDocument())) {
@@ -64,7 +68,8 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private void initializeDefaultData() {
 		data = new XmlData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
 		itemsCount = 1;
-		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		styleDeclaration = new StyleLinkDeclaration(data.getDocument()
+		                                                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		listener.onAssessmentDataLoaded();
 	}
 
@@ -73,14 +78,21 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 		data = xmlData;
 		itemsCount = -1;
-		styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		libraryLink = new LibraryLink(data.getDocument().getElementsByTagName("extensionsLibrary"), data.getBaseURL());
+		styleDeclaration = new StyleLinkDeclaration(data.getDocument()
+		                                                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
+		libraryLink = new LibraryLink(data.getDocument()
+		                                  .getElementsByTagName("extensionsLibrary"), data.getBaseURL());
+
+		String mode = workModeReader.read(data);
+		workModeUpdater.update(mode);
 
 		if (skinUrl == null) {
 			assessmentData = new AssessmentData(data, null);
 			listener.onAssessmentDataLoaded();
 		} else {
-			skinUrl = data.getBaseURL().concat(skinUrl);
+			skinUrl = data.getBaseURL()
+			              .concat(skinUrl);
+
 			skinData.load(skinUrl);
 		}
 	}
@@ -117,7 +129,9 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		String title = "";
 		if (data != null) {
 			try {
-				Node rootNode = data.getDocument().getElementsByTagName("assessmentTest").item(0);
+				Node rootNode = data.getDocument()
+				                    .getElementsByTagName("assessmentTest")
+				                    .item(0);
 				title = ((Element) rootNode).getAttribute("title");
 			} catch (Exception e) {
 			}
@@ -132,13 +146,15 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 		if (data != null) {
 			try {
-				NodeList nodes = data.getDocument().getElementsByTagName("assessmentItemRef");
+				NodeList nodes = data.getDocument()
+				                     .getElementsByTagName("assessmentItemRef");
 				String[] tmpItemUrls = new String[nodes.getLength()];
 				for (int i = 0; i < nodes.getLength(); i++) {
 					Node itemRefNode = nodes.item(i);
 
 					String name = "href";
-					if (((Element) itemRefNode).getAttribute(name).startsWith("http")) {
+					if (((Element) itemRefNode).getAttribute(name)
+					                           .startsWith("http")) {
 						tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(name);
 					} else {
 						tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(name);
@@ -154,16 +170,16 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 * 
-	 * @param index
-	 *            index wezla
+	 *
+	 * @param index index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
 	 */
 	public Element getItem(int index) {
 		if (data != null && items == null) {
 			try {
 				items = new ArrayList<Element>();
-				NodeList nodes = data.getDocument().getElementsByTagName("assessmentItemRef");
+				NodeList nodes = data.getDocument()
+				                     .getElementsByTagName("assessmentItemRef");
 				for (int x = 0; x < nodes.getLength(); ++x) {
 					Node n = nodes.item(x);
 					if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -216,8 +232,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		String url = null;
 
 		try {
-			Node testViewNode = document.getElementsByTagName("testView").item(0);
-			url = testViewNode.getAttributes().getNamedItem("href").getNodeValue();
+			Node testViewNode = document.getElementsByTagName("testView")
+			                            .item(0);
+			url = testViewNode.getAttributes()
+			                  .getNamedItem("href")
+			                  .getNodeValue();
 		} catch (Exception e) {
 		}
 
@@ -226,9 +245,12 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
 	private boolean isItemDocument(Document doc) {
 		try {
-			return doc.getDocumentElement().getNodeName().equals("assessmentItem");
+			return doc.getDocumentElement()
+			          .getNodeName()
+			          .equals("assessmentItem");
 		} catch (Exception e) {
 		}
 		return true;
 	}
+
 }
