@@ -40,12 +40,12 @@ public class TestResetButtonViewImpl extends Composite implements TestResetButto
 
 	@Override
 	public void lock() {
-		addStyleName(styleNameConstants.QP_TEST_RESET_BUTTON_DISABLED());
+		addStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
 	}
 
 	@Override
 	public void unlock() {
-		removeStyleName(styleNameConstants.QP_TEST_RESET_BUTTON_DISABLED());
+		removeStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
 	}
 
 	@Override

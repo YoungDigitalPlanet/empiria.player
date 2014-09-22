@@ -41,8 +41,7 @@ import eu.ydp.empiria.player.client.gin.module.SelectionGinModule;
 import eu.ydp.empiria.player.client.gin.module.SimulationGinModule;
 import eu.ydp.empiria.player.client.gin.module.SlideshowGinModule;
 import eu.ydp.empiria.player.client.gin.module.SourceListGinModule;
-import eu.ydp.empiria.player.client.gin.module.TestPageGinModule;
-import eu.ydp.empiria.player.client.gin.module.TestResetGinModule;
+import eu.ydp.empiria.player.client.gin.module.TestGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEditorGinModule;
 import eu.ydp.empiria.player.client.gin.module.TextEntryGinModule;
 import eu.ydp.empiria.player.client.gin.module.VideoGinModule;
@@ -65,7 +64,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 		TextEntryGinModule.class, SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
 		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
-		TextEditorGinModule.class, TestPageGinModule.class, TestResetGinModule.class })
+		TextEditorGinModule.class, TestGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();

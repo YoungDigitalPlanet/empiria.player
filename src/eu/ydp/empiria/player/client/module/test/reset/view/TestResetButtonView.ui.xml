@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:eu.ydp.gwtutil.client.ui.button">
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<g:FlowPanel styleName="{res.QP_TEST_RESET_BUTTON_WRAPPER}">
-		<b:CustomPushButton ui:field="testResetButton" styleName="{res.QP_TEST_RESET_BUTTON}" text="TEST RESET BUTTON" />
+	<g:FlowPanel styleName="{res.QP_TEST_RESET}">
+		<b:CustomPushButton ui:field="testResetButton" styleName="{res.QP_TEST_RESET_BUTTON}" />
 	</g:FlowPanel>
 </ui:UiBinder> 
