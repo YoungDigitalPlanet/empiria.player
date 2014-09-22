@@ -28,6 +28,7 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
@@ -51,6 +52,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Inject
 	@PageScoped
 	private ResponseSocket responseSocket;
+
+	@Inject
+	private StyleNameConstants styleNameConstants;
 
 	protected Panel container;
 
@@ -133,7 +137,6 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public void lock(boolean lock) {
 		listBox.setEnabled(!lock);
-
 	}
 
 	/**
@@ -346,5 +349,17 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 	@Override
 	public List<IModule> getChildren() {
 		return moduleSocket.getChildren(this);
+	}
+
+	@Override
+	public void enableTestSubmittetMode() {
+		lock(true);
+		container.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittetMode() {
+		lock(false);
+		container.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.texteditor.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
@@ -59,8 +60,17 @@ public class TextEditorPresenter {
 		view.enablePreviewMode();
 	}
 
+	public void enableTestSubmittedMode() {
+		textEditorJSWrapper.lock(moduleId);
+		view.enableTestSubmittedMode();
+	}
+
+	public void disableTestSubmittedMode() {
+		textEditorJSWrapper.unlock(moduleId);
+		view.disableTestSubmittedMode();
+	}
+
 	public Widget getView() {
 		return view.asWidget();
 	}
-
 }

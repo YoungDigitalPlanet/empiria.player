@@ -722,6 +722,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-module-mode-preview")
 	public String QP_MODULE_MODE_PREVIEW();
 
+	@DefaultStringValue("qp-module-mode-test")
+	public String QP_MODULE_MODE_TEST();
+
+	@DefaultStringValue("qp-module-mode-test-submitted")
+	public String QP_MODULE_MODE_TEST_SUBMITTED();
+
 	@DefaultStringValue("qp-ordered")
 	public String QP_ORDERED();
 

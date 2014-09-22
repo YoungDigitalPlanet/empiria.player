@@ -17,20 +17,18 @@ import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SelectionModuleViewImpl implements SelectionModuleView {
 
 	public SelectionModuleViewImpl() {
 	};
 
-	@Inject
-	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
-		this.gridElementGenerator = gridElementGenerator;
-	}
-
 	private SelectionElementGenerator gridElementGenerator;
 
 	private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
+
+	private StyleNameConstants styleNameConstants;
 
 	@UiField
 	Panel mainPanel;
@@ -40,6 +38,12 @@ public class SelectionModuleViewImpl implements SelectionModuleView {
 
 	@UiField
 	Grid selectionGrid;
+
+	@Inject
+	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator, StyleNameConstants styleNameConstants) {
+		this.gridElementGenerator = gridElementGenerator;
+		this.styleNameConstants = styleNameConstants;
+	}
 
 	@UiTemplate("SelectionModuleView.ui.xml")
 	interface SelectionModuleUiBinder extends UiBinder<Widget, SelectionModuleViewImpl> {
@@ -113,5 +117,15 @@ public class SelectionModuleViewImpl implements SelectionModuleView {
 
 	private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
 		selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

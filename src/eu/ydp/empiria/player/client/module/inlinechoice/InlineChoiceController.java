@@ -10,4 +10,8 @@ public interface InlineChoiceController extends IInteractionModule {
 	public void setParentInlineModule(IUniqueModule module);
 
 	public IUniqueModule getParentInlineModule();
+
+	public void enableTestSubmittetMode();
+
+	public void disableTestSubmittetMode();
 }

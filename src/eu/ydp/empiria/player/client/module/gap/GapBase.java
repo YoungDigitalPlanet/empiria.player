@@ -55,7 +55,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected abstract void setCorrectAnswer();
 
-	private boolean isGapBinderInitialized = false;
+	private final boolean isGapBinderInitialized = false;
 
 	@Override
 	public void onBodyLoad() {
@@ -124,6 +124,18 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	public void lock(boolean lock) {
 		locked = lock;
 		presenter.setViewEnabled(!lock);
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		lock(false);
+		presenter.disableTestSubmittedMode();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		lock(true);
+		presenter.enableTestSubmittedMode();
 	}
 
 	@Override

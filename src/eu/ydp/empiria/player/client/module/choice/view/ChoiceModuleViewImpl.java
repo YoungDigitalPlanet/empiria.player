@@ -7,6 +7,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ChoiceModuleViewImpl implements ChoiceModuleView {
 
@@ -25,7 +28,10 @@ public class ChoiceModuleViewImpl implements ChoiceModuleView {
 	@UiField
 	Panel choicesPanel;
 
-	private Widget widget;
+	@Inject
+	private StyleNameConstants styleNameConstants;
+
+	private final Widget widget;
 
 	public ChoiceModuleViewImpl() {
 		widget = uiBinder.createAndBindUi(this);
@@ -49,6 +55,16 @@ public class ChoiceModuleViewImpl implements ChoiceModuleView {
 	@Override
 	public Element getPrompt() {
 		return promptWidget.getElement();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 
 }

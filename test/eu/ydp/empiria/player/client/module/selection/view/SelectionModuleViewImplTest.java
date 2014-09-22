@@ -1,5 +1,13 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
+import static org.mockito.Mockito.*;
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Panel;
@@ -7,15 +15,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-
-import static org.mockito.Mockito.*;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SelectionModuleViewImplTest {
@@ -26,14 +29,16 @@ public class SelectionModuleViewImplTest {
 	private SelectionButtonGridElementImpl firstButtonGridElement;
 	private SelectionButtonGridElementImpl secondButtonGridElement;
 	private SelectionElementGenerator gridGenerator;
+	private StyleNameConstants styleNameConstants;
 
 	private SelectionModuleViewImpl selectionView;
 
 	@Before
 	public void setup() {
 		gridGenerator = mock(SelectionElementGenerator.class);
+		styleNameConstants = mock(StyleNameConstants.class);
 
-		selectionView = new SelectionModuleViewImpl(gridGenerator);
+		selectionView = new SelectionModuleViewImpl(gridGenerator, styleNameConstants);
 
 		selectionView.selectionGrid = grid = mock(Grid.class);
 		selectionView.mainPanel = panel = mock(Panel.class);

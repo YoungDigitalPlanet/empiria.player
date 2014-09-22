@@ -57,16 +57,6 @@ public class TestPageSubmitModuleTest {
 	}
 
 	@Test
-	public void shouldEnableTestMode() {
-		// given
-
-		// when
-		testObj.enableTestMode();
-		// then
-		verify(presenter).enableTestMode();
-	}
-
-	@Test
 	public void shouldEnableTestSubmittedMode() {
 		// given
 
@@ -74,6 +64,17 @@ public class TestPageSubmitModuleTest {
 		testObj.enableTestSubmittedMode();
 		// then
 		verify(presenter).enableTestSubmittedMode();
+	}
+
+	@Test
+	public void shouldDisableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.disableTestSubmittedMode();
+
+		// then
+		verify(presenter).disableTestSubmittedMode();
 	}
 
 	@Test

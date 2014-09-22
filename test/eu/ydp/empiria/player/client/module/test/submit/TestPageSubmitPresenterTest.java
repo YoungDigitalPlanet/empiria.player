@@ -110,18 +110,6 @@ public class TestPageSubmitPresenterTest {
 	}
 
 	@Test
-	public void shouldEnableTestMode() {
-		// given
-
-		// when
-		testObj.enableTestMode();
-
-		// then
-		verify(testPageSubmitButtonView).unlock();
-		verify(testPageSubmitButtonView).enableTestMode();
-	}
-
-	@Test
 	public void shouldEnableTestSubmittedMode() {
 		// given
 
@@ -131,6 +119,18 @@ public class TestPageSubmitPresenterTest {
 		// then
 		verify(testPageSubmitButtonView).lock();
 		verify(testPageSubmitButtonView).enableTestSubmittedMode();
+	}
+
+	@Test
+	public void shouldDisableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.disableTestSubmittedMode();
+
+		// verify
+		verify(testPageSubmitButtonView).unlock();
+		verify(testPageSubmitButtonView).disableTestSubmittedMode();
 	}
 
 	@Test

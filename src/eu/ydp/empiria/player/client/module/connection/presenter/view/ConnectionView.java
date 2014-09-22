@@ -30,4 +30,8 @@ public interface ConnectionView extends IsWidget, HasDimensions {
 
 	Element getElement();
 
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
+
 }

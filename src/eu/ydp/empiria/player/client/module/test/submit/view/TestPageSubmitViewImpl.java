@@ -48,17 +48,17 @@ public class TestPageSubmitViewImpl extends Composite implements TestPageSubmitV
 	}
 
 	@Override
-	public void enableTestMode() {
-		removeStyleName(styleNameConstants.QP_TEST_SUBMIT_SUBMITTED_MODE());
-	}
-
-	@Override
 	public void enableTestSubmittedMode() {
-		addStyleName(styleNameConstants.QP_TEST_SUBMIT_SUBMITTED_MODE());
+		addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 
 	@Override
 	public void enablePreviewMode() {
-		addStyleName(styleNameConstants.QP_TEST_SUBMIT_PREVIEW_MODE());
+		addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

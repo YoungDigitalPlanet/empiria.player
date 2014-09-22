@@ -31,8 +31,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	private final DragGapModuleModel model;
 	private final DragGapView view;
 	private final SourceListManagerAdapter sourceListManagerAdapter;
-	private @Inject
-	UserInteractionHandlerFactory interactionHandlerFactory;
+	private @Inject UserInteractionHandlerFactory interactionHandlerFactory;
 
 	@Inject
 	public DragGapPresenterImpl(@ModuleScoped DragGapView view, @ModuleScoped DragGapModuleModel model,
@@ -152,5 +151,15 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 	public void setGapDimensions(HasDimensions size) {
 		view.setWidth(size.getWidth());
 		view.setHeight(size.getHeight());
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		view.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		view.disableTestSubmittedMode();
 	}
 }

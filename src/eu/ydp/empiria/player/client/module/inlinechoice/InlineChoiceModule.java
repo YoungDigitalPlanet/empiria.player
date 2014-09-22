@@ -172,4 +172,14 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 		return inlineChoiceModuleProvider.get();
 	}
 
+	@Override
+	public void enableTestSubmittedMode() {
+		controller.enableTestSubmittetMode();
+	}
+
+	// dodac override
+	public void disableTestSubmittedMode() {
+		controller.disableTestSubmittetMode();
+	}
+
 }

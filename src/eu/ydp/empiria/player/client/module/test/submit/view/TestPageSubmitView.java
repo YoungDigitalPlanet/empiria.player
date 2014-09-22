@@ -11,9 +11,9 @@ public interface TestPageSubmitView extends IsWidget {
 
 	public void unlock();
 
-	public void enableTestMode();
-
 	public void enableTestSubmittedMode();
 
 	public void enablePreviewMode();
+
+	public void disableTestSubmittedMode();
 }

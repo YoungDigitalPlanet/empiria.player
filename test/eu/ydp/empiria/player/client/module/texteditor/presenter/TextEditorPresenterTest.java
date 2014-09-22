@@ -1,18 +1,20 @@
 package eu.ydp.empiria.player.client.module.texteditor.presenter;
 
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
-import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
-import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
+import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
+import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorJSWrapper;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TextEditorPresenterTest {
@@ -115,5 +117,27 @@ public class TextEditorPresenterTest {
 		// then
 		verify(textEditorJSWrapper).lock(MODULE_ID);
 		verify(view).enablePreviewMode();
+	}
+
+	@Test
+	public void shouldEnableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.enableTestSubmittedMode();
+		// then
+		verify(textEditorJSWrapper).lock(MODULE_ID);
+		verify(view).enableTestSubmittedMode();
+	}
+
+	@Test
+	public void shouldDisableTestSubmittedMode() {
+		// given
+
+		// when
+		testObj.disableTestSubmittedMode();
+		// then
+		verify(textEditorJSWrapper).unlock(MODULE_ID);
+		verify(view).disableTestSubmittedMode();
 	}
 }

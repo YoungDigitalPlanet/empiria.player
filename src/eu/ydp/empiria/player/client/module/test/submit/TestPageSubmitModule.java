@@ -3,11 +3,13 @@ package eu.ydp.empiria.player.client.module.test.submit;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.module.ILockable;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestSubmittedClient;
 
-public class TestPageSubmitModule extends SimpleModuleBase implements ILockable, WorkModeClient {
+public class TestPageSubmitModule extends SimpleModuleBase implements ILockable, WorkModePreviewClient, WorkModeTestSubmittedClient {
 
 	private final TestPageSubmitPresenter presenter;
 
@@ -31,21 +33,13 @@ public class TestPageSubmitModule extends SimpleModuleBase implements ILockable,
 	}
 
 	@Override
-	public void enableTestMode() {
-		presenter.enableTestMode();
-	}
-
-	@Override
-	public void disableTestMode() {
-	}
-
-	@Override
 	public void enableTestSubmittedMode() {
 		presenter.enableTestSubmittedMode();
 	}
 
 	@Override
 	public void disableTestSubmittedMode() {
+		presenter.disableTestSubmittedMode();
 	}
 
 	@Override

@@ -133,4 +133,14 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	public OrderInteractionOrientation getOrientation() {
 		return bean.getOrientation();
 	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		interactionView.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		interactionView.disableTestSubmittedMode();
+	}
 }

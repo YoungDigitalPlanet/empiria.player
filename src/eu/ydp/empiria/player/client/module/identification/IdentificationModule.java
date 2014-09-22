@@ -111,8 +111,8 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 			ArrayList<Boolean> fixeds = new ArrayList<Boolean>();
 			NodeList optionNodes = element.getElementsByTagName("simpleChoice");
 			for (int i = 0; i < optionNodes.getLength(); i++) {
-				final SelectableChoice selectableChoice = createSelectableChoice((Element) optionNodes.item(i), getModuleSocket()
-						.getInlineBodyGeneratorSocket());
+				final SelectableChoice selectableChoice = createSelectableChoice((Element) optionNodes.item(i),
+						getModuleSocket().getInlineBodyGeneratorSocket());
 				currOptions.add(selectableChoice);
 				if (shuffle && !XMLUtils.getAttributeAsBoolean((Element) optionNodes.item(i), "fixed")) {
 					optionsSet.push(selectableChoice);
@@ -291,6 +291,24 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	@Override
 	public IdentificationModule getNewInstance() {
 		return identificationModuleProvider.get();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		this.locked = true;
+		for (SelectableChoice option : options) {
+			option.setLocked(true);
+			option.enableTestSubmittedMode();
+		}
+	}
+
+	// dodac override
+	public void disableTestSubmittedMode() {
+		this.locked = false;
+		for (SelectableChoice option : options) {
+			option.setLocked(false);
+			option.disableTestSubmittedMode();
+		}
 	}
 
 }

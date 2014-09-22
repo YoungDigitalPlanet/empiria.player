@@ -70,4 +70,14 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
 	public String getMainPanelUniqueCssClass() {
 		return mainPanelUniqueCssClass;
 	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
 }

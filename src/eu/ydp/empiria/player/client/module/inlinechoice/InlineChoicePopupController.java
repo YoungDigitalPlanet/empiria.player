@@ -333,4 +333,16 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 			listBox.hidePopup();
 		}
 	}
+
+	@Override
+	public void enableTestSubmittetMode() {
+		lock(true);
+		container.addStyleName(styleNames.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittetMode() {
+		lock(false);
+		container.removeStyleName(styleNames.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
 }

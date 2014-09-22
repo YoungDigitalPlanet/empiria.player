@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module;
 
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.CORRECT_ANSWERS;
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.*;
 
 import java.util.List;
 
@@ -124,6 +123,18 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	@Override
+	public void enableTestSubmittedMode() {
+		lock(true);
+		presenter.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		lock(false);
+		presenter.disableTestSubmittedMode();
+	}
+
+	@Override
 	public void reset() {
 		presenter.reset();
 		clearModel();
@@ -165,7 +176,8 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	/**
-	 * Zwraca typ liczenia dla modulu. 1 punkt za cwiczenie lub ilosc poprawnych odpowiedzi w module
+	 * Zwraca typ liczenia dla modulu. 1 punkt za cwiczenie lub ilosc poprawnych
+	 * odpowiedzi w module
 	 * 
 	 * @return
 	 */

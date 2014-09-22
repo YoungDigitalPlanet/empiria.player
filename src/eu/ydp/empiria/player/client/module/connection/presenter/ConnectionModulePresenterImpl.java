@@ -194,7 +194,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	/**
-	 * Individually, each choice has a matchMax attribute that controls how many pairings it can be part of.
+	 * Individually, each choice has a matchMax attribute that controls how many
+	 * pairings it can be part of.
 	 */
 	private boolean matchMaxCondition(String identifier) {
 		SimpleAssociableChoiceBean beanChoiceIdentifier = bean.getChoiceByIdentifier(identifier);
@@ -213,7 +214,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	/**
-	 * The maxAssociations attribute controls the maximum number of pairings the user is allowed to make overall.
+	 * The maxAssociations attribute controls the maximum number of pairings the
+	 * user is allowed to make overall.
 	 */
 	private boolean isMaxAssociationAchieved() {
 		int maxAssociations = bean.getMaxAssociations();
@@ -223,7 +225,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	}
 
 	/**
-	 * Sets connections in view using given {@link KeyValue} collection for defined {@link MultiplePairModuleConnectType}
+	 * Sets connections in view using given {@link KeyValue} collection for
+	 * defined {@link MultiplePairModuleConnectType}
 	 * 
 	 * @param answers
 	 * @param type
@@ -241,7 +244,8 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	 * @param markMode
 	 *            - {@link Boolean} mark/unmark
 	 * @param markingType
-	 *            - {@link MultiplePairModuleConnectType#CORRECT} or {@link MultiplePairModuleConnectType#WRONG}
+	 *            - {@link MultiplePairModuleConnectType#CORRECT} or
+	 *            {@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
 		List<Boolean> responseEvaluated = model.evaluateResponse();
@@ -269,6 +273,16 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 		} else {
 			moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL);
 		}
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		moduleView.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		moduleView.disableTestSubmittedMode();
 	}
 
 }

@@ -65,4 +65,14 @@ public class OrderInteractionViewImpl implements OrderInteractionView {
 	public String getMainPanelUniqueCssClass() {
 		return viewWidget.getMainPanelUniqueCssClass();
 	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		viewWidget.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		viewWidget.disableTestSubmittedMode();
+	}
 }
