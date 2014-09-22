@@ -302,7 +302,7 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 		}
 	}
 
-	// dodac override
+	@Override
 	public void disableTestSubmittedMode() {
 		this.locked = false;
 		for (SelectableChoice option : options) {
