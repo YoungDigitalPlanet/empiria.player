@@ -6,7 +6,6 @@ import com.google.inject.Key;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
@@ -15,14 +14,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.BonusConfigModuleScopeProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.ProgressBonusConfigModuleScopeProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.WithCacheCssStylesModuleScopedProvider;
-import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
+import eu.ydp.empiria.player.client.gin.scopes.module.providers.*;
 import eu.ydp.empiria.player.client.module.bonus.BonusProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
@@ -68,16 +60,13 @@ import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControlle
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
+import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBeanProvider;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
 import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
 import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
 import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
 import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnOkAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnPageAllOkAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OnWrongAction;
-import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeGenerator;
-import eu.ydp.empiria.player.client.module.tutor.actions.OutcomeDrivenActionTypeProvider;
+import eu.ydp.empiria.player.client.module.tutor.actions.*;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
@@ -99,8 +88,10 @@ public class ModuleScopedModule extends AbstractGinModule {
 	protected void configure() {
 		bind(ModuleScopeStack.class).in(Singleton.class);
 
-		bind(Element.class).annotatedWith(ModuleScoped.class).toProvider(XmlElementModuleScopedProvider.class);
-		bind(Response.class).annotatedWith(ModuleScoped.class).toProvider(ResponseModuleScopedProvider.class);
+		bind(Element.class).annotatedWith(ModuleScoped.class)
+						   .toProvider(XmlElementModuleScopedProvider.class);
+		bind(Response.class).annotatedWith(ModuleScoped.class)
+							.toProvider(ResponseModuleScopedProvider.class);
 		bindCssStyle();
 		bindOrdering();
 		bindColorfill();
@@ -120,6 +111,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 	private void bindTextEditor() {
 		bindModuleScoped(TextEditorBean.class, new TypeLiteral<ModuleScopedProvider<TextEditorBean>>() {
 		});
+		bind(TextEditorBean.class).toProvider(TextEditorBeanProvider.class);
 		bindModuleScoped(TextEditorPresenter.class, new TypeLiteral<ModuleScopedProvider<TextEditorPresenter>>() {
 		});
 		bindModuleScoped(TextEditorView.class, new TypeLiteral<ModuleScopedProvider<TextEditorView>>() {
@@ -175,8 +167,10 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bind(CssStylesModuleScopedProvider.class).in(Singleton.class);
 		bind(WithCacheCssStylesModuleScopedProvider.class).in(Singleton.class);
 
-		bind(ModuleStyle.class).annotatedWith(ModuleScoped.class).toProvider(CssStylesModuleScopedProvider.class);
-		bind(ModuleStyle.class).annotatedWith(CachedModuleScoped.class).toProvider(WithCacheCssStylesModuleScopedProvider.class);
+		bind(ModuleStyle.class).annotatedWith(ModuleScoped.class)
+							   .toProvider(CssStylesModuleScopedProvider.class);
+		bind(ModuleStyle.class).annotatedWith(CachedModuleScoped.class)
+							   .toProvider(WithCacheCssStylesModuleScopedProvider.class);
 	}
 
 	private void bindOrdering() {
@@ -250,7 +244,8 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(OnPageAllOkAction.class, new TypeLiteral<ModuleScopedProvider<OnPageAllOkAction>>() {
 		});
-		bind(String.class).annotatedWith(TutorId.class).toProvider(TutorIdProvider.class);
+		bind(String.class).annotatedWith(TutorId.class)
+						  .toProvider(TutorIdProvider.class);
 		bindModuleScoped(GroupAnswersControllerModel.class, new TypeLiteral<ModuleScopedProvider<GroupAnswersControllerModel>>() {
 		});
 		bindModuleScoped(OnOkAction.class, new TypeLiteral<ModuleScopedProvider<OnOkAction>>() {
@@ -259,8 +254,10 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(OutcomeDrivenActionTypeProvider.class, new TypeLiteral<ModuleScopedProvider<OutcomeDrivenActionTypeProvider>>() {
 		});
-		bind(TutorConfig.class).annotatedWith(ModuleScoped.class).toProvider(TutorConfigModuleScopedProvider.class);
-		bind(PersonaService.class).annotatedWith(ModuleScoped.class).toProvider(PersonaServiceModuleScopedProvider.class);
+		bind(TutorConfig.class).annotatedWith(ModuleScoped.class)
+							   .toProvider(TutorConfigModuleScopedProvider.class);
+		bind(PersonaService.class).annotatedWith(ModuleScoped.class)
+								  .toProvider(PersonaServiceModuleScopedProvider.class);
 		bindModuleScoped(TutorEndHandler.class, new TypeLiteral<ModuleScopedProvider<TutorEndHandler>>() {
 		});
 	}
@@ -282,7 +279,8 @@ public class ModuleScopedModule extends AbstractGinModule {
 	private void bindBonus() {
 		bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>() {
 		});
-		bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
+		bind(BonusConfig.class).annotatedWith(ModuleScoped.class)
+							   .toProvider(BonusConfigModuleScopeProvider.class);
 	}
 
 	private void bindProgressBonus() {
@@ -290,12 +288,14 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(ProgressBonusView.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusView>>() {
 		});
-		bind(ProgressBonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(ProgressBonusConfigModuleScopeProvider.class);
+		bind(ProgressBonusConfig.class).annotatedWith(ModuleScoped.class)
+									   .toProvider(ProgressBonusConfigModuleScopeProvider.class);
 	}
 
 	private <F, T extends F> void bindModuleScoped(Class<F> clazz, TypeLiteral<? extends Provider<T>> typeLiteral) {
 		bind(typeLiteral).in(Singleton.class);
-		bind(clazz).annotatedWith(ModuleScoped.class).toProvider(Key.get(typeLiteral));
+		bind(clazz).annotatedWith(ModuleScoped.class)
+				   .toProvider(Key.get(typeLiteral));
 	}
 
 }
