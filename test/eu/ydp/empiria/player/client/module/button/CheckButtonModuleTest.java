@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
@@ -191,9 +191,9 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
 		// then
 		InOrder inOrder = inOrder(button);
-		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(DISABLED_STYLE_NAME);
 		inOrder.verify(button).addStyleName(inactiveStyleName);
-		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button).addStyleName(DISABLED_STYLE_NAME);
 		inOrder.verify(button).addStyleName(inactiveStyleName);
 	}
 }
