@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller.data;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -17,7 +16,7 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 	}
 
 	public void testDataLoadItemsCount() {
-		final DataSourceManager dsm = new DataSourceManager();
+		final DataSourceManager dsm = createDataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
 			@Override
@@ -42,7 +41,7 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 	}
 
 	public void testDataLoadAssessmentTitle() {
-		final DataSourceManager dsm = new DataSourceManager();
+		final DataSourceManager dsm = createDataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
 			@Override
@@ -66,7 +65,7 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 	}
 
 	public void testDataLoadItemTitle() {
-		final DataSourceManager dsm = new DataSourceManager();
+		final DataSourceManager dsm = createDataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
 			@Override
@@ -90,7 +89,7 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 	}
 
 	public void testDataLoadInitialData() {
-		final DataSourceManager dsm = new DataSourceManager();
+		final DataSourceManager dsm = createDataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
 			@Override
@@ -98,8 +97,10 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 				InitialData initData = dsm.getInitialData();
 				InitialItemData initItemData = initData.getItemInitialData(0);
 
-				assertEquals(1, initItemData.getOutcomes().size());
-				assertEquals("2", initItemData.getOutcomes().get("TODO").values.get(0));
+				assertEquals(1, initItemData.getOutcomes()
+				                            .size());
+				assertEquals("2", initItemData.getOutcomes()
+				                              .get("TODO").values.get(0));
 			}
 
 			@Override
@@ -120,7 +121,7 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 	}
 
 	public void testDataLoadMode() {
-		final DataSourceManager dsm = new DataSourceManager();
+		final DataSourceManager dsm = createDataSourceManager();
 		dsm.setDataLoaderEventListener(new DataLoaderEventListener() {
 
 			@Override
@@ -143,6 +144,10 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 				dsm,
 				"<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><outcomeDeclaration identifier=\"TODO\" cardinality=\"single\" baseType=\"integer\"><defaultValue><value>2</value></defaultValue></outcomeDeclaration><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
 
+	}
+
+	private DataSourceManager createDataSourceManager() {
+		return new DataSourceManager(new AssessmentDataSourceManager());
 	}
 
 	protected void processLoad(DataSourceManager dsm, String itemXml) {
