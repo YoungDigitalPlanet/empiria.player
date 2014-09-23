@@ -28,7 +28,7 @@ public class WorkModeParserForAssessmentTest extends AbstractEmpiriaPlayerGWTTes
 		assertEquals(actual.get(), expected);
 	}
 
-	public void test_shouldReturnEmptyStringWhenModeIsNotCorrect() {
+	public void test_shouldReturnAbsentWhenModeIsNotCorrect() {
 		// given
 		XmlData xmlData = getXmlData("<assessmentTest compilerVersion=\"3.3.2.117\" mode=\"not_existing_mode\"/>");
 
@@ -39,7 +39,7 @@ public class WorkModeParserForAssessmentTest extends AbstractEmpiriaPlayerGWTTes
 		assertFalse(actual.isPresent());
 	}
 
-	public void test_shouldReturnEmptyStringWhenModeIsNotSpecified() {
+	public void test_shouldReturnAbsentWhenModeIsNotSpecified() {
 		// given
 		XmlData xmlData = getXmlData("<assessmentTest compilerVersion=\"3.3.2.117\"/>");
 
