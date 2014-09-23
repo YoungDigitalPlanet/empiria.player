@@ -56,25 +56,25 @@ public class TestResetButtonPresenterTest {
 	}
 
 	@Test
-	public void shouldEnable() {
+	public void shouldLock() {
 		// when
-		testObj.enable();
+		testObj.lock();
 
 		// then
 		testResetButtonView.lock();
 	}
 
 	@Test
-	public void shouldDisable() {
+	public void shouldUnlock() {
 		// when
-		testObj.disable();
+		testObj.unlock();
 
 		// then
 		testResetButtonView.unlock();
 	}
 
 	@Test
-	public void shouldNavigateToFirstItem_ifNoDisableWasCalled() {
+	public void shouldNavigateToFirstItem_ifNoLockWasCalled() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
 		testObj.bindUi();
@@ -90,16 +90,16 @@ public class TestResetButtonPresenterTest {
 	}
 
 	@Test
-	public void shouldNavigateToFirstItem_ifEnableDisableWasCalled() {
+	public void shouldNavigateToFirstItem_ifLockUnlockWasCalled() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
 		testObj.bindUi();
-		testObj.enable();
+		testObj.lock();
 
 		verify(testResetButtonView).addHandler(commandCaptor.capture());
 		Command command = commandCaptor.getValue();
 
-		testObj.disable();
+		testObj.unlock();
 
 		// when
 		command.execute(event);
@@ -113,7 +113,7 @@ public class TestResetButtonPresenterTest {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
 		testObj.bindUi();
-		testObj.enable();
+		testObj.lock();
 
 		verify(testResetButtonView).addHandler(commandCaptor.capture());
 		Command command = commandCaptor.getValue();

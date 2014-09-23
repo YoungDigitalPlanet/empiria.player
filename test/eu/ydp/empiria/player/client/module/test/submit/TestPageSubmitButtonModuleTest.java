@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class TestPageSubmitModuleTest {
+public class TestPageSubmitButtonModuleTest {
 
 	@InjectMocks
-	private TestPageSubmitModule testObj;
+	private TestPageSubmitButtonModule testObj;
 
 	@Mock
-	private TestPageSubmitPresenter presenter;
+	private TestPageSubmitButtonPresenter presenter;
 
 	@Test
 	public void shouldReturnWidget() {

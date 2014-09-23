@@ -57,7 +57,7 @@ public class TestResetButtonModuleTest {
 		testObj.lock(true);
 
 		// then
-		verify(presenter).enable();
+		verify(presenter).lock();
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class TestResetButtonModuleTest {
 		testObj.lock(false);
 
 		// then
-		verify(presenter).disable();
+		verify(presenter).unlock();
 	}
 
 	@Test

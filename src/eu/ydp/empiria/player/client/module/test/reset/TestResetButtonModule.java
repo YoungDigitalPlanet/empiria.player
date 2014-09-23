@@ -31,9 +31,9 @@ public class TestResetButtonModule extends SimpleModuleBase implements ILockable
 	@Override
 	public void lock(boolean shouldLock) {
 		if (shouldLock) {
-			presenter.enable();
+			presenter.lock();
 		} else {
-			presenter.disable();
+			presenter.unlock();
 		}
 	}
 

@@ -13,7 +13,7 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-public class TestPageSubmitViewImpl extends Composite implements TestPageSubmitView {
+public class TestPageSubmitButtonViewImpl extends Composite implements TestPageSubmitButtonView {
 
 	private static TestPageSubmitViewIUiBinder uiBinder = GWT.create(TestPageSubmitViewIUiBinder.class);
 
@@ -24,11 +24,11 @@ public class TestPageSubmitViewImpl extends Composite implements TestPageSubmitV
 	@Inject
 	private StyleNameConstants styleNameConstants;
 
-	@UiTemplate("TestPageSubmitView.ui.xml")
-	interface TestPageSubmitViewIUiBinder extends UiBinder<Widget, TestPageSubmitViewImpl> {
+	@UiTemplate("TestPageSubmitButtonView.ui.xml")
+	interface TestPageSubmitViewIUiBinder extends UiBinder<Widget, TestPageSubmitButtonViewImpl> {
 	}
 
-	public TestPageSubmitViewImpl() {
+	public TestPageSubmitButtonViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 

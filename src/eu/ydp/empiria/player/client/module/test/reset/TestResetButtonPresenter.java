@@ -16,7 +16,7 @@ public class TestResetButtonPresenter {
 	private final TestResetButtonView testResetButtonView;
 	private final FlowManager flowManager;
 	private final PlayerWorkModeService playerWorkModeService;
-	private boolean enabled;
+	private boolean locked;
 
 	@Inject
 	public TestResetButtonPresenter(TestResetButtonView testResetButtonView, FlowManager flowManager, PlayerWorkModeService playerWorkModeService) {
@@ -29,7 +29,7 @@ public class TestResetButtonPresenter {
 		testResetButtonView.addHandler(new Command() {
 			@Override
 			public void execute(NativeEvent event) {
-				if (!enabled) {
+				if (!locked) {
 					updateWorkModeTestSubmitted();
 					navigateToFirstItem();
 				}
@@ -42,18 +42,18 @@ public class TestResetButtonPresenter {
 		return testResetButtonView.asWidget();
 	}
 
-	public void enable() {
-		enabled = true;
+	public void lock() {
+		locked = true;
 		testResetButtonView.lock();
 	}
 
-	public void disable() {
-		enabled = false;
+	public void unlock() {
+		locked = false;
 		testResetButtonView.unlock();
 	}
 
 	public void enablePreviewMode() {
-		enable();
+		lock();
 		testResetButtonView.enablePreviewMode();
 	}
 
