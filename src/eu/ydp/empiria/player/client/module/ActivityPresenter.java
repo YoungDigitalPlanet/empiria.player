@@ -15,7 +15,8 @@ import eu.ydp.empiria.player.client.structure.ModuleBean;
 public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends ModuleBean> extends IsWidget {
 
 	/**
-	 * Wiąże widok z prezenterem, w tym momencie prezenter powinien mieć pełną informację o strukturze według, której będzie tworzył widoki
+	 * Wiąże widok z prezenterem, w tym momencie prezenter powinien mieć
+	 * pełną informację o strukturze według, której będzie tworzył widoki
 	 */
 	void bindView();
 
@@ -59,5 +60,15 @@ public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends
 	 * Pokazywanie/ukrywanie poprawnych odpowiedzi
 	 */
 	void showAnswers(ShowAnswersType mode);
+
+	/**
+	 * Wejscie w tryb submitted mode
+	 */
+	void enableTestSubmittedMode();
+
+	/**
+	 * Wyjscie z trybu submitted mode
+	 */
+	void disableTestSubmittedMode();
 
 }

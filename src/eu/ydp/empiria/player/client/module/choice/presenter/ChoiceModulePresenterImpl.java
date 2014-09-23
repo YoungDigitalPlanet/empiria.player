@@ -162,4 +162,14 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	public void setModuleSocket(ModuleSocket socket) {
 		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		view.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		view.disableTestSubmittedMode();
+	}
 }

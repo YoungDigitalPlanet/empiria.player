@@ -21,4 +21,8 @@ public interface ColorfillInteractionView extends ColorfillCanvas, ColorfillPale
 
 	void unmarkWrongAnswers();
 
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
+
 }

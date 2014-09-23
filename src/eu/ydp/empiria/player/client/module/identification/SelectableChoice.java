@@ -111,4 +111,12 @@ public class SelectableChoice extends Composite {
 			panel.removeStyleName(styleNameConstants.QP_IDENTIFICATION_OPTION_LOCKED());
 		}
 	}
+
+	public void enableTestSubmittedMode() {
+		panel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	public void disableTestSubmittedMode() {
+		panel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
 }

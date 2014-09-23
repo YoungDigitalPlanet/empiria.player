@@ -19,4 +19,8 @@ public interface OrderInteractionView extends IsWidget {
 	void setOrientation(OrderInteractionOrientation orientation);
 
 	String getMainPanelUniqueCssClass();
+
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
 }

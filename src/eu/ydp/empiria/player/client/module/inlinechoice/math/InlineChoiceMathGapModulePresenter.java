@@ -14,6 +14,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.module.gap.GapModulePesenterBase;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
@@ -24,6 +25,7 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 	};
 
 	private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
+	private final StyleNameConstants styleNameConstants;
 
 	@UiField
 	protected FlowPanel mainPanel;
@@ -31,9 +33,10 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 	protected ExListBox listBox;
 
 	@Inject
-	public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker, Provider<ExListBox> exListBoxProvider) {
+	public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker, Provider<ExListBox> exListBoxProvider, StyleNameConstants styleNameConstants) {
 		listBox = exListBoxProvider.get();
 		uiBinder.createAndBindUi(this);
+		this.styleNameConstants = styleNameConstants;
 		swypeBlocker.addBlockOnOpenCloseHandler(listBox);
 	}
 
@@ -81,5 +84,15 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 	// czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to
 	// można to wywalić -> GapBase.setMaxlengthBinding()
 	public void setMaxLength(int length) {
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

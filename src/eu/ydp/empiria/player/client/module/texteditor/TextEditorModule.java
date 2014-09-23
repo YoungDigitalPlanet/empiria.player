@@ -4,15 +4,22 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.*;
+
+import eu.ydp.empiria.player.client.module.IActivity;
+import eu.ydp.empiria.player.client.module.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
 import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestSubmittedClient;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, IStateful, IUniqueModule, IActivity, ILifecycleModule {
+public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, WorkModeTestSubmittedClient, IStateful, IUniqueModule, IActivity,
+		ILifecycleModule {
 
 	private final TextEditorPresenter presenter;
 	private final TextEditorModelEncoder textEditorModelEncoder;
@@ -70,6 +77,16 @@ public class TextEditorModule extends SimpleModuleBase implements WorkModePrevie
 	@Override
 	public void enablePreviewMode() {
 		presenter.enablePreviewMode();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		presenter.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		presenter.disableTestSubmittedMode();
 	}
 
 	@Override

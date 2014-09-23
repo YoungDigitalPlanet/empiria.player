@@ -122,4 +122,17 @@ public class ColorfillInteractionPresenterImpl implements ColorfillInteractionPr
 	public Widget asWidget() {
 		return interactionView.asWidget();
 	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		locked = true;
+		interactionView.enableTestSubmittedMode();
+
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		locked = false;
+		interactionView.disableTestSubmittedMode();
+	}
 }

@@ -348,4 +348,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 		}
 	}
 
+	@Override
+	public void enableTestSubmittedMode() {
+		view.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		view.disableTestSubmittedMode();
+	}
+
 }

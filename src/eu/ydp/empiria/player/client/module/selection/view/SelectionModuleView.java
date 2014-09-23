@@ -29,4 +29,8 @@ public interface SelectionModuleView extends IsWidget {
 	void addClickHandlerToButton(SelectionGridElementPosition gridElementPosition, ClickHandler clickHandler);
 
 	void setGridSize(int amountOfItems, int amountOfChoices);
+
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
 }

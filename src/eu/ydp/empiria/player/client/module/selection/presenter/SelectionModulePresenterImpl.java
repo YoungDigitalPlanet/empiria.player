@@ -23,15 +23,15 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 
-	private SelectionModuleModel model;
+	private final SelectionModuleModel model;
 	private SelectionInteractionBean bean;
 	private ModuleSocket moduleSocket;
-	private GroupAnswersControllerModel groupChoicesControllersModel;
+	private final GroupAnswersControllerModel groupChoicesControllersModel;
 
-	private SelectionModuleView selectionModuleView;
-	private SelectionViewUpdater viewUpdater;
-	private SelectionViewBuilder viewBuilder;
-	private SelectionAnswersMarker answersMarker;
+	private final SelectionModuleView selectionModuleView;
+	private final SelectionViewUpdater viewUpdater;
+	private final SelectionViewBuilder viewBuilder;
+	private final SelectionAnswersMarker answersMarker;
 
 	@Inject
 	public SelectionModulePresenterImpl(SelectionViewUpdater selectionViewUpdater, SelectionAnswersMarker answersMarker,
@@ -113,10 +113,11 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answersToSelect;
-		if (ShowAnswersType.CORRECT.equals(mode))
+		if (ShowAnswersType.CORRECT.equals(mode)) {
 			answersToSelect = model.getCorrectAnswers();
-		else
+		} else {
 			answersToSelect = model.getCurrentAnswers();
+		}
 
 		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.selectOnlyAnswersMatchingIds(answersToSelect);
@@ -128,5 +129,15 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 	@Override
 	public Widget asWidget() {
 		return selectionModuleView.asWidget();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		selectionModuleView.enableTestSubmittedMode();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		selectionModuleView.disableTestSubmittedMode();
 	}
 }

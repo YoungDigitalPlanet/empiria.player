@@ -16,9 +16,11 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	void setBean(MultiplePairBean<T> modelInterface);
 
 	/**
-	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla wszystkich usunietych polaczen zostana wywolane handlery
-	 * {@link PairConnectEventHandler} zarejestrowane poprzez {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)} poprzez
-	 * zdarzenie {@link PairConnectEventTypes.DISCONNECTED}
+	 * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
+	 * wszystkich usunietych polaczen zostana wywolane handlery
+	 * {@link PairConnectEventHandler} zarejestrowane poprzez
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * poprzez zdarzenie {@link PairConnectEventTypes.DISCONNECTED}
 	 * 
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
 	 */
@@ -34,9 +36,12 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	void setLocked(boolean locked);
 
 	/**
-	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z {@link ConnectionModulePresenter#connect(String, String, MultiplePairModuleConnectType)}
-	 * Wykonanie polaczenia musi zostac zakomunikowane poprzez powiadomienie {@link PairConnectEventHandler} zarejestrowanych poprzez
-	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)} zdarzeniem {@link PairConnectEventTypes.CONNECTED}
+	 * Laczy wskazane elementy wywolanie tej metody jest rownowazne z
+	 * {@link ConnectionModulePresenter#connect(String, String, MultiplePairModuleConnectType)}
+	 * Wykonanie polaczenia musi zostac zakomunikowane poprzez powiadomienie
+	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * zdarzeniem {@link PairConnectEventTypes.CONNECTED}
 	 * 
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
@@ -44,9 +49,11 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	void connect(String sourceIdentifier, String targetIdentifier, MultiplePairModuleConnectType type);
 
 	/**
-	 * Rozdziela wskazane elementy. polaczenie powinno zostac usuniete z widoku. Wykonanie rozloczenia musi zostac zakomunikowane poprzez powiadomienie
-	 * {@link PairConnectEventHandler} zarejestrowanych poprzez {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)} zdarzeniem
-	 * {@link PairConnectEventTypes.DISCONNECTED}
+	 * Rozdziela wskazane elementy. polaczenie powinno zostac usuniete z widoku.
+	 * Wykonanie rozloczenia musi zostac zakomunikowane poprzez powiadomienie
+	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
+	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
+	 * zdarzeniem {@link PairConnectEventTypes.DISCONNECTED}
 	 * 
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
@@ -64,4 +71,8 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	void setModuleSocket(ModuleSocket socket);
 
 	boolean isAttached();
+
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
 }

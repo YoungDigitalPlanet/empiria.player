@@ -12,4 +12,8 @@ public interface ChoiceModuleView extends IsWidget {
 
 	Element getPrompt();
 
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
+
 }

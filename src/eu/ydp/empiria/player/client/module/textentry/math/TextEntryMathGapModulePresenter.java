@@ -12,11 +12,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModulePresenterBase;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements BlurHandler {
 
@@ -33,6 +35,9 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 	@UiField(provided = true)
 	protected Widget textBoxWidget;
 	private BlurHandler changeHandler;
+
+	@Inject
+	private StyleNameConstants styleNameConstants;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -78,5 +83,15 @@ public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenter
 		if (changeHandler != null) {
 			changeHandler.onBlur(event);
 		}
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

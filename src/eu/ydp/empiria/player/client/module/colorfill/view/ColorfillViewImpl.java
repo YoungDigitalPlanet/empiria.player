@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.mark.AnswersMarkingPanel;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
@@ -47,11 +48,14 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@UiField
 	AnswersMarkingPanel wrongAnswersMarkingPanel;
 
+	private final StyleNameConstants styleNameConstants;
+
 	@Inject
-	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
+	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas, StyleNameConstants styleNameConstants) {
 		this.canvas = canvas;
 		this.palette = palette;
 		this.correctImageCanvas = correctImageCanvas;
+		this.styleNameConstants = styleNameConstants;
 
 		uiBinder.createAndBindUi(this);
 	}
@@ -151,5 +155,15 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 	@Override
 	public void unmarkWrongAnswers() {
 		wrongAnswersMarkingPanel.clearAndHide();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		container.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		container.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

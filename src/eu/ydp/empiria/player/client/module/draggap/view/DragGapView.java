@@ -30,4 +30,8 @@ public interface DragGapView extends IsWidget {
 	void setWidth(int width);
 
 	void setItemContent(SourcelistItemValue item);
+
+	void enableTestSubmittedMode();
+
+	void disableTestSubmittedMode();
 }
