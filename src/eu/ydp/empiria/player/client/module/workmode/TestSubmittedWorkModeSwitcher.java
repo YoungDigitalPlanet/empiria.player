@@ -10,4 +10,11 @@ public class TestSubmittedWorkModeSwitcher implements WorkModeSwitcher {
 			((WorkModeTestSubmittedClient) module).enableTestSubmittedMode();
 		}
 	}
+
+	@Override
+	public void disable(IModule module) {
+		if (module instanceof WorkModeTestSubmittedClient) {
+			((WorkModeTestSubmittedClient) module).disableTestSubmittedMode();
+		}
+	}
 }

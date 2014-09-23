@@ -6,4 +6,6 @@ import java.io.Serializable;
 
 public interface WorkModeSwitcher extends Serializable {
 	void enable(IModule module);
+
+	void disable(IModule module);
 }
