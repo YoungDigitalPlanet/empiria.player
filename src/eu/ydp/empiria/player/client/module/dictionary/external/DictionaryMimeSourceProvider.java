@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.MimeUtil;
 
-public class MimeSourceProvider {
+public class DictionaryMimeSourceProvider {
 	private static final String dictionaryMediaPath = "dictionary/media/";
 
 	@Inject

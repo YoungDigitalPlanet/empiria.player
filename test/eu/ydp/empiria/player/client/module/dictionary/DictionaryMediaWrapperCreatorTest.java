@@ -16,8 +16,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.MediaWrapperCreator;
+import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -25,13 +25,13 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MediaWrapperCreatorTest {
+public class DictionaryMediaWrapperCreatorTest {
 
 	@InjectMocks
-	private MediaWrapperCreator testObj;
+	private DictionaryMediaWrapperCreator testObj;
 
 	@Mock
-	private MimeSourceProvider mimeSourceProvider;
+	private DictionaryMimeSourceProvider dictionaryMimeSourceProvider;
 
 	@Mock
 	private EventsBus eventsBus;
@@ -51,7 +51,7 @@ public class MediaWrapperCreatorTest {
 		sourcesWithTypes.put(fileName, mime);
 		CallbackRecevier<MediaWrapper<Widget>> callbackReceiver = mock(CallbackRecevier.class);
 
-		when(mimeSourceProvider.getSourcesWithTypes(fileName)).thenReturn(sourcesWithTypes);
+		when(dictionaryMimeSourceProvider.getSourcesWithTypes(fileName)).thenReturn(sourcesWithTypes);
 
 		// when
 		testObj.create(fileName, callbackReceiver);
