@@ -7,13 +7,13 @@ import eu.ydp.empiria.player.client.module.ILockable;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
 
-public class TestPageSubmitModule extends SimpleModuleBase implements ILockable, WorkModeClient {
+public class TestPageSubmitButtonModule extends SimpleModuleBase implements ILockable, WorkModeClient {
 
-	private final TestPageSubmitPresenter presenter;
+	private final TestPageSubmitButtonPresenter presenter;
 
 	@Inject
-	public TestPageSubmitModule(TestPageSubmitPresenter testPageSubmitPresenter) {
-		this.presenter = testPageSubmitPresenter;
+	public TestPageSubmitButtonModule(TestPageSubmitButtonPresenter presenter) {
+		this.presenter = presenter;
 	}
 
 	@Override

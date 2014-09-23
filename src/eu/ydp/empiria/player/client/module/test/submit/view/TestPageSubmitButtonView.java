@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 import eu.ydp.gwtutil.client.event.factory.Command;
 
-public interface TestPageSubmitView extends IsWidget {
+public interface TestPageSubmitButtonView extends IsWidget {
 	public void addHandler(Command command);
 
 	public void lock();
