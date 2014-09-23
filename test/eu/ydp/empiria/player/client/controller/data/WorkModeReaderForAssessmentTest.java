@@ -1,18 +1,13 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public class WorkModeReaderForAssessmentTest extends GWTTestCase {
+public class WorkModeReaderForAssessmentTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	private WorkModeReaderForAssessment testObj;
-
-	@Override
-	public String getModuleName() {
-		return "eu.ydp.empiria.player.Player";
-	}
 
 	@Override
 	protected void gwtSetUp() {
