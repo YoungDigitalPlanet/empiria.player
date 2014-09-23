@@ -1,11 +1,14 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.common.base.Optional;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
 import eu.ydp.empiria.player.client.controller.data.library.LibraryLink;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
@@ -34,9 +37,9 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private List<Element> items = null;
 
 	@Inject
-	private WorkModeReaderForAssessment workModeReader;
+	private WorkModeParserForAssessment workModeParser;
 	@Inject
-	private WorkModeUpdaterForAssessment workModeUpdater;
+	private PlayerWorkModeService playerWorkModeService;
 
 	public void setSkinListener(AssessmentDataLoaderEventListener listener) {
 		this.listener = listener;
@@ -82,9 +85,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 		                                                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
 		libraryLink = new LibraryLink(data.getDocument()
 		                                  .getElementsByTagName("extensionsLibrary"), data.getBaseURL());
-
-		String mode = workModeReader.read(data);
-		workModeUpdater.update(mode);
+		setWorkMode();
 
 		if (skinUrl == null) {
 			assessmentData = new AssessmentData(data, null);
@@ -94,6 +95,13 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 			              .concat(skinUrl);
 
 			skinData.load(skinUrl);
+		}
+	}
+
+	private void setWorkMode() {
+		Optional<PlayerWorkMode> workMode = workModeParser.parse(data);
+		if (workMode.isPresent()) {
+			playerWorkModeService.updateWorkMode(workMode.get());
 		}
 	}
 

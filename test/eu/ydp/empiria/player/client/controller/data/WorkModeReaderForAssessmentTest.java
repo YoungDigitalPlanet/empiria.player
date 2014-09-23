@@ -1,41 +1,53 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.common.base.Optional;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class WorkModeReaderForAssessmentTest extends AbstractEmpiriaPlayerGWTTestCase {
 
-	private WorkModeReaderForAssessment testObj;
+	private WorkModeParserForAssessment testObj;
 
 	@Override
 	protected void gwtSetUp() {
-		testObj = new WorkModeReaderForAssessment();
+		testObj = new WorkModeParserForAssessment();
 	}
 
-	public void test_shouldReturnModeWhenModeIsSpecified() {
+	public void test_shouldReturnModeWhenModeIsCorrect() {
 		// given
 		XmlData xmlData = getXmlData("<assessmentTest compilerVersion=\"3.3.2.117\" mode=\"test\"/>");
-		String expected = "test";
+		PlayerWorkMode expected = PlayerWorkMode.TEST;
 
 		// when
-		String actual = testObj.read(xmlData);
+		Optional<PlayerWorkMode> actual = testObj.parse(xmlData);
 
 		// then
-		assertEquals(actual, expected);
+		assertEquals(actual.get(), expected);
+	}
+
+	public void test_shouldReturnEmptyStringWhenModeIsNotCorrect() {
+		// given
+		XmlData xmlData = getXmlData("<assessmentTest compilerVersion=\"3.3.2.117\" mode=\"not_existing_mode\"/>");
+
+		// when
+		Optional<PlayerWorkMode> actual = testObj.parse(xmlData);
+
+		// then
+		assertFalse(actual.isPresent());
 	}
 
 	public void test_shouldReturnEmptyStringWhenModeIsNotSpecified() {
 		// given
 		XmlData xmlData = getXmlData("<assessmentTest compilerVersion=\"3.3.2.117\"/>");
-		String expected = "";
 
 		// when
-		String actual = testObj.read(xmlData);
+		Optional<PlayerWorkMode> actual = testObj.parse(xmlData);
 
 		// then
-		assertEquals(actual, expected);
+		assertFalse(actual.isPresent());
 	}
 
 	private XmlData getXmlData(String source) {
