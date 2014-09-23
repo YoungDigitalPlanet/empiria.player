@@ -995,6 +995,15 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-table-table")
 	public String QP_TABLE_TABLE();
 
+	@DefaultStringValue("qp-test-reset")
+	public String QP_TEST_RESET();
+
+	@DefaultStringValue("qp-test-reset-button")
+	public String QP_TEST_RESET_BUTTON();
+
+	@DefaultStringValue("qp-test-reset-disabled")
+	public String QP_TEST_RESET_DISABLED();
+
 	@DefaultStringValue("qp-test-submit")
 	public String QP_TEST_SUBMIT();
 

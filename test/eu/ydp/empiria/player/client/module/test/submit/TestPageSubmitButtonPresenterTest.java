@@ -20,16 +20,16 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitButtonView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class TestPageSubmitPresenterTest {
+public class TestPageSubmitButtonPresenterTest {
 
-	private TestPageSubmitPresenter testObj;
+	private TestPageSubmitButtonPresenter testObj;
 
 	@Mock
-	private TestPageSubmitView testPageSubmitButtonView;
+	private TestPageSubmitButtonView testPageSubmitButtonView;
 	@Mock
 	private FlowRequestInvoker flowRequestInvoker;
 	@Mock
@@ -42,7 +42,7 @@ public class TestPageSubmitPresenterTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		when(flowManager.getFlowRequestInvoker()).thenReturn(flowRequestInvoker);
-		testObj = new TestPageSubmitPresenter(testPageSubmitButtonView, flowManager);
+		testObj = new TestPageSubmitButtonPresenter(testPageSubmitButtonView, flowManager);
 	}
 
 	@Test
@@ -76,8 +76,6 @@ public class TestPageSubmitPresenterTest {
 
 	@Test
 	public void shouldLockButton() {
-		// given
-
 		// when
 		testObj.lock();
 
@@ -87,8 +85,6 @@ public class TestPageSubmitPresenterTest {
 
 	@Test
 	public void shouldUnlockButton() {
-		// given
-
 		// when
 		testObj.unlock();
 
@@ -135,8 +131,6 @@ public class TestPageSubmitPresenterTest {
 
 	@Test
 	public void shouldEnablePreviewModeMode() {
-		// given
-
 		// when
 		testObj.enablePreviewMode();
 

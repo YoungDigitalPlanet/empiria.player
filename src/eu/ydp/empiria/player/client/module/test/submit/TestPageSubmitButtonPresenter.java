@@ -7,17 +7,17 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitView;
+import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitButtonView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
-public class TestPageSubmitPresenter {
+public class TestPageSubmitButtonPresenter {
 
-	private final TestPageSubmitView testPageSubmitButtonView;
+	private final TestPageSubmitButtonView testPageSubmitButtonView;
 	private final FlowRequestInvoker flowRequestInvoker;
-	private boolean enabled = true;
+	private boolean locked;
 
 	@Inject
-	public TestPageSubmitPresenter(TestPageSubmitView testPageSubmitButtonView, FlowManager flowManager) {
+	public TestPageSubmitButtonPresenter(TestPageSubmitButtonView testPageSubmitButtonView, FlowManager flowManager) {
 		this.testPageSubmitButtonView = testPageSubmitButtonView;
 		this.flowRequestInvoker = flowManager.getFlowRequestInvoker();
 		addHandlerToButton();
@@ -28,7 +28,7 @@ public class TestPageSubmitPresenter {
 
 			@Override
 			public void execute(NativeEvent event) {
-				if (enabled) {
+				if (!locked) {
 					nextPage();
 				}
 			}
@@ -44,12 +44,12 @@ public class TestPageSubmitPresenter {
 	}
 
 	public void lock() {
-		enabled = false;
+		locked = true;
 		testPageSubmitButtonView.lock();
 	}
 
 	public void unlock() {
-		enabled = true;
+		locked = false;
 		testPageSubmitButtonView.unlock();
 	}
 

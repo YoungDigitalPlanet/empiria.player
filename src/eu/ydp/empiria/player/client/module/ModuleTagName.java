@@ -15,7 +15,8 @@ public enum ModuleTagName {
 			"gap_inline-choice"), MATCH_INTERACTION("matchInteraction"), SOURCE_LIST("sourceList"), TEXT_FEEDBACK("textFeedback"), IMAGE_FEEDBACK(
 			"imageFeedback"), INLINE_CONTAINER_STYLE_STRONG("b"), LABELLING_INTERACTION("labellingInteraction"), ORDER_INTERACTION("orderInteraction"), COLORFILL_INTERACTION(
 			"colorfillInteraction"), DRAG_GAP("dragInteraction"), TUTOR("tutor"), BUTTON("button"), DRAWING("drawing"), BONUS("bonus"), PROGRESS_BONUS(
-			"progressBonus"), VIDEO("video"), DICTIONARY("dictionaryButton"), OPEN_QUESTION("openQuestion"), TEST_PAGE_SUBMIT("testPageSubmitButton");
+			"progressBonus"), VIDEO("video"), DICTIONARY("dictionaryButton"), OPEN_QUESTION("openQuestion"), TEST_PAGE_SUBMIT("testPageSubmitButton"), TEST_RESET(
+			"testResetButton");
 	String name = null;
 
 	private ModuleTagName(String name) {
