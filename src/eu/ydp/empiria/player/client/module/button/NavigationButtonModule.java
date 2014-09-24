@@ -1,34 +1,48 @@
 package eu.ydp.empiria.player.client.module.button;
 
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
+
+import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
-
-public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler {
+public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler, WorkModeTestClient {
 
 	private PushButton button;
 	private boolean enabled = true;
 	private final NavigationButtonDirection direction;
 
-	// @Inject
-	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	protected EventsBus eventsBus;
+	private final StyleNameConstants styleNameConstants;
+	private final PlayerWorkModeService playerWorkModeService;
 
-	public NavigationButtonModule(NavigationButtonDirection dir) {
+	@Inject
+	public NavigationButtonModule(@Assisted NavigationButtonDirection dir, StyleNameConstants styleNameConstants, PlayerWorkModeService playerWorkModeService,
+			EventsBus eventsBus) {
 		direction = dir;
+		this.eventsBus = eventsBus;
+		this.styleNameConstants = styleNameConstants;
+		this.playerWorkModeService = playerWorkModeService;
 	}
 
 	@Override
@@ -68,9 +82,24 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		case TEST_PAGE_LOADED:
 			setStyleName();
 			break;
+		case PAGE_LOADING:
+			activateCorrectWorkMode();
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void activateCorrectWorkMode() {
+		PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
+		WorkModeSwitcher currentWorkModeSwitcher = currentWorkMode.getWorkModeSwitcher();
+		Optional<PlayerWorkMode> optionalPreviousWorkMode = playerWorkModeService.getPreviousWorkMode();
+		if (optionalPreviousWorkMode.isPresent()) {
+			PlayerWorkMode previousWorkMode = optionalPreviousWorkMode.get();
+			WorkModeSwitcher previousWorkModeSwitcher = previousWorkMode.getWorkModeSwitcher();
+			previousWorkModeSwitcher.disable(this);
+		}
+		currentWorkModeSwitcher.enable(this);
 	}
 
 	public void setEnabled(boolean isEnabled) {
@@ -122,19 +151,33 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PAGE_LOADED) {
-			Timer timer = new Timer() {
-				@Override
-				public void run() {
-					setEnabled(true && !isEnd());
-					setStyleName();
-				}
-			};
-			timer.schedule(300);
-		} else if (event.getType() == BEFORE_FLOW) {
-			setEnabled(false);
-			setStyleName();
+		if (isEnabled()) {
+			if (event.getType() == PAGE_LOADED) {
+				Timer timer = new Timer() {
+					@Override
+					public void run() {
+						setEnabled(true && !isEnd());
+						setStyleName();
+					}
+				};
+				timer.schedule(300);
+			} else if (event.getType() == BEFORE_FLOW) {
+				setEnabled(false);
+				setStyleName();
+			}
 		}
 
+	}
+
+	@Override
+	public void enableTestMode() {
+		setEnabled(false);
+		button.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
+	}
+
+	@Override
+	public void disableTestMode() {
+		setEnabled(true);
+		button.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
 	}
 }

@@ -1,10 +1,13 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
-import static eu.ydp.empiria.player.client.util.MapCreator.m;
+import static eu.ydp.empiria.player.client.util.MapCreator.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
+import eu.ydp.empiria.player.client.gin.factory.NavigationButtonFactory;
 import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
@@ -18,13 +21,16 @@ public abstract class NavigationButtonModuleConnectorExtension extends ControlMo
 			ModuleTagName.NEXT_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.NEXT).p(ModuleTagName.PREV_ITEM_NAVIGATION.tagName(),
 			NavigationButtonDirection.PREVIOUS);
 
+	@Inject
+	private NavigationButtonFactory navigationButtonFactory;
+
 	@Override
 	public ModuleCreator getModuleCreator() {
 		return new AbstractModuleCreator() {
 			@Override
 			public IModule createModule() {
 				NavigationButtonDirection direction = getDirection(getModuleNodeName());
-				NavigationButtonModule button = new NavigationButtonModule(direction);
+				NavigationButtonModule button = navigationButtonFactory.getNavigationButtonModule(direction);
 				initializeModule(button);
 				return button;
 			}

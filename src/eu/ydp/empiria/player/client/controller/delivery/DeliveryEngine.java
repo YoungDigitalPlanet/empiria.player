@@ -114,6 +114,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final BonusService bonusService;
 	private final ProgressBonusService progressBonusService;
 	private final UserAgentUtil userAgentUtil;
+	private final PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension;
+	private final NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
@@ -123,7 +125,9 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
 			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
 			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
-			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil) {
+			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
+			PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension,
+			NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -142,6 +146,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.userAgentUtil = userAgentUtil;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
+		this.prevPageButtonModuleConnectorExtension = prevPageButtonModuleConnectorExtension;
+		this.nextPageButtonModuleConnectorExtension = nextPageButtonModuleConnectorExtension;
 
 		eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
 		eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
@@ -305,8 +311,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getPromptModule(), ModuleTagName.PROMPT));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTableModule(), ModuleTagName.TABLE));
-		loadExtension(new NextPageButtonModuleConnectorExtension());
-		loadExtension(new PrevPageButtonModuleConnectorExtension());
+		loadExtension(nextPageButtonModuleConnectorExtension);
+		loadExtension(prevPageButtonModuleConnectorExtension);
 		loadExtension(new PageSwitchModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getPageInPageModule(), ModuleTagName.PAGE_IN_PAGE));
 		loadExtension(moduleProviderFactory.getCheckButtonModuleConnectorExtension().get());

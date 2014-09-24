@@ -75,6 +75,7 @@ import eu.ydp.empiria.player.client.gin.factory.MediaWrapperFactory;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
+import eu.ydp.empiria.player.client.gin.factory.NavigationButtonFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
@@ -251,6 +252,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
 		install(new GinFactoryModuleBuilder().build(TemplateParserFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
+		install(new GinFactoryModuleBuilder().build(NavigationButtonFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
