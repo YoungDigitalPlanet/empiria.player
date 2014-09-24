@@ -25,7 +25,6 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	@Inject
 	private StyleNameConstants styleNameConstants;
 	private boolean isEnabled = true;
-	private boolean isPreviewMode = false;
 
 	@Override
 	public void initModule(Element element) {// NOPMD
@@ -67,10 +66,6 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	protected void updateStyleName() {
 		final String currentStyleName = getCurrentStyleName();
 		button.addStyleName(currentStyleName);
-		if (isPreviewMode) {
-			final String qp_MODULE_MODE_PREVIEW = styleNameConstants.QP_MODULE_MODE_PREVIEW();
-			button.addStyleName(qp_MODULE_MODE_PREVIEW);
-		}
 	}
 
 	private String getCurrentStyleName() {
@@ -88,8 +83,7 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	@Override
 	public void enablePreviewMode() {
 		isEnabled = false;
-		isPreviewMode = true;
-		updateStyleName();
+		button.addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
 	}
 
 	@Override

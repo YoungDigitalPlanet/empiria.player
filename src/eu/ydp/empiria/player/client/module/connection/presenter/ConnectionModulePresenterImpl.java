@@ -1,12 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
-
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -21,6 +16,10 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHan
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
+
+import java.util.List;
+
+import static eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType.*;
 
 public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler {
 
@@ -227,7 +226,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	/**
 	 * Sets connections in view using given {@link KeyValue} collection for
 	 * defined {@link MultiplePairModuleConnectType}
-	 * 
+	 *
 	 * @param answers
 	 * @param type
 	 */
@@ -240,12 +239,10 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	/**
 	 * Marks / unmarks answers
-	 * 
-	 * @param markMode
-	 *            - {@link Boolean} mark/unmark
-	 * @param markingType
-	 *            - {@link MultiplePairModuleConnectType#CORRECT} or
-	 *            {@link MultiplePairModuleConnectType#WRONG}
+	 *
+	 * @param markMode    - {@link Boolean} mark/unmark
+	 * @param markingType - {@link MultiplePairModuleConnectType#CORRECT} or
+	 *                    {@link MultiplePairModuleConnectType#WRONG}
 	 */
 	private void setAnswersMarked(boolean markMode, MultiplePairModuleConnectType markingType) {
 		List<Boolean> responseEvaluated = model.evaluateResponse();
@@ -274,15 +271,4 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 			moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL);
 		}
 	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		moduleView.enableTestSubmittedMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		moduleView.disableTestSubmittedMode();
-	}
-
 }

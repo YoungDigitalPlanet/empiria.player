@@ -1,9 +1,5 @@
 package eu.ydp.empiria.player.client.module.identification;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -19,7 +15,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.gin.factory.IdentificationModuleFactory;
@@ -31,6 +26,10 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class IdentificationModule extends InteractionModuleBase implements Factory<IdentificationModule> {
 
@@ -292,23 +291,4 @@ public class IdentificationModule extends InteractionModuleBase implements Facto
 	public IdentificationModule getNewInstance() {
 		return identificationModuleProvider.get();
 	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		this.locked = true;
-		for (SelectableChoice option : options) {
-			option.setLocked(true);
-			option.enableTestSubmittedMode();
-		}
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		this.locked = false;
-		for (SelectableChoice option : options) {
-			option.setLocked(false);
-			option.disableTestSubmittedMode();
-		}
-	}
-
 }

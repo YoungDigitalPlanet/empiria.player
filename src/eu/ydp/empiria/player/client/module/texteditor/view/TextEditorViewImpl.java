@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class TextEditorViewImpl extends Composite implements TextEditorView {
@@ -47,15 +46,5 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 	@Override
 	public void enablePreviewMode() {
 		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		mainPanel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		mainPanel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }
