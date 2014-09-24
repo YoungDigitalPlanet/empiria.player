@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.controller.multiview.touch;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -22,16 +24,18 @@ public class TouchController {
 	private final EventsBus eventsBus;
 	private final TouchModel touchModel;
 	private final RootPanelDelegate rootPanelDelegate;
+	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public TouchController(WindowDelegate windowDelegate, TouchEventReader touchEventReader, EventsBus eventsBus, TouchModel touchModel,
-			RootPanelDelegate rootPanelDelegate) {
+			RootPanelDelegate rootPanelDelegate, PlayerWorkModeService playerWorkModeService) {
 
 		this.windowDelegate = windowDelegate;
 		this.touchEventReader = touchEventReader;
 		this.eventsBus = eventsBus;
 		this.touchModel = touchModel;
 		this.rootPanelDelegate = rootPanelDelegate;
+		this.playerWorkModeService = playerWorkModeService;
 	}
 
 	public void updateOnTouchStart(NativeEvent onTouchStartEvent) {
@@ -59,7 +63,11 @@ public class TouchController {
 		int swipeWidth = Math.abs(touchModel.getStartX() - touchModel.getEndX());
 		int swipeHeight = Math.abs(touchModel.getStartY() - touchModel.getEndY());
 
-		return touchModel.getEndX() > 0 && isCorrectSwypeAngle(swipeWidth, swipeHeight) && isCorrectSwypeWidth(swipeWidth);
+		return touchModel.getEndX() > 0 && isCorrectSwypeAngle(swipeWidth, swipeHeight) && isCorrectSwypeWidth(swipeWidth) && !isTestModeEnabled();
+	}
+
+	private boolean isTestModeEnabled() {
+		return playerWorkModeService.getCurrentWorkMode().equals(PlayerWorkMode.TEST);
 	}
 
 	private boolean isCorrectSwypeWidth(int swipeWidth) {

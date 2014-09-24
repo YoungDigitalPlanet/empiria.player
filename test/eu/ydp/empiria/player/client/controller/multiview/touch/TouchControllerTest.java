@@ -13,6 +13,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.dom.client.NativeEvent;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -31,6 +33,8 @@ public class TouchControllerTest {
 	private EventsBus eventsBus;
 	@Mock
 	private RootPanelDelegate rootPanelDelegate;
+	@Mock
+	private PlayerWorkModeService playerWorkModeService;
 
 	private TouchModel touchModel;
 
@@ -40,7 +44,7 @@ public class TouchControllerTest {
 	public void before() {
 		touchModel = new TouchModel();
 		MockitoAnnotations.initMocks(this);
-		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel, rootPanelDelegate);
+		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel, rootPanelDelegate, playerWorkModeService);
 	}
 
 	@After
@@ -90,7 +94,9 @@ public class TouchControllerTest {
 	@Test
 	public void getSwypePercentLengthTest() {
 		/**
-		 * int swypeWidth = Math.abs(touchModel.getLastEndX() - touchModel.getEndX()); return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * 100;
+		 * int swypeWidth = Math.abs(touchModel.getLastEndX() -
+		 * touchModel.getEndX()); return ((float) swypeWidth /
+		 * rootPanelDelegate.getOffsetWidth()) * 100;
 		 */
 		touchModel.setLastEndX(50);
 		touchModel.setEndX(100);
@@ -131,12 +137,26 @@ public class TouchControllerTest {
 	}
 
 	@Test
+	public void canSwitchPageTest_isTestModeEnabled() {
+		touchModel.setEndX(10);
+		touchModel.setStartX(111);
+		touchModel.setEndY(2);
+		touchModel.setStartY(15);
+		when(windowDelegate.getClientWidth()).thenReturn(400);
+		when(playerWorkModeService.getCurrentWorkMode()).thenReturn(PlayerWorkMode.TEST);
+
+		assertFalse(testObj.canSwitchPage());
+		verify(windowDelegate).getClientWidth();
+	}
+
+	@Test
 	public void canSwitchPageTest_isTrue() {
 		touchModel.setEndX(10);
 		touchModel.setStartX(111);
 		touchModel.setEndY(2);
 		touchModel.setStartY(15);
 		when(windowDelegate.getClientWidth()).thenReturn(400);
+		when(playerWorkModeService.getCurrentWorkMode()).thenReturn(PlayerWorkMode.FULL);
 
 		assertTrue(testObj.canSwitchPage());
 		verify(windowDelegate).getClientWidth();
