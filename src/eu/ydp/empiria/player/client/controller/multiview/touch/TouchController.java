@@ -85,7 +85,7 @@ public class TouchController {
 	}
 
 	public boolean isReadyToStartAnnimation() {
-		return isHorizontalSwipe() && !touchModel.isVerticalSwipeDetected();
+		return isHorizontalSwipe() && !touchModel.isVerticalSwipeDetected() && !isTestModeEnabled();
 	}
 
 	public boolean isTouchReservation() {
