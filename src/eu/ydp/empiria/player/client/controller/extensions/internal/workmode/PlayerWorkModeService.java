@@ -13,7 +13,7 @@ public class PlayerWorkModeService {
 		return currentWorkMode;
 	}
 
-	public void updateWorkMode(PlayerWorkMode newWorkMode) {
+	public void tryToUpdateWorkMode(PlayerWorkMode newWorkMode) {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
 			previousWorkMode = Optional.of(currentWorkMode);
 			currentWorkMode = newWorkMode;

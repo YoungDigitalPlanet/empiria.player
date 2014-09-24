@@ -15,7 +15,7 @@ public class PlayerWorkModeServiceTest {
 		PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
 
 		// when
-		testObj.updateWorkMode(validTransition);
+		testObj.tryToUpdateWorkMode(validTransition);
 		PlayerWorkMode actual = testObj.getCurrentWorkMode();
 
 		// then
@@ -28,10 +28,10 @@ public class PlayerWorkModeServiceTest {
 		PlayerWorkMode invalidTransition = PlayerWorkMode.FULL;
 
 		PlayerWorkMode initialState = PlayerWorkMode.PREVIEW;
-		testObj.updateWorkMode(initialState);
+		testObj.tryToUpdateWorkMode(initialState);
 
 		// when
-		testObj.updateWorkMode(invalidTransition);
+		testObj.tryToUpdateWorkMode(invalidTransition);
 		PlayerWorkMode actual = testObj.getCurrentWorkMode();
 
 		// then
@@ -44,7 +44,7 @@ public class PlayerWorkModeServiceTest {
 		PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
 
 		// when
-		testObj.updateWorkMode(validTransition);
+		testObj.tryToUpdateWorkMode(validTransition);
 		Optional<PlayerWorkMode> actual = testObj.getPreviousWorkMode();
 
 		// then
@@ -67,10 +67,10 @@ public class PlayerWorkModeServiceTest {
 		PlayerWorkMode invalidTransition = PlayerWorkMode.TEST;
 
 		PlayerWorkMode initialState = PlayerWorkMode.PREVIEW;
-		testObj.updateWorkMode(initialState);
+		testObj.tryToUpdateWorkMode(initialState);
 
 		// when
-		testObj.updateWorkMode(invalidTransition);
+		testObj.tryToUpdateWorkMode(invalidTransition);
 		Optional<PlayerWorkMode> actual = testObj.getPreviousWorkMode();
 
 		// then

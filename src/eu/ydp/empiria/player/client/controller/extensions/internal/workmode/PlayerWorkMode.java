@@ -8,7 +8,7 @@ public enum PlayerWorkMode {
 	FULL(new EmptyWorkModeSwitcher()) {
 		@Override
 		EnumSet<PlayerWorkMode> getAvailableTransitions() {
-			return EnumSet.allOf(PlayerWorkMode.class);
+			return EnumSet.complementOf(EnumSet.of(TEST_SUBMITTED));
 		}
 	},
 	PREVIEW(new PreviewWorkModeSwitcher()) {

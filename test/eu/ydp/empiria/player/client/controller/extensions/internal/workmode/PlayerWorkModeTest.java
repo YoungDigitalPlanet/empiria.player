@@ -32,7 +32,6 @@ public class PlayerWorkModeTest {
 		return $(
 				$(FULL, PREVIEW),
 				$(FULL, TEST),
-				$(FULL, TEST_SUBMITTED),
 				$(TEST, PREVIEW),
 				$(TEST, TEST_SUBMITTED),
 				$(TEST_SUBMITTED, PREVIEW),
@@ -52,6 +51,7 @@ public class PlayerWorkModeTest {
 
 	Object[] invalidTransitions() {
 		return $(
+				$(FULL, TEST_SUBMITTED),
 				$(PREVIEW, FULL),
 				$(PREVIEW, TEST),
 				$(PREVIEW, TEST_SUBMITTED),

@@ -101,7 +101,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 	private void setWorkMode() {
 		Optional<PlayerWorkMode> workMode = workModeParser.parse(data);
 		if (workMode.isPresent()) {
-			playerWorkModeService.updateWorkMode(workMode.get());
+			playerWorkModeService.tryToUpdateWorkMode(workMode.get());
 		}
 	}
 
