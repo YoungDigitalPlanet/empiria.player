@@ -137,6 +137,6 @@ public class TestResetButtonPresenterTest {
 
 	private void verifyActionsOnResetClick() {
 		verify(flowManager).invokeFlowRequest(any(FlowRequest.NavigateFirstItem.class));
-		verify(playerWorkModeService).updateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
+		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
 	}
 }

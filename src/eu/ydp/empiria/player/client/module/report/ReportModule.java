@@ -5,11 +5,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
@@ -24,7 +25,10 @@ public class ReportModule extends ContainerModuleBase {
 
 	private final Panel mainPanel;
 	private FlexTable table;
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector()
+	                                                                    .getStyleNameConstants();
+	private final PlayerWorkModeService playerWorkModeService = PlayerGinjectorFactory.getPlayerGinjector()
+	                                                                                  .getPlayerWorkModeService();
 
 	public ReportModule(FlowRequestInvoker flowRequestInvoker, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
@@ -42,6 +46,8 @@ public class ReportModule extends ContainerModuleBase {
 		table = reportTableGenerator.generate(element);
 
 		mainPanel.add(table);
+
+		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class TestResetButtonPresenter {
 	}
 
 	private void updateWorkModeTestSubmitted() {
-		playerWorkModeService.updateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
+		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
 	}
 
 	private void navigateToFirstItem() {
