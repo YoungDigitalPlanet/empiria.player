@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
@@ -24,7 +23,10 @@ public class ReportModule extends ContainerModuleBase {
 
 	private final Panel mainPanel;
 	private FlexTable table;
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector()
+	                                                                    .getStyleNameConstants();
+	private final WorkModeSwitcherForReport workModeSwitcherForReport = PlayerGinjectorFactory.getPlayerGinjector()
+	                                                                                          .getWorkModeSwitcherForReport();
 
 	public ReportModule(FlowRequestInvoker flowRequestInvoker, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
@@ -42,6 +44,8 @@ public class ReportModule extends ContainerModuleBase {
 		table = reportTableGenerator.generate(element);
 
 		mainPanel.add(table);
+
+		workModeSwitcherForReport.switchIfNeed();
 	}
 
 	@Override
