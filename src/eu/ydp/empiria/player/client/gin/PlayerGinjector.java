@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.ExtensionsManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.AssessmentJsonReportExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
@@ -23,7 +24,6 @@ import eu.ydp.empiria.player.client.gin.module.*;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
 import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnImageProvider;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.report.WorkModeSwitcherForReport;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -107,5 +107,5 @@ public interface PlayerGinjector extends Ginjector {
 
 	TouchHandlerOnImageProvider getTouchHandlerOnImageProvider();
 
-	WorkModeSwitcherForReport getWorkModeSwitcherForReport();
+	PlayerWorkModeService getPlayerWorkModeService();
 }
