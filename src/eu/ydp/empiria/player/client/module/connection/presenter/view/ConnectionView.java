@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.connection.presenter.view;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveCancelHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndHandler;
@@ -29,9 +28,4 @@ public interface ConnectionView extends IsWidget, HasDimensions {
 	void setDrawFollowTouch(boolean followTouch);
 
 	Element getElement();
-
-	void enableTestSubmittedMode();
-
-	void disableTestSubmittedMode();
-
 }

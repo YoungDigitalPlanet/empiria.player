@@ -127,18 +127,6 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 	}
 
 	@Override
-	public void disableTestSubmittedMode() {
-		lock(false);
-		presenter.disableTestSubmittedMode();
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		lock(true);
-		presenter.enableTestSubmittedMode();
-	}
-
-	@Override
 	public JSONArray getState() {
 		JSONArray jsonArr = new JSONArray();
 		jsonArr.set(0, new JSONString(getCurrentResponseValue()));

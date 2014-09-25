@@ -1,24 +1,23 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
 public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
 
@@ -49,24 +48,28 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 
 	protected void setStyles() {
 		Map<String, String> styles = getStyles();
-		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_TYPE) && styles.get(EMPIRIA_INLINECHOICE_TYPE).equalsIgnoreCase("popup")) {
+		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_TYPE) && styles.get(EMPIRIA_INLINECHOICE_TYPE)
+																					 .equalsIgnoreCase("popup")) {
 			controller = inlineChoicePopupControllerProvider.get();
 		} else {
 			controller = inlineChoiceDefaultControllerProvider.get();
 		}
-		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_EMPTY_OPTION) && styles.get(EMPIRIA_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase("hide")) {
+		if (styles != null && styles.containsKey(EMPIRIA_INLINECHOICE_EMPTY_OPTION) && styles.get(EMPIRIA_INLINECHOICE_EMPTY_OPTION)
+																							 .equalsIgnoreCase("hide")) {
 			controller.setShowEmptyOption(false);
 		} else {
 			controller.setShowEmptyOption(true);
 		}
 		if (styles != null && controller instanceof InlineChoicePopupController && styles.containsKey(EMPIRIA_INLINECHOICE_POPUP_POSITION)
-				&& styles.get(EMPIRIA_INLINECHOICE_POPUP_POSITION).equalsIgnoreCase("below")) {
+				&& styles.get(EMPIRIA_INLINECHOICE_POPUP_POSITION)
+						 .equalsIgnoreCase("below")) {
 			((InlineChoicePopupController) controller).setPopupPosition(ExListBox.PopupPosition.BELOW);
 		}
 	}
 
 	protected Map<String, String> getStyles() {
-		return styleSocket.getStyles(xmlParser.createDocument().createElement("inlinechoiceinteraction"));
+		return styleSocket.getStyles(xmlParser.createDocument()
+											  .createElement("inlinechoiceinteraction"));
 	}
 
 	@Override
@@ -171,15 +174,4 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 	public InlineChoiceModule getNewInstance() {
 		return inlineChoiceModuleProvider.get();
 	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		controller.enableTestSubmittetMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		controller.disableTestSubmittetMode();
-	}
-
 }

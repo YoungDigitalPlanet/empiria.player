@@ -1,21 +1,13 @@
 package eu.ydp.empiria.player.client.module.inlinechoice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
@@ -23,11 +15,7 @@ import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParentedModuleBase;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -39,6 +27,9 @@ import eu.ydp.gwtutil.client.collections.RandomizedSet;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener, PlayerEventHandler {
 
@@ -159,7 +150,8 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		}
 		container.add(listBox);
 
-		placeholders.get(0).add(container);
+		placeholders.get(0)
+					.add(container);
 	}
 
 	@Override
@@ -271,8 +263,11 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
 	@Override
 	public void setState(JSONArray newState) {
-		if (newState != null && newState.size() > 0 && newState.get(0).isString() != null) {
-			int index = identifiers.indexOf(newState.get(0).isString().stringValue());
+		if (newState != null && newState.size() > 0 && newState.get(0)
+															   .isString() != null) {
+			int index = identifiers.indexOf(newState.get(0)
+													.isString()
+													.stringValue());
 			listBox.setSelectedIndex(index + getOptionIndex());
 		}
 
@@ -332,17 +327,5 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 		if (event.getType() == PlayerEventTypes.PAGE_CHANGE_STARTED) {
 			listBox.hidePopup();
 		}
-	}
-
-	@Override
-	public void enableTestSubmittetMode() {
-		lock(true);
-		container.addStyleName(styleNames.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void disableTestSubmittetMode() {
-		lock(false);
-		container.removeStyleName(styleNames.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

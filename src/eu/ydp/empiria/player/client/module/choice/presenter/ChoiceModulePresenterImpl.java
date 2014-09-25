@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.SimpleChoicePresenterFactory;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
@@ -19,6 +15,9 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBea
 import eu.ydp.empiria.player.client.module.choice.structure.SimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
@@ -161,15 +160,5 @@ public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 	@Override
 	public void setModuleSocket(ModuleSocket socket) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		view.enableTestSubmittedMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		view.disableTestSubmittedMode();
 	}
 }

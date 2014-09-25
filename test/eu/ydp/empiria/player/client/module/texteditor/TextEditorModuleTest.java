@@ -1,19 +1,17 @@
 package eu.ydp.empiria.player.client.module.texteditor;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.json.client.JSONArray;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
+import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
+import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.json.client.JSONArray;
-
-import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
-import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
-import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TextEditorModuleTest {
@@ -149,23 +147,5 @@ public class TextEditorModuleTest {
 
 		// then
 		verify(presenter).enablePreviewMode();
-	}
-
-	@Test
-	public void shouldEnableTestSubmittedMode() {
-		// when
-		testObj.enableTestSubmittedMode();
-
-		// then
-		verify(presenter).enableTestSubmittedMode();
-	}
-
-	@Test
-	public void shouldDisableTestSubmittedMode() {
-		// when
-		testObj.disableTestSubmittedMode();
-
-		// then
-		verify(presenter).disableTestSubmittedMode();
 	}
 }

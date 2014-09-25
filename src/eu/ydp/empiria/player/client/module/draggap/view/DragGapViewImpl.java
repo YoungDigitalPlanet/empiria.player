@@ -31,7 +31,8 @@ public class DragGapViewImpl implements DragGapView {
 
 	@UiField
 	FlowPanelWithDropZone container;
-	private @Inject TouchController touchController;
+	@Inject
+	private TouchController touchController;
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;
@@ -175,15 +176,5 @@ public class DragGapViewImpl implements DragGapView {
 		String px = Unit.PX.toString().toLowerCase();
 		String valueInPxUnit = value + px;
 		return valueInPxUnit;
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		container.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		container.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }
