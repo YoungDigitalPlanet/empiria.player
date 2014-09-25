@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -18,6 +15,8 @@ import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBe
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+import java.util.List;
 
 public class OrderInteractionPresenterImpl implements OrderInteractionPresenter {
 
@@ -132,15 +131,5 @@ public class OrderInteractionPresenterImpl implements OrderInteractionPresenter 
 	@Override
 	public OrderInteractionOrientation getOrientation() {
 		return bean.getOrientation();
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		interactionView.enableTestSubmittedMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		interactionView.disableTestSubmittedMode();
 	}
 }

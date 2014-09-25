@@ -10,8 +10,4 @@ public interface TextEditorView extends IsWidget {
 	void init();
 
 	void enablePreviewMode();
-
-	void enableTestSubmittedMode();
-
-	void disableTestSubmittedMode();
 }

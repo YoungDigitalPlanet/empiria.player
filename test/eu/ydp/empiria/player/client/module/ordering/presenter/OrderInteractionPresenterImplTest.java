@@ -1,21 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.google.common.collect.Lists;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
@@ -30,6 +15,20 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderInteractionPresenterImplTest {
@@ -190,27 +189,5 @@ public class OrderInteractionPresenterImplTest {
 
 		// then
 		assertThat(orientation).isEqualTo(OrderInteractionOrientation.VERTICAL);
-	}
-
-	@Test
-	public void shouldEnableTestSubmittedMode() {
-		// given
-
-		// when
-		testObj.enableTestSubmittedMode();
-
-		// then
-		verify(interactionView).enableTestSubmittedMode();
-	}
-
-	@Test
-	public void shouldDisableTestSubmittedMode() {
-		// given
-
-		// when
-		testObj.disableTestSubmittedMode();
-
-		// then
-		verify(interactionView).disableTestSubmittedMode();
 	}
 }
