@@ -8,16 +8,14 @@ import com.google.common.base.Optional;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 
-public class PlayerWorkModeModuleContainer implements WorkModeOnChangeListener, WorkModeContainer {
+public class PlayerWorkModeModuleContainer {
 
 	private final List<WorkModeClientType> moduleList = new ArrayList<>();
 
-	@Override
 	public void addModule(WorkModeClientType module) {
 		moduleList.add(module);
 	}
 
-	@Override
 	public void onWorkModeChange(Optional<PlayerWorkMode> previousWorkMode, PlayerWorkMode currentWorkMode) {
 		Optional<WorkModeSwitcher> previousWorkModeSwitcher = Optional.absent();
 		if (previousWorkMode.isPresent()) {

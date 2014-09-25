@@ -11,7 +11,7 @@ public class PlayerWorkModeService {
 	private Optional<PlayerWorkMode> previousWorkMode = Optional.absent();
 
 	@Inject
-	private WorkModeOnChangeListener workModeOnChangeListener;
+	private PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
 
 	public PlayerWorkMode getCurrentWorkMode() {
 		return currentWorkMode;
@@ -21,7 +21,7 @@ public class PlayerWorkModeService {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
 			previousWorkMode = Optional.of(currentWorkMode);
 			currentWorkMode = newWorkMode;
-			workModeOnChangeListener.onWorkModeChange(previousWorkMode, currentWorkMode);
+			playerWorkModeModuleContainer.onWorkModeChange(previousWorkMode, currentWorkMode);
 		}
 	}
 

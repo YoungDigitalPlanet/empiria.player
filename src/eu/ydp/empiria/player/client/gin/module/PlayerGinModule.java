@@ -40,8 +40,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.WorkModeContainer;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.WorkModeOnChangeListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -61,6 +59,7 @@ import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationH
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
@@ -181,8 +180,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(TouchController.class).in(Singleton.class);
 		bind(PlayerWorkModeService.class).in(Singleton.class);
 		bind(PlayerWorkModeModuleContainer.class).in(Singleton.class);
-		bind(WorkModeContainer.class).to(PlayerWorkModeModuleContainer.class);
-		bind(WorkModeOnChangeListener.class).to(PlayerWorkModeModuleContainer.class);
 		bind(PageViewCache.class).in(Singleton.class);
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
@@ -219,6 +216,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
 		bind(SessionDataSupplier.class).to(SessionDataManager.class);
+		bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
 		bind(SessionDataManager.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
 		bind(MainFlowProcessor.class).in(Singleton.class);

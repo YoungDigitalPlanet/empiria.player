@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
@@ -12,6 +14,8 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -20,6 +24,8 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 
 public class AssessmentBody implements WidgetWorkflowListener {
 
@@ -30,16 +36,21 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	protected Panel pageSlot;
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
+	private final PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
+	private final PlayerWorkModeService playerWorkModeService;
 
-	public AssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket, final InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket) {
+	@Inject
+	public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
+			@Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
+			PlayerWorkModeModuleContainer playerWorkModeModuleContainer, PlayerWorkModeService playerWorkModeService) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.interactionEventsListener = interactionEventsListener;
+		this.playerWorkModeModuleContainer = playerWorkModeModuleContainer;
+		this.playerWorkModeService = playerWorkModeService;
 
 		parenthood = new ParenthoodManager();
-
 	}
 
 	public Widget init(Element assessmentBodyElement) {
@@ -109,6 +120,11 @@ public class AssessmentBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onSetUp();
+			}
+			if (currModule instanceof WorkModeClientType) {
+				playerWorkModeModuleContainer.addModule((WorkModeClientType) currModule);
+				WorkModeSwitcher currentWorkModeSwitcher = playerWorkModeService.getCurrentWorkMode().getWorkModeSwitcher();
+				currentWorkModeSwitcher.enable((WorkModeClientType) currModule);
 			}
 		}
 	}

@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.WorkModeContainer;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
@@ -58,12 +58,12 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private final ModulesStateLoader modulesStateLoader;
 	private final IgnoredModules ignoredModules;
-	private final WorkModeContainer workModeContainer;
+	private final PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules ignoredModules, WorkModeContainer workModeContainer) {
+			IgnoredModules ignoredModules, PlayerWorkModeModuleContainer playerWorkModeModuleContainer) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -75,7 +75,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		this.interactionEventsListener = interactionEventsListener;
 		this.ignoredModules = ignoredModules;
-		this.workModeContainer = workModeContainer;
+		this.playerWorkModeModuleContainer = playerWorkModeModuleContainer;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -133,7 +133,7 @@ public class ItemBody implements WidgetWorkflowListener {
 				processIgnoredModule(moduleBase);
 			}
 			if (currModule instanceof WorkModeClientType) {
-				workModeContainer.addModule((WorkModeClientType) currModule);
+				playerWorkModeModuleContainer.addModule((WorkModeClientType) currModule);
 			}
 		}
 	}
