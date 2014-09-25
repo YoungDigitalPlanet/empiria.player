@@ -1,22 +1,19 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import java.util.Stack;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.module.ControlModule;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule, WorkModeClient {
 
@@ -53,7 +50,8 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		Stack<HasChildren> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
 		for (IModule currModule : parentsHierarchy) {
 			if (currModule instanceof IGroup) {
-				if (((IGroup) currModule).getGroupIdentifier().equals(groupId)) {// NOPMD
+				if (((IGroup) currModule).getGroupIdentifier()
+										 .equals(groupId)) {// NOPMD
 					return true; // NOPMD
 				}
 			}
@@ -65,7 +63,10 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 
 	protected void updateStyleName() {
 		final String currentStyleName = getCurrentStyleName();
-		button.addStyleName(currentStyleName);
+		button.setStyleName(currentStyleName);
+		for (String style : styles) {
+			button.addStyleName(style);
+		}
 	}
 
 	private String getCurrentStyleName() {
@@ -80,33 +81,40 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 
 	protected abstract String getStyleName();
 
+	private List<String> styles = new ArrayList<>();
+
 	@Override
 	public void enablePreviewMode() {
 		isEnabled = false;
-		button.addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+		styles.add(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+		updateStyleName();
 	}
 
 	@Override
 	public void enableTestSubmittedMode() {
 		isEnabled = false;
-		button.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		styles.add(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		updateStyleName();
 	}
 
 	@Override
 	public void disableTestSubmittedMode() {
 		isEnabled = true;
-		button.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		styles.remove(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		updateStyleName();
 	}
 
 	@Override
 	public void enableTestMode() {
 		isEnabled = false;
-		button.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
+		styles.add(styleNameConstants.QP_MODULE_MODE_TEST());
+		updateStyleName();
 	}
 
 	@Override
 	public void disableTestMode() {
 		isEnabled = true;
-		button.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
+		styles.remove(styleNameConstants.QP_MODULE_MODE_TEST());
+		updateStyleName();
 	}
 }
