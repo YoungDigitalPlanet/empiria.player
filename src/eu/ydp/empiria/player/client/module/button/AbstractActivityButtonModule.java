@@ -24,6 +24,10 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	private boolean isEnabled = true;
 	private final List<String> styles = new ArrayList<>();
 
+	protected abstract void invokeRequest();
+
+	protected abstract String getStyleName();
+
 	@Override
 	public void initModule(Element element) {// NOPMD
 		updateStyleName();
@@ -60,8 +64,6 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		return false;
 	}
 
-	protected abstract void invokeRequest();
-
 	protected void updateStyleName() {
 		final String currentStyleName = getCurrentStyleName();
 		button.setStyleName(currentStyleName);
@@ -79,8 +81,6 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 
 		return styleName;
 	}
-
-	protected abstract String getStyleName();
 
 	@Override
 	public void enablePreviewMode() {
