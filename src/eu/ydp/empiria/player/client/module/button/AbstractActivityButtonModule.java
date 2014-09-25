@@ -22,6 +22,7 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	@Inject
 	private StyleNameConstants styleNameConstants;
 	private boolean isEnabled = true;
+	private final List<String> styles = new ArrayList<>();
 
 	@Override
 	public void initModule(Element element) {// NOPMD
@@ -80,8 +81,6 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	}
 
 	protected abstract String getStyleName();
-
-	private List<String> styles = new ArrayList<>();
 
 	@Override
 	public void enablePreviewMode() {
