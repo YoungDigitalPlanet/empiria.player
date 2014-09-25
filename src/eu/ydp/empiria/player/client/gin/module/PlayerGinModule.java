@@ -38,7 +38,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.Stic
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.WorkModeContainer;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.WorkModeOnChangeListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -177,6 +180,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(MultiPageTouchHandler.class).in(Singleton.class);
 		bind(TouchController.class).in(Singleton.class);
 		bind(PlayerWorkModeService.class).in(Singleton.class);
+		bind(PlayerWorkModeModuleContainer.class).in(Singleton.class);
+		bind(WorkModeContainer.class).to(PlayerWorkModeModuleContainer.class);
+		bind(WorkModeOnChangeListener.class).to(PlayerWorkModeModuleContainer.class);
 		bind(PageViewCache.class).in(Singleton.class);
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
