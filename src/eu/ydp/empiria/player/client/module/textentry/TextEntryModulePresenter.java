@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,17 +9,17 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+
+import javax.annotation.PostConstruct;
 
 public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 
 	@UiTemplate("TextEntryModule.ui.xml")
 	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {
-	};
+	}
 
 	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 
@@ -31,8 +29,6 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 	protected Panel moduleWidget;
 	@Inject
 	private TextBoxChangeHandler textBoxChangeHandler;
-	@Inject
-	private StyleNameConstants styleNameConstants;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -79,15 +75,5 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 	@Override
 	public void addPresenterHandler(PresenterHandler handler) {
 		textBoxChangeHandler.bind(droppable, handler);
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		moduleWidget.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		moduleWidget.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

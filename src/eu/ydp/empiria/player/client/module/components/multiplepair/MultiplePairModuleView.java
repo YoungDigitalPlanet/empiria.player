@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.components.multiplepair;
 
 import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
@@ -21,16 +20,15 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * {@link PairConnectEventHandler} zarejestrowane poprzez
 	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * poprzez zdarzenie {@link PairConnectEventTypes.DISCONNECTED}
-	 * 
+	 *
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#reset()
 	 */
 	void reset();
 
 	/**
 	 * Blokowanie widoku
-	 * 
+	 *
 	 * @param locked
-	 * 
 	 * @see eu.ydp.empiria.player.client.module.ActivityPresenter#setLocked()
 	 */
 	void setLocked(boolean locked);
@@ -42,7 +40,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
 	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * zdarzeniem {@link PairConnectEventTypes.CONNECTED}
-	 * 
+	 *
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
 	 */
@@ -54,7 +52,7 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 	 * {@link PairConnectEventHandler} zarejestrowanych poprzez
 	 * {@link ConnectionModulePresenter#addConnectionEventHandler(PairConnectEventHandler)}
 	 * zdarzeniem {@link PairConnectEventTypes.DISCONNECTED}
-	 * 
+	 *
 	 * @param sourceIdentifier
 	 * @param targetIdentifier
 	 */
@@ -62,17 +60,13 @@ public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidg
 
 	/**
 	 * Dodaje handlera nasuchujacego na zdarzenia z presentera
-	 * 
-	 * @see PairConnectEventTypes
+	 *
 	 * @param handler
+	 * @see PairConnectEventTypes
 	 */
 	void addPairConnectEventHandler(PairConnectEventHandler handler);
 
 	void setModuleSocket(ModuleSocket socket);
 
 	boolean isAttached();
-
-	void enableTestSubmittedMode();
-
-	void disableTestSubmittedMode();
 }

@@ -1,9 +1,5 @@
 package eu.ydp.empiria.player.client.module.connection.presenter.view;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import com.google.common.collect.ObjectArrays;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -12,18 +8,18 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
+
+import javax.annotation.PostConstruct;
+import java.util.Map;
 
 public class ConnectionViewVertical extends AbstractConnectionView {
 
@@ -43,9 +39,6 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 
 	@UiField
 	protected FlowPanel view;
-
-	@Inject
-	private StyleNameConstants styleNameConstants;
 
 	Map<String, String> errorStyles = null, correctStyles = null;
 
@@ -113,15 +106,5 @@ public class ConnectionViewVertical extends AbstractConnectionView {
 	public Widget asWidget() {
 		initTouchRecognition();
 		return this;
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		view.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		view.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

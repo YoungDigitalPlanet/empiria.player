@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.identification;
 
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,8 +11,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+
+import javax.annotation.PostConstruct;
 
 public class SelectableChoice extends Composite {
 
@@ -47,7 +46,8 @@ public class SelectableChoice extends Composite {
 		this.identifier = identifier;
 		this.contentWidget = contentWidget;
 		this.styleNameConstants = styleNameConstants;
-		coverId = Document.get().createUniqueId();
+		coverId = Document.get()
+						  .createUniqueId();
 
 		uiBinder.createAndBindUi(this);
 		initWidget(panel);
@@ -55,7 +55,8 @@ public class SelectableChoice extends Composite {
 
 	@PostConstruct
 	public void setUpCoverId() {
-		cover.getElement().setId(coverId);
+		cover.getElement()
+			 .setId(coverId);
 		setSelected(false);
 	}
 
@@ -110,13 +111,5 @@ public class SelectableChoice extends Composite {
 		} else {
 			panel.removeStyleName(styleNameConstants.QP_IDENTIFICATION_OPTION_LOCKED());
 		}
-	}
-
-	public void enableTestSubmittedMode() {
-		panel.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	public void disableTestSubmittedMode() {
-		panel.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

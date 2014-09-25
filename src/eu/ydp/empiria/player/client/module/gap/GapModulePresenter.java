@@ -36,8 +36,4 @@ public interface GapModulePresenter {
 	void setMarkMode(String mode);
 
 	void removeMarking();
-
-	void disableTestSubmittedMode();
-
-	void enableTestSubmittedMode();
 }

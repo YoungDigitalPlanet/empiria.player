@@ -1,9 +1,5 @@
 package eu.ydp.empiria.player.client.module;
 
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.*;
-
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -11,7 +7,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
-
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -22,16 +17,16 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonValue;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 
+import java.util.List;
+
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.CORRECT_ANSWERS;
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
+
 /**
- * 
+ * @param <T> typ modułu
+ * @param <H> typ modelu
+ * @param <U> typ beana
  * @author MKaldonek
- * 
- * @param <T>
- *            typ modułu
- * @param <H>
- *            typ modelu
- * @param <U>
- *            typ beana
  */
 public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends
 		OneViewInteractionModuleBase implements ResponseModelChangeListener {
@@ -66,7 +61,8 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 		initalizeModule();
 		initializePresenter();
 		applyIdAndClassToView(getView());
-		placeholders.get(0).add(getView());
+		placeholders.get(0)
+					.add(getView());
 
 	}
 
@@ -98,7 +94,8 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	protected void generateInlineBody(Node node, Widget parentWidget) {
-		getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(node, parentWidget.getElement());
+		getModuleSocket().getInlineBodyGeneratorSocket()
+						 .generateInlineBody(node, parentWidget.getElement());
 	}
 
 	@Override
@@ -120,18 +117,6 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	public void lock(boolean lock) {
 		locked = lock;
 		presenter.setLocked(lock);
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		lock(true);
-		presenter.enableTestSubmittedMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		lock(false);
-		presenter.disableTestSubmittedMode();
 	}
 
 	@Override
@@ -178,14 +163,15 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	/**
 	 * Zwraca typ liczenia dla modulu. 1 punkt za cwiczenie lub ilosc poprawnych
 	 * odpowiedzi w module
-	 * 
+	 *
 	 * @return
 	 */
 	protected CountMode getCountMode() {
 		CountMode mode = SINGLE;
 		boolean isMultiCount = styleAttributeHelper.getBoolean(CORRECT_ANSWERS.getGlobalCssClassName(), CORRECT_ANSWERS.getAttributeName());
 		if (!isMultiCount) {
-			String attrValue = styleSocket.getStyles(getModuleElement()).get(CORRECT_ANSWERS.getAttributeName());
+			String attrValue = styleSocket.getStyles(getModuleElement())
+										  .get(CORRECT_ANSWERS.getAttributeName());
 			isMultiCount = booleanUtils.getBoolean(attrValue);
 		}
 

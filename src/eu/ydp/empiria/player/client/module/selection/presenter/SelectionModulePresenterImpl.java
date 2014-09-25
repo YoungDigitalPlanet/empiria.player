@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -20,6 +17,8 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+import java.util.List;
 
 public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 
@@ -129,15 +128,5 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 	@Override
 	public Widget asWidget() {
 		return selectionModuleView.asWidget();
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		selectionModuleView.enableTestSubmittedMode();
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		selectionModuleView.disableTestSubmittedMode();
 	}
 }
