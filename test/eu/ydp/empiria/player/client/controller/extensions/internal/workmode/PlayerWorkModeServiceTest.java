@@ -1,12 +1,21 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PlayerWorkModeServiceTest {
 
-	PlayerWorkModeService testObj = new PlayerWorkModeService();
+	@InjectMocks
+	private PlayerWorkModeService testObj;
+
+	@Mock
+	private PlayerWorkModeNotifier playerWorkModeNotifier;
 
 	@Test
 	public void shouldUpdateWorkMode_ifTransitionIsValid() {

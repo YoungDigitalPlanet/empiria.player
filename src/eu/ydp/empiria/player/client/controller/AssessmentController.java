@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageData;
@@ -11,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterfe
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
+import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -21,29 +23,37 @@ import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public class AssessmentController implements AssessmentInterferenceSocket {
-	private final AssessmentSessionSocket assessmentSessionSocket;// NOPMD
+	private final AssessmentSessionSocket assessmentSessionSocket;
 	private ViewSocket headerViewSocket;
 	private ViewSocket footerViewSocket;
 
 	private Assessment assessment;
 	protected PageController pageController;
-	private int controllerPageNumber = -1; // NOPMD
-	private final InteractionEventsSocket interactionEventsSocket; // NOPMD
-	private final ModulesRegistrySocket modulesRegistrySocket; // NOPMD
-	private final PageControllerCache controllerCache = PlayerGinjectorFactory.getPlayerGinjector().getPageControllerCache();
-	private final EventsBus eventBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	private int controllerPageNumber = -1;
+	private final InteractionEventsSocket interactionEventsSocket;
+	private final ModulesRegistrySocket modulesRegistrySocket;
 	private final IFlowSocket flowSocket;
-	private final AssessmentViewSocket assessmentViewSocket; // NOPMD
-	private final Page page = PlayerGinjectorFactory.getPlayerGinjector().getPage();
-	private final AssessmentControllerFactory controllerFactory = PlayerGinjectorFactory.getPlayerGinjector().getAssessmentControllerFactory();
+	private final AssessmentViewSocket assessmentViewSocket;
+	private final Page page;
+	private final AssessmentControllerFactory controllerFactory;
+	private final PageControllerCache controllerCache;
+	private final EventsBus eventBus;
+	private final AssessmentFactory assessmentFactory;
 
-	public AssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket, AssessmentSessionSocket ass,
-			ModulesRegistrySocket mrs) {
+	@Inject
+	public AssessmentController(@Assisted AssessmentViewSocket avs, @Assisted IFlowSocket fsocket, @Assisted InteractionEventsSocket interactionsocket,
+			AssessmentSessionSocket ass, ModulesRegistrySocket mrs, Page page, AssessmentControllerFactory controllerFactory,
+			PageControllerCache controllerCache, EventsBus eventBus, AssessmentFactory assessmentFactory) {
 		assessmentViewSocket = avs;
 		assessmentSessionSocket = ass;
 		interactionEventsSocket = interactionsocket;
 		modulesRegistrySocket = mrs;
 		flowSocket = fsocket;
+		this.page = page;
+		this.controllerFactory = controllerFactory;
+		this.controllerCache = controllerCache;
+		this.eventBus = eventBus;
+		this.assessmentFactory = assessmentFactory;
 	}
 
 	/**
@@ -77,7 +87,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	public void init(AssessmentData data, DisplayContentOptions options) {
 		if (data != null) {
-			assessment = new Assessment(data, options, interactionEventsSocket, modulesRegistrySocket);
+			assessment = assessmentFactory.createAssessment(data, options, interactionEventsSocket, modulesRegistrySocket);
 			assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
 			assessment.setUp();
 			assessment.start();
@@ -115,13 +125,13 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
 	@SuppressWarnings("PMD")
 	private native JavaScriptObject createJsSocket(JavaScriptObject pageControllerSocket)/*-{
-																							var socket = {};
-																							var pcs = pageControllerSocket;
-																							socket.getPageControllerSocket = function() {
-																							return pcs;
-																							}
-																							return socket;
-																							}-*/;
+		var socket = {};
+		var pcs = pageControllerSocket;
+		socket.getPageControllerSocket = function() {
+			return pcs;
+		}
+		return socket;
+	}-*/;
 
 	@Override
 	public PageInterferenceSocket getPageControllerSocket() {

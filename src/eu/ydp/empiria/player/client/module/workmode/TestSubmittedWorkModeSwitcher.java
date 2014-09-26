@@ -1,18 +1,17 @@
 package eu.ydp.empiria.player.client.module.workmode;
 
-import eu.ydp.empiria.player.client.module.IModule;
 
 public class TestSubmittedWorkModeSwitcher implements WorkModeSwitcher {
 
 	@Override
-	public void enable(IModule module) {
+	public void enable(WorkModeClientType module) {
 		if (module instanceof WorkModeTestSubmittedClient) {
 			((WorkModeTestSubmittedClient) module).enableTestSubmittedMode();
 		}
 	}
 
 	@Override
-	public void disable(IModule module) {
+	public void disable(WorkModeClientType module) {
 		if (module instanceof WorkModeTestSubmittedClient) {
 			((WorkModeTestSubmittedClient) module).disableTestSubmittedMode();
 		}
