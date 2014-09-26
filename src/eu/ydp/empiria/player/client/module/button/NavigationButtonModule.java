@@ -6,7 +6,8 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
@@ -24,10 +25,11 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	private boolean enabled = true;
 	private final NavigationButtonDirection direction;
 
-	// @Inject
-	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	@Inject
+	protected EventsBus eventsBus;
 
-	public NavigationButtonModule(NavigationButtonDirection dir) {
+	@Inject
+	public NavigationButtonModule(@Assisted NavigationButtonDirection dir) {
 		direction = dir;
 	}
 
