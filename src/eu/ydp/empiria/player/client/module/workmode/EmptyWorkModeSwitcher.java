@@ -1,16 +1,15 @@
 package eu.ydp.empiria.player.client.module.workmode;
 
-import eu.ydp.empiria.player.client.module.IModule;
 
 public class EmptyWorkModeSwitcher implements WorkModeSwitcher {
 
 	@Override
-	public void enable(IModule module) {
+	public void enable(WorkModeClientType module) {
 
 	}
 
 	@Override
-	public void disable(IModule module) {
+	public void disable(WorkModeClientType module) {
 
 	}
 }
