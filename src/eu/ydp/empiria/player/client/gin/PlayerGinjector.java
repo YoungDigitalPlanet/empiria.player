@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.*;
-import eu.ydp.empiria.player.client.gin.module.*; 
+import eu.ydp.empiria.player.client.gin.module.*;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
 import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnImageProvider;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
