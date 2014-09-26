@@ -1,30 +1,49 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
-import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.FULL;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
 
-import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
+import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.FULL;
 
 public class PlayerWorkModeService {
 
+	private final List<WorkModeClientType> moduleList = new ArrayList<>();
 	private PlayerWorkMode currentWorkMode = FULL;
 	private PlayerWorkMode previousWorkMode = FULL;
 
-	@Inject
-	private PlayerWorkModeNotifier playerWorkModeNotifier;
-
-	public PlayerWorkMode getCurrentWorkMode() {
-		return currentWorkMode;
+	public void registerModule(WorkModeClientType module) {
+		moduleList.add(module);
+		notifyModule(module);
 	}
 
 	public void tryToUpdateWorkMode(PlayerWorkMode newWorkMode) {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
 			previousWorkMode = currentWorkMode;
 			currentWorkMode = newWorkMode;
-			playerWorkModeNotifier.onWorkModeChange(previousWorkMode, currentWorkMode);
+			notifyModules();
 		}
 	}
 
-	public PlayerWorkMode getPreviousWorkMode() {
-		return previousWorkMode;
+	private void notifyModules() {
+		for (WorkModeClientType module : moduleList) {
+			notifyModule(module);
+		}
+	}
+
+	private void notifyModule(WorkModeClientType module) {
+		disablePreviousModule(module);
+		enableCurrentModule(module);
+	}
+
+	private void disablePreviousModule(WorkModeClientType module) {
+		previousWorkMode.getWorkModeSwitcher()
+						.disable(module);
+	}
+
+	private void enableCurrentModule(WorkModeClientType module) {
+		currentWorkMode.getWorkModeSwitcher()
+					   .enable(module);
 	}
 }

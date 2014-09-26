@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.json.client.JSONArray;
@@ -11,7 +8,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
@@ -19,24 +15,17 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeNotifier;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemBody implements WidgetWorkflowListener {
 
@@ -58,12 +47,12 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private final ModulesStateLoader modulesStateLoader;
 	private final IgnoredModules ignoredModules;
-	private final PlayerWorkModeNotifier playerWorkModeNotifier;
+	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules ignoredModules, PlayerWorkModeNotifier playerWorkModeNotifier) {
+			IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -75,7 +64,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		this.interactionEventsListener = interactionEventsListener;
 		this.ignoredModules = ignoredModules;
-		this.playerWorkModeNotifier = playerWorkModeNotifier;
+		this.playerWorkModeService = playerWorkModeService;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -133,7 +122,7 @@ public class ItemBody implements WidgetWorkflowListener {
 				processIgnoredModule(moduleBase);
 			}
 			if (currModule instanceof WorkModeClientType) {
-				playerWorkModeNotifier.addModule((WorkModeClientType) currModule);
+				playerWorkModeService.registerModule((WorkModeClientType) currModule);
 			}
 		}
 	}
@@ -234,7 +223,8 @@ public class ItemBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof IGroup) {
 				lastGroup = (IGroup) currModule;
-				if (lastGroup.getGroupIdentifier().equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
+				if (lastGroup.getGroupIdentifier()
+							 .equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
 					return lastGroup;
 				}
 			}
@@ -280,13 +270,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-		var socket = {};
-		var instance = this;
-		socket.getModuleSockets = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-		}
-		return socket;
-	}-*/;
+        var socket = {};
+        var instance = this;
+        socket.getModuleSockets = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+        }
+        return socket;
+    }-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();
@@ -322,21 +312,4 @@ public class ItemBody implements WidgetWorkflowListener {
 	public ParenthoodManager getParenthood() {
 		return parenthood;
 	}
-
-	public void enableWorkMode(WorkModeSwitcher currentworkModeSwitcher) {
-		for (IModule module : modules) {
-			if (module instanceof WorkModeClientType) {
-				currentworkModeSwitcher.enable((WorkModeClientType) module);
-			}
-		}
-	}
-
-	public void disableWorkMode(WorkModeSwitcher previousWorkModeSwitcher) {
-		for (IModule module : modules) {
-			if (module instanceof WorkModeClientType) {
-				previousWorkModeSwitcher.enable((WorkModeClientType) module);
-			}
-		}
-	}
-
 }
