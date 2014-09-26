@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -300,12 +299,9 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private void activateCorrectWorkMode() {
 		PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
 		WorkModeSwitcher currentWorkModeSwitcher = currentWorkMode.getWorkModeSwitcher();
-		Optional<PlayerWorkMode> optionalPreviousWorkMode = playerWorkModeService.getPreviousWorkMode();
-		if (optionalPreviousWorkMode.isPresent()) {
-			PlayerWorkMode previousWorkMode = optionalPreviousWorkMode.get();
-			WorkModeSwitcher previousWorkModeSwitcher = previousWorkMode.getWorkModeSwitcher();
-			itemBody.disableWorkMode(previousWorkModeSwitcher);
-		}
+		PlayerWorkMode previousWorkMode = playerWorkModeService.getPreviousWorkMode();
+		WorkModeSwitcher previousWorkModeSwitcher = previousWorkMode.getWorkModeSwitcher();
+		itemBody.disableWorkMode(previousWorkModeSwitcher);
 		itemBody.enableWorkMode(currentWorkModeSwitcher);
 	}
 

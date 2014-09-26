@@ -1,13 +1,11 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
-import com.google.common.base.Optional;
-
 import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.FULL;
 
 public class PlayerWorkModeService {
 
 	private PlayerWorkMode currentWorkMode = FULL;
-	private Optional<PlayerWorkMode> previousWorkMode = Optional.absent();
+	private PlayerWorkMode previousWorkMode = FULL;
 
 	public PlayerWorkMode getCurrentWorkMode() {
 		return currentWorkMode;
@@ -15,12 +13,12 @@ public class PlayerWorkModeService {
 
 	public void tryToUpdateWorkMode(PlayerWorkMode newWorkMode) {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
-			previousWorkMode = Optional.of(currentWorkMode);
+			previousWorkMode = currentWorkMode;
 			currentWorkMode = newWorkMode;
 		}
 	}
 
-	public Optional<PlayerWorkMode> getPreviousWorkMode() {
+	public PlayerWorkMode getPreviousWorkMode() {
 		return previousWorkMode;
 	}
 }

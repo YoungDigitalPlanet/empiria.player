@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
-import com.google.common.base.Optional;
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -45,35 +44,37 @@ public class PlayerWorkModeServiceTest {
 
 		// when
 		testObj.tryToUpdateWorkMode(validTransition);
-		Optional<PlayerWorkMode> actual = testObj.getPreviousWorkMode();
+		PlayerWorkMode actual = testObj.getPreviousWorkMode();
 
 		// then
-		assertThat(actual.isPresent()).isTrue();
-		assertThat(actual.get()).isEqualTo(PlayerWorkMode.FULL);
+		assertThat(actual).isEqualTo(PlayerWorkMode.FULL);
 	}
 
 	@Test
-	public void shouldNotReturnPreviousState_onStart() {
+	public void shouldFullAsPreviousStateReturnPreviousState_onStart() {
 		// when
-		Optional<PlayerWorkMode> actual = testObj.getPreviousWorkMode();
+		PlayerWorkMode actual = testObj.getPreviousWorkMode();
 
 		// then
-		assertThat(actual.isPresent()).isFalse();
+		assertThat(actual).isEqualTo(PlayerWorkMode.FULL);
 	}
 
 	@Test
 	public void shouldNotReturnPreviousState_ifTransitionIsInvalid() {
 		// when
-		PlayerWorkMode invalidTransition = PlayerWorkMode.TEST;
+		PlayerWorkMode invalidTransition = PlayerWorkMode.TEST_SUBMITTED;
 
-		PlayerWorkMode initialState = PlayerWorkMode.PREVIEW;
-		testObj.tryToUpdateWorkMode(initialState);
+		PlayerWorkMode firstTransition = PlayerWorkMode.TEST;
+		testObj.tryToUpdateWorkMode(firstTransition);
+
+		PlayerWorkMode secondTransition = PlayerWorkMode.PREVIEW;
+		testObj.tryToUpdateWorkMode(secondTransition);
 
 		// when
 		testObj.tryToUpdateWorkMode(invalidTransition);
-		Optional<PlayerWorkMode> actual = testObj.getPreviousWorkMode();
+		PlayerWorkMode actual = testObj.getPreviousWorkMode();
 
 		// then
-		assertThat(actual.get()).isNotEqualTo(invalidTransition);
+		assertThat(actual).isNotEqualTo(invalidTransition);
 	}
 }
