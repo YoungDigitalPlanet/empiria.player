@@ -70,6 +70,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
+import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
@@ -120,6 +121,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
 
+	private final AssessmentFactory assessmentFactory;
+
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
 			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
@@ -127,6 +130,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
 			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
 			PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension,
+			AssessmentFactory assessmentFactory,
 			NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
@@ -144,6 +148,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.deliveryEventsHub = deliveryEventsHub;
 		this.progressBonusService = progressBonusService;
 		this.userAgentUtil = userAgentUtil;
+		this.assessmentFactory = assessmentFactory;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 		this.prevPageButtonModuleConnectorExtension = prevPageButtonModuleConnectorExtension;
@@ -163,8 +168,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 
-		assessmentController = new AssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
-				deliveryEventsHub.getInteractionSocket(), sessionDataManager, modulesRegistry);
+		assessmentController = assessmentFactory.createAssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
+				deliveryEventsHub.getInteractionSocket());
 
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
 
