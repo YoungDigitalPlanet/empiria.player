@@ -36,18 +36,18 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	protected Panel pageSlot;
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
-	private final PlayerWorkModeNotifier playerWorkModeModuleContainer;
+	private final PlayerWorkModeNotifier playerWorkModeNotifier;
 	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
 			@Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-			PlayerWorkModeNotifier playerWorkModeModuleContainer, PlayerWorkModeService playerWorkModeService) {
+			PlayerWorkModeNotifier playerWorkModeNotifier, PlayerWorkModeService playerWorkModeService) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.interactionEventsListener = interactionEventsListener;
-		this.playerWorkModeModuleContainer = playerWorkModeModuleContainer;
+		this.playerWorkModeNotifier = playerWorkModeNotifier;
 		this.playerWorkModeService = playerWorkModeService;
 
 		parenthood = new ParenthoodManager();
@@ -129,7 +129,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	private void workModeProceeding(WorkModeSwitcher currentWorkModeSwitcher, IModule currModule) {
 		if (currModule instanceof WorkModeClientType) {
 			WorkModeClientType workModeModule = (WorkModeClientType) currModule;
-			playerWorkModeModuleContainer.addModule(workModeModule);
+			playerWorkModeNotifier.addModule(workModeModule);
 			currentWorkModeSwitcher.enable(workModeModule);
 		}
 	}

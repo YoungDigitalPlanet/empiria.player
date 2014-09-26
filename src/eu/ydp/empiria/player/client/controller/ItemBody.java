@@ -58,12 +58,12 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private final ModulesStateLoader modulesStateLoader;
 	private final IgnoredModules ignoredModules;
-	private final PlayerWorkModeNotifier playerWorkModeModuleContainer;
+	private final PlayerWorkModeNotifier playerWorkModeNotifier;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules ignoredModules, PlayerWorkModeNotifier playerWorkModeModuleContainer) {
+			IgnoredModules ignoredModules, PlayerWorkModeNotifier playerWorkModeNotifier) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
@@ -75,7 +75,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		this.interactionEventsListener = interactionEventsListener;
 		this.ignoredModules = ignoredModules;
-		this.playerWorkModeModuleContainer = playerWorkModeModuleContainer;
+		this.playerWorkModeNotifier = playerWorkModeNotifier;
 	}
 
 	public Widget init(Element itemBodyElement) {
@@ -133,7 +133,7 @@ public class ItemBody implements WidgetWorkflowListener {
 				processIgnoredModule(moduleBase);
 			}
 			if (currModule instanceof WorkModeClientType) {
-				playerWorkModeModuleContainer.addModule((WorkModeClientType) currModule);
+				playerWorkModeNotifier.addModule((WorkModeClientType) currModule);
 			}
 		}
 	}
