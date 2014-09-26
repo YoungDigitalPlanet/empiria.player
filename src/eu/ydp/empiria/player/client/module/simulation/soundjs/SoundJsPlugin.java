@@ -1,16 +1,15 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoundJsPlugin {
 	@Inject
@@ -65,5 +64,10 @@ public class SoundJsPlugin {
 			}
 		};
 		return receiver;
+	}
+
+	public void stop(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		mediaWrapperController.stop(wrapper);
 	}
 }
