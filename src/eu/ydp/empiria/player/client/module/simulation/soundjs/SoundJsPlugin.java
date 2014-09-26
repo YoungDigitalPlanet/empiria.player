@@ -12,14 +12,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SoundJsPlugin {
-	@Inject
+
 	private MediaWrapperCreator mediaWrapperCreator;
-	@Inject
 	private MediaWrapperController mediaWrapperController;
-	@Inject
 	private MimeSourceProvider mimeSourceProvider;
+	private SoundJsNative soundJsNative;
 
 	private final Map<String, MediaWrapper<Widget>> wrappers = new HashMap<>();
+
+	@Inject
+	public SoundJsPlugin(MediaWrapperCreator mediaWrapperCreator, MediaWrapperController mediaWrapperController, MimeSourceProvider mimeSourceProvider, SoundJsNative soundJsNative) {
+		this.mediaWrapperCreator = mediaWrapperCreator;
+		this.mediaWrapperController = mediaWrapperController;
+		this.mimeSourceProvider = mimeSourceProvider;
+		this.soundJsNative = soundJsNative;
+
+		soundJsNative.setApiForJS(this);
+	}
 
 	public void preload(final String src) {
 		if (!wrappers.containsKey(src)) {

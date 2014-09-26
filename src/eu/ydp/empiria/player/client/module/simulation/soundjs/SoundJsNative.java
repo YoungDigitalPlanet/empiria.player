@@ -1,20 +1,21 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.inject.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SoundJsNative {
 
-	@Inject
-	private SoundJsPlugin soundJsWrapperApi;
-
+	private SoundJsPlugin soundJsPlugin;
 	private final Map<String, JavaScriptObject> soundInstances = new HashMap<>();
 
 	public SoundJsNative() {
 		nativesInit();
+	}
+
+	public void setApiForJS(SoundJsPlugin soundJsPlugin) {
+		this.soundJsPlugin = soundJsPlugin;
 	}
 
 	private native void nativesInit()/*-{
@@ -31,16 +32,15 @@ public class SoundJsNative {
     }-*/;
 
 	private void play(String src) {
-		soundJsWrapperApi.play(src);
+		soundJsPlugin.play(src);
 	}
 
 	private void preload(JavaScriptObject soundInstance, String src) {
 		soundInstances.put(src, soundInstance);
-		soundJsWrapperApi.preload(src);
+		soundJsPlugin.preload(src);
 	}
 
 	private void stop(String src) {
-		soundJsWrapperApi.stop(src);
+		soundJsPlugin.stop(src);
 	}
-
 }
