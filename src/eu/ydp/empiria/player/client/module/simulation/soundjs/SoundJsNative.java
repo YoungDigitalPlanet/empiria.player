@@ -7,15 +7,15 @@ import java.util.Map;
 
 public class SoundJsNative {
 
-	private SoundJsPlugin soundJsPlugin;
+	private ApiForJs api;
 	private final Map<String, JavaScriptObject> soundInstances = new HashMap<>();
 
 	public SoundJsNative() {
 		nativesInit();
 	}
 
-	public void setApiForJS(SoundJsPlugin soundJsPlugin) {
-		this.soundJsPlugin = soundJsPlugin;
+	public void setApiForJS(ApiForJs apiForJs) {
+		this.api = apiForJs;
 	}
 
 	private native void nativesInit()/*-{
@@ -32,15 +32,15 @@ public class SoundJsNative {
     }-*/;
 
 	private void play(String src) {
-		soundJsPlugin.play(src);
+		api.play(src);
 	}
 
 	private void preload(JavaScriptObject soundInstance, String src) {
 		soundInstances.put(src, soundInstance);
-		soundJsPlugin.preload(src);
+		api.preload(src);
 	}
 
 	private void stop(String src) {
-		soundJsPlugin.stop(src);
+		api.stop(src);
 	}
 }

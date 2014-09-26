@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoundJsPlugin {
+public class SoundJsPlugin implements ApiForJs {
 
 	private MediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapperController mediaWrapperController;
