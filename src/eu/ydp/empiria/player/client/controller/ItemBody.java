@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeNotifier;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
@@ -58,12 +58,12 @@ public class ItemBody implements WidgetWorkflowListener {
 
 	private final ModulesStateLoader modulesStateLoader;
 	private final IgnoredModules ignoredModules;
-	private final PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
+	private final PlayerWorkModeNotifier playerWorkModeModuleContainer;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules ignoredModules, PlayerWorkModeModuleContainer playerWorkModeModuleContainer) {
+			IgnoredModules ignoredModules, PlayerWorkModeNotifier playerWorkModeModuleContainer) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;

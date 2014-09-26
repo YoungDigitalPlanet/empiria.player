@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeModuleContainer;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeNotifier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
@@ -36,13 +36,13 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	protected Panel pageSlot;
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
-	private final PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
+	private final PlayerWorkModeNotifier playerWorkModeModuleContainer;
 	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
 			@Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-			PlayerWorkModeModuleContainer playerWorkModeModuleContainer, PlayerWorkModeService playerWorkModeService) {
+			PlayerWorkModeNotifier playerWorkModeModuleContainer, PlayerWorkModeService playerWorkModeService) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
@@ -117,15 +117,20 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	}
 
 	public void setUp() {
+		WorkModeSwitcher currentWorkModeSwitcher = playerWorkModeService.getCurrentWorkMode().getWorkModeSwitcher();
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onSetUp();
 			}
-			if (currModule instanceof WorkModeClientType) {
-				playerWorkModeModuleContainer.addModule((WorkModeClientType) currModule);
-				WorkModeSwitcher currentWorkModeSwitcher = playerWorkModeService.getCurrentWorkMode().getWorkModeSwitcher();
-				currentWorkModeSwitcher.enable((WorkModeClientType) currModule);
-			}
+			workModeProceeding(currentWorkModeSwitcher, currModule);
+		}
+	}
+
+	private void workModeProceeding(WorkModeSwitcher currentWorkModeSwitcher, IModule currModule) {
+		if (currModule instanceof WorkModeClientType) {
+			WorkModeClientType workModeModule = (WorkModeClientType) currModule;
+			playerWorkModeModuleContainer.addModule(workModeModule);
+			currentWorkModeSwitcher.enable(workModeModule);
 		}
 	}
 

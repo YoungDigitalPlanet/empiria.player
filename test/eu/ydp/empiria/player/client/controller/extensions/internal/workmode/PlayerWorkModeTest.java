@@ -17,8 +17,6 @@ import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 @RunWith(JUnitParamsRunner.class)
 public class PlayerWorkModeTest {
 
-	// private IModule module = mock(IModule.class,
-	// withSettings().extraInterfaces(WorkModeClient.class));
 	private final WorkModeClientType workModeClientType = mock(WorkModeClientType.class, withSettings().extraInterfaces(WorkModeClient.class));
 
 	@Test

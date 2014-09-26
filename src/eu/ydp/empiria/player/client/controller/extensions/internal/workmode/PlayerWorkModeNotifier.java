@@ -8,7 +8,7 @@ import com.google.common.base.Optional;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 
-public class PlayerWorkModeModuleContainer {
+public class PlayerWorkModeNotifier {
 
 	private final List<WorkModeClientType> moduleList = new ArrayList<>();
 

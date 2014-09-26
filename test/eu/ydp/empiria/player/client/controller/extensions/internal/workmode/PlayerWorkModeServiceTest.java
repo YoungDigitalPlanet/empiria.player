@@ -17,7 +17,7 @@ public class PlayerWorkModeServiceTest {
 	private PlayerWorkModeService testObj;
 
 	@Mock
-	private PlayerWorkModeModuleContainer playerWorkModeModuleContainer;
+	private PlayerWorkModeNotifier playerWorkModeModuleContainer;
 
 	@Test
 	public void shouldUpdateWorkMode_ifTransitionIsValid() {
