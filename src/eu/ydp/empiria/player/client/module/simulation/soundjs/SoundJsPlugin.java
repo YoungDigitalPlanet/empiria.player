@@ -26,8 +26,7 @@ public class SoundJsPlugin implements ApiForJs {
 		this.mediaWrapperController = mediaWrapperController;
 		this.mimeSourceProvider = mimeSourceProvider;
 		this.soundJsNative = soundJsNative;
-
-		soundJsNative.setApiForJS(this);
+		this.soundJsNative.setApiForJS(this);
 	}
 
 	public void preload(final String src) {
@@ -43,6 +42,11 @@ public class SoundJsPlugin implements ApiForJs {
 		} else {
 			playMediaWrapper(wrapper);
 		}
+	}
+
+	public void stop(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		mediaWrapperController.stop(wrapper);
 	}
 
 	private void createMediaWrapper(final String src, CallbackRecevier<MediaWrapper<Widget>> receiver) {
@@ -74,9 +78,5 @@ public class SoundJsPlugin implements ApiForJs {
 		};
 		return receiver;
 	}
-
-	public void stop(String src) {
-		MediaWrapper<Widget> wrapper = wrappers.get(src);
-		mediaWrapperController.stop(wrapper);
-	}
 }
+
