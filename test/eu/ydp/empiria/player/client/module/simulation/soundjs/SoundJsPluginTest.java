@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
+import com.google.common.collect.Maps;
+import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
+import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Maps;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.Map;
 
-import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
-import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SoundJsPluginTest {
@@ -37,6 +35,8 @@ public class SoundJsPluginTest {
 	private MediaWrapperController mediaWrapperController;
 	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
+	@Mock
+	private SoundJsNative soundJsNative;
 
 	@Captor
 	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> cbCaptor;
@@ -47,6 +47,11 @@ public class SoundJsPluginTest {
 	public void setUp() {
 		Map<String, String> sourcesWithTypes = getSourcesWithTypes();
 		when(mimeSourceProvider.getSourcesWithTypeByExtension(fileSrc)).thenReturn(sourcesWithTypes);
+	}
+
+	@Test
+	public void shouldSetApiForJs() {
+		verify(soundJsNative).setApiForJs(testObj);
 	}
 
 	@Test
@@ -69,7 +74,8 @@ public class SoundJsPluginTest {
 		testObj.preload(fileSrc);
 
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
 
 		// when
 		testObj.preload(fileSrc);
@@ -88,7 +94,8 @@ public class SoundJsPluginTest {
 
 		// then
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
 		verify(mediaWrapperController).stopAndPlay(mediaWrapper);
 	}
 
@@ -99,7 +106,8 @@ public class SoundJsPluginTest {
 		testObj.preload(fileSrc);
 
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
 
 		// when
 		testObj.play(fileSrc);
@@ -116,7 +124,8 @@ public class SoundJsPluginTest {
 		testObj.play(fileSrc);
 
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
 
 		// when
 		testObj.play(fileSrc);
@@ -124,6 +133,23 @@ public class SoundJsPluginTest {
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
 		verify(mediaWrapperController, times(2)).stopAndPlay(mediaWrapper);
+	}
+
+	@Test
+	public void shouldStop() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.stop(fileSrc);
+
+		// then
+		verify(mediaWrapperController).stop(mediaWrapper);
 	}
 
 	private void verifyMediaWrapperCreation(Map<String, String> sourcesWithTypes) {
