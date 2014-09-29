@@ -68,7 +68,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		case CONTINUE:
 		case CHECK:
 		case SHOW_ANSWERS:
-			setEnabled(!isEnd() && !isTestMode());
+			setEnabled(!isEnd() && !testMode);
 		case TEST_PAGE_LOADED:
 			setStyleName();
 			break;
@@ -126,7 +126,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
-		if (isTestMode()) {
+		if (testMode) {
 			return;
 		}
 
@@ -155,9 +155,5 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 	public void disableTestMode() {
 		setEnabled(true);
 		testMode = false;
-	}
-
-	private boolean isTestMode() {
-		return testMode;
 	}
 }

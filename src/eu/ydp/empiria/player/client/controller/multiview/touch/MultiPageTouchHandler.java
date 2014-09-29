@@ -84,7 +84,7 @@ public class MultiPageTouchHandler implements TouchHandler {
 		// zachownaia
 		touchController.updateEndPoint(event);
 
-		if (touchController.isReadyToStartAnnimation()) {
+		if (touchController.isReadyToStartAnimation()) {
 			startAnimation(event);
 		} else {
 			touchController.setVerticalSwipeDetected(true);

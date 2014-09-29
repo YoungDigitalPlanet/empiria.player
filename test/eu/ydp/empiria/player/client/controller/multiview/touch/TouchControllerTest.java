@@ -94,11 +94,6 @@ public class TouchControllerTest {
 
 	@Test
 	public void getSwypePercentLengthTest() {
-		/**
-		 * int swypeWidth = Math.abs(touchModel.getLastEndX() -
-		 * touchModel.getEndX()); return ((float) swypeWidth /
-		 * rootPanelDelegate.getOffsetWidth()) * 100;
-		 */
 		touchModel.setLastEndX(50);
 		touchModel.setEndX(100);
 		when(rootPanelDelegate.getOffsetWidth()).thenReturn(200);
@@ -158,32 +153,30 @@ public class TouchControllerTest {
 		touchModel.setStartY(15);
 		when(windowDelegate.getClientWidth()).thenReturn(400);
 
-		//		when(playerWorkModeService.getCurrentWorkMode()).thenReturn(PlayerWorkMode.FULL);
-
 		assertTrue(testObj.canSwitchPage());
 		verify(windowDelegate).getClientWidth();
 	}
 
 	@Test
-	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isFalse() {
+	public void isReadyToStartAnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isFalse() {
 		touchModel.setEndX(2);
 		touchModel.setStartX(0);
 		touchModel.setEndY(1);
 		touchModel.setStartY(0);
 		touchModel.setVerticalSwipeDetected(false);
 
-		assertTrue(testObj.isReadyToStartAnnimation());
+		assertTrue(testObj.isReadyToStartAnimation());
 	}
 
 	@Test
-	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isTrue() {
+	public void isReadyToStartAnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isTrue() {
 		touchModel.setEndX(2);
 		touchModel.setStartX(0);
 		touchModel.setEndY(1);
 		touchModel.setStartY(0);
 		touchModel.setVerticalSwipeDetected(true);
 
-		assertFalse(testObj.isReadyToStartAnnimation());
+		assertFalse(testObj.isReadyToStartAnimation());
 	}
 
 	@Test
@@ -193,7 +186,7 @@ public class TouchControllerTest {
 		touchModel.setEndY(2);
 		touchModel.setStartY(0);
 
-		assertFalse(testObj.isReadyToStartAnnimation());
+		assertFalse(testObj.isReadyToStartAnimation());
 	}
 
 	@Test

@@ -62,11 +62,7 @@ public class TouchController implements WorkModeTestClient {
 		int swipeWidth = Math.abs(touchModel.getStartX() - touchModel.getEndX());
 		int swipeHeight = Math.abs(touchModel.getStartY() - touchModel.getEndY());
 
-		return touchModel.getEndX() > 0 && isCorrectSwypeAngle(swipeWidth, swipeHeight) && isCorrectSwypeWidth(swipeWidth) && !isTestModeEnabled();
-	}
-
-	private boolean isTestModeEnabled() {
-		return testModeEnabled;
+		return touchModel.getEndX() > 0 && isCorrectSwypeAngle(swipeWidth, swipeHeight) && isCorrectSwypeWidth(swipeWidth) && !testModeEnabled;
 	}
 
 	private boolean isCorrectSwypeWidth(int swipeWidth) {
@@ -83,8 +79,8 @@ public class TouchController implements WorkModeTestClient {
 		return swipeHeight < swipeWidth;
 	}
 
-	public boolean isReadyToStartAnnimation() {
-		return isHorizontalSwipe() && !touchModel.isVerticalSwipeDetected() && !isTestModeEnabled();
+	public boolean isReadyToStartAnimation() {
+		return isHorizontalSwipe() && !touchModel.isVerticalSwipeDetected() && !testModeEnabled;
 	}
 
 	public boolean isTouchReservation() {
