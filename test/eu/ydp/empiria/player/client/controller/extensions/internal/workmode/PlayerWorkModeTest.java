@@ -1,18 +1,17 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
 
-import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.*;
-import static junitparams.JUnitParamsRunner.*;
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.*;
+import static junitparams.JUnitParamsRunner.$;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class PlayerWorkModeTest {
@@ -30,7 +29,14 @@ public class PlayerWorkModeTest {
 	}
 
 	Object[] validTransitions() {
-		return $($(FULL, PREVIEW), $(FULL, TEST), $(TEST, PREVIEW), $(TEST, TEST_SUBMITTED), $(TEST_SUBMITTED, PREVIEW), $(TEST_SUBMITTED, TEST));
+		return $(
+				$(FULL, PREVIEW),
+				$(FULL, TEST),
+				$(TEST, PREVIEW),
+				$(TEST, TEST_SUBMITTED),
+				$(TEST_SUBMITTED, PREVIEW),
+				$(TEST_SUBMITTED, TEST)
+		);
 	}
 
 	@Test
@@ -44,7 +50,14 @@ public class PlayerWorkModeTest {
 	}
 
 	Object[] invalidTransitions() {
-		return $($(FULL, TEST_SUBMITTED), $(PREVIEW, FULL), $(PREVIEW, TEST), $(PREVIEW, TEST_SUBMITTED), $(TEST, FULL), $(TEST_SUBMITTED, FULL));
+		return $(
+				$(FULL, TEST_SUBMITTED),
+				$(PREVIEW, FULL),
+				$(PREVIEW, TEST),
+				$(PREVIEW, TEST_SUBMITTED),
+				$(TEST, FULL),
+				$(TEST_SUBMITTED, FULL)
+		);
 	}
 
 	@Test

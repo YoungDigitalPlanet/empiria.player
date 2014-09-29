@@ -2,11 +2,10 @@ package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -14,7 +13,7 @@ import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
-public class TouchController {
+public class TouchController implements WorkModeTestClient {
 
 	private static final int PERCENT_MAX = 100;
 	private static final int SWYPE_WIDTH_TO_HEIGHT_LIMIT_RATE = 5;
@@ -24,7 +23,7 @@ public class TouchController {
 	private final EventsBus eventsBus;
 	private final TouchModel touchModel;
 	private final RootPanelDelegate rootPanelDelegate;
-	private final PlayerWorkModeService playerWorkModeService;
+	private boolean testModeEnabled = false;
 
 	@Inject
 	public TouchController(WindowDelegate windowDelegate, TouchEventReader touchEventReader, EventsBus eventsBus, TouchModel touchModel,
@@ -35,7 +34,7 @@ public class TouchController {
 		this.eventsBus = eventsBus;
 		this.touchModel = touchModel;
 		this.rootPanelDelegate = rootPanelDelegate;
-		this.playerWorkModeService = playerWorkModeService;
+		playerWorkModeService.registerModule(this);
 	}
 
 	public void updateOnTouchStart(NativeEvent onTouchStartEvent) {
@@ -67,7 +66,7 @@ public class TouchController {
 	}
 
 	private boolean isTestModeEnabled() {
-		return playerWorkModeService.getCurrentWorkMode().equals(PlayerWorkMode.TEST);
+		return testModeEnabled;
 	}
 
 	private boolean isCorrectSwypeWidth(int swipeWidth) {
@@ -176,4 +175,13 @@ public class TouchController {
 		touchModel.setVerticalSwipeDetected(verticalSwipeDetected);
 	}
 
+	@Override
+	public void enableTestMode() {
+		testModeEnabled = true;
+	}
+
+	@Override
+	public void disableTestMode() {
+		testModeEnabled = false;
+	}
 }

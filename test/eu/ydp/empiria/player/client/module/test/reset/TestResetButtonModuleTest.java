@@ -1,16 +1,14 @@
 package eu.ydp.empiria.player.client.module.test.reset;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestResetButtonModuleTest {
@@ -37,18 +35,6 @@ public class TestResetButtonModuleTest {
 
 		// then
 		assertThat(result).isEqualTo(view);
-	}
-
-	@Test
-	public void shouldInitModule() {
-		// given
-		Element element = mock(Element.class);
-
-		// when
-		testObj.initModule(element);
-
-		// then
-		verify(presenter).bindUi();
 	}
 
 	@Test

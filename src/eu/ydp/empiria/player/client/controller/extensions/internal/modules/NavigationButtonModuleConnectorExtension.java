@@ -1,28 +1,29 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
-import static eu.ydp.empiria.player.client.util.MapCreator.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.gin.factory.NavigationButtonFactory;
+import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
-import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonModule;
 
+import java.util.Map;
+
+import static eu.ydp.empiria.player.client.module.ModuleTagName.NEXT_ITEM_NAVIGATION;
+import static eu.ydp.empiria.player.client.module.ModuleTagName.PREV_ITEM_NAVIGATION;
+
 public abstract class NavigationButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
-	private static final Map<String, NavigationButtonDirection> NODE2DIRECTION = m(new HashMap<String, NavigationButtonDirection>()).p(
-			ModuleTagName.NEXT_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.NEXT).p(ModuleTagName.PREV_ITEM_NAVIGATION.tagName(),
-			NavigationButtonDirection.PREVIOUS);
+	private static final Map<String, NavigationButtonDirection> NODE2DIRECTION = ImmutableMap
+			.<String, NavigationButtonDirection>builder()
+			.put(NEXT_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.NEXT)
+			.put(PREV_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.PREVIOUS)
+			.build();
 
 	@Inject
-	private NavigationButtonFactory navigationButtonFactory;
+	private ModuleFactory moduleFactory;
 
 	@Override
 	public ModuleCreator getModuleCreator() {
@@ -30,7 +31,7 @@ public abstract class NavigationButtonModuleConnectorExtension extends ControlMo
 			@Override
 			public IModule createModule() {
 				NavigationButtonDirection direction = getDirection(getModuleNodeName());
-				NavigationButtonModule button = navigationButtonFactory.getNavigationButtonModule(direction);
+				NavigationButtonModule button = moduleFactory.createNavigationButtonModule(direction);
 				initializeModule(button);
 				return button;
 			}
