@@ -23,14 +23,15 @@ public class TestResetButtonPresenter {
 		this.testResetButtonView = testResetButtonView;
 		this.flowManager = flowManager;
 		this.playerWorkModeService = playerWorkModeService;
+		attachHandler();
 	}
 
-	public void bindUi() {
+	private void attachHandler() {
 		testResetButtonView.addHandler(new Command() {
 			@Override
 			public void execute(NativeEvent event) {
 				if (!locked) {
-					updateWorkModeTestSubmitted();
+					changeWorkModeToTest();
 					navigateToFirstItem();
 				}
 			}
@@ -57,8 +58,8 @@ public class TestResetButtonPresenter {
 		testResetButtonView.enablePreviewMode();
 	}
 
-	private void updateWorkModeTestSubmitted() {
-		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
+	private void changeWorkModeToTest() {
+		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST);
 	}
 
 	private void navigateToFirstItem() {

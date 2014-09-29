@@ -25,7 +25,6 @@ public class TestResetButtonModule extends SimpleModuleBase implements ILockable
 
 	@Override
 	protected void initModule(Element element) {
-		presenter.bindUi();
 	}
 
 	@Override
