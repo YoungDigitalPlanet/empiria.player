@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoundJsPlugin implements ApiForJs {
+public class SoundJsPlugin implements SoundApiForJs {
 
 	private MediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapperController mediaWrapperController;
@@ -26,15 +26,17 @@ public class SoundJsPlugin implements ApiForJs {
 		this.mediaWrapperController = mediaWrapperController;
 		this.mimeSourceProvider = mimeSourceProvider;
 		this.soundJsNative = soundJsNative;
-		this.soundJsNative.setApiForJS(this);
+		this.soundJsNative.setApiForJs(this);
 	}
 
+	@Override
 	public void preload(final String src) {
 		if (!wrappers.containsKey(src)) {
 			createMediaWrapper(src, addWrapper(src));
 		}
 	}
 
+	@Override
 	public void play(final String src) {
 		MediaWrapper<Widget> wrapper = wrappers.get(src);
 		if (wrapper == null) {
@@ -44,6 +46,7 @@ public class SoundJsPlugin implements ApiForJs {
 		}
 	}
 
+	@Override
 	public void stop(String src) {
 		MediaWrapper<Widget> wrapper = wrappers.get(src);
 		mediaWrapperController.stop(wrapper);

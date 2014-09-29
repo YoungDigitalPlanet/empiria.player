@@ -1,20 +1,22 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SoundJsNative {
 
-	private ApiForJs api;
+	private SoundApiForJs api;
 	private final Map<String, JavaScriptObject> soundInstances = new HashMap<>();
 
 	public SoundJsNative() {
 		nativesInit();
 	}
 
-	public void setApiForJS(ApiForJs apiForJs) {
+	public void setApiForJs(SoundApiForJs apiForJs) {
 		this.api = apiForJs;
 	}
 

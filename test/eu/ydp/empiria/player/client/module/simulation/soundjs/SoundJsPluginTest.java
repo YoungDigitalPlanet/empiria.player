@@ -51,7 +51,7 @@ public class SoundJsPluginTest {
 
 	@Test
 	public void shouldSetApiForJs() {
-		verify(soundJsNative).setApiForJS(testObj);
+		verify(soundJsNative).setApiForJs(testObj);
 	}
 
 	@Test
@@ -133,6 +133,23 @@ public class SoundJsPluginTest {
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
 		verify(mediaWrapperController, times(2)).stopAndPlay(mediaWrapper);
+	}
+
+	@Test
+	public void shouldStop() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue()
+		        .setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.stop(fileSrc);
+
+		// then
+		verify(mediaWrapperController).stop(mediaWrapper);
 	}
 
 	private void verifyMediaWrapperCreation(Map<String, String> sourcesWithTypes) {
