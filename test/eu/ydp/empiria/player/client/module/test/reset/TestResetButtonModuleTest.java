@@ -40,18 +40,6 @@ public class TestResetButtonModuleTest {
 	}
 
 	@Test
-	public void shouldInitModule() {
-		// given
-		Element element = mock(Element.class);
-
-		// when
-		testObj.initModule(element);
-
-		// then
-		verify(presenter).bindUi();
-	}
-
-	@Test
 	public void shouldLock() {
 		// when
 		testObj.lock(true);

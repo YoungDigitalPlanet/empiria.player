@@ -1,9 +1,14 @@
 package eu.ydp.empiria.player.client.module.test.reset;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.flow.FlowManager;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
+import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
+import eu.ydp.gwtutil.client.event.factory.Command;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,16 +16,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwtmockito.GwtMockitoTestRunner;
-
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.controller.flow.FlowManager;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
-import eu.ydp.gwtutil.client.event.factory.Command;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestResetButtonPresenterTest {
@@ -77,7 +74,6 @@ public class TestResetButtonPresenterTest {
 	public void shouldNavigateToFirstItem_ifNoLockWasCalled() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
-		testObj.bindUi();
 
 		verify(testResetButtonView).addHandler(commandCaptor.capture());
 		Command command = commandCaptor.getValue();
@@ -93,7 +89,6 @@ public class TestResetButtonPresenterTest {
 	public void shouldNavigateToFirstItem_ifLockUnlockWasCalled() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
-		testObj.bindUi();
 		testObj.lock();
 
 		verify(testResetButtonView).addHandler(commandCaptor.capture());
@@ -112,7 +107,6 @@ public class TestResetButtonPresenterTest {
 	public void shouldNotNavigateToFirstItem() {
 		// given
 		NativeEvent event = mock(NativeEvent.class);
-		testObj.bindUi();
 		testObj.lock();
 
 		verify(testResetButtonView).addHandler(commandCaptor.capture());
@@ -136,7 +130,7 @@ public class TestResetButtonPresenterTest {
 	}
 
 	private void verifyActionsOnResetClick() {
-		verify(flowManager).invokeFlowRequest(any(FlowRequest.NavigateFirstItem.class));
-		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
+		verify(flowManager).invokeFlowRequest(isA(FlowRequest.NavigateFirstItem.class));
+		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.TEST);
 	}
 }
