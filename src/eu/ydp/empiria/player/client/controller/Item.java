@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -14,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.item.ItemExpressionParser;
@@ -36,7 +34,6 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.expression.ExpressionListBuilder;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 import java.util.Map;
@@ -294,19 +291,6 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void start() {
 		itemBody.start();
-		activateCorrectWorkMode();
-	}
-
-	private void activateCorrectWorkMode() {
-		PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
-		WorkModeSwitcher currentWorkModeSwitcher = currentWorkMode.getWorkModeSwitcher();
-		Optional<PlayerWorkMode> optionalPreviousWorkMode = playerWorkModeService.getPreviousWorkMode();
-		if (optionalPreviousWorkMode.isPresent()) {
-			PlayerWorkMode previousWorkMode = optionalPreviousWorkMode.get();
-			WorkModeSwitcher previousWorkModeSwitcher = previousWorkMode.getWorkModeSwitcher();
-			itemBody.disableWorkMode(previousWorkModeSwitcher);
-		}
-		itemBody.enableWorkMode(currentWorkModeSwitcher);
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {

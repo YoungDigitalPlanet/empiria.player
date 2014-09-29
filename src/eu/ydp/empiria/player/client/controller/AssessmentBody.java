@@ -1,31 +1,24 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeNotifier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
+
+import java.util.List;
 
 public class AssessmentBody implements WidgetWorkflowListener {
 
@@ -36,18 +29,16 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	protected Panel pageSlot;
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
-	private final PlayerWorkModeNotifier playerWorkModeNotifier;
 	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
 			@Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-			PlayerWorkModeNotifier playerWorkModeNotifier, PlayerWorkModeService playerWorkModeService) {
+			PlayerWorkModeService playerWorkModeService) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.interactionEventsListener = interactionEventsListener;
-		this.playerWorkModeNotifier = playerWorkModeNotifier;
 		this.playerWorkModeService = playerWorkModeService;
 
 		parenthood = new ParenthoodManager();
@@ -117,20 +108,17 @@ public class AssessmentBody implements WidgetWorkflowListener {
 	}
 
 	public void setUp() {
-		WorkModeSwitcher currentWorkModeSwitcher = playerWorkModeService.getCurrentWorkMode().getWorkModeSwitcher();
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onSetUp();
 			}
-			workModeProceeding(currentWorkModeSwitcher, currModule);
+			workModeProceeding(currModule);
 		}
 	}
 
-	private void workModeProceeding(WorkModeSwitcher currentWorkModeSwitcher, IModule currModule) {
+	private void workModeProceeding(IModule currModule) {
 		if (currModule instanceof WorkModeClientType) {
-			WorkModeClientType workModeModule = (WorkModeClientType) currModule;
-			playerWorkModeNotifier.addModule(workModeModule);
-			currentWorkModeSwitcher.enable(workModeModule);
+			playerWorkModeService.registerModule((WorkModeClientType) currModule);
 		}
 	}
 

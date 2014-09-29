@@ -5,13 +5,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -25,17 +25,19 @@ public class ReportModule extends ContainerModuleBase {
 
 	private final Panel mainPanel;
 	private FlexTable table;
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector()
-	                                                                    .getStyleNameConstants();
-	private final PlayerWorkModeService playerWorkModeService = PlayerGinjectorFactory.getPlayerGinjector()
-	                                                                                  .getPlayerWorkModeService();
+	private final StyleNameConstants styleNames;
+	private final PlayerWorkModeService playerWorkModeService;
 
-	public ReportModule(FlowRequestInvoker flowRequestInvoker, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
+	@Inject
+	public ReportModule(@Assisted DataSourceDataSupplier dataSourceDataSupplier,
+			@Assisted SessionDataSupplier sessionDataSupplier, StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 		this.sessionDataSupplier = sessionDataSupplier;
+		this.styleNames = styleNames;
+		this.playerWorkModeService = playerWorkModeService;
 
 		mainPanel = new FlowPanel();
-		mainPanel.setStyleName(styleNames.QP_REPORT());
+		mainPanel.setStyleName(this.styleNames.QP_REPORT());
 	}
 
 	@Override
