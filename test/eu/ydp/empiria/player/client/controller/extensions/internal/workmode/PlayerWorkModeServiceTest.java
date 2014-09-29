@@ -72,7 +72,6 @@ public class PlayerWorkModeServiceTest {
 
 		// when
 		testObj.registerModule(moduleToEnable);
-		testObj.registerModule(moduleWithoutInterfaces);
 
 		// then
 		verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
