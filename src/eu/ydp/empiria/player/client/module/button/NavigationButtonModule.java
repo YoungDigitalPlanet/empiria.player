@@ -11,6 +11,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -19,18 +20,19 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
-public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler {
+public class NavigationButtonModule extends ControlModule implements ISimpleModule, PlayerEventHandler, WorkModeTestClient {
 
 	private PushButton button;
 	private boolean enabled = true;
+	private boolean testMode = false;
 	private final NavigationButtonDirection direction;
 
-	@Inject
 	protected EventsBus eventsBus;
 
 	@Inject
-	public NavigationButtonModule(@Assisted NavigationButtonDirection dir) {
+	public NavigationButtonModule(@Assisted NavigationButtonDirection dir, EventsBus eventsBus) {
 		direction = dir;
+		this.eventsBus = eventsBus;
 	}
 
 	@Override
@@ -66,7 +68,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 		case CONTINUE:
 		case CHECK:
 		case SHOW_ANSWERS:
-			setEnabled(!isEnd());
+			setEnabled(!isEnd() && !testMode);
 		case TEST_PAGE_LOADED:
 			setStyleName();
 			break;
@@ -124,6 +126,10 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
 	@Override
 	public void onPlayerEvent(PlayerEvent event) {
+		if (testMode) {
+			return;
+		}
+
 		if (event.getType() == PAGE_LOADED) {
 			Timer timer = new Timer() {
 				@Override
@@ -137,6 +143,17 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 			setEnabled(false);
 			setStyleName();
 		}
+	}
 
+	@Override
+	public void enableTestMode() {
+		setEnabled(false);
+		testMode = true;
+	}
+
+	@Override
+	public void disableTestMode() {
+		setEnabled(true);
+		testMode = false;
 	}
 }
