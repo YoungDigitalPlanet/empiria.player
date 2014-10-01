@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
@@ -35,7 +34,8 @@ public class TestResetButtonViewImpl extends Composite implements TestResetButto
 
 	@Override
 	public void addHandler(Command command) {
-		userInteractionHandlerFactory.createUserClickHandler(command).apply(testResetButton);
+		userInteractionHandlerFactory.createUserClickHandler(command)
+									 .apply(this);
 	}
 
 	@Override
@@ -52,5 +52,4 @@ public class TestResetButtonViewImpl extends Composite implements TestResetButto
 	public void enablePreviewMode() {
 		addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
 	}
-
 }

@@ -14,11 +14,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.Play
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
+import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class ReportModule extends ContainerModuleBase {
+public class ReportModule extends ContainerModuleBase implements ILifecycleModule {
 
 	private final SessionDataSupplier sessionDataSupplier;
 	private final DataSourceDataSupplier dataSourceDataSupplier;
@@ -49,11 +50,31 @@ public class ReportModule extends ContainerModuleBase {
 
 		mainPanel.add(table);
 
-		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
 	}
 
 	@Override
 	public Widget getView() {
 		return mainPanel;
+	}
+
+	@Override
+	public void onBodyLoad() {
+		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
+	}
+
+	@Override
+	public void onBodyUnload() {
+	}
+
+	@Override
+	public void onSetUp() {
+	}
+
+	@Override
+	public void onStart() {
+	}
+
+	@Override
+	public void onClose() {
 	}
 }
