@@ -48,17 +48,7 @@ public class TestPageSubmitButtonViewImpl extends Composite implements TestPageS
 	}
 
 	@Override
-	public void enableTestSubmittedMode() {
-		addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
 	public void enablePreviewMode() {
 		addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }
