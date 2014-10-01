@@ -13,4 +13,8 @@ public interface IPageSwitchWidget {
 
 	public void setCurrentIndex(Integer value);
 
+	public void enable();
+
+	public void disable();
+
 }
