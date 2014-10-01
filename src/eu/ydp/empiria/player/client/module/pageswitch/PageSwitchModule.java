@@ -10,8 +10,9 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
 
-public class PageSwitchModule extends ControlModule implements ISimpleModule, ChangeHandler {
+public class PageSwitchModule extends ControlModule implements ISimpleModule, ChangeHandler, WorkModeTestClient {
 
 	protected IPageSwitchWidget switchWidget;
 
@@ -46,5 +47,15 @@ public class PageSwitchModule extends ControlModule implements ISimpleModule, Ch
 
 	protected String getStyleName() {
 		return "qp-page-counter-list";
+	}
+
+	@Override
+	public void enableTestMode() {
+		switchWidget.disable();
+	}
+
+	@Override
+	public void disableTestMode() {
+		switchWidget.enable();
 	}
 }
