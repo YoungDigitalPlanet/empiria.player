@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module;
 
+import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.*;
+
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -7,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
+
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -16,11 +21,6 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonValue;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
-
-import java.util.List;
-
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.CORRECT_ANSWERS;
-import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
 
 /**
  * @param <T> typ modułu
@@ -183,6 +183,7 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 
 	@Override
 	public void onBodyLoad() { // NOPMD by MKaldonek on 15.10.12 08:30
+		fireStateChanged(false, false);
 		// eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyLoad
 	}
 
