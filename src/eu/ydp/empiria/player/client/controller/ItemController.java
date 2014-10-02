@@ -30,9 +30,6 @@ import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
 import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventHandler;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
@@ -40,7 +37,7 @@ import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.empiria.player.client.view.item.ItemViewCarrier;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
-public class ItemController implements PageEventHandler, StateChangeEventHandler, LessonResetEventHandler {
+public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
 	@Inject
 	private StyleNameConstants styleNames;
@@ -70,7 +67,6 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
 			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
 			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, new CurrentPageScope());
-			eventsBus.addHandler(LessonResetEvent.getType(LessonResetEventTypes.RESET), this);
 
 			if (data.data == null) {
 				throw new Exception("Item data is null");// NOPMD
@@ -179,8 +175,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 		return (item != null && item.hasInteractiveModules());
 	}
 
-	@Override
-	public void onLessonReset(LessonResetEvent event) {
+	public void resetItem() {
 		item.resetItem();
 	}
 }

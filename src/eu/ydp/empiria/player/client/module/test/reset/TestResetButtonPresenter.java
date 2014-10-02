@@ -4,7 +4,6 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
@@ -13,8 +12,6 @@ import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
 import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventTypes;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public class TestResetButtonPresenter {
@@ -78,6 +75,5 @@ public class TestResetButtonPresenter {
 
 	protected void resetLesson() {
 		eventsBus.fireEvent(new LessonResetEvent(LessonResetEventTypes.RESET));
-		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, true, null)));
 	}
 }
