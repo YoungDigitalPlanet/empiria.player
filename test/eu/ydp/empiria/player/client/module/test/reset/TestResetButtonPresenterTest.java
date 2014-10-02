@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
@@ -140,6 +141,7 @@ public class TestResetButtonPresenterTest {
 	private void verifyActionsOnResetClick() {
 		verify(flowManager).invokeFlowRequest(isA(FlowRequest.NavigateFirstItem.class));
 		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.TEST);
+		verify(eventBus).fireEvent(isA(LessonResetEvent.class));
 		verify(eventBus).fireEvent(isA(StateChangeEvent.class));
 	}
 }

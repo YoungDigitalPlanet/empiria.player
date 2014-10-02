@@ -11,6 +11,8 @@ import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventTypes;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.event.factory.Command;
@@ -40,7 +42,7 @@ public class TestResetButtonPresenter {
 				if (!locked) {
 					changeWorkModeToTest();
 					navigateToFirstItem();
-					fireStateReset();
+					resetLesson();
 				}
 			}
 
@@ -74,7 +76,8 @@ public class TestResetButtonPresenter {
 		flowManager.invokeFlowRequest(new FlowRequest.NavigateFirstItem());
 	}
 
-	protected void fireStateReset() {
+	protected void resetLesson() {
+		eventsBus.fireEvent(new LessonResetEvent(LessonResetEventTypes.RESET));
 		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, true, null)));
 	}
 }

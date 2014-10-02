@@ -87,7 +87,6 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
 	@Override
 	public void disableTestSubmittedMode() {
-		reset();
 		lock(false);
 	}
 
