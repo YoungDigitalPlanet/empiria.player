@@ -1,14 +1,9 @@
 package eu.ydp.empiria.player.client.module.test.reset;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.controller.flow.FlowManager;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
-import eu.ydp.gwtutil.client.event.factory.Command;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +11,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.flow.FlowManager;
+import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
+import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.gwtutil.client.event.factory.Command;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class TestResetButtonPresenterTest {
@@ -30,13 +35,15 @@ public class TestResetButtonPresenterTest {
 	private FlowManager flowManager;
 	@Mock
 	private PlayerWorkModeService playerWorkModeService;
+	@Mock
+	private EventsBus eventBus;
 
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
 	@Before
 	public void setUp() {
-		testObj = new TestResetButtonPresenter(testResetButtonView, flowManager, playerWorkModeService);
+		testObj = new TestResetButtonPresenter(testResetButtonView, flowManager, playerWorkModeService, eventBus);
 	}
 
 	@Test
@@ -117,6 +124,7 @@ public class TestResetButtonPresenterTest {
 
 		// then
 		verifyZeroInteractions(flowManager);
+		verifyZeroInteractions(eventBus);
 	}
 
 	@Test
@@ -132,5 +140,6 @@ public class TestResetButtonPresenterTest {
 	private void verifyActionsOnResetClick() {
 		verify(flowManager).invokeFlowRequest(isA(FlowRequest.NavigateFirstItem.class));
 		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.TEST);
+		verify(eventBus).fireEvent(isA(StateChangeEvent.class));
 	}
 }
