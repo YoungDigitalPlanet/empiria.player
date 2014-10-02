@@ -182,28 +182,22 @@ public abstract class AbstractInteractionModule<T extends AbstractInteractionMod
 	}
 
 	@Override
-	public void onBodyLoad() { // NOPMD by MKaldonek on 15.10.12 08:30
-		fireStateChanged(false, false);
-		// eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyLoad
+	public void onBodyLoad() {
 	}
 
 	@Override
-	public void onBodyUnload() { // NOPMD by MKaldonek on 15.10.12 08:30
-		// eu.ydp.empiria.player.client.module.ILifecycleModule.onBodyUnload
+	public void onBodyUnload() {
 	}
 
 	@Override
-	public void onSetUp() { // NOPMD by MKaldonek on 15.10.12 08:30
-		// eu.ydp.empiria.player.client.module.ILifecycleModule.onSetUp
+	public void onSetUp() {
 	}
 
 	@Override
-	public void onStart() { // NOPMD by MKaldonek on 15.10.12 08:31
-		// eu.ydp.empiria.player.client.module.ILifecycleModule.onStart
+	public void onStart() {
 	}
 
 	@Override
-	public void onClose() { // NOPMD by MKaldonek on 15.10.12 08:31
-		// eu.ydp.empiria.player.client.module.ILifecycleModule.onClose
+	public void onClose() {
 	}
 }
