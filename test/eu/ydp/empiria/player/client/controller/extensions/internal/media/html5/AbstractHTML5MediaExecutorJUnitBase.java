@@ -21,11 +21,11 @@ import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.user.client.Element;
 
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -34,7 +34,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-@SuppressWarnings("PMD")
 public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBaseWithoutAutoInjectorInit {
 
 	protected AbstractHTML5MediaExecutor<MediaBase> instance;
@@ -53,6 +52,8 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	public abstract BaseMediaConfiguration getBaseMediaConfiguration();
 
+	protected HTML5MediaEventMapper mediaEventMapper;
+
 	@BeforeClass
 	public static void disarm() {
 		GWTMockUtilities.disarm();
@@ -70,6 +71,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		doReturn(handlerRegistration).when(mediaBase).addBitlessDomHandler(Matchers.any(HTML5MediaEventHandler.class), Matchers.any(Type.class));
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance.setMedia(mediaBase);
+		mediaEventMapper = mock(HTML5MediaEventMapper.class);
 	}
 
 	public void setUpGuice() {
@@ -80,6 +82,12 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	@Test
 	public void testInitNoConfiguration() {
+		MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
+		when(mediaDescriptor.getMediaObject()).thenReturn(mediaBase);
+		when(mediaBase.getElement()).thenReturn(mock(Element.class));
+
+		instance.setMediaWrapper(mediaDescriptor);
+
 		mediaConfiguration = new BaseMediaConfiguration(new HashMap<String, String>(), false);
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
@@ -89,6 +97,12 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	@Test
 	public void testInit() {
+		MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
+		when(mediaDescriptor.getMediaObject()).thenReturn(mediaBase);
+		when(mediaBase.getElement()).thenReturn(mock(Element.class));
+
+		instance.setMediaWrapper(mediaDescriptor);
+
 		instance.setBaseMediaConfiguration(mediaConfiguration);
 		instance.init();
 		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
@@ -105,14 +119,6 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	}
 
 	@Test
-	public void testRemoveRegistration() {
-		instance.setBaseMediaConfiguration(mediaConfiguration);
-		instance.init();
-		instance.init();
-		verify(handlerRegistration).removeHandler();
-	}
-
-	@Test
 	public void testSetMediaWrapper() {
 		instance.setMedia(null);
 		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
@@ -123,13 +129,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	}
 
 	@Test
-	public void testSetBaseMediaConfiguration() {
-		instance.setBaseMediaConfiguration(mediaConfiguration);
-		assertEquals(mediaConfiguration, instance.getBaseMediaConfiguration());
-	}
-
-	@Test
-	public void testOnEvent() {
+	public void testHtml5OnEvent() {
 
 		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
 		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
@@ -140,9 +140,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		instance.setMediaWrapper(mediaWrapper);
 		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
 			ArgumentCaptor<MediaEvent> eventCaptor = ArgumentCaptor.forClass(MediaEvent.class);
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(typePair.getKey()).when(event).getType();
-			instance.onEvent(event);
+			instance.html5OnEvent(typePair.getKey());
 			if (asyncEvents.contains(typePair.getKey())) {
 				verify(eventsBus).fireAsyncEventFromSource(eventCaptor.capture(), Matchers.eq(mediaWrapper));
 			} else {
@@ -156,14 +154,9 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 	}
 
 	@Test
-	public void testOnEventWithDisabledEventPropagationForPlay() {
-		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
-		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
-		instance.playWithoutOnPlayEventPropagation();
-		HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-		doReturn(HTML5MediaEventsType.play).when(event).getType();
-		instance.onEvent(event);
-		verifyZeroInteractions(eventsBus);
+	public void testSetBaseMediaConfiguration() {
+		instance.setBaseMediaConfiguration(mediaConfiguration);
+		assertEquals(mediaConfiguration, instance.getBaseMediaConfiguration());
 	}
 
 	@Test
@@ -175,9 +168,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 		instance.setSoundFinishedListener(soundExecutorListener);
 		for (HTML5MediaEventsType type : pairMap.keySet()) {
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(type).when(event).getType();
-			instance.onEvent(event);
+			instance.html5OnEvent(type);
 
 			if (listenerEvents.contains(type)) {
 				if (type == HTML5MediaEventsType.play) {
@@ -200,10 +191,8 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 		unsupportedTypes.removeAll(pairMap.keySet());
 
 		for (HTML5MediaEventsType type : unsupportedTypes) {
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(type).when(event).getType();
-			instance.onEvent(event);
-			verifyZeroInteractions(eventsBus);
+			instance.html5OnEvent(type);
+			verifyZeroInteractions(mediaEventMapper);
 		}
 	}
 

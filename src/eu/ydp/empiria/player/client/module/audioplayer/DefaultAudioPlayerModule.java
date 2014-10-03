@@ -12,7 +12,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -35,8 +34,6 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
 	@Inject
 	private EventsBus eventsBus;
-	@Inject
-	private HideNativeMediaControlsManager nativeMediaControlsManager;
 	@Inject
 	@UniqueId
 	private String moduleId;
@@ -87,12 +84,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		this.mediaWrapper = mw;
 		AbstractMediaEventHandler handler = createMediaHandler();
 		addMediaHandlers(handler);
-		addMediaWidgetToRoot();
 		playAudio();
-	}
-
-	private void addMediaWidgetToRoot() {
-		nativeMediaControlsManager.addToDocumentAndHideControls((MediaWrapper<Widget>) mediaWrapper);
 	}
 
 	private AbstractMediaEventHandler createMediaHandler() {

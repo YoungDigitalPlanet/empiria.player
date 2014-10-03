@@ -1,24 +1,23 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.MediaElement;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5OnEvent;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 
-public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements HTML5MediaEventHandler, MediaExecutor<MediaBase> {
+public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements MediaExecutor<MediaBase>, HTML5OnEvent {
 
 	private H media;
 	private MediaWrapper<MediaBase> mediaDescriptor;
@@ -26,20 +25,26 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	private BaseMediaConfiguration baseMediaConfiguration;
 
 	@Inject
-	HTML5MediaEventMapper mediaEventMapper;
+	protected HTML5MediaEventMapper mediaEventMapper;
 
-	private final Set<HandlerRegistration> allEventsRegistration = new HashSet<HandlerRegistration>();
-	private boolean hideOnPlayEvent;
+	private final HTML5MediaNativeListeners html5MediaNativeListeners = new HTML5MediaNativeListeners(this);
 
 	@Override
 	public void init() {
 		if (media != null) {
-			// bindujemy evnty
-			removeMediaEventHandlers();
-			registerMediaEventHandlers();
+			Element audioElement = mediaDescriptor.getMediaObject().getElement();
 			configureMediaBase();
 			initExecutor();
+			for (HTML5MediaEventsType eventType : Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
+					HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play)) {
+				html5MediaNativeListeners.addListener(audioElement, eventType.toString());
+			}
 		}
+	}
+
+	@Override
+	public void html5OnEvent(HTML5MediaEventsType eventType) {
+		mediaEventMapper.mapAndFireEvent(eventType, listener, mediaDescriptor);
 	}
 
 	protected String getMediaPreloadType() {
@@ -52,19 +57,6 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		}
 		media.setPreload(getMediaPreloadType());
 		media.setControls(!baseMediaConfiguration.isTemplate());
-	}
-
-	private void registerMediaEventHandlers() {
-		for (HTML5MediaEventsType type : HTML5MediaEventsType.values()) {
-			allEventsRegistration.add(media.addBitlessDomHandler(this, HTML5MediaEvent.getType(type)));
-		}
-	}
-
-	private void removeMediaEventHandlers() {
-		for (HandlerRegistration registration : allEventsRegistration) {
-			registration.removeHandler();
-		}
-		allEventsRegistration.clear();
 	}
 
 	@Override
@@ -96,25 +88,6 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	@Override
-	public void onEvent(HTML5MediaEvent event) {// NOPMD
-		mapAndFireEvent(event);
-	}
-
-	private void mapAndFireEvent(HTML5MediaEvent event) {
-		if (canPopagateThisEvent(event)) {
-			mediaEventMapper.mapAndFireEvent(event, listener, mediaDescriptor);
-		}
-	}
-
-	private boolean canPopagateThisEvent(HTML5MediaEvent event) {
-		if (event.getType() == HTML5MediaEventsType.play && hideOnPlayEvent) {
-			hideOnPlayEvent = false;
-			return false;
-		}
-		return true;
-	}
-
-	@Override
 	public void play(String src) {
 		media.play();
 	}
@@ -126,11 +99,6 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	@Override
 	public void play() {
 		media.play();
-	}
-
-	public void playWithoutOnPlayEventPropagation() {
-		hideOnPlayEvent = true;
-		play();
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutorJUnitBase {
@@ -58,8 +59,15 @@ public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 
 	@Test
 	public void testInitExecutor() {
+		// given
 		instance.setBaseMediaConfiguration(mediaConfiguration);
-		instance.init();
+		MediaWrapper<Video> mediaWrapper = mock(MediaWrapper.class);
+		when(mediaWrapper.getMediaObject()).thenReturn(mock(Video.class));
+
+		// when
+		instance.initExecutor();
+
+		// then
 		verify(mediaBase).setHeight(Matchers.eq(HEIGHT + "px"));
 		verify(mediaBase).setWidth(Matchers.eq(WIDTH + "px"));
 		verify((Video) mediaBase).setPoster(Matchers.eq(POSTER_URL));

@@ -1,11 +1,9 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.ui.Widget;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gwt.core.client.JavaScriptObject;
 
 public class SoundJsNative {
 
@@ -21,17 +19,27 @@ public class SoundJsNative {
 	}
 
 	private native void nativesInit()/*-{
-        var instance = this;
-        $wnd.empiriaSoundJsBeginPlaying = function (src) {
-            instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::play(Ljava/lang/String;)(src);
-        }
-        $wnd.empiriaSoundJsInit = function (soundInstance, src) {
-            instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::preload(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(soundInstance, src);
-        }
-        $wnd.empiriaSoundJsStop = function (src) {
-            instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::stop(Ljava/lang/String;)(src);
-        }
-    }-*/;
+										var instance = this;
+										$wnd.empiriaSoundJsBeginPlaying = function (src) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::play(Ljava/lang/String;)(src);
+										}
+										$wnd.empiriaSoundJsInit = function (soundInstance, src) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::preload(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(soundInstance, src);
+										}
+										$wnd.empiriaSoundJsStop = function (src) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::stop(Ljava/lang/String;)(src);
+										}
+										}-*/;
+
+	private native void onComplete(JavaScriptObject soundInstance)/*-{
+																	if(typeof soundInstance.onComplete == 'function'){
+																	soundInstance.onComplete(soundInstance);
+																	}
+																	}-*/;
+
+	public void onComplete(String str) {
+		onComplete(soundInstances.get(str));
+	}
 
 	private void play(String src) {
 		api.play(src);
