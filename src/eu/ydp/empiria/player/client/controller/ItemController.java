@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller;
 
-import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
+import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.*;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -67,6 +67,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			// Rejestrowanie na wszystkie eventy Page dawniej FLOW
 			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
 			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, new CurrentPageScope());
+
 			if (data.data == null) {
 				throw new Exception("Item data is null");// NOPMD
 			}
@@ -172,5 +173,9 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	 */
 	public boolean hasInteractiveModules() {
 		return (item != null && item.hasInteractiveModules());
+	}
+
+	public void resetItem() {
+		item.resetItem();
 	}
 }
