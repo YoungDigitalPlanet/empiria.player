@@ -55,7 +55,6 @@ public class TestPageSubmitButtonPresenter {
 
 	public void enableTestSubmittedMode() {
 		lock();
-		testPageSubmitButtonView.enableTestSubmittedMode();
 	}
 
 	public void enablePreviewMode() {
@@ -65,6 +64,5 @@ public class TestPageSubmitButtonPresenter {
 
 	public void disableTestSubmittedMode() {
 		unlock();
-		testPageSubmitButtonView.disableTestSubmittedMode();
 	}
 }

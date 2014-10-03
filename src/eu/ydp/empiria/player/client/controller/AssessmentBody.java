@@ -1,10 +1,13 @@
 package eu.ydp.empiria.player.client.controller;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
@@ -12,17 +15,17 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-import java.util.List;
-
-public class AssessmentBody implements WidgetWorkflowListener, WorkModeClient {
+public class AssessmentBody implements WidgetWorkflowListener {
 
 	protected DisplayContentOptions options;
 	protected ModuleSocket moduleSocket;
@@ -32,18 +35,16 @@ public class AssessmentBody implements WidgetWorkflowListener, WorkModeClient {
 	protected ParenthoodManager parenthood;
 	protected List<IModule> modules;
 	private final PlayerWorkModeService playerWorkModeService;
-	private final StyleNameConstants styleNameConstants;
 
 	@Inject
 	public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
 			@Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-			PlayerWorkModeService playerWorkModeService, StyleNameConstants styleNameConstants) {
+			PlayerWorkModeService playerWorkModeService) {
 		this.options = options;
 		this.moduleSocket = moduleSocket;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.interactionEventsListener = interactionEventsListener;
 		this.playerWorkModeService = playerWorkModeService;
-		this.styleNameConstants = styleNameConstants;
 
 		parenthood = new ParenthoodManager();
 	}
@@ -60,7 +61,6 @@ public class AssessmentBody implements WidgetWorkflowListener, WorkModeClient {
 		modules = instalator.getInstalledSingleViewModules();
 
 		pageSlot = findPageInPage();
-		playerWorkModeService.registerModule(this);
 
 		return bodyModule.getView();
 	}
@@ -145,30 +145,5 @@ public class AssessmentBody implements WidgetWorkflowListener, WorkModeClient {
 
 	public ParenthoodManager getParenthood() {
 		return parenthood;
-	}
-
-	@Override
-	public void enablePreviewMode() {
-		pageSlot.addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
-	}
-
-	@Override
-	public void enableTestMode() {
-		pageSlot.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
-	}
-
-	@Override
-	public void disableTestMode() {
-		pageSlot.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
-	}
-
-	@Override
-	public void enableTestSubmittedMode() {
-		pageSlot.addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
-	}
-
-	@Override
-	public void disableTestSubmittedMode() {
-		pageSlot.removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
 	}
 }

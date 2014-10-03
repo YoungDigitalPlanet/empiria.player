@@ -114,7 +114,6 @@ public class TestPageSubmitButtonPresenterTest {
 
 		// then
 		verify(testPageSubmitButtonView).lock();
-		verify(testPageSubmitButtonView).enableTestSubmittedMode();
 	}
 
 	@Test
@@ -126,7 +125,6 @@ public class TestPageSubmitButtonPresenterTest {
 
 		// verify
 		verify(testPageSubmitButtonView).unlock();
-		verify(testPageSubmitButtonView).disableTestSubmittedMode();
 	}
 
 	@Test

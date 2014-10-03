@@ -117,7 +117,7 @@ public class Assessment {
 	private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
 		if (bodyNode != null) {
 			body = assessmentFactory.createAssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
-			bodyView = new AssessmentBodyView(body);
+			bodyView = assessmentFactory.createAssessmentBodyView(body);
 			bodyView.init(body.init(bodyNode));
 			pageSlot = body.getPageSlot();
 			this.interactionEventsListener = interactionEventsListener;
