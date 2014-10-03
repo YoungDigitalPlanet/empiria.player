@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.textentry;
 
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -11,16 +9,17 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
+
+import javax.annotation.PostConstruct;
 
 public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 
 	@UiTemplate("TextEntryModule.ui.xml")
 	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {
-	};
+	}
 
 	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 

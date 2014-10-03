@@ -1,16 +1,10 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -28,6 +22,10 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHan
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.Size;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean> {
 
@@ -155,7 +153,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void addCheckStyleHandler() {
-		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
+		view.asWidget()
+			.addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
 	}
 
 	private void initColumns() {
@@ -201,7 +200,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private String getIdentifier(ConnectionItem item) {
-		return item.getBean().getIdentifier();
+		return item.getBean()
+				   .getIdentifier();
 	}
 
 	private ConnectionPairEntry<String, String> getConnectionPair(ConnectionItem sourceItem, ConnectionItem targetItem) {
@@ -250,7 +250,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private void addStylesToSurface(List<String> styles) {
 		for (String style : styles) {
-			getCurrentSurface().asWidget().addStyleName(style);
+			getCurrentSurface().asWidget()
+							   .addStyleName(style);
 		}
 	}
 
@@ -303,12 +304,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	public void resetIfNotConnected(String identifier) {
 		if (!connectionSurfacesManager.hasConnections(connectedSurfaces, identifier)) {
-			connectionItems.getConnectionItem(identifier).reset();
+			connectionItems.getConnectionItem(identifier)
+						   .reset();
 		}
 	}
 
 	public ConnectionSurface getSurfaceForLineDrawing(ConnectionItem item, MultiplePairModuleConnectType type) {
-		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean().getIdentifier(), surfaceSize(connectionItems));
+		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean()
+																						  .getIdentifier(), surfaceSize(connectionItems));
 		this.currentSurface = cs;
 		cs.applyStyles(connectionModuleViewStyles.getStyles(type));
 
@@ -347,5 +350,4 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			currentSurface.drawLine(startPoint, endPoint);
 		}
 	}
-
 }

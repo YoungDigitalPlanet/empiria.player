@@ -1,23 +1,10 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.InOrder;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Module;
-
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.CurrentPageProperties;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
@@ -27,6 +14,17 @@ import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -53,7 +51,7 @@ public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAu
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
+		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] { }, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
 
 		testObj = spy(injector.getInstance(FeedbackAudioMuteButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
@@ -68,16 +66,19 @@ public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAu
 				handler = (ClickHandler) invocation.getArguments()[0];
 				return null;
 			}
-		}).when(button).addClickHandler(any(ClickHandler.class));
+		}).when(button)
+		  .addClickHandler(any(ClickHandler.class));
 	}
 
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
 			CustomPushButton customPushButton = mock(CustomPushButton.class);
-			binder.bind(CustomPushButton.class).toInstance(customPushButton);
+			binder.bind(CustomPushButton.class)
+				  .toInstance(customPushButton);
 			CurrentPageProperties currentPageProperties = mock(CurrentPageProperties.class);
-			binder.bind(CurrentPageProperties.class).toInstance(currentPageProperties);
+			binder.bind(CurrentPageProperties.class)
+				  .toInstance(currentPageProperties);
 		}
 	}
 
@@ -113,7 +114,8 @@ public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAu
 	public void shouldNotInvokeActionInPreviewMode() {
 		// given
 		testObj.initModule(mock(Element.class));
-		doReturn(null).when(testObj).getCurrentGroupIdentifier();
+		doReturn(null).when(testObj)
+					  .getCurrentGroupIdentifier();
 		testObj.setFlowRequestsInvoker(requestInvoker);
 		testObj.enablePreviewMode();
 
@@ -129,7 +131,8 @@ public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAu
 		// given
 		final String inactiveStyleName = "STYLE_NAME";
 		testObj.initModule(mock(Element.class));
-		doReturn(null).when(testObj).getCurrentGroupIdentifier();
+		doReturn(null).when(testObj)
+					  .getCurrentGroupIdentifier();
 		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
 		testObj.enablePreviewMode();
 
@@ -138,7 +141,9 @@ public class FeedbackAudioMuteButtonModuleTest extends AbstractTestBaseWithoutAu
 
 		// then
 		InOrder inOrder = inOrder(button);
-		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
-		inOrder.verify(button).addStyleName(inactiveStyleName);
+		inOrder.verify(button)
+			   .setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button)
+			   .addStyleName(inactiveStyleName);
 	}
 }

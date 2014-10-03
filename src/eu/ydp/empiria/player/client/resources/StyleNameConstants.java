@@ -722,6 +722,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-module-mode-preview")
 	public String QP_MODULE_MODE_PREVIEW();
 
+	@DefaultStringValue("qp-module-mode-test")
+	public String QP_MODULE_MODE_TEST();
+
+	@DefaultStringValue("qp-module-mode-test-submitted")
+	public String QP_MODULE_MODE_TEST_SUBMITTED();
+
 	@DefaultStringValue("qp-ordered")
 	public String QP_ORDERED();
 
@@ -988,6 +994,30 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("qp-table-table")
 	public String QP_TABLE_TABLE();
+
+	@DefaultStringValue("qp-test-reset")
+	public String QP_TEST_RESET();
+
+	@DefaultStringValue("qp-test-reset-button")
+	public String QP_TEST_RESET_BUTTON();
+
+	@DefaultStringValue("qp-test-reset-disabled")
+	public String QP_TEST_RESET_DISABLED();
+
+	@DefaultStringValue("qp-test-submit")
+	public String QP_TEST_SUBMIT();
+
+	@DefaultStringValue("qp-test-submit-button")
+	public String QP_TEST_SUBMIT_BUTTON();
+
+	@DefaultStringValue("qp-test-submit-disabled")
+	public String QP_TEST_SUBMIT_DISABLED();
+
+	@DefaultStringValue("qp-test-submit-submitted-mode")
+	public String QP_TEST_SUBMIT_SUBMITTED_MODE();
+
+	@DefaultStringValue("qp-test-submit-preview-mode")
+	public String QP_TEST_SUBMIT_PREVIEW_MODE();
 
 	@DefaultStringValue("qp-text")
 	public String QP_TEXT();

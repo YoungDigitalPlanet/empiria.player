@@ -62,5 +62,4 @@ public class TextEditorPresenter {
 	public Widget getView() {
 		return view.asWidget();
 	}
-
 }

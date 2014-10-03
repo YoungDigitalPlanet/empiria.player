@@ -1,21 +1,19 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 /**
  * Interfejs prezentera
- * 
- * @param <H>
- *            typ odpowiedzi
- * @param <T>
- *            typ beana przyjmowanego do utworzenia struktury widoku
+ *
+ * @param <H> typ odpowiedzi
+ * @param <T> typ beana przyjmowanego do utworzenia struktury widoku
  */
 public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends ModuleBean> extends IsWidget {
 
 	/**
-	 * Wiąże widok z prezenterem, w tym momencie prezenter powinien mieć pełną informację o strukturze według, której będzie tworzył widoki
+	 * Wiąże widok z prezenterem, w tym momencie prezenter powinien mieć
+	 * pełną informację o strukturze według, której będzie tworzył widoki
 	 */
 	void bindView();
 
@@ -26,7 +24,7 @@ public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends
 
 	/**
 	 * Ustawia response model
-	 * 
+	 *
 	 * @param model
 	 */
 	void setModel(H model);
@@ -38,14 +36,14 @@ public interface ActivityPresenter<H extends AbstractResponseModel<?>, T extends
 
 	/**
 	 * Ustawia beana reprezentującego strukturę widoku
-	 * 
+	 *
 	 * @param bean
 	 */
 	void setBean(T bean);
 
 	/**
 	 * Blokowanie widoku
-	 * 
+	 *
 	 * @param locked
 	 */
 	void setLocked(boolean locked);

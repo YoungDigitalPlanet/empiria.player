@@ -1,12 +1,7 @@
 package eu.ydp.empiria.player.client.module.draggap.presenter;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
@@ -25,14 +20,17 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
+
 public class DragGapPresenterImpl implements DragGapPresenter {
 
 	private final AnswerEvaluationSupplier answerEvaluationSupplier;
 	private final DragGapModuleModel model;
 	private final DragGapView view;
 	private final SourceListManagerAdapter sourceListManagerAdapter;
-	private @Inject
-	UserInteractionHandlerFactory interactionHandlerFactory;
+	@Inject
+	private UserInteractionHandlerFactory interactionHandlerFactory;
 
 	@Inject
 	public DragGapPresenterImpl(@ModuleScoped DragGapView view, @ModuleScoped DragGapModuleModel model,

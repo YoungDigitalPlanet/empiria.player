@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
@@ -28,12 +29,13 @@ import eu.ydp.gwtutil.client.command.SetStyleNameCommand;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
-public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
+public class LinkModule extends SimpleContainerModuleBase<LinkModule> implements WorkModeTestClient {
 
 	protected FlowRequestInvoker flowRequestInvoker;
 	protected Panel mainPanel;
 	protected int itemIndex = -1;
 	protected String url;
+	private boolean locked;
 
 	@Inject
 	private StyleNameConstants styleNames;
@@ -127,6 +129,9 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 	}
 
 	protected void processLink() {
+		if (locked) {
+			return;
+		}
 		if (itemIndex != -1) {
 			flowRequestInvoker.invokeRequest(new FlowRequest.NavigateGotoItem(itemIndex));
 		} else if (url != null) {
@@ -144,4 +149,19 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> {
 		return null;
 	}
 
+	@Override
+	public void lock(boolean state) {
+		super.lock(state);
+		this.locked = state;
+	}
+
+	@Override
+	public void enableTestMode() {
+		lock(true);
+	}
+
+	@Override
+	public void disableTestMode() {
+		lock(false);
+	}
 }

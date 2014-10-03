@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,20 +10,19 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SelectionModuleViewImpl implements SelectionModuleView {
 
 	public SelectionModuleViewImpl() {
-	};
-
-	@Inject
-	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
-		this.gridElementGenerator = gridElementGenerator;
 	}
+
+	;
 
 	private SelectionElementGenerator gridElementGenerator;
 
@@ -41,9 +37,14 @@ public class SelectionModuleViewImpl implements SelectionModuleView {
 	@UiField
 	Grid selectionGrid;
 
+	@Inject
+	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
+		this.gridElementGenerator = gridElementGenerator;
+	}
+
 	@UiTemplate("SelectionModuleView.ui.xml")
 	interface SelectionModuleUiBinder extends UiBinder<Widget, SelectionModuleViewImpl> {
-	};
+	}
 
 	@Override
 	public void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {

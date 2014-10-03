@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-
 import eu.ydp.empiria.player.client.controller.AssessmentControllerFactory;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
@@ -30,11 +29,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.JsMediaConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieProperties;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.IStickieView;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieFactory;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieProperties;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieView;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.StickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
@@ -58,6 +53,7 @@ import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationH
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
@@ -67,24 +63,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.Proce
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
-import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
-import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
-import eu.ydp.empiria.player.client.gin.factory.IdentificationModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.LinkModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.MediaWrapperFactory;
-import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
-import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
-import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
-import eu.ydp.empiria.player.client.gin.factory.SlideshowPlayerModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
-import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
-import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
-import eu.ydp.empiria.player.client.gin.factory.TouchRecognitionFactory;
-import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
-import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.gin.providers.FlowDataSupplierProvider;
 import eu.ydp.empiria.player.client.gin.providers.NewFlowPanelProvider;
 import eu.ydp.empiria.player.client.gin.providers.UniqIdStringProvider;
@@ -153,8 +132,10 @@ public class PlayerGinModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		bind(StyleDataSourceManager.class).in(Singleton.class);
-		bind(StyleSocket.class).to(StyleDataSourceManager.class).in(Singleton.class);
-		bind(PlayerViewSocket.class).to(PlayerContentView.class).in(Singleton.class);
+		bind(StyleSocket.class).to(StyleDataSourceManager.class)
+							   .in(Singleton.class);
+		bind(PlayerViewSocket.class).to(PlayerContentView.class)
+									.in(Singleton.class);
 		bind(PlayerContentView.class).in(Singleton.class);
 
 		// this is unnecessary, but left for clarity - if GIN can't find a
@@ -171,7 +152,8 @@ public class PlayerGinModule extends AbstractGinModule {
 
 		bind(DataSourceManager.class).in(Singleton.class);
 		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
-		bind(EventsBus.class).to(PlayerEventsBus.class).in(Singleton.class);
+		bind(EventsBus.class).to(PlayerEventsBus.class)
+							 .in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);
 		bind(MultiPageTouchHandler.class).in(Singleton.class);
@@ -181,13 +163,16 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PageControllerCache.class).in(Singleton.class);
 		bind(StyleNameConstants.class).in(Singleton.class);
 		bind(MainFlowProcessor.class).in(Singleton.class);
-		bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class);
+		bind(Scheduler.class).to(SchedulerImpl.class)
+							 .in(Singleton.class);
 		bind(Page.class).in(Singleton.class);
 		bind(PanelCache.class).in(Singleton.class);
 		bind(SoundActionProcessor.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
-		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class).in(Singleton.class);
-		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class).in(Singleton.class);
+		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class)
+								   .in(Singleton.class);
+		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class)
+										  .in(Singleton.class);
 		bind(VideoFullScreenHelper.class).in(Singleton.class);
 		bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
 		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
@@ -199,8 +184,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(BooleanUtils.class).in(Singleton.class);
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
-		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class).in(Singleton.class);
-		bind(DragDropHelper.class).to(DragDropHelperImpl.class).in(Singleton.class);
+		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class)
+											 .in(Singleton.class);
+		bind(DragDropHelper.class).to(DragDropHelperImpl.class)
+								  .in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
 		bind(ProgressView.class).to(InfinityProgressWidget.class);
@@ -209,29 +196,39 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
 		bind(Timer.class).to(TimerImpl.class);
 		bind(NativeMethodInvocator.class).to(NativeMethodInvocatorImpl.class);
-		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel")).toProvider(NewFlowPanelProvider.class).in(Singleton.class);
-		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class).in(Singleton.class);
+		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel"))
+							 .toProvider(NewFlowPanelProvider.class)
+							 .in(Singleton.class);
+		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class)
+											.in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
 		bind(SessionDataSupplier.class).to(SessionDataManager.class);
+		bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
 		bind(SessionDataManager.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
 		bind(MainFlowProcessor.class).in(Singleton.class);
 		bind(SessionTimeUpdater.class).in(Singleton.class);
 		bind(YJsJsonConverter.class).in(Singleton.class);
-		bind(IJSONService.class).to(JSONService.class).in(Singleton.class);
+		bind(IJSONService.class).to(JSONService.class)
+								.in(Singleton.class);
 		bind(LabellingView.class).to(LabellingViewImpl.class);
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
-		bind(String.class).annotatedWith(UniqueId.class).toProvider(UniqIdStringProvider.class);
-		bind(SwipeType.class).toProvider(SwipeTypeProvider.class).in(Singleton.class);
+		bind(String.class).annotatedWith(UniqueId.class)
+						  .toProvider(UniqIdStringProvider.class);
+		bind(SwipeType.class).toProvider(SwipeTypeProvider.class)
+							 .in(Singleton.class);
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
 		bind(TutorApiExtension.class).in(Singleton.class);
-		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class).in(Singleton.class);
-		bind(ComputedStyle.class).to(ComputedStyleImpl.class).in(Singleton.class);
+		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class)
+								   .in(Singleton.class);
+		bind(ComputedStyle.class).to(ComputedStyleImpl.class)
+								 .in(Singleton.class);
 		bind(FlowManager.class).in(Singleton.class);
 		bind(OutcomeAccessor.class).in(Singleton.class);
-		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class).toProvider(FlowDataSupplierProvider.class);
+		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class)
+									.toProvider(FlowDataSupplierProvider.class);
 		bind(AssetOpenDelegatorService.class).in(Singleton.class);
 		bind(VideoPlayerFactory.class).in(Singleton.class);
 		bind(FileRequest.class).to(StandardFileRequest.class);
@@ -250,7 +247,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(DragDropObjectFactory.class));
 		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
 		install(new GinFactoryModuleBuilder().build(TemplateParserFactory.class));
-		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class).build(TouchRecognitionFactory.class));
+		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class)
+											 .build(TouchRecognitionFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
@@ -258,10 +256,11 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class)
-												.implement(IStickiePresenter.class, StickiePresenter.class)
-												.build(StickieFactory.class));
+											 .implement(IStickiePresenter.class, StickiePresenter.class)
+											 .build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().build(SlideshowPlayerModuleFactory.class));
-		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class).build(TouchReservationFactory.class));
+		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class)
+											 .build(TouchReservationFactory.class));
 		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
 		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));

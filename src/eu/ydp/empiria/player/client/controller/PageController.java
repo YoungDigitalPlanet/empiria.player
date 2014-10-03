@@ -17,16 +17,23 @@ import eu.ydp.empiria.player.client.controller.communication.PageDataTest;
 import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventHandler;
+import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventTypes;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 
-public class PageController implements PageInterferenceSocket {
+public class PageController implements PageInterferenceSocket, LessonResetEventHandler {
 	private final PageViewSocket pageViewSocket;
 	private final PageSessionSocket pageSessionSocket;
 	private final IFlowSocket flowSocket;
@@ -34,18 +41,22 @@ public class PageController implements PageInterferenceSocket {
 	List<ItemController> items;
 
 	private final AssessmentControllerFactory controllerFactory;
+	private final EventsBus eventsBus;
 
 	@Inject
 	public PageController(@Assisted PageViewSocket pageViewSocket, @Assisted IFlowSocket flowSocket, @Assisted PageSessionSocket pageSessionSocket,
-			AssessmentControllerFactory controllerFactory) {
+			AssessmentControllerFactory controllerFactory, EventsBus eventsBus) {
 		this.pageViewSocket = pageViewSocket;
 		this.flowSocket = flowSocket;
 		this.pageSessionSocket = pageSessionSocket;
 		this.controllerFactory = controllerFactory;
+		this.eventsBus = eventsBus;
 	}
 
 	public void initPage(PageData pageData) {
 		items = Lists.newArrayList();
+		eventsBus.addHandler(LessonResetEvent.getType(LessonResetEventTypes.RESET), this);
+
 		// conception compatibility issue
 		if (pageData.type == PageType.ERROR) {
 			pageViewSocket.setPageViewCarrier(new PageViewCarrier((PageDataError) pageData));
@@ -99,13 +110,13 @@ public class PageController implements PageInterferenceSocket {
 	}
 
 	private native JavaScriptObject createPageSocket()/*-{
-														var socket = {};
-														var instance = this;
-														socket.getItemSockets = function() {
-														return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
-														}
-														return socket;
-														}-*/;
+		var socket = {};
+		var instance = this;
+		socket.getItemSockets = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
+		}
+		return socket;
+	}-*/;
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket assessmentParenthoodSocket) {
 		parenthoodSocket = assessmentParenthoodSocket;
@@ -120,4 +131,12 @@ public class PageController implements PageInterferenceSocket {
 		});
 	}
 
+	@Override
+	public void onLessonReset(LessonResetEvent event) {
+		for (ItemController item : items) {
+			item.resetItem();
+		}
+
+		eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, true, null)));
+	}
 }
