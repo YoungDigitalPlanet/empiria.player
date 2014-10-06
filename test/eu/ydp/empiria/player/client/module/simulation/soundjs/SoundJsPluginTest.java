@@ -137,6 +137,7 @@ public class SoundJsPluginTest {
 	public void shouldCallNativeOnComplete_ifPreloadedAndPlayed() {
 		// given
 		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
 		testObj.preload(fileSrc);
 
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
@@ -156,6 +157,7 @@ public class SoundJsPluginTest {
 	public void shouldCallNativeOnComplete_ifPlayingSecondTime() {
 		// given
 		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
 		testObj.play(fileSrc);
 
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
@@ -175,6 +177,7 @@ public class SoundJsPluginTest {
 	public void shouldCallNativeOnComplete_ifPlayed() {
 		// given
 		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
 
 		// when
 		testObj.play(fileSrc);
@@ -186,6 +189,24 @@ public class SoundJsPluginTest {
 		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
 		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
 		verify(soundJsNative).onComplete(fileSrc);
+	}
+
+	@Test
+	public void shouldNotCallNativeOnComplete_ifNotOnEndEvent() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.PAUSE);
+
+		// when
+		testObj.play(fileSrc);
+
+		// then
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
+		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
+		verify(soundJsNative, never()).onComplete(fileSrc);
 	}
 
 	@Test
@@ -223,7 +244,7 @@ public class SoundJsPluginTest {
 
 	private void verifyMediaWrapperCreation(Map<String, String> sourcesWithTypes) {
 		verify(mimeSourceProvider).getSourcesWithTypeByExtension(fileSrc);
-		verify(mediaWrapperCreator).createMediaWrapper(eq(fileSrc), eq(sourcesWithTypes), cbCaptor.capture());
+		verify(mediaWrapperCreator).createSimulationMediaWrapper(eq(fileSrc), eq(sourcesWithTypes), cbCaptor.capture());
 	}
 
 	private Map<String, String> getSourcesWithTypes() {

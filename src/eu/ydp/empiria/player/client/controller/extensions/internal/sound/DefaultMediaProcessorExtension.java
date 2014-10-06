@@ -56,7 +56,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
 	@Inject
 	private MediaChecker mediaChecker;
-	
+
 	@Override
 	public void initMediaProcessor() {
 		if (!initialized) {
@@ -71,7 +71,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 
 	@Override
-	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+	public void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
 		forceStop(mediaWrapper);
 	}
 

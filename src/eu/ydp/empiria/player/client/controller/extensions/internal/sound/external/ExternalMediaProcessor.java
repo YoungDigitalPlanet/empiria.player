@@ -1,11 +1,13 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.external;
 
+import static com.google.common.base.Preconditions.*;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.wrapper.ExternalMediaProxy;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -13,8 +15,6 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaTyp
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 public class ExternalMediaProcessor extends AbstractMediaProcessor implements MediaProcessorExtension {
 
@@ -49,7 +49,7 @@ public class ExternalMediaProcessor extends AbstractMediaProcessor implements Me
 	}
 
 	@Override
-	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+	public void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
 	}
 
 	@Override

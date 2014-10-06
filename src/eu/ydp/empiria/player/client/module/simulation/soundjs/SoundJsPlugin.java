@@ -63,7 +63,7 @@ public class SoundJsPlugin implements SoundApiForJs {
 
 	private void createMediaWrapper(final String src, CallbackRecevier<MediaWrapper<Widget>> receiver) {
 		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
-		mediaWrapperCreator.createMediaWrapper(src, sourcesWithTypes, receiver);
+		mediaWrapperCreator.createSimulationMediaWrapper(src, sourcesWithTypes, receiver);
 	}
 
 	private void playMediaWrapper(MediaWrapper<Widget> wrapper) {
@@ -101,10 +101,12 @@ public class SoundJsPlugin implements SoundApiForJs {
 	private final MediaEventHandler onEndHandler = new MediaEventHandler() {
 		@Override
 		public void onMediaEvent(MediaEvent event) {
-			AbstractHTML5MediaWrapper html5MediaWrapper = (AbstractHTML5MediaWrapper) event.getMediaWrapper();
-			String src = html5MediaWrapper.getMediaBase().getCurrentSrc();
+			if (MediaEventTypes.ON_END == event.getType()) {
+				AbstractHTML5MediaWrapper html5MediaWrapper = (AbstractHTML5MediaWrapper) event.getMediaWrapper();
+				String src = html5MediaWrapper.getMediaBase().getCurrentSrc();
 
-			soundJsNative.onComplete(src);
+				soundJsNative.onComplete(src);
+			}
 		}
 	};
 }
