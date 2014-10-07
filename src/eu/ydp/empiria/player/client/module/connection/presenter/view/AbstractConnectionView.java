@@ -23,16 +23,12 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveS
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerDownEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler, PointerHandler {
+public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
 	private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
 	private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
 	private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
@@ -195,31 +191,4 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	public abstract void onTouchEnd(NativeEvent event);
 
 	public abstract void onTouchCancel(NativeEvent event);
-
-	@Override
-	public void onPointerDown(PointerDownEvent event) {
-		if (event.isPrimary()) {
-			onTouchStart(event.getNativeEvent());
-		} else {
-			onTouchCancel(event.getNativeEvent());
-		}
-	}
-
-	@Override
-	public void onPointerMove(PointerMoveEvent event) {
-		if (event.isPrimary()) {
-			onTouchMove(event.getNativeEvent());
-		} else {
-			onTouchCancel(event.getNativeEvent());
-		}
-	}
-
-	@Override
-	public void onPointerUp(PointerUpEvent event) {
-		if (event.isPrimary()) {
-			onTouchEnd(event.getNativeEvent());
-		} else {
-			onTouchCancel(event.getNativeEvent());
-		}
-	}
 }
