@@ -1,5 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection.presenter.view;
 
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import com.google.common.collect.ObjectArrays;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -8,6 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
@@ -17,9 +22,6 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHan
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-
-import javax.annotation.PostConstruct;
-import java.util.Map;
 
 public class ConnectionViewVertical extends AbstractConnectionView {
 
