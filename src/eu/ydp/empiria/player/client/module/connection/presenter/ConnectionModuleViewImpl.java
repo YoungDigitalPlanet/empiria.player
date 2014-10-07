@@ -1,10 +1,16 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.gin.factory.ConnectionItemsFactory;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -22,10 +28,6 @@ import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHan
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.Size;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Map;
 
 public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean> {
 
@@ -209,6 +211,9 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	public void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
+		if (sourceItem == null) {
+			return;
+		}
 		ConnectionPairEntry<String, String> connectionPair = getConnectionPair(sourceItem, targetItem);
 		if (connectionSurfacesManager.containsSurface(connectedSurfaces, connectionPair)) {
 			resetIfNotConnected(getIdentifier(sourceItem));

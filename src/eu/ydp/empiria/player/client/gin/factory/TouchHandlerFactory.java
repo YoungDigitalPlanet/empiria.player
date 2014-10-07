@@ -9,6 +9,12 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.touch.TouchStartH
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerDownHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerMoveHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerUpHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
 
 public interface TouchHandlerFactory {
 	PointerMoveHandlerOnImage createPointerMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);
@@ -22,5 +28,11 @@ public interface TouchHandlerFactory {
 	TouchStartHandlerOnImage createTouchStartHandlerOnImage(TouchOnImageStartHandler touchStartHandler);
 
 	TouchEndHandlerOnImage createTouchEndHandlerOnImage(TouchOnImageEndHandler touchEndHandler);
+
+	PointerDownHandlerImpl createPointerDownHandlerImpl(TouchOnStartHandler touchOnStartHandler);
+
+	PointerMoveHandlerImpl createPointerMoveHandlerImpl(TouchOnMoveHandler touchOnStartHandler);
+
+	PointerUpHandlerImpl createPointerUpHandlerImpl(TouchOnEndHandler touchOnStartHandler);
 
 }

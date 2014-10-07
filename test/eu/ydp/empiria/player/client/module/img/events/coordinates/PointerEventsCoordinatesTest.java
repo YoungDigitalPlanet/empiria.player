@@ -136,4 +136,50 @@ public class PointerEventsCoordinatesTest {
 		// then
 		assertNotNull(result);
 	}
+
+	@Test
+	public void shouldContainsOneEvent() {
+		// given
+		testObj.addEvent(pointerEvent);
+
+		// when
+		boolean assumedBoolean = testObj.isOnePointer();
+
+		// then
+		assertTrue(assumedBoolean);
+	}
+
+	@Test
+	public void shouldNotContainsOneEvent() {
+		// given
+
+		// when
+		boolean assumedBoolean = testObj.isOnePointer();
+
+		// then
+		assertFalse(assumedBoolean);
+	}
+
+	@Test
+	public void shouldBeEmpty() {
+		// given
+
+		// when
+		boolean assumedBoolean = testObj.isEmpty();
+
+		// then
+		assertTrue(assumedBoolean);
+	}
+
+	@Test
+	public void shouldNotBeEmpty() {
+		// given
+		testObj.addEvent(pointerEvent);
+
+		// when
+		boolean assumedBoolean = testObj.isEmpty();
+
+		// then
+		assertFalse(assumedBoolean);
+	}
 }
