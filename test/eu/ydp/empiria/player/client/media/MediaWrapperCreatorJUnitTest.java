@@ -14,7 +14,9 @@ import org.mockito.Mock;
 
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import com.google.inject.Provider;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.SimulationMediaEventController;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
@@ -29,6 +31,9 @@ public class MediaWrapperCreatorJUnitTest {
 
 	@Mock
 	private EventsBus eventsBus;
+	@Mock
+	private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
+
 	@Mock
 	private CallbackRecevier callbackRecevier;
 
@@ -57,6 +62,9 @@ public class MediaWrapperCreatorJUnitTest {
 
 	@Test
 	public void shouldCreateSimulationMediaWrapper() {
+		// given
+		when(simulationMediaEventControllerProvider.get()).thenReturn(mock(SimulationMediaEventController.class));
+
 		// when
 		testObj.createSimulationMediaWrapper(sourcesKey, sourcesWithTypes, callbackRecevier);
 
