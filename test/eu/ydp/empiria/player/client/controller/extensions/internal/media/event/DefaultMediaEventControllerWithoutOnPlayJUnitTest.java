@@ -21,12 +21,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.html5.reattachhack.HTML5VideoReattachHack;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -41,8 +39,6 @@ public class DefaultMediaEventControllerWithoutOnPlayJUnitTest {
 	protected MediaEvent mediaEvent;
 	@Mock
 	private Logger logger;
-	@Mock
-	private Provider<HTML5VideoReattachHack> html5VideoReattachHackProvider;
 
 	@Mock
 	protected AbstractMediaProcessor mediaProcessor;
@@ -203,7 +199,7 @@ public class DefaultMediaEventControllerWithoutOnPlayJUnitTest {
 		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
 
 		// then
-		verifyZeroInteractions(mediaExecutor, mediaProcessor, logger, html5VideoReattachHackProvider);
+		verifyZeroInteractions(mediaExecutor, mediaProcessor, logger);
 	}
 
 	public Object[] parametersForShouldNotProcessOtherEvents() {
