@@ -24,10 +24,15 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
 
-	@Inject
 	protected HTML5MediaEventMapper mediaEventMapper;
+	protected final HTML5MediaNativeListeners html5MediaNativeListeners;
 
-	private final HTML5MediaNativeListeners html5MediaNativeListeners = new HTML5MediaNativeListeners(this);
+	@Inject
+	public AbstractHTML5MediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners) {
+		this.mediaEventMapper = mediaEventMapper;
+		this.html5MediaNativeListeners = html5MediaNativeListeners;
+		this.html5MediaNativeListeners.setCallbackListener(this);
+	}
 
 	@Override
 	public void init() {
@@ -36,7 +41,8 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 			configureMediaBase();
 			initExecutor();
 			for (HTML5MediaEventsType eventType : Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
-					HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play)) {
+					HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play, HTML5MediaEventsType.volumechange,
+					HTML5MediaEventsType.timeupdate, HTML5MediaEventsType.durationchange)) {
 				html5MediaNativeListeners.addListener(audioElement, eventType.toString());
 			}
 		}

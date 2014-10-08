@@ -6,10 +6,10 @@ import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 
 public class HTML5MediaNativeListeners {
 
-	private final HTML5OnEvent html5OnEvent;
+	private HTML5OnEvent html5OnEvent;
 
-	public HTML5MediaNativeListeners(final HTML5OnEvent html5OnEndedEvent) {
-		this.html5OnEvent = html5OnEndedEvent;
+	public void setCallbackListener(HTML5OnEvent html5OnEvent) {
+		this.html5OnEvent = html5OnEvent;
 	}
 
 	public native void addListener(Element audioElement, String eventType)/*-{

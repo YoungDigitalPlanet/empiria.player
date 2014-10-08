@@ -17,9 +17,9 @@ public class HTML5MediaEventMapper {
 	@Inject
 	private EventsBus eventsBus;
 
-	Map<HTML5MediaEventsType, MediaEventTypes> pairMapSyncEvents = creatEventsPairMap();
+	private final Map<HTML5MediaEventsType, MediaEventTypes> pairMapSyncEvents = creatEventsPairMap();
 
-	Map<HTML5MediaEventsType, MediaEventTypes> pairMapAsyncEvents = creatAsyncEventsPairMap();
+	private final Map<HTML5MediaEventsType, MediaEventTypes> pairMapAsyncEvents = creatAsyncEventsPairMap();
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
