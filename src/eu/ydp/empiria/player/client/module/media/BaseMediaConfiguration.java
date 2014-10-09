@@ -50,7 +50,7 @@ public class BaseMediaConfiguration {
 
 	public BaseMediaConfiguration(Map<String, String> sources, MediaEventController mediaEventController) {
 		this(sources, MediaType.AUDIO, "", 1, 1, false, false, "");
-		this.mediaEventControllerOpt = Optional.fromNullable(mediaEventController);
+		this.mediaEventControllerOpt = Optional.of(mediaEventController);
 	}
 
 	public Map<String, String> getSources() {

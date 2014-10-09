@@ -46,6 +46,7 @@ public class SoundJsPluginTest {
 	private SoundJsNative soundJsNative;
 	@Mock
 	private EventsBus eventsBus;
+
 	@Mock
 	private MediaEvent mediaEvent;
 	@Mock
@@ -147,7 +148,7 @@ public class SoundJsPluginTest {
 		testObj.play(fileSrc);
 
 		// then
-		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
 		verifyNoMoreInteractions(eventsBus);
 		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
 		verify(soundJsNative).onComplete(fileSrc);
@@ -167,7 +168,7 @@ public class SoundJsPluginTest {
 		testObj.play(fileSrc);
 
 		// then
-		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
 		verifyNoMoreInteractions(eventsBus);
 		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
 		verify(soundJsNative).onComplete(fileSrc);
@@ -186,7 +187,7 @@ public class SoundJsPluginTest {
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
 		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
 
-		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
 		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
 		verify(soundJsNative).onComplete(fileSrc);
 	}
@@ -204,7 +205,7 @@ public class SoundJsPluginTest {
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
 		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
 
-		verify(eventsBus).addHandlerToSource(eq(MediaEvent.getType(MediaEventTypes.ON_END)), eq(mediaWrapper), mediaEventCaptor.capture());
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
 		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
 		verify(soundJsNative, never()).onComplete(fileSrc);
 	}

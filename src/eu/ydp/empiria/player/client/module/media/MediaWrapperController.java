@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class MediaWrapperController {
@@ -28,6 +29,10 @@ public class MediaWrapperController {
 	public void stopAndPlay(MediaWrapper<Widget> mediaWrapper) {
 		stop(mediaWrapper);
 		play(mediaWrapper);
+	}
+
+	public void addHandler(MediaEventTypes type, MediaWrapper<Widget> wrapper, MediaEventHandler handler) {
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), wrapper, handler);
 	}
 
 	private void fireEventFromSource(MediaEventTypes eventType, MediaWrapper<Widget> mediaWrapper) {

@@ -40,11 +40,15 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 			Element audioElement = mediaDescriptor.getMediaObject().getElement();
 			configureMediaBase();
 			initExecutor();
-			for (HTML5MediaEventsType eventType : Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
-					HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play, HTML5MediaEventsType.volumechange,
-					HTML5MediaEventsType.timeupdate, HTML5MediaEventsType.durationchange)) {
-				html5MediaNativeListeners.addListener(audioElement, eventType.toString());
-			}
+			setNativeListeners(audioElement);
+		}
+	}
+
+	private void setNativeListeners(Element audioElement) {
+		for (HTML5MediaEventsType eventType : Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
+				HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play, HTML5MediaEventsType.volumechange,
+				HTML5MediaEventsType.timeupdate, HTML5MediaEventsType.durationchange)) {
+			html5MediaNativeListeners.addListener(audioElement, eventType.toString());
 		}
 	}
 

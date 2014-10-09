@@ -18,10 +18,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MediaWrapperControllerTest {
+public class MediaWrapperControllerJUnitTest {
 
 	@InjectMocks
 	private MediaWrapperController testObj;
@@ -76,6 +77,19 @@ public class MediaWrapperControllerTest {
 
 		assertMediaEvent(calledStopEvent, MediaEventTypes.STOP, mediaWrapper);
 		assertMediaEvent(calledPlayEvent, MediaEventTypes.PLAY, mediaWrapper);
+	}
+
+	@Test
+	public void shouldAddHandler() {
+		// given
+		MediaEventTypes type = MediaEventTypes.ON_END;
+		MediaEventHandler handler = mock(MediaEventHandler.class);
+
+		// when
+		testObj.addHandler(type, mediaWrapper, handler);
+
+		// then
+		verify(eventsBus).addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler);
 	}
 
 	private void verifyMediaEvent(MediaEventTypes assumedEventType, MediaWrapper<Widget> assumeMediaWrapper) {

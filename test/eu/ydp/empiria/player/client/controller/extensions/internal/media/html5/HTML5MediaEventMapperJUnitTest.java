@@ -13,9 +13,7 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -50,9 +48,6 @@ public class HTML5MediaEventMapperJUnitTest {
 
 	@Captor
 	private ArgumentCaptor<MediaEvent> mediaEventCaptor;
-
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
 
 	@Before
 	public void setUp() {
@@ -133,6 +128,9 @@ public class HTML5MediaEventMapperJUnitTest {
 	}
 
 	@Test
+	/**
+	 * This should not throw any exception when listener is null (no interaction should be called on him)
+	 */
 	public void shouldNotCallListener_ifListenerIsNull() {
 		// given
 		HTML5MediaEventsType html5EventType = play;

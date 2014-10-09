@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.DefaultMediaEventController;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.MediaEventControllerWithOnPlay;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.MediaEventController;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -30,7 +30,7 @@ public abstract class AbstractMediaProcessor extends InternalExtension implement
 	@Inject
 	private Logger logger;
 	@Inject
-	private Provider<DefaultMediaEventController> defaultMediaEventControllerProvider;
+	private Provider<MediaEventControllerWithOnPlay> defaultMediaEventControllerProvider;
 
 	@Override
 	public final void init() {
