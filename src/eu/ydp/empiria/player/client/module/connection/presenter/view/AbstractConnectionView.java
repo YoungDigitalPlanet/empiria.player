@@ -21,6 +21,7 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveE
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveHandler;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
@@ -39,6 +40,8 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	protected EventsBus eventsBus;
 	@Inject
 	private PositionHelper positionHelper;
+	@Inject
+	private PointerEventsCoordinates pointerEventsCoordinates;
 
 	private final static boolean NOT_MOBILE_BROWSER = !UserAgentChecker.isMobileUserAgent();
 
@@ -139,9 +142,10 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 		NativeEvent nativeEvent = event.getNativeEvent();
 
 		JsArray<Touch> touches = nativeEvent.getTouches();
-		boolean isMouseClick = (touches == null); // method is also called when
-													// MouseEvents occur
-		boolean isOneFingerTouch = touchEventChecker.isOnlyOneFinger(touches);
+		boolean isMouseClick = isMouseClick(touches); // method is also called
+														// when MouseEvents
+														// occur
+		boolean isOneFingerTouch = isOneFingerTouch(touches);
 
 		switch (event.getType()) {
 		case TOUCH_START:
@@ -166,6 +170,14 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 			break;
 		}
 
+	}
+
+	private boolean isMouseClick(JsArray<Touch> touches) {
+		return (touches == null) && pointerEventsCoordinates.isEmpty();
+	}
+
+	private boolean isOneFingerTouch(JsArray<Touch> touches) {
+		return touchEventChecker.isOnlyOneFinger(touches) || pointerEventsCoordinates.isOnePointer();
 	}
 
 	@Override
