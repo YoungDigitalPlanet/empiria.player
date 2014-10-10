@@ -177,8 +177,7 @@ public abstract class AbstractConnectionView extends Composite implements Connec
 	}
 
 	private boolean isOneFingerTouch(JsArray<Touch> touches) {
-		boolean isOneFingerTouch = touchEventChecker.isOnlyOneFinger(touches) || pointerEventsCoordinates.isOnePointer();
-		return isOneFingerTouch;
+		return touchEventChecker.isOnlyOneFinger(touches) || pointerEventsCoordinates.isOnePointer();
 	}
 
 	@Override

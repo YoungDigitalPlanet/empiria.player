@@ -29,10 +29,10 @@ public interface TouchHandlerFactory {
 
 	TouchEndHandlerOnImage createTouchEndHandlerOnImage(TouchOnImageEndHandler touchEndHandler);
 
-	PointerDownHandlerImpl createPointerDownHandlerImpl(TouchOnStartHandler touchOnStartHandler);
+	PointerDownHandlerImpl createPointerDownHandler(TouchOnStartHandler touchOnStartHandler);
 
-	PointerMoveHandlerImpl createPointerMoveHandlerImpl(TouchOnMoveHandler touchOnStartHandler);
+	PointerMoveHandlerImpl createPointerMoveHandler(TouchOnMoveHandler touchOnStartHandler);
 
-	PointerUpHandlerImpl createPointerUpHandlerImpl(TouchOnEndHandler touchOnStartHandler);
+	PointerUpHandlerImpl createPointerUpHandler(TouchOnEndHandler touchOnStartHandler);
 
 }

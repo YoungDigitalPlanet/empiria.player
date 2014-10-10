@@ -20,17 +20,17 @@ public class PointerHandlersInitializer implements ITouchHandlerInitializer {
 
 	@Override
 	public void addTouchMoveHandler(final TouchOnMoveHandler touchOnMoveHandler, Widget listenOn) {
-		listenOn.addDomHandler(touchHandlerFactory.createPointerMoveHandlerImpl(touchOnMoveHandler), PointerMoveEvent.getType());
+		listenOn.addDomHandler(touchHandlerFactory.createPointerMoveHandler(touchOnMoveHandler), PointerMoveEvent.getType());
 	}
 
 	@Override
 	public void addTouchStartHandler(final TouchOnStartHandler touchStartHandler, Widget listenOn) {
-		listenOn.addDomHandler(touchHandlerFactory.createPointerDownHandlerImpl(touchStartHandler), PointerDownEvent.getType());
+		listenOn.addDomHandler(touchHandlerFactory.createPointerDownHandler(touchStartHandler), PointerDownEvent.getType());
 	}
 
 	@Override
 	public void addTouchEndHandler(final TouchOnEndHandler touchEndHandler, Widget listenOn) {
-		listenOn.addDomHandler(touchHandlerFactory.createPointerUpHandlerImpl(touchEndHandler), PointerUpEvent.getType());
+		listenOn.addDomHandler(touchHandlerFactory.createPointerUpHandler(touchEndHandler), PointerUpEvent.getType());
 	}
 
 	@Override

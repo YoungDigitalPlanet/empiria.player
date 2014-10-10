@@ -36,7 +36,7 @@ public class PointerHandlersInitializerTest {
 		// given
 		TouchOnMoveHandler touchOnMoveHandler = mock(TouchOnMoveHandler.class);
 		PointerMoveHandlerImpl pointerMoveHandlerImpl = mock(PointerMoveHandlerImpl.class);
-		when(touchHandlerFactory.createPointerMoveHandlerImpl(touchOnMoveHandler)).thenReturn(pointerMoveHandlerImpl);
+		when(touchHandlerFactory.createPointerMoveHandler(touchOnMoveHandler)).thenReturn(pointerMoveHandlerImpl);
 
 		// when
 		testObj.addTouchMoveHandler(touchOnMoveHandler, listenOn);
@@ -50,7 +50,7 @@ public class PointerHandlersInitializerTest {
 		// given
 		TouchOnStartHandler touchOnStartHandler = mock(TouchOnStartHandler.class);
 		PointerDownHandlerImpl pointerDownHandlerImpl = mock(PointerDownHandlerImpl.class);
-		when(touchHandlerFactory.createPointerDownHandlerImpl(touchOnStartHandler)).thenReturn(pointerDownHandlerImpl);
+		when(touchHandlerFactory.createPointerDownHandler(touchOnStartHandler)).thenReturn(pointerDownHandlerImpl);
 
 		// when
 		testObj.addTouchStartHandler(touchOnStartHandler, listenOn);
@@ -64,7 +64,7 @@ public class PointerHandlersInitializerTest {
 		// given
 		TouchOnEndHandler touchOnEndHandler = mock(TouchOnEndHandler.class);
 		PointerUpHandlerImpl pointerUpHandlerImpl = mock(PointerUpHandlerImpl.class);
-		when(touchHandlerFactory.createPointerUpHandlerImpl(touchOnEndHandler)).thenReturn(pointerUpHandlerImpl);
+		when(touchHandlerFactory.createPointerUpHandler(touchOnEndHandler)).thenReturn(pointerUpHandlerImpl);
 
 		// when
 		testObj.addTouchEndHandler(touchOnEndHandler, listenOn);

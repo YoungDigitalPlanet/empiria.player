@@ -143,10 +143,10 @@ public class PointerEventsCoordinatesTest {
 		testObj.addEvent(pointerEvent);
 
 		// when
-		boolean assumedBoolean = testObj.isOnePointer();
+		boolean result = testObj.isOnePointer();
 
 		// then
-		assertTrue(assumedBoolean);
+		assertTrue(result);
 	}
 
 	@Test
@@ -154,10 +154,10 @@ public class PointerEventsCoordinatesTest {
 		// given
 
 		// when
-		boolean assumedBoolean = testObj.isOnePointer();
+		boolean result = testObj.isOnePointer();
 
 		// then
-		assertFalse(assumedBoolean);
+		assertFalse(result);
 	}
 
 	@Test
@@ -165,10 +165,10 @@ public class PointerEventsCoordinatesTest {
 		// given
 
 		// when
-		boolean assumedBoolean = testObj.isEmpty();
+		boolean result = testObj.isEmpty();
 
 		// then
-		assertTrue(assumedBoolean);
+		assertTrue(result);
 	}
 
 	@Test
@@ -177,9 +177,9 @@ public class PointerEventsCoordinatesTest {
 		testObj.addEvent(pointerEvent);
 
 		// when
-		boolean assumedBoolean = testObj.isEmpty();
+		boolean result = testObj.isEmpty();
 
 		// then
-		assertFalse(assumedBoolean);
+		assertFalse(result);
 	}
 }

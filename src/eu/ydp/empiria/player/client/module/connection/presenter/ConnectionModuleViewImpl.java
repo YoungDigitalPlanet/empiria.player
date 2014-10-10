@@ -212,7 +212,10 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	public void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
 		if (sourceItem == null) {
-			return;
+			return; // na IE11 stukniecie w ekran liczone jest jako mouse click
+					// jak i pointer down event. przy multitouche'u leci tutaj
+					// null - przez event mouseclick nie da sie zablokowac
+					// drugiego dotkniecia
 		}
 		ConnectionPairEntry<String, String> connectionPair = getConnectionPair(sourceItem, targetItem);
 		if (connectionSurfacesManager.containsSurface(connectedSurfaces, connectionPair)) {
