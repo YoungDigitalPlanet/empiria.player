@@ -5,5 +5,7 @@ public interface SoundApiForJs {
 
 	void play(final String src);
 
+	void playLooped(final String src);
+
 	void stop(String src);
 }

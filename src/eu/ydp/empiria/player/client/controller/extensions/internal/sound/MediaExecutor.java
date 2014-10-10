@@ -21,6 +21,8 @@ public interface MediaExecutor<T extends Widget> {
 
 	public void play();
 
+	public void playLooped();
+
 	public void stop();
 
 	public void pause();

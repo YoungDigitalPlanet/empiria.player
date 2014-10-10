@@ -54,6 +54,10 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void stop() {
 		mediaEngine.stop(wrapper);
 	}

@@ -67,6 +67,10 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void stop() {
 	}
 

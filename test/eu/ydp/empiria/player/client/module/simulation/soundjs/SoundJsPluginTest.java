@@ -228,6 +228,74 @@ public class SoundJsPluginTest {
 	}
 
 	@Test
+	public void shouldCreateWrapperAndPlayLooped() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+	}
+
+	@Test
+	public void shouldPlayLoopedAlreadyPreloaded() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.preload(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyNoMoreInteractions(mediaWrapperCreator);
+		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+	}
+
+	@Test
+	public void shouldCallNativeOnComplete_ifPlayingLoopedSecondTime() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
+		testObj.playLooped(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// then
+		testObj.playLooped(fileSrc);
+
+		// then
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
+		verifyNoMoreInteractions(eventsBus);
+		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
+		verify(soundJsNative).onComplete(fileSrc);
+	}
+
+	@Test
+	public void shouldPlayLoppedAlreadyPlayedLooped() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.playLooped(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyNoMoreInteractions(mediaWrapperCreator);
+		verify(mediaWrapperController, times(2)).stopAndPlayLooped(mediaWrapper);
+	}
+
+	@Test
 	public void shouldStop() {
 		// given
 		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
