@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
@@ -45,9 +46,11 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	private void setNativeListeners(Element audioElement) {
-		for (HTML5MediaEventsType eventType : Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
+		ArrayList<HTML5MediaEventsType> eventTypes = Lists.newArrayList(HTML5MediaEventsType.canplay, HTML5MediaEventsType.suspend, HTML5MediaEventsType.ended,
 				HTML5MediaEventsType.error, HTML5MediaEventsType.pause, HTML5MediaEventsType.play, HTML5MediaEventsType.volumechange,
-				HTML5MediaEventsType.timeupdate, HTML5MediaEventsType.durationchange)) {
+				HTML5MediaEventsType.timeupdate, HTML5MediaEventsType.durationchange);
+
+		for (HTML5MediaEventsType eventType : eventTypes) {
 			html5MediaNativeListeners.addListener(audioElement, eventType.toString());
 		}
 	}
