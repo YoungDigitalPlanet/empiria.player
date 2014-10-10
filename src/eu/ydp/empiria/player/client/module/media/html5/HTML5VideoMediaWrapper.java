@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.HTML5VideoMediaExecutor;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -17,9 +16,6 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
-	protected AttachHandlerImpl attachHandlerImpl;
-
-	private final AttachHandlerFactory attachHandlerFactory;
 
 	private final HTML5MediaExecutorDelegator html5MediaExecutorDelegator = new HTML5MediaExecutorDelegator();
 
@@ -29,15 +25,13 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 	private final EventsBus eventsBus;
 
 	@Inject
-	public HTML5VideoMediaWrapper(@Assisted Media media, AttachHandlerFactory attachHandlerFactory, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
+	public HTML5VideoMediaWrapper(@Assisted Media media, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
 		super(media, eventsBus, pageScopeFactory);
 		this.eventsBus = eventsBus;
-		this.attachHandlerFactory = attachHandlerFactory;
 	}
 
 	@PostConstruct
 	public void registerEvents() {
-		attachHandlerImpl = attachHandlerFactory.createAttachHandler((HTML5VideoMediaExecutor) getMediaExecutor(), this);
 		if (isHTML5VideoForcePosterNeeded()) {
 			HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(getMediaBase(), html5MediaExecutorDelegator);
 			addHandlerRegistration(MediaEventTypes.SUSPEND,
@@ -54,9 +48,6 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 	@Override
 	public void setMediaExecutor(AbstractHTML5MediaExecutor mediaExecutor) {
 		super.setMediaExecutor(mediaExecutor);
-		if (attachHandlerImpl != null) {
-			attachHandlerImpl.setMediaExecutor((HTML5VideoMediaExecutor) mediaExecutor);
-		}
 		html5MediaExecutorDelegator.setExecutor(mediaExecutor);
 	}
 

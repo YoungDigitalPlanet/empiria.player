@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.MocksCollector;
-import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
@@ -67,9 +66,6 @@ public class ExplanationDescriptionSoundControllerTest {
 	@Mock
 	private Entry entryWithValidFileName;
 
-	@Mock
-	private HideNativeMediaControlsManager hideNativeMediaControlsManager;
-
 	private final MocksCollector mocksCollector = new MocksCollector();
 
 	@Captor
@@ -111,7 +107,6 @@ public class ExplanationDescriptionSoundControllerTest {
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_STOP, currentPageScope);
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PLAY, currentPageScope);
 
-		inOrder.verify(hideNativeMediaControlsManager).addToDocumentAndHideControls(mediaWrapper);
 		inOrder.verify(mediaWrapperController).stopAndPlay(mediaWrapper);
 	}
 

@@ -5,206 +5,144 @@ import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.MediaElement;
-import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.media.client.MediaBase;
+import com.google.gwt.user.client.Element;
 
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventHandler;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-@SuppressWarnings("PMD")
-public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBaseWithoutAutoInjectorInit {
+public abstract class AbstractHTML5MediaExecutorJUnitBase {
 
 	protected AbstractHTML5MediaExecutor<MediaBase> instance;
 
+	@Mock
 	protected MediaBase mediaBase;
-
+	@Mock
 	protected BaseMediaConfiguration mediaConfiguration;
-
-	protected HandlerRegistration handlerRegistration = mock(HandlerRegistration.class);
-
+	@Mock
+	protected HandlerRegistration handlerRegistration;
+	@Mock
 	protected EventsBus eventsBus;
-
-	public abstract MediaBase getMediaBaseMock();
-
-	public abstract AbstractHTML5MediaExecutor getExecutorInstanceMock();
-
-	public abstract BaseMediaConfiguration getBaseMediaConfiguration();
-
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
-
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
-
-	public void before() {
-		instance = getExecutorInstanceMock();
-		mediaBase = getMediaBaseMock();
-		mediaConfiguration = getBaseMediaConfiguration();
-		doReturn(handlerRegistration).when(mediaBase).addBitlessDomHandler(Matchers.any(HTML5MediaEventHandler.class), Matchers.any(Type.class));
-		eventsBus = injector.getInstance(EventsBus.class);
-		instance.setMedia(mediaBase);
-	}
-
-	public void setUpGuice() {
-		GuiceModuleConfiguration configuration = new GuiceModuleConfiguration();
-		configuration.addAllClassToSpy(EventsBus.class);
-		setUp(configuration);
-	}
+	@Mock
+	protected HTML5MediaEventMapper mediaEventMapper;
+	@Mock
+	protected HTML5MediaNativeListeners html5MediaNativeListeners;
 
 	@Test
 	public void testInitNoConfiguration() {
+		// given
+		Element element = mock(Element.class);
+		MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
+		when(mediaDescriptor.getMediaObject()).thenReturn(mediaBase);
+		when(mediaBase.getElement()).thenReturn(element);
+
+		instance.setMediaWrapper(mediaDescriptor);
 		mediaConfiguration = new BaseMediaConfiguration(new HashMap<String, String>(), false);
 		instance.setBaseMediaConfiguration(mediaConfiguration);
+
+		// when
 		instance.init();
+
+		// then
 		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(true));
+		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : creatEventsPairMap().entrySet()) {
+			verify(html5MediaNativeListeners).addListener(element, typePair.getKey().toString());
+		}
 	}
 
 	@Test
 	public void testInit() {
+		// given
+		Element element = mock(Element.class);
+		MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
+		when(mediaDescriptor.getMediaObject()).thenReturn(mediaBase);
+		when(mediaBase.getElement()).thenReturn(element);
+
+		instance.setMediaWrapper(mediaDescriptor);
 		instance.setBaseMediaConfiguration(mediaConfiguration);
+
+		// when
 		instance.init();
+
+		// then
 		verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
 		verify(mediaBase).setControls(Matchers.eq(false));
+		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : creatEventsPairMap().entrySet()) {
+			verify(html5MediaNativeListeners).addListener(element, typePair.getKey().toString());
+		}
 	}
 
 	@Test
 	public void testInitMediaNotSet() {
+		// given
 		instance.setMedia(null);
-		instance.init();
-		verify(instance).init();
-		verify(instance, times(2)).setMedia(Matchers.any(MediaBase.class));
-		verifyNoMoreInteractions(instance);
-	}
 
-	@Test
-	public void testRemoveRegistration() {
-		instance.setBaseMediaConfiguration(mediaConfiguration);
+		// when
 		instance.init();
-		instance.init();
-		verify(handlerRegistration).removeHandler();
+
+		// then
+		verifyZeroInteractions(mediaEventMapper);
+		verify(html5MediaNativeListeners).setCallbackListener(instance);
+		verifyNoMoreInteractions(html5MediaNativeListeners);
 	}
 
 	@Test
 	public void testSetMediaWrapper() {
+		// given
 		instance.setMedia(null);
 		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
 		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
+
+		// when
 		instance.setMediaWrapper(mediaWrapper);
+
+		// then
 		assertEquals(mediaBase, instance.getMedia());
 		assertEquals(mediaWrapper, instance.getMediaWrapper());
 	}
 
 	@Test
-	public void testSetBaseMediaConfiguration() {
-		instance.setBaseMediaConfiguration(mediaConfiguration);
-		assertEquals(mediaConfiguration, instance.getBaseMediaConfiguration());
-	}
-
-	@Test
-	public void testOnEvent() {
-
+	public void testHtml5OnEvent() {
+		// given
 		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
 		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
-
-		Set<HTML5MediaEventsType> asyncEvents = Sets.newHashSet(HTML5MediaEventsType.durationchange, HTML5MediaEventsType.timeupdate);
-
-		instance.setMediaWrapper(mediaWrapper);
-		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
-			ArgumentCaptor<MediaEvent> eventCaptor = ArgumentCaptor.forClass(MediaEvent.class);
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(typePair.getKey()).when(event).getType();
-			instance.onEvent(event);
-			if (asyncEvents.contains(typePair.getKey())) {
-				verify(eventsBus).fireAsyncEventFromSource(eventCaptor.capture(), Matchers.eq(mediaWrapper));
-			} else {
-				verify(eventsBus).fireEventFromSource(eventCaptor.capture(), Matchers.eq(mediaWrapper));
-
-			}
-			verifyNoMoreInteractions(eventsBus);
-			assertEquals(typePair.getValue(), eventCaptor.getValue().getType());
-			Mockito.reset(eventsBus);
-		}
-	}
-
-	@Test
-	public void testOnEventWithDisabledEventPropagationForPlay() {
-		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
-		doReturn(mediaBase).when(mediaWrapper).getMediaObject();
-		instance.playWithoutOnPlayEventPropagation();
-		HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-		doReturn(HTML5MediaEventsType.play).when(event).getType();
-		instance.onEvent(event);
-		verifyZeroInteractions(eventsBus);
-	}
-
-	@Test
-	public void testOnEventSoundExecutorListener() {
-
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
 		SoundExecutorListener soundExecutorListener = mock(SoundExecutorListener.class);
-		Set<HTML5MediaEventsType> listenerEvents = Sets.newHashSet(HTML5MediaEventsType.ended, HTML5MediaEventsType.play);
 
+		instance.setMediaWrapper(mediaWrapper);
 		instance.setSoundFinishedListener(soundExecutorListener);
-		for (HTML5MediaEventsType type : pairMap.keySet()) {
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(type).when(event).getType();
-			instance.onEvent(event);
 
-			if (listenerEvents.contains(type)) {
-				if (type == HTML5MediaEventsType.play) {
-					verify(soundExecutorListener).onPlay();
-				} else {
-					verify(soundExecutorListener).onSoundFinished();
-				}
-			} else {
-				verifyZeroInteractions(soundExecutorListener);
-			}
-
-			Mockito.reset(soundExecutorListener);
+		// when - then
+		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
+			instance.html5OnEvent(typePair.getKey());
+			verify(mediaEventMapper).mapAndFireEvent(typePair.getKey(), soundExecutorListener, mediaWrapper);
 		}
 	}
 
 	@Test
-	public void testOnUnsupportedEvent() {
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
-		Set<HTML5MediaEventsType> unsupportedTypes = Sets.newHashSet(HTML5MediaEventsType.values());
-		unsupportedTypes.removeAll(pairMap.keySet());
+	public void testSetBaseMediaConfiguration() {
+		// given
+		instance.setBaseMediaConfiguration(mediaConfiguration);
 
-		for (HTML5MediaEventsType type : unsupportedTypes) {
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(type).when(event).getType();
-			instance.onEvent(event);
-			verifyZeroInteractions(eventsBus);
-		}
+		// when
+		BaseMediaConfiguration result = instance.getBaseMediaConfiguration();
+
+		// then
+		assertEquals(mediaConfiguration, result);
 	}
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
@@ -224,36 +162,71 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	@Test
 	public void testSetMedia() {
-		assertEquals(mediaBase, instance.getMedia());
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
+		MediaBase result = instance.getMedia();
+
+		// then
+		assertEquals(mediaBase, result);
 	}
 
 	@Test
 	public void testPlay() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
 		instance.play();
+
+		// then
 		verify(mediaBase).play();
 	}
 
 	@Test
 	public void testPlayWithString() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
 		instance.play("");
+
+		// then
 		verify(mediaBase).play();
 	}
 
 	@Test
 	public void testStop() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
 		instance.stop();
+
+		// then
 		verify(mediaBase).pause();
 		verify(mediaBase).setCurrentTime(Matchers.eq(0d));
 	}
 
 	@Test
 	public void testPause() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// whe
 		instance.pause();
+
+		// then
 		verify(mediaBase).pause();
 	}
 
 	@Test
 	public void testSetMuted() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when - then
 		instance.setMuted(true);
 		verify(mediaBase).setMuted(Matchers.eq(true));
 		instance.setMuted(false);
@@ -262,6 +235,10 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	@Test
 	public void testSetVolume() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when-then
 		instance.setVolume(3);
 		verify(mediaBase).setVolume(Matchers.eq(3d));
 		instance.setVolume(5.6);
@@ -270,14 +247,26 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase extends AbstractTestBa
 
 	@Test
 	public void testSetCurrentTime() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
 		instance.setCurrentTime(3);
+
+		// then
 		verify(mediaBase).setCurrentTime(Matchers.eq(3d));
 	}
 
 	@Test
 	public void testSetCurrentTimeNAN() {
+		// given
+		instance.setMedia(mediaBase);
 		doReturn(Double.NaN).when(mediaBase).getDuration();
+
+		// when
 		instance.setCurrentTime(3);
+
+		// then
 		verify(mediaBase, times(0)).setCurrentTime(Matchers.anyDouble());
 	}
 

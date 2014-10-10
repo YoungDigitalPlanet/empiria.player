@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -25,7 +24,6 @@ public class ExplanationDescriptionSoundController {
 	private final ExplanationView explanationView;
 	private final EventsBus eventsBus;
 	private final MediaWrapperController mediaWrapperController;
-	private final HideNativeMediaControlsManager hideNativeMediaControlsManager;
 
 	private final DictionaryMediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapper<Widget> mediaWrapper;
@@ -34,14 +32,12 @@ public class ExplanationDescriptionSoundController {
 
 	@Inject
 	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
-			Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator,
-			HideNativeMediaControlsManager hideNativeMediaControlsManager) {
+			Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator) {
 		this.explanationView = explanationView;
 		this.eventsBus = eventsBus;
 		this.mediaWrapperController = mediaWrapperController;
 		this.currentPageScopeProvider = currentPageScopeProvider;
 		this.mediaWrapperCreator = mediaWrapperCreator;
-		this.hideNativeMediaControlsManager = hideNativeMediaControlsManager;
 	}
 
 	private void playDescriptionSound(String filePath) {
@@ -60,7 +56,6 @@ public class ExplanationDescriptionSoundController {
 		explanationView.setPlayingButtonStyle();
 		AbstractMediaEventHandler handler = createDescriptionSoundMediaHandler();
 		addMediaHandlers(handler);
-		hideNativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
 		playing = true;
 		mediaWrapperController.stopAndPlay(mediaWrapper);
 	}

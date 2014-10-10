@@ -26,9 +26,6 @@ public class FeedbackSoundPlayer {
 	@Inject
 	protected SingleFeedbackSoundPlayerFactory feedbackPlayerFactory;
 
-	@Inject
-	private HideNativeMediaControlsManager nativeMediaControlsManager;
-
 	// Cache dla wrapperow - do odegrania danego pliku bedzie uzywany zawsze ten
 	// sam wrapper.
 	protected Map<String, MediaWrapper<Widget>> wrappers = new HashMap<String, MediaWrapper<Widget>>();
@@ -40,8 +37,6 @@ public class FeedbackSoundPlayer {
 
 		@Override
 		public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
-
-			nativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
 
 			wrappers.put(wrappersSourcesKey, mediaWrapper);
 			stopAndPlaySound(wrappersSourcesKey);

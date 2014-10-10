@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -14,8 +15,6 @@ import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
-import java.util.Map;
-
 public class ExplanationEntrySoundController {
 
 	@Inject
@@ -24,8 +23,6 @@ public class ExplanationEntrySoundController {
 	private EventsBus eventsBus;
 	@Inject
 	private MediaWrapperController mediaWrapperController;
-	@Inject
-	private HideNativeMediaControlsManager hideNativeMediaControlsManager;
 
 	public void playEntrySound(Entry entry) {
 		String fileName = entry.getEntrySound();
@@ -38,7 +35,6 @@ public class ExplanationEntrySoundController {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
-				hideNativeMediaControlsManager.addToDocumentAndHideControls(mediaWrapper);
 				mediaWrapperController.stopAndPlay(mediaWrapper);
 			}
 		}));
