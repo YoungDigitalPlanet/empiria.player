@@ -118,6 +118,19 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	@Test
+	public void shouldProcess_playLooped() {
+		// given
+		when(mediaEvent.getAssociatedType().getType()).thenReturn(PLAY_LOOPED);
+
+		// when
+		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
+
+		// then
+		verify(mediaExecutor).playLooped();
+		verifyNoMoreInteractions(mediaExecutor);
+	}
+
+	@Test
 	public void shouldProcess_mute() {
 		// given
 		boolean isMuted = false;
