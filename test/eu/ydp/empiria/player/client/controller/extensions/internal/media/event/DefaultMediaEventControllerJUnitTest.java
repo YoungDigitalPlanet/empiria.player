@@ -19,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
@@ -43,15 +42,14 @@ public class DefaultMediaEventControllerJUnitTest {
 	@Mock
 	protected AbstractMediaProcessor mediaProcessor;
 	@Mock
-	protected MediaExecutor<MediaBase> mediaExecutor;
-	@Mock
-	protected MediaWrapper mediaWrapper;
+	protected MediaExecutor<?> mediaExecutor;
 
 	@Before
+	@SuppressWarnings("unchecked")
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		when(mediaExecutor.getMediaWrapper()).thenReturn(mediaWrapper);
+		when(mediaExecutor.getMediaWrapper()).thenReturn(mock(MediaWrapper.class));
 	}
 
 	@Test
