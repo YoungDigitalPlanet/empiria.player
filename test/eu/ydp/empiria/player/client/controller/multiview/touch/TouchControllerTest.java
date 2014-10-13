@@ -1,18 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview.touch;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import com.google.gwt.dom.client.NativeEvent;
-
+import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -21,6 +10,16 @@ import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class TouchControllerTest {
 	@Mock
@@ -31,6 +30,8 @@ public class TouchControllerTest {
 	private EventsBus eventsBus;
 	@Mock
 	private RootPanelDelegate rootPanelDelegate;
+	@Mock
+	private PlayerWorkModeService playerWorkModeService;
 
 	private TouchModel touchModel;
 
@@ -40,7 +41,7 @@ public class TouchControllerTest {
 	public void before() {
 		touchModel = new TouchModel();
 		MockitoAnnotations.initMocks(this);
-		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel, rootPanelDelegate);
+		testObj = new TouchController(windowDelegate, touchEventReader, eventsBus, touchModel, rootPanelDelegate, playerWorkModeService);
 	}
 
 	@After
@@ -80,18 +81,19 @@ public class TouchControllerTest {
 		assertEquals(touchModel.isVerticalSwipeDetected(), false);
 
 		InOrder inOrder = inOrder(windowDelegate, touchEventReader, eventsBus);
-		inOrder.verify(touchEventReader).getScreenY(onTouchStartEvent);
-		inOrder.verify(touchEventReader).getX(onTouchStartEvent);
-		inOrder.verify(touchEventReader).isMoreThenOneFingerTouch(onTouchStartEvent);
-		inOrder.verify(windowDelegate).getScrollTop();
+		inOrder.verify(touchEventReader)
+			   .getScreenY(onTouchStartEvent);
+		inOrder.verify(touchEventReader)
+			   .getX(onTouchStartEvent);
+		inOrder.verify(touchEventReader)
+			   .isMoreThenOneFingerTouch(onTouchStartEvent);
+		inOrder.verify(windowDelegate)
+			   .getScrollTop();
 
 	}
 
 	@Test
 	public void getSwypePercentLengthTest() {
-		/**
-		 * int swypeWidth = Math.abs(touchModel.getLastEndX() - touchModel.getEndX()); return ((float) swypeWidth / rootPanelDelegate.getOffsetWidth()) * 100;
-		 */
 		touchModel.setLastEndX(50);
 		touchModel.setEndX(100);
 		when(rootPanelDelegate.getOffsetWidth()).thenReturn(200);
@@ -131,6 +133,19 @@ public class TouchControllerTest {
 	}
 
 	@Test
+	public void canSwitchPageTest_isTestModeEnabled() {
+		touchModel.setEndX(10);
+		touchModel.setStartX(111);
+		touchModel.setEndY(2);
+		touchModel.setStartY(15);
+		when(windowDelegate.getClientWidth()).thenReturn(400);
+		testObj.enableTestMode();
+
+		assertFalse(testObj.canSwitchPage());
+		verify(windowDelegate).getClientWidth();
+	}
+
+	@Test
 	public void canSwitchPageTest_isTrue() {
 		touchModel.setEndX(10);
 		touchModel.setStartX(111);
@@ -143,25 +158,25 @@ public class TouchControllerTest {
 	}
 
 	@Test
-	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isFalse() {
+	public void isReadyToStartAnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isFalse() {
 		touchModel.setEndX(2);
 		touchModel.setStartX(0);
 		touchModel.setEndY(1);
 		touchModel.setStartY(0);
 		touchModel.setVerticalSwipeDetected(false);
 
-		assertTrue(testObj.isReadyToStartAnnimation());
+		assertTrue(testObj.isReadyToStartAnimation());
 	}
 
 	@Test
-	public void isReadyToStartAnnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isTrue() {
+	public void isReadyToStartAnimation_isHorizontalSwipe_isTrue_and_isVerticalSwipeDetected_isTrue() {
 		touchModel.setEndX(2);
 		touchModel.setStartX(0);
 		touchModel.setEndY(1);
 		touchModel.setStartY(0);
 		touchModel.setVerticalSwipeDetected(true);
 
-		assertFalse(testObj.isReadyToStartAnnimation());
+		assertFalse(testObj.isReadyToStartAnimation());
 	}
 
 	@Test
@@ -171,7 +186,7 @@ public class TouchControllerTest {
 		touchModel.setEndY(2);
 		touchModel.setStartY(0);
 
-		assertFalse(testObj.isReadyToStartAnnimation());
+		assertFalse(testObj.isReadyToStartAnimation());
 	}
 
 	@Test
@@ -204,8 +219,10 @@ public class TouchControllerTest {
 		assertEquals(touchModel.getEndY(), y);
 
 		InOrder inOrder = inOrder(windowDelegate, touchEventReader, eventsBus);
-		inOrder.verify(touchEventReader).getScreenY(onTouchMoveEvent);
-		inOrder.verify(touchEventReader).getX(onTouchMoveEvent);
+		inOrder.verify(touchEventReader)
+			   .getScreenY(onTouchMoveEvent);
+		inOrder.verify(touchEventReader)
+			   .getX(onTouchMoveEvent);
 	}
 
 	@Test
@@ -235,7 +252,8 @@ public class TouchControllerTest {
 		ArgumentCaptor<PlayerEvent> argumentCaptor = ArgumentCaptor.forClass(PlayerEvent.class);
 
 		verify(eventsBus).fireEvent(argumentCaptor.capture());
-		assertEquals(argumentCaptor.getValue().getType(), PlayerEventTypes.PAGE_SWIPE_STARTED);
+		assertEquals(argumentCaptor.getValue()
+								   .getType(), PlayerEventTypes.PAGE_SWIPE_STARTED);
 
 	}
 
@@ -276,8 +294,10 @@ public class TouchControllerTest {
 		assertEquals(touchModel.getEndY(), y);
 
 		InOrder inOrder = inOrder(windowDelegate, touchEventReader, eventsBus);
-		inOrder.verify(touchEventReader).getFromChangedTouchesScreenY(event);
-		inOrder.verify(touchEventReader).getFromChangedTouchesX(event);
+		inOrder.verify(touchEventReader)
+			   .getFromChangedTouchesScreenY(event);
+		inOrder.verify(touchEventReader)
+			   .getFromChangedTouchesX(event);
 	}
 
 	@Test

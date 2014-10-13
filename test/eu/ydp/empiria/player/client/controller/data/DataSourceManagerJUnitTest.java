@@ -1,19 +1,18 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.gwt.user.client.ui.InsertPanel.ForIsWidget;
+import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
+import junit.framework.TestCase;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import junit.framework.TestCase;
-
-import com.google.gwt.user.client.ui.InsertPanel.ForIsWidget;
-import com.google.gwt.user.client.ui.IsWidget;
-
-import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
 
 public class DataSourceManagerJUnitTest extends TestCase {
 
 	public void testMainPreloaderAddedAndRemoved() {
-		DataSourceManager dsm = new DataSourceManager();
+		DataSourceManager dsm = new DataSourceManager(new AssessmentDataSourceManager());
 
 		ForIsWidget mockRootPanel = mock(ForIsWidget.class);
 		IsWidget mockImage = mock(IsWidget.class);

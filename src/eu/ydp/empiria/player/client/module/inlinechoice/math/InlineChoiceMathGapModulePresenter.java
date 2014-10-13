@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.module.gap.GapModulePesenterBase;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
@@ -21,7 +20,9 @@ public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 
 	@UiTemplate("InlineChoiceMathGap.ui.xml")
 	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceMathGapModulePresenter> {
-	};
+	}
+
+	;
 
 	private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
 

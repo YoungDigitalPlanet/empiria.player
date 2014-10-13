@@ -39,6 +39,14 @@ public class PointerEventsCoordinates {
 		return new TouchOnImageEvent(valuesAsList());
 	}
 
+	public boolean isOnePointer() {
+		return pointersPoints.size() == 1;
+	}
+
+	public boolean isEmpty() {
+		return pointersPoints.isEmpty();
+	}
+
 	private boolean isFirstTouch(PointerEvent<? extends EventHandler> pointerEvent) {
 		return pointerEvent.isPrimary() && !pointersPoints.containsKey(pointerEvent.getPointerId());
 	}

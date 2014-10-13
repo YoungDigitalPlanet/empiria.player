@@ -28,6 +28,7 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 	@Inject
 	private StyleNameConstants styleNameConstants;
 
+	@Override
 	public void init() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
@@ -45,6 +46,8 @@ import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
+import eu.ydp.empiria.player.client.module.test.reset.TestResetButtonModule;
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitButtonModule;
 import eu.ydp.empiria.player.client.module.texteditor.TextEditorModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
@@ -148,6 +151,10 @@ public class ModuleProviderFactory {
 	private Provider<DictionaryModule> dictionaryModule;
 	@Inject
 	private Provider<TextEditorModule> textEditorModule;
+	@Inject
+	private Provider<TestPageSubmitButtonModule> testPageSubmitButtonModule;
+	@Inject
+	private Provider<TestResetButtonModule> testResetButtonModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -339,5 +346,13 @@ public class ModuleProviderFactory {
 
 	public Provider<TextEditorModule> getTextEditorModule() {
 		return textEditorModule;
+	}
+
+	public Provider<TestPageSubmitButtonModule> getTestPageSubmitButtonModule() {
+		return testPageSubmitButtonModule;
+	}
+
+	public Provider<TestResetButtonModule> getTestResetButtonModule() {
+		return testResetButtonModule;
 	}
 }

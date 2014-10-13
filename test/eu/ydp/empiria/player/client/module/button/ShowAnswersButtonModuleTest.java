@@ -1,29 +1,10 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.InOrder;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Binder;
 import com.google.inject.Module;
-
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
@@ -34,6 +15,19 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
+import org.junit.*;
+import org.mockito.InOrder;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -50,13 +44,14 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 	private static class CustomGuiceModule implements Module {
 		@Override
 		public void configure(Binder binder) {
-			binder.bind(CustomPushButton.class).toInstance(mock(CustomPushButton.class));
+			binder.bind(CustomPushButton.class)
+				  .toInstance(mock(CustomPushButton.class));
 		}
 	}
 
 	@Before
 	public void before() {
-		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
+		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] { }, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
 		instance = spy(injector.getInstance(ShowAnswersButtonModule.class));
 		eventsBus = injector.getInstance(EventsBus.class);
 		requestInvoker = mock(FlowRequestInvoker.class);
@@ -69,7 +64,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 				handler = (ClickHandler) invocation.getArguments()[0];
 				return null;
 			}
-		}).when(button).addClickHandler(any(ClickHandler.class));
+		}).when(button)
+		  .addClickHandler(any(ClickHandler.class));
 	}
 
 	@After
@@ -125,7 +121,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 	@Test
 	public void testInvokeRequest() {
 		instance.setFlowRequestsInvoker(requestInvoker);
-		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		doReturn(null).when(instance)
+					  .getCurrentGroupIdentifier();
 
 		instance.isSelected = true;
 		instance.invokeRequest();
@@ -150,7 +147,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		PlayerEvent event = mock(PlayerEvent.class);
 		when(event.getType()).thenReturn(PlayerEventTypes.PAGE_CHANGING);
 		instance.setFlowRequestsInvoker(requestInvoker);
-		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		doReturn(null).when(instance)
+					  .getCurrentGroupIdentifier();
 
 		instance.isSelected = false;
 		instance.onPlayerEvent(event);
@@ -165,7 +163,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 	public void shouldNotInvokeActionInPreviewMode() {
 		// given
 		instance.initModule(mock(Element.class));
-		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		doReturn(null).when(instance)
+					  .getCurrentGroupIdentifier();
 		instance.setFlowRequestsInvoker(requestInvoker);
 		instance.enablePreviewMode();
 
@@ -181,7 +180,8 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 		// given
 		final String inactiveStyleName = "STYLE_NAME";
 		instance.initModule(mock(Element.class));
-		doReturn(null).when(instance).getCurrentGroupIdentifier();
+		doReturn(null).when(instance)
+					  .getCurrentGroupIdentifier();
 		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
 		instance.enablePreviewMode();
 
@@ -190,9 +190,13 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
 
 		// then
 		InOrder inOrder = inOrder(button);
-		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
-		inOrder.verify(button).addStyleName(inactiveStyleName);
-		inOrder.verify(button).setStyleName(DISABLED_STYLE_NAME);
-		inOrder.verify(button).addStyleName(inactiveStyleName);
+		inOrder.verify(button)
+			   .setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button)
+			   .addStyleName(inactiveStyleName);
+		inOrder.verify(button)
+			   .setStyleName(DISABLED_STYLE_NAME);
+		inOrder.verify(button)
+			   .addStyleName(inactiveStyleName);
 	}
 }

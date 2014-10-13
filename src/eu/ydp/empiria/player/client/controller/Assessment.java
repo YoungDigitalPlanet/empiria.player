@@ -32,6 +32,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
@@ -39,6 +41,7 @@ import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
+import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -75,9 +78,11 @@ public class Assessment {
 	private AssessmentBodyView bodyView;
 
 	/**
-	 * Properties instance prepared by assessmentController (based on item body properties through the page controller)
+	 * Properties instance prepared by assessmentController (based on item body
+	 * properties through the page controller)
 	 */
 	private InteractionEventsListener interactionEventsListener;
+	private final AssessmentFactory assessmentFactory;
 
 	/**
 	 * C'tor
@@ -85,9 +90,11 @@ public class Assessment {
 	 * @param data
 	 *            XMLData object as data source
 	 */
-	public Assessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener,
-			ModulesRegistrySocket modulesRegistrySocket) {
+	@Inject
+	public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
+			@Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory) {
 
+		this.assessmentFactory = assessmentFactory;
 		this.xmlData = data.getData();
 
 		this.modulesRegistrySocket = modulesRegistrySocket;
@@ -109,8 +116,8 @@ public class Assessment {
 
 	private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
 		if (bodyNode != null) {
-			body = new AssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
-			bodyView = new AssessmentBodyView(body);
+			body = assessmentFactory.createAssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
+			bodyView = assessmentFactory.createAssessmentBodyView(body);
 			bodyView.init(body.init(bodyNode));
 			pageSlot = body.getPageSlot();
 			this.interactionEventsListener = interactionEventsListener;

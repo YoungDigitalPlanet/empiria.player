@@ -1,10 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
@@ -21,17 +18,19 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleCh
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
+import java.util.List;
+
 public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 
-	private SelectionModuleModel model;
+	private final SelectionModuleModel model;
 	private SelectionInteractionBean bean;
 	private ModuleSocket moduleSocket;
-	private GroupAnswersControllerModel groupChoicesControllersModel;
+	private final GroupAnswersControllerModel groupChoicesControllersModel;
 
-	private SelectionModuleView selectionModuleView;
-	private SelectionViewUpdater viewUpdater;
-	private SelectionViewBuilder viewBuilder;
-	private SelectionAnswersMarker answersMarker;
+	private final SelectionModuleView selectionModuleView;
+	private final SelectionViewUpdater viewUpdater;
+	private final SelectionViewBuilder viewBuilder;
+	private final SelectionAnswersMarker answersMarker;
 
 	@Inject
 	public SelectionModulePresenterImpl(SelectionViewUpdater selectionViewUpdater, SelectionAnswersMarker answersMarker,
@@ -113,10 +112,11 @@ public class SelectionModulePresenterImpl implements SelectionModulePresenter {
 	@Override
 	public void showAnswers(ShowAnswersType mode) {
 		List<String> answersToSelect;
-		if (ShowAnswersType.CORRECT.equals(mode))
+		if (ShowAnswersType.CORRECT.equals(mode)) {
 			answersToSelect = model.getCorrectAnswers();
-		else
+		} else {
 			answersToSelect = model.getCurrentAnswers();
+		}
 
 		for (GroupAnswersController groupChoicesController : groupChoicesControllersModel.getGroupChoicesControllers()) {
 			groupChoicesController.selectOnlyAnswersMatchingIds(answersToSelect);

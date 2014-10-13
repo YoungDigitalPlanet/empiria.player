@@ -1,18 +1,17 @@
 package eu.ydp.empiria.player.client.module.ordering.view;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItem;
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItemStyles;
 import eu.ydp.empiria.player.client.module.ordering.view.items.OrderInteractionViewItems;
+
+import java.util.List;
 
 public class OrderInteractionViewImpl implements OrderInteractionView {
 
