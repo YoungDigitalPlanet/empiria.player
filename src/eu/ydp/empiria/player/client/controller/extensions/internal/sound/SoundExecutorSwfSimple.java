@@ -97,6 +97,10 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	}
 
 	@Override
+	public void resume() {
+	}
+
+	@Override
 	public void setMuted(boolean mute) {
 	}
 

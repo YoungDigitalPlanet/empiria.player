@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -16,8 +15,6 @@ public class DefaultMediaEventController implements MediaEventController {
 
 	@Override
 	public void onMediaEvent(MediaEvent event, MediaExecutor<?> executor, AbstractMediaProcessor processor) {
-		MediaWrapper<?> wrapper = event.getMediaWrapper();
-
 		switch (((MediaEventTypes) event.getAssociatedType().getType())) {
 		case CHANGE_VOLUME:
 			executor.setVolume(event.getVolume());
@@ -27,6 +24,9 @@ public class DefaultMediaEventController implements MediaEventController {
 			break;
 		case PAUSE:
 			executor.pause();
+			break;
+		case RESUME:
+			executor.resume();
 			break;
 		case SET_CURRENT_TIME:
 			executor.setCurrentTime(event.getCurrentTime());

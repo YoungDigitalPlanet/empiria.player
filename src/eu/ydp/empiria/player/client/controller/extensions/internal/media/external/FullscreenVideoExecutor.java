@@ -79,6 +79,10 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	}
 
 	@Override
+	public void resume() {
+	}
+
+	@Override
 	public void setMuted(boolean mute) {
 	}
 
@@ -98,5 +102,4 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
 		// do nothing - not applicable
 	}
-
 }

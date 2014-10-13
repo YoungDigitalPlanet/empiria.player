@@ -8,4 +8,8 @@ public interface SoundApiForJs {
 	void playLooped(final String src);
 
 	void stop(String src);
+
+	void pause(String src);
+
+	void resume(String src);
 }

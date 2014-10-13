@@ -215,6 +215,10 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
 		}
 	}
 
+	@Override
+	public void resume() {
+	}
+
 	private void free() {
 		if (flashMedia != null) {
 			flashMedia.free();

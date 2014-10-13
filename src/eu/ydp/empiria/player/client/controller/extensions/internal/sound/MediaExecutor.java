@@ -27,6 +27,8 @@ public interface MediaExecutor<T extends Widget> {
 
 	public void pause();
 
+	public void resume();
+
 	public void setMuted(boolean mute);
 
 	public void setVolume(double volume);

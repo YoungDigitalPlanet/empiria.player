@@ -1,17 +1,14 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.event;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.gwt.media.client.MediaBase;
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.gwtutil.client.debug.log.Logger;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static junitparams.JUnitParamsRunner.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +17,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
-import static junitparams.JUnitParamsRunner.$;
-import static org.mockito.Mockito.*;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 @RunWith(JUnitParamsRunner.class)
 public class DefaultMediaEventControllerJUnitTest {
@@ -40,15 +42,14 @@ public class DefaultMediaEventControllerJUnitTest {
 	@Mock
 	protected AbstractMediaProcessor mediaProcessor;
 	@Mock
-	protected MediaExecutor<MediaBase> mediaExecutor;
-	@Mock
-	protected MediaWrapper mediaWrapper;
+	protected MediaExecutor<?> mediaExecutor;
 
 	@Before
+	@SuppressWarnings("unchecked")
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		when(mediaExecutor.getMediaWrapper()).thenReturn(mediaWrapper);
+		when(mediaExecutor.getMediaWrapper()).thenReturn(mock(MediaWrapper.class));
 	}
 
 	@Test
@@ -88,6 +89,18 @@ public class DefaultMediaEventControllerJUnitTest {
 
 		// then
 		verify(mediaExecutor).pause();
+	}
+
+	@Test
+	public void shouldProcess_resume() {
+		// given
+		when(mediaEvent.getAssociatedType().getType()).thenReturn(RESUME);
+
+		// when
+		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
+
+		// then
+		verify(mediaExecutor).resume();
 	}
 
 	@Test
@@ -211,7 +224,8 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	public Object[] parametersForShouldNotProcessOtherEvents() {
-		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, SET_CURRENT_TIME, PLAY, PLAY_LOOPED, MUTE, ENDED, ON_END, ON_ERROR);
+		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, RESUME, SET_CURRENT_TIME, PLAY, PLAY_LOOPED, MUTE, ENDED,
+				ON_END, ON_ERROR);
 		List<MediaEventTypes> events = FluentIterable.from(Lists.newArrayList(MediaEventTypes.values())).filter(new Predicate<MediaEventTypes>() {
 
 			@Override
@@ -223,5 +237,4 @@ public class DefaultMediaEventControllerJUnitTest {
 
 		return $(events.toArray());
 	}
-
 }

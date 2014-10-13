@@ -29,7 +29,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class SoundJsPluginTest {
+public class SoundJsPluginJUnitTest {
 
 	@InjectMocks
 	private SoundJsPlugin testObj;
@@ -309,6 +309,38 @@ public class SoundJsPluginTest {
 
 		// then
 		verify(mediaWrapperController).stop(mediaWrapper);
+	}
+
+	@Test
+	public void shouldPause() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.pause(fileSrc);
+
+		// then
+		verify(mediaWrapperController).pause(mediaWrapper);
+	}
+
+	@Test
+	public void shouldResume() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.resume(fileSrc);
+
+		// then
+		verify(mediaWrapperController).resume(mediaWrapper);
 	}
 
 	private void verifyMediaWrapperCreation(Map<String, String> sourcesWithTypes) {
