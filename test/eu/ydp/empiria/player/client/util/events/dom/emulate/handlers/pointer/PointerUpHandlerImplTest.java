@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
+import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
 
@@ -27,13 +28,16 @@ public class PointerUpHandlerImplTest {
 	@Mock
 	private NativeEvent nativeEvent;
 
+	@Mock
+	private PointerEventsCoordinates pointerEventsCoordinates;
+
 	@Before
 	public void setUp() {
-		testObj = new PointerUpHandlerImpl(touchOnEndHandler);
+		testObj = new PointerUpHandlerImpl(touchOnEndHandler, pointerEventsCoordinates);
 	}
 
 	@Test
-	public void shouldCallOnStart() {
+	public void shouldCallOnEnd_andShouldRemoveEvent() {
 		// given
 		when(pointerUpEvent.getNativeEvent()).thenReturn(nativeEvent);
 		when(pointerUpEvent.isTouchEvent()).thenReturn(true);
@@ -42,11 +46,12 @@ public class PointerUpHandlerImplTest {
 		testObj.onPointerUp(pointerUpEvent);
 
 		// then
+		verify(pointerEventsCoordinates).removeEvent(pointerUpEvent);
 		verify(touchOnEndHandler).onEnd(nativeEvent);
 	}
 
 	@Test
-	public void shouldntCallOnStart() {
+	public void shouldNotCallOnEnd() {
 		// given
 		when(pointerUpEvent.getNativeEvent()).thenReturn(nativeEvent);
 		when(pointerUpEvent.isTouchEvent()).thenReturn(false);
@@ -55,6 +60,7 @@ public class PointerUpHandlerImplTest {
 		testObj.onPointerUp(pointerUpEvent);
 
 		// then
+		verify(pointerEventsCoordinates, never()).removeEvent(pointerUpEvent);
 		verify(touchOnEndHandler, never()).onEnd(nativeEvent);
 	}
 }

@@ -155,7 +155,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private void addCheckStyleHandler() {
-		view.asWidget().addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
+		view.asWidget()
+			.addAttachHandler(new ConnectionStyleCheckerHandler(view, connectionStyleChecker));
 	}
 
 	private void initColumns() {
@@ -201,7 +202,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	private String getIdentifier(ConnectionItem item) {
-		return item.getBean().getIdentifier();
+		return item.getBean()
+				   .getIdentifier();
 	}
 
 	private ConnectionPairEntry<String, String> getConnectionPair(ConnectionItem sourceItem, ConnectionItem targetItem) {
@@ -209,6 +211,12 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 	}
 
 	public void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
+		if (sourceItem == null) {
+			return; // na IE11 stukniecie w ekran liczone jest jako mouse click
+					// jak i pointer down event. przy multitouche'u leci tutaj
+					// null - przez event mouseclick nie da sie zablokowac
+					// drugiego dotkniecia
+		}
 		ConnectionPairEntry<String, String> connectionPair = getConnectionPair(sourceItem, targetItem);
 		if (connectionSurfacesManager.containsSurface(connectedSurfaces, connectionPair)) {
 			resetIfNotConnected(getIdentifier(sourceItem));
@@ -250,7 +258,8 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	private void addStylesToSurface(List<String> styles) {
 		for (String style : styles) {
-			getCurrentSurface().asWidget().addStyleName(style);
+			getCurrentSurface().asWidget()
+							   .addStyleName(style);
 		}
 	}
 
@@ -303,12 +312,14 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 
 	public void resetIfNotConnected(String identifier) {
 		if (!connectionSurfacesManager.hasConnections(connectedSurfaces, identifier)) {
-			connectionItems.getConnectionItem(identifier).reset();
+			connectionItems.getConnectionItem(identifier)
+						   .reset();
 		}
 	}
 
 	public ConnectionSurface getSurfaceForLineDrawing(ConnectionItem item, MultiplePairModuleConnectType type) {
-		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean().getIdentifier(), surfaceSize(connectionItems));
+		ConnectionSurface cs = connectionSurfacesManager.getOrCreateSurface(surfaces, item.getBean()
+																						  .getIdentifier(), surfaceSize(connectionItems));
 		this.currentSurface = cs;
 		cs.applyStyles(connectionModuleViewStyles.getStyles(type));
 
@@ -347,5 +358,4 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
 			currentSurface.drawLine(startPoint, endPoint);
 		}
 	}
-
 }

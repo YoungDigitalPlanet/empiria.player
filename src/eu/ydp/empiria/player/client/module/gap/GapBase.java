@@ -55,7 +55,7 @@ public abstract class GapBase extends OneViewInteractionModuleBase implements Bi
 
 	protected abstract void setCorrectAnswer();
 
-	private boolean isGapBinderInitialized = false;
+	private final boolean isGapBinderInitialized = false;
 
 	@Override
 	public void onBodyLoad() {

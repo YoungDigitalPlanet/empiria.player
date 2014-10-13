@@ -31,8 +31,8 @@ public class DragGapViewImpl implements DragGapView {
 
 	@UiField
 	FlowPanelWithDropZone container;
-	private @Inject
-	TouchController touchController;
+	@Inject
+	private TouchController touchController;
 	private final DragDropHelper dragDropHelper;
 	private final StyleNameConstants styleNameConstants;
 	private final DragGapStylesProvider dragGapStylesProvider;

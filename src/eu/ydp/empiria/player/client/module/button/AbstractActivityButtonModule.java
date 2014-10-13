@@ -1,22 +1,19 @@
 package eu.ydp.empiria.player.client.module.button;
 
-import java.util.Stack;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.module.ControlModule;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.WorkModeClient;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public abstract class AbstractActivityButtonModule extends ControlModule implements ISimpleModule, WorkModeClient {
 
@@ -25,7 +22,11 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 	@Inject
 	private StyleNameConstants styleNameConstants;
 	private boolean isEnabled = true;
-	private boolean isPreviewMode = false;
+	private final List<String> styles = new ArrayList<>();
+
+	protected abstract void invokeRequest();
+
+	protected abstract String getStyleName();
 
 	@Override
 	public void initModule(Element element) {// NOPMD
@@ -54,7 +55,8 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		Stack<HasChildren> parentsHierarchy = getModuleSocket().getParentsHierarchy(this);
 		for (IModule currModule : parentsHierarchy) {
 			if (currModule instanceof IGroup) {
-				if (((IGroup) currModule).getGroupIdentifier().equals(groupId)) {// NOPMD
+				if (((IGroup) currModule).getGroupIdentifier()
+										 .equals(groupId)) {// NOPMD
 					return true; // NOPMD
 				}
 			}
@@ -62,14 +64,11 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		return false;
 	}
 
-	protected abstract void invokeRequest();
-
 	protected void updateStyleName() {
 		final String currentStyleName = getCurrentStyleName();
 		button.setStyleName(currentStyleName);
-		if (isPreviewMode) {
-			final String qp_MODULE_MODE_PREVIEW = styleNameConstants.QP_MODULE_MODE_PREVIEW();
-			button.addStyleName(qp_MODULE_MODE_PREVIEW);
+		for (String style : styles) {
+			button.addStyleName(style);
 		}
 	}
 
@@ -83,12 +82,38 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
 		return styleName;
 	}
 
-	protected abstract String getStyleName();
-
 	@Override
 	public void enablePreviewMode() {
 		isEnabled = false;
-		isPreviewMode = true;
+		styles.add(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+		updateStyleName();
+	}
+
+	@Override
+	public void enableTestSubmittedMode() {
+		isEnabled = false;
+		styles.add(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		updateStyleName();
+	}
+
+	@Override
+	public void disableTestSubmittedMode() {
+		isEnabled = true;
+		styles.remove(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+		updateStyleName();
+	}
+
+	@Override
+	public void enableTestMode() {
+		isEnabled = false;
+		styles.add(styleNameConstants.QP_MODULE_MODE_TEST());
+		updateStyleName();
+	}
+
+	@Override
+	public void disableTestMode() {
+		isEnabled = true;
+		styles.remove(styleNameConstants.QP_MODULE_MODE_TEST());
 		updateStyleName();
 	}
 }

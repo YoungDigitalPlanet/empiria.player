@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
@@ -12,17 +10,18 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-
 import eu.ydp.empiria.player.client.module.gap.DropZoneGuardian;
 import eu.ydp.empiria.player.client.module.gap.GapBase.PresenterHandler;
 import eu.ydp.empiria.player.client.module.gap.GapModulePresenter;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModulePresenterBase;
 
+import javax.annotation.PostConstruct;
+
 public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements BlurHandler {
 
 	@UiTemplate("TextEntryMathGap.ui.xml")
 	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryMathGapModulePresenter> {
-	};
+	}
 
 	private final TextEntryGapModuleUiBinder uiBinder = GWT.create(TextEntryGapModuleUiBinder.class);
 

@@ -19,6 +19,16 @@ public class PageSwitchListBox extends ListBox implements IPageSwitchWidget {
 		return getSelectedIndex();
 	}
 
+	@Override
+	public void enable() {
+		setEnabled(true);
+	}
+
+	@Override
+	public void disable() {
+		setEnabled(false);
+	}
+
 	private void initializeList(Integer itemsNum) {
 		Integer itemIndex;
 

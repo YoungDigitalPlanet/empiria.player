@@ -25,7 +25,7 @@ public class ChoiceModuleViewImpl implements ChoiceModuleView {
 	@UiField
 	Panel choicesPanel;
 
-	private Widget widget;
+	private final Widget widget;
 
 	public ChoiceModuleViewImpl() {
 		widget = uiBinder.createAndBindUi(this);
@@ -50,5 +50,4 @@ public class ChoiceModuleViewImpl implements ChoiceModuleView {
 	public Element getPrompt() {
 		return promptWidget.getElement();
 	}
-
 }

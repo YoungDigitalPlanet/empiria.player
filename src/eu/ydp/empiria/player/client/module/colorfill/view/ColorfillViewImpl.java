@@ -1,8 +1,5 @@
 package eu.ydp.empiria.player.client.module.colorfill.view;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,11 +9,13 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
 import eu.ydp.empiria.player.client.module.colorfill.view.mark.AnswersMarkingPanel;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
+
+import java.util.List;
+import java.util.Map;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
@@ -63,7 +62,8 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 
 	@Override
 	public void setImage(Image image) {
-		String px = Unit.PX.toString().toLowerCase();
+		String px = Unit.PX.toString()
+						   .toLowerCase();
 		String width = image.getWidth() + px;
 		String height = image.getHeight() + px;
 		imageContainer.setSize(width, height);
@@ -123,13 +123,15 @@ public class ColorfillViewImpl implements ColorfillInteractionView {
 
 	@Override
 	public void showUserAnswers() {
-		canvas.asWidget().setVisible(true);
+		canvas.asWidget()
+			  .setVisible(true);
 		correctImageCanvas.hide();
 	}
 
 	@Override
 	public void showCorrectAnswers() {
-		canvas.asWidget().setVisible(false);
+		canvas.asWidget()
+			  .setVisible(false);
 		correctImageCanvas.show();
 	}
 
