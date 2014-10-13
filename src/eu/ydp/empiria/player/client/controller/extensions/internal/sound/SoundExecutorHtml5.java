@@ -59,8 +59,9 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	public void play(String src) {
 
 		if (audioCtrl != null) {
-			if (playing)
+			if (playing) {
 				stop();
+			}
 			listener.onPlay();
 			audioCtrl.setSrc(src);
 			audioCtrl.play();
@@ -75,8 +76,10 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 	}
 
 	/**
-	 * Ta metoda jest potrzebna aby obejsc problemy z odtwarzaniem dzwieku na iOS. Apple w swej madrosci nie pozwolilo na odtwarzanie dzwiekow dopoki nie
-	 * zostanie odtworzony jakikolwiek dzwiek w reakcji na dzialanie uzytkownika.
+	 * Ta metoda jest potrzebna aby obejsc problemy z odtwarzaniem dzwieku na
+	 * iOS. Apple w swej madrosci nie pozwolilo na odtwarzanie dzwiekow dopoki
+	 * nie zostanie odtworzony jakikolwiek dzwiek w reakcji na dzialanie
+	 * uzytkownika.
 	 */
 	protected void simulateUserInteraction() {
 		RootPanel root = RootPanel.get();
@@ -102,6 +105,10 @@ public class SoundExecutorHtml5 implements MediaExecutor<Widget>, TouchStartHand
 
 	@Override
 	public void pause() {
+	}
+
+	@Override
+	public void resume() {
 	}
 
 	@Override

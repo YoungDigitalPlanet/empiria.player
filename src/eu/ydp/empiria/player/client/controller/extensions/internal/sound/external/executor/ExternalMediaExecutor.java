@@ -64,6 +64,10 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	}
 
 	@Override
+	public void resume() {
+	}
+
+	@Override
 	public void setMuted(boolean mute) {
 	}
 
@@ -79,5 +83,4 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	@Override
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
 	}
-
 }

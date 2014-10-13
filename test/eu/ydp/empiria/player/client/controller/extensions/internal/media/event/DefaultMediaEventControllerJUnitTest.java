@@ -19,7 +19,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
@@ -43,15 +42,14 @@ public class DefaultMediaEventControllerJUnitTest {
 	@Mock
 	protected AbstractMediaProcessor mediaProcessor;
 	@Mock
-	protected MediaExecutor<MediaBase> mediaExecutor;
-	@Mock
-	protected MediaWrapper mediaWrapper;
+	protected MediaExecutor<?> mediaExecutor;
 
 	@Before
+	@SuppressWarnings("unchecked")
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		when(mediaExecutor.getMediaWrapper()).thenReturn(mediaWrapper);
+		when(mediaExecutor.getMediaWrapper()).thenReturn(mock(MediaWrapper.class));
 	}
 
 	@Test
@@ -91,6 +89,18 @@ public class DefaultMediaEventControllerJUnitTest {
 
 		// then
 		verify(mediaExecutor).pause();
+	}
+
+	@Test
+	public void shouldProcess_resume() {
+		// given
+		when(mediaEvent.getAssociatedType().getType()).thenReturn(RESUME);
+
+		// when
+		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
+
+		// then
+		verify(mediaExecutor).resume();
 	}
 
 	@Test
@@ -201,7 +211,7 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	public Object[] parametersForShouldNotProcessOtherEvents() {
-		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, SET_CURRENT_TIME, PLAY, MUTE, ENDED, ON_END, ON_ERROR);
+		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, RESUME, SET_CURRENT_TIME, PLAY, MUTE, ENDED, ON_END, ON_ERROR);
 		List<MediaEventTypes> events = FluentIterable.from(Lists.newArrayList(MediaEventTypes.values())).filter(new Predicate<MediaEventTypes>() {
 
 			@Override

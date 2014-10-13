@@ -58,6 +58,18 @@ public class SoundJsPlugin implements SoundApiForJs {
 		mediaWrapperController.stop(wrapper);
 	}
 
+	@Override
+	public void pause(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		mediaWrapperController.pause(wrapper);
+	}
+
+	@Override
+	public void resume(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		mediaWrapperController.resume(wrapper);
+	}
+
 	private void createMediaWrapper(final String src, CallbackRecevier<MediaWrapper<Widget>> receiver) {
 		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
 		mediaWrapperCreator.createSimulationMediaWrapper(src, sourcesWithTypes, receiver);

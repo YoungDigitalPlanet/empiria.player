@@ -29,6 +29,12 @@ public class SoundJsNative {
 										$wnd.empiriaSoundJsStop = function (src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::stop(Ljava/lang/String;)(src);
 										}
+										$wnd.empiriaSoundJsPause = function (src) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::pause(Ljava/lang/String;)(src);
+										}
+										$wnd.empiriaSoundJsResume = function (src) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::resume(Ljava/lang/String;)(src);
+										}
 										}-*/;
 
 	private native void onComplete(JavaScriptObject soundInstance)/*-{
@@ -52,5 +58,13 @@ public class SoundJsNative {
 
 	private void stop(String src) {
 		api.stop(src);
+	}
+
+	private void pause(String src) {
+		api.pause(src);
+	}
+
+	private void resume(String src) {
+		api.resume(src);
 	}
 }
