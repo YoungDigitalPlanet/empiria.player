@@ -94,6 +94,18 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	@Test
+	public void shouldProcess_resume() {
+		// given
+		when(mediaEvent.getAssociatedType().getType()).thenReturn(RESUME);
+
+		// when
+		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
+
+		// then
+		verify(mediaExecutor).resume();
+	}
+
+	@Test
 	public void shouldProcess_setCurrentTime() {
 		// given
 		double currentTime = 10.25;
@@ -201,7 +213,7 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	public Object[] parametersForShouldNotProcessOtherEvents() {
-		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, SET_CURRENT_TIME, PLAY, MUTE, ENDED, ON_END, ON_ERROR);
+		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, RESUME, SET_CURRENT_TIME, PLAY, MUTE, ENDED, ON_END, ON_ERROR);
 		List<MediaEventTypes> events = FluentIterable.from(Lists.newArrayList(MediaEventTypes.values())).filter(new Predicate<MediaEventTypes>() {
 
 			@Override

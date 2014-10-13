@@ -64,6 +64,15 @@ public class MediaWrapperControllerJUnitTest {
 	}
 
 	@Test
+	public void shouldResume() {
+		// when
+		testObj.resume(mediaWrapper);
+
+		// then
+		verifyMediaEvent(MediaEventTypes.RESUME, mediaWrapper);
+	}
+
+	@Test
 	public void shouldStopAndPlay() {
 		// when
 		testObj.stopAndPlay(mediaWrapper);

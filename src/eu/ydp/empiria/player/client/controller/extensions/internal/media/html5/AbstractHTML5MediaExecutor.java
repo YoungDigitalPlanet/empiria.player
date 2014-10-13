@@ -124,6 +124,11 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 		stopOnTime(media.getCurrentTime());
 	}
 
+	@Override
+	public void resume() {
+		media.play();
+	}
+
 	private void stopOnTime(double time) {
 		try {
 			media.pause();

@@ -28,6 +28,9 @@ public class DefaultMediaEventController implements MediaEventController {
 		case PAUSE:
 			executor.pause();
 			break;
+		case RESUME:
+			executor.resume();
+			break;
 		case SET_CURRENT_TIME:
 			executor.setCurrentTime(event.getCurrentTime());
 			break;

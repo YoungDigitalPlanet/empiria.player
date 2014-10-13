@@ -6,4 +6,8 @@ public interface SoundApiForJs {
 	void play(final String src);
 
 	void stop(String src);
+
+	void pause(String src);
+
+	void resume(String src);
 }

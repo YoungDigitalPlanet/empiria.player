@@ -26,6 +26,10 @@ public class MediaWrapperController {
 		fireEventFromSource(PAUSE, mediaWrapper);
 	}
 
+	public void resume(MediaWrapper<Widget> mediaWrapper) {
+		fireEventFromSource(RESUME, mediaWrapper);
+	}
+
 	public void stopAndPlay(MediaWrapper<Widget> mediaWrapper) {
 		stop(mediaWrapper);
 		play(mediaWrapper);
