@@ -6,13 +6,17 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import com.google.gwt.user.client.ui.Widget;
 
@@ -21,7 +25,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(JUnitParamsRunner.class)
 public class MediaWrapperControllerJUnitTest {
 
 	@InjectMocks
@@ -36,6 +40,11 @@ public class MediaWrapperControllerJUnitTest {
 	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
 
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
+
 	@Test
 	public void shouldPlay() {
 		// when
@@ -43,6 +52,15 @@ public class MediaWrapperControllerJUnitTest {
 
 		// then
 		verifyMediaEvent(MediaEventTypes.PLAY, mediaWrapper);
+	}
+
+	@Test
+	public void shouldPlayLooped() {
+		// when
+		testObj.playLooped(mediaWrapper);
+
+		// then
+		verifyMediaEvent(MediaEventTypes.PLAY_LOOPED, mediaWrapper);
 	}
 
 	@Test
@@ -89,9 +107,25 @@ public class MediaWrapperControllerJUnitTest {
 	}
 
 	@Test
-	public void shouldAddHandler() {
+	public void shouldStopAndPlayLooped() {
+		// when
+		testObj.stopAndPlayLooped(mediaWrapper);
+
+		// then
+		verify(eventsBus, times(2)).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
+
+		List<MediaEvent> calledMediaEvents = mediaEventCaptor.getAllValues();
+		MediaEvent calledStopEvent = calledMediaEvents.get(0);
+		MediaEvent calledPlayEvent = calledMediaEvents.get(1);
+
+		assertMediaEvent(calledStopEvent, MediaEventTypes.STOP, mediaWrapper);
+		assertMediaEvent(calledPlayEvent, MediaEventTypes.PLAY_LOOPED, mediaWrapper);
+	}
+
+	@Test
+	@Parameters
+	public void shouldAddHandler(MediaEventTypes type) {
 		// given
-		MediaEventTypes type = MediaEventTypes.ON_END;
 		MediaEventHandler handler = mock(MediaEventHandler.class);
 
 		// when
@@ -99,6 +133,10 @@ public class MediaWrapperControllerJUnitTest {
 
 		// then
 		verify(eventsBus).addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler);
+	}
+
+	public Object[] parametersForShouldAddHandler() {
+		return MediaEventTypes.values();
 	}
 
 	private void verifyMediaEvent(MediaEventTypes assumedEventType, MediaWrapper<Widget> assumeMediaWrapper) {

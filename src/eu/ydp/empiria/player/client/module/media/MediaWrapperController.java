@@ -18,6 +18,10 @@ public class MediaWrapperController {
 		fireEventFromSource(PLAY, mediaWrapper);
 	}
 
+	public void playLooped(MediaWrapper<Widget> mediaWrapper) {
+		fireEventFromSource(PLAY_LOOPED, mediaWrapper);
+	}
+
 	public void stop(MediaWrapper<Widget> mediaWrapper) {
 		fireEventFromSource(STOP, mediaWrapper);
 	}
@@ -35,8 +39,13 @@ public class MediaWrapperController {
 		play(mediaWrapper);
 	}
 
+	public void stopAndPlayLooped(MediaWrapper<Widget> mediaWrapper) {
+		stop(mediaWrapper);
+		playLooped(mediaWrapper);
+	}
+
 	public void addHandler(MediaEventTypes type, MediaWrapper<Widget> wrapper, MediaEventHandler handler) {
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), wrapper, handler);
+		eventsBus.addHandlerToSource(MediaEvent.getType(type), wrapper, handler);
 	}
 
 	private void fireEventFromSource(MediaEventTypes eventType, MediaWrapper<Widget> mediaWrapper) {

@@ -131,6 +131,19 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	@Test
+	public void shouldProcess_playLooped() {
+		// given
+		when(mediaEvent.getAssociatedType().getType()).thenReturn(PLAY_LOOPED);
+
+		// when
+		testObj.onMediaEvent(mediaEvent, mediaExecutor, mediaProcessor);
+
+		// then
+		verify(mediaExecutor).playLooped();
+		verifyNoMoreInteractions(mediaExecutor);
+	}
+
+	@Test
 	public void shouldProcess_mute() {
 		// given
 		boolean isMuted = false;
@@ -211,7 +224,8 @@ public class DefaultMediaEventControllerJUnitTest {
 	}
 
 	public Object[] parametersForShouldNotProcessOtherEvents() {
-		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, RESUME, SET_CURRENT_TIME, PLAY, MUTE, ENDED, ON_END, ON_ERROR);
+		final List<MediaEventTypes> mappedEvents = Lists.newArrayList(CHANGE_VOLUME, STOP, PAUSE, RESUME, SET_CURRENT_TIME, PLAY, PLAY_LOOPED, MUTE, ENDED,
+				ON_END, ON_ERROR);
 		List<MediaEventTypes> events = FluentIterable.from(Lists.newArrayList(MediaEventTypes.values())).filter(new Predicate<MediaEventTypes>() {
 
 			@Override
@@ -223,5 +237,4 @@ public class DefaultMediaEventControllerJUnitTest {
 
 		return $(events.toArray());
 	}
-
 }

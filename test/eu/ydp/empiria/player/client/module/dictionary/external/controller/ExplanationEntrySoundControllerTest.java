@@ -25,7 +25,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
@@ -49,7 +49,7 @@ public class ExplanationEntrySoundControllerTest {
 	@Captor
 	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
-	private CallbackRecevier<MediaWrapper<Widget>> callbackRecevier;
+	private CallbackReceiver<MediaWrapper<Widget>> callbackRecevier;
 
 	private static final String FILE_NAME = "test.mp3";
 
@@ -80,7 +80,7 @@ public class ExplanationEntrySoundControllerTest {
 			@Override
 			public Void answer(InvocationOnMock invocation) {
 				PlayerEvent plEvent = (PlayerEvent) invocation.getArguments()[0];
-				callbackRecevier = (CallbackRecevier<MediaWrapper<Widget>>) plEvent.getSource();
+				callbackRecevier = (CallbackReceiver<MediaWrapper<Widget>>) plEvent.getSource();
 				return null;
 			}
 		}).when(eventsBus).fireEvent(any(PlayerEvent.class));

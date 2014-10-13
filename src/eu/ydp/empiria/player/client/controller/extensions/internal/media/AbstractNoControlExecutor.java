@@ -43,6 +43,10 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void stop() {// NOPMD
 	}
 

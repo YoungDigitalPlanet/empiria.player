@@ -111,6 +111,13 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
 	@Override
 	public void play() {
+		media.setLoop(false);
+		media.play();
+	}
+
+	@Override
+	public void playLooped() {
+		media.setLoop(true);
 		media.play();
 	}
 

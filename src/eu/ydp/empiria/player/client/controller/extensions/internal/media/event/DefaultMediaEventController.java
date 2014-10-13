@@ -34,6 +34,9 @@ public class DefaultMediaEventController implements MediaEventController {
 		case PLAY:
 			executor.play();
 			break;
+		case PLAY_LOOPED:
+			executor.playLooped();
+			break;
 		case MUTE:
 			executor.setMuted(!(executor.getMediaWrapper().isMuted()));
 			break;

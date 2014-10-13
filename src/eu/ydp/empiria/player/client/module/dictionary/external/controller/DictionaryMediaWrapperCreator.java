@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSou
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
@@ -21,7 +21,7 @@ public class DictionaryMediaWrapperCreator {
 	@Inject
 	private EventsBus eventsBus;
 
-	public void create(String filePath, CallbackRecevier<MediaWrapper<Widget>> callback) {
+	public void create(String filePath, CallbackReceiver<MediaWrapper<Widget>> callback) {
 		Map<String, String> sourcesWithTypes = dictionaryMimeSourceProvider.getSourcesWithTypes(filePath);
 
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, false, true);

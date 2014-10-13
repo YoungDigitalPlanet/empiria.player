@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
@@ -31,7 +31,7 @@ public class ExplanationEntrySoundController {
 
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, false, true);
 
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackRecevier<MediaWrapper<Widget>>() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackReceiver<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {

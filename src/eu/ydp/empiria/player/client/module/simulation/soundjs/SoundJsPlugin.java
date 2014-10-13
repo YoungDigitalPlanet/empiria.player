@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -53,6 +53,16 @@ public class SoundJsPlugin implements SoundApiForJs {
 	}
 
 	@Override
+	public void playLooped(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		if (wrapper == null) {
+			createMediaWrapper(src, addWrapperAndPlayLooped(src));
+		} else {
+			playLoopedMediaWrapper(wrapper);
+		}
+	}
+
+	@Override
 	public void stop(String src) {
 		MediaWrapper<Widget> wrapper = wrappers.get(src);
 		mediaWrapperController.stop(wrapper);
@@ -70,7 +80,7 @@ public class SoundJsPlugin implements SoundApiForJs {
 		mediaWrapperController.resume(wrapper);
 	}
 
-	private void createMediaWrapper(final String src, CallbackRecevier<MediaWrapper<Widget>> receiver) {
+	private void createMediaWrapper(final String src, CallbackReceiver<MediaWrapper<Widget>> receiver) {
 		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
 		mediaWrapperCreator.createSimulationMediaWrapper(src, sourcesWithTypes, receiver);
 	}
@@ -79,28 +89,8 @@ public class SoundJsPlugin implements SoundApiForJs {
 		mediaWrapperController.stopAndPlay(wrapper);
 	}
 
-	private CallbackRecevier<MediaWrapper<Widget>> addWrapper(final String src) {
-		CallbackRecevier<MediaWrapper<Widget>> receiver = new CallbackRecevier<MediaWrapper<Widget>>() {
-			@Override
-			public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
-				addOnEndHandler(wrapper);
-				wrappers.put(src, wrapper);
-			}
-
-		};
-		return receiver;
-	}
-
-	private CallbackRecevier<MediaWrapper<Widget>> addWrapperAndPlay(final String src) {
-		CallbackRecevier<MediaWrapper<Widget>> receiver = new CallbackRecevier<MediaWrapper<Widget>>() {
-			@Override
-			public void setCallbackReturnObject(final MediaWrapper<Widget> wrapper) {
-				addOnEndHandler(wrapper);
-				wrappers.put(src, wrapper);
-				playMediaWrapper(wrapper);
-			}
-		};
-		return receiver;
+	private void playLoopedMediaWrapper(MediaWrapper<Widget> wrapper) {
+		mediaWrapperController.stopAndPlayLooped(wrapper);
 	}
 
 	private void addOnEndHandler(final MediaWrapper<Widget> wrapper) {
@@ -118,4 +108,44 @@ public class SoundJsPlugin implements SoundApiForJs {
 			}
 		}
 	};
+
+	private CallbackReceiver<MediaWrapper<Widget>> addWrapper(final String src) {
+		return new SoundJsCallbackReceiver(src);
+	}
+
+	private CallbackReceiver<MediaWrapper<Widget>> addWrapperAndPlay(final String src) {
+		return new SoundJsCallbackReceiver(src) {
+			@Override
+			public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
+				super.setCallbackReturnObject(wrapper);
+				playMediaWrapper(wrapper);
+			}
+
+		};
+	}
+
+	private CallbackReceiver<MediaWrapper<Widget>> addWrapperAndPlayLooped(final String src) {
+		return new SoundJsCallbackReceiver(src) {
+			@Override
+			public void setCallbackReturnObject(final MediaWrapper<Widget> wrapper) {
+				super.setCallbackReturnObject(wrapper);
+				playLoopedMediaWrapper(wrapper);
+			}
+		};
+	}
+
+	private class SoundJsCallbackReceiver implements CallbackReceiver<MediaWrapper<Widget>> {
+
+		private final String src;
+
+		public SoundJsCallbackReceiver(String src) {
+			this.src = src;
+		}
+
+		@Override
+		public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
+			addOnEndHandler(wrapper);
+			wrappers.put(src, wrapper);
+		}
+	}
 }

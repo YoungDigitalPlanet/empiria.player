@@ -19,7 +19,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.SimulationMediaEventController;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
@@ -35,7 +35,7 @@ public class MediaWrapperCreatorJUnitTest {
 	private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
 
 	@Mock
-	private CallbackRecevier callbackRecevier;
+	private CallbackReceiver callbackRecevier;
 
 	@Captor
 	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
@@ -52,7 +52,7 @@ public class MediaWrapperCreatorJUnitTest {
 		verify(eventsBus).fireEvent(playerEventCaptor.capture());
 		PlayerEvent capturedEvent = playerEventCaptor.getValue();
 		BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
-		CallbackRecevier capturedCallback = (CallbackRecevier) capturedEvent.getSource();
+		CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
 
 		assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
 		assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
@@ -72,7 +72,7 @@ public class MediaWrapperCreatorJUnitTest {
 		verify(eventsBus).fireEvent(playerEventCaptor.capture());
 		PlayerEvent capturedEvent = playerEventCaptor.getValue();
 		BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
-		CallbackRecevier capturedCallback = (CallbackRecevier) capturedEvent.getSource();
+		CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
 
 		assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
 		assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);

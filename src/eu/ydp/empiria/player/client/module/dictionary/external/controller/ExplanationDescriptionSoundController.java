@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationV
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -41,7 +41,7 @@ public class ExplanationDescriptionSoundController {
 	}
 
 	private void playDescriptionSound(String filePath) {
-		mediaWrapperCreator.create(filePath, new CallbackRecevier<MediaWrapper<Widget>>() {
+		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {

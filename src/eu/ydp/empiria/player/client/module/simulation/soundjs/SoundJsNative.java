@@ -23,6 +23,9 @@ public class SoundJsNative {
 										$wnd.empiriaSoundJsBeginPlaying = function (src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::play(Ljava/lang/String;)(src);
 										}
+										$wnd.empiriaSoundJsBeginPlayingLooped = function(src) {
+											instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::playLooped(Ljava/lang/String;)(src);
+										}
 										$wnd.empiriaSoundJsInit = function (soundInstance, src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::preload(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(soundInstance, src);
 										}
@@ -38,7 +41,7 @@ public class SoundJsNative {
 										}-*/;
 
 	private native void onComplete(JavaScriptObject soundInstance)/*-{
-																	if(typeof soundInstance.onComplete == 'function'){
+																	if (typeof soundInstance.onComplete == 'function') {
 																	soundInstance.onComplete(soundInstance);
 																	}
 																	}-*/;
@@ -49,6 +52,10 @@ public class SoundJsNative {
 
 	private void play(String src) {
 		api.play(src);
+	}
+
+	private void playLooped(String src) {
+		api.playLooped(src);
 	}
 
 	private void preload(JavaScriptObject soundInstance, String src) {

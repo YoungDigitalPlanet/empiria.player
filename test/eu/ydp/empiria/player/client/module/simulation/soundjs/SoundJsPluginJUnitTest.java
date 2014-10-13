@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -53,7 +53,7 @@ public class SoundJsPluginJUnitTest {
 	private MediaEventHandler mediaEventHandler;
 
 	@Captor
-	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> cbCaptor;
+	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> cbCaptor;
 	@Captor
 	private ArgumentCaptor<MediaEventHandler> mediaEventCaptor;
 
@@ -225,6 +225,74 @@ public class SoundJsPluginJUnitTest {
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
 		verify(mediaWrapperController, times(2)).stopAndPlay(mediaWrapper);
+	}
+
+	@Test
+	public void shouldCreateWrapperAndPlayLooped() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+	}
+
+	@Test
+	public void shouldPlayLoopedAlreadyPreloaded() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.preload(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyNoMoreInteractions(mediaWrapperCreator);
+		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+	}
+
+	@Test
+	public void shouldCallNativeOnComplete_ifPlayingLoopedSecondTime() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
+		testObj.playLooped(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// then
+		testObj.playLooped(fileSrc);
+
+		// then
+		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
+		verifyNoMoreInteractions(eventsBus);
+		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
+		verify(soundJsNative).onComplete(fileSrc);
+	}
+
+	@Test
+	public void shouldPlayLoppedAlreadyPlayedLooped() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.playLooped(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.playLooped(fileSrc);
+
+		// then
+		verifyNoMoreInteractions(mediaWrapperCreator);
+		verify(mediaWrapperController, times(2)).stopAndPlayLooped(mediaWrapper);
 	}
 
 	@Test

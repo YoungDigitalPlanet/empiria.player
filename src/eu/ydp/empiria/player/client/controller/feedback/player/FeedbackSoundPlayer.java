@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class FeedbackSoundPlayer {
@@ -31,7 +31,7 @@ public class FeedbackSoundPlayer {
 	protected Map<String, MediaWrapper<Widget>> wrappers = new HashMap<String, MediaWrapper<Widget>>();
 	protected Map<String, SingleFeedbackSoundPlayer> feedbackPlayers = new HashMap<String, SingleFeedbackSoundPlayer>();
 
-	protected class MediaWrapperHandler implements CallbackRecevier<MediaWrapper<Widget>> {
+	protected class MediaWrapperHandler implements CallbackReceiver<MediaWrapper<Widget>> {
 
 		protected String wrappersSourcesKey;
 

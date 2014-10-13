@@ -181,6 +181,20 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
 		instance.play();
 
 		// then
+		verify(mediaBase).setLoop(false);
+		verify(mediaBase).play();
+	}
+
+	@Test
+	public void testPlayLooped() {
+		// given
+		instance.setMedia(mediaBase);
+
+		// when
+		instance.playLooped();
+
+		// then
+		verify(mediaBase).setLoop(true);
 		verify(mediaBase).play();
 	}
 

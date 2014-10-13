@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 
 public class ExternalMediaProcessor extends AbstractMediaProcessor implements MediaProcessorExtension {
@@ -44,7 +44,7 @@ public class ExternalMediaProcessor extends AbstractMediaProcessor implements Me
 		initExecutor(proxy.getMediaExecutor(), bmc);
 
 		@SuppressWarnings("unchecked")
-		CallbackRecevier<MediaWrapper<Widget>> callbackReceiver = ((CallbackRecevier<MediaWrapper<Widget>>) event.getSource());
+		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = ((CallbackReceiver<MediaWrapper<Widget>>) event.getSource());
 		callbackReceiver.setCallbackReturnObject(proxy.getMediaWrapper());
 	}
 
