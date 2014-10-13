@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -53,7 +53,7 @@ public class SoundJsPluginJUnitTest {
 	private MediaEventHandler mediaEventHandler;
 
 	@Captor
-	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> cbCaptor;
+	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> cbCaptor;
 	@Captor
 	private ArgumentCaptor<MediaEventHandler> mediaEventCaptor;
 

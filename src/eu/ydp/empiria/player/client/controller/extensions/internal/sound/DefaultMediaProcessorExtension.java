@@ -29,7 +29,7 @@ import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoIm
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -148,12 +148,12 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 
 	private void fireCallback(PlayerEvent event, MediaExecutor<?> defaultMediaExecutor, MediaExecutor<?> fullScreenMediaExecutor) {
-		if (event.getSource() instanceof CallbackRecevier) {
+		if (event.getSource() instanceof CallbackReceiver) {
 			if (fullScreenMediaExecutor == null) {
-				((CallbackRecevier) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
+				((CallbackReceiver) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
 			} else {
 				MediaWrappersPair pair = pairFactory.getMediaWrappersPair(defaultMediaExecutor.getMediaWrapper(), fullScreenMediaExecutor.getMediaWrapper());
-				((CallbackRecevier) event.getSource()).setCallbackReturnObject(pair);
+				((CallbackReceiver) event.getSource()).setCallbackReturnObject(pair);
 			}
 		}
 	}

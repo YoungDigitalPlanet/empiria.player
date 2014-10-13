@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSou
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
@@ -40,7 +40,7 @@ public class DictionaryMediaWrapperCreatorTest {
 	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
 	@Captor
-	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> callbackArgumentCaptor;
+	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> callbackArgumentCaptor;
 
 	@Test
 	public void shouldFireCreateMediaWrapperEvent() {
@@ -49,7 +49,7 @@ public class DictionaryMediaWrapperCreatorTest {
 		String mime = "audio/mp3";
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();
 		sourcesWithTypes.put(fileName, mime);
-		CallbackRecevier<MediaWrapper<Widget>> callbackReceiver = mock(CallbackRecevier.class);
+		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = mock(CallbackReceiver.class);
 
 		when(dictionaryMimeSourceProvider.getSourcesWithTypes(fileName)).thenReturn(sourcesWithTypes);
 
