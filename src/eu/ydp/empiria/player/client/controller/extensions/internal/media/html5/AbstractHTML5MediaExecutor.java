@@ -17,6 +17,9 @@ import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements MediaExecutor<MediaBase>, HTML5OnEvent {
 
@@ -24,15 +27,19 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	private MediaWrapper<MediaBase> mediaDescriptor;
 	private SoundExecutorListener listener;
 	private BaseMediaConfiguration baseMediaConfiguration;
+	private final EventsBus eventsBus;
+	private final Logger logger;
 
 	protected HTML5MediaEventMapper mediaEventMapper;
 	protected final HTML5MediaNativeListeners html5MediaNativeListeners;
 
 	@Inject
-	public AbstractHTML5MediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners) {
+	public AbstractHTML5MediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners, EventsBus eventsBus) {
 		this.mediaEventMapper = mediaEventMapper;
 		this.html5MediaNativeListeners = html5MediaNativeListeners;
 		this.html5MediaNativeListeners.setCallbackListener(this);
+		this.eventsBus = eventsBus;
+		this.logger = new Logger(new ConsoleAppender());
 	}
 
 	@Override

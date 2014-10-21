@@ -44,6 +44,17 @@ public class MediaWrapperController {
 		playLooped(mediaWrapper);
 	}
 
+	public void setCurrentTime(MediaWrapper<Widget> mediaWrapper, Double time) {
+		MediaEvent event = new MediaEvent(MediaEventTypes.SET_CURRENT_TIME, mediaWrapper);
+		event.setCurrentTime(time);
+
+		eventsBus.fireEventFromSource(event, mediaWrapper);
+	}
+
+	public double getCurrentTime(MediaWrapper<Widget> mediaWrapper) {
+		return mediaWrapper.getCurrentTime();
+	}
+
 	public void addHandler(MediaEventTypes type, MediaWrapper<Widget> wrapper, MediaEventHandler handler) {
 		eventsBus.addHandlerToSource(MediaEvent.getType(type), wrapper, handler);
 	}

@@ -22,7 +22,7 @@ public class HTML5AudioMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 	@Before
 	public void setUp() {
 		GwtMockito.initMocks(this);
-		instance = (AbstractHTML5MediaExecutor) new HTML5AudioMediaExecutor(mediaEventMapper, html5MediaNativeListeners);
+		instance = (AbstractHTML5MediaExecutor) new HTML5AudioMediaExecutor(mediaEventMapper, html5MediaNativeListeners, eventsBus);
 		mediaBase = mock(Audio.class);
 
 		Map<String, String> sources = Maps.newHashMap();

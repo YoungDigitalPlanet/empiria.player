@@ -41,7 +41,7 @@ public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
 	public void setUp() {
 		GwtMockito.initMocks(this);
 
-		instance = (AbstractHTML5MediaExecutor) new HTML5VideoMediaExecutor(mediaEventMapper, html5MediaNativeListeners, uniqueIdGenerator);
+		instance = (AbstractHTML5MediaExecutor) new HTML5VideoMediaExecutor(mediaEventMapper, html5MediaNativeListeners, uniqueIdGenerator, eventsBus);
 		Video video = mock(Video.class);
 		mediaBase = video;
 

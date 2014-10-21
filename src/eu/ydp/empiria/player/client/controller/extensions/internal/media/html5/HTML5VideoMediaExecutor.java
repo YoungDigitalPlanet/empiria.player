@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 
@@ -16,8 +17,8 @@ public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 
 	@Inject
 	public HTML5VideoMediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners,
-			UniqueIdGenerator uniqueIdGenerator) {
-		super(mediaEventMapper, html5MediaNativeListeners);
+			UniqueIdGenerator uniqueIdGenerator, EventsBus eventsBus) {
+		super(mediaEventMapper, html5MediaNativeListeners, eventsBus);
 		this.uniqueIdGenerator = uniqueIdGenerator;
 	}
 

@@ -20,23 +20,29 @@ public class SoundJsNative {
 
 	private native void nativesInit()/*-{
 										var instance = this;
-										$wnd.empiriaSoundJsBeginPlaying = function (src) {
+										$wnd.empiriaSoundJsBeginPlaying = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::play(Ljava/lang/String;)(src);
 										}
 										$wnd.empiriaSoundJsBeginPlayingLooped = function(src) {
-											instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::playLooped(Ljava/lang/String;)(src);
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::playLooped(Ljava/lang/String;)(src);
 										}
-										$wnd.empiriaSoundJsInit = function (soundInstance, src) {
+										$wnd.empiriaSoundJsInit = function(soundInstance, src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::preload(Lcom/google/gwt/core/client/JavaScriptObject;Ljava/lang/String;)(soundInstance, src);
 										}
-										$wnd.empiriaSoundJsStop = function (src) {
+										$wnd.empiriaSoundJsStop = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::stop(Ljava/lang/String;)(src);
 										}
-										$wnd.empiriaSoundJsPause = function (src) {
+										$wnd.empiriaSoundJsPause = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::pause(Ljava/lang/String;)(src);
 										}
-										$wnd.empiriaSoundJsResume = function (src) {
+										$wnd.empiriaSoundJsResume = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::resume(Ljava/lang/String;)(src);
+										}
+										$wnd.empiriaSoundJsSetCurrentTime = function(src, time) {
+										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::setCurrentTime(Ljava/lang/String;D)(src, time);
+										}
+										$wnd.empiriaSoundJsGetCurrentTime = function(src) {
+										return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getCurrentTime(Ljava/lang/String;)(src);
 										}
 										}-*/;
 
@@ -73,5 +79,13 @@ public class SoundJsNative {
 
 	private void resume(String src) {
 		api.resume(src);
+	}
+
+	private void setCurrentTime(String src, double time) {
+		api.setCurrentTime(src, time);
+	}
+
+	private double getCurrentTime(String src) {
+		return api.getCurrentTime(src);
 	}
 }

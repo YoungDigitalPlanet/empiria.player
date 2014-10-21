@@ -43,13 +43,13 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 	}
 
 	private native void embedSwf(String id, String swfSrc, String installSrc, String soundSrc)/*-{
-		var flashvars = {
-			source : soundSrc
-		};
-		$wnd.swfobject.embedSWF(swfSrc, id, 100, 100, "9", installSrc,
-				flashvars);
+																								var flashvars = {
+																								source : soundSrc
+																								};
+																								$wnd.swfobject.embedSWF(swfSrc, id, 100, 100, "9", installSrc,
+																								flashvars);
 
-	}-*/;
+																								}-*/;
 
 	@Override
 	public void stop() {

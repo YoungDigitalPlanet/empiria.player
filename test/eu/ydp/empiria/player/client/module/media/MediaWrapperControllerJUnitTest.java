@@ -139,6 +139,32 @@ public class MediaWrapperControllerJUnitTest {
 		return MediaEventTypes.values();
 	}
 
+	@Test
+	public void shouldSetCurrentTime() {
+		// given
+		Double time = 1.23;
+
+		// when
+		testObj.setCurrentTime(mediaWrapper, time);
+
+		// then
+		verify(eventsBus).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
+		assertEquals(mediaEventCaptor.getValue().getType(), MediaEventTypes.SET_CURRENT_TIME);
+		assertEquals(mediaEventCaptor.getValue().getCurrentTime(), time);
+	}
+
+	@Test
+	public void shouldGetCurrentTime() {
+		// given
+		Double time = 1.23;
+		when(mediaWrapper.getCurrentTime()).thenReturn(time);
+
+		// when
+		double result = testObj.getCurrentTime(mediaWrapper);
+
+		assertEquals(time, result, 0);
+	}
+
 	private void verifyMediaEvent(MediaEventTypes assumedEventType, MediaWrapper<Widget> assumeMediaWrapper) {
 		verify(eventsBus).fireEventFromSource(mediaEventCaptor.capture(), eq(assumeMediaWrapper));
 
