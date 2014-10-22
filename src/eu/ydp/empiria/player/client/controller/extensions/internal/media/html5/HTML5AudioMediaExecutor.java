@@ -5,13 +5,12 @@ import com.google.gwt.media.client.Audio;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 
 	@Inject
-	public HTML5AudioMediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners, EventsBus eventsBus) {
-		super(mediaEventMapper, html5MediaNativeListeners, eventsBus);
+	public HTML5AudioMediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners) {
+		super(mediaEventMapper, html5MediaNativeListeners);
 	}
 
 	@Override
