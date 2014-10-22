@@ -12,7 +12,6 @@ import org.mockito.Mock;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gwt.dom.client.MediaElement;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.Element;
 
@@ -21,7 +20,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundEx
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public abstract class AbstractHTML5MediaExecutorJUnitBase {
@@ -29,17 +27,14 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
 	protected AbstractHTML5MediaExecutor<MediaBase> instance;
 
 	@Mock
-	protected MediaBase mediaBase;
-	@Mock
-	protected BaseMediaConfiguration mediaConfiguration;
-	@Mock
-	protected HandlerRegistration handlerRegistration;
-	@Mock
-	protected EventsBus eventsBus;
-	@Mock
 	protected HTML5MediaEventMapper mediaEventMapper;
 	@Mock
 	protected HTML5MediaNativeListeners html5MediaNativeListeners;
+
+	@Mock
+	protected MediaBase mediaBase;
+	@Mock
+	protected BaseMediaConfiguration mediaConfiguration;
 
 	@Test
 	public void testInitNoConfiguration() {
