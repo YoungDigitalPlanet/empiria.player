@@ -1,14 +1,20 @@
 package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+
+import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 public class SoundJsNative {
 
 	private SoundApiForJs api;
-	private final Map<String, JavaScriptObject> soundInstances = new HashMap<>();
+	private final Map<String, SoundInstance> soundInstances = new HashMap<>();
 
 	public SoundJsNative() {
 		nativesInit();
@@ -41,6 +47,12 @@ public class SoundJsNative {
 		$wnd.empiriaSoundJsGetSoundInstance = function(src) {
 			return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getSoundInstance(Ljava/lang/String;)(src);
 		}
+		$wnd.empiriaSoundJsGetSoundInstanceWithId = function(id) {
+			return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getSoundInstanceWithId(I)(id);
+		}
+		$wnd.empiriaSoundJsGetSoundInstances = function() {
+			return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getSoundInstances()();
+		}
 	}-*/;
 
 	private native void onComplete(JavaScriptObject soundInstance)/*-{
@@ -61,7 +73,8 @@ public class SoundJsNative {
 		api.playLooped(src);
 	}
 
-	private void preload(JavaScriptObject soundInstance, String src) {
+	private void preload(JavaScriptObject jsSoundInstanceObject, String src) {
+		SoundInstance soundInstance = jsSoundInstanceObject.cast();
 		soundInstances.put(src, soundInstance);
 		api.preload(src);
 	}
@@ -80,5 +93,16 @@ public class SoundJsNative {
 
 	private JavaScriptObject getSoundInstance(String src) {
 		return soundInstances.get(src);
+	}
+
+	private JavaScriptObject getSoundInstanceWithId(int id) {
+		Collection<SoundInstance> soundInstancesToFilter = soundInstances.values();
+		Predicate<SoundInstance> idPredicate = new SoundInstanceIdPredicate(id);
+		
+		return FluentIterable.from(soundInstancesToFilter).firstMatch(idPredicate).orNull();
+	}
+
+	private JsArray<JavaScriptObject> getSoundInstances() {
+		return JSArrayUtils.convert(soundInstances.values());
 	}
 }
