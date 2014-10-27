@@ -10,10 +10,7 @@ import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
-import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 public class SoundJsPlugin implements SoundApiForJs {
@@ -22,17 +19,20 @@ public class SoundJsPlugin implements SoundApiForJs {
 	private final MediaWrapperController mediaWrapperController;
 	private final MimeSourceProvider mimeSourceProvider;
 	private final SoundJsNative soundJsNative;
+	private final SoundJsMediaEventHandler soundJsMediaEventHandler;
 
 	private final Map<String, MediaWrapper<Widget>> wrappers = new HashMap<>();
 
 	@Inject
 	public SoundJsPlugin(MediaWrapperCreator mediaWrapperCreator, MediaWrapperController mediaWrapperController, MimeSourceProvider mimeSourceProvider,
-			SoundJsNative soundJsNative) {
+			SoundJsNative soundJsNative, SoundJsMediaEventHandler soundJsMediaEventHandler) {
 		this.mediaWrapperCreator = mediaWrapperCreator;
 		this.mediaWrapperController = mediaWrapperController;
 		this.mimeSourceProvider = mimeSourceProvider;
 		this.soundJsNative = soundJsNative;
 		this.soundJsNative.setApiForJs(this);
+		this.soundJsMediaEventHandler = soundJsMediaEventHandler;
+		this.soundJsMediaEventHandler.setSoundJsNative(soundJsNative);
 	}
 
 	@Override
@@ -80,6 +80,18 @@ public class SoundJsPlugin implements SoundApiForJs {
 		mediaWrapperController.resume(wrapper);
 	}
 
+	@Override
+	public void setCurrentTime(String src, Double time) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		mediaWrapperController.setCurrentTime(wrapper, time);
+	}
+
+	@Override
+	public double getCurrentTime(String src) {
+		MediaWrapper<Widget> wrapper = wrappers.get(src);
+		return mediaWrapperController.getCurrentTime(wrapper);
+	}
+
 	private void createMediaWrapper(final String src, CallbackReceiver<MediaWrapper<Widget>> receiver) {
 		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
 		mediaWrapperCreator.createSimulationMediaWrapper(src, sourcesWithTypes, receiver);
@@ -93,21 +105,9 @@ public class SoundJsPlugin implements SoundApiForJs {
 		mediaWrapperController.stopAndPlayLooped(wrapper);
 	}
 
-	private void addOnEndHandler(final MediaWrapper<Widget> wrapper) {
-		mediaWrapperController.addHandler(MediaEventTypes.ON_END, wrapper, onEndHandler);
+	private void addHandlers(final MediaWrapper<Widget> wrapper) {
+		mediaWrapperController.addHandler(MediaEventTypes.ON_END, wrapper, soundJsMediaEventHandler);
 	}
-
-	private final MediaEventHandler onEndHandler = new MediaEventHandler() {
-		@Override
-		public void onMediaEvent(MediaEvent event) {
-			if (MediaEventTypes.ON_END == event.getType()) {
-				AbstractHTML5MediaWrapper html5MediaWrapper = (AbstractHTML5MediaWrapper) event.getMediaWrapper();
-				String src = html5MediaWrapper.getMediaBase().getCurrentSrc();
-
-				soundJsNative.onComplete(src);
-			}
-		}
-	};
 
 	private CallbackReceiver<MediaWrapper<Widget>> addWrapper(final String src) {
 		return new SoundJsCallbackReceiver(src);
@@ -144,7 +144,7 @@ public class SoundJsPlugin implements SoundApiForJs {
 
 		@Override
 		public void setCallbackReturnObject(MediaWrapper<Widget> wrapper) {
-			addOnEndHandler(wrapper);
+			addHandlers(wrapper);
 			wrappers.put(src, wrapper);
 		}
 	}

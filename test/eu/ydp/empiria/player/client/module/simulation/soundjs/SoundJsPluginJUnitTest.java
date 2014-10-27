@@ -26,7 +26,6 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SoundJsPluginJUnitTest {
@@ -46,6 +45,8 @@ public class SoundJsPluginJUnitTest {
 	private SoundJsNative soundJsNative;
 	@Mock
 	private EventsBus eventsBus;
+	@Mock
+	private SoundJsMediaEventHandler soundJsMediaEventHandler;
 
 	@Mock
 	private MediaEvent mediaEvent;
@@ -72,6 +73,11 @@ public class SoundJsPluginJUnitTest {
 	@Test
 	public void shouldSetApiForJs() {
 		verify(soundJsNative).setApiForJs(testObj);
+	}
+
+	@Test
+	public void shouldSetSoundJsNativeForEventHandler() {
+		verify(soundJsMediaEventHandler).setSoundJsNative(soundJsNative);
 	}
 
 	@Test
@@ -135,82 +141,6 @@ public class SoundJsPluginJUnitTest {
 	}
 
 	@Test
-	public void shouldCallNativeOnComplete_ifPreloadedAndPlayed() {
-		// given
-		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
-		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
-		testObj.preload(fileSrc);
-
-		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-
-		// then
-		testObj.play(fileSrc);
-
-		// then
-		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
-		verifyNoMoreInteractions(eventsBus);
-		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(soundJsNative).onComplete(fileSrc);
-	}
-
-	@Test
-	public void shouldCallNativeOnComplete_ifPlayingSecondTime() {
-		// given
-		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
-		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
-		testObj.play(fileSrc);
-
-		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-
-		// then
-		testObj.play(fileSrc);
-
-		// then
-		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
-		verifyNoMoreInteractions(eventsBus);
-		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(soundJsNative).onComplete(fileSrc);
-	}
-
-	@Test
-	public void shouldCallNativeOnComplete_ifPlayed() {
-		// given
-		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
-		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
-
-		// when
-		testObj.play(fileSrc);
-
-		// then
-		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-
-		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
-		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(soundJsNative).onComplete(fileSrc);
-	}
-
-	@Test
-	public void shouldNotCallNativeOnComplete_ifNotOnEndEvent() {
-		// given
-		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
-		when(mediaEvent.getType()).thenReturn(MediaEventTypes.PAUSE);
-
-		// when
-		testObj.play(fileSrc);
-
-		// then
-		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-
-		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
-		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(soundJsNative, never()).onComplete(fileSrc);
-	}
-
-	@Test
 	public void shouldPlayAlreadyPlayed() {
 		// given
 		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
@@ -256,26 +186,6 @@ public class SoundJsPluginJUnitTest {
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
 		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
-	}
-
-	@Test
-	public void shouldCallNativeOnComplete_ifPlayingLoopedSecondTime() {
-		// given
-		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
-		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_END);
-		testObj.playLooped(fileSrc);
-
-		verifyMediaWrapperCreation(assumedSourcesWithTypes);
-		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-
-		// then
-		testObj.playLooped(fileSrc);
-
-		// then
-		verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventCaptor.capture());
-		verifyNoMoreInteractions(eventsBus);
-		mediaEventCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(soundJsNative).onComplete(fileSrc);
 	}
 
 	@Test
@@ -341,6 +251,39 @@ public class SoundJsPluginJUnitTest {
 
 		// then
 		verify(mediaWrapperController).resume(mediaWrapper);
+	}
+
+	@Test
+	public void shouldSetCurrentTime() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		Double time = 1.2343;
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.setCurrentTime(fileSrc, time);
+
+		// then
+		verify(mediaWrapperController).setCurrentTime(mediaWrapper, time);
+	}
+
+	@Test
+	public void shouldGetCurrentTime() {
+		// given
+		Map<String, String> assumedSourcesWithTypes = getSourcesWithTypes();
+		testObj.play(fileSrc);
+
+		verifyMediaWrapperCreation(assumedSourcesWithTypes);
+		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		// when
+		testObj.getCurrentTime(fileSrc);
+
+		// then
+		verify(mediaWrapperController).getCurrentTime(mediaWrapper);
 	}
 
 	private void verifyMediaWrapperCreation(Map<String, String> sourcesWithTypes) {

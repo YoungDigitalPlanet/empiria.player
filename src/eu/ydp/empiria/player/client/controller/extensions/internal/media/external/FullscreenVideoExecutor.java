@@ -100,6 +100,5 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 
 	@Override
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
-		// do nothing - not applicable
 	}
 }

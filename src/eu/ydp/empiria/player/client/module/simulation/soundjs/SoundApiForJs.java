@@ -12,4 +12,9 @@ public interface SoundApiForJs {
 	void pause(String src);
 
 	void resume(String src);
+
+	void setCurrentTime(String src, Double time);
+
+	double getCurrentTime(String src);
+
 }
