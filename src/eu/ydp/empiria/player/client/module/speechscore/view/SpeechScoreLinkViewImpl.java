@@ -31,11 +31,13 @@ public class SpeechScoreLinkViewImpl extends Composite implements SpeechScoreLin
 
 	@Override
 	public void addHandler(Command command) {
-		userInteractionHandlerFactory.createUserClickHandler(command).apply(link);
+		userInteractionHandlerFactory.createUserClickHandler(command)
+		                             .apply(link);
 	}
 
 	@Override
-	public String getUrl() {
-		return asWidget().getElement().getInnerText();
+	public void buildLink(String linkText, String href) {
+		link.setText(linkText);
+		link.setHref(href);
 	}
 }

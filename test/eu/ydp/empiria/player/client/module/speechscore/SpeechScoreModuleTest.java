@@ -29,6 +29,6 @@ public class SpeechScoreModuleTest {
 		testObj.initModule(element);
 
 		// then
-		verify(presenter).bindUi();
+		verify(presenter).init(element);
 	}
 }

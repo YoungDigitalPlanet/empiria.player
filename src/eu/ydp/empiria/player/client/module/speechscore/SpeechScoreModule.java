@@ -20,6 +20,6 @@ public class SpeechScoreModule extends SimpleModuleBase {
 
 	@Override
 	protected void initModule(Element element) {
-		presenter.bindUi();
+		presenter.init(element);
 	}
 }

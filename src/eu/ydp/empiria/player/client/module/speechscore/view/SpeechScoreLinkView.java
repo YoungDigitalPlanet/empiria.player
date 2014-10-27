@@ -6,5 +6,5 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 public interface SpeechScoreLinkView extends IsWidget {
 	void addHandler(Command command);
 
-	String getUrl();
+	void buildLink(String linkText, String href);
 }

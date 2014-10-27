@@ -1,18 +1,15 @@
 package eu.ydp.empiria.player.client.module.speechscore.presenter;
 
-import eu.ydp.empiria.player.client.controller.assets.URLOpenService;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkView;
-import eu.ydp.gwtutil.client.event.factory.Command;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpeechScorePresenterTest {
@@ -23,26 +20,26 @@ public class SpeechScorePresenterTest {
 	@Mock
 	private SpeechScoreLinkView view;
 	@Mock
-	private URLOpenService urlOpenService;
-	@Mock
 	private SpeechScoreProtocolProvider protocolProvider;
 
-	@Captor
-	private ArgumentCaptor<Command> commandCaptor;
-
 	@Test
-	public void shouldRunSpeechScoreWhenViewHandlerExecute() {
+	public void shouldBuildLinkOnView() {
 		//given
-		when(protocolProvider.get()).thenReturn("protocol:");
-		when(view.getUrl()).thenReturn("url");
+		final String LINK_TEXT = "Link text";
 
-		testObj.bindUi();
-		verify(view).addHandler(commandCaptor.capture());
+		Node node = mock(Node.class);
+		when(node.getNodeValue()).thenReturn(LINK_TEXT);
+
+		Element element = mock(Element.class);
+		when(element.getFirstChild()).thenReturn(node);
+		when(element.getAttribute("url")).thenReturn("url");
+
+		when(protocolProvider.get()).thenReturn("protocol:");
 
 		//when
-		commandCaptor.getValue().execute(null);
+		testObj.init(element);
 
 		//then
-		verify(urlOpenService).open("protocol:url");
+		verify(view).buildLink(LINK_TEXT, "protocol:url");
 	}
 }

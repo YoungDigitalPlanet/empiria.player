@@ -3,6 +3,6 @@
         >
     <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="styles"/>
     <g:FlowPanel ui:field="container" styleName="{styles.QP_SPEECH_SCORE_CONTAINER}">
-        <g:Anchor ui:field="link" styleName="{styles.QP_SPEECH_SCORE_LINK}}"/>
+        <g:Anchor ui:field="link" styleName="{styles.QP_SPEECH_SCORE_LINK}" target="_blank"/>
     </g:FlowPanel>
 </ui:UiBinder>
