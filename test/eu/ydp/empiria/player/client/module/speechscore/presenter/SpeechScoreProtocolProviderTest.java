@@ -20,7 +20,7 @@ public class SpeechScoreProtocolProviderTest {
 	private UserAgentUtil userAgentUtil;
 
 	@Test
-	public void shouldGetHTTPPtotocol() {
+	public void shouldGetHTTPProtocol() {
 		//given
 		String expected = "http://";
 		when(userAgentUtil.isMobileUserAgent()).thenReturn(false);
@@ -33,7 +33,7 @@ public class SpeechScoreProtocolProviderTest {
 	}
 
 	@Test
-	public void shouldGetYDPPtotocol() {
+	public void shouldGetYDPProtocol() {
 		//given
 		String expected = "ydp://";
 		when(userAgentUtil.isMobileUserAgent()).thenReturn(true);

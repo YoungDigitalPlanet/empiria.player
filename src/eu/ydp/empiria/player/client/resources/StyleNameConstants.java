@@ -1123,6 +1123,6 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-speechscore-container")
 	public String QP_SPEECH_SCORE_CONTAINER();
 
-	@DefaultStringValue("qp-speechscore")
+	@DefaultStringValue("qp-speechscore-link")
 	public String QP_SPEECH_SCORE_LINK();
 }
