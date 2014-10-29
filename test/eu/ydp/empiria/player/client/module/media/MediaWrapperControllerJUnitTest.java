@@ -107,9 +107,9 @@ public class MediaWrapperControllerJUnitTest {
 	}
 
 	@Test
-	public void shouldStopAndPlayLooped() {
+	public void shouldPauseAndPlay() {
 		// when
-		testObj.stopAndPlayLooped(mediaWrapper);
+		testObj.pauseAndPlay(mediaWrapper);
 
 		// then
 		verify(eventsBus, times(2)).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
@@ -118,7 +118,23 @@ public class MediaWrapperControllerJUnitTest {
 		MediaEvent calledStopEvent = calledMediaEvents.get(0);
 		MediaEvent calledPlayEvent = calledMediaEvents.get(1);
 
-		assertMediaEvent(calledStopEvent, MediaEventTypes.STOP, mediaWrapper);
+		assertMediaEvent(calledStopEvent, MediaEventTypes.PAUSE, mediaWrapper);
+		assertMediaEvent(calledPlayEvent, MediaEventTypes.PLAY, mediaWrapper);
+	}
+
+	@Test
+	public void shouldPauseAndPlayLooped() {
+		// when
+		testObj.pauseAndPlayLooped(mediaWrapper);
+
+		// then
+		verify(eventsBus, times(2)).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
+
+		List<MediaEvent> calledMediaEvents = mediaEventCaptor.getAllValues();
+		MediaEvent calledStopEvent = calledMediaEvents.get(0);
+		MediaEvent calledPlayEvent = calledMediaEvents.get(1);
+
+		assertMediaEvent(calledStopEvent, MediaEventTypes.PAUSE, mediaWrapper);
 		assertMediaEvent(calledPlayEvent, MediaEventTypes.PLAY_LOOPED, mediaWrapper);
 	}
 

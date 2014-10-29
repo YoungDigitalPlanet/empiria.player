@@ -98,11 +98,11 @@ public class SoundJsPlugin implements SoundApiForJs {
 	}
 
 	private void playMediaWrapper(MediaWrapper<Widget> wrapper) {
-		mediaWrapperController.stopAndPlay(wrapper);
+		mediaWrapperController.pauseAndPlay(wrapper);
 	}
 
 	private void playLoopedMediaWrapper(MediaWrapper<Widget> wrapper) {
-		mediaWrapperController.stopAndPlayLooped(wrapper);
+		mediaWrapperController.pauseAndPlayLooped(wrapper);
 	}
 
 	private void addHandlers(final MediaWrapper<Widget> wrapper) {
