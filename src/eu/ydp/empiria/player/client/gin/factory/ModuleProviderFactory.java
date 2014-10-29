@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
@@ -45,6 +44,7 @@ import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
+import eu.ydp.empiria.player.client.module.speechscore.SpeechScoreModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
 import eu.ydp.empiria.player.client.module.test.reset.TestResetButtonModule;
 import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitButtonModule;
@@ -155,6 +155,8 @@ public class ModuleProviderFactory {
 	private Provider<TestPageSubmitButtonModule> testPageSubmitButtonModule;
 	@Inject
 	private Provider<TestResetButtonModule> testResetButtonModule;
+	@Inject
+	private Provider<SpeechScoreModule> speechScoreModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -354,5 +356,9 @@ public class ModuleProviderFactory {
 
 	public Provider<TestResetButtonModule> getTestResetButtonModule() {
 		return testResetButtonModule;
+	}
+
+	public Provider<SpeechScoreModule> getSpeechScoreModule() {
+		return speechScoreModule;
 	}
 }

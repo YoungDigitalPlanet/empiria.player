@@ -1119,4 +1119,10 @@ public interface StyleNameConstants extends Constants {
 
 	@DefaultStringValue("selection-multi")
 	public String SELECTION_MULTI();
+
+	@DefaultStringValue("qp-speechscore-container")
+	public String QP_SPEECH_SCORE_CONTAINER();
+
+	@DefaultStringValue("qp-speechscore-link")
+	public String QP_SPEECH_SCORE_LINK();
 }
