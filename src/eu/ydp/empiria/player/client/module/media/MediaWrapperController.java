@@ -39,8 +39,13 @@ public class MediaWrapperController {
 		play(mediaWrapper);
 	}
 
-	public void stopAndPlayLooped(MediaWrapper<Widget> mediaWrapper) {
-		stop(mediaWrapper);
+	public void pauseAndPlay(MediaWrapper<Widget> mediaWrapper) {
+		pause(mediaWrapper);
+		play(mediaWrapper);
+	}
+
+	public void pauseAndPlayLooped(MediaWrapper<Widget> mediaWrapper) {
+		pause(mediaWrapper);
 		playLooped(mediaWrapper);
 	}
 

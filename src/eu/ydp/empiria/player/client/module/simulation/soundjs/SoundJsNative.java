@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+
+import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 public class SoundJsNative {
 
@@ -20,10 +23,10 @@ public class SoundJsNative {
 
 	private native void nativesInit()/*-{
 										var instance = this;
-										$wnd.empiriaSoundJsBeginPlaying = function(src) {
+										$wnd.empiriaSoundJsPlay = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::play(Ljava/lang/String;)(src);
 										}
-										$wnd.empiriaSoundJsBeginPlayingLooped = function(src) {
+										$wnd.empiriaSoundJsPlayLooped = function(src) {
 										instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::playLooped(Ljava/lang/String;)(src);
 										}
 										$wnd.empiriaSoundJsInit = function(soundInstance, src) {
@@ -43,6 +46,12 @@ public class SoundJsNative {
 										}
 										$wnd.empiriaSoundJsGetCurrentTime = function(src) {
 										return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getCurrentTime(Ljava/lang/String;)(src);
+										}
+										$wnd.empiriaSoundJsGetSoundInstance = function(src) {
+										return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getSoundInstance(Ljava/lang/String;)(src);
+										}
+										$wnd.empiriaSoundJsGetSoundInstances = function() {
+										return instance.@eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative::getSoundInstances()();
 										}
 										}-*/;
 
@@ -87,5 +96,13 @@ public class SoundJsNative {
 
 	private double getCurrentTime(String src) {
 		return api.getCurrentTime(src);
+	}
+
+	private JavaScriptObject getSoundInstance(String src) {
+		return soundInstances.get(src);
+	}
+
+	private JsArray<JavaScriptObject> getSoundInstances() {
+		return JSArrayUtils.convert(soundInstances.values());
 	}
 }

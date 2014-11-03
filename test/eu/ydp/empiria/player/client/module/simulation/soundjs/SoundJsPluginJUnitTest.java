@@ -120,7 +120,7 @@ public class SoundJsPluginJUnitTest {
 		// then
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
 		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-		verify(mediaWrapperController).stopAndPlay(mediaWrapper);
+		verify(mediaWrapperController).pauseAndPlay(mediaWrapper);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class SoundJsPluginJUnitTest {
 
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
-		verify(mediaWrapperController).stopAndPlay(mediaWrapper);
+		verify(mediaWrapperController).pauseAndPlay(mediaWrapper);
 	}
 
 	@Test
@@ -154,7 +154,7 @@ public class SoundJsPluginJUnitTest {
 
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
-		verify(mediaWrapperController, times(2)).stopAndPlay(mediaWrapper);
+		verify(mediaWrapperController, times(2)).pauseAndPlay(mediaWrapper);
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class SoundJsPluginJUnitTest {
 		// then
 		verifyMediaWrapperCreation(assumedSourcesWithTypes);
 		cbCaptor.getValue().setCallbackReturnObject(mediaWrapper);
-		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+		verify(mediaWrapperController).pauseAndPlayLooped(mediaWrapper);
 	}
 
 	@Test
@@ -185,7 +185,7 @@ public class SoundJsPluginJUnitTest {
 
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
-		verify(mediaWrapperController).stopAndPlayLooped(mediaWrapper);
+		verify(mediaWrapperController).pauseAndPlayLooped(mediaWrapper);
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class SoundJsPluginJUnitTest {
 
 		// then
 		verifyNoMoreInteractions(mediaWrapperCreator);
-		verify(mediaWrapperController, times(2)).stopAndPlayLooped(mediaWrapper);
+		verify(mediaWrapperController, times(2)).pauseAndPlayLooped(mediaWrapper);
 	}
 
 	@Test
