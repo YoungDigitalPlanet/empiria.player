@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 public class SoundJsNative {
 
 	private SoundApiForJs api;
-	private final Map<String, SoundInstance> soundInstances = new HashMap<>();
+	private final Map<String, JavaScriptObject> soundInstances = new HashMap<>();
 
 	public SoundJsNative() {
 		nativesInit();
@@ -73,8 +73,7 @@ public class SoundJsNative {
 		api.playLooped(src);
 	}
 
-	private void preload(JavaScriptObject jsSoundInstanceObject, String src) {
-		SoundInstance soundInstance = jsSoundInstanceObject.cast();
+	private void preload(JavaScriptObject soundInstance, String src) {
 		soundInstances.put(src, soundInstance);
 		api.preload(src);
 	}
