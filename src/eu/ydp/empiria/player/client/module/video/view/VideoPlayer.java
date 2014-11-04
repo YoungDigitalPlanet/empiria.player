@@ -4,7 +4,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
@@ -39,5 +38,17 @@ public class VideoPlayer extends Widget {
 	@Override
 	protected void onUnload() {
 		nativePlayer.disposeCurrentPlayer();
+	}
+
+	public void disablePointerEvents() {
+		nativePlayer.disablePointerEvents();
+	}
+
+	public String getId() {
+		return videoElementWrapper.getId();
+	}
+
+	public String getSource() {
+		return videoElementWrapper.getSource();
 	}
 }
