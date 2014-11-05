@@ -35,7 +35,7 @@ public class SpeechScoreProtocolProviderTest {
 	@Test
 	public void shouldGetYDPProtocol() {
 		//given
-		String expected = "ydp://";
+		String expected = "ydpsr://";
 		when(userAgentUtil.isMobileUserAgent()).thenReturn(true);
 
 		//when

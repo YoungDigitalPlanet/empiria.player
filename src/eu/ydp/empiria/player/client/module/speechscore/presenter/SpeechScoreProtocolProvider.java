@@ -6,7 +6,7 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 public class SpeechScoreProtocolProvider {
 
 	private static final String HTTP_PROTOCOL_PREFIX = "http://";
-	private static final String YDP_PROTOCOL_PREFIX = "ydp://";
+	private static final String YDP_PROTOCOL_PREFIX = "ydpsr://";
 
 	@Inject
 	private UserAgentUtil userAgentUtil;
