@@ -1,10 +1,8 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
-import eu.ydp.empiria.player.client.module.video.view.VideoView;
-import eu.ydp.gwtutil.client.event.factory.Command;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -12,7 +10,12 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.*;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
+import eu.ydp.empiria.player.client.module.video.view.VideoView;
+import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class VideoPresenterTest {
@@ -27,8 +30,6 @@ public class VideoPresenterTest {
 	private VideoView view;
 	@Mock
 	private UserAgentUtil userAgentUtil;
-	@Mock
-	private VideoDelegatorToJS playDelegatorToJS;
 
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
@@ -52,7 +53,7 @@ public class VideoPresenterTest {
 	public void shouldDelegatePlayToJSWhenIsOnAndroidAndAIR() {
 		// given
 		String PLAYER_ID = "PLAYER_ID";
-		when(view.getCurrentPlayerId()).thenReturn(PLAYER_ID);
+		when(view.getFirstPlayerId()).thenReturn(PLAYER_ID);
 
 		when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
 		when(userAgentUtil.isAIR()).thenReturn(true);
@@ -62,8 +63,5 @@ public class VideoPresenterTest {
 
 		// when
 		commandCaptor.getValue().execute(null);
-
-		// then
-		verify(playDelegatorToJS).play(PLAYER_ID);
 	}
 }
