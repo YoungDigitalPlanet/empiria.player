@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 public class MediaEventControllerWithOnPlay implements MediaEventController {
 
 	@Inject
-	private DefaultMediaEventController defaultMediaEventControllerWithoutOnPlay;
+	private DefaultMediaEventController defaultMediaEventController;
 
 	@Override
 	public void onMediaEvent(MediaEvent event, MediaExecutor<?> executor, AbstractMediaProcessor processor) {
@@ -19,7 +19,7 @@ public class MediaEventControllerWithOnPlay implements MediaEventController {
 			processor.pauseAllOthers(executor.getMediaWrapper());
 			break;
 		default:
-			defaultMediaEventControllerWithoutOnPlay.onMediaEvent(event, executor, processor);
+			defaultMediaEventController.onMediaEvent(event, executor, processor);
 			break;
 		}
 	}

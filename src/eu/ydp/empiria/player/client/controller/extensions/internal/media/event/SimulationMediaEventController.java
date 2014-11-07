@@ -9,11 +9,11 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 public class SimulationMediaEventController implements MediaEventController {
 
 	@Inject
-	private DefaultMediaEventController defaultMediaEventControllerWithoutOnPlay;
+	private DefaultMediaEventController defaultMediaEventController;
 
 	@Override
 	public void onMediaEvent(MediaEvent event, MediaExecutor<?> executor, AbstractMediaProcessor processor) {
-		defaultMediaEventControllerWithoutOnPlay.onMediaEvent(event, executor, processor);
+		defaultMediaEventController.onMediaEvent(event, executor, processor);
 	}
 
 }
