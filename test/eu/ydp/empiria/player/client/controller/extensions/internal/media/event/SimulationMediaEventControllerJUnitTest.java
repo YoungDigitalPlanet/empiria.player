@@ -1,21 +1,14 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.event;
 
 import static org.mockito.Mockito.*;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
+import junitparams.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
-import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.*;
+import eu.ydp.empiria.player.client.util.events.media.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class SimulationMediaEventControllerJUnitTest {
@@ -24,7 +17,7 @@ public class SimulationMediaEventControllerJUnitTest {
 	private SimulationMediaEventController testObj;
 
 	@Mock
-	private DefaultMediaEventController defaultMediaEventControllerWithoutOnPlay;
+	private DefaultMediaEventController defaultMediaEventController;
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private MediaEvent event;
 	@Mock
@@ -45,7 +38,7 @@ public class SimulationMediaEventControllerJUnitTest {
 		testObj.onMediaEvent(event, executor, processor);
 
 		// then
-		verify(defaultMediaEventControllerWithoutOnPlay).onMediaEvent(event, executor, processor);
+		verify(defaultMediaEventController).onMediaEvent(event, executor, processor);
 	}
 
 	public Object[] parametersForShouldDelegateEventsToDefaultController() {

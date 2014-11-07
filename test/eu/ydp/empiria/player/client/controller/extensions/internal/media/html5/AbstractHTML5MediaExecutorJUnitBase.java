@@ -123,7 +123,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
 
 		// when - then
 		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
-			instance.html5OnEvent(typePair.getKey());
+			instance.onHtml5MediaEvent(typePair.getKey());
 			verify(mediaEventMapper).mapAndFireEvent(typePair.getKey(), soundExecutorListener, mediaWrapper);
 		}
 	}

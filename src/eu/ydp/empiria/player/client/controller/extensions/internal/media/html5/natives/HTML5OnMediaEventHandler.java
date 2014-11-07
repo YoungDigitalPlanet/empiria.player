@@ -2,6 +2,6 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.
 
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 
-public interface HTML5OnEvent {
-	void html5OnEvent(HTML5MediaEventsType eventType);
+public interface HTML5OnMediaEventHandler {
+	void onHtml5MediaEvent(HTML5MediaEventsType eventType);
 }

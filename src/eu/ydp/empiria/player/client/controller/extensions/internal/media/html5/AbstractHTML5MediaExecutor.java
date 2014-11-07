@@ -10,7 +10,7 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5OnEvent;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5OnMediaEventHandler;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 
-public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements MediaExecutor<MediaBase>, HTML5OnEvent {
+public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements MediaExecutor<MediaBase>, HTML5OnMediaEventHandler {
 
 	private H media;
 	private MediaWrapper<MediaBase> mediaDescriptor;
@@ -56,7 +56,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 	}
 
 	@Override
-	public void html5OnEvent(HTML5MediaEventsType eventType) {
+	public void onHtml5MediaEvent(HTML5MediaEventsType eventType) {
 		mediaEventMapper.mapAndFireEvent(eventType, listener, mediaDescriptor);
 	}
 
