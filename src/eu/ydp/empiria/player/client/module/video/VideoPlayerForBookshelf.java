@@ -8,40 +8,27 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.FullscreenVideoConnectorListener;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
-public class VideoPlayerForBookshelf implements FullscreenVideoConnectorListener {
+public class VideoPlayerForBookshelf {
 
 	private final VideoView view;
 	private final ExternalFullscreenVideoConnector externalFullscreenVideoConnector;
-
-	private double currentTimeMillipercent;
 
 	@Inject
 	public VideoPlayerForBookshelf(@Assisted VideoView videoView, ExternalFullscreenVideoConnector externalFullscreenVideoConnector) {
 		this.view = videoView;
 		this.externalFullscreenVideoConnector = externalFullscreenVideoConnector;
-		this.currentTimeMillipercent = 0;
 	}
 
 	public void init() {
-			externalFullscreenVideoConnector.addConnectorListener(view.getFirstPlayerId(), this);
-			view.preparePlayDelegationToJS(new Command() {
-				@Override
-				public void execute(NativeEvent nativeEvent) {
-					List<String> sources = Lists.newArrayList(view.getVideoSource());
-					externalFullscreenVideoConnector.openFullscreen(view.getFirstPlayerId(), sources, currentTimeMillipercent);
-				}
-			});
+		view.preparePlayDelegationToJS(new Command() {
+			@Override
+			public void execute(NativeEvent nativeEvent) {
+				List<String> sources = Lists.newArrayList(view.getVideoSource());
+				externalFullscreenVideoConnector.openFullscreen(view.getPlayerId(), sources, 0);
+			}
+		});
 	}
-
-	@Override
-	public void onFullscreenClosed(String id, double currentTimeMillipercent) {
-		if (id.equals(view.getFirstPlayerId())) {
-			this.currentTimeMillipercent = currentTimeMillipercent;
-		}
-	}
-
 }

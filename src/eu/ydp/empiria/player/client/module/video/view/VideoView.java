@@ -11,7 +11,7 @@ public interface VideoView extends IsWidget {
 
 	public void preparePlayDelegationToJS(Command command);
 
-	public String getFirstPlayerId();
+	public String getPlayerId();
 
 	public String getVideoSource();
 

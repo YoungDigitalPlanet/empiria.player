@@ -21,15 +21,6 @@ public class VideoViewImpl extends Composite implements VideoView {
 	@UiField
 	FlowPanel container;
 
-	private boolean pointerEventsEnabled = true;
-	private String currentPlayerId = "";
-	private String source = "";
-
-	@Override
-	public String getFirstPlayerId() {
-		return currentPlayerId;
-	}
-
 	interface VideoViewImplUiBinder extends UiBinder<Widget, VideoViewImpl> {
 	}
 
@@ -41,29 +32,25 @@ public class VideoViewImpl extends Composite implements VideoView {
 	@Override
 	public void preparePlayDelegationToJS(Command command) {
 		userInteractionHandlerFactory.createUserClickHandler(command).apply(container);
-		pointerEventsEnabled = false;
 	}
 
 	@Override
 	public void attachVideoPlayer(VideoPlayer videoPlayer) {
-		setVideoId(videoPlayer.getId());
-		source = videoPlayer.getSource();
-
 		container.clear();
 		container.add(videoPlayer);
-		if (!pointerEventsEnabled) {
-			videoPlayer.disablePointerEvents();
-		}
 	}
 
-	private void setVideoId(String id) {
-		if (currentPlayerId.isEmpty()) {
-			currentPlayerId = id;
-		}
+	@Override
+	public String getPlayerId() {
+		return getVideoAttribute("id");
 	}
 
 	@Override
 	public String getVideoSource() {
-		return source;
+		return getVideoAttribute("src");
+	}
+
+	private String getVideoAttribute(String attribute) {
+		return container.getElement().getFirstChildElement().getFirstChildElement().getFirstChildElement().getAttribute(attribute);
 	}
 }
