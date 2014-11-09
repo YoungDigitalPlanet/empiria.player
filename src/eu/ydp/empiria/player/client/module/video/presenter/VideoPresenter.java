@@ -2,9 +2,7 @@ package eu.ydp.empiria.player.client.module.video.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
-import eu.ydp.empiria.player.client.module.video.VideoPlayerForBookshelf;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -15,8 +13,8 @@ public class VideoPresenter {
 	private final VideoView view;
 	private final VideoPlayerReattacher reAttachHack;
 	private final VideoPlayerBuilder videoPlayerBuilder;
-	private final VideoPlayerForBookshelf videoPlayerForBookshelf;
 	private final UserAgentUtil userAgentUtil;
+	private final VideoModuleFactory videoModuleFactory;
 
 
 	@Inject
@@ -26,7 +24,7 @@ public class VideoPresenter {
 		this.videoPlayerBuilder = videoPlayerAttacher;
 		this.reAttachHack = reAttachHack;
 		this.userAgentUtil = userAgentUtil;
-		this.videoPlayerForBookshelf = videoModuleFactory.createVideoPlayerForBookshelf(view);
+		this.videoModuleFactory = videoModuleFactory;
 	}
 
 	public void start() {
@@ -40,7 +38,7 @@ public class VideoPresenter {
 
 	private void initVideoForBookshelf() {
 		if (userAgentUtil.isAndroidBrowser() && userAgentUtil.isAIR()) {
-			videoPlayerForBookshelf.init();
+			videoModuleFactory.createVideoPlayerForBookshelf(view).init();
 		}
 	}
 

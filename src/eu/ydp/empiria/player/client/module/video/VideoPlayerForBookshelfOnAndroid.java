@@ -11,13 +11,13 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.externa
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
-public class VideoPlayerForBookshelf {
+public class VideoPlayerForBookshelfOnAndroid {
 
 	private final VideoView view;
 	private final ExternalFullscreenVideoConnector externalFullscreenVideoConnector;
 
 	@Inject
-	public VideoPlayerForBookshelf(@Assisted VideoView videoView, ExternalFullscreenVideoConnector externalFullscreenVideoConnector) {
+	public VideoPlayerForBookshelfOnAndroid(@Assisted VideoView videoView, ExternalFullscreenVideoConnector externalFullscreenVideoConnector) {
 		this.view = videoView;
 		this.externalFullscreenVideoConnector = externalFullscreenVideoConnector;
 	}

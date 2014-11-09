@@ -1,27 +1,25 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
+import eu.ydp.empiria.player.client.module.video.VideoPlayerForBookshelfOnAndroid;
+import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
+import eu.ydp.empiria.player.client.module.video.view.VideoView;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.google.gwtmockito.GwtMockitoTestRunner;
-
-import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
-import eu.ydp.empiria.player.client.module.video.view.VideoView;
-import eu.ydp.gwtutil.client.event.factory.Command;
-import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class VideoPresenterTest {
 
 	@InjectMocks
-	private VideoPresenter presenter;
+	private VideoPresenter testObj;
 	@Mock
 	private VideoPlayerReattacher videoPlayerReattacher;
 	@Mock
@@ -30,9 +28,15 @@ public class VideoPresenterTest {
 	private VideoView view;
 	@Mock
 	private UserAgentUtil userAgentUtil;
+	@Mock
+	private VideoModuleFactory videoModuleFactory;
+	@Mock
+	private VideoPlayerForBookshelfOnAndroid videoPlayerForBookshelfOnAndroid;
 
-	@Captor
-	private ArgumentCaptor<Command> commandCaptor;
+	@Before
+	public void init() {
+		when(videoModuleFactory.createVideoPlayerForBookshelf(view)).thenReturn(videoPlayerForBookshelfOnAndroid);
+	}
 
 	@Test
 	public void shouldCreateViewAndApplyHackWhenStart() {
@@ -41,27 +45,27 @@ public class VideoPresenterTest {
 		when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
 
 		// when
-		presenter.start();
+		testObj.start();
 
 		// then
 		verify(view).createView();
 		verify(view).attachVideoPlayer(isA(VideoPlayer.class));
 		verify(videoPlayerReattacher).registerReattachHandlerToView(view);
 	}
-	//
-	// @Test
-	// public void shouldDelegatePlayToJSWhenIsOnAndroidAndAIR() {
-	// // given
-	// String PLAYER_ID = "PLAYER_ID";
-	// when(view.getPlayerId()).thenReturn(PLAYER_ID);
-	//
-	// when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
-	// when(userAgentUtil.isAIR()).thenReturn(true);
-	//
-	// presenter.start();
-	// verify(view).preparePlayDelegationToJS(commandCaptor.capture());
-	//
-	// // when
-	// commandCaptor.getValue().execute(null);
-	// }
+
+	@Test
+	public void shouldInitVideoForBookshelfWhenIsOnAndroidAndAIR() {
+		// given
+		String PLAYER_ID = "PLAYER_ID";
+		when(view.getPlayerId()).thenReturn(PLAYER_ID);
+
+		when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
+		when(userAgentUtil.isAIR()).thenReturn(true);
+
+		//when
+		testObj.start();
+
+		//then
+		verify(videoPlayerForBookshelfOnAndroid).init();
+	}
 }
