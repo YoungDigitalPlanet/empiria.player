@@ -59,9 +59,6 @@ public class VideoPresenterTest {
 	@Test
 	public void shouldInitVideoForBookshelfWhenIsOnAndroidAndAIR() {
 		// given
-		String PLAYER_ID = "PLAYER_ID";
-		when(view.getPlayerId()).thenReturn(PLAYER_ID);
-
 		when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
 		when(userAgentUtil.isAIR()).thenReturn(true);
 
