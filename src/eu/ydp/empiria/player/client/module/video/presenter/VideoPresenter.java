@@ -33,12 +33,12 @@ public class VideoPresenter {
 		VideoPlayer videoPlayer = videoPlayerBuilder.build();
 		view.attachVideoPlayer(videoPlayer);
 		reAttachHack.registerReattachHandlerToView(view);
-		initVideoForBookshelf();
+		initVideoForBookshelf(videoPlayer);
 	}
 
-	private void initVideoForBookshelf() {
+	private void initVideoForBookshelf(VideoPlayer videoPlayer) {
 		if (userAgentUtil.isAndroidBrowser() && userAgentUtil.isAIR()) {
-			videoModuleFactory.createVideoPlayerForBookshelf(view).init();
+			videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer).init(view);
 		}
 	}
 

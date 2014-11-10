@@ -48,10 +48,6 @@ public class VideoPlayer extends Widget {
 		nativePlayer.disposeCurrentPlayer();
 	}
 
-	public void disablePointerEvents() {
-		nativePlayer.disablePointerEvents();
-	}
-
 	public String getId() {
 		return videoElementWrapper.getId();
 	}

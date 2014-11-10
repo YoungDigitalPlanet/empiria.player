@@ -27,6 +27,8 @@ public class VideoPresenterTest {
 	@Mock
 	private VideoView view;
 	@Mock
+	private VideoPlayer videoPlayer;
+	@Mock
 	private UserAgentUtil userAgentUtil;
 	@Mock
 	private VideoModuleFactory videoModuleFactory;
@@ -35,7 +37,8 @@ public class VideoPresenterTest {
 
 	@Before
 	public void init() {
-		when(videoModuleFactory.createVideoPlayerForBookshelf(view)).thenReturn(videoPlayerForBookshelfOnAndroid);
+		when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
+		when(videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer)).thenReturn(videoPlayerForBookshelfOnAndroid);
 	}
 
 	@Test
@@ -66,6 +69,6 @@ public class VideoPresenterTest {
 		testObj.start();
 
 		//then
-		verify(videoPlayerForBookshelfOnAndroid).init();
+		verify(videoPlayerForBookshelfOnAndroid).init(view);
 	}
 }
