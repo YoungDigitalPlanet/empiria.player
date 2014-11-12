@@ -3,48 +3,28 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 import javax.annotation.PostConstruct;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.BlurEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Event;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.controller.StickieDragHandlersManager;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.position.WidgetSizeHelper;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.ContainerDimensions;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.scroll.WindowToStickieScroller;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.player.*;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
-import eu.ydp.gwtutil.client.util.events.animation.TransitionEndEvent;
-import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
+import eu.ydp.gwtutil.client.util.events.animation.*;
 
 public class StickieView extends Composite implements IStickieView {
 
@@ -166,14 +146,11 @@ public class StickieView extends Composite implements IStickieView {
 	@UiHandler("contentText")
 	public void contentTextBlurHandler(BlurEvent event) {
 		setEditing(false);
-		updateContentLabel();
-		presenter.changeContentText(contentText.getText());
 		removePreventHandlerRegistration();
 	}
 
 	@UiHandler("contentText")
 	public void contentFocusInHandler(FocusEvent event) {
-
 		preventHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
 			@Override
 			public void onPreviewNativeEvent(NativePreviewEvent event) {
@@ -185,7 +162,6 @@ public class StickieView extends Composite implements IStickieView {
 				}
 			}
 		});
-
 	}
 
 	@UiHandler("contentText")
@@ -211,6 +187,11 @@ public class StickieView extends Composite implements IStickieView {
 		}
 	}
 
+	private void updateContentText() {
+		updateContentLabel();
+		presenter.changeContentText(contentText.getText());
+	}
+
 	private void updateContentLabel() {
 		String currentContentText = contentText.getText();
 		String newContentText = currentContentText.replace("\n", "<br/>");
@@ -231,7 +212,7 @@ public class StickieView extends Composite implements IStickieView {
 				firstKeyInputAfterClick = true;
 				windowToStickieScroller.scrollToStickie(getAbsoluteTop());
 			} else {
-				contentText.getElement().blur();
+				updateContentText();
 				contentText.removeFromParent();
 			}
 			labelPanel.setVisible(!edit);
@@ -293,5 +274,4 @@ public class StickieView extends Composite implements IStickieView {
 			preventHandlerRegistration = null;
 		}
 	}
-
 }
