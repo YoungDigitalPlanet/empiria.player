@@ -4,7 +4,7 @@
 
 	<!-- Debug -->
 	<set-property name="application.debug" value="on" />
-	<set-property name="user.agent" value="safari"/>
+	<set-property name="user.agent" value="gecko1_8"/>
 	<!-- END DEBUG -->
 
 </module>
