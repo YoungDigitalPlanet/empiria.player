@@ -49,6 +49,23 @@ public class StickieView extends Composite implements IStickieView {
 	private boolean takeOverKeyInput;
 	private boolean firstKeyInputAfterClick;
 
+	@UiField
+	FlowPanel rootStickiePanel;
+	@UiField
+	TextArea contentText;
+	@UiField
+	PushButton deleteButton;
+	@UiField
+	PushButton minimizeButton;
+	@UiField
+	FocusPanel headerPanel;
+	@UiField
+	InlineHTML contentLabel;
+	@UiField
+	FlowPanel textPanel;
+	@UiField
+	FocusPanel labelPanel;
+
 	@Inject
 	public StickieView(@Assisted HasWidgets parent, @Assisted IStickiePresenter presenter, @Assisted StickieDragHandlersManager stickieDragHandlersManager,
 			StyleNameConstants styleNameConstants, EventsBus eventsBus, WidgetSizeHelper widgetSizeHelper, WindowToStickieScroller windowToStickieScroller) {
@@ -92,23 +109,6 @@ public class StickieView extends Composite implements IStickieView {
 			}
 		});
 	}
-
-	@UiField
-	FlowPanel rootStickiePanel;
-	@UiField
-	TextArea contentText;
-	@UiField
-	PushButton deleteButton;
-	@UiField
-	PushButton minimizeButton;
-	@UiField
-	FocusPanel headerPanel;
-	@UiField
-	InlineHTML contentLabel;
-	@UiField
-	FlowPanel textPanel;
-	@UiField
-	FocusPanel labelPanel;
 
 	@UiHandler("minimizeButton")
 	public void minimizeHandler(ClickEvent event) {
