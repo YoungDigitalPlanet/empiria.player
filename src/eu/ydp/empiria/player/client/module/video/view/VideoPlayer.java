@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
+import java.util.List;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -52,7 +54,7 @@ public class VideoPlayer extends Widget {
 		return videoElementWrapper.getId();
 	}
 
-	public String getSource() {
-		return videoElementWrapper.getSource();
+	public List<String> getSources() {
+		return videoElementWrapper.getSources();
 	}
 }

@@ -1,15 +1,16 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
+import javax.inject.Inject;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
-
-import javax.inject.Inject;
 
 public class VideoViewImpl extends Composite implements VideoView {
 
@@ -29,7 +30,7 @@ public class VideoViewImpl extends Composite implements VideoView {
 	}
 
 	@Override
-	public void preparePlayDelegationToJS(Command command) {
+	public void preparePlayForBookshelf(Command command) {
 		userInteractionHandlerFactory.createUserClickHandler(command).apply(container);
 	}
 

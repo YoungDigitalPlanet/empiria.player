@@ -84,9 +84,12 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}
 
 	private native void disablePointerEventsNative() /*-{
-		var playListeners = $wnd.$('video').add('.vjs-poster').add(
-				'.vjs-big-play-button');
-		playListeners.css("pointer-events", "none");
+		var playerId = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId;
+		var player = $wnd.document.getElementById(playerId);
+
+		if (player) {
+			$wnd.$(player).css("pointer-events", "none");
+		}
 	}-*/;
 
 	@Override
