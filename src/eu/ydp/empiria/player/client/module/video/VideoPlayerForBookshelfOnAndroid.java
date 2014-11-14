@@ -18,8 +18,9 @@ public class VideoPlayerForBookshelfOnAndroid {
 	private final List<String> sources;
 
 	@Inject
-	public VideoPlayerForBookshelfOnAndroid(@Assisted VideoPlayer videoPlayer, FullscreenVideoConnector fullscreenVideoConnector) {
-		this.sources = videoPlayer.getSources();
+	public VideoPlayerForBookshelfOnAndroid(@Assisted VideoPlayer videoPlayer, FullscreenVideoConnector fullscreenVideoConnector,
+			SourceForBookshelfFilter sourceForBookshelfFilter) {
+		this.sources = sourceForBookshelfFilter.getFilteredSources(videoPlayer.getSources());
 		this.playerId = videoPlayer.getId();
 		this.fullscreenVideoConnector = fullscreenVideoConnector;
 	}

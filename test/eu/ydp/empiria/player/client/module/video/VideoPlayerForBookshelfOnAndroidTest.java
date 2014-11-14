@@ -30,6 +30,8 @@ public class VideoPlayerForBookshelfOnAndroidTest {
 	private VideoPlayer videoPlayer;
 	@Mock
 	private FullscreenVideoConnector fullscreenVideoConnector;
+	@Mock
+	private SourceForBookshelfFilter sourceForBookshelfFilter;
 
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
@@ -38,23 +40,24 @@ public class VideoPlayerForBookshelfOnAndroidTest {
 
 	@Test
 	public void shouldOpenFullscreen() {
-		//given
+		// given
 		String source = "video_source";
 		List<String> sources = Lists.newArrayList(source);
 		String playerId = "player_id";
 
 		when(videoPlayer.getSources()).thenReturn(sources);
 		when(videoPlayer.getId()).thenReturn(playerId);
+		when(sourceForBookshelfFilter.getFilteredSources(sources)).thenReturn(sources);
 
-		testObj = new VideoPlayerForBookshelfOnAndroid(videoPlayer, fullscreenVideoConnector);
+		testObj = new VideoPlayerForBookshelfOnAndroid(videoPlayer, fullscreenVideoConnector, sourceForBookshelfFilter);
 		testObj.init(view);
 
 		verify(view).preparePlayForBookshelf(commandCaptor.capture());
 
-		//when
+		// when
 		commandCaptor.getValue().execute(null);
 
-		//then
+		// then
 		verify(fullscreenVideoConnector).openFullscreen(eq(playerId), listCaptor.capture(), eq(0.0));
 		assertThat(listCaptor.getValue().get(0)).isEqualTo(source);
 	}
