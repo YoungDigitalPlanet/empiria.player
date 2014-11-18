@@ -29,5 +29,4 @@ public class SourceForBookshelfFilterTest {
 		assertThat(resultList.contains(sourceMP4)).isTrue();
 		assertThat(resultList.contains(sourceAVI)).isFalse();
 	}
-
 }

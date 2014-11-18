@@ -29,7 +29,9 @@ public class VideoPlayerForBookshelfOnAndroid {
 		view.preparePlayForBookshelf(new Command() {
 			@Override
 			public void execute(NativeEvent nativeEvent) {
-				fullscreenVideoConnector.openFullscreen(playerId, sources, 0);
+				if (!sources.isEmpty()) {
+					fullscreenVideoConnector.openFullscreen(playerId, sources, 0);
+				}
 			}
 		});
 	}

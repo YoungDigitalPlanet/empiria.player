@@ -61,4 +61,26 @@ public class VideoPlayerForBookshelfOnAndroidTest {
 		verify(fullscreenVideoConnector).openFullscreen(eq(playerId), listCaptor.capture(), eq(0.0));
 		assertThat(listCaptor.getValue().get(0)).isEqualTo(source);
 	}
+
+	@Test
+	public void shouldNotOpenFullscreen_whenEmptySourceList() {
+		// given
+		List<String> sources = Lists.newArrayList();
+		String playerId = "player_id";
+
+		when(videoPlayer.getSources()).thenReturn(sources);
+		when(videoPlayer.getId()).thenReturn(playerId);
+		when(sourceForBookshelfFilter.getFilteredSources(sources)).thenReturn(sources);
+
+		testObj = new VideoPlayerForBookshelfOnAndroid(videoPlayer, fullscreenVideoConnector, sourceForBookshelfFilter);
+		testObj.init(view);
+
+		verify(view).preparePlayForBookshelf(commandCaptor.capture());
+
+		// when
+		commandCaptor.getValue().execute(null);
+
+		// then
+		verifyZeroInteractions(fullscreenVideoConnector);
+	}
 }
