@@ -1,8 +1,11 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.*;
+import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
@@ -10,7 +13,11 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
  * 
  */
 public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
-	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+
+	@Inject
+	private EventsBus eventsBus;
+	@Inject
+	private ProgressUpdateLogic progressUpdateLogic;
 
 	public PositionInMediaStream() {
 		super(styleNames.QP_MEDIA_POSITIONINSTREAM());
@@ -25,7 +32,7 @@ public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStre
 			@Override
 			public void onMediaEvent(MediaEvent event) {
 				double currentTime = getMediaWrapper().getCurrentTime();
-				if (currentTime > lastTime + 1 || currentTime < lastTime) {
+				if (progressUpdateLogic.isReadyToUpdate(currentTime, lastTime)) {
 					lastTime = (int) currentTime;
 					double timeModulo = currentTime % 60;
 					StringBuilder innerText = new StringBuilder(getInnerText((currentTime - timeModulo) / 60f, timeModulo));
