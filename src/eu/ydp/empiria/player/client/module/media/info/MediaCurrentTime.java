@@ -1,15 +1,20 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
-import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
+import eu.ydp.empiria.player.client.util.events.media.*;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 /**
- * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1 sekunda
+ * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
+ * sekunda
  * 
  */
 public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
+
+	@Inject
+	private ProgressUpdateLogic progressUpdateLogic;
+
 	public MediaCurrentTime() {
 		super(styleNames.QP_MEDIA_CURRENTTIME());
 	}
@@ -28,7 +33,7 @@ public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
 				double currentTime = getMediaWrapper().getCurrentTime();
-				if (currentTime > lastTime + 1 || currentTime < lastTime - 1) {
+				if (progressUpdateLogic.isReadyToUpdate(currentTime, lastTime)) {
 					lastTime = (int) currentTime;
 					double timeModulo = currentTime % 60;
 					getElement().setInnerText(getInnerText((currentTime - timeModulo) / 60f, timeModulo));
