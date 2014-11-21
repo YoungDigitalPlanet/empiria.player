@@ -54,6 +54,10 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void stop() {
 		mediaEngine.stop(wrapper);
 	}
@@ -61,6 +65,10 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	@Override
 	public void pause() {
 		mediaEngine.pause(wrapper);
+	}
+
+	@Override
+	public void resume() {
 	}
 
 	@Override
@@ -79,5 +87,4 @@ public class ExternalMediaExecutor implements MediaExecutor<Widget> {
 	@Override
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
 	}
-
 }

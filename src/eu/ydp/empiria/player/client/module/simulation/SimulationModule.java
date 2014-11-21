@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.gwt.canvas.client.Canvas;
@@ -11,12 +9,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsPlugin;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -24,6 +22,8 @@ import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
 import eu.ydp.gwtcreatejs.client.handler.ManifestLoadHandler;
 import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
 import eu.ydp.gwtcreatejs.client.loader.Manifest;
+
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
 
 public class SimulationModule extends SimpleModuleBase implements ILifecycleModule, ManifestLoadHandler, PlayerEventHandler {
 
@@ -52,6 +52,9 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 	@Inject
 	private SimulationCanvasProvider simulationCanvasProvider;
 	private int pageIndex = -1;
+
+	@Inject
+	private SoundJsPlugin soundJsPlugin;
 
 	@Override
 	public Widget getView() {
@@ -90,7 +93,8 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 		String src = element.getAttribute("src");
 		addPageChangeHandlers();
 		initializeLoader(src);
-		pageIndex = pageScopeFactory.getCurrentPageScope().getPageIndex();
+		pageIndex = pageScopeFactory.getCurrentPageScope()
+		                            .getPageIndex();
 	}
 
 	protected void initializeLoader(String resourceSrc) {
