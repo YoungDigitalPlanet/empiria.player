@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -18,28 +17,32 @@ public class HTML5MediaEventMapper {
 	@Inject
 	private EventsBus eventsBus;
 
-	Map<HTML5MediaEventsType, MediaEventTypes> pairMapSyncEvents = creatEventsPairMap();
+	private final Map<HTML5MediaEventsType, MediaEventTypes> pairMapSyncEvents = creatEventsPairMap();
 
-	Map<HTML5MediaEventsType, MediaEventTypes> pairMapAsyncEvents = creatAsyncEventsPairMap();
+	private final Map<HTML5MediaEventsType, MediaEventTypes> pairMapAsyncEvents = creatAsyncEventsPairMap();
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
-				.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY).put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
-				.put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END).put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR)
-				.put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE).put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
-				.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY).build();
+																			.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY)
+																			.put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
+																			.put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END)
+																			.put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR)
+																			.put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE)
+																			.put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
+																			.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY)
+																			.build();
 		return pairMap;
 	}
 
 	private Map<HTML5MediaEventsType, MediaEventTypes> creatAsyncEventsPairMap() {
 		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
-				.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE)
-				.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE).build();
+																			.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE)
+																			.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE)
+																			.build();
 		return pairMap;
 	}
 
-	public void mapAndFireEvent(HTML5MediaEvent event, SoundExecutorListener listener, MediaWrapper<?> mediaWrapper) {
-		HTML5MediaEventsType eventType = event.getType();
+	public void mapAndFireEvent(HTML5MediaEventsType eventType, SoundExecutorListener listener, MediaWrapper<?> mediaWrapper) {
 		fireEvent(mediaWrapper, eventType);
 		callListenerMethod(listener, eventType);
 	}
@@ -53,16 +56,16 @@ public class HTML5MediaEventMapper {
 	}
 
 	private void callListenerMethod(SoundExecutorListener listener, HTML5MediaEventsType eventType) {
+		if (listener == null) {
+			return;
+		}
+
 		switch (eventType) {
 		case ended:
-			if (listener != null) {
-				listener.onSoundFinished();
-			}
+			listener.onSoundFinished();
 			break;
 		case play:
-			if (listener != null) {
-				listener.onPlay();
-			}
+			listener.onPlay();
 			break;
 		default:
 			break;

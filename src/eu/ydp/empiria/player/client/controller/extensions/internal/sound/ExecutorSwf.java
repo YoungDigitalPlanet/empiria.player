@@ -203,12 +203,20 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void pause() {
 		pause = true;
 		try {
 			flashMedia.pause();
 		} catch (Exception exception) {// NOPMD
 		}
+	}
+
+	@Override
+	public void resume() {
 	}
 
 	private void free() {

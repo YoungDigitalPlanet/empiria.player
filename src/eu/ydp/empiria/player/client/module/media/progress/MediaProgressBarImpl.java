@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.ProgressBarFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaScroll;
 import eu.ydp.empiria.player.client.module.media.button.SimpleMediaButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -49,6 +50,8 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	private PositionHelper positionHelper;
 	@Inject
 	private ComputedStyle computedStyle;
+	@Inject
+	private ProgressBarFactory progressBarFactory;
 	private ProgressBarUpdateEventHandler progressBarEventHandler;
 	private MediaProgressBarPositionCalculator positionCalculator;
 	private int lastScrollElementWidth;
@@ -102,7 +105,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 	public void init() {
 		super.init();
 		if (isSupported()) {
-			progressBarEventHandler = new ProgressBarUpdateEventHandler(this);
+			progressBarEventHandler = progressBarFactory.createProgressBarUpdateEventHandler(this);
 			CurrentPageScope scope = new CurrentPageScope();
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_TIME_UPDATE), getMediaWrapper(), progressBarEventHandler, scope);
 			eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_DURATION_CHANGE), getMediaWrapper(), progressBarEventHandler, scope);
@@ -112,7 +115,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
 			// nie zawsze zostanie wyzwolony timeupdate ze wzgledu na
 			// ograniczenie
 			// na 1s postepu wiec robimy to tu
-			ProgressBarEndEventHandler handlerForEnd = new ProgressBarEndEventHandler(this, eventsBus);
+			ProgressBarEndEventHandler handlerForEnd = progressBarFactory.createProgressBarEndEventHandler(this);
 			eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handlerForEnd, new CurrentPageScope());
 
 		} else {

@@ -1,6 +1,11 @@
 package eu.ydp.empiria.player.client.module.video.wrappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.VideoElement;
 
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -56,5 +61,16 @@ public class VideoElementWrapper {
 
 	private String posterSetupAttributeValue(String posterUrl) {
 		return "{\"poster\" : \"" + posterUrl + "\" }";
+	}
+
+	public List<String> getSources() {
+		List<String> sources = new ArrayList<>();
+		NodeList<Element> childList = videoElement.getElementsByTagName("source");
+		for (int i = 0; i < childList.getLength(); i++) {
+			Element element = childList.getItem(i);
+			String source = element.getAttribute("src");
+			sources.add(source);
+		}
+		return sources;
 	}
 }

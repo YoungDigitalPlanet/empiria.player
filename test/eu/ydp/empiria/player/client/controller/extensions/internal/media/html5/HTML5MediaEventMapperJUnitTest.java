@@ -1,103 +1,168 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import static org.junit.Assert.assertEquals;
+import static eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType.*;
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static junitparams.JUnitParamsRunner.*;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-import com.google.gwt.media.client.MediaBase;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
+import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEvent;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 
-@SuppressWarnings("PMD")
-public class HTML5MediaEventMapperJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
+@RunWith(JUnitParamsRunner.class)
+public class HTML5MediaEventMapperJUnitTest {
 
-	private HTML5MediaEventMapper instance;
+	@InjectMocks
+	private HTML5MediaEventMapper testObj;
+
+	@Mock
 	private EventsBus eventsBus;
+	@Mock
+	private SoundExecutorListener soundExecutorListener;
+	@Mock
+	private MediaWrapper<Widget> mediaWrapper;
+
+	@Captor
+	private ArgumentCaptor<MediaEvent> mediaEventCaptor;
 
 	@Before
-	public void before() {
-		GuiceModuleConfiguration conf = new GuiceModuleConfiguration();
-		conf.addAllClassToSpy(EventsBus.class);
-		setUp(conf);
-		instance = injector.getInstance(HTML5MediaEventMapper.class);
-		eventsBus = injector.getInstance(EventsBus.class);
-	}
-
-	private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes> builder()
-				.put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY).put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
-				.put(HTML5MediaEventsType.durationchange, MediaEventTypes.ON_DURATION_CHANGE).put(HTML5MediaEventsType.ended, MediaEventTypes.ON_END)
-				.put(HTML5MediaEventsType.error, MediaEventTypes.ON_ERROR).put(HTML5MediaEventsType.pause, MediaEventTypes.ON_PAUSE)
-				.put(HTML5MediaEventsType.timeupdate, MediaEventTypes.ON_TIME_UPDATE).put(HTML5MediaEventsType.volumechange, MediaEventTypes.ON_VOLUME_CHANGE)
-				.put(HTML5MediaEventsType.play, MediaEventTypes.ON_PLAY).build();
-		return pairMap;
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void testOnEvent() {
+	@Parameters
+	public void shouldFire_ifSyncEvent(HTML5MediaEventsType html5EventType, MediaEventTypes mediaEventType) {
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
 
-		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
-		SoundExecutorListener soundExecutorListener = mock(SoundExecutorListener.class);
-		Set<HTML5MediaEventsType> asyncEvents = Sets.newHashSet(HTML5MediaEventsType.durationchange, HTML5MediaEventsType.timeupdate);
+		// then
+		verify(eventsBus).fireEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
+		MediaEvent calledEvent = mediaEventCaptor.getValue();
+		assertThat(calledEvent.getMediaWrapper()).isEqualTo((MediaWrapper) mediaWrapper);
+		assertThat(calledEvent.getType()).isEqualTo(mediaEventType);
+	}
 
-		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
-			ArgumentCaptor<MediaEvent> eventCaptor = ArgumentCaptor.forClass(MediaEvent.class);
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(typePair.getKey()).when(event).getType();
-			instance.mapAndFireEvent(event, soundExecutorListener, mediaWrapper);
-			if (asyncEvents.contains(typePair.getKey())) {
-				verify(eventsBus).fireAsyncEventFromSource(eventCaptor.capture(), Matchers.eq(mediaWrapper));
-			} else {
-				verify(eventsBus).fireEventFromSource(eventCaptor.capture(), Matchers.eq(mediaWrapper));
-
-			}
-			verifyNoMoreInteractions(eventsBus);
-			assertEquals(typePair.getValue(), eventCaptor.getValue().getType());
-			Mockito.reset(eventsBus);
-		}
+	public Object[] parametersForShouldFire_ifSyncEvent() {
+		return $($(canplay, CAN_PLAY), $(suspend, SUSPEND), $(ended, ON_END), $(error, ON_ERROR), $(pause, ON_PAUSE), $(volumechange, ON_VOLUME_CHANGE),
+				$(play, ON_PLAY), $(volumechange, ON_VOLUME_CHANGE));
 	}
 
 	@Test
-	public void testOnEventSoundExecutorListener() {
+	@Parameters
+	public void shouldFire_ifAsyncEvent(HTML5MediaEventsType html5EventType, MediaEventTypes mediaEventType) {
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
 
-		MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
-		Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
-		SoundExecutorListener soundExecutorListener = mock(SoundExecutorListener.class);
-		Set<HTML5MediaEventsType> listenerEvents = Sets.newHashSet(HTML5MediaEventsType.ended, HTML5MediaEventsType.play);
+		// then
+		verify(eventsBus).fireAsyncEventFromSource(mediaEventCaptor.capture(), eq(mediaWrapper));
+		MediaEvent calledEvent = mediaEventCaptor.getValue();
+		assertThat(calledEvent.getMediaWrapper()).isEqualTo((MediaWrapper) mediaWrapper);
+		assertThat(calledEvent.getType()).isEqualTo(mediaEventType);
+	}
 
-		for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : pairMap.entrySet()) {
-			HTML5MediaEvent event = mock(HTML5MediaEvent.class);
-			doReturn(typePair.getKey()).when(event).getType();
-			instance.mapAndFireEvent(event, soundExecutorListener, mediaWrapper);
-			if (listenerEvents.contains(typePair.getKey())) {
-				if (typePair.getKey() == HTML5MediaEventsType.play) {
-					verify(soundExecutorListener).onPlay();
-				} else {
-					verify(soundExecutorListener).onSoundFinished();
-				}
-			}
-			verifyNoMoreInteractions(soundExecutorListener);
-			Mockito.reset(soundExecutorListener);
-		}
+	public Object[] parametersForShouldFire_ifAsyncEvent() {
+		return $($(durationchange, ON_DURATION_CHANGE), $(timeupdate, ON_TIME_UPDATE));
+	}
+
+	@Test
+	@Parameters
+	public void shouldNotFire(HTML5MediaEventsType html5EventType) {
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
+
+		// then
+		verifyZeroInteractions(eventsBus);
+	}
+
+	public Object[] parametersForShouldNotFire() {
+		return $(loadedmetadata, waiting, abort, loadeddata, seeking, seeked, loadstart, emptied, ratechange, stalled);
+	}
+
+	@Test
+	public void shouldCallListener_ifEnded() {
+		// given
+		HTML5MediaEventsType html5EventType = ended;
+
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
+
+		// then
+		verify(soundExecutorListener).onSoundFinished();
+	}
+
+	@Test
+	public void shouldCallListener_ifPlay() {
+		// given
+		HTML5MediaEventsType html5EventType = play;
+
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
+
+		// then
+		verify(soundExecutorListener).onPlay();
+	}
+
+	@Test
+	/**
+	 * This should not throw any exception when listener is null (no interaction should be called on him)
+	 */
+	public void shouldNotCallListener_ifListenerIsNull() {
+		// given
+		HTML5MediaEventsType html5EventType = play;
+		soundExecutorListener = null;
+
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
+	}
+
+	@Test
+	@Parameters
+	public void shouldNotCallListener_ifNorEndedNorPlay(HTML5MediaEventsType html5EventType) {
+		// when
+		testObj.mapAndFireEvent(html5EventType, soundExecutorListener, mediaWrapper);
+
+		// then
+		verifyZeroInteractions(soundExecutorListener);
+	}
+
+	public Object[] parametersForShouldNotCallListener_ifNorEndedNorPlay() {
+		List<HTML5MediaEventsType> events = FluentIterable.from(Lists.newArrayList(HTML5MediaEventsType.values()))
+															.filter(new Predicate<HTML5MediaEventsType>() {
+
+																@Override
+																public boolean apply(HTML5MediaEventsType type) {
+																	return type != play && type != ended;
+																}
+
+															})
+															.toList();
+
+		return $(events.toArray());
 	}
 
 }
