@@ -1,43 +1,20 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.view;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.ScrollEvent;
-import com.google.gwt.event.dom.client.ScrollHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.google.gwt.user.client.ui.*;
+import com.google.inject.*;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox;
+import eu.ydp.empiria.player.client.module.dictionary.external.components.*;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
-import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
-import eu.ydp.empiria.player.client.module.dictionary.external.components.ScrollbarPanel;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntriesController;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.Options;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.ViewType;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsResult;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.WordsSocket;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.*;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.*;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class MenuView extends Composite implements VisibilityClient {
@@ -49,10 +26,8 @@ public class MenuView extends Composite implements VisibilityClient {
 	PasteAwareTextBox searchTextBox;
 	@UiField
 	PushButton searchButton;
-
 	@UiField
 	FlowPanel quickLettersPanel;
-
 	@UiField
 	FlowPanel passwordsPanelContainer;
 	@UiField
@@ -71,7 +46,6 @@ public class MenuView extends Composite implements VisibilityClient {
 	private String prevLetter;
 	private PushButton prevSelectedButton;
 	private PushButton showMoreButton;
-	private int prevScroll;
 
 	@Inject
 	private StyleNameConstants styleNameConstants;
@@ -127,12 +101,11 @@ public class MenuView extends Composite implements VisibilityClient {
 	}
 
 	public void init() {
-		String initialPassword = "a";
+		String initialPassword = "";
 
 		fillQuickLetters();
 
 		fillPasswords(initialPassword);
-
 		if (Options.getViewType() == ViewType.FULL) {
 			showExplanationOfFirstItem(false);
 		}
@@ -253,10 +226,10 @@ public class MenuView extends Composite implements VisibilityClient {
 	private void fillPasswords(String text) {
 		prevLetter = text;
 		wordsResultString = passwordsSocket.get().getWords(text);
+		passwordButtons = new ArrayList<>();
 		if (wordsResultString != null) {
 			passwordsListPanelBody.clear();
 			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
-			passwordButtons = new ArrayList<PushButtonWithIndex>();
 			prevSelectedButton = null;
 			fillOptions(wordsResultString.getList(), wordsResultString.getIndex(), PASSWORDS_COUNT_INIT);
 		}
