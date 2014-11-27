@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import java.util.*;
 
-import com.google.common.base.Optional;
+import com.google.common.base.*;
 import com.google.inject.*;
 
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
@@ -12,37 +12,31 @@ public class WordFinder {
 	@Inject
 	private Provider<WordsResultFinder> finderProvider;
 
-	public WordsResult getWordsResult(String text, Words words) {
+	@Inject
+	private FirstWordFinder firstWordFinder;
+
+	public Optional<WordsResult> getWordsResult(String text, Words words) {
 		Map<String, Integer> baseIndexes = words.getBaseIndexes();
 
-		if (text == null || text.isEmpty()) {
-			Optional<String> firstIndex = words.getFirstIndex();
-			if (firstIndex.isPresent()) {
-				return new WordsResult(words.getWordsByLetter(firstIndex.get()), baseIndexes.get(firstIndex.get()));
-			} else {
-				return null;
-			}
+		if (Strings.isNullOrEmpty(text)) {
+			return firstWordFinder.find(words);
 		}
+
 		String lowerCaseText = text.toLowerCase();
 
 		String firstLetter = getFirstLetter(lowerCaseText);
 		List<String> currentWords = words.getWordsByLetter(firstLetter);
 
-		if (hasOnlyOneLetter(lowerCaseText)) {
-			Integer baseIndex = baseIndexes.get(lowerCaseText);
-			if (currentWords != null && baseIndex != null) {
-				return new WordsResult(currentWords, baseIndex);
-			} else {
-				return null;
-			}
-		}
-
 		if (currentWords == null) {
-			return null;
+			return Optional.absent();
 		}
-		WordsResultFinder finder = finderProvider.get();
 
-		return finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText);
+		if (hasOnlyOneLetter(lowerCaseText)) {
+			return Optional.of(new WordsResult(currentWords, baseIndexes.get(lowerCaseText)));
+		}
+
+		WordsResultFinder finder = finderProvider.get();
+		return Optional.of(finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText));
 	}
 
 	private boolean hasOnlyOneLetter(String lowerCaseText) {

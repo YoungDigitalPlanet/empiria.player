@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.view;
 
 import java.util.*;
 
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Style.Position;
@@ -225,9 +226,10 @@ public class MenuView extends Composite implements VisibilityClient {
 
 	private void fillPasswords(String text) {
 		prevLetter = text;
-		wordsResultString = passwordsSocket.get().getWords(text);
+		Optional<WordsResult> wordsResult = passwordsSocket.get().getWords(text);
 		passwordButtons = new ArrayList<>();
-		if (wordsResultString != null) {
+		if (wordsResult.isPresent()) {
+			wordsResultString = wordsResult.get();
 			passwordsListPanelBody.clear();
 			scrollbarPanel.setScrollTop(passwordsPanel.getElement(), 0);
 			prevSelectedButton = null;

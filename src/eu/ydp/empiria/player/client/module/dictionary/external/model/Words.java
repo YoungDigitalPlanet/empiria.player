@@ -22,11 +22,11 @@ public class Words {
 	}
 
 	public Optional<String> getFirstIndex() {
-		Optional<String> optional = Optional.absent();
-		if (!baseIndexes.isEmpty()) {
-			optional = Optional.of(baseIndexes.keySet().iterator().next());
+		if (baseIndexes.isEmpty()) {
+			return Optional.absent();
 		}
-		return optional;
+		Set<String> indexesSet = baseIndexes.keySet();
+		return Optional.of(indexesSet.iterator().next());
 	}
 
 	public List<String> getWordsByLetter(String firstLetter) {
