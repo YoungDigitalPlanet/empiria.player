@@ -16,22 +16,22 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
+import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DictionaryMediaWrapperCreatorTest {
+public class MediaWrapperCreatorTest {
 
 	@InjectMocks
-	private DictionaryMediaWrapperCreator testObj;
+	private MediaWrapperCreator testObj;
 
 	@Mock
-	private DictionaryMimeSourceProvider dictionaryMimeSourceProvider;
+	private MimeSourceProvider mimeSourceProvider;
 
 	@Mock
 	private EventsBus eventsBus;
@@ -40,7 +40,7 @@ public class DictionaryMediaWrapperCreatorTest {
 	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
 	@Captor
-	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> callbackArgumentCaptor;
+	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> callbackArgumentCaptor;
 
 	@Test
 	public void shouldFireCreateMediaWrapperEvent() {
@@ -49,9 +49,9 @@ public class DictionaryMediaWrapperCreatorTest {
 		String mime = "audio/mp3";
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();
 		sourcesWithTypes.put(fileName, mime);
-		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = mock(CallbackReceiver.class);
+		CallbackRecevier<MediaWrapper<Widget>> callbackReceiver = mock(CallbackRecevier.class);
 
-		when(dictionaryMimeSourceProvider.getSourcesWithTypes(fileName)).thenReturn(sourcesWithTypes);
+		when(mimeSourceProvider.getSourcesWithTypes(fileName)).thenReturn(sourcesWithTypes);
 
 		// when
 		testObj.create(fileName, callbackReceiver);

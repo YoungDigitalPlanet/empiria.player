@@ -43,10 +43,6 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 	}
 
 	@Override
-	public void playLooped() {
-	}
-
-	@Override
 	public void stop() {// NOPMD
 	}
 
@@ -55,23 +51,23 @@ public abstract class AbstractNoControlExecutor implements MediaExecutor<Widget>
 	}
 
 	@Override
-	public void resume() {// NOPMD
-	}
-
-	@Override
 	public void setMuted(boolean mute) {// NOPMD
+
 	}
 
 	@Override
 	public void setVolume(double volume) {// NOPMD
+
 	}
 
 	@Override
 	public void setCurrentTime(double time) {// NOPMD
+
 	}
 
 	@Override
 	public void setSoundFinishedListener(SoundExecutorListener listener) {// NOPMD
+
 	}
 
 }

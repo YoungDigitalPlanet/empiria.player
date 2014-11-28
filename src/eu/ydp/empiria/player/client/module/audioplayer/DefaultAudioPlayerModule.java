@@ -12,6 +12,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.controller.feedback.player.HideNativeMediaControlsManager;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -21,7 +22,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -34,6 +35,8 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 public class DefaultAudioPlayerModule implements AudioPlayerModule {
 	@Inject
 	private EventsBus eventsBus;
+	@Inject
+	private HideNativeMediaControlsManager nativeMediaControlsManager;
 	@Inject
 	@UniqueId
 	private String moduleId;
@@ -71,7 +74,7 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 
 	private void createMediaWrapperAndPlayAudio(Map<String, String> sources) {
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sources, false, true);
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackReceiver<MediaWrapper<?>>() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackRecevier<MediaWrapper<?>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<?> mw) {
@@ -84,7 +87,12 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
 		this.mediaWrapper = mw;
 		AbstractMediaEventHandler handler = createMediaHandler();
 		addMediaHandlers(handler);
+		addMediaWidgetToRoot();
 		playAudio();
+	}
+
+	private void addMediaWidgetToRoot() {
+		nativeMediaControlsManager.addToDocumentAndHideControls((MediaWrapper<Widget>) mediaWrapper);
 	}
 
 	private AbstractMediaEventHandler createMediaHandler() {

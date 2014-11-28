@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -24,15 +24,15 @@ public class ExplanationDescriptionSoundController {
 	private final ExplanationView explanationView;
 	private final EventsBus eventsBus;
 	private final MediaWrapperController mediaWrapperController;
+	private final MediaWrapperCreator mediaWrapperCreator;
 
-	private final DictionaryMediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapper<Widget> mediaWrapper;
 	private boolean playing;
 	private final Provider<CurrentPageScope> currentPageScopeProvider;
 
 	@Inject
 	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
-			Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator) {
+			Provider<CurrentPageScope> currentPageScopeProvider, MediaWrapperCreator mediaWrapperCreator) {
 		this.explanationView = explanationView;
 		this.eventsBus = eventsBus;
 		this.mediaWrapperController = mediaWrapperController;
@@ -41,7 +41,7 @@ public class ExplanationDescriptionSoundController {
 	}
 
 	private void playDescriptionSound(String filePath) {
-		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
+		mediaWrapperCreator.create(filePath, new CallbackRecevier<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
@@ -56,8 +56,9 @@ public class ExplanationDescriptionSoundController {
 		explanationView.setPlayingButtonStyle();
 		AbstractMediaEventHandler handler = createDescriptionSoundMediaHandler();
 		addMediaHandlers(handler);
+		mediaWrapperController.addMediaWrapperControls(mediaWrapper);
 		playing = true;
-		mediaWrapperController.stopAndPlay(mediaWrapper);
+		mediaWrapperController.play(mediaWrapper);
 	}
 
 	private AbstractMediaEventHandler createDescriptionSoundMediaHandler() {
