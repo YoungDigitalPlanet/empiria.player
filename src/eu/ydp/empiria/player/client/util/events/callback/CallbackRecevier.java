@@ -1,5 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.callback;
 
-public interface CallbackReceiver<T> {
+public interface CallbackRecevier<T> {
 	void setCallbackReturnObject(T o);
 }

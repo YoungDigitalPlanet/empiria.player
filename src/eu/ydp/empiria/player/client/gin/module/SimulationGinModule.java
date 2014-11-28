@@ -7,8 +7,6 @@ import eu.ydp.empiria.player.client.module.simulation.SimulationCanvasProvider;
 import eu.ydp.empiria.player.client.module.simulation.SimulationController;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModuleView;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModuleViewImpl;
-import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsNative;
-import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsPlugin;
 
 public class SimulationGinModule extends AbstractGinModule {
 
@@ -17,8 +15,6 @@ public class SimulationGinModule extends AbstractGinModule {
 		bind(SimulationModuleView.class).to(SimulationModuleViewImpl.class);
 		bind(SimulationCanvasProvider.class).in(Singleton.class);
 		bind(SimulationController.class).in(Singleton.class);
-		bind(SoundJsNative.class).in(Singleton.class);
-		bind(SoundJsPlugin.class).in(Singleton.class);
 	}
 
 }

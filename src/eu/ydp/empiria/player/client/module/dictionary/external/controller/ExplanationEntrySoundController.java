@@ -5,20 +5,20 @@ import java.util.Map;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
+import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 
 public class ExplanationEntrySoundController {
 
 	@Inject
-	private DictionaryMimeSourceProvider dictionaryMimeSourceProvider;
+	private MimeSourceProvider mimeSourceProvider;
 	@Inject
 	private EventsBus eventsBus;
 	@Inject
@@ -27,15 +27,16 @@ public class ExplanationEntrySoundController {
 	public void playEntrySound(Entry entry) {
 		String fileName = entry.getEntrySound();
 
-		Map<String, String> sourcesWithTypes = dictionaryMimeSourceProvider.getSourcesWithTypes(fileName);
+		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypes(fileName);
 
 		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, false, true);
 
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackReceiver<MediaWrapper<Widget>>() {
+		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, new CallbackRecevier<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
-				mediaWrapperController.stopAndPlay(mediaWrapper);
+				mediaWrapperController.addMediaWrapperControls(mediaWrapper);
+				mediaWrapperController.play(mediaWrapper);
 			}
 		}));
 	}

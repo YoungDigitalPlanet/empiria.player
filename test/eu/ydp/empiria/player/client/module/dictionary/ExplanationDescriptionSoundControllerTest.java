@@ -17,15 +17,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Provider;
 
 import eu.ydp.empiria.player.client.MocksCollector;
-import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
-import eu.ydp.empiria.player.client.module.dictionary.external.controller.DictionaryMediaWrapperCreator;
+import eu.ydp.empiria.player.client.module.dictionary.external.MediaWrapperController;
+import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
@@ -46,7 +46,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	private ExplanationView explanationView;
 
 	@Mock
-	private DictionaryMimeSourceProvider mimeSourceProvider;
+	private MimeSourceProvider mimeSourceProvider;
 
 	@Mock
 	private EventsBus eventsBus;
@@ -55,7 +55,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	private MediaWrapperController mediaWrapperController;
 
 	@Mock
-	private DictionaryMediaWrapperCreator mediaWrapperCreator;
+	private MediaWrapperCreator mediaWrapperCreator;
 
 	@Mock
 	private Provider<CurrentPageScope> currentPageScropProvider;
@@ -75,7 +75,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	private ArgumentCaptor<MediaEvent> mediaEventCaptor;
 
 	@Captor
-	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> callbackReceiverCaptor;
+	private ArgumentCaptor<CallbackRecevier<MediaWrapper<Widget>>> callbackReceiverCaptor;
 
 	@Captor
 	private ArgumentCaptor<AbstractMediaEventHandler> abstractMediaHandlerCaptor;
@@ -107,7 +107,8 @@ public class ExplanationDescriptionSoundControllerTest {
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_STOP, currentPageScope);
 		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PLAY, currentPageScope);
 
-		inOrder.verify(mediaWrapperController).stopAndPlay(mediaWrapper);
+		inOrder.verify(mediaWrapperController).addMediaWrapperControls(mediaWrapper);
+		inOrder.verify(mediaWrapperController).play(mediaWrapper);
 	}
 
 	@Test

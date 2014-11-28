@@ -29,7 +29,7 @@ import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoIm
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
@@ -56,7 +56,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
 	@Inject
 	private MediaChecker mediaChecker;
-
+	
 	@Override
 	public void initMediaProcessor() {
 		if (!initialized) {
@@ -71,7 +71,7 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 
 	@Override
-	public void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
 		forceStop(mediaWrapper);
 	}
 
@@ -148,12 +148,12 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
 	}
 
 	private void fireCallback(PlayerEvent event, MediaExecutor<?> defaultMediaExecutor, MediaExecutor<?> fullScreenMediaExecutor) {
-		if (event.getSource() instanceof CallbackReceiver) {
+		if (event.getSource() instanceof CallbackRecevier) {
 			if (fullScreenMediaExecutor == null) {
-				((CallbackReceiver) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
+				((CallbackRecevier) event.getSource()).setCallbackReturnObject(defaultMediaExecutor.getMediaWrapper());
 			} else {
 				MediaWrappersPair pair = pairFactory.getMediaWrappersPair(defaultMediaExecutor.getMediaWrapper(), fullScreenMediaExecutor.getMediaWrapper());
-				((CallbackReceiver) event.getSource()).setCallbackReturnObject(pair);
+				((CallbackRecevier) event.getSource()).setCallbackReturnObject(pair);
 			}
 		}
 	}

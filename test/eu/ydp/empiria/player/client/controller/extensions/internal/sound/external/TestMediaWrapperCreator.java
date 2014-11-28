@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.ClassUtil;
@@ -31,7 +31,7 @@ public class TestMediaWrapperCreator {
 
 	public MediaWrapper<Widget> createMediaWrapper() {
 		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>> castClassUnsafe(MediaWrapper.class));
-		CallbackReceiver<MediaWrapper<Widget>> callbackRecevier = new CallbackReceiver<MediaWrapper<Widget>>() {
+		CallbackRecevier<MediaWrapper<Widget>> callbackRecevier = new CallbackRecevier<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> o) {
@@ -44,7 +44,7 @@ public class TestMediaWrapperCreator {
 
 	public MediaWrapper<Widget> createMediaWrapper(TestMedia testMedias) {
 		final Wrapper<MediaWrapper<Widget>> mwWrapper = Wrapper.ofStrict(ClassUtil.<MediaWrapper<Widget>> castClassUnsafe(MediaWrapper.class));
-		CallbackReceiver<MediaWrapper<Widget>> callbackRecevier = new CallbackReceiver<MediaWrapper<Widget>>() {
+		CallbackRecevier<MediaWrapper<Widget>> callbackRecevier = new CallbackRecevier<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> o) {

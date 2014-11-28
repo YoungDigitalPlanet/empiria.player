@@ -6,34 +6,30 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public interface MediaExecutor<T extends Widget> {
-	MediaWrapper<T> getMediaWrapper();
+	public MediaWrapper<T> getMediaWrapper();
 
-	void setMediaWrapper(MediaWrapper<T> descriptor);
+	public void setMediaWrapper(MediaWrapper<T> descriptor);
 
-	void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration);
+	public void setBaseMediaConfiguration(BaseMediaConfiguration baseMediaConfiguration);
 
-	BaseMediaConfiguration getBaseMediaConfiguration();
+	public BaseMediaConfiguration getBaseMediaConfiguration();
 
-	void init();
+	public void init();
 
 	@Deprecated
-	void play(String src);
+	public void play(String src);
 
-	void play();
+	public void play();
 
-	void playLooped();
+	public void stop();
 
-	void stop();
+	public void pause();
 
-	void pause();
+	public void setMuted(boolean mute);
 
-	void resume();
+	public void setVolume(double volume);
 
-	void setMuted(boolean mute);
+	public void setCurrentTime(double time);
 
-	void setVolume(double volume);
-
-	void setCurrentTime(double time);
-
-	void setSoundFinishedListener(SoundExecutorListener listener);
+	public void setSoundFinishedListener(SoundExecutorListener listener);
 }
