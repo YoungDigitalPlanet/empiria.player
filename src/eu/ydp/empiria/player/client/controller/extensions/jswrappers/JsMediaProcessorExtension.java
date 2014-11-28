@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -126,8 +126,8 @@ public class JsMediaProcessorExtension extends AbstractJsExtension implements Me
 				BaseMediaConfiguration bmc = (BaseMediaConfiguration) event.getValue();
 				JsMediaWrapper mediaWrapper = new JsMediaWrapper(getMediaAvailableOptionsJs(extensionJsObject));
 				sources.put(mediaWrapper, SourceUtil.getMpegSource(bmc.getSources()));
-				if (event.getSource() instanceof CallbackReceiver) {// NOPMD
-					((CallbackReceiver) event.getSource()).setCallbackReturnObject(mediaWrapper);
+				if (event.getSource() instanceof CallbackRecevier) {// NOPMD
+					((CallbackRecevier) event.getSource()).setCallbackReturnObject(mediaWrapper);
 				}
 			}
 		}

@@ -1,20 +1,20 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.external;
 
-import static com.google.common.base.Preconditions.*;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
+import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.wrapper.ExternalMediaProxy;
 import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorExtension;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class ExternalMediaProcessor extends AbstractMediaProcessor implements MediaProcessorExtension {
 
@@ -44,12 +44,12 @@ public class ExternalMediaProcessor extends AbstractMediaProcessor implements Me
 		initExecutor(proxy.getMediaExecutor(), bmc);
 
 		@SuppressWarnings("unchecked")
-		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = ((CallbackReceiver<MediaWrapper<Widget>>) event.getSource());
+		CallbackRecevier<MediaWrapper<Widget>> callbackReceiver = ((CallbackRecevier<MediaWrapper<Widget>>) event.getSource());
 		callbackReceiver.setCallbackReturnObject(proxy.getMediaWrapper());
 	}
 
 	@Override
-	public void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
+	protected void pauseAllOthers(MediaWrapper<?> mediaWrapper) {
 	}
 
 	@Override
