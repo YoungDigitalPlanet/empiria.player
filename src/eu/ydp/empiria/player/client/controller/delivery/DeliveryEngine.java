@@ -37,11 +37,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
-import eu.ydp.empiria.player.client.gin.factory.ModuleConnectorExtensionProvider;
-import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
-import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
-import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
+import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -94,11 +90,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
-			EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
-			SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
-			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
-			AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
+	                      EventsBus eventsBus, ModuleFactory extensionFactory, ModuleProviderFactory moduleProviderFactory,
+	                      SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
+	                      ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
+	                      ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
+	                      AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -129,7 +125,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.playerJsObject = playerJsObject;
 
 		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector()
-												  .getExtensionsManager();
+		                                          .getExtensionsManager();
 
 		soundProcessorManager = new SoundProcessorManagerExtension();
 
@@ -204,7 +200,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			sessionDataManager.setState((JSONArray) deState.get(1));
 
 			extensionsManager.setState(deState.get(2)
-											  .isArray());
+			                                  .isArray());
 
 			flowManager.deinitFlow();
 
@@ -225,21 +221,21 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			if (initialItemIndex != null) {
 				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
 			} else if (deState.get(0)
-							  .isNumber() != null) {
+			                  .isNumber() != null) {
 				flowRequest = new FlowRequest.NavigateGotoItem((int) deState.get(0)
-																			.isNumber()
-																			.doubleValue());
+				                                                            .isNumber()
+				                                                            .doubleValue());
 			} else if (deState.get(0)
-							  .isString() != null) {
+			                  .isString() != null) {
 				if (deState.get(0)
-						   .isString()
-						   .stringValue()
-						   .equals(PageType.TOC.toString())) {
+				           .isString()
+				           .stringValue()
+				           .equals(PageType.TOC.toString())) {
 					flowRequest = new FlowRequest.NavigateToc();
 				} else if (deState.get(0)
-								  .isString()
-								  .stringValue()
-								  .equals(PageType.SUMMARY.toString())) {
+				                  .isString()
+				                  .stringValue()
+				                  .equals(PageType.SUMMARY.toString())) {
 					flowRequest = new FlowRequest.NavigateSummary();
 				}
 			}
@@ -289,6 +285,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDictionaryModule(), ModuleTagName.DICTIONARY, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTextEditorModule(), ModuleTagName.OPEN_QUESTION, false));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTestPageSubmitButtonModule(), ModuleTagName.TEST_PAGE_SUBMIT, false));
+		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSpeechScoreModule(), ModuleTagName.SPEECH_SCORE, false));
 		loadExtension(singleModuleInstanceProvider.getInfoModuleConnectorExtension());
 		loadExtension(moduleConnectorExtensionProvider.getReportModuleConnectorExtension());
 		loadExtension(singleModuleInstanceProvider.getLinkModuleConnectorExtension());
@@ -299,14 +296,14 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(moduleConnectorExtensionProvider.getPageSwitchModuleConnectorExtension());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getPageInPageModule(), ModuleTagName.PAGE_IN_PAGE));
 		loadExtension(moduleProviderFactory.getCheckButtonModuleConnectorExtension()
-										   .get());
+		                                   .get());
 		loadExtension(moduleProviderFactory.getShowAnswersButtonModuleConnectorExtension()
-										   .get());
+		                                   .get());
 		loadExtension(moduleProviderFactory.getResetButtonModuleConnectorExtension()
-										   .get());
+		                                   .get());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getShapeModule(), ModuleTagName.SHAPE));
 		loadExtension(moduleProviderFactory.getAudioMuteButtonModuleConnectorExtension()
-										   .get());
+		                                   .get());
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSubHtmlContainerModule(), ModuleTagName.SUB));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getSupHtmlContainerModule(), ModuleTagName.SUP));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getConnectionModule(), ModuleTagName.MATCH_INTERACTION, true));
@@ -315,17 +312,17 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getDrawingModule(), ModuleTagName.DRAWING));
 		loadExtension(new SimpleConnectorExtension(moduleProviderFactory.getTestResetButtonModule(), ModuleTagName.TEST_RESET, false));
 		loadExtension(moduleProviderFactory.getMediaProcessor()
-										   .get());
+		                                   .get());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector()
-											.getMultiPage());
+		                                    .getMultiPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector()
-											.getPage());
+		                                    .getPage());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector()
-											.getBookmarkProcessorExtension());
+		                                    .getBookmarkProcessorExtension());
 		loadExtension(PlayerGinjectorFactory.getPlayerGinjector()
-											.getStickiesProcessorExtension());
+		                                    .getStickiesProcessorExtension());
 		loadExtension(moduleProviderFactory.getTutorApiExtension()
-										   .get());
+		                                   .get());
 	}
 
 	protected void loadLibraryExtensions() {
@@ -514,7 +511,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			deState.set(0, new JSONNumber(flowManager.getCurrentPageIndex()));
 		} else if (flowManager.getCurrentPageType() == PageType.TOC || flowManager.getCurrentPageType() == PageType.SUMMARY) {
 			deState.set(0, new JSONString(flowManager.getCurrentPageType()
-													 .toString()));
+			                                         .toString()));
 		} else {
 			deState.set(0, JSONNull.getInstance());
 		}

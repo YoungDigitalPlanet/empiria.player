@@ -7,4 +7,7 @@ public interface VideoPlayerNative extends VideoPlayerControl {
 	void initPlayer(String playerId);
 
 	void disposeCurrentPlayer();
+
+	public void disablePointerEvents();
+
 }

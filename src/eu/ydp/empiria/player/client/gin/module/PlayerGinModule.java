@@ -85,6 +85,7 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerFactory;
@@ -235,6 +236,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
+		bind(ProgressUpdateLogic.class).in(Singleton.class);
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
@@ -251,6 +253,7 @@ public class PlayerGinModule extends AbstractGinModule {
 											 .build(TouchRecognitionFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
+		install(new GinFactoryModuleBuilder().build(ProgressBarFactory.class));
 		install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new GinFactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
