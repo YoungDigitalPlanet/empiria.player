@@ -32,11 +32,15 @@ public class WordFinder {
 		}
 
 		if (hasOnlyOneLetter(lowerCaseText)) {
-			return Optional.of(new WordsResult(currentWords, baseIndexes.get(lowerCaseText)));
+
+			int index = baseIndexes.get(lowerCaseText);
+			WordsResult foundWords = new WordsResult(currentWords, index);
+			return Optional.of(foundWords);
 		}
 
 		WordsResultFinder finder = finderProvider.get();
-		return Optional.of(finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText));
+		WordsResult foundWords = finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText);
+		return Optional.of(foundWords);
 	}
 
 	private boolean hasOnlyOneLetter(String lowerCaseText) {

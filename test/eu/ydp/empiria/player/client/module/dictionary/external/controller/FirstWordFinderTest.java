@@ -14,8 +14,8 @@ import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 
 public class FirstWordFinderTest {
 
-	private final Map<String, List<String>> wordsByLetter = Maps.newLinkedHashMap();
-	private final Map<String, Integer> baseIndexes = Maps.newTreeMap();
+	private final LinkedHashMap<String, List<String>> wordsByLetter = Maps.newLinkedHashMap();
+	private final TreeMap<String, Integer> baseIndexes = Maps.newTreeMap();
 	private final FirstWordFinder testObj = new FirstWordFinder();
 
 	@Test

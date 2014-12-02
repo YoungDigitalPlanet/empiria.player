@@ -8,7 +8,7 @@ public class Words {
 	private final Map<String, List<String>> wordsByLetter;
 	private final Map<String, Integer> baseIndexes;
 
-	public Words(Map<String, List<String>> wordsByLetter, Map<String, Integer> baseIndexes) {
+	public Words(LinkedHashMap<String, List<String>> wordsByLetter, TreeMap<String, Integer> baseIndexes) {
 		this.wordsByLetter = wordsByLetter;
 		this.baseIndexes = baseIndexes;
 	}

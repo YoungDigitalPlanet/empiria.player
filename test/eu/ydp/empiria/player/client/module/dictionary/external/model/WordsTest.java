@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.junit.*;
+import org.junit.Test;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
@@ -13,14 +13,8 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 public class WordsTest {
 
 	private Words testObj;
-	private Map<String, List<String>> wordsByLetter;
-	private Map<String, Integer> baseIndexes;
-
-	@Before
-	public void init() {
-		wordsByLetter = Maps.newLinkedHashMap();
-		baseIndexes = Maps.newTreeMap();
-	}
+	private final LinkedHashMap<String, List<String>> wordsByLetter = Maps.newLinkedHashMap();
+	private final TreeMap<String, Integer> baseIndexes = Maps.newTreeMap();
 
 	@Test
 	public void shouldReturnNull_whenBaseIndexesIsEmpty() {

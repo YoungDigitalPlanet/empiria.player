@@ -31,8 +31,8 @@ public class WordFinderTest {
 	@Mock
 	private Provider<WordsResultFinder> finderProvider;
 
-	private final Map<String, List<String>> wordsByLetter = Maps.newLinkedHashMap();
-	private final Map<String, Integer> baseIndexes = Maps.newTreeMap();
+	private final LinkedHashMap<String, List<String>> wordsByLetter = Maps.newLinkedHashMap();
+	private final TreeMap<String, Integer> baseIndexes = Maps.newTreeMap();
 	private final List<String> wordsByLetterK = Lists.newArrayList("ka", "kb");
 	private final List<String> wordsByLetterO = Lists.newArrayList("on", "oz");
 	private Words words;
