@@ -23,17 +23,25 @@
  */
 package eu.ydp.empiria.player.client;
 
-import com.google.gwt.core.client.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+
+import eu.ydp.empiria.player.client.scripts.Scripts;
+import eu.ydp.empiria.player.client.scripts.ScriptsLoadedListener;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.debug.log.UncaughtExceptionHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -54,6 +62,22 @@ public class PlayerEntryPoint implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
+		Scripts scripts = PlayerGinjectorFactory.getPlayerGinjector().getScripts();
+		scripts.inject(createScriptsLoadedListener());
+
+	}
+
+	private ScriptsLoadedListener createScriptsLoadedListener() {
+		return new ScriptsLoadedListener() {
+
+			@Override
+			public void onScriptsLoaded() {
+				continueLoad();
+			}
+		};
+	}
+
+	private void continueLoad() {
 		Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -70,36 +94,36 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * Init Javascript API
 	 */
 	private native void initJavaScriptAPI() /*-{
-        // CreatePlayer
-        $wnd.empiriaCreatePlayer = function (id) {
-            var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
-            player.load = function (url) {
-                @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
-            }
-            player.loadFromData = function (assessmentData, itemDatas) {
-                @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
-            }
+		// CreatePlayer
+		$wnd.empiriaCreatePlayer = function(id) {
+			var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
+			player.load = function(url) {
+				@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
+			}
+			player.loadFromData = function(assessmentData, itemDatas) {
+				@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
+			}
 
-            // ładowanie rozszerzeń (pluginów i addonów)
-            player.loadExtension = function (obj) {
-                if (typeof obj == 'object')
-                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-                else if (typeof obj == 'string')
-                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
-            }
+			// ładowanie rozszerzeń (pluginów i addonów)
+			player.loadExtension = function(obj) {
+				if (typeof obj == 'object')
+					@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
+				else if (typeof obj == 'string')
+					@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
+			}
 
-            return player;
-        }
+			return player;
+		}
 
-        $wnd.getPlayerVersion = function () {
-            return @eu.ydp.empiria.player.client.version.Version::getVersion()();
-        }
+		$wnd.getPlayerVersion = function() {
+			return @eu.ydp.empiria.player.client.version.Version::getVersion()();
+		}
 
-        // Call App loaded function
-        if (typeof $wnd.empiriaPlayerAppLoaded == 'function') {
-            $wnd.empiriaPlayerAppLoaded();
-        }
-    }-*/;
+		// Call App loaded function
+		if (typeof $wnd.empiriaPlayerAppLoaded == 'function') {
+			$wnd.empiriaPlayerAppLoaded();
+		}
+	}-*/;
 
 	/**
 	 * createPlayer js interface
@@ -177,16 +201,16 @@ public class PlayerEntryPoint implements EntryPoint {
 	}
 
 	private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{
-        if (typeof data.document == 'string')
-            return data.document;
-        return "";
-    }-*/;
+		if (typeof data.document == 'string')
+			return data.document;
+		return "";
+	}-*/;
 
 	private native static String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
-        if (typeof data.baseURL == 'string')
-            return data.baseURL;
-        return "";
-    }-*/;
+		if (typeof data.baseURL == 'string')
+			return data.baseURL;
+		return "";
+	}-*/;
 
 	public static void loadExtension(JavaScriptObject extension) {
 		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForOther(extension));
