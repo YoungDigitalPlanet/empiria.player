@@ -1,47 +1,20 @@
-
-
-
-import org.gradle.api.*
-import org.gradle.api.tasks.*
-import org.gradle.api.plugins.*
-
-class GWTCompileTask extends DefaultTask {
-    def File buildDir;
-    def String module;
-
-    @TaskAction
-    public void exec() {
-        def javaConvention = project.getConvention().getPlugin(JavaPluginConvention);
-        def mainSourceSet = javaConvention.getSourceSets().getByName(SourceSet.MAIN_SOURCE_SET_NAME);
-        buildDir.mkdirs()
-
-        project.javaexec {
-            main = 'com.google.gwt.dev.Compiler'
-            classpath {
-                [
-                    mainSourceSet.java.srcDirs,           // Java source
-                    mainSourceSet.output.resourcesDir,    // Generated resources
-                    mainSourceSet.output.classesDir,      // Generated classes
-                    mainSourceSet.compileClasspath,       // Deps
-                ]   
+buildscript {
+    repositories {
+        ivy {
+            url "http://dev/ivyrep/public/"
+            layout 'pattern', {
+                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
+            }
+        }
             }
          
-            args =
-                [
-                    this.module, // Your GWT module
-                    '-war', this.buildDir.absolutePath,
-                    '-logLevel', 'INFO',
-                    '-localWorkers', '2',
-                    '-XdisableCastChecking'
-                ]
-
-            systemProperty 'java.awt.headless', 'true'
-
-            maxHeapSize = '1024M'
-            jvmArgs( '-XX:MaxPermSize=512M' )
-        }
+    dependencies {
+        classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
     }
 }
+
+import eu.ydp.gradle.gwt.GWTCompileTask
 
 def empiriaWar = file("war")
 def empiriaBuildDir = new File(empiriaWar, "empiria.player")
@@ -58,7 +31,6 @@ apply plugin: 'eclipse'
 apply plugin: 'sonar-runner'
 apply from: "gradle/profiles/${buildProfile}.gradle"
 apply plugin: 'ivy-publish'
-
 
 sourceCompatibility = 1.7
 compileJava.options.encoding = 'UTF-8'

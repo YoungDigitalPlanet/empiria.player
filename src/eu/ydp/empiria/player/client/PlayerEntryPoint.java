@@ -36,8 +36,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
-import eu.ydp.empiria.player.client.scripts.Scripts;
-import eu.ydp.empiria.player.client.scripts.ScriptsLoadedListener;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -62,22 +60,6 @@ public class PlayerEntryPoint implements EntryPoint {
 	 */
 	@Override
 	public void onModuleLoad() {
-		Scripts scripts = PlayerGinjectorFactory.getPlayerGinjector().getScripts();
-		scripts.inject(createScriptsLoadedListener());
-
-	}
-
-	private ScriptsLoadedListener createScriptsLoadedListener() {
-		return new ScriptsLoadedListener() {
-
-			@Override
-			public void onScriptsLoaded() {
-				continueLoad();
-			}
-		};
-	}
-
-	private void continueLoad() {
 		Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {

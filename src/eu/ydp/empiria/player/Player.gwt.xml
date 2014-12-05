@@ -24,8 +24,7 @@
     <set-property name="compiler.stackMode" value="native"/>
     <!-- native | strip | emulated -->
     <set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/>
-	<!-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA nie komituj -->
-    <!-- <set-property name="user.agent" value="safari" />--> <!-- tylko chrome? -->
+
     <!-- Specify the app entry point class. -->
     <entry-point class='eu.ydp.empiria.player.client.ScriptsEntryPoint'/>
     <entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint'/>
@@ -134,6 +133,7 @@
             <when-property-is name="user.agent" value="ie8"/>
         </any>
     </replace-with>
+    
     <add-linker name="xsiframe"/>
-     <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 </module>

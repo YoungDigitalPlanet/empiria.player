@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.EntryPoint;
 
+import eu.ydp.empiria.player.client.scripts.AsynchronousScriptsLoader;
+
 public class ScriptsEntryPoint implements EntryPoint {
 
 	@Override
@@ -10,8 +12,7 @@ public class ScriptsEntryPoint implements EntryPoint {
 	}
 
 	private void injectScripts() {
-		// Scripts scripts =
-		// PlayerGinjectorFactory.getPlayerGinjector().getScripts();
-		// scripts.inject();
+		AsynchronousScriptsLoader scriptsLoader = PlayerGinjectorFactory.getPlayerGinjector().getAsynchronousScriptsLoader();
+		scriptsLoader.inject();
 	}
 }
