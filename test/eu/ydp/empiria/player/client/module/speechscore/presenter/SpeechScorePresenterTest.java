@@ -1,15 +1,17 @@
 package eu.ydp.empiria.player.client.module.speechscore.presenter;
 
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkView;
+import static org.mockito.Mockito.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
+
+import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkView;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpeechScorePresenterTest {
@@ -19,12 +21,10 @@ public class SpeechScorePresenterTest {
 
 	@Mock
 	private SpeechScoreLinkView view;
-	@Mock
-	private SpeechScoreProtocolProvider protocolProvider;
 
 	@Test
 	public void shouldBuildLinkOnView() {
-		//given
+		// given
 		final String LINK_TEXT = "Link text";
 
 		Node node = mock(Node.class);
@@ -34,12 +34,10 @@ public class SpeechScorePresenterTest {
 		when(element.getFirstChild()).thenReturn(node);
 		when(element.getAttribute("url")).thenReturn("url");
 
-		when(protocolProvider.get()).thenReturn("protocol:");
-
-		//when
+		// when
 		testObj.init(element);
 
-		//then
-		verify(view).buildLink(LINK_TEXT, "protocol:url");
+		// then
+		verify(view).buildLink(LINK_TEXT, "http://url");
 	}
 }

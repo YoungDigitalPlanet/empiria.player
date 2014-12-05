@@ -1,50 +1,53 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
+import java.util.*;
 
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.*;
+import com.google.inject.*;
+
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 
 public class WordFinder {
 
-    @Inject
-    private Provider<WordsResultFinder> finderProvider;
+	@Inject
+	private Provider<WordsResultFinder> finderProvider;
 
-    public WordsResult getWordsResult(String text, Words words) {
-        Map<String, Integer> baseIndexes = words.getBaseIndexes();
+	@Inject
+	private FirstWordFinder firstWordFinder;
 
-        if (text == null || text.isEmpty()) {
-            return new WordsResult(words.getWordsByLetter("a"), baseIndexes.get("a"));
-        }
-        String lowerCaseText = text.toLowerCase();
+	public Optional<WordsResult> getWordsResult(String text, Words words) {
+		Map<String, Integer> baseIndexes = words.getBaseIndexes();
 
-        String firstLetter = getFirstLetter(lowerCaseText);
-        List<String> currentWords = words.getWordsByLetter(firstLetter);
+		if (Strings.isNullOrEmpty(text)) {
+			return firstWordFinder.find(words);
+		}
 
-        if (hasOnlyOneLetter(lowerCaseText)) {
-            Integer baseIndex = baseIndexes.get(lowerCaseText);
-            if (currentWords != null && baseIndex != null) {
-                return new WordsResult(currentWords, baseIndex);
-            } else {
-                return null;
-            }
-        }
+		String lowerCaseText = text.toLowerCase();
 
-        if (currentWords == null) {
-            return null;
-        }
-        WordsResultFinder finder = finderProvider.get();
+		String firstLetter = getFirstLetter(lowerCaseText);
+		List<String> currentWords = words.getWordsByLetter(firstLetter);
 
-        return finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText);
-    }
+		if (currentWords == null) {
+			return Optional.absent();
+		}
 
-    private boolean hasOnlyOneLetter(String lowerCaseText) {
-        return lowerCaseText.length() == 1;
-    }
+		if (hasOnlyOneLetter(lowerCaseText)) {
 
-    private String getFirstLetter(String lowerCaseText) {
-        return lowerCaseText.substring(0, 1);
-    }
+			int index = baseIndexes.get(lowerCaseText);
+			WordsResult foundWords = new WordsResult(currentWords, index);
+			return Optional.of(foundWords);
+		}
+
+		WordsResultFinder finder = finderProvider.get();
+		WordsResult foundWords = finder.findPhrasesMatchingPrefix(currentWords, baseIndexes, lowerCaseText);
+		return Optional.of(foundWords);
+	}
+
+	private boolean hasOnlyOneLetter(String lowerCaseText) {
+		return lowerCaseText.length() == 1;
+	}
+
+	private String getFirstLetter(String lowerCaseText) {
+		return lowerCaseText.substring(0, 1);
+	}
 }
