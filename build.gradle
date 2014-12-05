@@ -80,7 +80,7 @@ dependencies {
     
     compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'canvasadapter', version: 'latest.integration'
-    compile group: 'eu.ydp', name: 'jsfilerequest', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
     compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
     compile group: 'eu.ydp', name: 'jaxb4gwt', version: 'latest.integration'
