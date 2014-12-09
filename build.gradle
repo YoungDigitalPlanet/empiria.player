@@ -7,7 +7,7 @@ buildscript {
                 ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
             }
         }
-	}
+    }
    
     dependencies {
         classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
