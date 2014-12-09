@@ -43,7 +43,7 @@ import eu.ydp.empiria.player.client.gin.module.VideoGinModule;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
 import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnImageProvider;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.scripts.AsynchronousScriptsLoader;
+import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
@@ -101,5 +101,5 @@ public interface PlayerGinjector extends Ginjector {
 
 	TouchHandlerOnImageProvider getTouchHandlerOnImageProvider();
 
-	AsynchronousScriptsLoader getAsynchronousScriptsLoader();
+	ScriptsLoader getScriptsLoader();
 }

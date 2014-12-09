@@ -1,23 +1,28 @@
 package eu.ydp.empiria.player.client.scripts;
 
+import eu.ydp.gwtutil.client.scripts.ScriptUrl;
+
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
-
 import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
+import eu.ydp.gwtutil.client.scripts.*;
 import eu.ydp.gwtutil.client.util.paths.UrlConverter;
 
-public class AsynchronousScriptsLoader {
-
-	private final String jQuery = "jquery/jquery-1.10.2.min.js";
+public class ScriptsLoader {
 
 	@Inject
 	private ScriptInjectorWrapper scriptInjectorWrapper;
 	@Inject
 	private UrlConverter urlConverter;
+	@Inject
+	private AsynchronousScriptsLoader asynchronousScriptsLoader;
+	@Inject
+	private ScriptInjectorDescriptor scriptInjectorDescriptor;
 
 
 	public void inject() {
-		String correctUrl = urlConverter.getModuleRelativeUrl(jQuery);
+		ScriptUrl firstScript = scriptInjectorDescriptor.getFirstScript();
+		String correctUrl = urlConverter.getModuleRelativeUrl(firstScript);
 		scriptInjectorWrapper.fromUrl(correctUrl, createJQueryCallback());
 	}
 
@@ -36,9 +41,7 @@ public class AsynchronousScriptsLoader {
 	}
 
 	private void injectOthers() {
-		for (ScriptsList script : ScriptsList.values()) {
-			String correctUrl = urlConverter.getModuleRelativeUrl(script.getUrl());
-			scriptInjectorWrapper.fromUrl(correctUrl);
-		}
+		ScriptUrl[] scripts = scriptInjectorDescriptor.getOtherScripts();
+		asynchronousScriptsLoader.inject(scripts);
 	}
 }
