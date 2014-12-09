@@ -23,23 +23,13 @@
  */
 package eu.ydp.empiria.player.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.XMLParser;
-
+import com.google.gwt.xml.client.*;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
-import eu.ydp.gwtutil.client.debug.log.Logger;
-import eu.ydp.gwtutil.client.debug.log.UncaughtExceptionHandler;
+import eu.ydp.gwtutil.client.debug.log.*;
+import java.util.*;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -77,17 +67,17 @@ public class PlayerEntryPoint implements EntryPoint {
 	 */
 	private native void initJavaScriptAPI() /*-{
 		// CreatePlayer
-		$wnd.empiriaCreatePlayer = function(id) {
+		$wnd.empiriaCreatePlayer = function (id) {
 			var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
-			player.load = function(url) {
+			player.load = function (url) {
 				@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
 			}
-			player.loadFromData = function(assessmentData, itemDatas) {
+			player.loadFromData = function (assessmentData, itemDatas) {
 				@eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
 			}
 
 			// ładowanie rozszerzeń (pluginów i addonów)
-			player.loadExtension = function(obj) {
+			player.loadExtension = function (obj) {
 				if (typeof obj == 'object')
 					@eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 				else if (typeof obj == 'string')
@@ -97,7 +87,7 @@ public class PlayerEntryPoint implements EntryPoint {
 			return player;
 		}
 
-		$wnd.getPlayerVersion = function() {
+		$wnd.getPlayerVersion = function () {
 			return @eu.ydp.empiria.player.client.version.Version::getVersion()();
 		}
 
@@ -195,11 +185,11 @@ public class PlayerEntryPoint implements EntryPoint {
 	}-*/;
 
 	public static void loadExtension(JavaScriptObject extension) {
-		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForOther(extension));
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject> createForOther(extension));
 	}
 
 	public static void loadExtension(String extension) {
-		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForMain(extension));
+		extensionsToLoad.add(Alternative.<String, JavaScriptObject> createForMain(extension));
 	}
 
 }
