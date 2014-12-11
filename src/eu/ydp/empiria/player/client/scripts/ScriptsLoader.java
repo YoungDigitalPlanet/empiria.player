@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.scripts;
 
-import eu.ydp.gwtutil.client.scripts.ScriptUrl;
-
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
 import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
@@ -19,25 +17,23 @@ public class ScriptsLoader {
 	@Inject
 	private ScriptInjectorDescriptor scriptInjectorDescriptor;
 
+	private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
+
+		@Override
+		public void onFailure(Exception reason) {
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			injectOthers();
+		}
+	};
+
 
 	public void inject() {
 		ScriptUrl firstScript = scriptInjectorDescriptor.getFirstScript();
 		String correctUrl = urlConverter.getModuleRelativeUrl(firstScript);
-		scriptInjectorWrapper.fromUrl(correctUrl, createJQueryCallback());
-	}
-
-	private Callback<Void, Exception> createJQueryCallback() {
-		return new Callback<Void, Exception>() {
-
-			@Override
-			public void onFailure(Exception reason) {
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				injectOthers();
-			}
-		};
+		scriptInjectorWrapper.fromUrl(correctUrl, callback);
 	}
 
 	private void injectOthers() {
