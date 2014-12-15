@@ -1,35 +1,45 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import java.util.List;
-
-import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
+import eu.ydp.empiria.player.client.module.video.*;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import java.util.List;
 
 public class VideoPlayer extends Widget {
 
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 	private final UserAgentUtil userAgentUtil;
+	private final DivElement divElement;
+	private final ElementScaler elementScaler;
 
 	@Inject
-	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, UserAgentUtil userAgentUtil) {
+	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, UserAgentUtil userAgentUtil,
+			ElementScaler elementScaler) {
 		this.nativePlayer = nativePlayer;
 		this.videoElementWrapper = videoElementWrapper;
 		this.userAgentUtil = userAgentUtil;
-		setElement(Document.get().createDivElement());
+		this.elementScaler = elementScaler;
+		divElement = Document.get().createDivElement();
+		setElement(divElement);
 	}
 
 	@Override
 	protected void onLoad() {
-		getElement().appendChild(videoElementWrapper.asNode());
+		divElement.appendChild(videoElementWrapper.asNode());
 
 		initializeNativePlayer();
+
+		scalePlayer();
+	}
+
+	private void scalePlayer() {
+		Element wrapperElement = divElement.getFirstChildElement();
+		elementScaler.scale(wrapperElement);
 	}
 
 	private void initializeNativePlayer() {
@@ -57,4 +67,5 @@ public class VideoPlayer extends Widget {
 	public List<String> getSources() {
 		return videoElementWrapper.getSources();
 	}
+
 }

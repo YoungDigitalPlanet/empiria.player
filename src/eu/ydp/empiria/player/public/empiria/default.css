@@ -1,10 +1,14 @@
 .qp-player .vjs-poster {
-	background-repeat: repeat;
+    background-repeat: repeat;
+}
+
+.qp-player .vjs-fullscreen {
+    padding-top: 0px !important;
 }
 
 .qp-player .ui-sortable-placeholder {
-  display: inline-block;
-  height: 1px;
+    display: inline-block;
+    height: 1px;
 }
 
 .jqte ol, .jqte ul {
