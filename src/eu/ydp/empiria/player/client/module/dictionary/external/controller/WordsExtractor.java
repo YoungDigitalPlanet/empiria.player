@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
+import java.util.*;
 
-import java.util.List;
-import java.util.Map;
+import com.google.common.base.Splitter;
+import com.google.common.collect.*;
+
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 
 public class WordsExtractor {
 
@@ -14,14 +13,14 @@ public class WordsExtractor {
 	public static final String WORD_DELIMITER = "\n";
 
 	public Words extractWords(String text) {
-		Map<String, List<String>> wordsByLetter = splitToWordsMap(text);
-		Map<String, Integer> baseIndexes = buildIndexes(wordsByLetter);
+		LinkedHashMap<String, List<String>> wordsByLetter = splitToWordsMap(text);
+		TreeMap<String, Integer> baseIndexes = buildIndexes(wordsByLetter);
 
 		return new Words(wordsByLetter, baseIndexes);
 	}
 
-	private Map<String, List<String>> splitToWordsMap(String text) {
-		Map<String, List<String>> wordsMap = Maps.newLinkedHashMap();
+	private LinkedHashMap<String, List<String>> splitToWordsMap(String text) {
+		LinkedHashMap<String, List<String>> wordsMap = Maps.newLinkedHashMap();
 
 		Iterable<String> parsedWordsByLetter = Splitter.on(DICTIONARY_DELIMITER).trimResults()
 													   .omitEmptyStrings().split(text);
@@ -33,8 +32,8 @@ public class WordsExtractor {
 		return wordsMap;
 	}
 
-	private Map<String, Integer> buildIndexes(Map<String, List<String>> passwordsByLetter) {
-		Map<String, Integer> baseIndexes = Maps.newTreeMap();
+	private TreeMap<String, Integer> buildIndexes(Map<String, List<String>> passwordsByLetter) {
+		TreeMap<String, Integer> baseIndexes = Maps.newTreeMap();
 		int indexSum = 0;
 		for (List<String> currList : passwordsByLetter.values()) {
 			String firstLetter = extractFirstWordsFirstLetter(currList);

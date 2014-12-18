@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.dom.emulate.handlers;
 
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.mockito.Mock;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerDownEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
@@ -26,43 +26,50 @@ public class PointerHandlersInitializerTest {
 
 	@InjectMocks
 	private PointerHandlersInitializer testObj;
-
+	@Mock
+	private TouchHandlerFactory touchHandlerFactory;
 	@Mock
 	private Widget listenOn;
 
 	@Test
-	public void shouldAddTouchMoveHandler_ifIE() {
+	public void shouldAddTouchMoveHandler() {
 		// given
 		TouchOnMoveHandler touchOnMoveHandler = mock(TouchOnMoveHandler.class);
+		PointerMoveHandlerImpl pointerMoveHandlerImpl = mock(PointerMoveHandlerImpl.class);
+		when(touchHandlerFactory.createPointerMoveHandler(touchOnMoveHandler)).thenReturn(pointerMoveHandlerImpl);
 
 		// when
 		testObj.addTouchMoveHandler(touchOnMoveHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(any(PointerMoveHandlerImpl.class), eq(PointerMoveEvent.getType()));
+		verify(listenOn).addDomHandler(pointerMoveHandlerImpl, PointerMoveEvent.getType());
 	}
 
 	@Test
-	public void shouldAddTouchStartHandler_ifIE() {
+	public void shouldAddTouchStartHandler() {
 		// given
 		TouchOnStartHandler touchOnStartHandler = mock(TouchOnStartHandler.class);
+		PointerDownHandlerImpl pointerDownHandlerImpl = mock(PointerDownHandlerImpl.class);
+		when(touchHandlerFactory.createPointerDownHandler(touchOnStartHandler)).thenReturn(pointerDownHandlerImpl);
 
 		// when
 		testObj.addTouchStartHandler(touchOnStartHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(any(PointerDownHandlerImpl.class), eq(PointerDownEvent.getType()));
+		verify(listenOn).addDomHandler(pointerDownHandlerImpl, PointerDownEvent.getType());
 	}
 
 	@Test
-	public void shouldAddTouchEndHandler_ifIE() {
+	public void shouldAddTouchEndHandler() {
 		// given
-		TouchOnEndHandler touchOnStartHandler = mock(TouchOnEndHandler.class);
+		TouchOnEndHandler touchOnEndHandler = mock(TouchOnEndHandler.class);
+		PointerUpHandlerImpl pointerUpHandlerImpl = mock(PointerUpHandlerImpl.class);
+		when(touchHandlerFactory.createPointerUpHandler(touchOnEndHandler)).thenReturn(pointerUpHandlerImpl);
 
 		// when
-		testObj.addTouchEndHandler(touchOnStartHandler, listenOn);
+		testObj.addTouchEndHandler(touchOnEndHandler, listenOn);
 
 		// then
-		verify(listenOn).addDomHandler(any(PointerUpHandlerImpl.class), eq(PointerUpEvent.getType()));
+		verify(listenOn).addDomHandler(pointerUpHandlerImpl, PointerUpEvent.getType());
 	}
 }

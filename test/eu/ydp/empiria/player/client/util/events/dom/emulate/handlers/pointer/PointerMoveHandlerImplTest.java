@@ -32,7 +32,7 @@ public class PointerMoveHandlerImplTest {
 	}
 
 	@Test
-	public void shouldCallOnStart() {
+	public void shouldCallOnMove() {
 		// given
 		when(pointerMoveEvent.getNativeEvent()).thenReturn(nativeEvent);
 		when(pointerMoveEvent.isTouchEvent()).thenReturn(true);
@@ -45,7 +45,7 @@ public class PointerMoveHandlerImplTest {
 	}
 
 	@Test
-	public void shouldntCallOnStart() {
+	public void shouldntCallOnMove() {
 		// given
 		when(pointerMoveEvent.getNativeEvent()).thenReturn(nativeEvent);
 		when(pointerMoveEvent.isTouchEvent()).thenReturn(false);

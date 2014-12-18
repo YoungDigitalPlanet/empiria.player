@@ -26,6 +26,7 @@
     <set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/>
 
     <!-- Specify the app entry point class. -->
+    <entry-point class='eu.ydp.empiria.player.client.ScriptsEntryPoint'/>
     <entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint'/>
 
     <define-property name="run.local" values="false,true"/>
@@ -42,21 +43,10 @@
     <stylesheet src="lightbox2/css/lightbox.css"/>
     <stylesheet src="video-js/video-js.min.css"/>
     <stylesheet src="jqueryte/jquery-te-1.4.0.css"/>
-    <script src="video-js/video.dev.js"/>
-    <script src="jquery/jquery-1.10.2.min.js"/>
-    <script src="jquery/jquery-ui-1.10.3.custom.min.js"/>
-    <script src="jquery/jquery.ui.touch-punch.min.js"/>
-    <script src="jquery/jquery.smooth-scroll.min.js"/>
-    <script src="lightbox2/js/lightbox-min.js"/>
-    <script src="video/AC_RunActiveContent.js"/>
-    <script src="video/FAVideo.js"/>
-    <script src="jscss/cssparser.js"/>
-    <script src="jqueryte/jquery-te-1.4.0.min.js"/>
-
 
     <!-- LOGGER -->
-    <!-- 	<replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
-    <replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender">
+    	<!--  <replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
+    <replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender"> 
         <when-type-is class="eu.ydp.gwtutil.client.debug.log.LogAppender"/>
     </replace-with>
 
@@ -143,7 +133,7 @@
             <when-property-is name="user.agent" value="ie8"/>
         </any>
     </replace-with>
-    <add-linker name="xsiframescripts"/>
-
-    <set-configuration-property name="devModeRedirectEnabled" value="false"/>
+    
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 </module>

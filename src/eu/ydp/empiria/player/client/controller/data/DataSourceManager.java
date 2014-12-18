@@ -33,17 +33,10 @@ import java.util.List;
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier,
 		LibraryLoaderListener {
 
-	public DataSourceManager() {
-		mode = DataSourceManagerMode.NONE;
-		assessmentDataManager = new AssessmentDataSourceManager(this);
-		itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
-		libraryLoader = new LibraryLoader(this);
-		styleDataSourceLoader = new StyleDataSourceLoader();
-	}
-
 	protected final String MAIN_PRELOADER_ID = "mainPreloader";
 
 	private StyleDataSourceManager styleDataSourceManager;
+
 	private int styleLoadCounter;
 
 	private final AssessmentDataSourceManager assessmentDataManager;
@@ -54,6 +47,16 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	private XmlData assesmentXML;
 	private final StyleDataSourceLoader styleDataSourceLoader;
 	private Image mainPreloader;
+
+	@Inject
+	public DataSourceManager(AssessmentDataSourceManager assessmentDataManager) {
+		this.assessmentDataManager = assessmentDataManager;
+		this.assessmentDataManager.setSkinListener(this);
+		mode = DataSourceManagerMode.NONE;
+		itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
+		libraryLoader = new LibraryLoader(this);
+		styleDataSourceLoader = new StyleDataSourceLoader();
+	}
 
 	public InitialData getInitialData() {
 		InitialData initialData = new InitialData(itemDataCollectionManager.getItemsCount());
@@ -78,9 +81,8 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	/**
 	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 * 
-	 * @param index
-	 *            index wezla
+	 *
+	 * @param index index wezla
 	 * @return Element lub null gdy element o podanym indeksie nie istnieje
 	 */
 	@Override
@@ -98,7 +100,8 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	public void loadMainDocument(String url) {
 		if (RootPanel.get(MAIN_PRELOADER_ID) != null) {
-			setMainPreloader(Image.wrap(RootPanel.get(MAIN_PRELOADER_ID).getElement()));
+			setMainPreloader(Image.wrap(RootPanel.get(MAIN_PRELOADER_ID)
+			                                     .getElement()));
 		} else {
 			ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
 			setMainPreloader(new Image(progressBundle.getProgressImage()));
@@ -140,9 +143,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 
 	protected void centerMainPreloader(int x, int y, com.google.gwt.dom.client.Element preloaderElement) {
 		preloaderElement.setId(MAIN_PRELOADER_ID);
-		preloaderElement.getStyle().setPosition(Position.ABSOLUTE);
-		preloaderElement.getStyle().setLeft(x - preloaderElement.getOffsetWidth() / 2, Unit.PX);
-		preloaderElement.getStyle().setTop(y - preloaderElement.getOffsetHeight() / 2, Unit.PX);
+		preloaderElement.getStyle()
+		                .setPosition(Position.ABSOLUTE);
+		preloaderElement.getStyle()
+		                .setLeft(x - preloaderElement.getOffsetWidth() / 2, Unit.PX);
+		preloaderElement.getStyle()
+		                .setTop(y - preloaderElement.getOffsetHeight() / 2, Unit.PX);
 	}
 
 	public void loadExtensionsLibrary() {
@@ -202,7 +208,7 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
 	}
 
 	private void loadSingleItemData(XmlData itemData) {
-		itemDataCollectionManager.setItemDataCollection(new XmlData[] { itemData });
+		itemDataCollectionManager.setItemDataCollection(new XmlData[]{itemData});
 	}
 
 	public void loadData(XmlData ad, XmlData[] ids) {

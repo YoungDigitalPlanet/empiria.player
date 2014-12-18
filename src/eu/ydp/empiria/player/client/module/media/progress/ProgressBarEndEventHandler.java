@@ -1,16 +1,20 @@
 package eu.ydp.empiria.player.client.module.media.progress;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PAUSE;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PAUSE;
 
 public class ProgressBarEndEventHandler extends AbstractMediaEventHandler {
 
 	private final MediaProgressBarImpl progressBar;
 	private final EventsBus eventsBus;
 
-	public ProgressBarEndEventHandler(MediaProgressBarImpl progressBar, EventsBus eventsBus) {
+	@Inject
+	public ProgressBarEndEventHandler(@Assisted MediaProgressBarImpl progressBar, EventsBus eventsBus) {
 		this.progressBar = progressBar;
 		this.eventsBus = eventsBus;
 

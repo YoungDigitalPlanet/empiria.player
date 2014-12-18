@@ -56,7 +56,9 @@ public class OrderInteractionModule extends AbstractInteractionModule<OrderInter
 	}
 
 	@Override
-	public void onStart() {
+	public void onBodyLoad() {
+		super.onBodyLoad();
 		dragController.init(presenter.getOrientation());
+		presenter.setLocked(locked);
 	}
 }

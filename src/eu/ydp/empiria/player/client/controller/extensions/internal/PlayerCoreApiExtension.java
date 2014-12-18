@@ -37,7 +37,7 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 
 	private void initWorkMode() {
 		if (isPreviewMode(playerJsObject)) {
-			workModeService.setCurrentWorkMode(PlayerWorkMode.PREVIEW);
+			workModeService.tryToUpdateWorkMode(PlayerWorkMode.PREVIEW);
 		}
 	}
 

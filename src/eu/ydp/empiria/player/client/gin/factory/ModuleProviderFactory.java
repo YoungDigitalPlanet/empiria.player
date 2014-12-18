@@ -44,7 +44,10 @@ import eu.ydp.empiria.player.client.module.simulation.SimulationModule;
 import eu.ydp.empiria.player.client.module.slideshow.SlideshowPlayerModule;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListModule;
 import eu.ydp.empiria.player.client.module.span.SpanModule;
+import eu.ydp.empiria.player.client.module.speechscore.SpeechScoreModule;
 import eu.ydp.empiria.player.client.module.table.TableModule;
+import eu.ydp.empiria.player.client.module.test.reset.TestResetButtonModule;
+import eu.ydp.empiria.player.client.module.test.submit.TestPageSubmitButtonModule;
 import eu.ydp.empiria.player.client.module.texteditor.TextEditorModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
@@ -148,6 +151,12 @@ public class ModuleProviderFactory {
 	private Provider<DictionaryModule> dictionaryModule;
 	@Inject
 	private Provider<TextEditorModule> textEditorModule;
+	@Inject
+	private Provider<TestPageSubmitButtonModule> testPageSubmitButtonModule;
+	@Inject
+	private Provider<TestResetButtonModule> testResetButtonModule;
+	@Inject
+	private Provider<SpeechScoreModule> speechScoreModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -339,5 +348,17 @@ public class ModuleProviderFactory {
 
 	public Provider<TextEditorModule> getTextEditorModule() {
 		return textEditorModule;
+	}
+
+	public Provider<TestPageSubmitButtonModule> getTestPageSubmitButtonModule() {
+		return testPageSubmitButtonModule;
+	}
+
+	public Provider<TestResetButtonModule> getTestResetButtonModule() {
+		return testResetButtonModule;
+	}
+
+	public Provider<SpeechScoreModule> getSpeechScoreModule() {
+		return speechScoreModule;
 	}
 }

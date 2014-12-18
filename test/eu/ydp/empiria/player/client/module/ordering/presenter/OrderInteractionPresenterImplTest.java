@@ -1,22 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.google.common.collect.Lists;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.OrderInteractionModuleFactory;
@@ -31,11 +15,25 @@ import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBean;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InOrder;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderInteractionPresenterImplTest {
 
-	private OrderInteractionPresenterImpl presenter;
+	private OrderInteractionPresenterImpl testObj;
 	@Mock
 	private OrderInteractionView interactionView;
 	@Mock
@@ -68,13 +66,13 @@ public class OrderInteractionPresenterImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		presenter = new OrderInteractionPresenterImpl(itemsMarkingController, itemsResponseOrderController, orderingResetController, showingAnswersController,
+		testObj = new OrderInteractionPresenterImpl(itemsMarkingController, itemsResponseOrderController, orderingResetController, showingAnswersController,
 				viewBuilder, interactionView, orderingItemsDao, model, dragController);
 
 		bean = new OrderInteractionBean();
 
-		presenter.setModuleSocket(socket);
-		presenter.setBean(bean);
+		testObj.setModuleSocket(socket);
+		testObj.setBean(bean);
 		setUpMocks();
 	}
 
@@ -87,7 +85,7 @@ public class OrderInteractionPresenterImplTest {
 
 	@Test
 	public void shouldSetLockedAndUpdateStylesOnView() throws Exception {
-		presenter.setLocked(true);
+		testObj.setLocked(true);
 
 		InOrder inOrder = Mockito.inOrder(item1, item2, interactionView);
 		inOrder.verify(item1).setLocked(true);
@@ -101,7 +99,7 @@ public class OrderInteractionPresenterImplTest {
 		MarkAnswersType type = MarkAnswersType.CORRECT;
 		MarkAnswersMode mode = MarkAnswersMode.MARK;
 
-		presenter.markAnswers(type, mode);
+		testObj.markAnswers(type, mode);
 
 		InOrder inOrder = Mockito.inOrder(socket, itemsResponseOrderController, itemsMarkingController, interactionView);
 		inOrder.verify(itemsMarkingController).markOrUnmarkItemsByType(type, mode);
@@ -122,7 +120,7 @@ public class OrderInteractionPresenterImplTest {
 		when(itemsResponseOrderController.getResponseAnswersByItemsOrder(itemsOrder)).thenReturn(responseAnswers);
 
 		// when
-		presenter.bindView();
+		testObj.bindView();
 
 		// then
 		InOrder inOrder = Mockito.inOrder(interactionView, itemsMarkingController, itemsResponseOrderController, orderInteractionModuleFactory, viewBuilder,
@@ -139,7 +137,7 @@ public class OrderInteractionPresenterImplTest {
 		List<String> newOrderToShow = Lists.newArrayList("item1", "item2");
 		when(showingAnswersController.findNewAnswersOrderToShow(mode)).thenReturn(newOrderToShow);
 
-		presenter.showAnswers(mode);
+		testObj.showAnswers(mode);
 
 		verify(showingAnswersController).findNewAnswersOrderToShow(mode);
 		verify(interactionView).setChildrenOrder(newOrderToShow);
@@ -148,7 +146,7 @@ public class OrderInteractionPresenterImplTest {
 	@Test
 	public void shouldDisableDragOnLock() {
 		// when
-		presenter.setLocked(true);
+		testObj.setLocked(true);
 
 		// then
 		verify(dragController).disableDrag();
@@ -157,7 +155,7 @@ public class OrderInteractionPresenterImplTest {
 	@Test
 	public void shouldEnableDragOnunlock() {
 		// when
-		presenter.setLocked(false);
+		testObj.setLocked(false);
 
 		// then
 		verify(dragController).enableDrag();
@@ -169,7 +167,7 @@ public class OrderInteractionPresenterImplTest {
 		List<String> itemsOrder = Lists.newArrayList("a", "b");
 
 		// when
-		presenter.updateItemsOrder(itemsOrder);
+		testObj.updateItemsOrder(itemsOrder);
 
 		// then
 		InOrder inOrder = Mockito.inOrder(orderingItemsDao, interactionView, itemsResponseOrderController, model);
@@ -187,7 +185,7 @@ public class OrderInteractionPresenterImplTest {
 		bean.setOrientation(OrderInteractionOrientation.VERTICAL);
 
 		// when
-		OrderInteractionOrientation orientation = presenter.getOrientation();
+		OrderInteractionOrientation orientation = testObj.getOrientation();
 
 		// then
 		assertThat(orientation).isEqualTo(OrderInteractionOrientation.VERTICAL);
