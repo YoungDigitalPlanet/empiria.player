@@ -25,9 +25,12 @@ public class ElementScalerTest {
 	@Test
 	public void shouldClearOldSizesAndSetTopPadding() {
 		// given
+		int width = 16;
+		int height = 9;
+		double expectedRatio = 56.25;
 		when(element.getStyle()).thenReturn(style);
-		when(element.getClientWidth()).thenReturn(16);
-		when(element.getClientHeight()).thenReturn(9);
+		when(element.getClientWidth()).thenReturn(width);
+		when(element.getClientHeight()).thenReturn(height);
 
 		// when
 		testObj.scale(element);
@@ -36,6 +39,7 @@ public class ElementScalerTest {
 		verify(style).clearWidth();
 		verify(style).clearHeight();
 
-		verify(style).setPaddingTop(eq(56.25, DELTA), eq(Unit.PCT));
+		verify(style).setPaddingTop(eq(expectedRatio, DELTA), eq(Unit.PCT));
+		verify(style).setProperty("maxWidth", width, Unit.PX);
 	}
 }
