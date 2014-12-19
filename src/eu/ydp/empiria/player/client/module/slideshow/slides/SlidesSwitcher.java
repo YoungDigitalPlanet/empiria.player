@@ -61,11 +61,7 @@ public class SlidesSwitcher {
 	}
 
 	private int getSlideStartTime(int index) {
-		if (index < slides.size()) {
-			return slides.get(index).getStartTime();
-		} else {
-			return 0;
-		}
+		return slides.get(index).getStartTime();
 	}
 
 	private void showCurrentSlide() {

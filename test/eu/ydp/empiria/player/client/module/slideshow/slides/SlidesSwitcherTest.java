@@ -130,19 +130,6 @@ public class SlidesSwitcherTest {
 	}
 
 	@Test
-	public void shouldReturnZeroTime_whenEmptyList() {
-		// given
-		slides.clear();
-		when(slide.getStartTime()).thenReturn(10);
-
-		// when
-		int result = testObj.getCurrentSlideStartTime();
-
-		// then
-		assertThat(result).isEqualTo(0);
-	}
-
-	@Test
 	public void shouldGetStartTimeOfNextSlide() {
 		// given
 		slides.add(slide);
@@ -153,17 +140,5 @@ public class SlidesSwitcherTest {
 
 		// then
 		assertThat(result).isEqualTo(10);
-	}
-
-	@Test
-	public void shouldReturnZeroTime_whenIsLastSlide() {
-		// given
-		when(slide.getStartTime()).thenReturn(10);
-
-		// when
-		int result = testObj.getNextSlideStartTime();
-
-		// then
-		assertThat(result).isEqualTo(0);
 	}
 }
