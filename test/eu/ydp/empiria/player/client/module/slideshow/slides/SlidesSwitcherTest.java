@@ -33,8 +33,8 @@ public class SlidesSwitcherTest {
 	@Test
 	public void shouldNotDecrementCurrentSlideAfterInit() {
 		// given
-		int startSlide = 0;
-		assertThat(testObj.getCurrentSlide()).isEqualTo(startSlide);
+		boolean firstResult = testObj.canSwitchToPreviousSlide();
+		assertThat(firstResult).isFalse();
 		
 		// when
 		boolean result = testObj.canSwitchToPreviousSlide();
@@ -42,7 +42,6 @@ public class SlidesSwitcherTest {
 
 		// then
 		assertThat(result).isFalse();
-		assertThat(testObj.getCurrentSlide()).isEqualTo(startSlide);
 	}
 
 	@Test
@@ -50,7 +49,6 @@ public class SlidesSwitcherTest {
 		// given
 		slides.add(slide);
 		testObj.showNextSlide();
-		assertThat(testObj.getCurrentSlide()).isEqualTo(1);
 
 		// when
 		boolean result = testObj.canSwitchToPreviousSlide();
@@ -58,37 +56,38 @@ public class SlidesSwitcherTest {
 
 		// then
 		assertThat(result).isTrue();
-		assertThat(testObj.getCurrentSlide()).isEqualTo(0);
-		verify(presenter, times(2)).replaceView(slide);
+		verify(presenter, times(2)).replaceViewData(slide);
 	}
 
 	@Test
 	public void isAbleToSwitchToNextSlide() {
 		// given
-		assertThat(testObj.getCurrentSlide()).isEqualTo(0);
 		slides.add(slide);
+		boolean canSwitchToPreviousSlide = testObj.canSwitchToPreviousSlide();
+		assertThat(canSwitchToPreviousSlide).isFalse();
 
 		// when
-		boolean result = testObj.canSwitchToNextSlide();
 		testObj.showNextSlide();
+		boolean result = testObj.canSwitchToPreviousSlide();
 
 		// then
 		assertThat(result).isTrue();
-		assertThat(testObj.getCurrentSlide()).isEqualTo(1);
-		verify(presenter).replaceView(slide);
+		verify(presenter).replaceViewData(slide);
 	}
 
 	@Test
 	public void isNotAbleToSwitchToNextSlide() {
 		// given
+		slides.add(slide);
+		boolean canSwitchToNextSlide = testObj.canSwitchToNextSlide();
+		assertThat(canSwitchToNextSlide).isTrue();
 
 		// when
-		boolean result = testObj.canSwitchToNextSlide();
 		testObj.showNextSlide();
+		boolean result = testObj.canSwitchToNextSlide();
 
 		// then
 		assertThat(result).isFalse();
-		assertThat(testObj.getCurrentSlide()).isEqualTo(0);
 	}
 
 	@Test
@@ -99,10 +98,11 @@ public class SlidesSwitcherTest {
 
 		// when
 		testObj.reset();
+		boolean result = testObj.canSwitchToPreviousSlide();
 
 		// then
-		assertThat(testObj.getCurrentSlide()).isEqualTo(0);
-		verify(presenter, times(2)).replaceView(slide);
+		assertThat(result).isFalse();
+		verify(presenter, times(2)).replaceViewData(slide);
 	}
 
 	@Test

@@ -18,44 +18,6 @@ public class SlidePresenterTest {
 	private SlideView view;
 
 	@Test
-	public void shouldSetTitle() {
-		// given
-		String title = "title";
-
-		// when
-		testObj.setTitle(title);
-
-		// then
-		verify(view).setSlideTitle(title);
-	}
-
-	@Test
-	public void shouldSetNarration() {
-		// given
-		String narration = "narration";
-
-		// when
-		testObj.setNarration(narration);
-
-		// then
-		verify(view).setNarration(narration);
-	}
-
-	@Test
-	public void shouldSetSrcImage() {
-		// given
-		String src = "src";
-		SourceBean srcBean = new SourceBean();
-		srcBean.setSrc(src);
-
-		// when
-		testObj.setImageSrc(srcBean);
-
-		// then
-		verify(view).setImage(src);
-	}
-
-	@Test
 	public void shouldReplaceAll() {
 		// given
 		String title = "title";
@@ -71,7 +33,7 @@ public class SlidePresenterTest {
 		slide.setSource(srcBean);
 
 		// when
-		testObj.replaceView(slide);
+		testObj.replaceViewData(slide);
 
 		// then
 		verify(view).setSlideTitle(title);

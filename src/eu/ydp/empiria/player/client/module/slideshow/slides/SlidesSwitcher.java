@@ -21,10 +21,6 @@ public class SlidesSwitcher {
 		this.slides = slides;
 	}
 
-	public int getCurrentSlide() {
-		return currSlideIndex;
-	}
-
 	public void showNextSlide() {
 		if (canSwitchToNextSlide()) {
 			currSlideIndex++;
@@ -47,11 +43,12 @@ public class SlidesSwitcher {
 	}
 
 	public boolean canSwitchToNextSlide() {
-		return (currSlideIndex + 1 < slides.size());
+		int nextSlide = currSlideIndex + 1;
+		return nextSlide < slides.size();
 	}
 
 	public boolean canSwitchToPreviousSlide() {
-		return (currSlideIndex > 0);
+		return currSlideIndex > 0;
 	}
 
 	public int getCurrentSlideStartTime() {
@@ -59,7 +56,8 @@ public class SlidesSwitcher {
 	}
 
 	public int getNextSlideStartTime() {
-		return getSlideStartTime(currSlideIndex + 1);
+		int nextSlide = currSlideIndex + 1;
+		return getSlideStartTime(nextSlide);
 	}
 
 	private int getSlideStartTime(int index) {
@@ -72,7 +70,8 @@ public class SlidesSwitcher {
 
 	private void showCurrentSlide() {
 		if (currSlideIndex < slides.size()) {
-			slidePresenter.replaceView(slides.get(currSlideIndex));
+			SlideBean currentSlide = slides.get(currSlideIndex);
+			slidePresenter.replaceViewData(currentSlide);
 		}
 	}
 }

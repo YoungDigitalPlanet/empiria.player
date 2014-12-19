@@ -2,32 +2,30 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.ButtonsPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.List;
 
-public class SlidesControllerImpl implements SlidesController {
+public class SlideshowController implements SlideshowSlidesController {
 
 	private final SlidesSwitcher slidesSwitcher;
 	private final SlideshowTimer timer;
-	private Presenter presenter;
 	private final SlidesSorter slidesSorter;
+	private final ButtonsPresenter buttonsPresenter;
 
 	@Inject
-	public SlidesControllerImpl(@ModuleScoped SlidesSwitcher slidesSwitcher, SlideshowTimer timer, SlidesSorter slidesSorter) {
+	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped ButtonsPresenter buttonsPresenter, SlideshowTimer timer,
+			SlidesSorter slidesSorter) {
 		this.slidesSwitcher = slidesSwitcher;
+		this.buttonsPresenter = buttonsPresenter;
 		this.timer = timer;
 		this.slidesSorter = slidesSorter;
 		initTimer();
 	}
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
-
-	@Override
-	public void setSlides(List<SlideBean> slides) {
+	public void init(List<SlideBean> slides) {
+		buttonsPresenter.setSlideshowController(this);
 		slidesSorter.sortByTime(slides);
 		slidesSwitcher.setSlides(slides);
 		resetAndSetButtons();
@@ -66,8 +64,8 @@ public class SlidesControllerImpl implements SlidesController {
 	}
 
 	private void setButtons() {
-		presenter.setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		presenter.setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		buttonsPresenter.setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
+		buttonsPresenter.setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
 	}
 
 	private void showNextWithDelay() {
@@ -84,7 +82,7 @@ public class SlidesControllerImpl implements SlidesController {
 			showNextWithDelay();
 		} else {
 			pauseSlideshow();
-			presenter.setPlayButtonDown(false);
+			buttonsPresenter.setPlayButtonDown(false);
 		}
 	}
 

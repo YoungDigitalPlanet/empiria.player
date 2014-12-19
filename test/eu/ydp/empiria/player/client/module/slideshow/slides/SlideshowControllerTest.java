@@ -4,23 +4,23 @@ import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
-import eu.ydp.empiria.player.client.module.slideshow.slides.SlidesController.Presenter;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.ButtonsPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
-import org.junit.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlidesControllerImplTest {
+public class SlideshowControllerTest {
 
 	@InjectMocks
-	private SlidesControllerImpl testObj;
+	private SlideshowController testObj;
 	@Mock
 	private SlidesSwitcher slidesSwitcher;
 	@Mock
-	private Presenter presenter;
+	private ButtonsPresenter buttonsPresenter;
 	@Mock
 	private SlideshowTimer timer;
 	@Mock
@@ -28,10 +28,10 @@ public class SlidesControllerImplTest {
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
-	@Before
-	public void init() {
-		testObj.setPresenter(presenter);
-	}
+	// @Before
+	// public void init() {
+	// testObj.setPresenter(presenter);
+	// }
 
 	@Test
 	public void shouldSetSlides_andReset() {
@@ -39,15 +39,15 @@ public class SlidesControllerImplTest {
 		List<SlideBean> slides = Lists.newArrayList();
 
 		// when
-		testObj.setSlides(slides);
+		testObj.init(slides);
 
 		// then
-		InOrder inOrder = inOrder(slidesSorter, slidesSwitcher, presenter);
+		InOrder inOrder = inOrder(slidesSorter, slidesSwitcher, buttonsPresenter);
 		inOrder.verify(slidesSorter).sortByTime(slides);
 		inOrder.verify(slidesSwitcher).setSlides(slides);
 		inOrder.verify(slidesSwitcher).reset();
-		inOrder.verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		inOrder.verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		inOrder.verify(buttonsPresenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
+		inOrder.verify(buttonsPresenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
 	}
 
 	@Test
@@ -60,8 +60,7 @@ public class SlidesControllerImplTest {
 		// then
 		verify(timer).cancel();
 		verify(slidesSwitcher).reset();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 	}
 
 	@Test
@@ -80,13 +79,12 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher).reset();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 		verify(timer).schedule(delay);
 	}
 
 	@Test
-	public void shouldOnlyPlay_whenIsNotLastSlide() {
+	public void shouldPlayWithoutReset_whenIsNotLastSlide() {
 		// given
 		int nextTime = 10;
 		int currentTime = 5;
@@ -100,8 +98,6 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher, never()).reset();
-		verify(presenter, never()).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter, never()).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
 		verify(timer).schedule(delay);
 	}
 
@@ -125,8 +121,7 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher).showPreviousSlide();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 	}
 
 	@Test
@@ -138,8 +133,7 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 	}
 
 	@Test
@@ -160,8 +154,7 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 		verify(timer).schedule(delay);
 	}
 
@@ -178,9 +171,16 @@ public class SlidesControllerImplTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
-		verify(presenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		verify(presenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
 		verify(timer).cancel();
-		verify(presenter).setPlayButtonDown(false);
+		verify(buttonsPresenter).setPlayButtonDown(false);
+	}
+
+	private void verifyEnableButtons() {
+		boolean canSwitchToNextSlide = slidesSwitcher.canSwitchToNextSlide();
+		verify(buttonsPresenter).setEnabledNextButton(canSwitchToNextSlide);
+
+		boolean canSwitchToPreviousSlide = slidesSwitcher.canSwitchToPreviousSlide();
+		verify(buttonsPresenter).setEnabledPreviousButton(canSwitchToPreviousSlide);
 	}
 }

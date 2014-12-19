@@ -12,7 +12,7 @@ public class SlidesSorterTest {
 	private final SlidesSorter testObj = new SlidesSorter();
 
 	@Test
-	public void listShouldBeSortedByTime() {
+	public void shouldSortSlidesByStartTime() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
 
@@ -34,7 +34,7 @@ public class SlidesSorterTest {
 	}
 
 	@Test
-	public void shouldBeSortedInAdditionOrder() {
+	public void shouldSortSlidesByOrder_whenTheyHaveTheSameStartTime() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
 

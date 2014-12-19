@@ -83,6 +83,8 @@ public class ModuleProviderFactory {
 	@Inject
 	private Provider<SimulationModule> simulationModule;
 	@Inject
+	private Provider<SlideshowPlayerModule> slideshowPlayerModule;
+	@Inject
 	private Provider<LabellingModule> labellingModule;
 	@Inject
 	private Provider<OrderInteractionModule> orderInteractionModule;
@@ -146,8 +148,6 @@ public class ModuleProviderFactory {
 	private Provider<TestResetButtonModule> testResetButtonModule;
 	@Inject
 	private Provider<SpeechScoreModule> speechScoreModule;
-	@Inject
-	private Provider<SlideshowPlayerModule> slideshowPlayerModule;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
