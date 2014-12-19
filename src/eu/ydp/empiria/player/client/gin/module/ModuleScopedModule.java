@@ -89,7 +89,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 	}
 
 	private void bindSlideshow() {
-		bindModuleScoped(ButtonsPresenter.class, new TypeLiteral<ModuleScopedProvider<ButtonsPresenter>>() {
+		bindModuleScoped(SlideshowButtonsPresenter.class, new TypeLiteral<ModuleScopedProvider<SlideshowButtonsPresenter>>() {
 		});
 		bindModuleScoped(SlideshowPlayerPresenter.class, new TypeLiteral<ModuleScopedProvider<SlideshowPlayerPresenter>>() {
 		});

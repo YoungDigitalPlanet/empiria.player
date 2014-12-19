@@ -73,6 +73,11 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 		this.presenter = presenter;
 	}
 
+	@Override
+	public boolean isPlayButtonDown() {
+		return playButton.isStateDown();
+	}
+
 	private void addEventsHandlers() {
 		userInteractionHandlerFactory.applyUserClickHandler(createOnPlayClickCommand(), playButton);
 		userInteractionHandlerFactory.applyUserClickHandler(createOnStopClickCommand(), stopButton);
@@ -85,8 +90,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 
 			@Override
 			public void execute(NativeEvent event) {
-				playButton.setStateDown(false);
-				presenter.executeStop();
+				presenter.onStopClick();
 			}
 		};
 	}
@@ -96,7 +100,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 
 			@Override
 			public void execute(NativeEvent event) {
-				presenter.executeNext();
+				presenter.onNextClick();
 			}
 		};
 	}
@@ -106,7 +110,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 
 			@Override
 			public void execute(NativeEvent event) {
-				presenter.executePrevious();
+				presenter.onPreviousClick();
 			}
 		};
 	}
@@ -116,11 +120,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 
 			@Override
 			public void execute(NativeEvent event) {
-				if (playButton.isStateDown()) {
-					presenter.executePlay();
-				} else {
-					presenter.executePause();
-				}
+				presenter.onPlayClick();
 			}
 		};
 	}

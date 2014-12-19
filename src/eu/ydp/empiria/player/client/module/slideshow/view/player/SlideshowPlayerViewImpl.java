@@ -1,14 +1,12 @@
 package eu.ydp.empiria.player.client.module.slideshow.view.player;
 
-import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
-
-import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
-import eu.ydp.empiria.player.client.module.slideshow.view.text.TextView;
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
+import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
+import eu.ydp.empiria.player.client.module.slideshow.view.text.TextView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
@@ -32,7 +30,7 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	public SlideshowPlayerViewImpl(@ModuleScoped SlideView slideView, @ModuleScoped SlideshowButtonsView buttonsView) {
 		uiBinder.createAndBindUi(this);
 		slidesPanel.add(slideView);
-		addPanelWidget(buttonsView.asWidget());
+		mainPanel.add(buttonsView.asWidget());
 	}
 
 	@Override
@@ -43,16 +41,5 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	@Override
 	public Widget asWidget() {
 		return mainPanel;
-	}
-
-	@Override
-	public void setViewClass(String className) {
-		if (!Strings.isNullOrEmpty(className) && mainPanel != null) {
-			mainPanel.addStyleName(className);
-		}
-	}
-
-	private void addPanelWidget(Widget widget) {
-		mainPanel.add(widget);
 	}
 }

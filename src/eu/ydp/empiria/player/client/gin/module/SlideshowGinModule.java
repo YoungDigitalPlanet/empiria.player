@@ -13,9 +13,8 @@ public class SlideshowGinModule extends AbstractGinModule {
 	protected void configure() {
 		bind(SlideshowPlayerView.class).to(SlideshowPlayerViewImpl.class);
 		bind(SlideView.class).to(SlideViewImpl.class);
-		// bind(SlideshowController.class).to(SlideshowController.class);
 		bind(SlideshowButtonsView.class).to(SlideshowButtonsViewImpl.class);
-		bind(ButtonsPresenter.class).to(SlideshowButtonsPresenter.class);
+		bind(SlideshowButtonsPresenter.class).to(SlideshowButtonsPresenterImpl.class);
 		bind(SourceListModuleStructure.class);
 	}
 }

@@ -11,10 +11,10 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class SlideshowButtonsPresenterTest {
+public class SlideshowButtonsPresenterImplTest {
 
 	@InjectMocks
-	private SlideshowButtonsPresenter testObj;
+	private SlideshowButtonsPresenterImpl testObj;
 	@Mock
 	private SlideshowPlayerView playerView;
 	@Mock
@@ -98,7 +98,7 @@ public class SlideshowButtonsPresenterTest {
 		// given
 
 		// when
-		testObj.executeNext();
+		testObj.onNextClick();
 
 		// then
 		verify(slidesController).showNextSlide();
@@ -109,7 +109,7 @@ public class SlideshowButtonsPresenterTest {
 		// given
 
 		// when
-		testObj.executePrevious();
+		testObj.onPreviousClick();
 
 		// then
 		verify(slidesController).showPreviousSlide();
@@ -118,9 +118,10 @@ public class SlideshowButtonsPresenterTest {
 	@Test
 	public void shouldPlaySlideshow() {
 		// given
+		when(buttonsView.isPlayButtonDown()).thenReturn(false);
 
 		// when
-		testObj.executePlay();
+		testObj.onPlayClick();
 
 		// then
 		verify(slidesController).playSlideshow();
@@ -129,9 +130,10 @@ public class SlideshowButtonsPresenterTest {
 	@Test
 	public void shouldPauseSlideshow() {
 		// given
+		when(buttonsView.isPlayButtonDown()).thenReturn(true);
 
 		// when
-		testObj.executePause();
+		testObj.onPlayClick();
 
 		// then
 		verify(slidesController).pauseSlideshow();
@@ -142,9 +144,10 @@ public class SlideshowButtonsPresenterTest {
 		// given
 
 		// when
-		testObj.executeStop();
+		testObj.onStopClick();
 
 		// then
 		verify(slidesController).stopSlideshow();
+		verify(buttonsView).setPlayButtonDown(false);
 	}
 }

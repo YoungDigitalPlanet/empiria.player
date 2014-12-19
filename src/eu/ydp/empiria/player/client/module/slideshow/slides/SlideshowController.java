@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.ButtonsPresenter;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.List;
@@ -12,10 +12,10 @@ public class SlideshowController implements SlideshowSlidesController {
 	private final SlidesSwitcher slidesSwitcher;
 	private final SlideshowTimer timer;
 	private final SlidesSorter slidesSorter;
-	private final ButtonsPresenter buttonsPresenter;
+	private final SlideshowButtonsPresenter buttonsPresenter;
 
 	@Inject
-	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped ButtonsPresenter buttonsPresenter, SlideshowTimer timer,
+	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter, SlideshowTimer timer,
 			SlidesSorter slidesSorter) {
 		this.slidesSwitcher = slidesSwitcher;
 		this.buttonsPresenter = buttonsPresenter;

@@ -11,15 +11,15 @@ public interface SlideshowButtonsView extends IsWidget {
 
 	void setPresenter(Presenter presenter);
 
+	boolean isPlayButtonDown();
+
 	interface Presenter {
-		void executeNext();
+		void onNextClick();
 
-		void executePrevious();
+		void onPreviousClick();
 
-		void executePlay();
+		void onPlayClick();
 
-		void executePause();
-
-		void executeStop();
+		void onStopClick();
 	}
 }

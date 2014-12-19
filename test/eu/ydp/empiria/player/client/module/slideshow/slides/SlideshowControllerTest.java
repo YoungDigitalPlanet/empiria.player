@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.ButtonsPresenter;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class SlideshowControllerTest {
 	@Mock
 	private SlidesSwitcher slidesSwitcher;
 	@Mock
-	private ButtonsPresenter buttonsPresenter;
+	private SlideshowButtonsPresenter buttonsPresenter;
 	@Mock
 	private SlideshowTimer timer;
 	@Mock
