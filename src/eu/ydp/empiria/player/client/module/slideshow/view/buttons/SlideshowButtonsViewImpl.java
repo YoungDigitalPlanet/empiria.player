@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.*;
 
@@ -36,7 +37,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 	@Inject
 	private StyleNameConstants styleNameConstants;
 
-	private Presenter presenter;
+	private SlideshowButtonsPresenter presenter;
 
 	public SlideshowButtonsViewImpl() {
 		uiBinder.createAndBindUi(this);
@@ -69,7 +70,7 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 	}
 
 	@Override
-	public void setPresenter(Presenter presenter) {
+	public void setPresenter(SlideshowButtonsPresenter presenter) {
 		this.presenter = presenter;
 	}
 

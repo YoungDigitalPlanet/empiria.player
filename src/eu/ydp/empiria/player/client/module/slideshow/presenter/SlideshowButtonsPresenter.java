@@ -10,4 +10,12 @@ public interface SlideshowButtonsPresenter {
 	void setPlayButtonDown(boolean isDown);
 
 	void setSlideshowController(SlideshowSlidesController controller);
+
+	void onNextClick();
+
+	void onPreviousClick();
+
+	void onPlayClick();
+
+	void onStopClick();
 }

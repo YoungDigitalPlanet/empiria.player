@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowSlidesContr
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class SlideshowButtonsPresenterImpl implements SlideshowButtonsPresenter, SlideshowButtonsView.Presenter {
+public class SlideshowButtonsPresenterImpl implements SlideshowButtonsPresenter {
 
 	private final SlideshowButtonsView buttonsView;
 	private SlideshowSlidesController controller;

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.slideshow.view.buttons;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
 
 public interface SlideshowButtonsView extends IsWidget {
 	void setEnabledNextButton(boolean enabled);
@@ -9,17 +10,7 @@ public interface SlideshowButtonsView extends IsWidget {
 
 	void setPlayButtonDown(boolean down);
 
-	void setPresenter(Presenter presenter);
+	void setPresenter(SlideshowButtonsPresenter presenter);
 
 	boolean isPlayButtonDown();
-
-	interface Presenter {
-		void onNextClick();
-
-		void onPreviousClick();
-
-		void onPlayClick();
-
-		void onStopClick();
-	}
 }
