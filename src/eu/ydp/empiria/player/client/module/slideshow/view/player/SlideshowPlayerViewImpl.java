@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
-import eu.ydp.empiria.player.client.module.slideshow.view.text.TextView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
@@ -18,7 +17,7 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	private final SlideshowModuleUiBinder uiBinder = GWT.create(SlideshowModuleUiBinder.class);
 
 	@UiField
-	protected Panel titlePanel;
+	protected InlineLabel titleText;
 
 	@UiField
 	protected Panel mainPanel;
@@ -35,7 +34,7 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 
 	@Override
 	public void setTitle(String title) {
-		titlePanel.add(new TextView(title));
+		titleText.setText(title);
 	}
 
 	@Override

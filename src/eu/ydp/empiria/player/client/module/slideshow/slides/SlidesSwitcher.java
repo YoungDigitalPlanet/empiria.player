@@ -56,8 +56,8 @@ public class SlidesSwitcher {
 	}
 
 	public int getNextSlideStartTime() {
-		int nextSlide = currSlideIndex + 1;
-		return getSlideStartTime(nextSlide);
+		int nextSlideIndex = currSlideIndex + 1;
+		return getSlideStartTime(nextSlideIndex);
 	}
 
 	private int getSlideStartTime(int index) {

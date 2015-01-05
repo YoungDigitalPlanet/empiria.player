@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.slideshow.view.slide;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.ui.*;
-import eu.ydp.empiria.player.client.module.slideshow.view.text.TextView;
 
 public class SlideViewImpl extends Composite implements SlideView {
 
@@ -17,10 +16,10 @@ public class SlideViewImpl extends Composite implements SlideView {
 	public Image image;
 
 	@UiField
-	public FlowPanel titlePanel;
+	public InlineLabel titleText;
 
 	@UiField
-	public FlowPanel narrationPanel;
+	public InlineLabel narrationText;
 
 	public SlideViewImpl() {
 		initWidget(slideWidgetBinder.createAndBindUi(this));
@@ -28,22 +27,22 @@ public class SlideViewImpl extends Composite implements SlideView {
 
 	@Override
 	public void setSlideTitle(String title) {
-		titlePanel.add(new TextView(title));
+		titleText.setText(title);
 	}
 
 	@Override
 	public void clearSlideTitle() {
-		titlePanel.clear();
+		titleText.setText("");
 	}
 
 	@Override
 	public void setNarration(String narration) {
-		narrationPanel.add(new TextView(narration));
+		narrationText.setText(narration);
 	}
 
 	@Override
 	public void clearNarration() {
-		narrationPanel.clear();
+		narrationText.setText("");
 	}
 
 	@Override

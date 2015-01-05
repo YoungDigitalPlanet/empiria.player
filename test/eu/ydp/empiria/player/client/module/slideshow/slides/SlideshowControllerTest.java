@@ -28,11 +28,6 @@ public class SlideshowControllerTest {
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
-	// @Before
-	// public void init() {
-	// testObj.setPresenter(presenter);
-	// }
-
 	@Test
 	public void shouldSetSlides_andReset() {
 		// given

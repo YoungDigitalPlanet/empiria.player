@@ -1,8 +1,0 @@
-<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<g:HTMLPanel ui:field="inlineText" styleName="{res.QP_TEXT_INLINE}">
-   		<span ui:field="innerText" styleName="{res.QP_TEXT}"/>
-   	</g:HTMLPanel>
-</ui:UiBinder> 
