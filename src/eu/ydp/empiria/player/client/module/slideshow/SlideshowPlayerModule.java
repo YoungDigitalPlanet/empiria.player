@@ -19,8 +19,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 
 	@Inject
 	public SlideshowPlayerModule(@ModuleScoped SlideshowController slideshowController, @ModuleScoped SlideshowPlayerPresenter presenter,
-			SlideshowModuleStructure moduleStructure,
-			IJSONService ijsonService) {
+			SlideshowModuleStructure moduleStructure, IJSONService ijsonService) {
 		this.controller = slideshowController;
 		this.presenter = presenter;
 		this.moduleStructure = moduleStructure;
@@ -35,9 +34,13 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	@Override
 	protected void initModule(Element element) {
 		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
-		SlideshowBean bean = moduleStructure.getBean().getSlideshowBean();
+		SlideshowBean bean = getSlideshowBean();
 
 		presenter.init(bean);
 		controller.init(bean.getSlideBeans());
+	}
+
+	private SlideshowBean getSlideshowBean() {
+		return moduleStructure.getBean().getSlideshowBean();
 	}
 }

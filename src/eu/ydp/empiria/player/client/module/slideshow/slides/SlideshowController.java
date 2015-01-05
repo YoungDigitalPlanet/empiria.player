@@ -21,10 +21,10 @@ public class SlideshowController implements SlideshowSlidesController {
 		this.buttonsPresenter = buttonsPresenter;
 		this.timer = timer;
 		this.slidesSorter = slidesSorter;
-		initTimer();
 	}
 
 	public void init(List<SlideBean> slides) {
+		initTimer();
 		buttonsPresenter.setSlideshowController(this);
 		slidesSorter.sortByTime(slides);
 		slidesSwitcher.setSlides(slides);

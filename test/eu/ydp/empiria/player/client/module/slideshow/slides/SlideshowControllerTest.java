@@ -141,6 +141,9 @@ public class SlideshowControllerTest {
 		when(slidesSwitcher.getNextSlideStartTime()).thenReturn(nextTime);
 		when(slidesSwitcher.getCurrentSlideStartTime()).thenReturn(currentTime);
 
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides);
+
 		verify(timer).setCommand(commandCaptor.capture());
 		
 		// when
@@ -149,13 +152,15 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
-		verifyEnableButtons();
+		verifyEnableButtons(2);
 		verify(timer).schedule(delay);
 	}
 
 	@Test
 	public void shouldShowNextSlide_andPause_whenIsLastSlide() {
 		// given
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides);
 
 		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
 		verify(timer).setCommand(commandCaptor.capture());
@@ -166,16 +171,20 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
-		verifyEnableButtons();
+		verifyEnableButtons(2);
 		verify(timer).cancel();
 		verify(buttonsPresenter).setPlayButtonDown(false);
 	}
 
 	private void verifyEnableButtons() {
+		verifyEnableButtons(1);
+	}
+
+	private void verifyEnableButtons(int times) {
 		boolean canSwitchToNextSlide = slidesSwitcher.canSwitchToNextSlide();
-		verify(buttonsPresenter).setEnabledNextButton(canSwitchToNextSlide);
+		verify(buttonsPresenter, times(times)).setEnabledNextButton(canSwitchToNextSlide);
 
 		boolean canSwitchToPreviousSlide = slidesSwitcher.canSwitchToPreviousSlide();
-		verify(buttonsPresenter).setEnabledPreviousButton(canSwitchToPreviousSlide);
+		verify(buttonsPresenter, times(times)).setEnabledPreviousButton(canSwitchToPreviousSlide);
 	}
 }
