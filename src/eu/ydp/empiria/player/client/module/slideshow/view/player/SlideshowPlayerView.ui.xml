@@ -4,14 +4,11 @@
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
 	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_SLIDESHOW}">
 		<g:FlowPanel ui:field="titlePanel" styleName="{res.QP_SLIDESHOW_TITLE_PANEL}">
+			<g:HTMLPanel ui:field="inlineText" styleName="{res.QP_TEXT_INLINE}">
+				<g:InlineLabel ui:field="titleText" styleName="{res.QP_TEXT}"/>
+			</g:HTMLPanel>
 		</g:FlowPanel>
 		<g:FlowPanel ui:field="slidesPanel" styleName="{res.QP_SLIDESHOW_SLIDES_PANEL}">
-		</g:FlowPanel>
-		<g:FlowPanel ui:field="buttonsPanel" styleName="{res.QP_SLIDESHOW_BUTTON_PANEL}">
-			<c:TwoStateButton ui:field="playButton"/>
-			<b:CustomPushButton ui:field="stopButton" styleName="{res.QP_SLIDESHOW_BUTTON_STOP}"/>
-			<b:CustomPushButton ui:field="previousButton" styleName="{res.QP_SLIDESHOW_BUTTON_PREVIOUS}"/>
-			<b:CustomPushButton ui:field="nextButton" styleName="{res.QP_SLIDESHOW_BUTTON_NEXT}"/>
 		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder>
