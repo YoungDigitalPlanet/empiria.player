@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.video.view;
 import static com.google.gwt.core.client.GWT.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler;
+import eu.ydp.empiria.player.client.module.video.*;
 
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
@@ -149,6 +149,27 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	public void addDurationChangeHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("durationchange", handler);
 	}
+
+	@Override
+	public void addFullscreenListener(VideoFullscreenListener videoFullscreenListener) {
+		addFSListener(videoFullscreenListener);
+	}
+
+	private native void addFSListener(VideoFullscreenListener listener)/*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+		if (player) {
+			player
+				.on(
+				"fullscreenchange",
+				function () {
+					if (player.isFullScreen()) {
+						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
+					} else {
+						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();
+					}
+				});
+		}
+	}-*/;
 
 	private native void addEventHandler(String event, VideoPlayerControlHandler handler) /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;

@@ -15,15 +15,13 @@ public class VideoPlayer extends Widget {
 	private final VideoElementWrapper videoElementWrapper;
 	private final UserAgentUtil userAgentUtil;
 	private final DivElement divElement;
-	private final ElementScaler elementScaler;
+	private ElementScaler elementScaler;
 
 	@Inject
-	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, UserAgentUtil userAgentUtil,
-			ElementScaler elementScaler) {
+	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, UserAgentUtil userAgentUtil) {
 		this.nativePlayer = nativePlayer;
 		this.videoElementWrapper = videoElementWrapper;
 		this.userAgentUtil = userAgentUtil;
-		this.elementScaler = elementScaler;
 		divElement = Document.get().createDivElement();
 		setElement(divElement);
 	}
@@ -34,12 +32,27 @@ public class VideoPlayer extends Widget {
 
 		initializeNativePlayer();
 
-		scalePlayer();
+		enablePlayerScaling();
 	}
 
-	private void scalePlayer() {
-		Element wrapperElement = divElement.getFirstChildElement();
-		elementScaler.scale(wrapperElement);
+	private void enablePlayerScaling() {
+		final Element wrappedElement = divElement.getFirstChildElement();
+		elementScaler = new ElementScaler(wrappedElement);
+		elementScaler.setRatio();
+		elementScaler.setMaxWidth();
+		nativePlayer.addFullscreenListener(new VideoFullscreenListener() {
+			@Override
+			public void onEnterFullscreen() {
+				elementScaler.clearRatio();
+				elementScaler.clearMaxWidth();
+			}
+
+			@Override
+			public void onExitFullscreen() {
+				elementScaler.setRatio();
+				elementScaler.setMaxWidth();
+			}
+		});
 	}
 
 	private void initializeNativePlayer() {

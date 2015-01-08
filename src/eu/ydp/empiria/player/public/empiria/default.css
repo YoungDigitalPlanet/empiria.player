@@ -2,10 +2,6 @@
     background-repeat: repeat;
 }
 
-.qp-player .vjs-fullscreen {
-    padding-top: 0px !important;
-}
-
 .qp-player .ui-sortable-placeholder {
     display: inline-block;
     height: 1px;
