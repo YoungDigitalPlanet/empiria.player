@@ -1,18 +1,13 @@
 package eu.ydp.empiria.player.client.controller.session;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONValue;
-
+import com.google.gwt.json.client.*;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariableStorageImpl;
+import java.util.*;
 
 public class ItemSessionData implements ItemSessionDataSocket {
 
@@ -101,16 +96,16 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	}
 
 	private native JavaScriptObject createJsObject()/*-{
-													var obj = [];
-													var instance = this;
-													obj.getVariableManagerSocket = function(){
-													return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getVariableStorageJsSocket()();
-													}
-													obj.getTime = function(){
-													return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getActualTime()();
-													}
-													return obj;
-													}-*/;
+		var obj = [];
+		var instance = this;
+		obj.getVariableManagerSocket = function () {
+			return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getVariableStorageJsSocket()();
+		};
+		obj.getTime = function () {
+			return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getActualTime()();
+		};
+		return obj;
+	}-*/;
 
 	private JavaScriptObject getVariableStorageJsSocket() {
 		return variableStorage.getJsSocket();
