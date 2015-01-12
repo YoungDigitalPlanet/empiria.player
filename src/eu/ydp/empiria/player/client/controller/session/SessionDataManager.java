@@ -87,7 +87,7 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 		if (itemSessionDatas[itemIndex] != null) {
 			return itemSessionDatas[itemIndex].getOutcomeVariablesMap();
 		}
-		return new HashMap<String, Outcome>();
+		return new HashMap<>();
 	}
 
 	@Override
