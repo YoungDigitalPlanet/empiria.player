@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 import com.google.common.base.Optional;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -11,22 +14,15 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.simulation.SimulationModule.TouchReservationHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
-import eu.ydp.gwtcreatejs.client.handler.ManifestLoadHandler;
-import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
-import eu.ydp.gwtcreatejs.client.loader.Manifest;
-import org.junit.Before;
-import org.junit.Test;
+import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.gwtcreatejs.client.handler.*;
+import eu.ydp.gwtcreatejs.client.loader.*;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
 @RunWith(GwtMockitoTestRunner.class)
-public class SimulationModuleJUnitTest {
+public class SimulationModuleTest {
 
 	private static final String URL = "http://dummyurl/";
 
@@ -138,7 +134,7 @@ public class SimulationModuleJUnitTest {
 	public void onPlayerEventNoInteractionTest() {
 		testObj.initModule(createElementMock());
 		for (PlayerEventTypes eventType : PlayerEventTypes.values()) {
-			if (eventType != PlayerEventTypes.PAGE_CHANGE) {
+			if (eventType != PlayerEventTypes.PAGE_CHANGE && eventType != PlayerEventTypes.WINDOW_RESIZED) {
 				PlayerEvent event = new PlayerEvent(eventType);
 				testObj.onPlayerEvent(event);
 			}
@@ -148,21 +144,46 @@ public class SimulationModuleJUnitTest {
 
 	@Test
 	public void onPlayerEventPageNotChangeTest() {
+		// given
 		testObj.initModule(createElementMock());
 		Canvas canvas = mock(Canvas.class);
 		testObj.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 0, null);
+
+		// when
 		testObj.onPlayerEvent(event);
+
+		// then
 		verify(simulationController).resumeAnimation(Matchers.any(JavaScriptObject.class));
 	}
 
 	@Test
 	public void onPlayerEventPageChangeTest() {
+		// given
 		testObj.initModule(createElementMock());
 		Canvas canvas = mock(Canvas.class);
 		testObj.initializeCanvas(canvas);
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, 1, null);
+
+		// when
 		testObj.onPlayerEvent(event);
+
+		// then
 		verify(simulationController).pauseAnimation(element);
+	}
+
+	@Test
+	public void onWindowResizedEventTest() {
+		// given
+		testObj.initModule(createElementMock());
+		Canvas canvas = mock(Canvas.class);
+		testObj.initializeCanvas(canvas);
+		PlayerEvent event = new PlayerEvent(PlayerEventTypes.WINDOW_RESIZED);
+
+		// when
+		testObj.onPlayerEvent(event);
+
+		// then
+		verify(simulationController).onWindowResized(element);
 	}
 }

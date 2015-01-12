@@ -1,29 +1,21 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.PAGE_CHANGE;
+import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import com.google.common.base.*;
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.gwtcreatejs.client.handler.CompleteHandler;
-import eu.ydp.gwtcreatejs.client.handler.ManifestLoadHandler;
-import eu.ydp.gwtcreatejs.client.loader.CreateJsLoader;
-import eu.ydp.gwtcreatejs.client.loader.Manifest;
+import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.gwtcreatejs.client.handler.*;
+import eu.ydp.gwtcreatejs.client.loader.*;
 
 public class SimulationModule extends SimpleModuleBase implements ILifecycleModule, ManifestLoadHandler, PlayerEventHandler {
 
@@ -85,10 +77,15 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 		eventBus.addHandler(PlayerEvent.getTypes(PAGE_CHANGE), this);
 	}
 
+	private void addResizeWindowHandlers() {
+		eventBus.addAsyncHandler(PlayerEvent.getType(WINDOW_RESIZED), this);
+	}
+
 	@Override
 	protected void initModule(Element element) {
 		String src = element.getAttribute("src");
 		addPageChangeHandlers();
+		addResizeWindowHandlers();
 		initializeLoader(src);
 		pageIndex = pageScopeFactory.getCurrentPageScope().getPageIndex();
 	}
@@ -153,11 +150,15 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 	public void onPlayerEvent(PlayerEvent event) {
 		Optional<com.google.gwt.user.client.Element> simulationCanvasElement = simulationCanvasProvider.getSimulationCanvasElement(loader);
 
-		if (event.getType() == PAGE_CHANGE && simulationCanvasElement.isPresent()) {
-			if (Objects.equal(pageIndex, event.getValue())) {
-				simulationController.resumeAnimation(simulationCanvasElement.get());
-			} else {
-				simulationController.pauseAnimation(simulationCanvasElement.get());
+		if (simulationCanvasElement.isPresent()) {
+			if (event.getType() == PAGE_CHANGE) {
+				if (Objects.equal(pageIndex, event.getValue())) {
+					simulationController.resumeAnimation(simulationCanvasElement.get());
+				} else {
+					simulationController.pauseAnimation(simulationCanvasElement.get());
+				}
+			} else if (event.getType() == WINDOW_RESIZED) {
+				simulationController.onWindowResized(simulationCanvasElement.get());
 			}
 		}
 	}
