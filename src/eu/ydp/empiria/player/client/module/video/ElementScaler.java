@@ -11,10 +11,10 @@ public class ElementScaler {
 
 	public ElementScaler(Element element) {
 		this.element = element;
-		initialRatio = calculateRatio(element);
+		initialRatio = calculateRatio();
 	}
 
-	private double calculateRatio(Element element) {
+	private double calculateRatio() {
 		int width = element.getClientWidth();
 		int height = element.getClientHeight();
 		return 100.0 * height / width;

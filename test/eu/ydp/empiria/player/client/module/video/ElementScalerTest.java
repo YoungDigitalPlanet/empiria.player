@@ -21,14 +21,14 @@ public class ElementScalerTest {
 	@Mock
 	private Style style;
 	private final double DELTA = 0.01;
-	private final int height = 9;
-	private final int width = 16;
-	private final double expectedRatio = 56.25;
+	private final int HEIGHT = 9;
+	private final int WIDTH = 16;
+	private final double EXPECTED_RATIO = 56.25;
 
 	@Before
 	public void setUp() throws Exception {
-		when(element.getClientWidth()).thenReturn(width);
-		when(element.getClientHeight()).thenReturn(height);
+		when(element.getClientWidth()).thenReturn(WIDTH);
+		when(element.getClientHeight()).thenReturn(HEIGHT);
 		when(element.getStyle()).thenReturn(style);
 		testObj = new ElementScaler(element);
 	}
@@ -42,7 +42,7 @@ public class ElementScalerTest {
 		verify(style).clearWidth();
 		verify(style).clearHeight();
 
-		verify(style).setPaddingTop(eq(expectedRatio, DELTA), eq(Unit.PCT));
+		verify(style).setPaddingTop(eq(EXPECTED_RATIO, DELTA), eq(Unit.PCT));
 	}
 
 	@Test
@@ -51,7 +51,6 @@ public class ElementScalerTest {
 		testObj.clearRatio();
 
 		// then
-
 		verify(style).clearPaddingTop();
 	}
 
@@ -61,7 +60,7 @@ public class ElementScalerTest {
 		testObj.setMaxWidth();
 
 		// then
-		verify(style).setProperty("maxWidth", width, Unit.PX);
+		verify(style).setProperty("maxWidth", WIDTH, Unit.PX);
 	}
 
 	@Test

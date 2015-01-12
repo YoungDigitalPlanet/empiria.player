@@ -152,10 +152,10 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 	@Override
 	public void addFullscreenListener(VideoFullscreenListener videoFullscreenListener) {
-		addFSListener(videoFullscreenListener);
+		addFullscreenListenerNative(videoFullscreenListener);
 	}
 
-	private native void addFSListener(VideoFullscreenListener listener)/*-{
+	private native void addFullscreenListenerNative(VideoFullscreenListener listener)/*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		if (player) {
 			player
