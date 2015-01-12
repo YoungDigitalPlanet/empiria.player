@@ -11,28 +11,25 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class WindowResizedCommandTest {
+public class WindowResizeTimerTest {
 
 	@InjectMocks
-	private WindowResizedCommand testObj;
-
+	private WindowResizeTimer testObj;
 	@Mock
 	private EventsBus eventsBus;
-
 	@Captor
-	private ArgumentCaptor<PlayerEvent> captor;
+	private ArgumentCaptor<PlayerEvent> eventCaptor;
 
 	@Test
-	public void shouldFireAsyncEvent() {
+	public void shouldExecuteCommand() {
 		// given
 
 		// when
-		testObj.execute();
+		testObj.run();
 
 		// then
-		verify(eventsBus).fireAsyncEvent(captor.capture());
-		PlayerEventTypes eventType = captor.getValue().getType();
-		assertThat(eventType).isEqualTo(PlayerEventTypes.WINDOW_RESIZED);
+		verify(eventsBus).fireAsyncEvent(eventCaptor.capture());
+		PlayerEvent playerEvent = eventCaptor.getValue();
+		assertThat(playerEvent.getType()).isEqualTo(PlayerEventTypes.WINDOW_RESIZED);
 	}
-
 }

@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.controller.window;
 
-import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.*;
 
-public class WindowResizedCommand implements Command {
+public class WindowResizeTimer extends Timer {
 
 	private final PlayerEvent windowResized = new PlayerEvent(PlayerEventTypes.WINDOW_RESIZED);
 
@@ -13,7 +13,7 @@ public class WindowResizedCommand implements Command {
 	private EventsBus eventsBus;
 
 	@Override
-	public void execute() {
+	public void run() {
 		eventsBus.fireAsyncEvent(windowResized);
 	}
 }

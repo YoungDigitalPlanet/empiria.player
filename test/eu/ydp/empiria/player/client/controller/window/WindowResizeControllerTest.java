@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -14,20 +15,20 @@ public class WindowResizeControllerTest {
 	@InjectMocks
 	private WindowResizeController testObj;
 	@Mock
-	private CommandTimer commandTimer;
+	private WindowResizeTimer commandTimer;
 	@Mock
-	private WindowResizedCommand command;
-	
+	private WindowDelegate windowDelegate;
+
 	@Test
-	public void shouldInitCommandTimer() {
+	public void shouldAddResizeHandler() {
 		// given
-		
+
 		// when
 
 		// then
-		verify(commandTimer).setCommand(command);
+		verify(windowDelegate).addResizeHandler(testObj);
 	}
-	
+		
 	@Test
 	public void shouldScheduleTimer() {
 		// given

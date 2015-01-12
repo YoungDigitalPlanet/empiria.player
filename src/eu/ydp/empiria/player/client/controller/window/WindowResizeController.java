@@ -1,22 +1,21 @@
 package eu.ydp.empiria.player.client.controller.window;
 
 import com.google.gwt.event.logical.shared.*;
-import com.google.gwt.user.client.Window;
 import com.google.inject.Inject;
+import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 public class WindowResizeController implements ResizeHandler {
 
-	private final CommandTimer commandTimer;
+	private final WindowResizeTimer windowResizeTimer;
 
 	@Inject
-	public WindowResizeController(CommandTimer commandTimer, WindowResizedCommand command) {
-		this.commandTimer = commandTimer;
-		this.commandTimer.setCommand(command);
-		Window.addResizeHandler(this);
+	public WindowResizeController(WindowResizeTimer windowResizeTimer, WindowDelegate windowDelegate) {
+		this.windowResizeTimer = windowResizeTimer;
+		windowDelegate.addResizeHandler(this);
 	}
 
 	@Override
 	public void onResize(ResizeEvent event) {
-		commandTimer.schedule(250);
+		windowResizeTimer.schedule(250);
 	}
 }

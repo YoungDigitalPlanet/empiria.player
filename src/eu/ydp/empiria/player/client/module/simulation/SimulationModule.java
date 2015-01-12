@@ -151,15 +151,30 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 		Optional<com.google.gwt.user.client.Element> simulationCanvasElement = simulationCanvasProvider.getSimulationCanvasElement(loader);
 
 		if (simulationCanvasElement.isPresent()) {
-			if (event.getType() == PAGE_CHANGE) {
-				if (Objects.equal(pageIndex, event.getValue())) {
-					simulationController.resumeAnimation(simulationCanvasElement.get());
-				} else {
-					simulationController.pauseAnimation(simulationCanvasElement.get());
-				}
-			} else if (event.getType() == WINDOW_RESIZED) {
-				simulationController.onWindowResized(simulationCanvasElement.get());
+			com.google.gwt.user.client.Element canvasElement = simulationCanvasElement.get();
+
+			switch (event.getType()) {
+			case PAGE_CHANGE:
+				pageChangeEventProceed(event, canvasElement);
+				break;
+			case WINDOW_RESIZED:
+				windowResizedEventProceed(canvasElement);
+				break;
+			default:
+				break;
 			}
+		}
+	}
+
+	private void windowResizedEventProceed(com.google.gwt.user.client.Element canvasElement) {
+		simulationController.onWindowResized(canvasElement);
+	}
+
+	private void pageChangeEventProceed(PlayerEvent event, com.google.gwt.user.client.Element canvasElement) {
+		if (Objects.equal(pageIndex, event.getValue())) {
+			simulationController.resumeAnimation(canvasElement);
+		} else {
+			simulationController.pauseAnimation(canvasElement);
 		}
 	}
 }
