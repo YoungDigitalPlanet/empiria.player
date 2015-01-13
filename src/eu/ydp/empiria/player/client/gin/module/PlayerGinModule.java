@@ -41,6 +41,7 @@ import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
+import eu.ydp.empiria.player.client.controller.window.WindowResizeController;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.*;
 import eu.ydp.empiria.player.client.gin.factory.*;
@@ -190,6 +191,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
+		bind(WindowResizeController.class).asEagerSingleton();
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
