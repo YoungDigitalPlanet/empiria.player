@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeTestSubmittedClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestSubmittedClient;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;

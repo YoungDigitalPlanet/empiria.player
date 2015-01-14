@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;

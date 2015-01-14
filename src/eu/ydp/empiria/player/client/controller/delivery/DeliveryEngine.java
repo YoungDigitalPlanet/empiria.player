@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeState;
 import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
@@ -82,6 +83,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final ProgressBonusService progressBonusService;
 	private final UserAgentUtil userAgentUtil;
 	private final ModuleConnectorExtensionProvider moduleConnectorExtensionProvider;
+	private final PlayerWorkModeState playerWorkModeState;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
@@ -94,7 +96,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	                      SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
 	                      ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
 	                      ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
-	                      AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
+	                      AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider, PlayerWorkModeState playerWorkModeState) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -113,6 +115,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.userAgentUtil = userAgentUtil;
 		this.moduleConnectorExtensionProvider = moduleConnectorExtensionProvider;
 		this.assessmentFactory = assessmentFactory;
+		this.playerWorkModeState = playerWorkModeState;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 
@@ -202,6 +205,9 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			extensionsManager.setState(deState.get(2)
 			                                  .isArray());
 
+			if (deState.size() > 2) {
+				playerWorkModeState.setState(deState.get(3).isArray());
+			}
 			flowManager.deinitFlow();
 
 		}
@@ -517,6 +523,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		}
 		deState.set(1, sessionDataManager.getState());
 		deState.set(2, extensionsManager.getState());
+		deState.set(3, playerWorkModeState.getState());
+
 		return deState;
 	}
 

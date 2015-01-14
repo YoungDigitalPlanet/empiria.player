@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.*;
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.controller.body.*;
 import eu.ydp.empiria.player.client.controller.data.*;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeState;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
 import eu.ydp.empiria.player.client.controller.events.interaction.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
@@ -21,7 +22,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.*;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
@@ -190,6 +191,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
+		bind(PlayerWorkModeState.class).in(Singleton.class);
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

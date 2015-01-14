@@ -1,8 +1,6 @@
-package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
+package eu.ydp.empiria.player.client.controller.workmode;
 
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
-import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.controller.workmode.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

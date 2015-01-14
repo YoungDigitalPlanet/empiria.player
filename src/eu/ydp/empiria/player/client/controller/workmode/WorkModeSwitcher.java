@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.workmode;
+package eu.ydp.empiria.player.client.controller.workmode;
 
 import java.io.Serializable;
 
