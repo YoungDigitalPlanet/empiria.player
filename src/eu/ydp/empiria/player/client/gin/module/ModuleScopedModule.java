@@ -2,55 +2,36 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Key;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonus.BonusConfig;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bonusprogress.ProgressBonusConfig;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.*;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
-import eu.ydp.empiria.player.client.gin.module.tutor.TutorId;
-import eu.ydp.empiria.player.client.gin.module.tutor.TutorIdProvider;
+import eu.ydp.empiria.player.client.gin.module.tutor.*;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.*;
 import eu.ydp.empiria.player.client.module.bonus.BonusProvider;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleModel;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
 import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
-import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModuleModel;
-import eu.ydp.empiria.player.client.module.colorfill.ColorfillModelProxy;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionPresenter;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.ColorfillInteractionViewColors;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.ResponseAnswerByViewBuilder;
-import eu.ydp.empiria.player.client.module.colorfill.presenter.UserToResponseAreaMapper;
-import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillBeanProxy;
-import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteractionStructure;
+import eu.ydp.empiria.player.client.module.colorfill.*;
+import eu.ydp.empiria.player.client.module.colorfill.presenter.*;
+import eu.ydp.empiria.player.client.module.colorfill.structure.*;
 import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillInteractionView;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryPresenter;
-import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryButtonView;
-import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupView;
-import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
-import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
+import eu.ydp.empiria.player.client.module.dictionary.view.*;
+import eu.ydp.empiria.player.client.module.draggap.*;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.drawing.DrawingView;
-import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
-import eu.ydp.empiria.player.client.module.drawing.model.DrawingModelProvider;
-import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxButtonCreator;
-import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxPresenter;
-import eu.ydp.empiria.player.client.module.drawing.toolbox.ToolboxView;
-import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
-import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
-import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
-import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
+import eu.ydp.empiria.player.client.module.drawing.model.*;
+import eu.ydp.empiria.player.client.module.drawing.toolbox.*;
+import eu.ydp.empiria.player.client.module.drawing.view.*;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
-import eu.ydp.empiria.player.client.module.ordering.presenter.ItemsResponseOrderController;
-import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
+import eu.ydp.empiria.player.client.module.ordering.presenter.*;
 import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionView;
 import eu.ydp.empiria.player.client.module.progressbonus.presenter.ProgressBonusPresenter;
 import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
@@ -58,6 +39,11 @@ import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
+import eu.ydp.empiria.player.client.module.slideshow.slides.*;
+import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
+import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
+import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
 import eu.ydp.empiria.player.client.module.speechscore.presenter.SpeechScorePresenter;
 import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkView;
 import eu.ydp.empiria.player.client.module.test.reset.TestResetButtonPresenter;
@@ -65,25 +51,15 @@ import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.empiria.player.client.module.texteditor.view.TextEditorView;
-import eu.ydp.empiria.player.client.module.tutor.ActionEventGenerator;
-import eu.ydp.empiria.player.client.module.tutor.ActionExecutorService;
-import eu.ydp.empiria.player.client.module.tutor.CommandFactory;
-import eu.ydp.empiria.player.client.module.tutor.TutorEndHandler;
+import eu.ydp.empiria.player.client.module.tutor.*;
 import eu.ydp.empiria.player.client.module.tutor.actions.*;
-import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
-import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenterImpl;
-import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
-import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerBuilder;
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerReattacher;
-import eu.ydp.empiria.player.client.module.video.presenter.VideoPresenter;
-import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
-import eu.ydp.empiria.player.client.module.video.structure.VideoBeanProvider;
+import eu.ydp.empiria.player.client.module.tutor.presenter.*;
+import eu.ydp.empiria.player.client.module.tutor.view.*;
+import eu.ydp.empiria.player.client.module.video.presenter.*;
+import eu.ydp.empiria.player.client.module.video.structure.*;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
+import eu.ydp.gwtutil.client.gin.scopes.module.*;
 
 public class ModuleScopedModule extends AbstractGinModule {
 
@@ -109,6 +85,26 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindTextEditor();
 		bindTestResetButton();
 		bindSpeechScore();
+		bindSlideshow();
+	}
+
+	private void bindSlideshow() {
+		bindModuleScoped(SlideshowButtonsPresenter.class, new TypeLiteral<ModuleScopedProvider<SlideshowButtonsPresenter>>() {
+		});
+		bindModuleScoped(SlideshowPlayerPresenter.class, new TypeLiteral<ModuleScopedProvider<SlideshowPlayerPresenter>>() {
+		});
+		bindModuleScoped(SlideshowPlayerView.class, new TypeLiteral<ModuleScopedProvider<SlideshowPlayerView>>() {
+		});
+		bindModuleScoped(SlideshowButtonsView.class, new TypeLiteral<ModuleScopedProvider<SlideshowButtonsView>>() {
+		});
+		bindModuleScoped(SlideshowController.class, new TypeLiteral<ModuleScopedProvider<SlideshowController>>() {
+		});
+		bindModuleScoped(SlidesSwitcher.class, new TypeLiteral<ModuleScopedProvider<SlidesSwitcher>>() {
+		});
+		bindModuleScoped(SlidePresenter.class, new TypeLiteral<ModuleScopedProvider<SlidePresenter>>() {
+		});
+		bindModuleScoped(SlideView.class, new TypeLiteral<ModuleScopedProvider<SlideView>>() {
+		});
 	}
 
 	private void bindSpeechScore() {

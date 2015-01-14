@@ -17,7 +17,7 @@ public interface AssessmentControllerFactory {
 
 	PageController getPageController(PageViewSocket pvs, IFlowSocket fs, PageSessionSocket pss);
 
-	ItemController getItemController(ItemViewSocket ivs, IFlowSocket fs, ItemSessionSocket iss);
+	ItemController getItemController(ItemViewSocket ivs, ItemSessionSocket iss);
 
 	Item getItem(DisplayContentOptions options, Map<String, Outcome> outcomeVariables, JSONArray stateArray);
 
