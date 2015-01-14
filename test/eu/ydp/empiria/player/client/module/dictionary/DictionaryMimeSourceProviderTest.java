@@ -11,15 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.MimeSourceProvider;
+import eu.ydp.empiria.player.client.module.dictionary.external.DictionaryMimeSourceProvider;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.MimeUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MimeSourceProviderTest {
+public class DictionaryMimeSourceProviderTest {
 
 	@InjectMocks
-	private MimeSourceProvider testObj;
+	private DictionaryMimeSourceProvider testObj;
 
 	@Mock
 	private EmpiriaPaths empiriaPaths;

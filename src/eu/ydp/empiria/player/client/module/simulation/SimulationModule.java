@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
+import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsPlugin;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.*;
@@ -44,6 +45,9 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 	@Inject
 	private SimulationCanvasProvider simulationCanvasProvider;
 	private int pageIndex = -1;
+
+	@Inject
+	private SoundJsPlugin soundJsPlugin;
 
 	@Override
 	public Widget getView() {
@@ -87,7 +91,8 @@ public class SimulationModule extends SimpleModuleBase implements ILifecycleModu
 		addPageChangeHandlers();
 		addResizeWindowHandlers();
 		initializeLoader(src);
-		pageIndex = pageScopeFactory.getCurrentPageScope().getPageIndex();
+		pageIndex = pageScopeFactory.getCurrentPageScope()
+		                            .getPageIndex();
 	}
 
 	protected void initializeLoader(String resourceSrc) {
