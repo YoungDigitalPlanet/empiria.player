@@ -4,7 +4,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
-public class JSONStateUtil {
+public class JSONStateSerializer {
 
 	public String extractString(JSONArray array) {
 		return extractValue(array).isString().stringValue();

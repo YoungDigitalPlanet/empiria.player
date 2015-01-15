@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.json;
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
-public class JSONStateUtilTest extends AbstractEmpiriaPlayerGWTTestCase {
+public class JSONStateSerializerTest extends AbstractEmpiriaPlayerGWTTestCase {
 
-	private JSONStateUtil testObj = new JSONStateUtil();
+	private JSONStateSerializer testObj = new JSONStateSerializer();
 
 	public void testShouldGetCreatedString() {
 		// given

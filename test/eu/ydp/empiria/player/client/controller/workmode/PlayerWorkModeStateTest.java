@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.workmode;
 
 import com.google.gwt.json.client.JSONArray;
-import eu.ydp.empiria.player.client.json.JSONStateUtil;
+import eu.ydp.empiria.player.client.json.JSONStateSerializer;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
@@ -27,7 +27,7 @@ public class PlayerWorkModeStateTest {
 	@Mock
 	private PlayerWorkModeService playerWorkModeService;
 	@Mock
-	private JSONStateUtil jsonStateUtil;
+	private JSONStateSerializer jsonStateUtil;
 
 	@Captor
 	ArgumentCaptor<PlayerEventHandler> eventCaptor;
