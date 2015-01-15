@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.workmode;
+package eu.ydp.empiria.player.client.json;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;

@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.json;
 
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.controller.workmode.JSONStateUtil;
 
 public class JSONStateUtilTest extends AbstractEmpiriaPlayerGWTTestCase {
 
