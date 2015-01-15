@@ -1,14 +1,15 @@
-package eu.ydp.empiria.player.client.controller.extensions.internal.workmode;
+package eu.ydp.empiria.player.client.controller.workmode;
 
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeSwitcher;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeSwitcher;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode.*;
+import static eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode.*;
 import static junitparams.JUnitParamsRunner.$;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;

@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
 import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModelEncoder;
 import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresenter;
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
-import eu.ydp.empiria.player.client.module.workmode.WorkModePreviewClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, IStateful, IUniqueModule, IActivity,

@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
 
 public class PageSwitchModule extends ControlModule implements ISimpleModule, ChangeHandler, WorkModeTestClient {
 

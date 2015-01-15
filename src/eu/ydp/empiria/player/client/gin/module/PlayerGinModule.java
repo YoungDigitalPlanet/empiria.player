@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.*;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;

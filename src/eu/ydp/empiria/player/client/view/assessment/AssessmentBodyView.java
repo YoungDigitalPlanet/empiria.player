@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClient;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class AssessmentBodyView extends FlowPanel implements WorkModeClient {
