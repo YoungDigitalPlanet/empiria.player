@@ -67,11 +67,19 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 	}
 
 	@Override
+	public void playLooped() {
+	}
+
+	@Override
 	public void stop() {
 	}
 
 	@Override
 	public void pause() {
+	}
+
+	@Override
+	public void resume() {
 	}
 
 	@Override
@@ -92,7 +100,5 @@ public class FullscreenVideoExecutor implements MediaExecutor<Widget>, Fullscree
 
 	@Override
 	public void setSoundFinishedListener(SoundExecutorListener listener) {
-		// do nothing - not applicable
 	}
-
 }

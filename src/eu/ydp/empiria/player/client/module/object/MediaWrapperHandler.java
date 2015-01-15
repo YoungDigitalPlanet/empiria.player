@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.object;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrappersPair;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackRecevier;
+import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 
-public class MediaWrapperHandler implements CallbackRecevier {
+public class MediaWrapperHandler implements CallbackReceiver {
 	private final ObjectModule objectModule;
 
 	public MediaWrapperHandler(ObjectModule objectModule) {

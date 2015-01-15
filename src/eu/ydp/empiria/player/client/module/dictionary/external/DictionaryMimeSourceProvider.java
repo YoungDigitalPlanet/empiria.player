@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.empiria.player.client.util.MimeUtil;
 
-public class MimeSourceProvider {
-	private static final String dictionaryMediaPath = "dictionary/media/";
+public class DictionaryMimeSourceProvider {
+	private static final String DICTIONARY_MEDIA_PATH = "dictionary/media/";
 
 	@Inject
 	private EmpiriaPaths empiriaPaths;
@@ -18,7 +18,7 @@ public class MimeSourceProvider {
 	private MimeUtil mimeUtil;
 
 	public Map<String, String> getSourcesWithTypes(String fileName) {
-		String dictionaryMediaFilePath = dictionaryMediaPath + fileName;
+		String dictionaryMediaFilePath = DICTIONARY_MEDIA_PATH + fileName;
 		String path = empiriaPaths.getCommonsFilePath(dictionaryMediaFilePath);
 
 		Map<String, String> sourcesWithTypes = Maps.newHashMap();

@@ -80,6 +80,10 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 		}
 	}
 
+	@Override
+	public void playLooped() {
+	}
+
 	private boolean sourceExists() {
 		return baseMediaConfiguration != null && !baseMediaConfiguration.getSources().isEmpty();
 	}
@@ -90,6 +94,10 @@ public class SoundExecutorSwfSimple implements MediaExecutor<Widget> {
 
 	@Override
 	public void pause() {
+	}
+
+	@Override
+	public void resume() {
 	}
 
 	@Override

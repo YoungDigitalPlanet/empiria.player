@@ -10,19 +10,18 @@ import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 
 public class ExternalFullscreenVideoConnector implements FullscreenVideoConnector {
 
-	private final Map<String, FullscreenVideoConnectorListener> idToListeners = Maps.newHashMap();
+	private Map<String, FullscreenVideoConnectorListener> idToListeners = Maps.newHashMap();
 
 	public ExternalFullscreenVideoConnector() {
 		initJs();
 	}
 
 	private native void initJs() /*-{
-		var instance = this;
-		$wnd.empiriaMediaFullscreenVideoOnClose = function(id,
-				currentTimeMillipercents) {
-			instance.@eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector::onFullscreenClose(Ljava/lang/String;I)(id, currentTimeMillipercents);
-		}
-	}-*/;
+									var instance = this;
+									$wnd.empiriaMediaFullscreenVideoOnClose = function(id, currentTimeMillipercents){
+									instance.@eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoConnector::onFullscreenClose(Ljava/lang/String;I)(id, currentTimeMillipercents);
+									}
+									}-*/;
 
 	private void onFullscreenClose(String id, int currentTimeMillipercent) {
 		if (idToListeners.containsKey(id)) {
@@ -44,9 +43,8 @@ public class ExternalFullscreenVideoConnector implements FullscreenVideoConnecto
 	}
 
 	private native void openFullscreenJs(String id, JsArrayString sources, int currentTimePercent)/*-{
-		if (typeof $wnd.empiriaMediaFullscreenVideoOpen == 'function') {
-			$wnd.empiriaMediaFullscreenVideoOpen(id, sources,
-					currentTimePercent);
-		}
-	}-*/;
+																									if (typeof $wnd.empiriaMediaFullscreenVideoOpen == 'function'){
+																									$wnd.empiriaMediaFullscreenVideoOpen(id, sources, currentTimePercent);
+																									}
+																									}-*/;
 }
