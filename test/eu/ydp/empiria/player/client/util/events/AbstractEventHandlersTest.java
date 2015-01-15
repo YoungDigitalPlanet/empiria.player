@@ -1,15 +1,5 @@
 package eu.ydp.empiria.player.client.util.events;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-
-import java.util.Set;
-
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
@@ -21,6 +11,16 @@ import eu.ydp.gwtutil.client.event.Event;
 import eu.ydp.gwtutil.client.event.EventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.event.HandlerRegistration;
+import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+
+import java.util.Set;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("PMD")
 public class AbstractEventHandlersTest {
@@ -138,23 +138,14 @@ public class AbstractEventHandlersTest {
 	public void addMultipleEventHandlerTest() {
 		AbstractPlayerEventHandlerImpl abstractEventHandlers = getPlayerEventHandler();
 		PlayerEventHandler handler = mock(PlayerEventHandler.class);
-		PlayerEventHandler handler2 = mock(PlayerEventHandler.class);
 
-		abstractEventHandlers.addHandlers(handler, PlayerEvent.getTypes(PlayerEventTypes.LOAD_PAGE_VIEW, PlayerEventTypes.AFTER_FLOW));
-		abstractEventHandlers.addHandler(handler2, PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW));
+		abstractEventHandlers.addHandler(handler, PlayerEvent.getType(PlayerEventTypes.LOAD_PAGE_VIEW));
 
 		// test
 		PlayerEvent event = new PlayerEvent(PlayerEventTypes.LOAD_PAGE_VIEW);
 		abstractEventHandlers.fireEvent(event);
 		verify(handler).onPlayerEvent(event);
-		verify(handler2).onPlayerEvent(event);
-		Mockito.reset(handler2);
 		Mockito.reset(handler);
-		event = new PlayerEvent(PlayerEventTypes.AFTER_FLOW);
-		abstractEventHandlers.fireEvent(event);
-		verify(handler).onPlayerEvent(event);
-		verify(handler).onPlayerEvent(Matchers.any(PlayerEvent.class));
-		verify(handler2, times(0)).onPlayerEvent(event);
 	}
 
 }
