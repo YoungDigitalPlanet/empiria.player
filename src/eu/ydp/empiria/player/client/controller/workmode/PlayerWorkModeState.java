@@ -5,35 +5,15 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.json.JSONStateSerializer;
 import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-
-import javax.annotation.PostConstruct;
 
 public class PlayerWorkModeState implements IStateful {
 
-	@Inject
-	private EventsBus eventsBus;
 	@Inject
 	private PlayerWorkModeService playerWorkModeService;
 	@Inject
 	private JSONStateSerializer jsonStateSerializer;
 
 	private Optional<PlayerWorkMode> workModeFromState = Optional.absent();
-
-	@PostConstruct
-	public void postConstruct() {
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED), new PlayerEventHandler() {
-			@Override
-			public void onPlayerEvent(PlayerEvent event) {
-				if (workModeFromState.isPresent()) {
-					playerWorkModeService.tryToUpdateWorkMode(workModeFromState.get());
-				}
-			}
-		});
-	}
 
 	@Override
 	public JSONArray getState() {
@@ -45,5 +25,11 @@ public class PlayerWorkModeState implements IStateful {
 	public void setState(JSONArray array) {
 		String state = jsonStateSerializer.extractString(array);
 		workModeFromState = Optional.of(PlayerWorkMode.valueOf(state));
+	}
+
+	public void updateWorkModeFormState() {
+		if (workModeFromState.isPresent()) {
+			playerWorkModeService.tryToUpdateWorkMode(workModeFromState.get());
+		}
 	}
 }

@@ -3,13 +3,8 @@ package eu.ydp.empiria.player.client.controller.workmode;
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.json.JSONStateSerializer;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -29,22 +24,29 @@ public class PlayerWorkModeStateTest {
 	@Mock
 	private JSONStateSerializer jsonStateUtil;
 
-	@Captor
-	ArgumentCaptor<PlayerEventHandler> eventCaptor;
-
 	@Test
-	public void testShouldUpdateModeOnEvent() {
+	public void testShouldNotUpdateModeOnService() {
 		// given
 		JSONArray state = mock(JSONArray.class);
-
 		when(jsonStateUtil.extractString(state)).thenReturn("FULL");
 
-		testObj.postConstruct();
+		// when
+		testObj.updateWorkModeFormState();
+
+		// then
+		verify(playerWorkModeService, never()).tryToUpdateWorkMode(any(PlayerWorkMode.class));
+	}
+
+	@Test
+	public void testShouldUpdateModeOnService() {
+		// given
+		JSONArray state = mock(JSONArray.class);
+		when(jsonStateUtil.extractString(state)).thenReturn("FULL");
+
 		testObj.setState(state);
 
 		// when
-		verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED)), eventCaptor.capture());
-		eventCaptor.getValue().onPlayerEvent(null);
+		testObj.updateWorkModeFormState();
 
 		// then
 		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.FULL);
