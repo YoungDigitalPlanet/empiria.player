@@ -170,7 +170,7 @@ public class SelectableChoicePresenterTest {
 	}
 
 	@Test
-	public void shoultReturnViewsWidget() {
+	public void shouldReturnViewsWidget() {
 		// given
 		Widget widget = mock(Widget.class);
 		when(view.asWidget()).thenReturn(widget);

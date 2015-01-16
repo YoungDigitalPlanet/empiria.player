@@ -37,13 +37,17 @@ public class SelectableChoicePresenter {
 
 	public void markAnswers(boolean mark, boolean isChoiceCorrect) {
 		if (mark) {
-			if (isChoiceCorrect) {
-				markCorrectChoice();
-			} else {
-				markWrongChoice();
-			}
+			markChoice(isChoiceCorrect);
 		} else {
 			updatePanelStyleName();
+		}
+	}
+
+	private void markChoice(boolean isChoiceCorrect) {
+		if (isChoiceCorrect) {
+			markCorrectChoice();
+		} else {
+			markWrongChoice();
 		}
 	}
 

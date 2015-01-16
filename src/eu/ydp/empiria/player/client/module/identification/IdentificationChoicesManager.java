@@ -1,25 +1,21 @@
 package eu.ydp.empiria.player.client.module.identification;
 
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.*;
 import com.google.gwt.json.client.*;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.module.identification.predicates.*;
 import eu.ydp.empiria.player.client.module.identification.presenter.SelectableChoicePresenter;
-import java.util.*;
+import java.util.List;
 
 public class IdentificationChoicesManager {
 
-	private final List<SelectableChoicePresenter> choices;
+	private final List<SelectableChoicePresenter> choices = Lists.newArrayList();
 
 	@Inject
 	private ChoiceToIdentifierTransformer choiceToIdentifierTransformer;
 	@Inject
 	private SelectedChoicePredicate selectedChoicePredicate;
-
-	public IdentificationChoicesManager() {
-		choices = new LinkedList<>();
-	}
 
 	public void addChoice(SelectableChoicePresenter choice) {
 		choices.add(choice);
