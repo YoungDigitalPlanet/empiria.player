@@ -89,6 +89,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private String stateAsync;
 
 	private final AssessmentFactory assessmentFactory;
+	private boolean pageLoadedFirstTime = true;
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
@@ -478,7 +479,11 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			}
 			updatePageStyle();
 
-			playerWorkModeState.updateWorkModeFormState();
+			if (pageLoadedFirstTime) {
+				playerWorkModeState.updateWorkModeFormState();
+				pageLoadedFirstTime = false;
+			}
+
 		}
 		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK
 				|| event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {

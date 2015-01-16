@@ -49,7 +49,7 @@ public class PlayerWorkModeStateTest {
 		testObj.updateWorkModeFormState();
 
 		// then
-		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.FULL);
+		verify(playerWorkModeService).forceToUpdateWorkMode(PlayerWorkMode.FULL);
 	}
 
 	@Test
