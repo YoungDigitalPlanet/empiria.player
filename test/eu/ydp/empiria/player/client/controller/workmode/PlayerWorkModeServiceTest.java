@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.workmode;
 
-import eu.ydp.empiria.player.client.controller.workmode.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,7 +14,7 @@ public class PlayerWorkModeServiceTest {
 	@InjectMocks
 	private PlayerWorkModeService testObj;
 
-	@Mock(extraInterfaces = { WorkModePreviewClient.class, WorkModeTestClient.class })
+	@Mock(extraInterfaces = {WorkModePreviewClient.class, WorkModeTestClient.class})
 	private WorkModeClientType moduleToDisableAndEnable;
 	@Mock(extraInterfaces = WorkModeTestClient.class)
 	private WorkModeClientType moduleToDisable;
@@ -121,4 +120,16 @@ public class PlayerWorkModeServiceTest {
 		verify((WorkModeTestClient) moduleToDisableAndEnable, never()).disableTestMode();
 	}
 
+	@Test
+	public void shouldNotifyModule_evenIfTransitionIsInvalid() {
+		// given
+		PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
+		testObj.registerModule(moduleToEnable);
+
+		// when
+		testObj.forceToUpdateWorkMode(validTransition);
+
+		// then
+		verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
+	}
 }

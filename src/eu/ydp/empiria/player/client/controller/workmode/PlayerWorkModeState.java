@@ -29,7 +29,7 @@ public class PlayerWorkModeState implements IStateful {
 
 	public void updateWorkModeFormState() {
 		if (workModeFromState.isPresent()) {
-			playerWorkModeService.tryToUpdateWorkMode(workModeFromState.get());
+			playerWorkModeService.forceToUpdateWorkMode(workModeFromState.get());
 		}
 	}
 }

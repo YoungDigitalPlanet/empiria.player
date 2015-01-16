@@ -18,10 +18,14 @@ public class PlayerWorkModeService {
 
 	public void tryToUpdateWorkMode(PlayerWorkMode newWorkMode) {
 		if (currentWorkMode.canChangeModeTo(newWorkMode)) {
-			previousWorkMode = currentWorkMode;
-			currentWorkMode = newWorkMode;
-			notifyModules();
+			forceToUpdateWorkMode(newWorkMode);
 		}
+	}
+
+	public void forceToUpdateWorkMode(PlayerWorkMode newWorkMode) {
+		previousWorkMode = currentWorkMode;
+		currentWorkMode = newWorkMode;
+		notifyModules();
 	}
 
 	private void notifyModules() {
