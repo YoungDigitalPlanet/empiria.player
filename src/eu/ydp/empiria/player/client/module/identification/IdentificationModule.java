@@ -87,7 +87,11 @@ public class IdentificationModule extends InteractionModuleBase {
 	@Override
 	public void lock(boolean locked) {
 		this.locked = locked;
-		choicesManager.lockAll();
+		if (locked) {
+			choicesManager.lockAll();
+		} else {
+			choicesManager.unlockAll();
+		}
 	}
 
 	@Override

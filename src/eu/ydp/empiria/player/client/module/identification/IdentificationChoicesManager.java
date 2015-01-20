@@ -23,7 +23,13 @@ public class IdentificationChoicesManager {
 
 	public void lockAll() {
 		for (SelectableChoicePresenter choice : choices) {
-			choice.setLocked(true);
+			choice.lock();
+		}
+	}
+
+	public void unlockAll() {
+		for (SelectableChoicePresenter choice : choices) {
+			choice.unlock();
 		}
 	}
 
