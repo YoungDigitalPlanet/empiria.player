@@ -185,10 +185,9 @@ public class SelectableChoicePresenterTest {
 	@Test
 	public void shouldLockView() {
 		// given
-		boolean lock = true;
 
 		// when
-		testObj.setLocked(lock);
+		testObj.lock();
 
 		// then
 		verify(view).lock();
@@ -197,10 +196,9 @@ public class SelectableChoicePresenterTest {
 	@Test
 	public void shouldUnlockView() {
 		// given
-		boolean lock = false;
 
 		// when
-		testObj.setLocked(lock);
+		testObj.unlock();
 
 		// then
 		verify(view).unlock();

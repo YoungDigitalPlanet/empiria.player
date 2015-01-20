@@ -42,8 +42,20 @@ public class IdentificationChoicesManagerTest {
 		testObj.lockAll();
 
 		// then
-		verify(firstPresenter).setLocked(true);
-		verify(secondPresenter).setLocked(true);
+		verify(firstPresenter).lock();
+		verify(secondPresenter).lock();
+	}
+
+	@Test
+	public void shouldUnlockChoices() {
+		// given
+
+		// when
+		testObj.unlockAll();
+
+		// then
+		verify(firstPresenter).unlock();
+		verify(secondPresenter).unlock();
 	}
 
 	@Test

@@ -83,11 +83,11 @@ public class SelectableChoicePresenter {
 		return view.asWidget();
 	}
 
-	public void setLocked(boolean lock) {
-		if (lock) {
-			view.lock();
-		} else {
-			view.unlock();
-		}
+	public void lock() {
+		view.lock();
+	}
+
+	public void unlock() {
+		view.unlock();
 	}
 }
