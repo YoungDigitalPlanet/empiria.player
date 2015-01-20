@@ -19,6 +19,9 @@ public class SelectableChoiceViewImpl extends Composite implements SelectableCho
 	AbsolutePanel cover;
 
 	@UiField
+	FlowPanel panel;
+
+	@UiField
 	FlowPanel optionPanel;
 
 	@UiField(provided = true)
@@ -31,7 +34,7 @@ public class SelectableChoiceViewImpl extends Composite implements SelectableCho
 		this.contentWidget = contentWidget;
 		this.styleNameConstants = styleNameConstants;
 		uiBinder.createAndBindUi(this);
-		initWidget(optionPanel);
+		initWidget(panel);
 	}
 
 	@Override
