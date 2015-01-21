@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
 
 public class AssessmentBody implements WidgetWorkflowListener {
 

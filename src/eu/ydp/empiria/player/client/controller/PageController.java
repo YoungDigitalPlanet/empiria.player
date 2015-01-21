@@ -1,37 +1,23 @@
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.List;
-
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
-import eu.ydp.empiria.player.client.controller.communication.PageData;
-import eu.ydp.empiria.player.client.controller.communication.PageDataError;
-import eu.ydp.empiria.player.client.controller.communication.PageDataSummary;
-import eu.ydp.empiria.player.client.controller.communication.PageDataTest;
-import eu.ydp.empiria.player.client.controller.communication.PageDataToC;
-import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
-import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
-import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
+import eu.ydp.empiria.player.client.controller.log.*;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventHandler;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEventTypes;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.empiria.player.client.util.events.reset.*;
+import eu.ydp.empiria.player.client.util.events.state.*;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
-import eu.ydp.empiria.player.client.view.page.PageViewCarrier;
-import eu.ydp.empiria.player.client.view.page.PageViewSocket;
+import eu.ydp.empiria.player.client.view.page.*;
+import java.util.List;
 
 public class PageController implements PageInterferenceSocket, LessonResetEventHandler {
 	private final PageViewSocket pageViewSocket;
@@ -67,8 +53,7 @@ public class PageController implements PageInterferenceSocket, LessonResetEventH
 			pageViewSocket.setPageViewCarrier(new PageViewCarrier());
 
 			for (int i = 0; i < pageDataTest.datas.length; i++) {
-				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), flowSocket,
-						pageSessionSocket.getItemSessionSocket());
+				ItemController controller = controllerFactory.getItemController(pageViewSocket.getItemViewSocket(i), pageSessionSocket.getItemSessionSocket());
 				controller.init(pageDataTest.displayOptions);
 				controller.setAssessmentParenthoodSocket(parenthoodSocket);
 				if (pageDataTest.flowOptions.activityMode == ActivityMode.CHECK) {
@@ -112,9 +97,9 @@ public class PageController implements PageInterferenceSocket, LessonResetEventH
 	private native JavaScriptObject createPageSocket()/*-{
 		var socket = {};
 		var instance = this;
-		socket.getItemSockets = function() {
+		socket.getItemSockets = function () {
 			return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
-		}
+		};
 		return socket;
 	}-*/;
 

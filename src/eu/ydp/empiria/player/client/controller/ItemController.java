@@ -56,7 +56,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	private int itemIndex;
 
 	@Inject
-	public ItemController(@Assisted ItemViewSocket ivs, @Assisted IFlowSocket fs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
+	public ItemController(@Assisted ItemViewSocket ivs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
 		itemViewSocket = ivs;
 		itemSessionSocket = iss;
 		this.controllerFactory = controllerFactory;
@@ -121,7 +121,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 	}
 
 	protected ItemViewCarrier getItemViewCarrier(Item item, ItemData itemData, boolean useSkin) {
-		ItemViewCarrier carrier = null;
+		ItemViewCarrier carrier;
 
 		if (useSkin) {
 			carrier = new ItemViewCarrier(item.getContentView());

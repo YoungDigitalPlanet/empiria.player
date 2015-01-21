@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeState;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.*;
@@ -49,6 +50,8 @@ import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlersMock
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
+import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
+import eu.ydp.gwtutil.client.debug.log.LogAppender;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
@@ -150,6 +153,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		bind(String.class).annotatedWith(UniqueId.class)
 						  .toInstance("id");
 		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+		bind(LogAppender.class).to(ConsoleAppender.class);
+		bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
 		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
 		install(new FactoryModuleBuilder().build(TextTrackFactory.class));

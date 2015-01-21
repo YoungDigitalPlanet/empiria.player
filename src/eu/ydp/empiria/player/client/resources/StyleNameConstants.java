@@ -467,6 +467,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-header")
 	public String QP_HEADER();
 
+	@DefaultStringValue("qp-identification-module")
+	public String QP_IDENTIFICATION_MODULE();
+
 	@DefaultStringValue("qp-identification-option")
 	public String QP_IDENTIFICATION_OPTION();
 

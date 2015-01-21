@@ -2,18 +2,17 @@ package eu.ydp.empiria.player.client.controller.extensions.internal;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 
 public class PlayerCoreApiExtension extends InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension,
@@ -79,23 +78,23 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 	}
 
 	private native JavaScriptObject callImportFlowOptionsJs(JavaScriptObject playerJsObject)/*-{
-																							if (typeof playerJsObject.importFlowOptions == 'function')
-																							return playerJsObject.importFlowOptions();
-																							return null;
-																							}-*/;
+        if (typeof playerJsObject.importFlowOptions == 'function')
+            return playerJsObject.importFlowOptions();
+        return null;
+    }-*/;
 
 	private native JavaScriptObject callImportDisplayOptionsJs(JavaScriptObject playerJsObject)/*-{
-																								if (typeof playerJsObject.importDisplayOptions == 'function')
-																								return playerJsObject.importDisplayOptions();
-																								return null;
-																								}-*/;
+        if (typeof playerJsObject.importDisplayOptions == 'function')
+            return playerJsObject.importDisplayOptions();
+        return null;
+    }-*/;
 
 	private native boolean isPreviewMode(JavaScriptObject playerJsObject)/*-{
-																			if (!!playerJsObject.enablePreviewMode){
-																			return playerJsObject.enablePreviewMode();
-																			}
-																			return false;
-																			}-*/;
+        if (!!playerJsObject.enablePreviewMode) {
+            return playerJsObject.enablePreviewMode();
+        }
+        return false;
+    }-*/;
 
 	private void importState() {
 		String state = callImportStateStringJs(playerJsObject);
@@ -105,10 +104,10 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 	}
 
 	private native String callImportStateStringJs(JavaScriptObject playerJsObject)/*-{
-																					if (typeof playerJsObject.importStateString == 'function')
-																					return playerJsObject.importStateString();
-																					return "";
-																					}-*/;
+        if (typeof playerJsObject.importStateString == 'function')
+            return playerJsObject.importStateString();
+        return "";
+    }-*/;
 
 	private String exportState() {
 		return deliveryEngineSocket.getStateString();
@@ -119,15 +118,15 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 	}
 
 	private native void initApiJs(JavaScriptObject playerJsObject)/*-{
-																	var instance = this;
-																	playerJsObject.exportStateString = function(){
-																	return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportState()();
-																	}		
-																	playerJsObject.exportItemIndex = function(){
-																	return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportItemIndex()();
-																	}
-																	
-																	}-*/;
+        var instance = this;
+        playerJsObject.exportStateString = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportState()();
+        }
+        playerJsObject.exportItemIndex = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.extensions.internal.PlayerCoreApiExtension::exportItemIndex()();
+        }
+
+    }-*/;
 
 	private void importInitialItemIndex() {
 		int importedItemIndex = callImportInitialItemIndex(playerJsObject);
@@ -136,15 +135,15 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 	}
 
 	private native int callImportInitialItemIndex(JavaScriptObject playerJsObject)/*-{
-																					var itemIndex = -1;
-																					if (typeof playerJsObject.importInitialItemIndex == 'function'){
-																					var importedIndex =  playerJsObject.importInitialItemIndex();
-																					if(!isNaN(importedIndex)){
-																					itemIndex = parseInt(importedIndex);
-																					}			
-																					}
-																					
-																					return itemIndex;		
-																					
-																					}-*/;
+        var itemIndex = -1;
+        if (typeof playerJsObject.importInitialItemIndex == 'function') {
+            var importedIndex = playerJsObject.importInitialItemIndex();
+            if (!isNaN(importedIndex)) {
+                itemIndex = parseInt(importedIndex);
+            }
+        }
+
+        return itemIndex;
+
+    }-*/;
 }

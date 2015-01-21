@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.item;
 
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -32,7 +31,7 @@ public abstract class AbstractConnectionItemView extends Composite {
 	}
 
 	protected void buildView() {
-		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue(), true));
+		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue()));
 		item.getElement().getStyle().setZIndex(1);
 	}
 

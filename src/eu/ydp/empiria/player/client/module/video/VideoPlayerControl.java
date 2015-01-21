@@ -27,4 +27,6 @@ public interface VideoPlayerControl {
 	void addLoadedAllDataHandler(VideoPlayerControlHandler handler);
 
 	void addDurationChangeHandler(VideoPlayerControlHandler handler);
+
+	void addFullscreenListener(VideoFullscreenListener videoFullscreenListener);
 }
