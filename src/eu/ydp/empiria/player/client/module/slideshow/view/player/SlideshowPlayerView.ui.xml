@@ -10,5 +10,7 @@
 		</g:FlowPanel>
 		<g:FlowPanel ui:field="slidesPanel" styleName="{res.QP_SLIDESHOW_SLIDES_PANEL}">
 		</g:FlowPanel>
+		<g:FlowPanel ui:field="pagerPanel">
+		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder>

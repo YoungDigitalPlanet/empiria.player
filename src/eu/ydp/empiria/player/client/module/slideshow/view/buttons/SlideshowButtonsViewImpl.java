@@ -65,6 +65,11 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 	}
 
 	@Override
+	public boolean isPlayButtonDown() {
+		return playButton.isStateDown();
+	}
+
+	@Override
 	public Widget asWidget() {
 		return buttonsPanel.asWidget();
 	}
@@ -72,11 +77,6 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
 	@Override
 	public void setPresenter(SlideshowButtonsPresenter presenter) {
 		this.presenter = presenter;
-	}
-
-	@Override
-	public boolean isPlayButtonDown() {
-		return playButton.isStateDown();
 	}
 
 	private void addEventsHandlers() {

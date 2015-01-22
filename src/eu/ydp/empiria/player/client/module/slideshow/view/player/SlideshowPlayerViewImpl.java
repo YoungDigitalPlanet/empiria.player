@@ -25,6 +25,9 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	@UiField
 	protected Panel slidesPanel;
 
+	@UiField
+	protected Panel pagerPanel;
+
 	@Inject
 	public SlideshowPlayerViewImpl(@ModuleScoped SlideView slideView, @ModuleScoped SlideshowButtonsView buttonsView) {
 		uiBinder.createAndBindUi(this);
@@ -40,5 +43,10 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	@Override
 	public Widget asWidget() {
 		return mainPanel;
+	}
+
+	@Override
+	public void addPager(Widget pager) {
+		pagerPanel.add(pager);
 	}
 }

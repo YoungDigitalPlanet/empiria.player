@@ -141,4 +141,32 @@ public class SlidesSwitcherTest {
 		// then
 		assertThat(result).isEqualTo(10);
 	}
+
+	@Test
+	public void shouldShowSlide() {
+		// given
+		slides.add(slide);
+		int slideToShow = 1;
+
+		// when
+		testObj.showSlide(slideToShow);
+		int result = testObj.getCurrentSlideIndex();
+
+		// then
+		assertThat(result).isEqualTo(slideToShow);
+		verify(presenter).replaceViewData(slide);
+	}
+
+	@Test
+	public void shouldNotShowSlide() {
+		// given
+		slides.add(slide);
+		int slideToShow = 3;
+
+		// when
+		testObj.showSlide(slideToShow);
+
+		// then
+		verify(presenter, never()).replaceViewData(slide);
+	}
 }

@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
+import java.util.List;
 
 public class SlideshowPlayerModule extends SimpleModuleBase {
 
@@ -16,14 +17,16 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	private final SlideshowModuleStructure moduleStructure;
 	private final IJSONService ijsonService;
 	private final SlideshowPlayerPresenter presenter;
+	private final SlideshowTemplateInterpreter templatesInterpreter;
 
 	@Inject
 	public SlideshowPlayerModule(@ModuleScoped SlideshowController slideshowController, @ModuleScoped SlideshowPlayerPresenter presenter,
-			SlideshowModuleStructure moduleStructure, IJSONService ijsonService) {
+			SlideshowModuleStructure moduleStructure, IJSONService ijsonService, SlideshowTemplateInterpreter templatesInterpreter) {
 		this.controller = slideshowController;
 		this.presenter = presenter;
 		this.moduleStructure = moduleStructure;
 		this.ijsonService = ijsonService;
+		this.templatesInterpreter = templatesInterpreter;
 	}
 
 	@Override
@@ -34,13 +37,20 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	@Override
 	protected void initModule(Element element) {
 		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
-		SlideshowBean bean = getSlideshowBean();
+		SlideshowPlayerBean slideshowPlayer = moduleStructure.getBean();
+		SlideshowBean slideshow = slideshowPlayer.getSlideshowBean();
 
-		presenter.init(bean);
-		controller.init(bean.getSlideBeans());
+		initPager(slideshowPlayer);
+		presenter.init(slideshow);
+		controller.init(slideshow.getSlideBeans());
 	}
 
-	private SlideshowBean getSlideshowBean() {
-		return moduleStructure.getBean().getSlideshowBean();
+	private void initPager(SlideshowPlayerBean slideshowPlayer) {
+		if (templatesInterpreter.isPagerTemplateActivate(slideshowPlayer)) {
+			List<SlideBean> slides = slideshowPlayer.getSlideshowBean().getSlideBeans();
+			int slidesSize = slides.size();
+			Widget pagerWidget = controller.initPager(slidesSize);
+			presenter.setPager(pagerWidget);
+		}
 	}
 }

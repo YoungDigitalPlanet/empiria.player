@@ -1,21 +1,55 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
-import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowSlidesController;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
+import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public interface SlideshowButtonsPresenter {
-	void setEnabledNextButton(boolean enabled);
+public class SlideshowButtonsPresenter {
 
-	void setEnabledPreviousButton(boolean enabled);
+	private final SlideshowButtonsView buttonsView;
+	private SlideshowController controller;
 
-	void setPlayButtonDown(boolean isDown);
+	@Inject
+	public SlideshowButtonsPresenter(@ModuleScoped SlideshowButtonsView buttonsView) {
+		this.buttonsView = buttonsView;
+		buttonsView.setPresenter(this);
+	}
 
-	void setSlideshowController(SlideshowSlidesController controller);
+	public void setSlideshowController(SlideshowController controller) {
+		this.controller = controller;
+	}
 
-	void onNextClick();
+	public void setEnabledNextButton(boolean enabled) {
+		buttonsView.setEnabledNextButton(enabled);
+	}
 
-	void onPreviousClick();
+	public void setEnabledPreviousButton(boolean enabled) {
+		buttonsView.setEnabledPreviousButton(enabled);
+	}
 
-	void onPlayClick();
+	public void setPlayButtonDown(boolean isDown) {
+		buttonsView.setPlayButtonDown(isDown);
+	}
 
-	void onStopClick();
+	public void onNextClick() {
+		controller.showNextSlide();
+	}
+
+	public void onPreviousClick() {
+		controller.showPreviousSlide();
+	}
+
+	public void onPlayClick() {
+		if (buttonsView.isPlayButtonDown()) {
+			controller.playSlideshow();
+		} else {
+			controller.pauseSlideshow();
+		}
+	}
+
+	public void onStopClick() {
+		buttonsView.setPlayButtonDown(false);
+		controller.stopSlideshow();
+	}
 }

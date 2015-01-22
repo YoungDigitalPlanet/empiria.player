@@ -54,6 +54,8 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 		SlideBean secondSlide = slides.get(1);
 		assertSlidesEquals(secondSlideExpected, secondSlide);
+
+		assertTemplateIsNull(bean);
 	}
 
 	public void testSlideshowWihoutNarration() {
@@ -73,6 +75,8 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 		SlideBean firstSlide = slides.get(0);
 		assertSlidesEquals(firstSlideExpected, firstSlide);
+
+		assertTemplateIsNull(bean);
 	}
 
 	public void testSlideshowWithoutTitle() {
@@ -94,6 +98,16 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 		SlideBean secondSlide = slides.get(1);
 		assertSlidesEquals(secondSlideExpected, secondSlide);
+
+		assertTemplateIsNull(bean);
+	}
+
+	public void testSlideshowWithTemplate() {
+		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.FULL_SLIDESHOW_WITH_TEMPLATE);
+		SlideshowTemplate template = bean.getTemplate();
+
+		assertNotNull(template);
+		assertNotNull(template.getSlideshowPager());
 	}
 
 	private void assertSlidesEquals(SlideBean slideExpected, SlideBean slideActual) {
@@ -113,5 +127,9 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		JAXBParser<SlideshowPlayerBean> jaxbParser = jaxbParserFactory.create();
 		SlideshowPlayerBean slBean = jaxbParser.parse(xml);
 		return slBean;
+	}
+
+	private void assertTemplateIsNull(SlideshowPlayerBean bean) {
+		assertEquals(null, bean.getTemplate());
 	}
 }
