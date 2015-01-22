@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.gin.module;
 
+import eu.ydp.empiria.player.client.module.identification.view.*;
+
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
@@ -21,7 +23,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.*;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
@@ -41,6 +43,7 @@ import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory
 import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
+import eu.ydp.empiria.player.client.controller.window.WindowResizeController;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.*;
 import eu.ydp.empiria.player.client.gin.factory.*;
@@ -50,6 +53,7 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider;
 import eu.ydp.empiria.player.client.module.feedback.image.*;
 import eu.ydp.empiria.player.client.module.feedback.text.*;
+import eu.ydp.empiria.player.client.module.identification.*;
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.*;
@@ -87,9 +91,9 @@ public class PlayerGinModule extends AbstractGinModule {
 	protected void configure() {
 		bind(StyleDataSourceManager.class).in(Singleton.class);
 		bind(StyleSocket.class).to(StyleDataSourceManager.class)
-							   .in(Singleton.class);
+				.in(Singleton.class);
 		bind(PlayerViewSocket.class).to(PlayerContentView.class)
-									.in(Singleton.class);
+				.in(Singleton.class);
 		bind(PlayerContentView.class).in(Singleton.class);
 
 		// this is unnecessary, but left for clarity - if GIN can't find a
@@ -107,7 +111,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(DataSourceManager.class).in(Singleton.class);
 		bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
 		bind(EventsBus.class).to(PlayerEventsBus.class)
-							 .in(Singleton.class);
+				.in(Singleton.class);
 		bind(DefaultMediaProcessorExtension.class).in(Singleton.class);
 		bind(MultiPageController.class).in(Singleton.class);
 		bind(MultiPageTouchHandler.class).in(Singleton.class);
@@ -118,15 +122,15 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(StyleNameConstants.class).in(Singleton.class);
 		bind(MainFlowProcessor.class).in(Singleton.class);
 		bind(Scheduler.class).to(SchedulerImpl.class)
-							 .in(Singleton.class);
+				.in(Singleton.class);
 		bind(Page.class).in(Singleton.class);
 		bind(PanelCache.class).in(Singleton.class);
 		bind(SoundActionProcessor.class).in(Singleton.class);
 		bind(DOMTreeWalker.class);
 		bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class)
-								   .in(Singleton.class);
+				.in(Singleton.class);
 		bind(MediaControllerFactory.class).to(MediaControllerFactoryImpl.class)
-										  .in(Singleton.class);
+				.in(Singleton.class);
 		bind(VideoFullScreenHelper.class).in(Singleton.class);
 		bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
 		bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
@@ -139,9 +143,9 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(FeedbackRegistry.class).in(Singleton.class);
 		bind(MatcherRegistry.class).in(Singleton.class);
 		bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class)
-											 .in(Singleton.class);
+				.in(Singleton.class);
 		bind(DragDropHelper.class).to(DragDropHelperImpl.class)
-								  .in(Singleton.class);
+				.in(Singleton.class);
 		bind(TextFeedback.class).to(TextFeedbackPresenter.class);
 		bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
 		bind(ProgressView.class).to(InfinityProgressWidget.class);
@@ -151,10 +155,10 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(Timer.class).to(TimerImpl.class);
 		bind(NativeMethodInvocator.class).to(NativeMethodInvocatorImpl.class);
 		bind(FlowPanel.class).annotatedWith(Names.named("multiPageControllerMainPanel"))
-							 .toProvider(NewFlowPanelProvider.class)
-							 .in(Singleton.class);
+				.toProvider(NewFlowPanelProvider.class)
+				.in(Singleton.class);
 		bind(FullscreenVideoConnector.class).to(ExternalFullscreenVideoConnector.class)
-											.in(Singleton.class);
+				.in(Singleton.class);
 		bind(SingleModuleInstanceProvider.class);
 		bind(SessionDataSupplier.class).to(SessionDataManager.class);
 		bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
@@ -164,25 +168,25 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(SessionTimeUpdater.class).in(Singleton.class);
 		bind(YJsJsonConverter.class).in(Singleton.class);
 		bind(IJSONService.class).to(JSONService.class)
-								.in(Singleton.class);
+				.in(Singleton.class);
 		bind(LabellingView.class).to(LabellingViewImpl.class);
 		bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
 		bind(String.class).annotatedWith(UniqueId.class)
-						  .toProvider(UniqIdStringProvider.class);
+				.toProvider(UniqIdStringProvider.class);
 		bind(SwipeType.class).toProvider(SwipeTypeProvider.class)
-							 .in(Singleton.class);
+				.in(Singleton.class);
 		bind(Animation.class).toProvider(SwipeAnimationProvider.class);
 		bind(ExpressionCharacterMappingProvider.class).in(Singleton.class);
 		bind(TutorService.class).in(Singleton.class);
 		bind(TutorApiExtension.class).in(Singleton.class);
 		bind(ForceRedrawHack.class).to(ForceRedrawHackImpl.class)
-								   .in(Singleton.class);
+				.in(Singleton.class);
 		bind(ComputedStyle.class).to(ComputedStyleImpl.class)
-								 .in(Singleton.class);
+				.in(Singleton.class);
 		bind(FlowManager.class).in(Singleton.class);
 		bind(OutcomeAccessor.class).in(Singleton.class);
 		bind(FlowDataSupplier.class).annotatedWith(FlowManagerDataSupplier.class)
-									.toProvider(FlowDataSupplierProvider.class);
+				.toProvider(FlowDataSupplierProvider.class);
 		bind(AssetOpenDelegatorService.class).in(Singleton.class);
 		bind(VideoPlayerFactory.class).in(Singleton.class);
 		bind(FileRequest.class).to(StandardFileRequest.class);
@@ -190,6 +194,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
+		bind(WindowResizeController.class).asEagerSingleton();
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
@@ -203,7 +208,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(MatcherRegistryFactory.class));
 		install(new GinFactoryModuleBuilder().build(TemplateParserFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class)
-											 .build(TouchRecognitionFactory.class));
+				.build(TouchRecognitionFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrappersPairFactory.class));
 		install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
 		install(new GinFactoryModuleBuilder().build(ProgressBarFactory.class));
@@ -212,11 +217,11 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
 		install(new GinFactoryModuleBuilder().build(LinkModuleFactory.class));
 		install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class)
-											 .implement(IStickiePresenter.class, StickiePresenter.class)
-											 .build(StickieFactory.class));
+				.implement(IStickiePresenter.class, StickiePresenter.class)
+				.build(StickieFactory.class));
 		install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class)
-											 .build(TouchReservationFactory.class));
-		install(new GinFactoryModuleBuilder().build(IdentificationModuleFactory.class));
+				.build(TouchReservationFactory.class));
+		install(new GinFactoryModuleBuilder().implement(SelectableChoiceView.class, SelectableChoiceViewImpl.class).build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
 		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
 	}

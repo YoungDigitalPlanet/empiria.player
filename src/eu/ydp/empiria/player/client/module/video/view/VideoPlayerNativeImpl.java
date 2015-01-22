@@ -3,8 +3,7 @@ package eu.ydp.empiria.player.client.module.video.view;
 import static com.google.gwt.core.client.GWT.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-
-import eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler;
+import eu.ydp.empiria.player.client.module.video.*;
 
 public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
@@ -60,9 +59,9 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 	private native boolean isFlashFallback() /*-{
 		var objects = $wnd.document
-				.getElementById(
-						this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId)
-				.getElementsByTagName('object');
+			.getElementById(
+			this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId)
+			.getElementsByTagName('object');
 
 		return ((objects != null) && (objects.length != 0));
 	}-*/;
@@ -72,7 +71,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 		var options = $wnd.document.getElementById(playerId).getAttribute(
 				'data-setup')
-				|| '{}';
+			|| '{}';
 		options = $wnd.vjs.JSON.parse(options);
 
 		return $wnd.vjs(playerId, options);
@@ -111,21 +110,15 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 		addEventHandler("play", handler);
 	}
 
-	;
-
 	@Override
 	public void addPauseHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("pause", handler);
 	}
 
-	;
-
 	@Override
 	public void addEndedHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("ended", handler);
 	}
-
-	;
 
 	@Override
 	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
@@ -137,14 +130,10 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 		addEventHandler("loadstart", handler);
 	}
 
-	;
-
 	@Override
 	public void addLoadedMetadataHandler(VideoPlayerControlHandler handler) {
 		addEventHandler("loadedmetadata", handler);
 	}
-
-	;
 
 	@Override
 	public void addLoadedDataHandler(VideoPlayerControlHandler handler) {
@@ -161,17 +150,38 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 		addEventHandler("durationchange", handler);
 	}
 
+	@Override
+	public void addFullscreenListener(VideoFullscreenListener videoFullscreenListener) {
+		addFullscreenListenerNative(videoFullscreenListener);
+	}
+
+	private native void addFullscreenListenerNative(VideoFullscreenListener listener)/*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+		if (player) {
+			player
+				.on(
+				"fullscreenchange",
+				function () {
+					if (player.isFullScreen()) {
+						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
+					} else {
+						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();
+					}
+				});
+		}
+	}-*/;
+
 	private native void addEventHandler(String event, VideoPlayerControlHandler handler) /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		var javaPlayer = this;
 
 		if (player) {
 			player
-					.on(
-							event,
-							function() {
-								handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
-							});
+				.on(
+				event,
+				function () {
+					handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
+				});
 		}
 	}-*/;
 }

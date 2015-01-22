@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
-import com.google.gwt.dom.client.MediaElement;
 import com.google.inject.Inject;
 
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
@@ -12,8 +12,14 @@ import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
 
 public class HTML5VideoMediaExecutor extends AbstractHTML5MediaExecutor<Video> {
 
+	private final UniqueIdGenerator uniqueIdGenerator;
+
 	@Inject
-	private UniqueIdGenerator uniqueIdGenerator;
+	public HTML5VideoMediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners,
+			UniqueIdGenerator uniqueIdGenerator) {
+		super(mediaEventMapper, html5MediaNativeListeners);
+		this.uniqueIdGenerator = uniqueIdGenerator;
+	}
 
 	@Override
 	public void initExecutor() {

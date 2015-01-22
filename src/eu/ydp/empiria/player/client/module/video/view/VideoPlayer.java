@@ -1,35 +1,58 @@
 package eu.ydp.empiria.player.client.module.video.view;
 
-import java.util.List;
-
-import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
+import eu.ydp.empiria.player.client.module.video.*;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
+import java.util.List;
 
 public class VideoPlayer extends Widget {
 
 	private final VideoPlayerNative nativePlayer;
 	private final VideoElementWrapper videoElementWrapper;
 	private final UserAgentUtil userAgentUtil;
+	private final DivElement divElement;
+	private ElementScaler elementScaler;
 
 	@Inject
 	public VideoPlayer(@Assisted VideoElementWrapper videoElementWrapper, VideoPlayerNative nativePlayer, UserAgentUtil userAgentUtil) {
 		this.nativePlayer = nativePlayer;
 		this.videoElementWrapper = videoElementWrapper;
 		this.userAgentUtil = userAgentUtil;
-		setElement(Document.get().createDivElement());
+		divElement = Document.get().createDivElement();
+		setElement(divElement);
 	}
 
 	@Override
 	protected void onLoad() {
-		getElement().appendChild(videoElementWrapper.asNode());
+		divElement.appendChild(videoElementWrapper.asNode());
 
 		initializeNativePlayer();
+
+		enablePlayerScaling();
+	}
+
+	private void enablePlayerScaling() {
+		final Element wrappedElement = divElement.getFirstChildElement();
+		elementScaler = new ElementScaler(wrappedElement);
+		elementScaler.setRatio();
+		elementScaler.setMaxWidth();
+		nativePlayer.addFullscreenListener(new VideoFullscreenListener() {
+			@Override
+			public void onEnterFullscreen() {
+				elementScaler.clearRatio();
+				elementScaler.clearMaxWidth();
+			}
+
+			@Override
+			public void onExitFullscreen() {
+				elementScaler.setRatio();
+				elementScaler.setMaxWidth();
+			}
+		});
 	}
 
 	private void initializeNativePlayer() {
@@ -57,4 +80,5 @@ public class VideoPlayer extends Widget {
 	public List<String> getSources() {
 		return videoElementWrapper.getSources();
 	}
+
 }

@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkMode;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class WorkModeParserForAssessmentTest extends AbstractEmpiriaPlayerGWTTestCase {

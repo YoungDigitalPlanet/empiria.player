@@ -1,31 +1,23 @@
 package eu.ydp.empiria.player.client.controller;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.core.client.*;
+import com.google.gwt.json.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
-import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
-import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
-import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
+import eu.ydp.empiria.player.client.controller.body.*;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.extensions.internal.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
-import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
+import eu.ydp.empiria.player.client.module.containers.group.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.module.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ItemBody implements WidgetWorkflowListener {
 
@@ -76,7 +68,7 @@ public class ItemBody implements WidgetWorkflowListener {
 		modulesInstalator.setInitialParent(itemBodyModule);
 		itemBodyModule.initModule(itemBodyElement, moduleSocket, interactionEventsListener, generator);
 
-		modules = new ArrayList<IModule>();
+		modules = new ArrayList<>();
 		modules.add(itemBodyModule);
 		modulesInstalator.installMultiViewNonuniuqeModules();
 		modules.addAll(modulesInstalator.installMultiViewUniqueModules());
@@ -147,10 +139,6 @@ public class ItemBody implements WidgetWorkflowListener {
 				((ILifecycleModule) currModule).onClose();
 			}
 		}
-	}
-
-	public int getModuleCount() {
-		return modules.size();
 	}
 
 	/**
@@ -270,13 +258,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-        var socket = {};
-        var instance = this;
-        socket.getModuleSockets = function () {
-            return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-        }
-        return socket;
-    }-*/;
+		var socket = {};
+		var instance = this;
+		socket.getModuleSockets = function () {
+			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+		};
+		return socket;
+	}-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();

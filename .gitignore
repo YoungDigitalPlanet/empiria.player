@@ -28,3 +28,4 @@ build/
 /bin
 .idea/
 *.iml
+atlassian-ide-plugin.xml
