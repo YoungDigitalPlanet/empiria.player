@@ -5,17 +5,8 @@ import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowPlayerBe
 public class SlideshowTemplateInterpreter {
 
 	public boolean isPagerTemplateActivate(SlideshowPlayerBean slideshowPlayer) {
-		if (isAnyTemplateActivate(slideshowPlayer)) {
-			String pager = slideshowPlayer.getTemplate().getSlideshowPager();
-			return pager != null;
-		}
-
-		return false;
-	}
-
-	private boolean isAnyTemplateActivate(SlideshowPlayerBean slideshowPlayer) {
-		if (slideshowPlayer.getTemplate() != null) {
-			return true;
+		if (slideshowPlayer.hasTemplate()) {
+			return slideshowPlayer.getTemplate().hasSlideshowPager();
 		}
 
 		return false;

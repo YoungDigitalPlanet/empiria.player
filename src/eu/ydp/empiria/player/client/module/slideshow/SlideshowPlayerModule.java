@@ -9,7 +9,6 @@ import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
-import java.util.List;
 
 public class SlideshowPlayerModule extends SimpleModuleBase {
 
@@ -47,8 +46,7 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 
 	private void initPager(SlideshowPlayerBean slideshowPlayer) {
 		if (templatesInterpreter.isPagerTemplateActivate(slideshowPlayer)) {
-			List<SlideBean> slides = slideshowPlayer.getSlideshowBean().getSlideBeans();
-			int slidesSize = slides.size();
+			int slidesSize = slideshowPlayer.getSlideshowBean().getSlideBeans().size();
 			Widget pagerWidget = controller.initPager(slidesSize);
 			presenter.setPager(pagerWidget);
 		}

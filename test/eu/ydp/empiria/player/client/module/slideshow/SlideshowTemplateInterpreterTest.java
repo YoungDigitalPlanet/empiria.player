@@ -14,7 +14,8 @@ public class SlideshowTemplateInterpreterTest {
 		// given
 		SlideshowPlayerBean slideshowPlayer = new SlideshowPlayerBean();
 		SlideshowTemplate template = new SlideshowTemplate();
-		template.setSlideshowPager("");
+		SlideshowPagerBean pager = new SlideshowPagerBean();
+		template.setSlideshowPager(pager);
 		slideshowPlayer.setTemplate(template);
 
 		// when

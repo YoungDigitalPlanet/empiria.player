@@ -7,13 +7,17 @@ import javax.xml.bind.annotation.*;
 public class SlideshowTemplate {
 
 	@XmlElement(name = "slideshowPager")
-	private String slideshowPager;
+	private SlideshowPagerBean slideshowPager;
 
-	public String getSlideshowPager() {
+	public SlideshowPagerBean getSlideshowPager() {
 		return slideshowPager;
 	}
 
-	public void setSlideshowPager(String slideshowPager) {
+	public void setSlideshowPager(SlideshowPagerBean slideshowPager) {
 		this.slideshowPager = slideshowPager;
+	}
+
+	public boolean hasSlideshowPager() {
+		return slideshowPager != null;
 	}
 }

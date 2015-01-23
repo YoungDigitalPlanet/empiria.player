@@ -21,7 +21,9 @@ public class SlideshowPagerPresenter {
 
 	public Widget createPager(int slidesSize) {
 		for (int i = 0; i < slidesSize; i++) {
-			addNewPagerButton();
+			SlideshowPagerButtonPresenter pagerButton = createPagerButton();
+			pagerButtonsList.add(pagerButton);
+			view.addPager(pagerButton.getView());
 		}
 
 		return view.asWidget();
@@ -36,13 +38,11 @@ public class SlideshowPagerPresenter {
 		activatePagerButton(currentSlideIndex);
 	}
 
-	private void addNewPagerButton() {
+	private SlideshowPagerButtonPresenter createPagerButton() {
 		SlideshowPagerButtonPresenter pagerButton = pagerButtonProvider.get();
 		Command clickCommand = createClickCommand(pagerButton);
 		pagerButton.setClickCommand(clickCommand);
-
-		pagerButtonsList.add(pagerButton);
-		view.addPager(pagerButton.getView());
+		return pagerButton;
 	}
 
 	private Command createClickCommand(final SlideshowPagerButtonPresenter pagerButton) {

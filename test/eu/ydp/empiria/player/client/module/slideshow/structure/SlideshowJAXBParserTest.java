@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.slideshow.structure;
 
-
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
@@ -12,7 +11,6 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private final SlideBean firstSlideExpected;
 	private final SourceBean secondSourceBean;
 	private final SlideBean secondSlideExpected;
-
 
 	public SlideshowJAXBParserTest() {
 		firstSourceBean = new SourceBean();
@@ -55,7 +53,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		SlideBean secondSlide = slides.get(1);
 		assertSlidesEquals(secondSlideExpected, secondSlide);
 
-		assertTemplateIsNull(bean);
+		assertTemplateIsNotPresent(bean);
 	}
 
 	public void testSlideshowWihoutNarration() {
@@ -76,7 +74,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		SlideBean firstSlide = slides.get(0);
 		assertSlidesEquals(firstSlideExpected, firstSlide);
 
-		assertTemplateIsNull(bean);
+		assertTemplateIsNotPresent(bean);
 	}
 
 	public void testSlideshowWithoutTitle() {
@@ -99,15 +97,15 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		SlideBean secondSlide = slides.get(1);
 		assertSlidesEquals(secondSlideExpected, secondSlide);
 
-		assertTemplateIsNull(bean);
+		assertTemplateIsNotPresent(bean);
 	}
 
 	public void testSlideshowWithTemplate() {
-		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.FULL_SLIDESHOW_WITH_TEMPLATE);
-		SlideshowTemplate template = bean.getTemplate();
+		SlideshowPlayerBean slideshowPlayer = parse(SlideshowJAXBParserMock.FULL_SLIDESHOW_WITH_TEMPLATE);
+		SlideshowTemplate template = slideshowPlayer.getTemplate();
 
-		assertNotNull(template);
-		assertNotNull(template.getSlideshowPager());
+		assertTrue(slideshowPlayer.hasTemplate());
+		assertTrue(template.hasSlideshowPager());
 	}
 
 	private void assertSlidesEquals(SlideBean slideExpected, SlideBean slideActual) {
@@ -125,11 +123,11 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private SlideshowPlayerBean parse(String xml) {
 		SlideshowJAXBParser jaxbParserFactory = GWT.create(SlideshowJAXBParser.class);
 		JAXBParser<SlideshowPlayerBean> jaxbParser = jaxbParserFactory.create();
-		SlideshowPlayerBean slBean = jaxbParser.parse(xml);
-		return slBean;
+		SlideshowPlayerBean slideshowPlayer = jaxbParser.parse(xml);
+		return slideshowPlayer;
 	}
 
-	private void assertTemplateIsNull(SlideshowPlayerBean bean) {
-		assertEquals(null, bean.getTemplate());
+	private void assertTemplateIsNotPresent(SlideshowPlayerBean slideshowPlayer) {
+		assertFalse(slideshowPlayer.hasTemplate());
 	}
 }

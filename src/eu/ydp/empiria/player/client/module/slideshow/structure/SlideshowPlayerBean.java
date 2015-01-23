@@ -28,4 +28,8 @@ public class SlideshowPlayerBean extends ModuleBean {
 	public void setTemplate(SlideshowTemplate template) {
 		this.template = template;
 	}
+
+	public boolean hasTemplate() {
+		return template != null;
+	}
 }

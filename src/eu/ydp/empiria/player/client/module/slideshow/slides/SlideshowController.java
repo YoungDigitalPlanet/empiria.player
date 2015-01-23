@@ -18,8 +18,7 @@ public class SlideshowController {
 
 	@Inject
 	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter,
-			SlideshowPagerPresenter pagerPresenter, SlideshowPagerPresenter slideshowPager, SlideshowTimer timer,
-			SlidesSorter slidesSorter) {
+			SlideshowPagerPresenter pagerPresenter, SlideshowTimer timer, SlidesSorter slidesSorter) {
 		this.slidesSwitcher = slidesSwitcher;
 		this.buttonsPresenter = buttonsPresenter;
 		this.pagerPresenter = pagerPresenter;
