@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client.gin.module;
 
-import eu.ydp.empiria.player.client.module.identification.view.*;
-
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.*;
 import com.google.inject.name.Names;
+
 import eu.ydp.empiria.player.client.controller.*;
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.controller.body.*;
@@ -23,7 +22,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
-import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.*;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
@@ -34,7 +32,7 @@ import eu.ydp.empiria.player.client.controller.multiview.swipe.*;
 import eu.ydp.empiria.player.client.controller.multiview.touch.*;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationHandler;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
-import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
+import eu.ydp.empiria.player.client.controller.session.*;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
@@ -44,6 +42,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.OutcomeAccess
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
 import eu.ydp.empiria.player.client.controller.window.WindowResizeController;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.gin.EmpiriaExListBoxDelay;
 import eu.ydp.empiria.player.client.gin.binding.*;
 import eu.ydp.empiria.player.client.gin.factory.*;
@@ -53,7 +52,7 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider;
 import eu.ydp.empiria.player.client.module.feedback.image.*;
 import eu.ydp.empiria.player.client.module.feedback.text.*;
-import eu.ydp.empiria.player.client.module.identification.*;
+import eu.ydp.empiria.player.client.module.identification.view.*;
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.*;
@@ -195,6 +194,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
 		bind(WindowResizeController.class).asEagerSingleton();
+		bind(LessonStateReset.class).asEagerSingleton();
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
@@ -224,6 +224,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().implement(SelectableChoiceView.class, SelectableChoiceViewImpl.class).build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
 		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
+
 	}
 
 	@Provides
