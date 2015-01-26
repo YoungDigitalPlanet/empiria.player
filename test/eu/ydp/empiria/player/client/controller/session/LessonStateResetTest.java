@@ -8,7 +8,8 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
+import eu.ydp.empiria.player.client.util.events.reset.*;
+import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LessonStateResetTest {
@@ -22,7 +23,16 @@ public class LessonStateResetTest {
 	
 
 	@Test
-	public void test() {
+	public void shouldAddHandler() {
+		// given
+		Type<LessonResetEventHandler, LessonResetEventTypes> eventType = LessonResetEvent.getType(LessonResetEventTypes.RESET);
+
+		// than
+		verify(eventsBus).addHandler(eventType, testObj);
+	}
+
+	@Test
+	public void shouldResetLessonsState() {
 		// given
 		LessonResetEvent event = mock(LessonResetEvent.class);
 		
