@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;

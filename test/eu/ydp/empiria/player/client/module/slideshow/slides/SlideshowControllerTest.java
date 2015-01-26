@@ -4,15 +4,19 @@ import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
+import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SlideshowControllerTest {
@@ -27,6 +31,20 @@ public class SlideshowControllerTest {
 	private SlideshowPagerPresenter pagerPresenter;
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
+
+	@Test
+	public void shouldSetSlides_andReset() {
+		// given
+		List<SlideBean> slides = Lists.newArrayList();
+
+		// when
+		testObj.init(slides);
+
+		// then
+		verify(slidesSwitcher).setSlides(slides);
+		verify(slidesSwitcher).reset();
+		verifyEnableButtons();
+	}
 
 	@Test
 	public void shouldInitPager() {
@@ -59,6 +77,43 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
+	public void shouldStopSlideshow() {
+		// given
+		
+		// when
+		testObj.stopSlideshow();
+		
+		// then
+		verify(slidesSwitcher).reset();
+		verifyEnableButtons();
+	}
+
+	@Test
+	public void shouldResetSlideAndPlay_whenIsLastSlide() {
+		// given
+		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
+
+
+		// when
+		testObj.playSlideshow();
+
+		// then
+		verify(slidesSwitcher).reset();
+		verifyEnableButtons();
+	}
+
+	@Test
+	public void shouldPlayWithoutReset_whenIsNotLastSlide() {
+		// given
+		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(true);
+
+		// when
+		testObj.playSlideshow();
+
+		// then
+		verify(slidesSwitcher, never()).reset();
+	}
+
 	public void shouldShowPreviousSlide_andSetButtons() {
 		// given
 

@@ -53,7 +53,6 @@ public class SlideshowController {
 
 	public void pauseSlideshow() {
 		buttonsPresenter.setPlayButtonDown(false);
-
 	}
 
 	public void showPreviousSlide() {
