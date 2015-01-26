@@ -158,7 +158,7 @@ public class SlidesSwitcherTest {
 	}
 
 	@Test
-	public void shouldNotShowSlide() {
+	public void shouldNotShowSlide_whenIndexOutOfBounds() {
 		// given
 		slides.add(slide);
 		int slideToShow = 3;
