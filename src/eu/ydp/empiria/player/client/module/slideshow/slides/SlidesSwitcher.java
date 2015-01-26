@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
+import java.util.List;
+
 import com.google.inject.Inject;
+
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import java.util.List;
 
 public class SlidesSwitcher {
 
@@ -49,19 +51,6 @@ public class SlidesSwitcher {
 
 	public boolean canSwitchToPreviousSlide() {
 		return currSlideIndex > 0;
-	}
-
-	public int getCurrentSlideStartTime() {
-		return getSlideStartTime(currSlideIndex);
-	}
-
-	public int getNextSlideStartTime() {
-		int nextSlideIndex = currSlideIndex + 1;
-		return getSlideStartTime(nextSlideIndex);
-	}
-
-	private int getSlideStartTime(int index) {
-		return slides.get(index).getStartTime();
 	}
 
 	public void showSlide(int indexToShow) {

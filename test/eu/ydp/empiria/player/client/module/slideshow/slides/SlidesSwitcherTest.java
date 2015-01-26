@@ -3,14 +3,17 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.google.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
-import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.google.common.collect.Lists;
+
+import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
+import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlidesSwitcherTest {
@@ -115,31 +118,6 @@ public class SlidesSwitcherTest {
 
 		// then
 		verifyZeroInteractions(presenter);
-	}
-
-	@Test
-	public void shouldGetStartTimeOfCurrentSlide() {
-		// given
-		when(slide.getStartTime()).thenReturn(10);
-
-		// when
-		int result = testObj.getCurrentSlideStartTime();
-
-		// then
-		assertThat(result).isEqualTo(10);
-	}
-
-	@Test
-	public void shouldGetStartTimeOfNextSlide() {
-		// given
-		slides.add(slide);
-		when(slide.getStartTime()).thenReturn(10);
-
-		// when
-		int result = testObj.getNextSlideStartTime();
-
-		// then
-		assertThat(result).isEqualTo(10);
 	}
 
 	@Test
