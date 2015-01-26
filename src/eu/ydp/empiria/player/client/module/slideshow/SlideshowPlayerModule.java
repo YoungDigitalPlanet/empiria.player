@@ -16,14 +16,16 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	private final SlideshowModuleStructure moduleStructure;
 	private final IJSONService ijsonService;
 	private final SlideshowPlayerPresenter presenter;
+	private final SlideshowTemplateInterpreter templateInterpreter;
 
 	@Inject
 	public SlideshowPlayerModule(@ModuleScoped SlideshowController slideshowController, @ModuleScoped SlideshowPlayerPresenter presenter,
-			SlideshowModuleStructure moduleStructure, IJSONService ijsonService) {
+			SlideshowModuleStructure moduleStructure, IJSONService ijsonService, SlideshowTemplateInterpreter templateInterpreter) {
 		this.controller = slideshowController;
 		this.presenter = presenter;
 		this.moduleStructure = moduleStructure;
 		this.ijsonService = ijsonService;
+		this.templateInterpreter = templateInterpreter;
 	}
 
 	@Override
@@ -34,13 +36,19 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	@Override
 	protected void initModule(Element element) {
 		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
-		SlideshowBean bean = getSlideshowBean();
+		SlideshowPlayerBean slideshowPlayer = moduleStructure.getBean();
+		SlideshowBean slideshow = slideshowPlayer.getSlideshowBean();
 
-		presenter.init(bean);
-		controller.init(bean.getSlideBeans());
+		initPager(slideshowPlayer);
+		presenter.init(slideshow);
+		controller.init(slideshow.getSlideBeans());
 	}
 
-	private SlideshowBean getSlideshowBean() {
-		return moduleStructure.getBean().getSlideshowBean();
+	private void initPager(SlideshowPlayerBean slideshowPlayer) {
+		if (templateInterpreter.isPagerTemplateActivate(slideshowPlayer)) {
+			int slidesSize = slideshowPlayer.getSlideshowBean().getSlideBeans().size();
+			Widget pagerWidget = controller.initPager(slidesSize);
+			presenter.setPager(pagerWidget);
+		}
 	}
 }

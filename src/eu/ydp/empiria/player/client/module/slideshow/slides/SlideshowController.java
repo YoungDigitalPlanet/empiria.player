@@ -1,24 +1,27 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.List;
 
-public class SlideshowController implements SlideshowSlidesController {
+public class SlideshowController {
 
 	private final SlidesSwitcher slidesSwitcher;
 	private final SlideshowTimer timer;
 	private final SlidesSorter slidesSorter;
 	private final SlideshowButtonsPresenter buttonsPresenter;
+	private final SlideshowPagerPresenter pagerPresenter;
 
 	@Inject
-	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter, SlideshowTimer timer,
-			SlidesSorter slidesSorter) {
+	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter,
+			SlideshowPagerPresenter pagerPresenter, SlideshowTimer timer, SlidesSorter slidesSorter) {
 		this.slidesSwitcher = slidesSwitcher;
 		this.buttonsPresenter = buttonsPresenter;
+		this.pagerPresenter = pagerPresenter;
 		this.timer = timer;
 		this.slidesSorter = slidesSorter;
 	}
@@ -31,13 +34,21 @@ public class SlideshowController implements SlideshowSlidesController {
 		resetAndSetButtons();
 	}
 
-	@Override
+	public Widget initPager(int slidesSize) {
+		pagerPresenter.setSlideshowController(this);
+		return pagerPresenter.createPager(slidesSize);
+	}
+
+	public void showSlide(int indexToShow) {
+		slidesSwitcher.showSlide(indexToShow);
+		updateButtons();
+	}
+
 	public void stopSlideshow() {
 		pauseSlideshow();
 		resetAndSetButtons();
 	}
 
-	@Override
 	public void playSlideshow() {
 		if (!slidesSwitcher.canSwitchToNextSlide()) {
 			resetAndSetButtons();
@@ -46,26 +57,24 @@ public class SlideshowController implements SlideshowSlidesController {
 		showNextWithDelay();
 	}
 
-	@Override
 	public void pauseSlideshow() {
 		timer.cancel();
 	}
 
-	@Override
 	public void showPreviousSlide() {
 		slidesSwitcher.showPreviousSlide();
-		setButtons();
+		updateButtons();
 	}
 
-	@Override
 	public void showNextSlide() {
 		slidesSwitcher.showNextSlide();
-		setButtons();
+		updateButtons();
 	}
 
-	private void setButtons() {
+	private void updateButtons() {
 		buttonsPresenter.setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
 		buttonsPresenter.setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		pagerPresenter.updateButtons(slidesSwitcher.getCurrentSlideIndex());
 	}
 
 	private void showNextWithDelay() {
@@ -88,7 +97,7 @@ public class SlideshowController implements SlideshowSlidesController {
 
 	private void resetAndSetButtons() {
 		slidesSwitcher.reset();
-		setButtons();
+		updateButtons();
 	}
 
 	private void initTimer() {

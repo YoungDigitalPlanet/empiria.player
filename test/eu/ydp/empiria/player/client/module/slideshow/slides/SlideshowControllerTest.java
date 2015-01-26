@@ -1,18 +1,21 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class SlideshowControllerTest {
 
 	@InjectMocks
@@ -25,6 +28,8 @@ public class SlideshowControllerTest {
 	private SlideshowTimer timer;
 	@Mock
 	private SlidesSorter slidesSorter;
+	@Mock
+	private SlideshowPagerPresenter pagerPresenter;
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
@@ -41,8 +46,37 @@ public class SlideshowControllerTest {
 		inOrder.verify(slidesSorter).sortByTime(slides);
 		inOrder.verify(slidesSwitcher).setSlides(slides);
 		inOrder.verify(slidesSwitcher).reset();
-		inOrder.verify(buttonsPresenter).setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
-		inOrder.verify(buttonsPresenter).setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
+		verifyEnableButtons();
+	}
+
+	@Test
+	public void shouldInitPager() {
+		// given
+		Widget widget = mock(Widget.class);
+		when(pagerPresenter.createPager(anyInt())).thenReturn(widget);
+
+		int slidesSize = 2;
+
+		// when
+		Widget result = testObj.initPager(slidesSize);
+
+		// then
+		verify(pagerPresenter).setSlideshowController(testObj);
+		verify(pagerPresenter).createPager(slidesSize);
+		assertThat(result).isEqualTo(widget);
+	}
+
+	@Test
+	public void shouldDelegateShowSlide_andUpdateButtonsStyle() {
+		// given
+		int slideIndexToShow = 2;
+
+		// when
+		testObj.showSlide(slideIndexToShow);
+
+		// then
+		verify(slidesSwitcher).showSlide(slideIndexToShow);
+		verifyEnableButtons();
 	}
 
 	@Test
@@ -186,5 +220,7 @@ public class SlideshowControllerTest {
 
 		boolean canSwitchToPreviousSlide = slidesSwitcher.canSwitchToPreviousSlide();
 		verify(buttonsPresenter, times(times)).setEnabledPreviousButton(canSwitchToPreviousSlide);
+
+		verify(pagerPresenter, times(times)).updateButtons(anyInt());
 	}
 }

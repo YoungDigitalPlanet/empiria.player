@@ -10,11 +10,11 @@ public class SlidesSwitcher {
 
 	private List<SlideBean> slides;
 	private int currSlideIndex;
-	private final SlidePresenter slidePresenter;
+	private final SlidePresenter presenter;
 
 	@Inject
-	public SlidesSwitcher(@ModuleScoped SlidePresenter slidePresenter) {
-		this.slidePresenter = slidePresenter;
+	public SlidesSwitcher(@ModuleScoped SlidePresenter presenter) {
+		this.presenter = presenter;
 	}
 
 	public void setSlides(List<SlideBean> slides) {
@@ -64,10 +64,21 @@ public class SlidesSwitcher {
 		return slides.get(index).getStartTime();
 	}
 
+	public void showSlide(int indexToShow) {
+		if (indexToShow < slides.size()) {
+			currSlideIndex = indexToShow;
+			showCurrentSlide();
+		}
+	}
+
+	public int getCurrentSlideIndex() {
+		return currSlideIndex;
+	}
+
 	private void showCurrentSlide() {
 		if (currSlideIndex < slides.size()) {
 			SlideBean currentSlide = slides.get(currSlideIndex);
-			slidePresenter.replaceViewData(currentSlide);
+			presenter.replaceViewData(currentSlide);
 		}
 	}
 }

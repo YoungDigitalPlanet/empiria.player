@@ -19,6 +19,10 @@ public class SlideshowPlayerPresenter {
 		view.setTitle(title);
 	}
 
+	public void setPager(Widget pagerWidget) {
+		view.addPager(pagerWidget);
+	}
+
 	public Widget getView() {
 		return view.asWidget();
 	}
