@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.slideshow.structure;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
+
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import java.util.List;
 
 public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
@@ -19,7 +21,6 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		firstSlideExpected = new SlideBean();
 		firstSlideExpected.setTitle("slide title1");
 		firstSlideExpected.setNarration("narration1");
-		firstSlideExpected.setStartTime(0);
 		firstSlideExpected.setSource(firstSourceBean);
 
 		secondSourceBean = new SourceBean();
@@ -28,7 +29,6 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		secondSlideExpected = new SlideBean();
 		secondSlideExpected.setTitle("slide title2");
 		secondSlideExpected.setNarration("narration2");
-		secondSlideExpected.setStartTime(100);
 		secondSlideExpected.setSource(secondSourceBean);
 
 	}
@@ -111,7 +111,6 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 	private void assertSlidesEquals(SlideBean slideExpected, SlideBean slideActual) {
 		assertEquals(slideExpected.getTitle(), slideActual.getTitle());
 		assertEquals(slideExpected.getNarration(), slideActual.getNarration());
-		assertEquals(slideExpected.getStartTime(), slideActual.getStartTime());
 
 		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
 	}
