@@ -4,10 +4,13 @@ import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowBean;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 
@@ -18,19 +21,38 @@ public class SlideshowPlayerPresenterTest {
 	private SlideshowPlayerPresenter testObj;
 	@Mock
 	private SlideshowPlayerView view;
+	@Mock
+	private InlineBodyGeneratorSocketWrapper bodyGeneratorSocketWrapper;
+	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+
+	@Before
+	public void init() {
+		when(bodyGeneratorSocketWrapper.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
+	}
 
 	@Test
 	public void shouldInit() {
 		// given
 		SlideshowBean slideshow = mock(SlideshowBean.class);
-		String title = "title";
-		when(slideshow.getTitle()).thenReturn(title);
+
+		SlideshowTitleBean slideshowTitle = mock(SlideshowTitleBean.class);
+		when(slideshow.getTitle()).thenReturn(slideshowTitle);
+
+		XMLContent titleValue = mock(XMLContent.class);
+		when(slideshowTitle.getTitleValue()).thenReturn(titleValue);
+
+		Element titleElement = mock(Element.class);
+		when(titleValue.getValue()).thenReturn(titleElement);
+
+		Widget titleView = mock(Widget.class);
+		when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleView);
 
 		// when
 		testObj.init(slideshow);
 
 		// then
-		verify(view).setTitle(title);
+		verify(view).setTitle(titleView);
 	}
 
 	@Test

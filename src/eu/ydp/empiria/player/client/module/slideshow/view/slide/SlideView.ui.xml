@@ -8,14 +8,8 @@
 			</g:Image>
 		</g:FlowPanel>
 		<g:FlowPanel ui:field="titlePanel" styleName="{res.QP_SLIDESHOW_SLIDE_TITLE_PANEL}">
-			<g:HTMLPanel ui:field="inlineTitleText" styleName="{res.QP_TEXT_INLINE}">
-				<g:InlineLabel ui:field="titleText" styleName="{res.QP_TEXT}"/>
-			</g:HTMLPanel>
 		</g:FlowPanel>
 		<g:FlowPanel ui:field="narrationPanel" styleName="{res.QP_SLIDESHOW_SLIDE_NARRATION_PANEL}">
-			<g:HTMLPanel ui:field="inlineNarrationText" styleName="{res.QP_TEXT_INLINE}">
-				<g:InlineLabel ui:field="narrationText" styleName="{res.QP_TEXT}"/>
-			</g:HTMLPanel>
 		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

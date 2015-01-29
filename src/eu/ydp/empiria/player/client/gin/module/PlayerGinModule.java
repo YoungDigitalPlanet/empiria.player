@@ -6,7 +6,6 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.*;
 import com.google.inject.name.Names;
-
 import eu.ydp.empiria.player.client.controller.*;
 import eu.ydp.empiria.player.client.controller.assets.AssetOpenDelegatorService;
 import eu.ydp.empiria.player.client.controller.body.*;
@@ -193,6 +192,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
+		bind(InlineBodyGeneratorSocketWrapper.class).in(Singleton.class);
+
 		bind(WindowResizeController.class).asEagerSingleton();
 		bind(LessonStateReset.class).asEagerSingleton();
 

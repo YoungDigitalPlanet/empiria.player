@@ -17,7 +17,7 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	private final SlideshowModuleUiBinder uiBinder = GWT.create(SlideshowModuleUiBinder.class);
 
 	@UiField
-	protected InlineLabel titleText;
+	protected FlowPanel titlePanel;
 
 	@UiField
 	protected Panel mainPanel;
@@ -36,8 +36,9 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	}
 
 	@Override
-	public void setTitle(String title) {
-		titleText.setText(title);
+	public void setTitle(Widget title) {
+		titlePanel.clear();
+		titlePanel.add(title);
 	}
 
 	@Override

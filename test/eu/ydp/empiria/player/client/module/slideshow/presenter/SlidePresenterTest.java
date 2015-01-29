@@ -1,71 +1,123 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.controller.body.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class SlidePresenterTest {
 
 	@InjectMocks
 	private SlidePresenter testObj;
 	@Mock
 	private SlideView view;
+	@Mock
+	private InlineBodyGeneratorSocketWrapper bodyGeneratorSocketWrapper;
+	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+
+	@Mock
+	private Element titleElement;
+	@Mock
+	private XMLContent titleXmlContent;
+	@Mock
+	private Widget titleView;
+
+	@Mock
+	private Element narrationElement;
+	@Mock
+	private XMLContent narrationXmlContent;
+	@Mock
+	private Widget narrationView;
+
+	private final String src = "src";
+	private SlideBean slide;
+
+	@Before
+	public void init() {
+		when(bodyGeneratorSocketWrapper.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
+		slide = new SlideBean();
+	}
 
 	@Test
-	public void shouldReplaceAll() {
+	public void shouldReplaceSlideNarration_andImageSource() {
 		// given
-		String title = "title";
-		String narration = "narration";
+		SlideNarrationBean slideNarration = new SlideNarrationBean();
+		when(narrationXmlContent.getValue()).thenReturn(narrationElement);
+		slideNarration.setNarrationValue(narrationXmlContent);
+
+		when(inlineBodyGeneratorSocket.generateInlineBody(narrationElement)).thenReturn(narrationView);
 		String src = "src";
 
 		SourceBean srcBean = new SourceBean();
 		srcBean.setSrc(src);
 
-		SlideBean slide = new SlideBean();
-		slide.setTitle(title);
-		slide.setNarration(narration);
+		slide.setNarration(slideNarration);
 		slide.setSource(srcBean);
 
 		// when
 		testObj.replaceViewData(slide);
 
 		// then
-		verify(view).clearSlideTitle();
-		verify(view).setSlideTitle(title);
-		verify(view).clearNarration();
-		verify(view).setNarration(narration);
+		verifyClearText();
+		verify(view).setNarration(narrationView);
 		verify(view).setImage(src);
+		verify(view, never()).setSlideTitle(any(Widget.class));
 	}
 
 	@Test
-	public void shouldClearAndNotReplace() {
+	public void shouldReplaceOnlySlideTitle() {
 		// given
-		String title = "";
-		String narration = "";
-		String src = "";
+		SlideTitleBean slideTitle = new SlideTitleBean();
+		when(titleXmlContent.getValue()).thenReturn(titleElement);
+		slideTitle.setTitleValue(titleXmlContent);
 
-		SourceBean srcBean = new SourceBean();
-		srcBean.setSrc(src);
+		when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleView);
 
-		SlideBean slide = new SlideBean();
-		slide.setTitle(title);
-		slide.setNarration(narration);
-		slide.setSource(srcBean);
+		SourceBean sourceBean = new SourceBean();
+		sourceBean.setSrc("");
+		slide.setSource(sourceBean);
+		slide.setSlideTitle(slideTitle);
 
 		// when
 		testObj.replaceViewData(slide);
 
 		// then
-		verify(view).clearSlideTitle();
-		verify(view, never()).setSlideTitle(title);
-		verify(view).clearNarration();
-		verify(view, never()).setNarration(narration);
+		verifyClearText();
+		verify(view).setSlideTitle(titleView);
 		verify(view, never()).setImage(src);
+		verify(view, never()).setNarration(any(Widget.class));
+	}
+
+	@Test
+	public void shouldReplaceImageSource() {
+		// given
+		SourceBean sourceBean = new SourceBean();
+		sourceBean.setSrc(src);
+		slide.setSource(sourceBean);
+
+		// when
+		testObj.replaceViewData(slide);
+
+		// then
+		verifyClearText();
+		verify(view).setImage(src);
+		verify(view, never()).setNarration(any(Widget.class));
+		verify(view, never()).setNarration(any(Widget.class));
+	}
+
+	private void verifyClearText() {
+		verify(view).clearNarration();
+		verify(view).clearTitle();
 	}
 }

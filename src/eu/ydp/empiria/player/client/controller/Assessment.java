@@ -23,39 +23,25 @@
  */
 package eu.ydp.empiria.player.client.controller;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocketWrapper;
 
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.XMLParser;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
-import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
+import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IGroup;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.InlineContainerStylesExtractor;
-import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
-import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.containers.group.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.js.YJsJsonFactory;
+import java.util.*;
 
 public class Assessment {
 
@@ -84,6 +70,8 @@ public class Assessment {
 	private InteractionEventsListener interactionEventsListener;
 	private final AssessmentFactory assessmentFactory;
 
+	private final InlineBodyGeneratorSocketWrapper inlineBodyGeneratorSocketWrapper;
+
 	/**
 	 * C'tor
 	 * 
@@ -92,9 +80,11 @@ public class Assessment {
 	 */
 	@Inject
 	public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-			@Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory) {
+			@Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory,
+			InlineBodyGeneratorSocketWrapper inlineBodyGeneratorSocketWrapper) {
 
 		this.assessmentFactory = assessmentFactory;
+		this.inlineBodyGeneratorSocketWrapper = inlineBodyGeneratorSocketWrapper;
 		this.xmlData = data.getData();
 
 		this.modulesRegistrySocket = modulesRegistrySocket;
@@ -112,6 +102,8 @@ public class Assessment {
 		title = rootNode.getAttribute("title");
 
 		initializeBody(skinBody, interactionEventsListener);
+
+		moduleSocket.getInlineBodyGeneratorSocket();
 	}
 
 	private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
@@ -176,6 +168,7 @@ public class Assessment {
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
 				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
+				inlineBodyGeneratorSocketWrapper.setInlineBodyGeneratorSocket(inlineBodyGenerator);
 			}
 			return inlineBodyGenerator;
 		}
