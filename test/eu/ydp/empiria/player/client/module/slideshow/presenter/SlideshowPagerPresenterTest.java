@@ -85,7 +85,7 @@ public class SlideshowPagerPresenterTest {
 	}
 
 	@Test
-	public void shouldNotUpdateButtons_whenIndexOutOfBounds() {
+	public void shouldNotUpdateButtons_whenPagerIsNotInitialized() {
 		// given
 
 		// when
