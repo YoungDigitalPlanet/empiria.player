@@ -66,7 +66,11 @@ public class SlideshowPagerPresenter {
 	}
 
 	private void activatePagerButton(int currentSlideIndex) {
-		SlideshowPagerButtonPresenter button = pagerButtonsList.get(currentSlideIndex);
-		button.activatePagerButton();
+		boolean isPagerInitialized = currentSlideIndex < pagerButtonsList.size();
+
+		if (isPagerInitialized) {
+			SlideshowPagerButtonPresenter button = pagerButtonsList.get(currentSlideIndex);
+			button.activatePagerButton();
+		}
 	}
 }
