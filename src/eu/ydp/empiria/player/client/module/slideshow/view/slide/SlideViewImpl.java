@@ -16,37 +16,37 @@ public class SlideViewImpl extends Composite implements SlideView {
 	public Image image;
 
 	@UiField
-	public InlineLabel titleText;
+	FlowPanel titlePanel;
 
 	@UiField
-	public InlineLabel narrationText;
+	FlowPanel narrationPanel;
 
 	public SlideViewImpl() {
 		initWidget(slideWidgetBinder.createAndBindUi(this));
 	}
 
 	@Override
-	public void setSlideTitle(String title) {
-		titleText.setText(title);
+	public void setSlideTitle(Widget title) {
+		titlePanel.add(title);
 	}
 
 	@Override
-	public void clearSlideTitle() {
-		titleText.setText("");
-	}
-
-	@Override
-	public void setNarration(String narration) {
-		narrationText.setText(narration);
-	}
-
-	@Override
-	public void clearNarration() {
-		narrationText.setText("");
+	public void setNarration(Widget narration) {
+		narrationPanel.add(narration);
 	}
 
 	@Override
 	public void setImage(String src) {
 		image.setUrl(src);
+	}
+
+	@Override
+	public void clearTitle() {
+		titlePanel.clear();
+	}
+
+	@Override
+	public void clearNarration() {
+		narrationPanel.clear();
 	}
 }

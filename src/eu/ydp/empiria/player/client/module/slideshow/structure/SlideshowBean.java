@@ -9,17 +9,17 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "slideshow")
 public class SlideshowBean {
 
-	@XmlElement(defaultValue = "")
-	private String title;
+	@XmlElement
+	private SlideshowTitleBean title;
 
 	@XmlElement(name = "slide")
 	private List<SlideBean> slideBeans = Lists.newArrayList();
 
-	public String getTitle() {
+	public SlideshowTitleBean getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(SlideshowTitleBean title) {
 		this.title = title;
 	}
 

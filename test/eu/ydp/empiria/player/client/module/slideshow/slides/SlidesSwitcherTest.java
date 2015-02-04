@@ -4,6 +4,7 @@ import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.google.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SlidesSwitcherTest {
 	private SlidePresenter presenter;
 	@Mock
 	private SlideBean slide;
+	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
 	private final List<SlideBean> slides = Lists.newArrayList();
 
@@ -27,7 +30,7 @@ public class SlidesSwitcherTest {
 	public void init() {
 		testObj = new SlidesSwitcher(presenter);
 		slides.add(slide);
-		testObj.setSlides(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 	}
 
 	@Test
@@ -35,7 +38,7 @@ public class SlidesSwitcherTest {
 		// given
 		boolean firstResult = testObj.canSwitchToPreviousSlide();
 		assertThat(firstResult).isFalse();
-		
+
 		// when
 		boolean result = testObj.canSwitchToPreviousSlide();
 		testObj.showPreviousSlide();
@@ -114,7 +117,7 @@ public class SlidesSwitcherTest {
 		testObj.reset();
 
 		// then
-		verifyZeroInteractions(presenter);
+		verify(presenter, only()).setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	@Test
