@@ -26,7 +26,7 @@ public class SlideshowPagerPresenterTest {
 	private SlideshowPagerButtonPresenter pagerButton;
 	@Mock
 	private SlideshowController slideshowController;
-	
+
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
@@ -82,5 +82,17 @@ public class SlideshowPagerPresenterTest {
 		// then
 		verify(pagerButton).deactivatePagerButton();
 		verify(pagerButton).activatePagerButton();
+	}
+
+	@Test
+	public void shouldNotUpdateButtons_whenPagerIsNotInitialized() {
+		// given
+
+		// when
+		testObj.updateButtons(2);
+
+		// then
+		verify(pagerButton, never()).deactivatePagerButton();
+		verify(pagerButton, never()).activatePagerButton();
 	}
 }
