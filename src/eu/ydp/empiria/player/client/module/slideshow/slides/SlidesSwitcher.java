@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 import java.util.List;
 
 import com.google.inject.Inject;
-
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -19,8 +19,9 @@ public class SlidesSwitcher {
 		this.presenter = presenter;
 	}
 
-	public void setSlides(List<SlideBean> slides) {
+	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		this.slides = slides;
+		presenter.setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	public void showNextSlide() {

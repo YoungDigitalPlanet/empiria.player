@@ -4,19 +4,17 @@ import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SlideshowControllerTest {
@@ -29,6 +27,8 @@ public class SlideshowControllerTest {
 	private SlideshowButtonsPresenter buttonsPresenter;
 	@Mock
 	private SlideshowPagerPresenter pagerPresenter;
+	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
@@ -38,10 +38,10 @@ public class SlideshowControllerTest {
 		List<SlideBean> slides = Lists.newArrayList();
 
 		// when
-		testObj.init(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 
 		// then
-		verify(slidesSwitcher).setSlides(slides);
+		verify(slidesSwitcher).init(slides, inlineBodyGeneratorSocket);
 		verify(slidesSwitcher).reset();
 		verifyEnableButtons();
 	}
@@ -79,10 +79,10 @@ public class SlideshowControllerTest {
 	@Test
 	public void shouldStopSlideshow() {
 		// given
-		
+
 		// when
 		testObj.stopSlideshow();
-		
+
 		// then
 		verify(slidesSwitcher).reset();
 		verifyEnableButtons();
@@ -92,7 +92,6 @@ public class SlideshowControllerTest {
 	public void shouldResetSlideAndPlay_whenIsLastSlide() {
 		// given
 		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
-
 
 		// when
 		testObj.playSlideshow();

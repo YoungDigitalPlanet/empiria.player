@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.slideshow;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowPlayerPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
@@ -35,13 +36,15 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 
 	@Override
 	protected void initModule(Element element) {
+		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = getModuleSocket().getInlineBodyGeneratorSocket();
+
 		moduleStructure.createFromXml(element.toString(), ijsonService.createArray());
 		SlideshowPlayerBean slideshowPlayer = moduleStructure.getBean();
 		SlideshowBean slideshow = slideshowPlayer.getSlideshowBean();
 
 		initPager(slideshowPlayer);
-		presenter.init(slideshow);
-		controller.init(slideshow.getSlideBeans());
+		presenter.init(slideshow, inlineBodyGeneratorSocket);
+		controller.init(slideshow.getSlideBeans(), inlineBodyGeneratorSocket);
 	}
 
 	private void initPager(SlideshowPlayerBean slideshowPlayer) {

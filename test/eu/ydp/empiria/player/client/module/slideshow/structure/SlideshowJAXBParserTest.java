@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
-
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
 public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
@@ -18,31 +18,67 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		firstSourceBean = new SourceBean();
 		firstSourceBean.setSrc("source1");
 
+		String firstSlideTitleString = "<slideTitle>slide title1</slideTitle>";
+		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
+		firstSlideTitleContent.setStringElement(firstSlideTitleString);
+
+		SlideTitleBean firstSlideTitle = new SlideTitleBean();
+		firstSlideTitle.setTitleValue(firstSlideTitleContent);
+
+		String firstSlideNarrationString = "<narration>narration1</narration>";
+		XmlContentImpl firstSlideNarrationContent = new XmlContentImpl();
+		firstSlideNarrationContent.setStringElement(firstSlideNarrationString);
+
+		SlideNarrationBean firstSlideNarration = new SlideNarrationBean();
+		firstSlideNarration.setNarrationValue(firstSlideNarrationContent);
+
 		firstSlideExpected = new SlideBean();
-		firstSlideExpected.setTitle("slide title1");
-		firstSlideExpected.setNarration("narration1");
+		firstSlideExpected.setSlideTitle(firstSlideTitle);
+		firstSlideExpected.setNarration(firstSlideNarration);
 		firstSlideExpected.setSource(firstSourceBean);
 
 		secondSourceBean = new SourceBean();
 		secondSourceBean.setSrc("source2");
 
+		String secondSlideTitleString = "<slideTitle>slide title2</slideTitle>";
+		XmlContentImpl secondSlideTitleContent = new XmlContentImpl();
+		secondSlideTitleContent.setStringElement(secondSlideTitleString);
+
+		SlideTitleBean secondSlideTitle = new SlideTitleBean();
+		secondSlideTitle.setTitleValue(secondSlideTitleContent);
+
+		String secondSlideNarrationString = "<narration>narration2</narration>";
+		XmlContentImpl secondSlideNarrationContent = new XmlContentImpl();
+		secondSlideNarrationContent.setStringElement(secondSlideNarrationString);
+
+		SlideNarrationBean secondSlideNarration = new SlideNarrationBean();
+		secondSlideNarration.setNarrationValue(secondSlideNarrationContent);
+
 		secondSlideExpected = new SlideBean();
-		secondSlideExpected.setTitle("slide title2");
-		secondSlideExpected.setNarration("narration2");
+		secondSlideExpected.setSlideTitle(secondSlideTitle);
+		secondSlideExpected.setNarration(secondSlideNarration);
 		secondSlideExpected.setSource(secondSourceBean);
 
 	}
 
-	public void testFullSlideshow() {
+	public void testFullSlideshow_withBoldTitle() {
 		// given
+		String firstSlideTitleString = "<slideTitle>slide <bold>title1</bold></slideTitle>";
+		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
+		firstSlideTitleContent.setStringElement(firstSlideTitleString);
+		firstSlideExpected.getSlideTitle().setTitleValue(firstSlideTitleContent);
+
+		XmlContentImpl titleExpected = new XmlContentImpl();
+		titleExpected.setStringElement("<title>title</title>");
 
 		// when
 		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.FULL_SLIDESHOW);
 
 		// then
 		SlideshowBean slideshow = bean.getSlideshowBean();
-		String titleResult = slideshow.getTitle();
-		assertEquals("title", titleResult);
+
+		XMLContent titleResult = slideshow.getTitle().getTitleValue();
+		assertEqualsXmlContent(titleExpected, titleResult);
 
 		List<SlideBean> slides = slideshow.getSlideBeans();
 		assertEquals(2, slides.size());
@@ -58,15 +94,18 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testSlideshowWihoutNarration() {
 		// given
-		firstSlideExpected.setNarration("");
+		XmlContentImpl titleExpected = new XmlContentImpl();
+		titleExpected.setStringElement("<title>title</title>");
 
+		firstSlideExpected.setNarration(null);
 		// when
 		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.SLIDESHOW_WITHOUT_NARRATION);
 
 		// then
 		SlideshowBean slideshow = bean.getSlideshowBean();
-		String titleResult = slideshow.getTitle();
-		assertEquals("title", titleResult);
+
+		XMLContent titleResult = slideshow.getTitle().getTitleValue();
+		assertEqualsXmlContent(titleExpected, titleResult);
 
 		List<SlideBean> slides = slideshow.getSlideBeans();
 		assertEquals(1, slides.size());
@@ -79,14 +118,16 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testSlideshowWithoutTitle() {
 		// given
+		XmlContentImpl titleExpected = new XmlContentImpl();
+		titleExpected.setStringElement("<title></title>");
 
 		// when
 		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.FULL_SLIDESHOW_WITHOUT_TITLE);
 
 		// then
 		SlideshowBean slideshow = bean.getSlideshowBean();
-		String titleResult = slideshow.getTitle();
-		assertEquals("", titleResult);
+		XMLContent titleResult = slideshow.getTitle().getTitleValue();
+		assertEqualsXmlContent(titleExpected, titleResult);
 
 		List<SlideBean> slides = slideshow.getSlideBeans();
 		assertEquals(2, slides.size());
@@ -109,10 +150,29 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 	}
 
 	private void assertSlidesEquals(SlideBean slideExpected, SlideBean slideActual) {
-		assertEquals(slideExpected.getTitle(), slideActual.getTitle());
-		assertEquals(slideExpected.getNarration(), slideActual.getNarration());
-
+		assertEqualsSlideTitle(slideExpected.getSlideTitle(), slideActual.getSlideTitle(), slideExpected.hasSlideTitle());
+		assertEqualsSlideNarration(slideExpected.getNarration(), slideActual.getNarration(), slideExpected.hasNarration());
 		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
+	}
+
+	private void assertEqualsSlideTitle(SlideTitleBean expectedNarration, SlideTitleBean actualNarration, boolean hasNarration) {
+		if (hasNarration) {
+			assertEqualsXmlContent(expectedNarration.getTitleValue(), actualNarration.getTitleValue());
+		} else {
+			assertEquals(expectedNarration, actualNarration);
+		}
+	}
+
+	private void assertEqualsSlideNarration(SlideNarrationBean expectedNarration, SlideNarrationBean actualNarration, boolean hasNarration) {
+		if (hasNarration) {
+			assertEqualsXmlContent(expectedNarration.getNarrationValue(), actualNarration.getNarrationValue());
+		} else {
+			assertEquals(expectedNarration, actualNarration);
+		}
+	}
+
+	private void assertEqualsXmlContent(XMLContent expectedSlideTitle, XMLContent resultSlideTitle) {
+		assertEquals(expectedSlideTitle.toString(), resultSlideTitle.getValue().toString());
 	}
 
 	private void assertSourceEqual(SourceBean sourceExpected, SourceBean sourceActual) {
