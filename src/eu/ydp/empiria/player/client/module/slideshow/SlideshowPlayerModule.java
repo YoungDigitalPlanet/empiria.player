@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowPlayerPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
+import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
@@ -17,15 +18,18 @@ public class SlideshowPlayerModule extends SimpleModuleBase {
 	private final IJSONService ijsonService;
 	private final SlideshowPlayerPresenter presenter;
 	private final SlideshowTemplateInterpreter templateInterpreter;
+	private final SlideSoundController slideSoundController;
 
 	@Inject
 	public SlideshowPlayerModule(@ModuleScoped SlideshowController slideshowController, @ModuleScoped SlideshowPlayerPresenter presenter,
-			SlideshowModuleStructure moduleStructure, IJSONService ijsonService, SlideshowTemplateInterpreter templateInterpreter) {
+			SlideshowModuleStructure moduleStructure, IJSONService ijsonService, SlideshowTemplateInterpreter templateInterpreter,
+			SlideSoundController slideSoundController) {
 		this.controller = slideshowController;
 		this.presenter = presenter;
 		this.moduleStructure = moduleStructure;
 		this.ijsonService = ijsonService;
 		this.templateInterpreter = templateInterpreter;
+		this.slideSoundController = slideSoundController;
 	}
 
 	@Override

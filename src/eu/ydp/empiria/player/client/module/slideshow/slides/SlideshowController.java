@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
-import java.util.List;
-
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import java.util.List;
 
 public class SlideshowController {
 
@@ -23,9 +22,22 @@ public class SlideshowController {
 		this.pagerPresenter = pagerPresenter;
 	}
 
+	private final Command nextSlideCommand = new Command() {
+
+		@Override
+		public void execute() {
+			boolean isPlaying = buttonsPresenter.isPlayButtonDown();
+			if (isPlaying) {
+				continuePlaySlideshow();
+			}
+		}
+	};
+
 	public void init(List<SlideBean> slides) {
 		buttonsPresenter.setSlideshowController(this);
 		slidesSwitcher.setSlides(slides);
+		slidesSwitcher.initSounds();
+		slidesSwitcher.setShowNextSlideCommand(nextSlideCommand);
 		resetAndSetButtons();
 	}
 
@@ -36,43 +48,53 @@ public class SlideshowController {
 
 	public void showSlide(int indexToShow) {
 		slidesSwitcher.showSlide(indexToShow);
+		slidesSwitcher.stopAndPlaySlide();
 		updateButtons();
 	}
 
 	public void stopSlideshow() {
-		pauseSlideshow();
+		slidesSwitcher.stopSlide();
 		resetAndSetButtons();
 	}
 
 	public void playSlideshow() {
-		if (!slidesSwitcher.canSwitchToNextSlide()) {
-			resetAndSetButtons();
-		}
-		buttonsPresenter.setPlayButtonDown(true);
+		slidesSwitcher.playSlide();
 	}
 
 	public void pauseSlideshow() {
-		buttonsPresenter.setPlayButtonDown(false);
+		slidesSwitcher.pauseSlide();
 	}
 
 	public void showPreviousSlide() {
 		slidesSwitcher.showPreviousSlide();
+		slidesSwitcher.stopAndPlaySlide();
 		updateButtons();
 	}
 
 	public void showNextSlide() {
 		slidesSwitcher.showNextSlide();
+		slidesSwitcher.stopAndPlaySlide();
 		updateButtons();
+	}
+
+	private void continuePlaySlideshow() {
+		if (slidesSwitcher.canSwitchToNextSlide()) {
+			showNextSlide();
+		} else {
+			stopSlideshow();
+		}
 	}
 
 	private void updateButtons() {
 		buttonsPresenter.setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
 		buttonsPresenter.setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
 		pagerPresenter.updateButtons(slidesSwitcher.getCurrentSlideIndex());
+		buttonsPresenter.setPlayButtonDown(true);
 	}
 
 	private void resetAndSetButtons() {
 		slidesSwitcher.reset();
 		updateButtons();
+		buttonsPresenter.setPlayButtonDown(false);
 	}
 }

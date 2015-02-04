@@ -4,19 +4,16 @@ import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SlideshowControllerTest {
@@ -29,6 +26,7 @@ public class SlideshowControllerTest {
 	private SlideshowButtonsPresenter buttonsPresenter;
 	@Mock
 	private SlideshowPagerPresenter pagerPresenter;
+
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
@@ -41,8 +39,12 @@ public class SlideshowControllerTest {
 		testObj.init(slides);
 
 		// then
-		verify(slidesSwitcher).setSlides(slides);
+		InOrder inOrder = inOrder(slidesSwitcher);
+		inOrder.verify(slidesSwitcher).setSlides(slides);
+		inOrder.verify(slidesSwitcher).initSounds();
+
 		verify(slidesSwitcher).reset();
+		verify(slidesSwitcher).setShowNextSlideCommand(any(Command.class));
 		verifyEnableButtons();
 	}
 
@@ -73,6 +75,7 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).showSlide(slideIndexToShow);
+		verify(slidesSwitcher).stopAndPlaySlide();
 		verifyEnableButtons();
 	}
 
@@ -85,21 +88,52 @@ public class SlideshowControllerTest {
 		
 		// then
 		verify(slidesSwitcher).reset();
+		verify(slidesSwitcher).stopSlide();
 		verifyEnableButtons();
+		verify(buttonsPresenter).setPlayButtonDown(false);
 	}
 
 	@Test
-	public void shouldResetSlideAndPlay_whenIsLastSlide() {
+	public void shouldPauseSlideshow() {
 		// given
-		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
 
+		// when
+		testObj.pauseSlideshow();
+
+		// then
+		verify(slidesSwitcher).pauseSlide();
+	}
+
+	@Test
+	public void shouldPlaySlideshow() {
+		// given
 
 		// when
 		testObj.playSlideshow();
 
 		// then
-		verify(slidesSwitcher).reset();
-		verifyEnableButtons();
+		verify(slidesSwitcher).playSlide();
+
+	}
+
+	@Test
+	public void shouldResetSlideAndPlay_whenIsLastSlide() {
+		// given
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides);
+		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
+		Command value = commandCaptor.getValue();
+
+		when(buttonsPresenter.isPlayButtonDown()).thenReturn(true);
+		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
+
+
+		// when
+		value.execute();
+
+		// then
+		verify(slidesSwitcher, times(2)).reset();
+		verify(slidesSwitcher).stopSlide();
 	}
 
 	@Test
@@ -122,6 +156,7 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).showPreviousSlide();
+		verify(slidesSwitcher).stopAndPlaySlide();
 		verifyEnableButtons();
 	}
 
@@ -134,7 +169,44 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).showNextSlide();
+		verify(slidesSwitcher).stopAndPlaySlide();
 		verifyEnableButtons();
+	}
+
+	@Test
+	public void shouldNotContinuePlayingSlideshow_whenIsNotPlaying() {
+		// given
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides);
+		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
+		Command value = commandCaptor.getValue();
+
+		when(buttonsPresenter.isPlayButtonDown()).thenReturn(false);
+
+		// when
+		value.execute();
+
+		// than
+		verify(slidesSwitcher, never()).showNextSlide();
+	}
+
+	@Test
+	public void shouldContinuePlayingSlideshow_whenIsPlaying() {
+		// given
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides);
+		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
+		Command value = commandCaptor.getValue();
+
+		when(buttonsPresenter.isPlayButtonDown()).thenReturn(true);
+		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(true);
+
+		// when
+		value.execute();
+
+		// than
+		verify(slidesSwitcher).showNextSlide();
+		verify(slidesSwitcher).stopAndPlaySlide();
 	}
 
 	private void verifyEnableButtons() {
