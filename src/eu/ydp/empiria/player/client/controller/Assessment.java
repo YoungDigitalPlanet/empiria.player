@@ -23,8 +23,6 @@
  */
 package eu.ydp.empiria.player.client.controller;
 
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocketWrapper;
-
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
@@ -70,21 +68,17 @@ public class Assessment {
 	private InteractionEventsListener interactionEventsListener;
 	private final AssessmentFactory assessmentFactory;
 
-	private final InlineBodyGeneratorSocketWrapper inlineBodyGeneratorSocketWrapper;
-
 	/**
 	 * C'tor
-	 * 
+	 *
 	 * @param data
 	 *            XMLData object as data source
 	 */
 	@Inject
 	public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-			@Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory,
-			InlineBodyGeneratorSocketWrapper inlineBodyGeneratorSocketWrapper) {
+			@Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory) {
 
 		this.assessmentFactory = assessmentFactory;
-		this.inlineBodyGeneratorSocketWrapper = inlineBodyGeneratorSocketWrapper;
 		this.xmlData = data.getData();
 
 		this.modulesRegistrySocket = modulesRegistrySocket;
@@ -168,7 +162,6 @@ public class Assessment {
 		public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
 			if (inlineBodyGenerator == null) {
 				inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
-				inlineBodyGeneratorSocketWrapper.setInlineBodyGeneratorSocket(inlineBodyGenerator);
 			}
 			return inlineBodyGenerator;
 		}

@@ -7,10 +7,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
-import org.junit.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 
@@ -22,14 +22,7 @@ public class SlideshowPlayerPresenterTest {
 	@Mock
 	private SlideshowPlayerView view;
 	@Mock
-	private InlineBodyGeneratorSocketWrapper bodyGeneratorSocketWrapper;
-	@Mock
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
-
-	@Before
-	public void init() {
-		when(bodyGeneratorSocketWrapper.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
-	}
 
 	@Test
 	public void shouldInit() {
@@ -49,7 +42,7 @@ public class SlideshowPlayerPresenterTest {
 		when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleView);
 
 		// when
-		testObj.init(slideshow);
+		testObj.init(slideshow, inlineBodyGeneratorSocket);
 
 		// then
 		verify(view).setTitle(titleView);

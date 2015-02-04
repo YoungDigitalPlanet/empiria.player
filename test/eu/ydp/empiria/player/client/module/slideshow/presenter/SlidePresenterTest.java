@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
 import org.junit.*;
@@ -21,8 +21,6 @@ public class SlidePresenterTest {
 	private SlidePresenter testObj;
 	@Mock
 	private SlideView view;
-	@Mock
-	private InlineBodyGeneratorSocketWrapper bodyGeneratorSocketWrapper;
 	@Mock
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
@@ -45,8 +43,8 @@ public class SlidePresenterTest {
 
 	@Before
 	public void init() {
-		when(bodyGeneratorSocketWrapper.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
 		slide = new SlideBean();
+		testObj.setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	@Test

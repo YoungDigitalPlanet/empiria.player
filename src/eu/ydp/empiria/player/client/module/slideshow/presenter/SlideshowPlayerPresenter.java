@@ -3,25 +3,22 @@ package eu.ydp.empiria.player.client.module.slideshow.presenter;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowBean;
 import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
 
 public class SlideshowPlayerPresenter {
 
 	private final SlideshowPlayerView view;
-	private final InlineBodyGeneratorSocketWrapper inlineBodyGeneratorWrapper;
 
 	@Inject
-	public SlideshowPlayerPresenter(SlideshowPlayerView view, InlineBodyGeneratorSocketWrapper inlineBodyGeneratorWrapper) {
+	public SlideshowPlayerPresenter(SlideshowPlayerView view) {
 		this.view = view;
-		this.inlineBodyGeneratorWrapper = inlineBodyGeneratorWrapper;
 	}
 
-	public void init(SlideshowBean bean) {
+	public void init(SlideshowBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		Element title = bean.getTitle().getTitleValue().getValue();
-		InlineBodyGeneratorSocket inlineBodyGenerator = inlineBodyGeneratorWrapper.getInlineBodyGeneratorSocket();
-		Widget titleView = inlineBodyGenerator.generateInlineBody(title);
+		Widget titleView = inlineBodyGeneratorSocket.generateInlineBody(title);
 		view.setTitle(titleView);
 	}
 

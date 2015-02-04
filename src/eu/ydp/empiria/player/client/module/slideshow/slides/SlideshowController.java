@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -26,11 +27,11 @@ public class SlideshowController {
 		this.slidesSorter = slidesSorter;
 	}
 
-	public void init(List<SlideBean> slides) {
+	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		initTimer();
 		buttonsPresenter.setSlideshowController(this);
 		slidesSorter.sortByTime(slides);
-		slidesSwitcher.setSlides(slides);
+		slidesSwitcher.init(slides, inlineBodyGeneratorSocket);
 		resetAndSetButtons();
 	}
 
