@@ -192,7 +192,6 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(PointerEventsCoordinates.class).in(Singleton.class);
 		bind(IgnoredModules.class).in(Singleton.class);
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
-
 		bind(WindowResizeController.class).asEagerSingleton();
 		bind(LessonStateReset.class).asEagerSingleton();
 

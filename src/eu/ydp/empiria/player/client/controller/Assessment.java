@@ -96,8 +96,6 @@ public class Assessment {
 		title = rootNode.getAttribute("title");
 
 		initializeBody(skinBody, interactionEventsListener);
-
-		moduleSocket.getInlineBodyGeneratorSocket();
 	}
 
 	private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {

@@ -48,7 +48,7 @@ public class SlidePresenterTest {
 	}
 
 	@Test
-	public void shouldReplaceSlideNarration_andImageSource() {
+	public void shouldReplaceSlideNarrationAndImageSource() {
 		// given
 		SlideNarrationBean slideNarration = new SlideNarrationBean();
 		when(narrationXmlContent.getValue()).thenReturn(narrationElement);
