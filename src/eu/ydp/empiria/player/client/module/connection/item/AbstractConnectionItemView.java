@@ -4,7 +4,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
@@ -31,7 +30,7 @@ public abstract class AbstractConnectionItemView extends Composite {
 	}
 
 	protected void buildView() {
-		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue()));
+		item.add(bodyGenerator.generateInlineBody(bean.getXmlContent().getValue(), true));
 		item.getElement().getStyle().setZIndex(1);
 	}
 
