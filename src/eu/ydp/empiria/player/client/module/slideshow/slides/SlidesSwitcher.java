@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
@@ -31,9 +32,9 @@ public class SlidesSwitcher {
 			showNextSlideCommand.execute();
 		}
 	};
-
-	public void setSlides(List<SlideBean> slides) {
+	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		this.slides = slides;
+		presenter.setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	public void initSounds() {

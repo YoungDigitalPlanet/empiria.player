@@ -8,6 +8,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
@@ -26,7 +27,8 @@ public class SlideshowControllerTest {
 	private SlideshowButtonsPresenter buttonsPresenter;
 	@Mock
 	private SlideshowPagerPresenter pagerPresenter;
-
+	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Captor
 	private ArgumentCaptor<Command> commandCaptor;
 
@@ -36,11 +38,11 @@ public class SlideshowControllerTest {
 		List<SlideBean> slides = Lists.newArrayList();
 
 		// when
-		testObj.init(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 
 		// then
 		InOrder inOrder = inOrder(slidesSwitcher);
-		inOrder.verify(slidesSwitcher).setSlides(slides);
+		inOrder.verify(slidesSwitcher).init(slides, inlineBodyGeneratorSocket);;
 		inOrder.verify(slidesSwitcher).initSounds();
 
 		verify(slidesSwitcher).reset();
@@ -82,10 +84,10 @@ public class SlideshowControllerTest {
 	@Test
 	public void shouldStopSlideshow() {
 		// given
-		
+
 		// when
 		testObj.stopSlideshow();
-		
+
 		// then
 		verify(slidesSwitcher).reset();
 		verify(slidesSwitcher).stopSlide();
@@ -120,13 +122,12 @@ public class SlideshowControllerTest {
 	public void shouldResetSlideAndPlay_whenIsLastSlide() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
-		testObj.init(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
 		Command value = commandCaptor.getValue();
 
 		when(buttonsPresenter.isPlayButtonDown()).thenReturn(true);
 		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
-
 
 		// when
 		value.execute();
@@ -177,7 +178,7 @@ public class SlideshowControllerTest {
 	public void shouldNotContinuePlayingSlideshow_whenIsNotPlaying() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
-		testObj.init(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
 		Command value = commandCaptor.getValue();
 
@@ -194,7 +195,7 @@ public class SlideshowControllerTest {
 	public void shouldContinuePlayingSlideshow_whenIsPlaying() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
-		testObj.init(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
 		Command value = commandCaptor.getValue();
 

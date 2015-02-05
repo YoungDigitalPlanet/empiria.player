@@ -10,10 +10,10 @@ public class SlideBean {
 	private AudioBean audio;
 	@XmlElement
 	private SourceBean source;
-	@XmlElement(defaultValue = "")
-	private String narration;
-	@XmlElement(name = "slideTitle")
-	private String title;
+	@XmlElement
+	private SlideNarrationBean narration;
+	@XmlElement
+	private SlideTitleBean slideTitle;
 
 	public SourceBean getSource() {
 		return source;
@@ -23,20 +23,28 @@ public class SlideBean {
 		this.source = src;
 	}
 
-	public String getNarration() {
+	public SlideNarrationBean getNarration() {
 		return narration;
 	}
 
-	public void setNarration(String narration) {
+	public void setNarration(SlideNarrationBean narration) {
 		this.narration = narration;
 	}
 
-	public String getTitle() {
-		return title;
+	public boolean hasNarration() {
+		return narration != null;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public SlideTitleBean getSlideTitle() {
+		return slideTitle;
+	}
+
+	public void setSlideTitle(SlideTitleBean title) {
+		this.slideTitle = title;
+	}
+
+	public boolean hasSlideTitle() {
+		return slideTitle != null;
 	}
 
 	public AudioBean getAudio() {

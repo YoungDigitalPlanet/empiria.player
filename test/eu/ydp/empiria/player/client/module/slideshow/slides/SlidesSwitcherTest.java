@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.Command;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
@@ -24,6 +25,7 @@ public class SlidesSwitcherTest {
 	@Mock
 	private SlideBean slide;
 	@Mock
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;	@Mock
 	private SlideSoundController slideSoundController;
 	@Mock
 	private Command command;
@@ -39,7 +41,7 @@ public class SlidesSwitcherTest {
 	public void init() {
 		testObj = new SlidesSwitcher(presenter, slideSoundController);
 		slides.add(slide);
-		testObj.setSlides(slides);
+		testObj.init(slides, inlineBodyGeneratorSocket);
 	}
 
 	@Test
@@ -62,7 +64,7 @@ public class SlidesSwitcherTest {
 		// given
 		boolean firstResult = testObj.canSwitchToPreviousSlide();
 		assertThat(firstResult).isFalse();
-		
+
 		// when
 		boolean result = testObj.canSwitchToPreviousSlide();
 		testObj.showPreviousSlide();
@@ -240,7 +242,7 @@ public class SlidesSwitcherTest {
 		testObj.reset();
 
 		// then
-		verifyZeroInteractions(presenter);
+		verify(presenter, only()).setInlineBodyGenerator(inlineBodyGeneratorSocket);
 	}
 
 	@Test
