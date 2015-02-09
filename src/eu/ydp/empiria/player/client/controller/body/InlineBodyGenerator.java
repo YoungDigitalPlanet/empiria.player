@@ -174,7 +174,8 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 	}
 
 	private void createInlineFormattedModule(Node node, Panel parentPanel, IInlineContainerModule inlineContainer) {
-		Panel inlineFormattedPanel = new FlowPanel(inlineContainer.getType().getHtmlTag());
+		String htmlTag = inlineContainer.getType().getHtmlTag();
+		Panel inlineFormattedPanel = new FlowPanel(htmlTag);
 		parentPanel.add(inlineFormattedPanel);
 		parseXML(node.getChildNodes(), inlineFormattedPanel);
 	}
