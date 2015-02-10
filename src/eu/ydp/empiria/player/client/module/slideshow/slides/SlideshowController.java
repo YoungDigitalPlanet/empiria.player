@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -23,22 +23,18 @@ public class SlideshowController {
 		this.pagerPresenter = pagerPresenter;
 	}
 
-	private final Command nextSlideCommand = new Command() {
+	private final SlideEnd slideEnd = new SlideEnd() {
 
 		@Override
-		public void execute() {
-			boolean isPlaying = buttonsPresenter.isPlayButtonDown();
-			if (isPlaying) {
-				continuePlaySlideshow();
-			}
+		public void onEnd() {
+			continuePlaySlideshow();
 		}
 	};
 
 	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		buttonsPresenter.setSlideshowController(this);
 		slidesSwitcher.init(slides, inlineBodyGeneratorSocket);
-		slidesSwitcher.initSounds();
-		slidesSwitcher.setShowNextSlideCommand(nextSlideCommand);
+		slidesSwitcher.setSlideEnd(slideEnd);
 		resetAndSetButtons();
 	}
 
@@ -54,7 +50,6 @@ public class SlideshowController {
 	}
 
 	public void stopSlideshow() {
-		slidesSwitcher.stopSlide();
 		resetAndSetButtons();
 	}
 

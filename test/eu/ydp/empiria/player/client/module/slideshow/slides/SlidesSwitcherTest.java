@@ -5,8 +5,8 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.user.client.Command;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
@@ -19,16 +19,16 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlidesSwitcherTest {
 
+	@InjectMocks
 	private SlidesSwitcher testObj;
 	@Mock
 	private SlidePresenter presenter;
 	@Mock
 	private SlideBean slide;
 	@Mock
-	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;	@Mock
-	private SlideSoundController slideSoundController;
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Mock
-	private Command command;
+	private SlideSoundController slideSoundController;
 	@Mock
 	private AudioBean audioBean;
 
@@ -39,7 +39,6 @@ public class SlidesSwitcherTest {
 
 	@Before
 	public void init() {
-		testObj = new SlidesSwitcher(presenter, slideSoundController);
 		slides.add(slide);
 		testObj.init(slides, inlineBodyGeneratorSocket);
 	}
@@ -47,16 +46,16 @@ public class SlidesSwitcherTest {
 	@Test
 	public void shouldInitSounds() {
 		// given
+		String audiopath = "test.mp3";
 		when(slide.getAudio()).thenReturn(audioBean);
 		when(slide.hasAudio()).thenReturn(true);
-		slides.add(slide);
+		when(audioBean.getSrc()).thenReturn(audiopath);
 
 		// when
-		testObj.initSounds();
+		testObj.init(slides, inlineBodyGeneratorSocket);
 
 		// than
-		verify(slideSoundController).initSounds(captor.capture());
-		assertThat(captor.getValue().size()).isEqualTo(2);
+		verify(slideSoundController).initSound(audiopath);
 	}
 
 	@Test
@@ -132,6 +131,7 @@ public class SlidesSwitcherTest {
 		// then
 		assertThat(result).isFalse();
 		verify(presenter, times(2)).replaceViewData(slide);
+		verify(slideSoundController).stopAllSounds();
 	}
 
 	@Test
@@ -162,33 +162,6 @@ public class SlidesSwitcherTest {
 	}
 
 	@Test
-	public void shouldStopSlide_whenThereIsAudio() {
-		// given
-		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(audioBean.getSrc()).thenReturn(audiopath);
-		when(slide.hasAudio()).thenReturn(true);
-
-		// when
-		testObj.stopSlide();
-
-		// then
-		verify(slideSoundController).stopSound(audiopath);
-	}
-
-	@Test
-	public void shouldNotStopSlide_whenThereIsNoAudio() {
-		// given
-		when(slide.hasAudio()).thenReturn(false);
-
-		// when
-		testObj.stopSlide();
-
-		// then
-		verifyZeroInteractions(slideSoundController);
-	}
-
-	@Test
 	public void shouldNotPlaySound_whenThereIsNoAudio() {
 		// given
 		when(slide.hasAudio()).thenReturn(false);
@@ -212,8 +185,7 @@ public class SlidesSwitcherTest {
 		testObj.playSlide();
 
 		// then
-		verify(slideSoundController).playSound(eq(audiopath), any(Command.class));
-
+		verify(slideSoundController).playSound(eq(audiopath), any(SlideEnd.class));
 	}
 
 	@Test
@@ -228,9 +200,8 @@ public class SlidesSwitcherTest {
 		testObj.stopAndPlaySlide();
 
 		// then
-		verify(slideSoundController).playSound(eq(audiopath), any(Command.class));
+		verify(slideSoundController).playSound(eq(audiopath), any(SlideEnd.class));
 		verify(slideSoundController).stopAllSounds();
-
 	}
 
 	@Test

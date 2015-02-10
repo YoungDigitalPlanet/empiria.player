@@ -5,14 +5,13 @@ import static org.mockito.Mockito.*;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.*;
-import eu.ydp.empiria.player.client.module.slideshow.structure.AudioBean;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.*;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
-import java.util.*;
+import java.util.Collection;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -20,9 +19,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlideSoundControllerTest {
+
 	@InjectMocks
 	private SlideSoundController testObj;
-
 	@Mock
 	private MediaWrapperController mediaWrapperController;
 	@Mock
@@ -30,9 +29,9 @@ public class SlideSoundControllerTest {
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
-	private Command command;
+	private SlideEnd command;
 	@Mock
-	private Optional<Command> audioEnd;
+	private Optional<SlideEnd> audioEnd;
 	@Mock
 	private MediaWrapper<Widget> sound;
 	@Mock
@@ -47,20 +46,17 @@ public class SlideSoundControllerTest {
 	@Test
 	public void shouldInitSounds() {
 		// given
-		AudioBean audio = mock(AudioBean.class);
-		List<AudioBean> sounds = Lists.newArrayList();
-		sounds.add(audio);
-		sounds.add(audio);
 
 		// when
-		testObj.initSounds(sounds);
+		testObj.initSound(filepath);
+		testObj.initSound(filepath);
 
 		// then
-		verify(slideSounds, times(2)).initSound(audio.getSrc());
+		verify(slideSounds, times(2)).initSound(filepath);
 	}
 
 	@Test
-	public void shouldAddHandler() {
+	public void shouldAddHandlerOnInit() {
 		// given
 		Type<MediaEventHandler, MediaEventTypes> eventType = MediaEvent.getType(MediaEventTypes.ON_END);
 		
@@ -92,17 +88,6 @@ public class SlideSoundControllerTest {
 	}
 	
 	@Test
-	public void shouldStopSound() {
-		// given
-
-		// when
-		testObj.stopSound(filepath);
-		
-		// than
-		verify(mediaWrapperController).stop(sound);
-	}
-	
-	@Test
 	public void shouldStopAllSounds() {
 		// given
 		Collection<MediaWrapper<Widget>> sounds = Lists.newArrayList();
@@ -127,7 +112,7 @@ public class SlideSoundControllerTest {
 		testObj.onMediaEvent(mediaEvent);
 
 		// than
-		verify(command).execute();
+		verify(command).onEnd();
 	}
 	
 	@Test
@@ -140,7 +125,7 @@ public class SlideSoundControllerTest {
 		testObj.onMediaEvent(mediaEvent);
 
 		// than
-		verify(command, never()).execute();
+		verify(command, never()).onEnd();
 
 	}
 }

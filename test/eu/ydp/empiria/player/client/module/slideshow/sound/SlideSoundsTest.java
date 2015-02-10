@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.*;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import java.util.*;
-import org.junit.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -20,44 +20,42 @@ public class SlideSoundsTest {
 
 	@InjectMocks
 	private SlideSounds testObj;
-
 	@Mock
 	private MediaWrapperCreator mediaWrapperCreator;
 	@Mock
 	private MimeSourceProvider mimeSourceProvider;
+	@Mock
+	private MediaWrapper<Widget> mediaWrapper;
 
 	@Captor
 	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> callbackReceiverCaptor;
 
-	private final MediaWrapper<Widget> mediaWrapper = mock(MediaWrapper.class);
 	private final Map<String, String> sourceWithType = Maps.newHashMap();
-	private final String filepath = "test.mp3";
-
-	@Before
-	public void init() {
-		sourceWithType.put(filepath, "audio/mp4");
-	}
 
 	@Test
 	public void shouldAddSoundToList_whenSoundIsNotOnList() {
 		// given
-		when(mimeSourceProvider.getSourcesWithTypeByExtension(filepath)).thenReturn(sourceWithType);
+		String filepath = "test.mp3";
+		String filepath2 = "test2.mp3";
 
 		// when
-		testObj.initSound(filepath);
+		addSound(filepath);
+		addSound(filepath2);
+
+		MediaWrapper<Widget> result = testObj.getSound(filepath);
 
 		// than
-		verify(mimeSourceProvider).getSourcesWithTypeByExtension(filepath);
-		verify(mediaWrapperCreator).createMediaWrapper(eq(filepath), eq(sourceWithType), callbackReceiverCaptor.capture());
+		assertThat(result).isEqualTo(mediaWrapper);
 	}
 
 	@Test
 	public void shouldNotCreateSound_whenSoundIsOnList() {
 		// given
-		addSound();
+		String filepath = "test.mp3";
 
-		// when
-		testObj.initSound(filepath);
+		// when;
+		addSound(filepath);
+		addSound(filepath);
 
 		// than
 		verify(mimeSourceProvider, times(1)).getSourcesWithTypeByExtension(filepath);
@@ -67,7 +65,7 @@ public class SlideSoundsTest {
 	@Test
 	public void shouldReturnAllSounds() {
 		// given
-		addSound();
+		addSound("test.mp3");
 
 		// when
 		Collection<MediaWrapper<Widget>> result = testObj.getAllSounds();
@@ -79,7 +77,7 @@ public class SlideSoundsTest {
 	@Test
 	public void shouldReturnTrue_whenContainsSound() {
 		// given
-		addSound();
+		addSound("test.mp3");
 
 		// when
 		boolean result = testObj.containsWrapper(mediaWrapper);
@@ -91,7 +89,7 @@ public class SlideSoundsTest {
 	@Test
 	public void shouldReturnFalse_whenDoesNotContainsSound() {
 		// given
-		addSound();
+		addSound("test.mp3");
 		MediaWrapper<Widget> otherMediaWrapper = mock(MediaWrapper.class);
 
 		// when
@@ -102,7 +100,8 @@ public class SlideSoundsTest {
 
 	}
 
-	private void addSound() {
+	private void addSound(String filepath) {
+		sourceWithType.put(filepath, "audio/mp4");
 		when(mimeSourceProvider.getSourcesWithTypeByExtension(filepath)).thenReturn(sourceWithType);
 		testObj.initSound(filepath);
 

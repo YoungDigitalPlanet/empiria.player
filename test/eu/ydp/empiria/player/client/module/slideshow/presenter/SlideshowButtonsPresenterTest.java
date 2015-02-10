@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
+import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
@@ -148,5 +149,29 @@ public class SlideshowButtonsPresenterTest {
 
 		// then
 		verify(slidesController).stopSlideshow();
+	}
+
+	@Test
+	public void shouldReturnTrue_whenPlayButtonIsDown() {
+		// given
+		when(buttonsView.isPlayButtonDown()).thenReturn(true);
+
+		// when
+		boolean result = testObj.isPlayButtonDown();
+
+		// then
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void shouldReturnFalse_whenPlayButtonIsup() {
+		// given
+		when(buttonsView.isPlayButtonDown()).thenReturn(false);
+
+		// when
+		boolean result = testObj.isPlayButtonDown();
+
+		// then
+		assertThat(result).isFalse();
 	}
 }

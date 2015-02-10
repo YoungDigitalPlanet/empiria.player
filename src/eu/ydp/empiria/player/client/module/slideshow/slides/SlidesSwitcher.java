@@ -1,9 +1,8 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
-import com.google.common.collect.Lists;
-import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
 import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
@@ -16,37 +15,27 @@ public class SlidesSwitcher {
 	private int currSlideIndex;
 	private final SlidePresenter presenter;
 	private final SlideSoundController slideSoundController;
-	private Command showNextSlideCommand;
+	private SlideEnd slideEnd;
 
 	@Inject
 	public SlidesSwitcher(@ModuleScoped SlidePresenter presenter, SlideSoundController slideSoundController) {
 		this.slideSoundController = slideSoundController;
 		this.presenter = presenter;
-
 	}
 
-	private final Command endSlideCommand = new Command() {
-
-		@Override
-		public void execute() {
-			showNextSlideCommand.execute();
-		}
-	};
 	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
 		this.slides = slides;
 		presenter.setInlineBodyGenerator(inlineBodyGeneratorSocket);
+		initSounds();
 	}
 
-	public void initSounds() {
-		List<AudioBean> sounds = Lists.newArrayList();
-
+	private void initSounds() {
 		for (SlideBean slide : slides) {
 			if (slide.hasAudio()) {
-				sounds.add(slide.getAudio());
+				String audiopath = slide.getAudio().getSrc();
+				slideSoundController.initSound(audiopath);
 			}
 		}
-
-		slideSoundController.initSounds(sounds);
 	}
 
 	public void showNextSlide() {
@@ -81,13 +70,6 @@ public class SlidesSwitcher {
 		}
 	}
 
-	public void stopSlide() {
-		if (hasCurrentSlideAudio()) {
-			String audiopath = getCurrentAudioSource();
-			slideSoundController.stopSound(audiopath);
-		}
-	}
-
 	public void stopAndPlaySlide() {
 		slideSoundController.stopAllSounds();
 		playSlide();
@@ -96,7 +78,7 @@ public class SlidesSwitcher {
 	public void playSlide() {
 		if (hasCurrentSlideAudio()) {
 			String audiopath = getCurrentAudioSource();
-			slideSoundController.playSound(audiopath, endSlideCommand);
+			slideSoundController.playSound(audiopath, slideEnd);
 		}
 	}
 
@@ -112,6 +94,7 @@ public class SlidesSwitcher {
 	}
 
 	public void reset() {
+		slideSoundController.stopAllSounds();
 		currSlideIndex = 0;
 		showCurrentSlide();
 	}
@@ -123,8 +106,8 @@ public class SlidesSwitcher {
 		}
 	}
 
-	public void setShowNextSlideCommand(Command showNextSlideCommand) {
-		this.showNextSlideCommand = showNextSlideCommand;
+	public void setSlideEnd(SlideEnd slideEnd) {
+		this.slideEnd = slideEnd;
 	}
 
 	private boolean hasCurrentSlideAudio() {

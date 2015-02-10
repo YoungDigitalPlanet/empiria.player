@@ -120,9 +120,10 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(1, slides.size());
 
 		SlideBean firstSlide = slides.get(0);
-		assertSlidesEqualWithoutAudio(firstSlideExpected, firstSlide);
+		assertSlidesEquals(firstSlideExpected, firstSlide);
 
 		assertTemplateIsNotPresent(bean);
+		assertAudioIsNotPresent(firstSlide);
 	}
 
 	public void testSlideshowWihoutNarration() {
@@ -186,14 +187,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEqualsSlideTitle(slideExpected.getSlideTitle(), slideActual.getSlideTitle(), slideExpected.hasSlideTitle());
 		assertEqualsSlideNarration(slideExpected.getNarration(), slideActual.getNarration(), slideExpected.hasNarration());
 		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
-		assertAudioEqual(slideExpected.getAudio(), slideActual.getAudio());
-	}
-
-	private void assertSlidesEqualWithoutAudio(SlideBean slideExpected, SlideBean slideActual) {
-		assertEqualsSlideTitle(slideExpected.getSlideTitle(), slideActual.getSlideTitle(), slideExpected.hasSlideTitle());
-		assertEqualsSlideNarration(slideExpected.getNarration(), slideActual.getNarration(), slideExpected.hasNarration());
-		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
-		assertAudioIsNotPresent(slideActual);
+		assertAudioEqual(slideExpected.getAudio(), slideActual.getAudio(), slideExpected.hasAudio());
 	}
 
 	private void assertEqualsSlideTitle(SlideTitleBean expectedNarration, SlideTitleBean actualNarration, boolean hasNarration) {
@@ -220,8 +214,12 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(sourceExpected.getSrc(), sourceActual.getSrc());
 	}
 
-	private void assertAudioEqual(AudioBean audioExpected, AudioBean audioActual) {
-		assertEquals(audioExpected.getSrc(), audioActual.getSrc());
+	private void assertAudioEqual(AudioBean audioExpected, AudioBean audioActual, boolean hasAudio) {
+		if (hasAudio) {
+			assertEquals(audioExpected.getSrc(), audioActual.getSrc());
+		} else {
+			assertEquals(audioExpected, audioActual);
+		}
 	}
 
 	private SlideshowPlayerBean parse(String xml) {

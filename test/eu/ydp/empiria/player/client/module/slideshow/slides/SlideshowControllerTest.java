@@ -5,10 +5,10 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SlideshowControllerTest {
 	@Mock
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Captor
-	private ArgumentCaptor<Command> commandCaptor;
+	private ArgumentCaptor<SlideEnd> slideEndCaptor;
 
 	@Test
 	public void shouldSetSlides_andReset() {
@@ -41,12 +41,9 @@ public class SlideshowControllerTest {
 		testObj.init(slides, inlineBodyGeneratorSocket);
 
 		// then
-		InOrder inOrder = inOrder(slidesSwitcher);
-		inOrder.verify(slidesSwitcher).init(slides, inlineBodyGeneratorSocket);;
-		inOrder.verify(slidesSwitcher).initSounds();
-
+		verify(slidesSwitcher).init(slides, inlineBodyGeneratorSocket);
 		verify(slidesSwitcher).reset();
-		verify(slidesSwitcher).setShowNextSlideCommand(any(Command.class));
+		verify(slidesSwitcher).setSlideEnd(any(SlideEnd.class));
 		verifyEnableButtons();
 	}
 
@@ -68,7 +65,7 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
-	public void shouldDelegateShowSlide_andUpdateButtonsStyle() {
+	public void shouldShowAndPlazSlide_andUpdateButtonsStyle() {
 		// given
 		int slideIndexToShow = 2;
 
@@ -90,7 +87,6 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).reset();
-		verify(slidesSwitcher).stopSlide();
 		verifyEnableButtons();
 		verify(buttonsPresenter).setPlayButtonDown(false);
 	}
@@ -119,22 +115,20 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
-	public void shouldResetSlideAndPlay_whenIsLastSlide() {
+	public void shouldResetSlide_whenCantSwitchToNextSlide() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
 		testObj.init(slides, inlineBodyGeneratorSocket);
-		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
-		Command value = commandCaptor.getValue();
+		verify(slidesSwitcher).setSlideEnd(slideEndCaptor.capture());
+		SlideEnd value = slideEndCaptor.getValue();
 
-		when(buttonsPresenter.isPlayButtonDown()).thenReturn(true);
 		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
 
 		// when
-		value.execute();
+		value.onEnd();
 
 		// then
 		verify(slidesSwitcher, times(2)).reset();
-		verify(slidesSwitcher).stopSlide();
 	}
 
 	@Test
@@ -175,39 +169,38 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
-	public void shouldNotContinuePlayingSlideshow_whenIsNotPlaying() {
+	public void shouldContinuePlayingSlideshow_whenCanSwitchToNextSlide() {
 		// given
 		List<SlideBean> slides = Lists.newArrayList();
 		testObj.init(slides, inlineBodyGeneratorSocket);
-		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
-		Command value = commandCaptor.getValue();
+		verify(slidesSwitcher).setSlideEnd(slideEndCaptor.capture());
+		SlideEnd value = slideEndCaptor.getValue();
 
-		when(buttonsPresenter.isPlayButtonDown()).thenReturn(false);
-
-		// when
-		value.execute();
-
-		// than
-		verify(slidesSwitcher, never()).showNextSlide();
-	}
-
-	@Test
-	public void shouldContinuePlayingSlideshow_whenIsPlaying() {
-		// given
-		List<SlideBean> slides = Lists.newArrayList();
-		testObj.init(slides, inlineBodyGeneratorSocket);
-		verify(slidesSwitcher).setShowNextSlideCommand(commandCaptor.capture());
-		Command value = commandCaptor.getValue();
-
-		when(buttonsPresenter.isPlayButtonDown()).thenReturn(true);
 		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(true);
 
 		// when
-		value.execute();
+		value.onEnd();
 
 		// than
 		verify(slidesSwitcher).showNextSlide();
 		verify(slidesSwitcher).stopAndPlaySlide();
+	}
+
+	@Test
+	public void shouldStopSlideshow_whenCanNotSwitchToNextSlide() {
+		// given
+		List<SlideBean> slides = Lists.newArrayList();
+		testObj.init(slides, inlineBodyGeneratorSocket);
+		verify(slidesSwitcher).setSlideEnd(slideEndCaptor.capture());
+		SlideEnd value = slideEndCaptor.getValue();
+
+		when(slidesSwitcher.canSwitchToNextSlide()).thenReturn(false);
+
+		// when
+		value.onEnd();
+
+		// than
+		verify(slidesSwitcher, times(2)).reset();
 	}
 
 	private void verifyEnableButtons() {

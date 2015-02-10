@@ -31,8 +31,8 @@ public class SlideSounds {
 		}
 	}
 
-	public boolean containsWrapper(MediaWrapper<Widget> mw) {
-		return sounds.containsValue(mw);
+	public boolean containsWrapper(MediaWrapper<Widget> mediaWrapper) {
+		return sounds.containsValue(mediaWrapper);
 	}
 
 	public Collection<MediaWrapper<Widget>> getAllSounds() {
@@ -41,17 +41,17 @@ public class SlideSounds {
 
 	private void createMediaWrapper(String audiopath) {
 		Map<String, String> sourceWithType = mimeSourceProvider.getSourcesWithTypeByExtension(audiopath);
-		CallbackReceiver<MediaWrapper<Widget>> cr = createCallbackReceiver(audiopath);
+		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = createCallbackReceiver(audiopath);
 
-		mediaWrapperCreator.createMediaWrapper(audiopath, sourceWithType, cr);
+		mediaWrapperCreator.createMediaWrapper(audiopath, sourceWithType, callbackReceiver);
 	}
 
 	private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audiopath) {
 		return new CallbackReceiver<MediaWrapper<Widget>>() {
 
 			@Override
-			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-				sounds.put(audiopath, mw);
+			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
+				sounds.put(audiopath, mediaWrapper);
 			}
 		};
 	}
