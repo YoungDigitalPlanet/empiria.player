@@ -3,22 +3,16 @@ package eu.ydp.empiria.player.client.controller;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
-import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
-import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.communication.PageData;
-import eu.ydp.empiria.player.client.controller.communication.sockets.AssessmentInterferenceSocket;
-import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
+import eu.ydp.empiria.player.client.controller.communication.*;
+import eu.ydp.empiria.player.client.controller.communication.sockets.*;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.view.assessment.AssessmentViewCarrier;
-import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
+import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.empiria.player.client.view.assessment.*;
 import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
@@ -100,6 +94,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 			pageController.initPage(pageData);
 			eventBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_INITIALIZED, page.getCurrentPageNumber(), this));
 		}
+		pageController.onShow();
 
 		if (assessment != null) {
 			pageController.setAssessmentParenthoodSocket(assessment.getAssessmentParenthoodSocket());
