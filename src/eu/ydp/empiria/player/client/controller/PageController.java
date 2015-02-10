@@ -77,6 +77,12 @@ public class PageController implements PageInterferenceSocket, LessonResetEventH
 		}
 	}
 
+	public void onShow() {
+		for (ItemController itemController : items) {
+			itemController.onShow();
+		}
+	}
+
 	public void reset() {
 		items.clear();
 	}
@@ -97,7 +103,7 @@ public class PageController implements PageInterferenceSocket, LessonResetEventH
 	private native JavaScriptObject createPageSocket()/*-{
 		var socket = {};
 		var instance = this;
-		socket.getItemSockets = function () {
+		socket.getItemSockets = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.PageController::getItemJsSockets()();
 		};
 		return socket;
