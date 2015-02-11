@@ -6,9 +6,9 @@ import static org.mockito.Mockito.*;
 
 import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlidePresenter;
-import eu.ydp.empiria.player.client.module.slideshow.sound.SlideSoundController;
+import eu.ydp.empiria.player.client.module.slideshow.sound.SlideshowSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import java.util.List;
 import org.junit.*;
@@ -28,7 +28,7 @@ public class SlidesSwitcherTest {
 	@Mock
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Mock
-	private SlideSoundController slideSoundController;
+	private SlideshowSoundController slideshowSoundController;
 	@Mock
 	private AudioBean audioBean;
 
@@ -44,21 +44,6 @@ public class SlidesSwitcherTest {
 	}
 
 	@Test
-	public void shouldInitSounds() {
-		// given
-		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(slide.hasAudio()).thenReturn(true);
-		when(audioBean.getSrc()).thenReturn(audiopath);
-
-		// when
-		testObj.init(slides, inlineBodyGeneratorSocket);
-
-		// than
-		verify(slideSoundController).initSound(audiopath);
-	}
-
-	@Test
 	public void shouldNotDecrementCurrentSlideAfterInit() {
 		// given
 		boolean firstResult = testObj.canSwitchToPreviousSlide();
@@ -68,7 +53,7 @@ public class SlidesSwitcherTest {
 		boolean result = testObj.canSwitchToPreviousSlide();
 		testObj.showPreviousSlide();
 
-		// than
+		// then
 		assertThat(result).isFalse();
 	}
 
@@ -131,7 +116,7 @@ public class SlidesSwitcherTest {
 		// then
 		assertThat(result).isFalse();
 		verify(presenter, times(2)).replaceViewData(slide);
-		verify(slideSoundController).stopAllSounds();
+		verify(slideshowSoundController).stopAllSounds();
 	}
 
 	@Test
@@ -146,7 +131,7 @@ public class SlidesSwitcherTest {
 		testObj.pauseSlide();
 
 		// then
-		verify(slideSoundController).pauseSound(audiopath);
+		verify(slideshowSoundController).pauseSound(audiopath);
 	}
 
 	@Test
@@ -158,7 +143,7 @@ public class SlidesSwitcherTest {
 		testObj.pauseSlide();
 
 		// then
-		verifyZeroInteractions(slideSoundController);
+		verifyZeroInteractions(slideshowSoundController);
 	}
 
 	@Test
@@ -170,7 +155,7 @@ public class SlidesSwitcherTest {
 		testObj.playSlide();
 		
 		// then
-		verifyZeroInteractions(slideSoundController);
+		verifyZeroInteractions(slideshowSoundController);
 	}
 
 	@Test
@@ -185,7 +170,7 @@ public class SlidesSwitcherTest {
 		testObj.playSlide();
 
 		// then
-		verify(slideSoundController).playSound(eq(audiopath), any(SlideEnd.class));
+		verify(slideshowSoundController).playSound(eq(audiopath), any(SlideEndHandler.class));
 	}
 
 	@Test
@@ -200,8 +185,8 @@ public class SlidesSwitcherTest {
 		testObj.stopAndPlaySlide();
 
 		// then
-		verify(slideSoundController).playSound(eq(audiopath), any(SlideEnd.class));
-		verify(slideSoundController).stopAllSounds();
+		verify(slideshowSoundController).playSound(eq(audiopath), any(SlideEndHandler.class));
+		verify(slideshowSoundController).stopAllSounds();
 	}
 
 	@Test

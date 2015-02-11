@@ -7,7 +7,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.*;
-import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.*;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
@@ -18,10 +18,10 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlideSoundControllerTest {
+public class SlideshowSoundControllerTest {
 
 	@InjectMocks
-	private SlideSoundController testObj;
+	private SlideshowSoundController testObj;
 	@Mock
 	private MediaWrapperController mediaWrapperController;
 	@Mock
@@ -29,9 +29,9 @@ public class SlideSoundControllerTest {
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
-	private SlideEnd command;
+	private SlideEndHandler command;
 	@Mock
-	private Optional<SlideEnd> audioEnd;
+	private Optional<SlideEndHandler> audioEnd;
 	@Mock
 	private MediaWrapper<Widget> sound;
 	@Mock
@@ -60,7 +60,7 @@ public class SlideSoundControllerTest {
 		// given
 		Type<MediaEventHandler, MediaEventTypes> eventType = MediaEvent.getType(MediaEventTypes.ON_END);
 		
-		// than
+		// then
 		verify(eventsBus).addHandler(eventType, testObj);
 	}
 
@@ -71,7 +71,7 @@ public class SlideSoundControllerTest {
 		// when
 		testObj.playSound(filepath, command);
 
-		// than
+		// then
 		verify(mediaWrapperController).play(sound);
 	}
 
@@ -83,7 +83,7 @@ public class SlideSoundControllerTest {
 		// when
 		testObj.pauseSound(filepath);
 
-		// than
+		// then
 		verify(mediaWrapperController).pause(sound);
 	}
 	
@@ -98,7 +98,7 @@ public class SlideSoundControllerTest {
 		// when
 		testObj.stopAllSounds();
 
-		// than
+		// then
 		verify(mediaWrapperController, times(2)).stop(sound);
 	}
 
@@ -111,7 +111,7 @@ public class SlideSoundControllerTest {
 		// when
 		testObj.onMediaEvent(mediaEvent);
 
-		// than
+		// then
 		verify(command).onEnd();
 	}
 	
@@ -124,7 +124,7 @@ public class SlideSoundControllerTest {
 		// when
 		testObj.onMediaEvent(mediaEvent);
 
-		// than
+		// then
 		verify(command, never()).onEnd();
 
 	}

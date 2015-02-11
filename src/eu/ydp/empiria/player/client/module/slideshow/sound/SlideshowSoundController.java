@@ -3,19 +3,19 @@ package eu.ydp.empiria.player.client.module.slideshow.sound;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.media.*;
-import eu.ydp.empiria.player.client.module.slideshow.SlideEnd;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.media.*;
 import java.util.Collection;
 
-public class SlideSoundController implements MediaEventHandler {
+public class SlideshowSoundController implements MediaEventHandler {
 
 	private final MediaWrapperController mediaWrapperController;
 	private final SlideSounds slideSounds;
-	private SlideEnd audioEnd;
+	private SlideEndHandler audioEnd;
 
 	@Inject
-	public SlideSoundController(EventsBus eventsBus, MediaWrapperController mediaWrapperController, SlideSounds slideTracks) {
+	public SlideshowSoundController(EventsBus eventsBus, MediaWrapperController mediaWrapperController, SlideSounds slideTracks) {
 		this.mediaWrapperController = mediaWrapperController;
 		this.slideSounds = slideTracks;
 
@@ -26,7 +26,7 @@ public class SlideSoundController implements MediaEventHandler {
 		slideSounds.initSound(audiopath);
 	}
 
-	public void playSound(String audiopath, SlideEnd audioEnd) {
+	public void playSound(String audiopath, SlideEndHandler audioEnd) {
 		this.audioEnd = audioEnd;
 		MediaWrapper<Widget> currentSound = slideSounds.getSound(audiopath);
 		mediaWrapperController.play(currentSound);

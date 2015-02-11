@@ -51,8 +51,4 @@ public class SlideshowButtonsPresenter {
 	public void onStopClick() {
 		controller.stopSlideshow();
 	}
-
-	public boolean isPlayButtonDown() {
-		return buttonsView.isPlayButtonDown();
-	}
 }

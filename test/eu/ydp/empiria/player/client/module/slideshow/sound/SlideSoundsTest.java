@@ -44,7 +44,7 @@ public class SlideSoundsTest {
 
 		MediaWrapper<Widget> result = testObj.getSound(filepath);
 
-		// than
+		// then
 		assertThat(result).isEqualTo(mediaWrapper);
 	}
 
@@ -57,7 +57,7 @@ public class SlideSoundsTest {
 		addSound(filepath);
 		addSound(filepath);
 
-		// than
+		// then
 		verify(mimeSourceProvider, times(1)).getSourcesWithTypeByExtension(filepath);
 		verify(mediaWrapperCreator, times(1)).createMediaWrapper(eq(filepath), eq(sourceWithType), callbackReceiverCaptor.capture());
 	}
@@ -70,7 +70,7 @@ public class SlideSoundsTest {
 		// when
 		Collection<MediaWrapper<Widget>> result = testObj.getAllSounds();
 
-		// than
+		// then
 		assertThat(result.size()).isEqualTo(1);
 	}
 
@@ -82,7 +82,7 @@ public class SlideSoundsTest {
 		// when
 		boolean result = testObj.containsWrapper(mediaWrapper);
 
-		// than
+		// then
 		assertThat(result).isTrue();
 	}
 
@@ -95,7 +95,7 @@ public class SlideSoundsTest {
 		// when
 		boolean result = testObj.containsWrapper(otherMediaWrapper);
 
-		// than
+		// then
 		assertThat(result).isFalse();
 
 	}
