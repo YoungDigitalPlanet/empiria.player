@@ -1,19 +1,17 @@
 package eu.ydp.empiria.player.client.components;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import eu.ydp.canvasadapter.client.Context2dAdapter;
+import com.google.gwt.canvas.dom.client.Context2d;
 import eu.ydp.gwtutil.client.collections.KeyValue;
+import java.util.*;
 
 public class CanvasArrow {
-	private Context2dAdapter context2d;
+	private Context2d context2d;
 	private final double startX, endX;
 	private final double startY, endY;
 
 	int[][] arrow = { { 0, 0 }, { -10, -4 }, { -10, 4 } };
 
-	public CanvasArrow(Context2dAdapter context2d, double startX, double startY, double endX, double endY) {
+	public CanvasArrow(Context2d context2d, double startX, double startY, double endX, double endY) {
 		this.context2d = context2d;
 		this.startX = startX;
 		this.startY = startY;
@@ -69,5 +67,7 @@ public class CanvasArrow {
 
 	private KeyValue<Double, Double> rotatePoint(double ang, int x, int y) {
 		return new KeyValue<Double, Double>((x * Math.cos(ang)) - (y * Math.sin(ang)), (x * Math.sin(ang)) + (y * Math.cos(ang)));
-	};
+	}
+
+	;
 }

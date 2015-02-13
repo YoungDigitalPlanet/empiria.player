@@ -1,15 +1,16 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.empiria.player.client.components"
-	xmlns:canvasadapter="urn:import:eu.ydp.canvasadapter.client">
-	<ui:style>
-		.imagearea {
-			cursor: move;
-		}
-	</ui:style>
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
-	<g:FlowPanel addStyleNames="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS_PANEL} {style.imagearea}" ui:field="imagePanel">
-		<c:PanelWithScrollbars ui:field="scrollbarsPanel">
-			<canvasadapter:CanvasAdapter styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="imageCanvas" />
-		</c:PanelWithScrollbars>
-	</g:FlowPanel>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:eu.ydp.empiria.player.client.components" xmlns:canvas="urn:import:com.google.gwt.canvas.client"
+        >
+    <ui:style>
+        .imagearea {
+            cursor: move;
+        }
+    </ui:style>
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel addStyleNames="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS_PANEL} {style.imagearea}" ui:field="imagePanel">
+        <c:PanelWithScrollbars ui:field="scrollbarsPanel">
+            <canvas:Canvas styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="canvas"/>
+        </c:PanelWithScrollbars>
+    </g:FlowPanel>
 </ui:UiBinder>

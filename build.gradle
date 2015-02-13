@@ -79,7 +79,6 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
     
     compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
-    compile group: 'eu.ydp', name: 'canvasadapter', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
     compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver

@@ -1,33 +1,18 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_COLOR;
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_LABEL_LINE_THICKNESS;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 import static eu.ydp.gwtutil.client.xml.XMLUtils.*;
 
-import java.util.Map;
-
-import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.dom.client.Style.*;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.touch.client.Point;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-
-import eu.ydp.canvasadapter.client.CanvasAdapter;
-import eu.ydp.canvasadapter.client.Context2dAdapter;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.xml.client.*;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
@@ -35,6 +20,7 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+import java.util.Map;
 
 public class LabelledImgContent extends Composite implements ImgContent {// NOPMD
 
@@ -57,7 +43,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	@UiField
 	protected Image image;
 	@UiField
-	protected CanvasAdapter canvas;
+	protected Canvas canvas;
 
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
 
@@ -68,9 +54,14 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 		fillCanvas(element, modulesocket);
 	}
 
+	@UiFactory
+	public Canvas cretaeCanvas() {
+		return Canvas.createIfSupported();
+	}
+
 	/**
 	 * Tworzy obiekt html5/canvas
-	 * 
+	 *
 	 * @param element
 	 * @param moduleSocket
 	 */
@@ -96,7 +87,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 				textPanel.setWidth(image.getWidth() + "px");
 				textPanel.setHeight(image.getHeight() + "px");
 				// imgelement.
-				Context2dAdapter context2d = canvas.getContext2d();
+				Context2d context2d = canvas.getContext2d();
 				setContextStyle(context2d);
 				NodeList labelList = element.getElementsByTagName("label");
 				for (int x = 0; x < labelList.getLength(); ++x) {
@@ -112,7 +103,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 						parseLine(line, context2d);
 					}
 					if (text != null && anchor != null) {
-						textPanel.add(parseText(text, anchor, context2d, moduleSocket));
+						textPanel.add(parseText(text, anchor, moduleSocket));
 					}
 				}
 			}
@@ -122,11 +113,11 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 
 	/**
 	 * rysuje linie
-	 * 
+	 *
 	 * @param line
 	 * @param context2d
 	 */
-	private void parseLine(Element line, Context2dAdapter context2d) {// NOPMD
+	private void parseLine(Element line, Context2d context2d) {// NOPMD
 		NodeList elements = line.getChildNodes();
 		String endPoint = null;
 		String startPoint = null;
@@ -187,14 +178,12 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 
 	/**
 	 * Parsuje element text i generuje odpowiednie widgety
-	 * 
+	 *
 	 * @param text
 	 * @param anchor
-	 * @param context2d
 	 * @param moduleSocket
-	 * @param mainPanel
 	 */
-	private Panel parseText(Element text, Element anchor, Context2dAdapter context2d, ModuleSocket moduleSocket) {
+	private Panel parseText(Element text, Element anchor, ModuleSocket moduleSocket) {
 		Panel panel = new FlowPanel();
 		panel.setStyleName(styleNames.QP_IMG_LABELLED_TEXT_PANEL());
 		Widget widget = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(text);
@@ -208,7 +197,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 
 	/**
 	 * Rysuje zakonczenie linii
-	 * 
+	 *
 	 * @param shapeName
 	 * @param context
 	 * @param centerX
@@ -216,7 +205,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	 * @param startX
 	 * @param startY
 	 */
-	private void drawShape(String shapeName, Context2dAdapter context, double centerX, double centerY, double startX, double startY) {
+	private void drawShape(String shapeName, Context2d context, double centerX, double centerY, double startX, double startY) {
 		if ("dot".equals(shapeName)) {
 			context.beginPath();
 			context.arc(centerX, centerY, 3, 0, 2 * Math.PI, false);
@@ -230,11 +219,10 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 
 	/**
 	 * ustawia style dla context
-	 * 
+	 *
 	 * @param context2d
-	 * @param ms
 	 */
-	private void setContextStyle(Context2dAdapter context2d) {
+	private void setContextStyle(Context2d context2d) {
 		if (styles.containsKey(EMPIRIA_IMG_LABEL_LINE_COLOR)) {
 			try {
 				context2d.setStrokeStyle(CssColor.make(styles.get(EMPIRIA_IMG_LABEL_LINE_COLOR)).value());
