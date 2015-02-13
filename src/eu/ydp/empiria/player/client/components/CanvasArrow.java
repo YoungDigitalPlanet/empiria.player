@@ -68,6 +68,4 @@ public class CanvasArrow {
 	private KeyValue<Double, Double> rotatePoint(double ang, int x, int y) {
 		return new KeyValue<Double, Double>((x * Math.cos(ang)) - (y * Math.sin(ang)), (x * Math.sin(ang)) + (y * Math.cos(ang)));
 	}
-
-	;
 }
