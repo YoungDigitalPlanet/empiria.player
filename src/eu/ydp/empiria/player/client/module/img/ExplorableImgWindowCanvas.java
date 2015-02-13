@@ -25,7 +25,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 
 	@UiField
 	protected FlowPanel imagePanel;
-	@UiField
+	@UiField(provided = true)
 	protected Canvas canvas;
 	@UiField
 	protected PanelWithScrollbars scrollbarsPanel;
@@ -48,6 +48,7 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 	private final ITouchHandlerOnImageInitializer touchHandlerInitializer;
 
 	public ExplorableImgWindowCanvas() {
+		canvas = Canvas.createIfSupported();
 		initWidget(uiBinder.createAndBindUi(this));
 		context2d = canvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
@@ -68,11 +69,6 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
 		FocusWidget focusCanvas = (FocusWidget) canvas.asWidget();
 		addHandlersToCanvas(focusCanvas);
-	}
-
-	@UiFactory
-	public Canvas cretaeCanvas() {
-		return Canvas.createIfSupported();
 	}
 
 	private void setUpImageCanvasProperties(String title) {

@@ -30,6 +30,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	}
 
 	public LabelledImgContent() {
+		canvas = Canvas.createIfSupported();
 		initWidget(uiBinder.createAndBindUi(this));
 		mainPanel.setWidgetPosition(image, 0, 0);
 		mainPanel.setWidgetPosition(canvas.asWidget(), 0, 0);
@@ -42,7 +43,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	protected AbsolutePanel textPanel;
 	@UiField
 	protected Image image;
-	@UiField
+	@UiField(provided = true)
 	protected Canvas canvas;
 
 	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
@@ -52,11 +53,6 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
 	@Override
 	public void init(Element element, ModuleSocket modulesocket) {
 		fillCanvas(element, modulesocket);
-	}
-
-	@UiFactory
-	public Canvas cretaeCanvas() {
-		return Canvas.createIfSupported();
 	}
 
 	/**
