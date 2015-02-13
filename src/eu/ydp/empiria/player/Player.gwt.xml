@@ -9,7 +9,6 @@
     <inherits name='com.mathplayer.Math_player'/>
     <inherits name='eu.ydp.gwtutil.YdpGwtUtil'/>
     <inherits name='eu.ydp.empiria.gwtflashmedia.GwtFlashMedia'/>
-    <inherits name='eu.ydp.canvasadapter.canvasadapter'/>
     <inherits name='eu.ydp.jsfilerequest.jsfilerequest'/>
     <inherits name="eu.ydp.gwtcreatejs.GwtCreateJs"/>
     <inherits name="com.peterfranza.gwt.jaxb.JAXB"/>
