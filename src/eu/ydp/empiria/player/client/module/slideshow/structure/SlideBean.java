@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.*;
 public class SlideBean {
 
 	@XmlElement
+	private AudioBean audio;
+	@XmlElement
 	private SourceBean source;
 	@XmlElement
 	private SlideNarrationBean narration;
@@ -43,5 +45,17 @@ public class SlideBean {
 
 	public boolean hasSlideTitle() {
 		return slideTitle != null;
+	}
+
+	public AudioBean getAudio() {
+		return audio;
+	}
+
+	public void setAudio(AudioBean audio) {
+		this.audio = audio;
+	}
+
+	public boolean hasAudio() {
+		return this.audio != null;
 	}
 }

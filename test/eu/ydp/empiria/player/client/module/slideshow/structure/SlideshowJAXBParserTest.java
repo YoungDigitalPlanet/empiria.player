@@ -1,22 +1,26 @@
 package eu.ydp.empiria.player.client.module.slideshow.structure;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import java.util.List;
 
 public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	private final SourceBean firstSourceBean;
+	private final AudioBean firstAudioBean;
 	private final SlideBean firstSlideExpected;
 	private final SourceBean secondSourceBean;
+	private final AudioBean secondAudioBean;
 	private final SlideBean secondSlideExpected;
 
 	public SlideshowJAXBParserTest() {
 		firstSourceBean = new SourceBean();
 		firstSourceBean.setSrc("source1");
+
+		firstAudioBean = new AudioBean();
+		firstAudioBean.setSrc("test1.mp3");
 
 		String firstSlideTitleString = "<slideTitle>slide title1</slideTitle>";
 		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
@@ -36,9 +40,13 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		firstSlideExpected.setSlideTitle(firstSlideTitle);
 		firstSlideExpected.setNarration(firstSlideNarration);
 		firstSlideExpected.setSource(firstSourceBean);
+		firstSlideExpected.setAudio(firstAudioBean);
 
 		secondSourceBean = new SourceBean();
 		secondSourceBean.setSrc("source2");
+
+		secondAudioBean = new AudioBean();
+		secondAudioBean.setSrc("test2.mp3");
 
 		String secondSlideTitleString = "<slideTitle>slide title2</slideTitle>";
 		XmlContentImpl secondSlideTitleContent = new XmlContentImpl();
@@ -58,7 +66,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		secondSlideExpected.setSlideTitle(secondSlideTitle);
 		secondSlideExpected.setNarration(secondSlideNarration);
 		secondSlideExpected.setSource(secondSourceBean);
-
+		secondSlideExpected.setAudio(secondAudioBean);
 	}
 
 	public void testFullSlideshow_withBoldTitle() {
@@ -90,6 +98,32 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertSlidesEquals(secondSlideExpected, secondSlide);
 
 		assertTemplateIsNotPresent(bean);
+	}
+
+	public void testSlideshowWihoutAudio() {
+		// given
+		XmlContentImpl titleExpected = new XmlContentImpl();
+		titleExpected.setStringElement("<title>title</title>");
+
+		firstSlideExpected.setAudio(null);
+
+		// when
+		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.SLIDESHOW_WITHOUT_AUDIO);
+
+		// then
+		SlideshowBean slideshow = bean.getSlideshowBean();
+
+		XMLContent titleResult = slideshow.getTitle().getTitleValue();
+		assertEqualsXmlContent(titleExpected, titleResult);
+
+		List<SlideBean> slides = slideshow.getSlideBeans();
+		assertEquals(1, slides.size());
+
+		SlideBean firstSlide = slides.get(0);
+		assertSlidesEquals(firstSlideExpected, firstSlide);
+
+		assertTemplateIsNotPresent(bean);
+		assertAudioIsNotPresent(firstSlide);
 	}
 
 	public void testSlideshowWihoutNarration() {
@@ -153,6 +187,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEqualsSlideTitle(slideExpected.getSlideTitle(), slideActual.getSlideTitle(), slideExpected.hasSlideTitle());
 		assertEqualsSlideNarration(slideExpected.getNarration(), slideActual.getNarration(), slideExpected.hasNarration());
 		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
+		assertAudioEqual(slideExpected.getAudio(), slideActual.getAudio(), slideExpected.hasAudio());
 	}
 
 	private void assertEqualsSlideTitle(SlideTitleBean expectedNarration, SlideTitleBean actualNarration, boolean hasNarration) {
@@ -179,6 +214,14 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(sourceExpected.getSrc(), sourceActual.getSrc());
 	}
 
+	private void assertAudioEqual(AudioBean audioExpected, AudioBean audioActual, boolean hasAudio) {
+		if (hasAudio) {
+			assertEquals(audioExpected.getSrc(), audioActual.getSrc());
+		} else {
+			assertEquals(audioExpected, audioActual);
+		}
+	}
+
 	private SlideshowPlayerBean parse(String xml) {
 		SlideshowJAXBParser jaxbParserFactory = GWT.create(SlideshowJAXBParser.class);
 		JAXBParser<SlideshowPlayerBean> jaxbParser = jaxbParserFactory.create();
@@ -188,5 +231,9 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	private void assertTemplateIsNotPresent(SlideshowPlayerBean slideshowPlayer) {
 		assertFalse(slideshowPlayer.hasTemplate());
+	}
+
+	private void assertAudioIsNotPresent(SlideBean slideActual) {
+		assertFalse(slideActual.hasAudio());
 	}
 }
