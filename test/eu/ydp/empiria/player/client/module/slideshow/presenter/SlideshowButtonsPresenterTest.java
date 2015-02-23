@@ -148,6 +148,5 @@ public class SlideshowButtonsPresenterTest {
 
 		// then
 		verify(slidesController).stopSlideshow();
-		verify(buttonsView).setPlayButtonDown(false);
 	}
 }

@@ -6,22 +6,14 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "slide")
 public class SlideBean {
 
-	@XmlAttribute
-	private int startTime;
+	@XmlElement
+	private AudioBean audio;
 	@XmlElement
 	private SourceBean source;
 	@XmlElement
 	private SlideNarrationBean narration;
 	@XmlElement
 	private SlideTitleBean slideTitle;
-
-	public int getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(int startTime) {
-		this.startTime = startTime;
-	}
 
 	public SourceBean getSource() {
 		return source;
@@ -53,5 +45,17 @@ public class SlideBean {
 
 	public boolean hasSlideTitle() {
 		return slideTitle != null;
+	}
+
+	public AudioBean getAudio() {
+		return audio;
+	}
+
+	public void setAudio(AudioBean audio) {
+		this.audio = audio;
+	}
+
+	public boolean hasAudio() {
+		return this.audio != null;
 	}
 }
