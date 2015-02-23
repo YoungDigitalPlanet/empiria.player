@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.module.media.*;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import java.util.*;
 
-public class SlideSounds {
+public class SlideshowSounds {
 
 	private final Map<String, MediaWrapper<Widget>> sounds = Maps.newHashMap();
 	
@@ -16,7 +16,7 @@ public class SlideSounds {
 	private final MimeSourceProvider mimeSourceProvider;
 
 	@Inject
-	public SlideSounds(MediaWrapperCreator slideshowMediaWrapperCreator, MimeSourceProvider mimeSourceProvider) {
+	public SlideshowSounds(MediaWrapperCreator slideshowMediaWrapperCreator, MimeSourceProvider mimeSourceProvider) {
 		this.mediaWrapperCreator = slideshowMediaWrapperCreator;
 		this.mimeSourceProvider = mimeSourceProvider;
 	}

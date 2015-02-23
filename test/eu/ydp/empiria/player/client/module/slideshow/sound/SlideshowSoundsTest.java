@@ -16,10 +16,10 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SlideSoundsTest {
+public class SlideshowSoundsTest {
 
 	@InjectMocks
-	private SlideSounds testObj;
+	private SlideshowSounds testObj;
 	@Mock
 	private MediaWrapperCreator mediaWrapperCreator;
 	@Mock

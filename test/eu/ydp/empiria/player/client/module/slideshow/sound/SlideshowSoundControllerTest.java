@@ -25,7 +25,7 @@ public class SlideshowSoundControllerTest {
 	@Mock
 	private MediaWrapperController mediaWrapperController;
 	@Mock
-	private SlideSounds slideSounds;
+	private SlideshowSounds slideshowSounds;
 	@Mock
 	private EventsBus eventsBus;
 	@Mock
@@ -40,7 +40,7 @@ public class SlideshowSoundControllerTest {
 
 	@Before
 	public void init() {
-		when(slideSounds.getSound(filepath)).thenReturn(sound);
+		when(slideshowSounds.getSound(filepath)).thenReturn(sound);
 	}
 	
 	@Test
@@ -52,7 +52,7 @@ public class SlideshowSoundControllerTest {
 		testObj.initSound(filepath);
 
 		// then
-		verify(slideSounds, times(2)).initSound(filepath);
+		verify(slideshowSounds, times(2)).initSound(filepath);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class SlideshowSoundControllerTest {
 		Collection<MediaWrapper<Widget>> sounds = Lists.newArrayList();
 		sounds.add(sound);
 		sounds.add(sound);
-		when(slideSounds.getAllSounds()).thenReturn(sounds);
+		when(slideshowSounds.getAllSounds()).thenReturn(sounds);
 
 		// when
 		testObj.stopAllSounds();
@@ -105,7 +105,7 @@ public class SlideshowSoundControllerTest {
 	@Test
 	public void shouldExecuteAudioEnd_whenSlideSoundsContainsWrapper() {
 		// given
-		when(slideSounds.containsWrapper(any(MediaWrapper.class))).thenReturn(true);
+		when(slideshowSounds.containsWrapper(any(MediaWrapper.class))).thenReturn(true);
 		testObj.playSound(filepath, command);
 
 		// when
@@ -118,7 +118,7 @@ public class SlideshowSoundControllerTest {
 	@Test
 	public void shouldNotExecuteAudioEnd_andSlideSoundDoesNotContainWrapper() {
 		// given
-		when(slideSounds.containsWrapper(any(MediaWrapper.class))).thenReturn(false);
+		when(slideshowSounds.containsWrapper(any(MediaWrapper.class))).thenReturn(false);
 		testObj.playSound(filepath, command);
 
 		// when

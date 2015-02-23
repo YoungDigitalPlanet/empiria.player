@@ -11,34 +11,34 @@ import java.util.Collection;
 public class SlideshowSoundController implements MediaEventHandler {
 
 	private final MediaWrapperController mediaWrapperController;
-	private final SlideSounds slideSounds;
-	private SlideEndHandler audioEnd;
+	private final SlideshowSounds slideshowSounds;
+	private SlideEndHandler slideEndHandler;
 
 	@Inject
-	public SlideshowSoundController(EventsBus eventsBus, MediaWrapperController mediaWrapperController, SlideSounds slideTracks) {
+	public SlideshowSoundController(EventsBus eventsBus, MediaWrapperController mediaWrapperController, SlideshowSounds slideshowSounds) {
 		this.mediaWrapperController = mediaWrapperController;
-		this.slideSounds = slideTracks;
+		this.slideshowSounds = slideshowSounds;
 
 		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_END), this);
 	}
 
 	public void initSound(String audiopath) {
-		slideSounds.initSound(audiopath);
+		slideshowSounds.initSound(audiopath);
 	}
 
-	public void playSound(String audiopath, SlideEndHandler audioEnd) {
-		this.audioEnd = audioEnd;
-		MediaWrapper<Widget> currentSound = slideSounds.getSound(audiopath);
+	public void playSound(String audiopath, SlideEndHandler slideEndhandler) {
+		this.slideEndHandler = slideEndhandler;
+		MediaWrapper<Widget> currentSound = slideshowSounds.getSound(audiopath);
 		mediaWrapperController.play(currentSound);
 	}
 
 	public void pauseSound(String audiopath) {
-		MediaWrapper<Widget> currentSound = slideSounds.getSound(audiopath);
+		MediaWrapper<Widget> currentSound = slideshowSounds.getSound(audiopath);
 		mediaWrapperController.pause(currentSound);
 	}
 
 	public void stopAllSounds() {
-		Collection<MediaWrapper<Widget>> sounds = slideSounds.getAllSounds();
+		Collection<MediaWrapper<Widget>> sounds = slideshowSounds.getAllSounds();
 		for (MediaWrapper<Widget> sound : sounds) {
 			mediaWrapperController.stop(sound);
 		}
@@ -48,8 +48,8 @@ public class SlideshowSoundController implements MediaEventHandler {
 	public void onMediaEvent(MediaEvent event) {
 		MediaWrapper<Widget> onEndEventSource = (MediaWrapper<Widget>) event.getMediaWrapper();
 
-		if (slideSounds.containsWrapper(onEndEventSource)) {
-			audioEnd.onEnd();
+		if (slideshowSounds.containsWrapper(onEndEventSource)) {
+			slideEndHandler.onEnd();
 		}
 	}
 }
