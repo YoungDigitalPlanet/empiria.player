@@ -30,10 +30,10 @@ public class SlidesSwitcherTest {
 	@Mock
 	private SlideshowSoundController slideshowSoundController;
 	@Mock
-	private AudioBean audioBean;
+	private SoundBean soundBean;
 
 	@Captor
-	ArgumentCaptor<List<AudioBean>> captor;
+	ArgumentCaptor<List<SoundBean>> captor;
 
 	private final List<SlideBean> slides = Lists.newArrayList();
 
@@ -123,9 +123,9 @@ public class SlidesSwitcherTest {
 	public void shouldPauseSlide_whenThereIsAudio() {
 		// given
 		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(audioBean.getSrc()).thenReturn(audiopath);
-		when(slide.hasAudio()).thenReturn(true);
+		when(slide.getSound()).thenReturn(soundBean);
+		when(soundBean.getSrc()).thenReturn(audiopath);
+		when(slide.hasSound()).thenReturn(true);
 
 		// when
 		testObj.pauseSlide();
@@ -137,7 +137,7 @@ public class SlidesSwitcherTest {
 	@Test
 	public void shouldNotPauseSlide_whenThereIsNoAudio() {
 		// given
-		when(slide.hasAudio()).thenReturn(false);
+		when(slide.hasSound()).thenReturn(false);
 
 		// when
 		testObj.pauseSlide();
@@ -149,7 +149,7 @@ public class SlidesSwitcherTest {
 	@Test
 	public void shouldNotPlaySound_whenThereIsNoAudio() {
 		// given
-		when(slide.hasAudio()).thenReturn(false);
+		when(slide.hasSound()).thenReturn(false);
 		
 		// when
 		testObj.playSlide();
@@ -162,9 +162,9 @@ public class SlidesSwitcherTest {
 	public void shouldPlaySlide() {
 		// given
 		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(audioBean.getSrc()).thenReturn(audiopath);
-		when(slide.hasAudio()).thenReturn(true);
+		when(slide.getSound()).thenReturn(soundBean);
+		when(soundBean.getSrc()).thenReturn(audiopath);
+		when(slide.hasSound()).thenReturn(true);
 
 		// when
 		testObj.playSlide();
@@ -177,9 +177,9 @@ public class SlidesSwitcherTest {
 	public void shouldStopAndPlaySlide() {
 		// given
 		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(audioBean.getSrc()).thenReturn(audiopath);
-		when(slide.hasAudio()).thenReturn(true);
+		when(slide.getSound()).thenReturn(soundBean);
+		when(soundBean.getSrc()).thenReturn(audiopath);
+		when(slide.hasSound()).thenReturn(true);
 
 		// when
 		testObj.stopAndPlaySlide();

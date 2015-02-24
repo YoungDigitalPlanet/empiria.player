@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.*;
 public class SlideBean {
 
 	@XmlElement
-	private AudioBean audio;
+	private SoundBean sound;
 	@XmlElement
 	private SourceBean source;
 	@XmlElement
@@ -47,15 +47,15 @@ public class SlideBean {
 		return slideTitle != null;
 	}
 
-	public AudioBean getAudio() {
-		return audio;
+	public SoundBean getSound() {
+		return sound;
 	}
 
-	public void setAudio(AudioBean audio) {
-		this.audio = audio;
+	public void setSound(SoundBean audio) {
+		this.sound = audio;
 	}
 
-	public boolean hasAudio() {
-		return this.audio != null;
+	public boolean hasSound() {
+		return this.sound != null;
 	}
 }

@@ -44,8 +44,8 @@ public class SlideshowController {
 
 	private void initSounds(List<SlideBean> slides) {
 		for (SlideBean slide : slides) {
-			if (slide.hasAudio()) {
-				String audiopath = slide.getAudio().getSrc();
+			if (slide.hasSound()) {
+				String audiopath = slide.getSound().getSrc();
 				slideshowSoundController.initSound(audiopath);
 			}
 		}

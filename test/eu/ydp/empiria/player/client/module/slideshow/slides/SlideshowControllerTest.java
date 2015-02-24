@@ -54,14 +54,14 @@ public class SlideshowControllerTest {
 	public void shouldInitSounds() {
 		// given
 		SlideBean slide = mock(SlideBean.class);
-		AudioBean audioBean = mock(AudioBean.class);
+		SoundBean soundBean = mock(SoundBean.class);
 		List<SlideBean> slides = Lists.newArrayList();
 		slides.add(slide);
 
 		String audiopath = "test.mp3";
-		when(slide.getAudio()).thenReturn(audioBean);
-		when(slide.hasAudio()).thenReturn(true);
-		when(audioBean.getSrc()).thenReturn(audiopath);
+		when(slide.getSound()).thenReturn(soundBean);
+		when(slide.hasSound()).thenReturn(true);
+		when(soundBean.getSrc()).thenReturn(audiopath);
 
 		// when
 		testObj.init(slides, inlineBodyGeneratorSocket);
