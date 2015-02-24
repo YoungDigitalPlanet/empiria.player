@@ -9,18 +9,18 @@ import java.util.List;
 public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	private final SourceBean firstSourceBean;
-	private final AudioBean firstAudioBean;
+	private final SoundBean firstSoundBean;
 	private final SlideBean firstSlideExpected;
 	private final SourceBean secondSourceBean;
-	private final AudioBean secondAudioBean;
+	private final SoundBean secondSoundBean;
 	private final SlideBean secondSlideExpected;
 
 	public SlideshowJAXBParserTest() {
 		firstSourceBean = new SourceBean();
 		firstSourceBean.setSrc("source1");
 
-		firstAudioBean = new AudioBean();
-		firstAudioBean.setSrc("test1.mp3");
+		firstSoundBean = new SoundBean();
+		firstSoundBean.setSrc("test1.mp3");
 
 		String firstSlideTitleString = "<slideTitle>slide title1</slideTitle>";
 		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
@@ -40,13 +40,13 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		firstSlideExpected.setSlideTitle(firstSlideTitle);
 		firstSlideExpected.setNarration(firstSlideNarration);
 		firstSlideExpected.setSource(firstSourceBean);
-		firstSlideExpected.setAudio(firstAudioBean);
+		firstSlideExpected.setSound(firstSoundBean);
 
 		secondSourceBean = new SourceBean();
 		secondSourceBean.setSrc("source2");
 
-		secondAudioBean = new AudioBean();
-		secondAudioBean.setSrc("test2.mp3");
+		secondSoundBean = new SoundBean();
+		secondSoundBean.setSrc("test2.mp3");
 
 		String secondSlideTitleString = "<slideTitle>slide title2</slideTitle>";
 		XmlContentImpl secondSlideTitleContent = new XmlContentImpl();
@@ -66,7 +66,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		secondSlideExpected.setSlideTitle(secondSlideTitle);
 		secondSlideExpected.setNarration(secondSlideNarration);
 		secondSlideExpected.setSource(secondSourceBean);
-		secondSlideExpected.setAudio(secondAudioBean);
+		secondSlideExpected.setSound(secondSoundBean);
 	}
 
 	public void testFullSlideshow_withBoldTitle() {
@@ -100,15 +100,15 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertTemplateIsNotPresent(bean);
 	}
 
-	public void testSlideshowWihoutAudio() {
+	public void testSlideshowWihoutSound() {
 		// given
 		XmlContentImpl titleExpected = new XmlContentImpl();
 		titleExpected.setStringElement("<title>title</title>");
 
-		firstSlideExpected.setAudio(null);
+		firstSlideExpected.setSound(null);
 
 		// when
-		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.SLIDESHOW_WITHOUT_AUDIO);
+		SlideshowPlayerBean bean = parse(SlideshowJAXBParserMock.SLIDESHOW_WITHOUT_SOUND);
 
 		// then
 		SlideshowBean slideshow = bean.getSlideshowBean();
@@ -123,7 +123,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertSlidesEquals(firstSlideExpected, firstSlide);
 
 		assertTemplateIsNotPresent(bean);
-		assertAudioIsNotPresent(firstSlide);
+		assertSoundIsNotPresent(firstSlide);
 	}
 
 	public void testSlideshowWihoutNarration() {
@@ -187,7 +187,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEqualsSlideTitle(slideExpected.getSlideTitle(), slideActual.getSlideTitle(), slideExpected.hasSlideTitle());
 		assertEqualsSlideNarration(slideExpected.getNarration(), slideActual.getNarration(), slideExpected.hasNarration());
 		assertSourceEqual(slideExpected.getSource(), slideActual.getSource());
-		assertAudioEqual(slideExpected.getAudio(), slideActual.getAudio(), slideExpected.hasAudio());
+		assertSoundEqual(slideExpected.getSound(), slideActual.getSound(), slideExpected.hasSound());
 	}
 
 	private void assertEqualsSlideTitle(SlideTitleBean expectedNarration, SlideTitleBean actualNarration, boolean hasNarration) {
@@ -214,11 +214,11 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertEquals(sourceExpected.getSrc(), sourceActual.getSrc());
 	}
 
-	private void assertAudioEqual(AudioBean audioExpected, AudioBean audioActual, boolean hasAudio) {
-		if (hasAudio) {
-			assertEquals(audioExpected.getSrc(), audioActual.getSrc());
+	private void assertSoundEqual(SoundBean soundExpected, SoundBean soundActual, boolean hasSound) {
+		if (hasSound) {
+			assertEquals(soundExpected.getSrc(), soundActual.getSrc());
 		} else {
-			assertEquals(audioExpected, audioActual);
+			assertEquals(soundExpected, soundActual);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		assertFalse(slideshowPlayer.hasTemplate());
 	}
 
-	private void assertAudioIsNotPresent(SlideBean slideActual) {
-		assertFalse(slideActual.hasAudio());
+	private void assertSoundIsNotPresent(SlideBean slideActual) {
+		assertFalse(slideActual.hasSound());
 	}
 }

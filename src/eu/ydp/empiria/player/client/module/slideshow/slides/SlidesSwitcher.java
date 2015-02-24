@@ -102,11 +102,11 @@ public class SlidesSwitcher {
 
 	private boolean hasCurrentSlideAudio() {
 		SlideBean currentSlide = slides.get(currSlideIndex);
-		return currentSlide.hasAudio();
+		return currentSlide.hasSound();
 	}
 
 	private String getCurrentAudioSource() {
 		SlideBean currentSlide = slides.get(currSlideIndex);
-		return currentSlide.getAudio().getSrc();
+		return currentSlide.getSound().getSrc();
 	}
 }
