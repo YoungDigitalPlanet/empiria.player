@@ -1,14 +1,12 @@
 package eu.ydp.empiria.player.client.module.connection;
 
-import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
-import eu.ydp.empiria.player.client.util.position.Point;
-import gwt.g2d.client.math.Vector2;
-
-import java.util.Map;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.util.position.Point;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import java.util.Map;
 
 public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private final ConnectionSurfaceView view;
@@ -16,8 +14,8 @@ public class ConnectionSurfaceImpl implements ConnectionSurface {
 	private int offsetLeft;
 
 	@Inject
-	public ConnectionSurfaceImpl(@Assisted Vector2 vector, ConnectionModuleFactory connectionModuleFactory) {
-		view = connectionModuleFactory.getConnectionSurfaceView(vector);
+	public ConnectionSurfaceImpl(@Assisted HasDimensions dimensions, ConnectionModuleFactory connectionModuleFactory) {
+		view = connectionModuleFactory.getConnectionSurfaceView(dimensions);
 	}
 
 	@Override

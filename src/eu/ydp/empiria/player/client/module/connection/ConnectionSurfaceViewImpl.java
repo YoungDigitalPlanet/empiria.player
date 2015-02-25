@@ -1,28 +1,24 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.*;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
-import gwt.g2d.client.graphics.Surface;
-import gwt.g2d.client.graphics.canvas.Context;
-import gwt.g2d.client.math.Vector2;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
+import java.util.*;
 
 public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSurfaceView {
 
-	private final Context context;
-	private final Surface surface;
+	private final Context2d context;
+	private final Canvas canvas;
 	private final StyleToPropertyMappingHelper styleHelper;
 	private final LineSegmentChecker lineSegmentChecker;
 	private final Map<String, String> propertiesToClear = new HashMap<String, String>();
@@ -33,20 +29,28 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 	private LineSegment lineSegment;
 
 	@Inject
-	public ConnectionSurfaceViewImpl(@Assisted Vector2 vector, StyleToPropertyMappingHelper styleHelper, LineSegmentChecker lineSegmentChecker) {
+	public ConnectionSurfaceViewImpl(@Assisted HasDimensions dimensions, StyleToPropertyMappingHelper styleHelper, LineSegmentChecker lineSegmentChecker) {
 		this.styleHelper = styleHelper;
 		this.lineSegmentChecker = lineSegmentChecker;
-		this.surface = new Surface(vector);
-		this.context = surface.getContext();
-		initWidget(surface);
+		this.canvas = Canvas.createIfSupported();
+		setupCanvas(dimensions);
+		this.context = canvas.getContext2d();
+		initWidget(canvas);
 		// ma znajdowac sie pod caloscia
 		setStylesForSurface();
 	}
 
+	private void setupCanvas(HasDimensions point) {
+		canvas.setWidth(point.getWidth() + "px");
+		canvas.setHeight(point.getHeight() + "px");
+		canvas.setCoordinateSpaceWidth(point.getWidth());
+		canvas.setCoordinateSpaceHeight(point.getHeight());
+	}
+
 	private void setStylesForSurface() {
-		surface.getElement().getStyle().setPosition(Position.ABSOLUTE);
-		surface.getElement().getStyle().setLeft(0, Unit.PX);
-		surface.getElement().getStyle().setTop(0, Unit.PX);
+		canvas.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+		canvas.getElement().getStyle().setLeft(0, Unit.PX);
+		canvas.getElement().getStyle().setTop(0, Unit.PX);
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 
 	@Override
 	public void clear() {
-		context.clear();
+		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 		applyHackForCanvasInAndroid4();
 	}
 
@@ -77,13 +81,13 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 	 */
 	private void applyHackForCanvasInAndroid4() {
 		if (IS_ANDROID_4) {
-			surface.setWidth(surface.getWidth());
+			canvas.setWidth(canvas.getCoordinateSpaceWidth() + "px");
 			applyStyles(lastSetStyles);
 		}
 	}
 
 	public Widget getView() {
-		return surface;
+		return canvas;
 	}
 
 	@Override
@@ -93,8 +97,8 @@ public class ConnectionSurfaceViewImpl extends Composite implements ConnectionSu
 
 	@Override
 	public void applyStyles(Map<String, String> styles) {
-		styleHelper.applyStyles((JavaScriptObject) context, propertiesToClear);
-		styleHelper.applyStyles((JavaScriptObject) context, styles);
+		styleHelper.applyStyles(context, propertiesToClear);
+		styleHelper.applyStyles(context, styles);
 		lastSetStyles = styles;
 		propertiesToClear.clear();
 		for (String property : styles.keySet()) {

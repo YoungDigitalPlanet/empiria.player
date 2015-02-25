@@ -4,22 +4,16 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import com.google.common.collect.Maps;
-
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
-import gwt.g2d.client.math.Vector2;
+import java.util.Map;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConnectionSurfacesManagerTest {
@@ -159,7 +153,7 @@ public class ConnectionSurfacesManagerTest {
 		surfaces.put("someId", mock(ConnectionSurface.class));
 		ConnectionSurface expected = mock(ConnectionSurface.class);
 
-		when(connectionModuleFactory.getConnectionSurface(any(Vector2.class))).thenReturn(expected);
+		when(connectionModuleFactory.getConnectionSurface(any(HasDimensions.class))).thenReturn(expected);
 
 		// when
 		ConnectionSurface actual = testObj.getOrCreateSurface(surfaces, "otherId", hasDimension);
@@ -169,7 +163,7 @@ public class ConnectionSurfacesManagerTest {
 		assertEquals(2, surfaces.size());
 		assertTrue(surfaces.containsKey("otherId"));
 
-		verify(connectionModuleFactory).getConnectionSurface(any(Vector2.class));
+		verify(connectionModuleFactory).getConnectionSurface(any(HasDimensions.class));
 
 		verifyNoMoreInteractions(connectionModuleFactory);
 	}
