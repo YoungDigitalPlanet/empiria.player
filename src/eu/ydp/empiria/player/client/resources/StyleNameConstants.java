@@ -905,6 +905,15 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-slideshow-button-stop")
 	public String QP_SLIDESHOW_BUTTON_STOP();
 
+	@DefaultStringValue("qp-slideshow-pager-panel")
+	public String QP_SLIDESHOW_PAGER_PANEL();
+
+	@DefaultStringValue("qp-slideshow-pager-button")
+	public String QP_SLIDESHOW_PAGER_BUTTON();
+
+	@DefaultStringValue("qp-slideshow-pager-button-active")
+	public String QP_SLIDESHOW_PAGER_BUTTON_ACTIVE();
+
 	@DefaultStringValue("qp-slideshow-slide-image")
 	public String QP_SLIDESHOW_SLIDE_IMAGE();
 

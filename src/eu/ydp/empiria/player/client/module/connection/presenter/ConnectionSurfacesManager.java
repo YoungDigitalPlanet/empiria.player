@@ -1,16 +1,13 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import java.util.Map;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
-import gwt.g2d.client.math.Vector2;
+import java.util.Map;
 
 public class ConnectionSurfacesManager {
 
@@ -56,8 +53,7 @@ public class ConnectionSurfacesManager {
 		if (surfaces.containsKey(identifier)) {
 			surface = surfaces.get(identifier);
 		} else {
-			Vector2 vector = new Vector2(dimensions.getWidth(), dimensions.getHeight());
-			surface = connectionFactory.getConnectionSurface(vector);
+			surface = connectionFactory.getConnectionSurface(dimensions);
 			surfaces.put(identifier, surface);
 		}
 		return surface;
@@ -84,7 +80,8 @@ public class ConnectionSurfacesManager {
 		surfaces.remove(connectionPairForSurface.getSource());
 	}
 
-	public boolean containsSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces, ConnectionPairEntry<String, String> keyValue) {
+	public boolean containsSurface(Map<ConnectionPairEntry<String, String>, ConnectionSurface> connectedSurfaces,
+			ConnectionPairEntry<String, String> keyValue) {
 		return connectedSurfaces.containsKey(keyValue);
 	}
 

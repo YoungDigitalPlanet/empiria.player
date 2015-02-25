@@ -1,13 +1,15 @@
 package eu.ydp.empiria.player.client.controller.session;
 
+import java.util.*;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.*;
+
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariableStorageImpl;
-import java.util.*;
 
 public class ItemSessionData implements ItemSessionDataSocket {
 
@@ -98,10 +100,10 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	private native JavaScriptObject createJsObject()/*-{
 		var obj = [];
 		var instance = this;
-		obj.getVariableManagerSocket = function () {
+		obj.getVariableManagerSocket = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getVariableStorageJsSocket()();
 		};
-		obj.getTime = function () {
+		obj.getTime = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.session.ItemSessionData::getActualTime()();
 		};
 		return obj;
@@ -114,5 +116,9 @@ public class ItemSessionData implements ItemSessionDataSocket {
 	@Override
 	public VariableProviderSocket getVariableProviderSocket() {
 		return variableStorage;
+	}
+
+	public void resetItemState() {
+		itemBodyState = new JSONArray();
 	}
 }

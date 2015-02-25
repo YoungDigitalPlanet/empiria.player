@@ -1,104 +1,111 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
-import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
+import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
+import eu.ydp.empiria.player.client.module.slideshow.sound.SlideshowSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.List;
 
-public class SlideshowController implements SlideshowSlidesController {
+public class SlideshowController {
 
 	private final SlidesSwitcher slidesSwitcher;
-	private final SlideshowTimer timer;
-	private final SlidesSorter slidesSorter;
 	private final SlideshowButtonsPresenter buttonsPresenter;
+	private final SlideshowPagerPresenter pagerPresenter;
+	private final SlideshowSoundController slideshowSoundController;
 
 	@Inject
-	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter, SlideshowTimer timer,
-			SlidesSorter slidesSorter) {
+	public SlideshowController(@ModuleScoped SlidesSwitcher slidesSwitcher, @ModuleScoped SlideshowButtonsPresenter buttonsPresenter,
+			SlideshowPagerPresenter pagerPresenter, @ModuleScoped SlideshowSoundController slideshowSoundController) {
 		this.slidesSwitcher = slidesSwitcher;
 		this.buttonsPresenter = buttonsPresenter;
-		this.timer = timer;
-		this.slidesSorter = slidesSorter;
+		this.pagerPresenter = pagerPresenter;
+		this.slideshowSoundController = slideshowSoundController;
 	}
 
-	public void init(List<SlideBean> slides) {
-		initTimer();
-		buttonsPresenter.setSlideshowController(this);
-		slidesSorter.sortByTime(slides);
-		slidesSwitcher.setSlides(slides);
-		resetAndSetButtons();
-	}
+	private final SlideEndHandler slideEnd = new SlideEndHandler() {
 
-	@Override
-	public void stopSlideshow() {
-		pauseSlideshow();
-		resetAndSetButtons();
-	}
-
-	@Override
-	public void playSlideshow() {
-		if (!slidesSwitcher.canSwitchToNextSlide()) {
-			resetAndSetButtons();
+		@Override
+		public void onEnd() {
+			continuePlaySlideshow();
 		}
+	};
 
-		showNextWithDelay();
+	public void init(List<SlideBean> slides, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		buttonsPresenter.setSlideshowController(this);
+		slidesSwitcher.init(slides, inlineBodyGeneratorSocket);
+		slidesSwitcher.setSlideEnd(slideEnd);
+		initSounds(slides);
+		resetAndSetButtons();
 	}
 
-	@Override
+	private void initSounds(List<SlideBean> slides) {
+		for (SlideBean slide : slides) {
+			if (slide.hasSound()) {
+				String audiopath = slide.getSound().getSrc();
+				slideshowSoundController.initSound(audiopath);
+			}
+		}
+	}
+
+	public Widget initPager(int slidesSize) {
+		pagerPresenter.setSlideshowController(this);
+		return pagerPresenter.createPager(slidesSize);
+	}
+
+	public void showSlide(int indexToShow) {
+		slidesSwitcher.showSlide(indexToShow);
+		slidesSwitcher.stopAndPlaySlide();
+		updateButtons();
+		buttonsPresenter.setPlayButtonDown(true);
+	}
+
+	public void stopSlideshow() {
+		resetAndSetButtons();
+	}
+
+	public void playSlideshow() {
+		slidesSwitcher.playSlide();
+	}
+
 	public void pauseSlideshow() {
-		timer.cancel();
+		slidesSwitcher.pauseSlide();
 	}
 
-	@Override
 	public void showPreviousSlide() {
 		slidesSwitcher.showPreviousSlide();
-		setButtons();
+		slidesSwitcher.stopAndPlaySlide();
+		updateButtons();
+		buttonsPresenter.setPlayButtonDown(true);
 	}
 
-	@Override
 	public void showNextSlide() {
 		slidesSwitcher.showNextSlide();
-		setButtons();
+		slidesSwitcher.stopAndPlaySlide();
+		updateButtons();
+		buttonsPresenter.setPlayButtonDown(true);
 	}
 
-	private void setButtons() {
+	private void continuePlaySlideshow() {
+		if (slidesSwitcher.canSwitchToNextSlide()) {
+			showNextSlide();
+		} else {
+			stopSlideshow();
+		}
+	}
+
+	private void updateButtons() {
 		buttonsPresenter.setEnabledNextButton(slidesSwitcher.canSwitchToNextSlide());
 		buttonsPresenter.setEnabledPreviousButton(slidesSwitcher.canSwitchToPreviousSlide());
-	}
-
-	private void showNextWithDelay() {
-		int nextSlideTime = slidesSwitcher.getNextSlideStartTime();
-		int currentSlideTime = slidesSwitcher.getCurrentSlideStartTime();
-
-		int delay = nextSlideTime - currentSlideTime;
-		timer.schedule(delay);
-	}
-
-	private void showAndSheduleNextSlide() {
-		showNextSlide();
-		if (slidesSwitcher.canSwitchToNextSlide()) {
-			showNextWithDelay();
-		} else {
-			pauseSlideshow();
-			buttonsPresenter.setPlayButtonDown(false);
-		}
+		pagerPresenter.updateButtons(slidesSwitcher.getCurrentSlideIndex());
 	}
 
 	private void resetAndSetButtons() {
 		slidesSwitcher.reset();
-		setButtons();
-	}
-
-	private void initTimer() {
-		Command command = new Command() {
-
-			@Override
-			public void execute() {
-				showAndSheduleNextSlide();
-			}
-		};
-		timer.setCommand(command);
+		updateButtons();
+		buttonsPresenter.setPlayButtonDown(false);
 	}
 }

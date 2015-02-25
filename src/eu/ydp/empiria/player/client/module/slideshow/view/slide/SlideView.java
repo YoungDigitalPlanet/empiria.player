@@ -1,15 +1,15 @@
 package eu.ydp.empiria.player.client.module.slideshow.view.slide;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.*;
 
 public interface SlideView extends IsWidget {
-	void setSlideTitle(String title);
+	void setSlideTitle(Widget title);
 
-	void clearSlideTitle();
-
-	void setNarration(String narration);
-
-	void clearNarration();
+	void setNarration(Widget narration);
 
 	void setImage(String src);
+
+	void clearTitle();
+
+	void clearNarration();
 }

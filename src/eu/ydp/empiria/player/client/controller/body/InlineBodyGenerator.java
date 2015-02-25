@@ -1,26 +1,16 @@
 package eu.ydp.empiria.player.client.controller.body;
 
-import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.*;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.XMLParser;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.IInlineContainerModule;
-import eu.ydp.empiria.player.client.module.IInlineModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
@@ -103,7 +93,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	/**
 	 * Parsuje pojedynczy wezel xml-a i generuje reprezentacje w postaci widgeta. Widget jest dodawany do parentElement
-	 * 
+	 *
 	 * @param currNode
 	 * @param parentElement
 	 * @return
@@ -159,7 +149,13 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 					((IInlineModule) module).initModule((Element) node, moduleSocket, interactionEventsListener);
 					Widget moduleView = ((IInlineModule) module).getView();
 					if (parent instanceof ComplexPanel && moduleView != null) {
-						((Panel) parent).add(moduleView);
+						Panel parentPanel = ((Panel) parent);
+						parentPanel.add(moduleView);
+
+						if (module instanceof IInlineContainerModule) {
+							IInlineContainerModule inlineContainer = (IInlineContainerModule) module;
+							createInlineFormattedModule(node, parentPanel, inlineContainer);
+						}
 					}
 				}
 
@@ -177,9 +173,16 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	}
 
+	private void createInlineFormattedModule(Node node, Panel parentPanel, IInlineContainerModule inlineContainer) {
+		String htmlTag = inlineContainer.getType().getHtmlTag();
+		Panel inlineFormattedPanel = new FlowPanel(htmlTag);
+		parentPanel.add(inlineFormattedPanel);
+		parseXML(node.getChildNodes(), inlineFormattedPanel);
+	}
+
 	/**
 	 * Generuje elementy dla dzieci wskazanego wezla
-	 * 
+	 *
 	 * @param nodes
 	 * @param parentElement
 	 * @return
@@ -194,7 +197,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
 	/**
 	 * Generuje widgety dla dzieci wskazanego wezla
-	 * 
+	 *
 	 * @param nodes
 	 * @param parentElement
 	 * @return

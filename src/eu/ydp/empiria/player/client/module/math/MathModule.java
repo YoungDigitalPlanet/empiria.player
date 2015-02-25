@@ -1,46 +1,26 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.*;
 import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.xml.client.*;
+import com.google.inject.*;
 import com.mathplayer.player.MathPlayerManager;
-import com.mathplayer.player.geom.Color;
-import com.mathplayer.player.geom.Font;
-import com.mathplayer.player.geom.Point;
-import com.mathplayer.player.interaction.GapIdentifier;
-import com.mathplayer.player.interaction.InteractionManager;
+import com.mathplayer.player.geom.*;
+import com.mathplayer.player.interaction.*;
 import com.mathplayer.player.model.interaction.CustomFieldDescription;
-
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.IContainerModule;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule;
-import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.resources.*;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
+import java.util.*;
 
 public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IContainerModule {
 
@@ -50,9 +30,8 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	private MathModuleViewUiBinder uiBinder;
 
-	@UiTemplate("MathModuleView.ui.xml")
-	interface MathModuleViewUiBinder extends UiBinder<Widget, MathModule> {
-	};
+	@UiTemplate("MathModuleView.ui.xml") interface MathModuleViewUiBinder extends UiBinder<Widget, MathModule> {
+	}
 
 	@UiField
 	protected AbsolutePanel outerPanel;

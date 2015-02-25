@@ -1,40 +1,34 @@
 package eu.ydp.empiria.player.client.controller.session;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.*;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSocket;
+import eu.ydp.empiria.player.client.controller.session.datasockets.*;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
-import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
-import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
+import eu.ydp.empiria.player.client.controller.session.sockets.*;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.empiria.player.client.util.events.state.*;
 
 public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
 
 	private ItemSessionData[] itemSessionDatas;
 	private final AssessmentVariableStorageImpl variableProvider;
-	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	private final EventsBus eventsBus;
 
 	@Inject
-	public SessionDataManager(AssessmentVariableStorageImpl variableProvider) {
+	public SessionDataManager(AssessmentVariableStorageImpl variableProvider, EventsBus eventsBus) {
 		this.variableProvider = variableProvider;
+		this.eventsBus = eventsBus;
 	}
 
 	public void init(int itemsCount, InitialData data) {
@@ -162,16 +156,16 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	}
 
 	private native JavaScriptObject createAssessmentSessionDataJsSocket()/*-{
-																			var socket = [];
-																			var instance = this;
-																			socket.getVariableManagerSocket = function() {
-																			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getVariableProviderJsSocket()();
-																			}
-																			socket.getTime = function() {
-																			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getTimeAssessmentTotal()();
-																			}
-																			return socket
-																			}-*/;
+		var socket = [];
+		var instance = this;
+		socket.getVariableManagerSocket = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getVariableProviderJsSocket()();
+		}
+		socket.getTime = function() {
+			return instance.@eu.ydp.empiria.player.client.controller.session.SessionDataManager::getTimeAssessmentTotal()();
+		}
+		return socket
+	}-*/;
 
 	private JavaScriptObject getVariableProviderJsSocket() {
 		return variableProvider.getJsSocket();
@@ -198,6 +192,12 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
 	@Override
 	public VariableProviderSocket getVariableProviderSocket() {
 		return variableProvider;
+	}
+
+	public void resetLessonsState() {
+		for (ItemSessionData itemSessionData : itemSessionDatas) {
+			itemSessionData.resetItemState();
+		}
 	}
 
 }

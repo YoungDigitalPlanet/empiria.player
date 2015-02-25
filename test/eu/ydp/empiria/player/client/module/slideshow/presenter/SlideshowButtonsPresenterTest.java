@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.slideshow.presenter;
 import static org.mockito.Mockito.*;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowSlidesController;
+import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
 import org.junit.*;
@@ -11,16 +11,16 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class SlideshowButtonsPresenterImplTest {
+public class SlideshowButtonsPresenterTest {
 
 	@InjectMocks
-	private SlideshowButtonsPresenterImpl testObj;
+	private SlideshowButtonsPresenter testObj;
 	@Mock
 	private SlideshowPlayerView playerView;
 	@Mock
 	private SlideshowButtonsView buttonsView;
 	@Mock
-	private SlideshowSlidesController slidesController;
+	private SlideshowController slidesController;
 
 	@Before
 	public void init() {
@@ -118,7 +118,7 @@ public class SlideshowButtonsPresenterImplTest {
 	@Test
 	public void shouldPlaySlideshow() {
 		// given
-		when(buttonsView.isPlayButtonDown()).thenReturn(false);
+		when(buttonsView.isPlayButtonDown()).thenReturn(true);
 
 		// when
 		testObj.onPlayClick();
@@ -130,7 +130,7 @@ public class SlideshowButtonsPresenterImplTest {
 	@Test
 	public void shouldPauseSlideshow() {
 		// given
-		when(buttonsView.isPlayButtonDown()).thenReturn(true);
+		when(buttonsView.isPlayButtonDown()).thenReturn(false);
 
 		// when
 		testObj.onPlayClick();
@@ -148,6 +148,5 @@ public class SlideshowButtonsPresenterImplTest {
 
 		// then
 		verify(slidesController).stopSlideshow();
-		verify(buttonsView).setPlayButtonDown(false);
 	}
 }

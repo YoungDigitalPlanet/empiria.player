@@ -1,25 +1,19 @@
 package eu.ydp.empiria.player.client.module.report;
 
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
-import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.module.ContainerModuleBase;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.controller.workmode.*;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class ReportModule extends ContainerModuleBase implements ILifecycleModule {
+public class ReportModule extends ContainerModuleBase implements OnModuleShowHandler {
 
 	private final SessionDataSupplier sessionDataSupplier;
 	private final DataSourceDataSupplier dataSourceDataSupplier;
@@ -31,7 +25,8 @@ public class ReportModule extends ContainerModuleBase implements ILifecycleModul
 
 	@Inject
 	public ReportModule(@Assisted DataSourceDataSupplier dataSourceDataSupplier,
-			@Assisted SessionDataSupplier sessionDataSupplier, StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService) {
+ @Assisted SessionDataSupplier sessionDataSupplier,
+			StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService) {
 		this.dataSourceDataSupplier = dataSourceDataSupplier;
 		this.sessionDataSupplier = sessionDataSupplier;
 		this.styleNames = styleNames;
@@ -49,7 +44,6 @@ public class ReportModule extends ContainerModuleBase implements ILifecycleModul
 		table = reportTableGenerator.generate(element);
 
 		mainPanel.add(table);
-
 	}
 
 	@Override
@@ -58,23 +52,8 @@ public class ReportModule extends ContainerModuleBase implements ILifecycleModul
 	}
 
 	@Override
-	public void onBodyLoad() {
+	public void onShow() {
 		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
-	}
 
-	@Override
-	public void onBodyUnload() {
-	}
-
-	@Override
-	public void onSetUp() {
-	}
-
-	@Override
-	public void onStart() {
-	}
-
-	@Override
-	public void onClose() {
 	}
 }
