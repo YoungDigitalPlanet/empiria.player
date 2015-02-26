@@ -2,40 +2,26 @@ package eu.ydp.empiria.player.client.controller;
 
 import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.*;
 
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
-import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.communication.ItemData;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEvent;
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
+import eu.ydp.empiria.player.client.controller.events.activity.*;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
-import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
-import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
+import eu.ydp.empiria.player.client.controller.log.*;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.page.PageEvent;
-import eu.ydp.empiria.player.client.util.events.page.PageEventHandler;
-import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.page.*;
+import eu.ydp.empiria.player.client.util.events.player.*;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
-import eu.ydp.empiria.player.client.view.item.ItemViewCarrier;
-import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
+import eu.ydp.empiria.player.client.util.events.state.*;
+import eu.ydp.empiria.player.client.view.item.*;
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
@@ -88,7 +74,10 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			OperationLogManager.logEvent(OperationLogEvent.DISPLAY_ITEM_FAILED);
 			e.printStackTrace();
 		}
+	}
 
+	public void onShow() {
+		item.onShow();
 	}
 
 	public void close() {

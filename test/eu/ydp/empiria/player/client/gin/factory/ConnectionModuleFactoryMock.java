@@ -1,33 +1,21 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
-import org.mockito.Mockito;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
-import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
-import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
-import eu.ydp.empiria.player.client.module.connection.ConnectionSurfaceView;
-import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
+import eu.ydp.empiria.player.client.module.components.multiplepair.structure.*;
+import eu.ydp.empiria.player.client.module.connection.*;
+import eu.ydp.empiria.player.client.module.connection.item.*;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem.Column;
-import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewLeft;
-import eu.ydp.empiria.player.client.module.connection.item.ConnectionItemViewRight;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionColumnsBuilder;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionItems;
-import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionStyleChecker;
+import eu.ydp.empiria.player.client.module.connection.presenter.*;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
-import eu.ydp.empiria.player.client.module.connection.structure.ConnectionModuleStructure;
-import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import eu.ydp.empiria.player.client.module.connection.structure.*;
+import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.client.xml.XMLParser;
-import gwt.g2d.client.math.Vector2;
+import org.mockito.Mockito;
 
 public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	// singleton na potrzeby testow wszystkie operacje na jednym
@@ -71,7 +59,7 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionSurface getConnectionSurface(Vector2 vector) {
+	public ConnectionSurface getConnectionSurface(HasDimensions dimensions) {
 		return surfaceProvider.get();
 	}
 
@@ -82,7 +70,7 @@ public class ConnectionModuleFactoryMock implements ConnectionModuleFactory {
 	}
 
 	@Override
-	public ConnectionSurfaceView getConnectionSurfaceView(Vector2 vector) {
+	public ConnectionSurfaceView getConnectionSurfaceView(HasDimensions dimensions) {
 		return mock(ConnectionSurfaceView.class);
 	}
 

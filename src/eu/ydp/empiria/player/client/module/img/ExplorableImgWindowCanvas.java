@@ -1,41 +1,19 @@
 package eu.ydp.empiria.player.client.module.img;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.event.dom.client.ErrorEvent;
-import com.google.gwt.event.dom.client.ErrorHandler;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.Window.Navigator;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import eu.ydp.canvasadapter.client.CanvasAdapter;
-import eu.ydp.canvasadapter.client.Context2dAdapter;
+import com.google.gwt.user.client.ui.*;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 import eu.ydp.empiria.player.client.module.img.events.handlers.ITouchHandlerOnImageInitializer;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.*;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase implements CanvasMoveEvents {
@@ -47,12 +25,12 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 
 	@UiField
 	protected FlowPanel imagePanel;
-	@UiField
-	protected CanvasAdapter imageCanvas;
+	@UiField(provided = true)
+	protected Canvas canvas;
 	@UiField
 	protected PanelWithScrollbars scrollbarsPanel;
 
-	private final Context2dAdapter context2d;
+	private final Context2d context2d;
 	private static final int REDRAW_INTERVAL_MIN = 50;
 	private double imgX = 0;
 	private double imgY = 0;
@@ -70,8 +48,9 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 	private final ITouchHandlerOnImageInitializer touchHandlerInitializer;
 
 	public ExplorableImgWindowCanvas() {
+		canvas = Canvas.createIfSupported();
 		initWidget(uiBinder.createAndBindUi(this));
-		context2d = imageCanvas.getContext2d();
+		context2d = canvas.getContext2d();
 		touchController = PlayerGinjectorFactory.getPlayerGinjector().getTouchController();
 		touchHandlerInitializer = PlayerGinjectorFactory.getPlayerGinjector().getTouchHandlerOnImageProvider().get();
 	}
@@ -88,16 +67,16 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
 		setUpImageCanvasProperties(title);
 
 		scrollbarsPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
-		FocusWidget focusCanvas = (FocusWidget) imageCanvas.asWidget();
+		FocusWidget focusCanvas = (FocusWidget) canvas.asWidget();
 		addHandlersToCanvas(focusCanvas);
 	}
 
 	private void setUpImageCanvasProperties(String title) {
-		imageCanvas.setCoordinateSpaceWidth(getWindowWidth());
-		imageCanvas.setCoordinateSpaceHeight(getWindowHeight());
-		imageCanvas.setWidth(getWindowWidth() + "px");
-		imageCanvas.setHeight(getWindowHeight() + "px");
-		imageCanvas.setTitle(title);
+		canvas.setCoordinateSpaceWidth(getWindowWidth());
+		canvas.setCoordinateSpaceHeight(getWindowHeight());
+		canvas.setWidth(getWindowWidth() + "px");
+		canvas.setHeight(getWindowHeight() + "px");
+		canvas.setTitle(title);
 	}
 
 	private void createAndInitializeTempImage(String imageUrl) {

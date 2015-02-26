@@ -1,7 +1,10 @@
 package eu.ydp.empiria.player.client.module.slideshow.presenter;
 
 import com.google.common.base.Strings;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -9,6 +12,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class SlidePresenter {
 
 	private final SlideView view;
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
 	@Inject
 	public SlidePresenter(@ModuleScoped SlideView view) {
@@ -16,12 +20,20 @@ public class SlidePresenter {
 	}
 
 	public void replaceViewData(SlideBean slide) {
-		String title = slide.getTitle();
-		String narration = slide.getNarration();
-		SourceBean source = slide.getSource();
+		view.clearTitle();
+		view.clearNarration();
 
-		setTitle(title);
-		setNarration(narration);
+		if (slide.hasSlideTitle()) {
+			Element title = slide.getSlideTitle().getTitleValue().getValue();
+			setTitle(title);
+		}
+
+		if (slide.hasNarration()) {
+			Element narration = slide.getNarration().getNarrationValue().getValue();
+			setNarration(narration);
+		}
+
+		SourceBean source = slide.getSource();
 		setSource(source);
 	}
 
@@ -32,17 +44,21 @@ public class SlidePresenter {
 		}
 	}
 
-	private void setTitle(String title) {
-		view.clearSlideTitle();
-		if (!Strings.isNullOrEmpty(title)) {
-			view.setSlideTitle(title);
-		}
+	private void setTitle(Element title) {
+		Widget titleView = getWidgetFromElement(title);
+		view.setSlideTitle(titleView);
 	}
 
-	private void setNarration(String narration) {
-		view.clearNarration();
-		if (!Strings.isNullOrEmpty(narration)) {
-			view.setNarration(narration);
-		}
+	private void setNarration(Element narration) {
+		Widget narrationView = getWidgetFromElement(narration);
+		view.setNarration(narrationView);
+	}
+
+	private Widget getWidgetFromElement(Element element) {
+		return inlineBodyGeneratorSocket.generateInlineBody(element);
+	}
+
+	public void setInlineBodyGenerator(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
 	}
 }

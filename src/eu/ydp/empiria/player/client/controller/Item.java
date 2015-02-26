@@ -221,34 +221,34 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
 		var socket = {};
 		var instance = this;
-		socket.reset = function () {
+		socket.reset = function() {
 			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
 		};
-		socket.showAnswers = function () {
+		socket.showAnswers = function() {
 			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
 		};
-		socket.lock = function () {
+		socket.lock = function() {
 			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
 		};
-		socket.unlock = function () {
+		socket.unlock = function() {
 			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
 		};
-		socket.checkItem = function (value) {
+		socket.checkItem = function(value) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
 		};
-		socket.continueItem = function (value) {
+		socket.continueItem = function(value) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
 		};
-		socket.getOutcomeVariables = function () {
+		socket.getOutcomeVariables = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
 		};
-		socket.getResponseVariables = function () {
+		socket.getResponseVariables = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
 		};
-		socket.getItemBodySocket = function () {
+		socket.getItemBodySocket = function() {
 			return itemBodySocket;
 		};
-		socket.handleFlowActivityEvent = function (event) {
+		socket.handleFlowActivityEvent = function(event) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
 		};
 		return socket;
@@ -273,6 +273,10 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	public void start() {
 		itemBody.start();
+	}
+
+	public void onShow() {
+		itemBody.onShow();
 	}
 
 	public void setAssessmentParenthoodSocket(ParenthoodSocket parenthoodSocket) {

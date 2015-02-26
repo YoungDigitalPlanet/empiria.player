@@ -10,12 +10,11 @@ import eu.ydp.empiria.player.client.controller.body.*;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
-import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
+import eu.ydp.empiria.player.client.controller.workmode.*;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
-import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 import java.util.*;
 
@@ -129,6 +128,14 @@ public class ItemBody implements WidgetWorkflowListener {
 		for (IModule currModule : modules) {
 			if (currModule instanceof ILifecycleModule) {
 				((ILifecycleModule) currModule).onStart();
+			}
+		}
+	}
+
+	public void onShow() {
+		for (IModule currModule : modules) {
+			if (currModule instanceof OnModuleShowHandler) {
+				((OnModuleShowHandler) currModule).onShow();
 			}
 		}
 	}
@@ -260,7 +267,7 @@ public class ItemBody implements WidgetWorkflowListener {
 	private native JavaScriptObject createJsSocket()/*-{
 		var socket = {};
 		var instance = this;
-		socket.getModuleSockets = function () {
+		socket.getModuleSockets = function() {
 			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
 		};
 		return socket;

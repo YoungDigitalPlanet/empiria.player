@@ -17,13 +17,16 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	private final SlideshowModuleUiBinder uiBinder = GWT.create(SlideshowModuleUiBinder.class);
 
 	@UiField
-	protected InlineLabel titleText;
+	protected FlowPanel titlePanel;
 
 	@UiField
 	protected Panel mainPanel;
 
 	@UiField
 	protected Panel slidesPanel;
+
+	@UiField
+	protected Panel pagerPanel;
 
 	@Inject
 	public SlideshowPlayerViewImpl(@ModuleScoped SlideView slideView, @ModuleScoped SlideshowButtonsView buttonsView) {
@@ -33,12 +36,18 @@ public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 	}
 
 	@Override
-	public void setTitle(String title) {
-		titleText.setText(title);
+	public void setTitle(Widget title) {
+		titlePanel.clear();
+		titlePanel.add(title);
 	}
 
 	@Override
 	public Widget asWidget() {
 		return mainPanel;
+	}
+
+	@Override
+	public void addPager(Widget pager) {
+		pagerPanel.add(pager);
 	}
 }

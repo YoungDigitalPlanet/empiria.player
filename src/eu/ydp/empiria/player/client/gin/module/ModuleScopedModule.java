@@ -41,6 +41,7 @@ import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControlle
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.slides.*;
+import eu.ydp.empiria.player.client.module.slideshow.sound.SlideshowSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.empiria.player.client.module.slideshow.view.player.SlideshowPlayerView;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
@@ -104,6 +105,8 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindModuleScoped(SlidePresenter.class, new TypeLiteral<ModuleScopedProvider<SlidePresenter>>() {
 		});
 		bindModuleScoped(SlideView.class, new TypeLiteral<ModuleScopedProvider<SlideView>>() {
+		});
+		bindModuleScoped(SlideshowSoundController.class, new TypeLiteral<ModuleScopedProvider<SlideshowSoundController>>() {
 		});
 	}
 
