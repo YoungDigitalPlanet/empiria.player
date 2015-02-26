@@ -25,6 +25,20 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 			player.play();
 		}
 	}-*/;
+	
+	@Override
+	public int getWidth() {
+		return getWidthNative();
+	}
+
+	private native int getWidthNative() /*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+
+		if (player) {
+			var options = player.options();
+			return options.width;
+		}
+	}-*/;
 
 	@Override
 	public native void pause() /*-{
@@ -59,9 +73,9 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 	private native boolean isFlashFallback() /*-{
 		var objects = $wnd.document
-			.getElementById(
-			this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId)
-			.getElementsByTagName('object');
+				.getElementById(
+						this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId)
+				.getElementsByTagName('object');
 
 		return ((objects != null) && (objects.length != 0));
 	}-*/;
@@ -71,7 +85,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 		var options = $wnd.document.getElementById(playerId).getAttribute(
 				'data-setup')
-			|| '{}';
+				|| '{}';
 		options = $wnd.vjs.JSON.parse(options);
 
 		return $wnd.vjs(playerId, options);
@@ -159,15 +173,15 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		if (player) {
 			player
-				.on(
-				"fullscreenchange",
-				function () {
-					if (player.isFullScreen()) {
-						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
-					} else {
-						listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();
-					}
-				});
+					.on(
+							"fullscreenchange",
+							function() {
+								if (player.isFullScreen()) {
+									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
+								} else {
+									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();
+								}
+							});
 		}
 	}-*/;
 
@@ -177,11 +191,11 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 
 		if (player) {
 			player
-				.on(
-				event,
-				function () {
-					handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
-				});
+					.on(
+							event,
+							function() {
+								handler.@eu.ydp.empiria.player.client.module.video.VideoPlayerControlHandler::handle(Leu/ydp/empiria/player/client/module/video/VideoPlayerControl;)(javaPlayer);
+							});
 		}
 	}-*/;
 }
