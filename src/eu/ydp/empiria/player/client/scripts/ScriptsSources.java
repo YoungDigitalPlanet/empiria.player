@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.scripts;
 import eu.ydp.gwtutil.client.scripts.ScriptUrl;
 
 enum ScriptsSources implements ScriptUrl {
-	// after YPUB-6716, excanvas should be deleted
-	EXCANVAS("excanvas.js"),
 	VIDEO_JS("video-js/video.dev.js"),
 	VIDEO_AC("video/AC_RunActiveContent.js"),
 	FA_VIDEO("video/FAVideo.js"),

@@ -185,7 +185,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 			}
 
 			Point position = customFieldDescriptionsIterator.next().getPosition();
-			gapsPanel.setWidgetPosition(gap.getContainer(), position.x, position.y);
+			gapsPanel.setWidgetPosition(gap.getContainer(), position.getX(), position.getY());
 		}
 	}
 

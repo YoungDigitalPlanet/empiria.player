@@ -44,8 +44,8 @@
     <stylesheet src="jqueryte/jquery-te-1.4.0.css"/>
 
     <!-- LOGGER -->
-    	<!--  <replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
-    <replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender"> 
+    <!--  <replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
+    <replace-with class="eu.ydp.gwtutil.client.debug.log.ConsoleAppender">
         <when-type-is class="eu.ydp.gwtutil.client.debug.log.LogAppender"/>
     </replace-with>
 
@@ -132,7 +132,6 @@
             <when-property-is name="user.agent" value="ie8"/>
         </any>
     </replace-with>
-    
+
     <add-linker name="xsiframe"/>
-    <set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 </module>
