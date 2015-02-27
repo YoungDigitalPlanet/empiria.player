@@ -8,6 +8,8 @@ public interface VideoPlayerControl {
 
 	void setCurrentTime(float position);
 
+	void showPoster();
+
 	float getCurrentTime();
 
 	int getWidth();
@@ -16,7 +18,7 @@ public interface VideoPlayerControl {
 
 	void addPauseHandler(VideoPlayerControlHandler handler);
 
-	void addEndedHandler(VideoPlayerControlHandler handler);
+	void addEndVideoListener(VideoEndedListener handler);
 
 	void addTimeUpdateHandler(VideoPlayerControlHandler handler);
 

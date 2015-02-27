@@ -41,6 +41,19 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	@Override
+	public void showPoster() {
+		showPosterNative();
+	}
+	
+	private native void showPosterNative() /*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+
+		if (player) {
+			player.posterImage.show();
+		}
+	}-*/;
+
+	@Override
 	public native void pause() /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 
@@ -57,6 +70,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 			player.currentTime(position);
 		}
 	}-*/;
+
 
 	@Override
 	public native float getCurrentTime() /*-{
@@ -130,9 +144,21 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}
 
 	@Override
-	public void addEndedHandler(VideoPlayerControlHandler handler) {
-		addEventHandler("ended", handler);
+	public void addEndVideoListener(VideoEndedListener listener) {
+		addEndVideoListenerNative(listener);
 	}
+
+	private native void addEndVideoListenerNative(VideoEndedListener listener)/*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+		if (player) {
+			player
+					.on(
+							"ended",
+							function() {
+								listener.@eu.ydp.empiria.player.client.module.video.VideoEndedListener::onVideoEnd()();
+							});
+		}
+	}-*/;
 
 	@Override
 	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
