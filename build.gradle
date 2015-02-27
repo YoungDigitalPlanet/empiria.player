@@ -78,7 +78,7 @@ dependencies {
     compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
     
-    compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
+    compile group: 'eu.ydp', name: 'mathPlayer', version: mathplayer_ver
     compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
     compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver

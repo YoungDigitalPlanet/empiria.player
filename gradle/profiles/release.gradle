@@ -10,4 +10,5 @@ ext {
 	ydp_gwt_utils_ver="1.10.rc-+"
 	gwt_createjs_ver='1.2.rc-+'
 	jsfilerequest_ver='1.6.rc+'
+	mathplayer_ver='1.6.rc+'
 }
