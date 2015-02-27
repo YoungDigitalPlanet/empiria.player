@@ -34,7 +34,7 @@ public class ElementScaler {
 		style.clearPaddingTop();
 	}
 
-	public void setMaxWidthToParentDiv(int width) {
+	public void setMaxWidth(int width) {
 		Style style = element.getParentElement().getStyle();
 		style.setProperty(MAX_WIDTH_PROPERTY, width, Style.Unit.PX);
 	}

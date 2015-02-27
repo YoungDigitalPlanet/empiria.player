@@ -64,7 +64,7 @@ public class ElementScalerTest {
 	@Test
 	public void shouldSetMaxWidth() {
 		// when
-		testObj.setMaxWidthToParentDiv(WIDTH);
+		testObj.setMaxWidth(WIDTH);
 
 		// then
 		verify(parentStyle).setProperty("maxWidth", WIDTH, Unit.PX);
