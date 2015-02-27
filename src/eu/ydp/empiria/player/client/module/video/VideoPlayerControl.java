@@ -10,6 +10,8 @@ public interface VideoPlayerControl {
 
 	float getCurrentTime();
 
+	int getWidth();
+
 	void addPlayHandler(VideoPlayerControlHandler handler);
 
 	void addPauseHandler(VideoPlayerControlHandler handler);

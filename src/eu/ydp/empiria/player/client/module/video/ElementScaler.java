@@ -34,15 +34,13 @@ public class ElementScaler {
 		style.clearPaddingTop();
 	}
 
-	public void setMaxWidth() {
-		int width = element.getClientWidth();
-		Style style = element.getStyle();
+	public void setMaxWidth(int width) {
+		Style style = element.getParentElement().getStyle();
 		style.setProperty(MAX_WIDTH_PROPERTY, width, Style.Unit.PX);
-
 	}
 
 	public void clearMaxWidth() {
-		Style style = element.getStyle();
+		Style style = element.getParentElement().getStyle();
 		style.clearProperty(MAX_WIDTH_PROPERTY);
 	}
 }

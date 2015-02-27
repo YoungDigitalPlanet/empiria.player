@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.video;
 
-import static org.mockito.AdditionalMatchers.eq;
-import static org.mockito.Matchers.eq;
+import static org.mockito.AdditionalMatchers.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.dom.client.*;
@@ -19,7 +19,12 @@ public class ElementScalerTest {
 	@Mock
 	private Element element;
 	@Mock
+	private Element parentElement;
+	@Mock
 	private Style style;
+	@Mock
+	private Style parentStyle;
+
 	private final double DELTA = 0.01;
 	private final int HEIGHT = 9;
 	private final int WIDTH = 16;
@@ -30,6 +35,8 @@ public class ElementScalerTest {
 		when(element.getClientWidth()).thenReturn(WIDTH);
 		when(element.getClientHeight()).thenReturn(HEIGHT);
 		when(element.getStyle()).thenReturn(style);
+		when(element.getParentElement()).thenReturn(parentElement);
+		when(parentElement.getStyle()).thenReturn(parentStyle);
 		testObj = new ElementScaler(element);
 	}
 
@@ -57,20 +64,18 @@ public class ElementScalerTest {
 	@Test
 	public void shouldSetMaxWidth() {
 		// when
-		testObj.setMaxWidth();
+		testObj.setMaxWidth(WIDTH);
 
 		// then
-		verify(style).setProperty("maxWidth", WIDTH, Unit.PX);
+		verify(parentStyle).setProperty("maxWidth", WIDTH, Unit.PX);
 	}
 
 	@Test
 	public void shouldClearMaxWidth() {
-		// given
-
 		// when
 		testObj.clearMaxWidth();
 
 		// then
-		verify(style).clearProperty("maxWidth");
+		verify(parentStyle).clearProperty("maxWidth");
 	}
 }

@@ -37,9 +37,11 @@ public class VideoPlayer extends Widget {
 
 	private void enablePlayerScaling() {
 		final Element wrappedElement = divElement.getFirstChildElement();
+		final int playerWidth = nativePlayer.getWidth();
 		elementScaler = new ElementScaler(wrappedElement);
+
 		elementScaler.setRatio();
-		elementScaler.setMaxWidth();
+		elementScaler.setMaxWidth(playerWidth);
 		nativePlayer.addFullscreenListener(new VideoFullscreenListener() {
 			@Override
 			public void onEnterFullscreen() {
@@ -50,7 +52,7 @@ public class VideoPlayer extends Widget {
 			@Override
 			public void onExitFullscreen() {
 				elementScaler.setRatio();
-				elementScaler.setMaxWidth();
+				elementScaler.setMaxWidth(playerWidth);
 			}
 		});
 	}
