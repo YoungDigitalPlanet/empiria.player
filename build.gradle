@@ -225,7 +225,7 @@ task distWebkit(dependsOn: [cleanCache, createVersion, test, zipWebkit])
 task dist(dependsOn: [distMain, distWebkit])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.3'
 }
 
 tasks.withType(JavaCompile) {
