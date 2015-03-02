@@ -121,8 +121,8 @@ sonarRunner {
 }
 
 sourceSets {
-    sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
-    sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
+    test.runtimeClasspath += files(main.java.srcDirs)
+    test.runtimeClasspath += files(test.java.srcDirs)
 }
 
 task testJUnit(type: Test) {
