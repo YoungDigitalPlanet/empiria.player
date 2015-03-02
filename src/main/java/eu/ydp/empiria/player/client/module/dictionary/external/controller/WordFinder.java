@@ -1,11 +1,10 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import java.util.*;
-
+import com.google.common.base.Optional;
 import com.google.common.base.*;
 import com.google.inject.*;
-
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
+import java.util.*;
 
 public class WordFinder {
 
