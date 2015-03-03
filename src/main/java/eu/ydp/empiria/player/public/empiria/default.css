@@ -10,3 +10,7 @@
 .jqte ol, .jqte ul {
     padding-left: 40px;
 }
+
+.qp-slideshow-button-pause {
+    display: none;
+}
