@@ -68,8 +68,7 @@ public class VideoPlayer extends Widget {
 		nativePlayer.addEndVideoListener(new VideoEndedListener() {
 			@Override
 			public void onVideoEnd() {
-				nativePlayer.setCurrentTime(0);
-				nativePlayer.showPoster();
+				nativePlayer.reset();
 			}
 		});
 	}

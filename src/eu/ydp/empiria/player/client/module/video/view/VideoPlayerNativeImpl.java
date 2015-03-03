@@ -41,15 +41,17 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	@Override
-	public void showPoster() {
-		showPosterNative();
+	public void reset() {
+		resetNative();
 	}
 	
-	private native void showPosterNative() /*-{
+	private native void resetNative() /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
-
 		if (player) {
 			player.posterImage.show();
+			player.exitFullscreen();
+			player.currentTime(0);
+			player.trigger('loadstart');
 		}
 	}-*/;
 
@@ -202,7 +204,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 					.on(
 							"fullscreenchange",
 							function() {
-								if (player.isFullScreen()) {
+								if (player.isFullscreen()) {
 									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
 								} else {
 									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();

@@ -8,7 +8,7 @@ public interface VideoPlayerControl {
 
 	void setCurrentTime(float position);
 
-	void showPoster();
+	void reset();
 
 	float getCurrentTime();
 
