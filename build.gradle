@@ -31,6 +31,7 @@ apply plugin: 'eclipse'
 apply plugin: 'sonar-runner'
 apply from: "gradle/profiles/${buildProfile}.gradle"
 apply plugin: 'ivy-publish'
+apply plugin: "groovy"
 
 sourceCompatibility = 1.7
 compileJava.options.encoding = 'UTF-8'
@@ -93,6 +94,9 @@ dependencies {
     testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
     testCompile group: 'xmlunit', name: 'xmlunit', version: '1.3'
     testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
 
 eclipse {
@@ -123,6 +127,7 @@ sonarRunner {
 sourceSets {
     test.runtimeClasspath += files(main.java.srcDirs)
     test.runtimeClasspath += files(test.java.srcDirs)
+    test.runtimeClasspath += files(test.groovy.srcDirs)
 }
 
 task testJUnit(type: Test) {
@@ -131,6 +136,7 @@ task testJUnit(type: Test) {
     }
     useJUnit()
     include "**/JUnitTestSuite.*"
+    include "**/SpockTestSuite.*"
 
     forkEvery = 1
     maxHeapSize = '512M'
