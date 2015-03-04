@@ -146,18 +146,18 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}
 
 	@Override
-	public void addEndVideoListener(VideoEndedListener listener) {
-		addEndVideoListenerNative(listener);
+	public void addVideoEndListener(VideoEndListener listener) {
+		addVideoEndListenerNative(listener);
 	}
 
-	private native void addEndVideoListenerNative(VideoEndedListener listener)/*-{
+	private native void addVideoEndListenerNative(VideoEndListener listener)/*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		if (player) {
 			player
 					.on(
 							"ended",
 							function() {
-								listener.@eu.ydp.empiria.player.client.module.video.VideoEndedListener::onVideoEnd()();
+								listener.@eu.ydp.empiria.player.client.module.video.VideoEndListener::onVideoEnd()();
 							});
 		}
 	}-*/;

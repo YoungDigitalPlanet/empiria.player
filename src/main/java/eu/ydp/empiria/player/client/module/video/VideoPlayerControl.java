@@ -18,7 +18,7 @@ public interface VideoPlayerControl {
 
 	void addPauseHandler(VideoPlayerControlHandler handler);
 
-	void addEndVideoListener(VideoEndedListener handler);
+	void addVideoEndListener(VideoEndListener handler);
 
 	void addTimeUpdateHandler(VideoPlayerControlHandler handler);
 

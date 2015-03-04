@@ -65,7 +65,7 @@ public class VideoPlayer extends Widget {
 			nativePlayer.disablePointerEvents();
 		}
 
-		nativePlayer.addEndVideoListener(new VideoEndedListener() {
+		nativePlayer.addVideoEndListener(new VideoEndListener() {
 			@Override
 			public void onVideoEnd() {
 				nativePlayer.stop();
