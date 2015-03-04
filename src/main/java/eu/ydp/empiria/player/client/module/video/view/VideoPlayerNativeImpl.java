@@ -41,6 +41,21 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	@Override
+	public void stop() {
+		stopNative();
+	}
+	
+	private native void stopNative() /*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+		if (player) {
+			player.posterImage.show();
+			player.exitFullscreen();
+			player.currentTime(0);
+			player.trigger('loadstart');
+		}
+	}-*/;
+
+	@Override
 	public native void pause() /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 
@@ -57,6 +72,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 			player.currentTime(position);
 		}
 	}-*/;
+
 
 	@Override
 	public native float getCurrentTime() /*-{
@@ -130,9 +146,21 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}
 
 	@Override
-	public void addEndedHandler(VideoPlayerControlHandler handler) {
-		addEventHandler("ended", handler);
+	public void addVideoEndListener(VideoEndListener listener) {
+		addVideoEndListenerNative(listener);
 	}
+
+	private native void addVideoEndListenerNative(VideoEndListener listener)/*-{
+		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
+		if (player) {
+			player
+					.on(
+							"ended",
+							function() {
+								listener.@eu.ydp.empiria.player.client.module.video.VideoEndListener::onVideoEnd()();
+							});
+		}
+	}-*/;
 
 	@Override
 	public void addTimeUpdateHandler(VideoPlayerControlHandler handler) {
@@ -176,7 +204,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 					.on(
 							"fullscreenchange",
 							function() {
-								if (player.isFullScreen()) {
+								if (player.isFullscreen()) {
 									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onEnterFullscreen()();
 								} else {
 									listener.@eu.ydp.empiria.player.client.module.video.VideoFullscreenListener::onExitFullscreen()();

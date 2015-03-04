@@ -64,6 +64,13 @@ public class VideoPlayer extends Widget {
 		if (userAgentUtil.isAndroidBrowser() && userAgentUtil.isAIR()) {
 			nativePlayer.disablePointerEvents();
 		}
+
+		nativePlayer.addVideoEndListener(new VideoEndListener() {
+			@Override
+			public void onVideoEnd() {
+				nativePlayer.stop();
+			}
+		});
 	}
 
 	public VideoPlayerControl getControl() {
@@ -82,5 +89,4 @@ public class VideoPlayer extends Widget {
 	public List<String> getSources() {
 		return videoElementWrapper.getSources();
 	}
-
 }
