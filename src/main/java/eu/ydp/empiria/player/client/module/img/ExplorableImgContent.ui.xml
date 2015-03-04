@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.canvasadapter.client" xmlns:components="urn:import:eu.ydp.empiria.player.client.components" xmlns:i="urn:import:eu.ydp.empiria.player.client.module.img">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:components="urn:import:eu.ydp.empiria.player.client.components" xmlns:i="urn:import:eu.ydp.empiria.player.client.module.img">
 	<ui:style>
 	</ui:style>
 	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
