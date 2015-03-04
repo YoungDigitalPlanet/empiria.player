@@ -20,7 +20,7 @@ def empiriaWar = file("war")
 def empiriaBuildDir = new File(empiriaWar, "empiria.player")
 def empiriaWebkitWar = file("build/gwt")
 def empiriaWebkitBuildDir = new File(empiriaWebkitWar, "empiria.player")
-def versionFile = new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
+def versionFile = file("${projectDir}/src/main/java/eu/ydp/empiria/player/client/version/version.txt")
 def buildProfile = project.getProperties().get('buildProfile', 'develop')
 
 println "Picked build profile [$buildProfile]"
@@ -77,8 +77,8 @@ dependencies {
     compile group: 'com.googlecode.gwtquery', name: 'gwtquery', version: '1.4.2'
     compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
-    
-    compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
+
+    compile group: 'eu.ydp', name: 'mathPlayer', version: mathplayer_ver
     compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
     compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
@@ -121,25 +121,8 @@ sonarRunner {
 }
 
 sourceSets {
-    main {
-        java {
-            srcDir 'src/'
-        }
-        resources {
-            srcDir 'src/'
-        }
-    }
-    test {
-        java {
-            srcDir 'test/'
-        }
-        resources {
-            srcDir 'test/'
-        }
-    }
-
-    sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
-    sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
+    test.runtimeClasspath += files(main.java.srcDirs)
+    test.runtimeClasspath += files(test.java.srcDirs)
 }
 
 task testJUnit(type: Test) {
@@ -242,7 +225,7 @@ task distWebkit(dependsOn: [cleanCache, createVersion, test, zipWebkit])
 task dist(dependsOn: [distMain, distWebkit])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.3'
 }
 
 tasks.withType(JavaCompile) {
