@@ -41,11 +41,11 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	@Override
-	public void reset() {
-		resetNative();
+	public void stop() {
+		stopNative();
 	}
 	
-	private native void resetNative() /*-{
+	private native void stopNative() /*-{
 		var player = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerObject;
 		if (player) {
 			player.posterImage.show();
