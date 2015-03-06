@@ -1,17 +1,11 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import com.google.common.collect.*;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.module.IModule;
+import java.util.*;
+import java.util.logging.Logger;
 
 class FeedbackAppendActionTestData {
 
@@ -21,7 +15,7 @@ class FeedbackAppendActionTestData {
 		actions.put(position, new FeedbackActionData(createUrlAction(url, type), module, ShowUrlAction.class));
 	}
 
-	void addShowTextAction(int position, IModule module, String text) {
+	void addShowTextAction(int position, IModule module, XMLContent text) {
 		actions.put(position, new FeedbackActionData(createTextAction(text), module, ShowTextAction.class));
 	}
 
@@ -73,10 +67,10 @@ class FeedbackAppendActionTestData {
 		return action;
 	}
 
-	private ShowTextAction createTextAction(String text) {
+	private ShowTextAction createTextAction(XMLContent text) {
 		ShowTextAction action = new ShowTextAction();
 
-		action.setText(text);
+		action.setContent(text);
 		return action;
 	}
 

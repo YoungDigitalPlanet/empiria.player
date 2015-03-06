@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import java.util.List;
 
 public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
@@ -23,14 +24,14 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		firstSoundBean.setSrc("test1.mp3");
 
 		String firstSlideTitleString = "<slideTitle>slide title1</slideTitle>";
-		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
+		XmlContentMock firstSlideTitleContent = new XmlContentMock();
 		firstSlideTitleContent.setStringElement(firstSlideTitleString);
 
 		SlideTitleBean firstSlideTitle = new SlideTitleBean();
 		firstSlideTitle.setTitleValue(firstSlideTitleContent);
 
 		String firstSlideNarrationString = "<narration>narration1</narration>";
-		XmlContentImpl firstSlideNarrationContent = new XmlContentImpl();
+		XmlContentMock firstSlideNarrationContent = new XmlContentMock();
 		firstSlideNarrationContent.setStringElement(firstSlideNarrationString);
 
 		SlideNarrationBean firstSlideNarration = new SlideNarrationBean();
@@ -49,14 +50,14 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 		secondSoundBean.setSrc("test2.mp3");
 
 		String secondSlideTitleString = "<slideTitle>slide title2</slideTitle>";
-		XmlContentImpl secondSlideTitleContent = new XmlContentImpl();
+		XmlContentMock secondSlideTitleContent = new XmlContentMock();
 		secondSlideTitleContent.setStringElement(secondSlideTitleString);
 
 		SlideTitleBean secondSlideTitle = new SlideTitleBean();
 		secondSlideTitle.setTitleValue(secondSlideTitleContent);
 
 		String secondSlideNarrationString = "<narration>narration2</narration>";
-		XmlContentImpl secondSlideNarrationContent = new XmlContentImpl();
+		XmlContentMock secondSlideNarrationContent = new XmlContentMock();
 		secondSlideNarrationContent.setStringElement(secondSlideNarrationString);
 
 		SlideNarrationBean secondSlideNarration = new SlideNarrationBean();
@@ -72,11 +73,11 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 	public void testFullSlideshow_withBoldTitle() {
 		// given
 		String firstSlideTitleString = "<slideTitle>slide <bold>title1</bold></slideTitle>";
-		XmlContentImpl firstSlideTitleContent = new XmlContentImpl();
+		XmlContentMock firstSlideTitleContent = new XmlContentMock();
 		firstSlideTitleContent.setStringElement(firstSlideTitleString);
 		firstSlideExpected.getSlideTitle().setTitleValue(firstSlideTitleContent);
 
-		XmlContentImpl titleExpected = new XmlContentImpl();
+		XmlContentMock titleExpected = new XmlContentMock();
 		titleExpected.setStringElement("<title>title</title>");
 
 		// when
@@ -102,7 +103,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testSlideshowWihoutSound() {
 		// given
-		XmlContentImpl titleExpected = new XmlContentImpl();
+		XmlContentMock titleExpected = new XmlContentMock();
 		titleExpected.setStringElement("<title>title</title>");
 
 		firstSlideExpected.setSound(null);
@@ -128,7 +129,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testSlideshowWihoutNarration() {
 		// given
-		XmlContentImpl titleExpected = new XmlContentImpl();
+		XmlContentMock titleExpected = new XmlContentMock();
 		titleExpected.setStringElement("<title>title</title>");
 
 		firstSlideExpected.setNarration(null);
@@ -152,7 +153,7 @@ public class SlideshowJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
 	public void testSlideshowWithoutTitle() {
 		// given
-		XmlContentImpl titleExpected = new XmlContentImpl();
+		XmlContentMock titleExpected = new XmlContentMock();
 		titleExpected.setStringElement("<title></title>");
 
 		// when

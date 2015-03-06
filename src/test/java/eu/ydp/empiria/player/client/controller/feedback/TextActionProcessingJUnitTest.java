@@ -1,22 +1,17 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import com.google.common.collect.Lists;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import java.util.List;
-
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import com.google.common.collect.Lists;
-
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.TextActionProcessor;
 
 public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
 
@@ -25,7 +20,10 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 	@Test
 	public void shouldProcessSingleTextAction() {
 		// given
-		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addTextAction("Good").getList();
+		List<FeedbackAction> actions = ActionListBuilder.create()
+														.addUrlAction(ActionType.NARRATION, "good.mp3")
+														.addTextAction(new XmlContentMock("Good"))
+														.getList();
 
 		initializeWithActions(actions);
 		initializeModuleHierarchyWithTextProcessor();
@@ -40,16 +38,21 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 
 		assertThat(argument.getAllValues().size(), is(equalTo(1)));
 		assertThat(processedAction, is(instanceOf(ShowTextAction.class)));
-		assertThat(((ShowTextAction) processedAction).getText(), is(equalTo("Good")));
+		assertThat(((ShowTextAction) processedAction).getContent().toString(), is(equalTo("Good")));
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 	}
 
 	@Test
 	public void shouldProcessManyTextActions() {
 		// given
-		String[] actionTexts = new String[] { "Good", "Very good!!!" };
-		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addTextAction(actionTexts[0])
-				.addUrlAction(ActionType.NARRATION, "allok.mp3").addTextAction(actionTexts[1]).getList();
+		XMLContent[] actionTexts = new XMLContent[] { new XmlContentMock("Good"), new XmlContentMock("Very good!!!") };
+
+		List<FeedbackAction> actions = ActionListBuilder.create()
+														.addUrlAction(ActionType.NARRATION, "good.mp3")
+														.addTextAction(actionTexts[0])
+														.addUrlAction(ActionType.NARRATION, "allok.mp3")
+														.addTextAction(actionTexts[1])
+														.getList();
 
 		initializeWithActions(actions);
 		initializeModuleHierarchyWithTextProcessor();
@@ -65,10 +68,10 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 
 		for (int i = 0; i < actionTexts.length; i++) {
 			FeedbackAction processedAction = processedActions.get(i);
-			String actionText = actionTexts[i];
+			String actionText = actionTexts[i].toString();
 
 			assertThat(processedAction, is(instanceOf(ShowTextAction.class)));
-			assertThat(((ShowTextAction) processedAction).getText(), is(equalTo(actionText)));
+			assertThat(((ShowTextAction) processedAction).getContent().toString(), is(equalTo(actionText)));
 		}
 	}
 

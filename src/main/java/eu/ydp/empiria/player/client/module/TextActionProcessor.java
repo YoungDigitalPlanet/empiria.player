@@ -1,20 +1,15 @@
 package eu.ydp.empiria.player.client.module;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
+import com.google.inject.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcessorHelper;
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.controller.feedback.processor.*;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.gwtutil.client.StringUtils;
+import java.util.List;
 
 public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
 
@@ -24,11 +19,13 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	private TextFeedback feedbackPresenter;
 
 	@Inject
-	Provider<TextActionProcessor> provider;
+	private Provider<TextActionProcessor> provider;
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
 	@Override
-	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
-		return getHelper().processActions(actions);
+	public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
+		return getHelper().processActions(actions, inlineBodyGeneratorSocket);
 	}
 
 	private ActionProcessorHelper getHelper() {
@@ -45,7 +42,8 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 		if (action instanceof ShowTextAction) {
 			ShowTextAction textAction = (ShowTextAction) action;
-			canProcess = !StringUtils.EMPTY_STRING.equals(textAction.getText());
+			String nodeValue = textAction.getContent().getValue().getChildNodes().toString();
+			canProcess = !StringUtils.EMPTY_STRING.equals(nodeValue);
 		}
 
 		return canProcess;
@@ -55,14 +53,16 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	public void processSingleAction(FeedbackAction action) {
 		if (action instanceof ShowTextAction) {
 			ShowTextAction textAction = (ShowTextAction) action;
-			feedbackPresenter.setText(textAction.getText());
+			Element element = textAction.getContent().getValue();
+			Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
+			feedbackPresenter.setTextElement(widget);
 			feedbackPresenter.show();
 		}
 	}
 
 	@Override
 	public void clearFeedback() {
-		feedbackPresenter.setText("");
+		feedbackPresenter.clearTextElement();
 		feedbackPresenter.hide();
 	}
 

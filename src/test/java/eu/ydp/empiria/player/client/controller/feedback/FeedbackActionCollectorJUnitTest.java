@@ -1,23 +1,16 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
-
+import com.google.common.collect.*;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackAppendActionTestData.FeedbackActionData;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
+import java.util.List;
+import org.junit.*;
 
 public class FeedbackActionCollectorJUnitTest {
 
@@ -121,7 +114,7 @@ public class FeedbackActionCollectorJUnitTest {
 				ShowTextAction textAction = (ShowTextAction) expectedAction;
 				ShowTextAction actualAction = (ShowTextAction) actions.get(i);
 
-				assertThat(actualAction.getText(), is(equalTo(textAction.getText())));
+				assertThat(actualAction.getContent().toString(), is(equalTo(textAction.getContent().toString())));
 			} else if (actions.get(i) instanceof ShowUrlAction) {
 				ShowUrlAction urlAction = (ShowUrlAction) expectedAction;
 				ShowUrlAction actualAction = (ShowUrlAction) actions.get(i);
@@ -175,11 +168,11 @@ public class FeedbackActionCollectorJUnitTest {
 	}
 
 	private void prepareAndAppendActions(FeedbackAppendActionTestData testData, IModule module) {
-		testData.addShowTextAction(0, source, "Very goood!!!");
+		testData.addShowTextAction(0, source, new XmlContentMock("Very goood!!!"));
 		testData.addShowUrlAction(2, source, "/commons/very_good.mp3", ActionType.NARRATION);
 		testData.addShowUrlAction(3, source, "/commons/very_good.mp4", ActionType.VIDEO);
 
-		testData.addShowTextAction(1, module, "wrong");
+		testData.addShowTextAction(1, module, new XmlContentMock("wrong"));
 		testData.addShowUrlAction(4, module, "/commons/wrong.mp3", ActionType.NARRATION);
 
 		collector.appendActionsToSource(testData.getModuleActions(source), source);

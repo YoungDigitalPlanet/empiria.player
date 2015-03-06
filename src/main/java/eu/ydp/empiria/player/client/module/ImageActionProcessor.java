@@ -1,20 +1,14 @@
 package eu.ydp.empiria.player.client.module;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
+import com.google.inject.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcessorHelper;
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.processor.*;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
+import java.util.List;
 
 public class ImageActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<ImageActionProcessor> {
 
@@ -27,8 +21,8 @@ public class ImageActionProcessor implements FeedbackActionProcessor, ActionProc
 	Provider<ImageActionProcessor> provider;
 
 	@Override
-	public List<FeedbackAction> processActions(List<FeedbackAction> actions) {
-		return getHelper().processActions(actions);
+	public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+		return getHelper().processActions(actions, inlineBodyGeneratorSocket);
 	}
 
 	private ActionProcessorHelper getHelper() {

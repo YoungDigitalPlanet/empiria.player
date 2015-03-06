@@ -5,28 +5,19 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.MockitoAnnotations;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import java.util.List;
+import org.junit.*;
+import org.mockito.*;
 
 public class FeedbackProcessingWithContainerIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -83,7 +74,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 				ModuleInfo.create("-" + MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0),
 				ModuleInfo.create(null).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
 				ModuleInfo.create("+").setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0) };
-		String[] expectedUrls = new String[] {};
+		String[] expectedUrls = new String[] { };
 
 		// when
 		List<List<FeedbackAction>> capturedActions = processUserAction(infos);
@@ -155,10 +146,10 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		sender = helper.getSender();
 		container = helper.getContainer();
 
-		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
+		ModuleFeedbackProcessor processor = getProcessor();
 		processor.processFeedbacks(helper.getVariables(), (IUniqueModule) sender);
 
-		verify(processor.soundProcessor, times(2)).processActions(captor.capture());
+		verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.any(InlineBodyGeneratorSocket.class));
 
 		return captor.getAllValues();
 	}
@@ -184,6 +175,12 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
 		ShowUrlAction showUrlAction = (ShowUrlAction) actualAction;
 		assertThat(showUrlAction.getType(), is(equalTo(expectedType.getName())));
 		assertThat(showUrlAction.getHref(), is(equalTo(expectedUrl)));
+	}
+
+	private ModuleFeedbackProcessor getProcessor() {
+		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
+		FeedbackModuleFactory feedbackModuleFactory = injector.getInstance(FeedbackModuleFactory.class);
+		return feedbackModuleFactory.getModuleFeedbackProcessor(inlineBodyGeneratorSocket);
 	}
 
 	private class ProcessingModule implements Module {

@@ -1,24 +1,23 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import java.util.List;
-
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 
 public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
 
 	@Test
 	public void shouldProcessSingleSoundAction() {
-		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addTextAction("Good").getList();
+		List<FeedbackAction> actions = ActionListBuilder.create()
+														.addUrlAction(ActionType.NARRATION, "good.mp3")
+														.addTextAction(new XmlContentMock("Good"))
+														.getList();
 		initializeWithActions(actions);
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 
@@ -36,8 +35,11 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 	@Test
 	public void shouldProcessTwoSoundActions() {
 		String[] audioUrl = new String[] { "good.mp3", "allok.mp3" };
-		List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, audioUrl[0]).addTextAction("Good")
-				.addUrlAction(ActionType.NARRATION, audioUrl[1]).getList();
+		List<FeedbackAction> actions = ActionListBuilder.create()
+														.addUrlAction(ActionType.NARRATION, audioUrl[0])
+														.addTextAction(new XmlContentMock("Good"))
+														.addUrlAction(ActionType.NARRATION, audioUrl[1])
+														.getList();
 
 		initializeWithActions(actions);
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
@@ -57,7 +59,5 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 			assertThat(((ShowUrlAction) processedAction).getHref(), is(equalTo(url)));
 			assertThat(((ShowUrlAction) processedAction).getType(), is(equalTo(ActionType.NARRATION.getName())));
 		}
-
 	}
-
 }

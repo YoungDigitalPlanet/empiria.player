@@ -223,7 +223,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		install(new GinFactoryModuleBuilder().implement(SelectableChoiceView.class, SelectableChoiceViewImpl.class).build(IdentificationModuleFactory.class));
 		install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
 		install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
-
+		install(new GinFactoryModuleBuilder().build(FeedbackModuleFactory.class));
 	}
 
 	@Provides

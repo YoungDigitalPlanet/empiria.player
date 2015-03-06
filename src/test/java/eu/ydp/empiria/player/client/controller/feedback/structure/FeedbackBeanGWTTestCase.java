@@ -1,18 +1,11 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlActionSource;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.AndConditionBean;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
-import eu.ydp.empiria.player.client.controller.feedback.structure.condition.PropertyConditionBean;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.controller.feedback.structure.condition.*;
+import java.util.List;
 
 public class FeedbackBeanGWTTestCase extends GWTTestCase {
 
@@ -84,7 +77,7 @@ public class FeedbackBeanGWTTestCase extends GWTTestCase {
 	public void testShouldHaveCorrectValueInShowTextAction() {
 		List<FeedbackAction> allActions = feedback.getActions();
 		ShowTextAction showTextAction = (ShowTextAction) allActions.get(0);
-		assertTrue(showTextAction.getText().equals("testowy tekst"));
+		assertEquals(showTextAction.getContent().getValue().getChildNodes().toString(), "testowy tekst");
 	}
 
 	public void testShouldHaveShowUrlActions() {

@@ -1,21 +1,17 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
-import java.util.List;
-
-import org.junit.Before;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
+import java.util.List;
+import org.junit.Before;
 
 public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -45,8 +41,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 			//
 		}
 
-		@Provides
-		SoundActionProcessor getSoundActionProcessor() {
+		@Provides SoundActionProcessor getSoundActionProcessor() {
 			return soundProcessor;
 		}
 
@@ -77,7 +72,9 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 		}
 
 		private void createProcessor() {
-			processor = injector.getInstance(ModuleFeedbackProcessor.class);
+			InlineBodyGeneratorSocket inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
+			FeedbackModuleFactory feedbackModuleFactory = injector.getInstance(FeedbackModuleFactory.class);
+			processor = feedbackModuleFactory.getModuleFeedbackProcessor(inlineBodyGeneratorSocket);
 		}
 
 	}
