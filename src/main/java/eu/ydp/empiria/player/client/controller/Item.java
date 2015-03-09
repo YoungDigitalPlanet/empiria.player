@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.communication.sockets.ItemInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.events.activity.*;
@@ -16,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.*;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.*;
+import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.*;
@@ -41,14 +43,13 @@ public class Item implements IStateful, ItemInterferenceSocket {
 
 	@Inject
 	public Item(@Assisted DisplayContentOptions options, @Assisted Map<String, Outcome> outcomeVariables, @Assisted JSONArray stateArray,
-			ModuleFeedbackProcessor moduleFeedbackProcessor, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
+			FeedbackModuleFactory feedbackModuleFactory, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
 			@PageScoped VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
 			@PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper, ItemExpressionParser expressionParser,
 			AssessmentControllerFactory assessmentControllerFactory) {
 
 		this.options = options;
 		this.responseManager = responseManager;
-		this.moduleFeedbackProcessor = moduleFeedbackProcessor;
 		this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
 		this.variableProcessor = variableProcessingAdapter;
 
@@ -61,6 +62,9 @@ public class Item implements IStateful, ItemInterferenceSocket {
 		moduleSocket = assessmentControllerFactory.getItemModuleSocket(this);
 		itemBody = assessmentControllerFactory.getItemBody(options, moduleSocket);
 		moduleSocket.init(itemBody, state);
+
+		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = moduleSocket.getInlineBodyGeneratorSocket();
+		this.moduleFeedbackProcessor = feedbackModuleFactory.getModuleFeedbackProcessor(inlineBodyGeneratorSocket);
 		itemBodyView = new ItemBodyView(itemBody);
 
 		setState(stateArray);
@@ -221,34 +225,34 @@ public class Item implements IStateful, ItemInterferenceSocket {
 	private native JavaScriptObject createItemSocket(JavaScriptObject itemBodySocket)/*-{
 		var socket = {};
 		var instance = this;
-		socket.reset = function() {
+		socket.reset = function () {
 			instance.@eu.ydp.empiria.player.client.controller.Item::resetItem()();
 		};
-		socket.showAnswers = function() {
+		socket.showAnswers = function () {
 			instance.@eu.ydp.empiria.player.client.controller.Item::showAnswers()();
 		};
-		socket.lock = function() {
+		socket.lock = function () {
 			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(true);
 		};
-		socket.unlock = function() {
+		socket.unlock = function () {
 			instance.@eu.ydp.empiria.player.client.controller.Item::lockItem(Z)(false);
 		};
-		socket.checkItem = function(value) {
+		socket.checkItem = function (value) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::checkItem()();
 		};
-		socket.continueItem = function(value) {
+		socket.continueItem = function (value) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::continueItem()();
 		};
-		socket.getOutcomeVariables = function() {
+		socket.getOutcomeVariables = function () {
 			return instance.@eu.ydp.empiria.player.client.controller.Item::getOutcomeVariablesJsSocket()();
 		};
-		socket.getResponseVariables = function() {
+		socket.getResponseVariables = function () {
 			return instance.@eu.ydp.empiria.player.client.controller.Item::getResponseVariablesJsSocket()();
 		};
-		socket.getItemBodySocket = function() {
+		socket.getItemBodySocket = function () {
 			return itemBodySocket;
 		};
-		socket.handleFlowActivityEvent = function(event) {
+		socket.handleFlowActivityEvent = function (event) {
 			instance.@eu.ydp.empiria.player.client.controller.Item::handleFlowActivityEvent(Lcom/google/gwt/core/client/JavaScriptObject;)(event);
 		};
 		return socket;

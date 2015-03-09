@@ -6,7 +6,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextFeedbackPresenter extends Composite implements TextFeedback {
@@ -22,19 +21,16 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 	}
 
 	@UiField
-	FlowPanel feedbackTextModule;
-
-	@UiField
-	InlineHTML feedbackText;
+	FlowPanel feedbackTextPanel;
 
 	@Override
-	public void setText(String text) {
-		feedbackText.setText(text);
+	public void setTextElement(Widget widget) {
+		feedbackTextPanel.add(widget);
 	}
 
 	@Override
-	public String getText() {
-		return feedbackText.getText();
+	public void clearTextElement() {
+		feedbackTextPanel.clear();
 	}
 
 	@Override
@@ -46,5 +42,4 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 	public void hide() {
 		this.setVisible(false);
 	}
-
 }

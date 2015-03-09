@@ -1,33 +1,24 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.CORRECT;
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.WRONG;
+import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import java.util.*;
+import org.junit.*;
+import org.mockito.*;
 
 public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -113,8 +104,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private List<FeedbackAction> processUserAction(ModuleInfo info) {
 		sender = createSender(info);
-
-		ModuleFeedbackProcessor processor = injector.getInstance(ModuleFeedbackProcessor.class);
+		ModuleFeedbackProcessor processor = getProcessor();
 		FeedbackRegistry feedbackRegistry = injector.getInstance(FeedbackRegistry.class);
 
 		when(feedbackRegistry.hasFeedbacks()).thenReturn(true);
@@ -122,7 +112,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		processor.processFeedbacks(variables, (IUniqueModule) sender);
 
 		ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
-		verify(processor.soundProcessor, times(1)).processActions(argument.capture());
+		verify(processor.soundProcessor, times(1)).processActions(argument.capture(), Matchers.any(InlineBodyGeneratorSocket.class));
 
 		return argument.getValue();
 	}
@@ -138,6 +128,12 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 		FeedbackPropertiesCollectorTestHelper helper = new FeedbackPropertiesCollectorTestHelper();
 		variables = helper.createOutcomeVariables(info);
 		return helper.createUniqueModuleMock(null, info.getId(), variables);
+	}
+
+	private ModuleFeedbackProcessor getProcessor() {
+		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
+		FeedbackModuleFactory feedbackModuleFactory = injector.getInstance(FeedbackModuleFactory.class);
+		return feedbackModuleFactory.getModuleFeedbackProcessor(inlineBodyGeneratorSocket);
 	}
 
 	private class ProcessingModule implements Module {
@@ -168,7 +164,5 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 			injector.injectMembers(processor);
 			return spy(processor);
 		}
-
 	}
-
 }

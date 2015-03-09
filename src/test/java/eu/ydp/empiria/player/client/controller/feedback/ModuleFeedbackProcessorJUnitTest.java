@@ -1,24 +1,17 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import com.google.common.collect.Lists;
-
 import eu.ydp.empiria.player.client.AbstractTestBase;
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
-import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.feedback.processor.*;
+import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
+import eu.ydp.empiria.player.client.module.*;
+import java.util.List;
+import org.junit.*;
 
 public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase {
 
@@ -27,7 +20,9 @@ public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase {
 
 	@Before
 	public void init() {
-		feedbackProcessor = injector.getInstance(ModuleFeedbackProcessor.class);
+		InlineBodyGeneratorSocket inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
+		FeedbackModuleFactory feedbackModuleFactory = injector.getInstance(FeedbackModuleFactory.class);
+		feedbackProcessor = feedbackModuleFactory.getModuleFeedbackProcessor(inlineBodyGeneratorSocket);
 		feedbackRegistry = injector.getInstance(FeedbackRegistry.class);
 	}
 

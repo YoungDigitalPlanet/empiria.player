@@ -2,39 +2,37 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import static com.google.common.base.Optional.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
-import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
+import com.google.inject.*;
+import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.feedback.processor.*;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.*;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class ModuleFeedbackProcessor {
 
-	@Inject
 	private FeedbackRegistry feedbackRegistry;
-	@Inject
 	private FeedbackConditionMatcher matcher;
-	@Inject
 	protected SoundActionProcessor soundProcessor;
-	@Inject
 	private FeedbackPropertiesCollector propertiesCollector;
-
+	private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
 	protected FeedbackActionCollector feedbackActionCollector;
-	private final Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
+	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
 	@Inject
-	public ModuleFeedbackProcessor(Provider<FeedbackActionCollector> feedbackActionCollectorProvider) {
+	public ModuleFeedbackProcessor(@Assisted InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackRegistry feedbackRegistry,
+			FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
+			Provider<FeedbackActionCollector> feedbackActionCollectorProvider) {
+		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
+		this.feedbackRegistry = feedbackRegistry;
+		this.matcher = matcher;
+		this.soundProcessor = soundProcessor;
+		this.propertiesCollector = propertiesCollector;
 		this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
 		initializeFeedbackActionCollector();
 	}
@@ -100,7 +98,7 @@ public class ModuleFeedbackProcessor {
 
 		for (FeedbackActionProcessor processor : processors) {
 			List<FeedbackAction> actions = feedbackActionCollector.getActions();
-			List<FeedbackAction> processedActions = processor.processActions(actions);
+			List<FeedbackAction> processedActions = processor.processActions(actions, inlineBodyGeneratorSocket);
 			feedbackActionCollector.removeActions(processedActions);
 		}
 	}
@@ -149,5 +147,4 @@ public class ModuleFeedbackProcessor {
 	private FeedbackProperties getPropertiesForModule(IModule module) {
 		return propertiesCollector.collect(module, feedbackActionCollector.getSource());
 	}
-
 }

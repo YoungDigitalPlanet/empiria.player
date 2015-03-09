@@ -163,6 +163,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
 		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
 		install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
+		install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
 	}
 
 	private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
