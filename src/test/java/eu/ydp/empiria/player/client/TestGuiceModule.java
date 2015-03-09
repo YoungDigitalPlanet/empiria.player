@@ -1,17 +1,22 @@
 package eu.ydp.empiria.player.client;
 
-import static org.mockito.Mockito.*;
-
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.*;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Document;
-import com.google.inject.*;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.spi.*;
+import com.google.inject.spi.TypeEncounter;
+import com.google.inject.spi.TypeListener;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
-import eu.ydp.empiria.player.client.controller.feedback.*;
-import eu.ydp.empiria.player.client.controller.feedback.matcher.*;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMock;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
@@ -32,30 +37,44 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.*;
-import eu.ydp.empiria.player.client.overlaytypes.*;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
+import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
-import eu.ydp.empiria.player.client.util.events.bus.*;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.HasTouchHandlersMock;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
-import eu.ydp.gwtutil.client.debug.log.*;
+import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
+import eu.ydp.gwtutil.client.debug.log.LogAppender;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
-import eu.ydp.gwtutil.client.scheduler.*;
-import eu.ydp.gwtutil.client.service.json.*;
+import eu.ydp.gwtutil.client.scheduler.Scheduler;
+import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
+import eu.ydp.gwtutil.client.service.json.IJSONService;
+import eu.ydp.gwtutil.client.service.json.NativeJSONService;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
-import eu.ydp.gwtutil.client.util.*;
+import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
+import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.xml.XMLParser;
-import eu.ydp.gwtutil.client.xml.proxy.*;
-import eu.ydp.gwtutil.junit.mock.*;
+import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
+import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
+import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
+import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
-import java.util.*;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
@@ -235,16 +254,19 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
 		return helper;
 	}
 
-	@Provides DragDropHelper getDragDropHelper() {
+	@Provides
+	DragDropHelper getDragDropHelper() {
 		return mock(DragDropHelper.class);
 	}
 
-	@Provides ConnectionSurface getConnectionSurface() {
+	@Provides
+	ConnectionSurface getConnectionSurface() {
 		return mock(ConnectionSurface.class);
 	}
 
 	@Provides
-	@Singleton NativeMethodInvocator getMethodInvocator() {
+	@Singleton
+	NativeMethodInvocator getMethodInvocator() {
 		NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
 		return invocator;
 	}
