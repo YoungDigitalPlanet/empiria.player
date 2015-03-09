@@ -95,9 +95,9 @@ dependencies {
     testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
     testCompile group: 'xmlunit', name: 'xmlunit', version: '1.3'
     testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
-
-    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.3.7'
-    testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.3'
+    testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.3') {
+        exclude group: 'junit' // GWTMockito ma problem z junitem 4.12. Czekamny na wersje 1.1.5 https://github.com/google/gwtmockito/issues/46
+    }
 }
 
 eclipse {
