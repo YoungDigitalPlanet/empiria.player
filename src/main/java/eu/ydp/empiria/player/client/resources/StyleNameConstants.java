@@ -581,6 +581,9 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-item-title-text")
 	public String QP_ITEM_TITLE_TEXT();
 
+	@DefaultStringValue("qp-jsplayer-video")
+	public String QP_JSPLAYER_VIDEO();
+
 	@DefaultStringValue("qp-labelling")
 	public String QP_LABELLING();
 

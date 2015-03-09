@@ -1,8 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:w="urn:import:eu.ydp.empiria.player.client.module.video.view">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
 
-	<g:HTMLPanel ui:field="placeHolder">
-		<g:FlowPanel ui:field="container"/>
-	</g:HTMLPanel>
+    <g:HTMLPanel ui:field="placeHolder" styleName="{res.QP_JSPLAYER_VIDEO}">
+        <g:FlowPanel ui:field="container"/>
+    </g:HTMLPanel>
 </ui:UiBinder> 
