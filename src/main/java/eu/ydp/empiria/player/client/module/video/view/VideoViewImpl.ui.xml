@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
 
-    <g:HTMLPanel ui:field="placeHolder" styleName="{res.QP_JSPLAYER_VIDEO}">
+    <g:HTMLPanel ui:field="placeHolder" styleName="{res.QP_VIDEO_MODULE}">
         <g:FlowPanel ui:field="container"/>
     </g:HTMLPanel>
 </ui:UiBinder> 
