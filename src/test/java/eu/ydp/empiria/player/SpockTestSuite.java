@@ -1,14 +1,18 @@
 package eu.ydp.empiria.player;
 
 import com.google.common.base.Predicate;
-import java.util.Set;
-import junit.framework.*;
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.TestSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
 import org.mockito.configuration.MockitoConfiguration;
 import org.reflections.Reflections;
-import org.reflections.util.*;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import spock.lang.Specification;
+
+import java.util.Set;
 
 @RunWith(AllTests.class)
 public class SpockTestSuite {
@@ -22,14 +26,14 @@ public class SpockTestSuite {
 
 	public static TestSuite suite() {
 		MockitoConfiguration.setenableClassCache(false);
-		TestSuite junitSuite = new TestSuite();
+		TestSuite spockSuite = new TestSuite();
 
 		Iterable<Class<? extends Specification>> filteredClasses = getTestClasses();
 		for (Class<? extends Specification> clazz : filteredClasses) {
 			JUnit4TestAdapter adapter = new JUnit4TestAdapter(clazz);
-			junitSuite.addTest(adapter);
+			spockSuite.addTest(adapter);
 		}
-		return junitSuite;
+		return spockSuite;
 	}
 
 	private static Set<Class<? extends Specification>> getTestClasses() {
