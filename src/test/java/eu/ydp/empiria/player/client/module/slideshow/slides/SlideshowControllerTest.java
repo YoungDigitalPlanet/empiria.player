@@ -1,17 +1,21 @@
 package eu.ydp.empiria.player.client.module.slideshow.slides;
 
 import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
 import eu.ydp.empiria.player.client.module.slideshow.sound.SlideshowSoundController;
 import eu.ydp.empiria.player.client.module.slideshow.structure.*;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.player.*;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,8 +36,12 @@ public class SlideshowControllerTest {
 	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 	@Mock
 	private SlideshowSoundController slideshowSoundController;
+	@Mock
+	private EventsBus eventsBus;
 	@Captor
 	private ArgumentCaptor<SlideEndHandler> slideEndCaptor;
+	@Captor
+	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
 	@Test
 	public void shouldSetSlides_andReset() {
@@ -115,6 +123,22 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
+	public void shouldFireEventAfterSlideshowPlay() {
+		// given
+		PlayerEventTypes expectedEventType = PlayerEventTypes.SLIDESHOW_STARTED;
+		SlideshowController expextedSource = testObj;
+
+		// when
+		testObj.playSlideshow();
+
+		// then
+		verify(eventsBus).fireEvent(playerEventCaptor.capture());
+		PlayerEvent playerEvent = playerEventCaptor.getValue();
+		assertThat(playerEvent.getType()).isEqualTo(expectedEventType);
+		assertThat(playerEvent.getSource()).isEqualTo(expextedSource);
+	}
+
+	@Test
 	public void shouldPauseSlideshow() {
 		// given
 
@@ -123,6 +147,45 @@ public class SlideshowControllerTest {
 
 		// then
 		verify(slidesSwitcher).pauseSlide();
+		verify(buttonsPresenter).setPlayButtonDown(false);
+	}
+
+	@Test
+	public void shouldPauseSlideshow_whenAnotherSlideshowStarted() {
+		// given
+		SlideshowController otherSlideshow = mock(SlideshowController.class);
+		PlayerEvent slideshowStartedEvent = new PlayerEvent(PlayerEventTypes.SLIDESHOW_STARTED, otherSlideshow, otherSlideshow);
+
+		// when
+		testObj.onPlayerEvent(slideshowStartedEvent);
+
+		// then
+		verify(slidesSwitcher).pauseSlide();
+	}
+
+	@Test
+	public void shouldPauseSlideshow_whenPageChanged() {
+		// given
+		MainFlowProcessor eventSource = mock(MainFlowProcessor.class);
+		PlayerEvent pageChangedEvent = new PlayerEvent(PlayerEventTypes.PAGE_CHANGING, eventSource, eventSource);
+
+		// when
+		testObj.onPlayerEvent(pageChangedEvent);
+
+		// then
+		verify(slidesSwitcher).pauseSlide();
+	}
+
+	@Test
+	public void shouldNotPauseSlideshow_whenThisSlideshowStarted() {
+		// given
+		PlayerEvent slideshowStartedEvent = new PlayerEvent(PlayerEventTypes.SLIDESHOW_STARTED, testObj, testObj);
+
+		// when
+		testObj.onPlayerEvent(slideshowStartedEvent);
+
+		// then
+		verify(slidesSwitcher, never()).pauseSlide();
 	}
 
 	@Test
