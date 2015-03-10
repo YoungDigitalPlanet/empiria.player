@@ -59,19 +59,6 @@ public class SlideshowControllerTest {
 	}
 
 	@Test
-	public void shouldAddhandlers() {
-		// given
-		List<SlideBean> slides = Lists.newArrayList();
-
-		// when
-		testObj.init(slides, inlineBodyGeneratorSocket);
-
-		// then
-		verify(eventsBus).addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGING), testObj);
-		verify(eventsBus).addHandler(PlayerEvent.getType(PlayerEventTypes.SLIDESHOW_STARTED), testObj);
-	}
-
-	@Test
 	public void shouldInitSounds() {
 		// given
 		SlideBean slide = mock(SlideBean.class);

@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.slideshow.slides;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.*;
@@ -77,10 +76,10 @@ public class SlideshowController implements PlayerEventHandler {
 
 	public void playSlideshow() {
 		slidesSwitcher.playSlide();
-		fireEventFromSlideshow();
+		fireSlideshowStartedEvent();
 	}
 
-	private void fireEventFromSlideshow() {
+	private void fireSlideshowStartedEvent() {
 		PlayerEvent slideshowStartedEvent = new PlayerEvent(PlayerEventTypes.SLIDESHOW_STARTED, this, this);
 		eventsBus.fireEvent(slideshowStartedEvent);
 	}
