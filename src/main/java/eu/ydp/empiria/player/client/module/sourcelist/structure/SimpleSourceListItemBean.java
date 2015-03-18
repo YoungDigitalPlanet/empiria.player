@@ -1,21 +1,13 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.*;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-
+import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasFixed;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
+import eu.ydp.empiria.player.client.module.dragdrop.*;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "simpleSourceListItem")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -59,8 +51,8 @@ public class SimpleSourceListItemBean implements HasFixed {
 	}
 
 	private SourcelistItemValue createTextItemValue() {
-		Node textNode = content.getValue().getChildNodes().item(0);
-		String text = textNode.getNodeValue();
+		NodeList textNode = content.getValue().getChildNodes();
+		String text = textNode.toString();
 		return new SourcelistItemValue(SourcelistItemType.TEXT, text, alt);
 	}
 
