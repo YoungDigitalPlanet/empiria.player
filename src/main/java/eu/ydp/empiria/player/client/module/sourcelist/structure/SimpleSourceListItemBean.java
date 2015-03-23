@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
 import com.google.gwt.xml.client.*;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasFixed;
 import eu.ydp.empiria.player.client.module.dragdrop.*;
 import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapter;
