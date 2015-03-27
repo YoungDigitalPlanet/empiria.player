@@ -1,0 +1,7 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
+    <g:FlowPanel ui:field="feedbackTextModule" styleName="{res.QP_FEEDBACK_TEXT_MODULE}">
+        <g:FlowPanel ui:field="feedbackTextPanel" styleName="{res.QP_FEEDBACK_TEXT}"/>
+    </g:FlowPanel>
+</ui:UiBinder> 

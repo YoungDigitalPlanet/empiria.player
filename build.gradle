@@ -20,7 +20,7 @@ def empiriaWar = file("war")
 def empiriaBuildDir = new File(empiriaWar, "empiria.player")
 def empiriaWebkitWar = file("build/gwt")
 def empiriaWebkitBuildDir = new File(empiriaWebkitWar, "empiria.player")
-def versionFile = new File("${projectDir}${File.separator}src${File.separator}eu${File.separator}ydp${File.separator}empiria${File.separator}player${File.separator}client${File.separator}version${File.separator}version.txt")
+def versionFile = file("${projectDir}/src/main/java/eu/ydp/empiria/player/client/version/version.txt")
 def buildProfile = project.getProperties().get('buildProfile', 'develop')
 
 println "Picked build profile [$buildProfile]"
@@ -31,6 +31,7 @@ apply plugin: 'eclipse'
 apply plugin: 'sonar-runner'
 apply from: "gradle/profiles/${buildProfile}.gradle"
 apply plugin: 'ivy-publish'
+apply plugin: "groovy"
 
 sourceCompatibility = 1.7
 compileJava.options.encoding = 'UTF-8'
@@ -42,6 +43,7 @@ ext {
 }
 
 repositories {
+    jcenter()
     ivy {
         url "http://dev/ivyrep/public/"
         layout 'pattern', {
@@ -77,8 +79,8 @@ dependencies {
     compile group: 'com.googlecode.gwtquery', name: 'gwtquery', version: '1.4.2'
     compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
-    
-    compile group: 'eu.ydp', name: 'mathPlayer', version: 'latest.integration'
+
+    compile group: 'eu.ydp', name: 'mathPlayer', version: mathplayer_ver
     compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
     compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
@@ -93,6 +95,9 @@ dependencies {
     testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
     testCompile group: 'xmlunit', name: 'xmlunit', version: '1.3'
     testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+    testCompile(group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.3') {
+        exclude group: 'junit' // GWTMockito ma problem z junitem 4.12. Czekamny na wersje 1.1.5 https://github.com/google/gwtmockito/issues/46
+    }
 }
 
 eclipse {
@@ -121,25 +126,9 @@ sonarRunner {
 }
 
 sourceSets {
-    main {
-        java {
-            srcDir 'src/'
-        }
-        resources {
-            srcDir 'src/'
-        }
-    }
-    test {
-        java {
-            srcDir 'test/'
-        }
-        resources {
-            srcDir 'test/'
-        }
-    }
-
-    sourceSets.test.runtimeClasspath += files(sourceSets.main.java.srcDirs)
-    sourceSets.test.runtimeClasspath += files(sourceSets.test.java.srcDirs)
+    test.runtimeClasspath += files(main.java.srcDirs)
+    test.runtimeClasspath += files(test.java.srcDirs)
+    test.runtimeClasspath += files(test.groovy.srcDirs)
 }
 
 task testJUnit(type: Test) {
@@ -148,6 +137,7 @@ task testJUnit(type: Test) {
     }
     useJUnit()
     include "**/JUnitTestSuite.*"
+    include "**/SpockTestSuite.*"
 
     forkEvery = 1
     maxHeapSize = '512M'
@@ -242,7 +232,7 @@ task distWebkit(dependsOn: [cleanCache, createVersion, test, zipWebkit])
 task dist(dependsOn: [distMain, distWebkit])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.3'
 }
 
 tasks.withType(JavaCompile) {
