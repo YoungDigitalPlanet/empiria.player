@@ -12,9 +12,6 @@ public class SpeechScorePresenter {
 	@ModuleScoped
 	private SpeechScoreLinkView view;
 
-	@Inject
-	private SpeechScoreProtocolProvider protocolProvider;
-
 	private static final String URL_ATTR_NAME = "url";
 
 	public Widget getView() {
@@ -23,7 +20,7 @@ public class SpeechScorePresenter {
 
 	public void init(Element element) {
 		String linkText = element.getFirstChild().getNodeValue();
-		String href = protocolProvider.get() + element.getAttribute(URL_ATTR_NAME);
+		String href = "http://" + element.getAttribute(URL_ATTR_NAME);
 		view.buildLink(linkText, href);
 	}
 }

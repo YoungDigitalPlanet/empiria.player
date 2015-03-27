@@ -19,8 +19,6 @@ public class SpeechScorePresenterTest {
 
 	@Mock
 	private SpeechScoreLinkView view;
-	@Mock
-	private SpeechScoreProtocolProvider protocolProvider;
 
 	@Test
 	public void shouldBuildLinkOnView() {
@@ -34,12 +32,10 @@ public class SpeechScorePresenterTest {
 		when(element.getFirstChild()).thenReturn(node);
 		when(element.getAttribute("url")).thenReturn("url");
 
-		when(protocolProvider.get()).thenReturn("protocol:");
-
 		// when
 		testObj.init(element);
 
 		// then
-		verify(view).buildLink(LINK_TEXT, "protocol:url");
+		verify(view).buildLink(LINK_TEXT, "http://url");
 	}
 }
