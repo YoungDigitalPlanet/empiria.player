@@ -1,7 +1,8 @@
 package eu.ydp.empiria.player.client.controller.delivery;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.*;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONParser;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
@@ -194,32 +195,22 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	private void initFlow() {
-
 		JSONArray deState = null;
-
 		if (stateAsync != null) {
-
 			deState = (JSONArray) JSONParser.parseLenient(stateAsync);
-
 			assessmentController.reset();
-
 			sessionDataManager.setState((JSONArray) deState.get(1));
-
 			extensionsManager.setState(deState.get(2)
 			                                  .isArray());
-
 			if (deState.size() > 2) {
 				playerWorkModeState.setState(deState.get(3).isArray());
 			}
 			flowManager.deinitFlow();
-
 		}
-
 		IFlowRequest flowRequest = flowRequestFactory.create(deState, initialItemIndex);
 		if (flowRequest != null) {
 			flowManager.invokeFlowRequest(flowRequest);
 		}
-
 		flowManager.initFlow();
 	}
 
@@ -490,18 +481,10 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	private JSONArray prepareJSONState() {
 		JSONArray deState = new JSONArray();
-		if (flowManager.getCurrentPageType() == PageType.TEST) {
-			deState.set(0, new JSONNumber(flowManager.getCurrentPageIndex()));
-		} else if (flowManager.getCurrentPageType() == PageType.TOC || flowManager.getCurrentPageType() == PageType.SUMMARY) {
-			deState.set(0, new JSONString(flowManager.getCurrentPageType()
-			                                         .toString()));
-		} else {
-			deState.set(0, JSONNull.getInstance());
-		}
+		deState.set(0, flowManager.getState());
 		deState.set(1, sessionDataManager.getState());
 		deState.set(2, extensionsManager.getState());
 		deState.set(3, playerWorkModeState.getState());
-
 		return deState;
 	}
 
@@ -548,7 +531,5 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	@Override
 	public void setInitialItemIndex(Integer num) {
 		initialItemIndex = num;
-
 	}
-
 }
