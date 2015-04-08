@@ -32,7 +32,6 @@ import eu.ydp.empiria.player.client.controller.flow.processing.DefaultFlowReques
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventsListener;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
@@ -84,6 +83,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private final UserAgentUtil userAgentUtil;
 	private final ModuleConnectorExtensionProvider moduleConnectorExtensionProvider;
 	private final PlayerWorkModeState playerWorkModeState;
+	private final FlowRequestFactory flowRequestFactory;
 
 	private JavaScriptObject playerJsObject;
 	private String stateAsync;
@@ -97,7 +97,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	                      SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
 	                      ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
 	                      ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
-	                      AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider, PlayerWorkModeState playerWorkModeState) {
+	                      AssessmentFactory assessmentFactory, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider, PlayerWorkModeState playerWorkModeState,
+	                      FlowRequestFactory flowRequestFactory) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -117,6 +118,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		this.moduleConnectorExtensionProvider = moduleConnectorExtensionProvider;
 		this.assessmentFactory = assessmentFactory;
 		this.playerWorkModeState = playerWorkModeState;
+		this.flowRequestFactory = flowRequestFactory;
 		dataManager.setDataLoaderEventListener(this);
 		this.styleSocket = styleSocket;
 
@@ -213,44 +215,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 		}
 
-		IFlowRequest flowRequest = parseFlowRequest(deState);
+		IFlowRequest flowRequest = flowRequestFactory.create(deState, initialItemIndex);
 		if (flowRequest != null) {
 			flowManager.invokeFlowRequest(flowRequest);
 		}
 
 		flowManager.initFlow();
-	}
-
-	protected IFlowRequest parseFlowRequest(JSONArray deState) {
-		IFlowRequest flowRequest = null;
-
-		if (deState != null) {
-			if (initialItemIndex != null) {
-				flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
-			} else if (deState.get(0)
-			                  .isNumber() != null) {
-				flowRequest = new FlowRequest.NavigateGotoItem((int) deState.get(0)
-				                                                            .isNumber()
-				                                                            .doubleValue());
-			} else if (deState.get(0)
-			                  .isString() != null) {
-				if (deState.get(0)
-				           .isString()
-				           .stringValue()
-				           .equals(PageType.TOC.toString())) {
-					flowRequest = new FlowRequest.NavigateToc();
-				} else if (deState.get(0)
-				                  .isString()
-				                  .stringValue()
-				                  .equals(PageType.SUMMARY.toString())) {
-					flowRequest = new FlowRequest.NavigateSummary();
-				}
-			}
-		} else if (initialItemIndex != null) {
-			flowRequest = new FlowRequest.NavigateGotoItem(initialItemIndex);
-		}
-
-		return flowRequest;
 	}
 
 	protected void loadPredefinedExtensions() {
