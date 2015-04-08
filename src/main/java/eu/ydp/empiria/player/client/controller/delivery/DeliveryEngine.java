@@ -193,7 +193,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		updatePageStyle();
 	}
 
-	protected void initFlow() {
+	private void initFlow() {
 
 		JSONArray deState = null;
 
@@ -223,7 +223,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		flowManager.initFlow();
 	}
 
-	protected void loadPredefinedExtensions() {
+	private void loadPredefinedExtensions() {
 		loadExtension(extensionFactory.getPlayerCoreApiExtension());
 		loadExtension(extensionFactory.getScormSupportExtension());
 		loadExtension(extensionFactory.getAssessmentJsonReportExtension());
@@ -302,7 +302,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		                                   .get());
 	}
 
-	protected void loadLibraryExtensions() {
+	private void loadLibraryExtensions() {
 		List<LibraryExtension> extCreators = dataManager.getExtensionCreators();
 		for (LibraryExtension ext : extCreators) {
 			if (ext instanceof LibraryExternalExtension) {
@@ -335,7 +335,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		integrateExtension(extension);
 	}
 
-	protected void integrateExtension(Extension extension) {
+	private void integrateExtension(Extension extension) {
 		if (extension != null) {
 			if (extension instanceof DeliveryEventsListenerExtension) {
 				deliveryEventsHub.addDeliveryEventsListener(((DeliveryEventsListener) extension));
@@ -392,18 +392,18 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		}
 	}
 
-	protected void initExtensions() {
+	private void initExtensions() {
 		extensionsManager.init();
 		employExtensions();
 	}
 
-	protected void employExtensions() {
+	private void employExtensions() {
 		for (Extension currExtension : extensionsManager.getExtensions()) {
 			employExtension(currExtension);
 		}
 	}
 
-	protected void employExtension(Extension extension) {
+	private void employExtension(Extension extension) {
 		if (extension instanceof FlowRequestProcessorExtension) {
 			flowManager.addCommandProcessor(((FlowRequestProcessorExtension) extension));
 		}
