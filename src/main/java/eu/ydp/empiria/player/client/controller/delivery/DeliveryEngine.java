@@ -186,19 +186,19 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	private void initFlow() {
-		JSONArray deState = null;
+		JSONArray state = null;
 		if (stateAsync != null) {
-			deState = (JSONArray) JSONParser.parseLenient(stateAsync);
+			state = (JSONArray) JSONParser.parseLenient(stateAsync);
 			assessmentController.reset();
-			sessionDataManager.setState((JSONArray) deState.get(1));
-			extensionsManager.setState(deState.get(2)
-			                                  .isArray());
-			if (deState.size() > 2) {
-				playerWorkModeState.setState(deState.get(3).isArray());
+			sessionDataManager.setState((JSONArray) state.get(1));
+			extensionsManager.setState(state.get(2)
+			                                .isArray());
+			if (state.size() > 2) {
+				playerWorkModeState.setState(state.get(3).isArray());
 			}
 			flowManager.deinitFlow();
 		}
-		IFlowRequest flowRequest = flowRequestFactory.create(deState, initialItemIndex);
+		IFlowRequest flowRequest = flowRequestFactory.create(state, initialItemIndex);
 		if (flowRequest != null) {
 			flowManager.invokeFlowRequest(flowRequest);
 		}
@@ -398,12 +398,12 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	private JSONArray prepareJSONState() {
-		JSONArray deState = new JSONArray();
-		deState.set(0, flowManager.getState());
-		deState.set(1, sessionDataManager.getState());
-		deState.set(2, extensionsManager.getState());
-		deState.set(3, playerWorkModeState.getState());
-		return deState;
+		JSONArray state = new JSONArray();
+		state.set(0, flowManager.getState());
+		state.set(1, sessionDataManager.getState());
+		state.set(2, extensionsManager.getState());
+		state.set(3, playerWorkModeState.getState());
+		return state;
 	}
 
 	@Override
