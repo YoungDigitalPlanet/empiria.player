@@ -153,11 +153,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	}
 
 	@Override
-	public void onAssessmentLoadingError() {
-
-	}
-
-	@Override
 	public void onDataReady() {
 		AssessmentData assessmentData = dataManager.getAssessmentData();
 		DisplayOptions displayOptions = flowManager.getDisplayOptions();
