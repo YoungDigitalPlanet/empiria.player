@@ -6,7 +6,6 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.junit.client.GWTTestCase;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
-import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -24,8 +23,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		testObj = new FlowRequestFactory();
 	}
 
-	@Test
-	public void shouldReturnNavigateGoToItemRequestWhenItemIndexExists() {
+	public void testShouldReturnNavigateGoToItemRequestWhenItemIndexExists() {
 		// given
 		JSONArray state = null;
 		Integer initialItemIndex = 1;
@@ -37,8 +35,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		assertThat(((FlowRequest.NavigateGotoItem) result).getIndex()).equals(initialItemIndex);
 	}
 
-	@Test
-	public void shouldReturnNavigateGoToItemRequestWhenStateIsNumber() {
+	public void testShouldReturnNavigateGoToItemRequestWhenStateIsNumber() {
 		// given
 		JSONArray state = getStateWithNumber(1);
 		Integer initialItemIndex = null;
@@ -50,8 +47,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		assertThat(((FlowRequest.NavigateGotoItem) result).getIndex()).equals(initialItemIndex);
 	}
 
-	@Test
-	public void shouldReturnNullWhenArgsAreNull() {
+	public void testShouldReturnNullWhenArgsAreNull() {
 		// given
 		JSONArray state = null;
 		Integer initialItemIndex = null;
@@ -63,8 +59,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		assertThat(result).isNull();
 	}
 
-	@Test
-	public void shouldReturnNavigateTocRequestWhenStateIsTocType() {
+	public void testShouldReturnNavigateTocRequestWhenStateIsTocType() {
 		// given
 		JSONArray state = getStateWithString("TOC");
 		Integer initialItemIndex = null;
@@ -76,8 +71,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		assertThat(result).isInstanceOf(FlowRequest.NavigateToc.class);
 	}
 
-	@Test
-	public void shouldReturnNavigateSummaryRequestWhenStateIsSummaryType() {
+	public void testShouldReturnNavigateSummaryRequestWhenStateIsSummaryType() {
 		// given
 		JSONArray state = getStateWithString("SUMMARY");
 		Integer initialItemIndex = null;
