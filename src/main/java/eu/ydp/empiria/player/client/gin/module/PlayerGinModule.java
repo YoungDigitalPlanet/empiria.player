@@ -19,6 +19,8 @@ import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
+import eu.ydp.empiria.player.client.controller.extensions.ExtensionsProvider;
+import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
@@ -243,6 +245,8 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(ProgressUpdateLogic.class).in(Singleton.class);
 		bind(WindowResizeController.class).asEagerSingleton();
 		bind(LessonStateReset.class).asEagerSingleton();
+		bind(SoundProcessorManagerExtension.class).in(Singleton.class);
+		bind(ExtensionsProvider.class).in(Singleton.class);
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
