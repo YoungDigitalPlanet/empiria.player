@@ -123,17 +123,15 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
 	public void init(JavaScriptObject playerJsObject) {
 		this.playerJsObject = playerJsObject;
-
-		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector()
-		                                          .getExtensionsManager();
-
+		extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
 		flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 
-		assessmentController = assessmentFactory.createAssessmentController(playerViewSocket.getAssessmentViewSocket(), flowManager.getFlowSocket(),
-				deliveryEventsHub.getInteractionSocket());
-
+		assessmentController = assessmentFactory.createAssessmentController(
+				playerViewSocket.getAssessmentViewSocket(),
+				flowManager.getFlowSocket(),
+				deliveryEventsHub.getInteractionSocket()
+		);
 		playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
-
 		loadPredefinedExtensions();
 	}
 
@@ -186,8 +184,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 			state = (JSONArray) JSONParser.parseLenient(stateAsync);
 			assessmentController.reset();
 			sessionDataManager.setState((JSONArray) state.get(1));
-			extensionsManager.setState(state.get(2)
-			                                .isArray());
+			extensionsManager.setState(state.get(2).isArray());
 			if (state.size() > 2) {
 				playerWorkModeState.setState(state.get(3).isArray());
 			}
@@ -378,7 +375,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 		if (event.getValue() instanceof FlowProcessingEvent) {
 			onFlowProcessingEvent((FlowProcessingEvent) event.getValue());
 		}
-
 	}
 
 	public DeliveryEventsListener getDeliveryEventsListener() {
