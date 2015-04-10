@@ -7,20 +7,13 @@ import com.google.gwt.junit.client.GWTTestCase;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
 public class FlowRequestFactoryTest extends GWTTestCase {
 
-	private FlowRequestFactory testObj;
+	private FlowRequestFactory testObj = new FlowRequestFactory();
 
 	@Override
 	public String getModuleName() {
 		return "eu.ydp.empiria.player.Player";
-	}
-
-	@Override
-	protected void gwtSetUp() throws Exception {
-		testObj = new FlowRequestFactory();
 	}
 
 	public void testShouldReturnNavigateGoToItemRequestWhenItemIndexExists() {
@@ -32,7 +25,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		IFlowRequest result = testObj.create(state, initialItemIndex);
 
 		// then
-		assertThat(((FlowRequest.NavigateGotoItem) result).getIndex()).equals(initialItemIndex);
+		assertEquals(((FlowRequest.NavigateGotoItem) result).getIndex(), (int) initialItemIndex);
 	}
 
 	public void testShouldReturnNavigateGoToItemRequestWhenStateIsNumber() {
@@ -44,7 +37,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		IFlowRequest result = testObj.create(state, initialItemIndex);
 
 		// then
-		assertThat(((FlowRequest.NavigateGotoItem) result).getIndex()).equals(initialItemIndex);
+		assertEquals(((FlowRequest.NavigateGotoItem) result).getIndex(), 1);
 	}
 
 	public void testShouldReturnNullWhenArgsAreNull() {
@@ -56,7 +49,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		IFlowRequest result = testObj.create(state, initialItemIndex);
 
 		// then
-		assertThat(result).isNull();
+		assertNull(result);
 	}
 
 	public void testShouldReturnNavigateTocRequestWhenStateIsTocType() {
@@ -68,7 +61,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		IFlowRequest result = testObj.create(state, initialItemIndex);
 
 		// then
-		assertThat(result).isInstanceOf(FlowRequest.NavigateToc.class);
+		assertNotNull((FlowRequest.NavigateToc) result);
 	}
 
 	public void testShouldReturnNavigateSummaryRequestWhenStateIsSummaryType() {
@@ -80,7 +73,7 @@ public class FlowRequestFactoryTest extends GWTTestCase {
 		IFlowRequest result = testObj.create(state, initialItemIndex);
 
 		// then
-		assertThat(result).isInstanceOf(FlowRequest.NavigateSummary.class);
+		assertNotNull((FlowRequest.NavigateSummary) result);
 
 	}
 
