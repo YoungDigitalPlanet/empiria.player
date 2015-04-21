@@ -43,13 +43,7 @@ ext {
 }
 
 repositories {
-	maven {
-		url 'http://maven.ydp.eu/artifactory/libs-release/'
-		credentials {
-			username 'build'
-			password 'AP8pLmphXRs9rJmALKYTckniDqY'
-		}
-	}
+    jcenter()
     ivy {
         url "http://dev/ivyrep/public/"
         layout 'pattern', {
