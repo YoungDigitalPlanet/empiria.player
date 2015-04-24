@@ -43,7 +43,9 @@ ext {
 }
 
 repositories {
-    jcenter()
+    jcenter {
+        url "http://jcenter.bintray.com/"
+    }
     ivy {
         url "http://dev/ivyrep/public/"
         layout 'pattern', {
