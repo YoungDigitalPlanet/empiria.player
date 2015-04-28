@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class ExternalInteractionModuleBean extends ModuleBean {
 
 	@XmlAttribute(name = "src")
-	private String responseIdentifier = StringUtils.EMPTY_STRING;
+	private String src = StringUtils.EMPTY_STRING;
 
 	@XmlAttribute(name = "todo")
 	private Integer todo = 0;
 
-	public String getResponseIdentifier() {
-		return responseIdentifier;
+	public String getSrc() {
+		return src;
 	}
 
-	public void setResponseIdentifier(String responseIdentifier) {
-		this.responseIdentifier = responseIdentifier;
+	public void setSrc(String src) {
+		this.src = src;
 	}
 
 	public Integer getTodo() {
