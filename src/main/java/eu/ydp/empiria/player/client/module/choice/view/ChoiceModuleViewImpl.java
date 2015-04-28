@@ -2,11 +2,8 @@ package eu.ydp.empiria.player.client.module.choice.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
 
 public class ChoiceModuleViewImpl implements ChoiceModuleView {
 

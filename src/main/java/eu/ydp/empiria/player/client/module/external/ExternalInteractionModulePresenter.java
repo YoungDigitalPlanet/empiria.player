@@ -1,10 +1,19 @@
 package eu.ydp.empiria.player.client.module.external;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
+import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 
 public class ExternalInteractionModulePresenter implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
+
+	private final ExternalInteractionView view;
+
+	@Inject
+	public ExternalInteractionModulePresenter(ExternalInteractionView view) {
+		this.view = view;
+	}
 
 	@Override
 	public void bindView() {
@@ -17,7 +26,6 @@ public class ExternalInteractionModulePresenter implements ActivityPresenter<Ext
 
 	@Override
 	public void setModel(ExternalInteractionResponseModel model) {
-
 	}
 
 	@Override
@@ -47,6 +55,6 @@ public class ExternalInteractionModulePresenter implements ActivityPresenter<Ext
 
 	@Override
 	public Widget asWidget() {
-		return null;
+		return view.asWidget();
 	}
 }
