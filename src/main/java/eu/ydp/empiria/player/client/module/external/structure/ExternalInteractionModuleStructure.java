@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external;
+package eu.ydp.empiria.player.client.module.external.structure;
 
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;

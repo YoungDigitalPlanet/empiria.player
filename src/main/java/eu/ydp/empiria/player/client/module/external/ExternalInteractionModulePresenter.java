@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.external;
 
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
 
 public class ExternalInteractionModulePresenter implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
 

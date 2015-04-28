@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external;
+package eu.ydp.empiria.player.client.module.external.structure;
 
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.StringUtils;

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.external;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
+import eu.ydp.empiria.player.client.module.external.structure.*;
 
 public class ExternalInteractionModule extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
 
