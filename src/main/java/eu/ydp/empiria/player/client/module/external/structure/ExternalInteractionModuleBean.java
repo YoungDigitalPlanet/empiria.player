@@ -10,7 +10,7 @@ public class ExternalInteractionModuleBean extends ModuleBean {
 	private String src = StringUtils.EMPTY_STRING;
 
 	@XmlAttribute(name = "todo")
-	private Integer todo = 0;
+	private int todo = 0;
 
 	public String getSrc() {
 		return src;
@@ -20,11 +20,11 @@ public class ExternalInteractionModuleBean extends ModuleBean {
 		this.src = src;
 	}
 
-	public Integer getTodo() {
+	public int getTodo() {
 		return todo;
 	}
 
-	public void setTodo(Integer todo) {
+	public void setTodo(int todo) {
 		this.todo = todo;
 	}
 }
