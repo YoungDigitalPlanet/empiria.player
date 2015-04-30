@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.external.view.*;
 
 public class ExternalInteractionGinModule extends AbstractGinModule {
 
+	@Override
 	protected void configure() {
 		bind(ExternalInteractionView.class).to(ExternalInteractionViewImpl.class);
 	}
