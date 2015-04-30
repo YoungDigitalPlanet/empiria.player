@@ -1,9 +1,3 @@
-/*
- * Created by IntelliJ IDEA.
- * User: jjackowiak
- * Date: 2015-04-29
- * Time: 14:13
- */
 package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.AbstractGinModule;
