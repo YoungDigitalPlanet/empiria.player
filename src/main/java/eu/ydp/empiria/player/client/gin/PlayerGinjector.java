@@ -29,7 +29,8 @@ import eu.ydp.gwtutil.client.gin.module.*;
 		TextEntryGinModule.class, SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
 		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
 		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
-		TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorModule.class, IdentificationGinModule.class })
+		TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorModule.class, IdentificationGinModule.class,
+		ExternalInteractionGinModule.class })
 public interface PlayerGinjector extends Ginjector {
 
 	ViewEngine getViewEngine();

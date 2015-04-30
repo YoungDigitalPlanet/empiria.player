@@ -4,14 +4,16 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.external.structure.*;
 
-public class ExternalInteractionModule extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
+public class ExternalInteractionModule
+		extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
 
 	private final ExternalInteractionModulePresenter externalInteractionModulePresenter;
 	private final ExternalInteractionResponseModel externalInteractionResponseModel;
 	private final ExternalInteractionModuleStructure externalInteractionModuleStructure;
 
 	@Inject
-	public ExternalInteractionModule(ExternalInteractionModulePresenter externalInteractionModulePresenter, ExternalInteractionResponseModel externalInteractionResponseModel,
+	public ExternalInteractionModule(ExternalInteractionModulePresenter externalInteractionModulePresenter,
+			ExternalInteractionResponseModel externalInteractionResponseModel,
 			ExternalInteractionModuleStructure externalInteractionModuleStructure) {
 		this.externalInteractionModulePresenter = externalInteractionModulePresenter;
 		this.externalInteractionResponseModel = externalInteractionResponseModel;
@@ -25,7 +27,8 @@ public class ExternalInteractionModule extends AbstractInteractionModule<Externa
 
 	@Override
 	protected void initalizeModule() {
-
+		ExternalInteractionModuleBean bean = externalInteractionModuleStructure.getBean();
+		externalInteractionModulePresenter.setBean(bean);
 	}
 
 	@Override

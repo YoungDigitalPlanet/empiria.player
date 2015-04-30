@@ -27,6 +27,8 @@ import eu.ydp.empiria.player.client.module.drawing.DrawingView;
 import eu.ydp.empiria.player.client.module.drawing.model.*;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.*;
 import eu.ydp.empiria.player.client.module.drawing.view.*;
+import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
@@ -87,6 +89,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindTestResetButton();
 		bindSpeechScore();
 		bindSlideshow();
+		bineExternalInteraction();
 	}
 
 	private void bindSlideshow() {
@@ -297,6 +300,13 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindModuleScoped(TestResetButtonPresenter.class, new TypeLiteral<ModuleScopedProvider<TestResetButtonPresenter>>() {
 		});
 		bindModuleScoped(TestResetButtonView.class, new TypeLiteral<ModuleScopedProvider<TestResetButtonView>>() {
+		});
+	}
+
+	private void bineExternalInteraction() {
+		bindModuleScoped(ExternalInteractionResponseModel.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionResponseModel>>() {
+		});
+		bindModuleScoped(ExternalInteractionView.class, new TypeLiteral<Provider<ExternalInteractionView>>() {
 		});
 	}
 

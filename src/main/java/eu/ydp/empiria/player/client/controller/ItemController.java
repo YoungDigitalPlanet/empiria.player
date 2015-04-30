@@ -54,7 +54,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
 			eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
 			eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, new CurrentPageScope());
 
-			if (data.data == null) {
+			if (data.getData() == null) {
 				throw new Exception("Item data is null");// NOPMD
 			}
 			itemIndex = data.itemIndex;

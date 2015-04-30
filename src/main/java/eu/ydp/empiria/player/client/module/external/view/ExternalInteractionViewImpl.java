@@ -1,0 +1,26 @@
+package eu.ydp.empiria.player.client.module.external.view;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
+
+public class ExternalInteractionViewImpl extends Composite implements ExternalInteractionView {
+
+	private static ExternalInteractionViewUiBinder uiBinder = GWT.create(ExternalInteractionViewUiBinder.class);
+
+	@UiTemplate("ExternalInteractionView.ui.xml")
+	interface ExternalInteractionViewUiBinder extends UiBinder<Widget, ExternalInteractionViewImpl> {
+	}
+
+	@UiField
+	Frame frame;
+
+	public ExternalInteractionViewImpl() {
+		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	@Override
+	public void setUrl(String url) {
+		frame.setUrl(url);
+	}
+}
