@@ -28,4 +28,9 @@ public class ExternalInteractionViewImpl implements ExternalInteractionView {
 	public Widget asWidget() {
 		return widget;
 	}
+
+	@Override
+	public void setUrl(String url) {
+		frame.setUrl(url);
+	}
 }

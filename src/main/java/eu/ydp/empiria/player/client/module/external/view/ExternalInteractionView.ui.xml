@@ -3,6 +3,6 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <ui:with field="res" type="eu.ydp.empiria.player.client.resources.StyleNameConstants"/>
     <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_EXTERNAL_INTERACTION_MODULE}">
-        <g:Frame ui:field="frame"
+        <g:Frame ui:field="frame" styleName="{res.QP_EXTERNAL_INTERACTION_FRAME}" />
     </g:FlowPanel>
 </ui:UiBinder>
