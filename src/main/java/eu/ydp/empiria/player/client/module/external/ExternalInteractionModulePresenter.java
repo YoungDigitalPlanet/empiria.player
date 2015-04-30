@@ -5,21 +5,21 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
+import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModulePresenter implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean> {
 
-	private final ExternalInteractionView view;
+	private final EmpiriaPaths empiriaPaths;
 	private final ExternalInteractionResponseModel externalInteractionResponseModel;
 	private final ExternalInteractionView externalInteractionView;
 	private ExternalInteractionModuleBean externalInteractionModuleBean;
 
 	@Inject
 	public ExternalInteractionModulePresenter(
-			ExternalInteractionView view,
-			@ModuleScoped ExternalInteractionResponseModel externalInteractionResponseModel,
+			EmpiriaPaths empiriaPaths, @ModuleScoped ExternalInteractionResponseModel externalInteractionResponseModel,
 			@ModuleScoped ExternalInteractionView externalInteractionView) {
-		this.view = view;
+		this.empiriaPaths = empiriaPaths;
 		this.externalInteractionResponseModel = externalInteractionResponseModel;
 		this.externalInteractionView = externalInteractionView;
 	}
@@ -27,7 +27,8 @@ public class ExternalInteractionModulePresenter implements ActivityPresenter<Ext
 	@Override
 	public void bindView() {
 		String src = externalInteractionModuleBean.getSrc();
-		view.setUrl(src);
+		String externalModuleFilePath = empiriaPaths.getMediaFilePath(src);
+		externalInteractionView.setUrl(externalModuleFilePath);
 	}
 
 	@Override
@@ -66,6 +67,6 @@ public class ExternalInteractionModulePresenter implements ActivityPresenter<Ext
 
 	@Override
 	public Widget asWidget() {
-		return view.asWidget();
+		return externalInteractionView.asWidget();
 	}
 }
