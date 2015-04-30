@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.ui.*;
 
-public class ExternalInteractionViewImpl implements ExternalInteractionView {
+public class ExternalInteractionViewImpl extends Composite implements ExternalInteractionView {
 
 	private static ExternalInteractionViewUiBinder uiBinder = GWT.create(ExternalInteractionViewUiBinder.class);
 
@@ -13,20 +13,10 @@ public class ExternalInteractionViewImpl implements ExternalInteractionView {
 	}
 
 	@UiField
-	Panel mainPanel;
-
-	@UiField
 	Frame frame;
 
-	private final Widget widget;
-
 	public ExternalInteractionViewImpl() {
-		widget = uiBinder.createAndBindUi(this);
-	}
-
-	@Override
-	public Widget asWidget() {
-		return widget;
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
