@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.external;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionNullObject;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
@@ -20,14 +20,14 @@ public class ExternalInteractionModulePresenter
 	private final ExternalInteractionView view;
 	private ExternalInteractionModuleBean externalInteractionModuleBean;
 	private ExternalInteractionEmpiriaApi empiriaApi;
-	private Optional<ExternalInteractionObject> externalObject;
+	private ExternalInteractionObject externalObject;
 
 	@Inject
 	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths) {
 		this.empiriaPaths = empiriaPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;
-		this.externalObject = Optional.absent();
+		this.externalObject = new ExternalInteractionNullObject();
 	}
 
 	@Override
@@ -41,9 +41,7 @@ public class ExternalInteractionModulePresenter
 
 	@Override
 	public void reset() {
-		if (externalObject.isPresent()) {
-			externalObject.get().reset();
-		}
+		externalObject.reset();
 	}
 
 	@Override
@@ -99,33 +97,24 @@ public class ExternalInteractionModulePresenter
 
 	@Override
 	public void onExternalModuleLoaded(ExternalInteractionObject externalObject) {
-		this.externalObject = Optional.of(externalObject);
+		this.externalObject = externalObject;
 	}
 
 	public JSONArray getState() {
-		if (externalObject.isPresent()) {
-			JavaScriptObject state = externalObject.get().getStateFromExternal();
-			return new JSONArray(state);
-		}
-		return new JSONArray();
+		JavaScriptObject state = externalObject.getStateFromExternal();
+		return new JSONArray(state);
 	}
 
 	public void setState(JSONArray stateAndStructure) {
-		if (externalObject.isPresent()) {
-			externalObject.get().setStateFromEmpiriaOnExternal(stateAndStructure.getJavaScriptObject());
-		}
+		externalObject.setStateFromEmpiriaOnExternal(stateAndStructure.getJavaScriptObject());
 	}
 
 	private void lock() {
-		if (externalObject.isPresent()) {
-			externalObject.get().lock();
-		}
+		externalObject.lock();
 	}
 
 	private void unlock() {
-		if (externalObject.isPresent()) {
-			externalObject.get().unlock();
-		}
+		externalObject.unlock();
 	}
 
 	private void markAnswers(MarkAnswersType type) {
@@ -151,38 +140,26 @@ public class ExternalInteractionModulePresenter
 	}
 
 	private void unmarkCorrectAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().unmarkCorrectAnswers();
-		}
+		externalObject.unmarkCorrectAnswers();
 	}
 
 	private void unmarkWrongAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().unmarkWrongAnswers();
-		}
+		externalObject.unmarkWrongAnswers();
 	}
 
 	private void markCorrectAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().markCorrectAnswers();
-		}
+		externalObject.markCorrectAnswers();
 	}
 
 	private void markWrongAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().markWrongAnswers();
-		}
+		externalObject.markWrongAnswers();
 	}
 
 	private void hideCorrectAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().hideCorrectAnswers();
-		}
+		externalObject.hideCorrectAnswers();
 	}
 
 	private void showCorrectAnswers() {
-		if (externalObject.isPresent()) {
-			externalObject.get().showCorrectAnswers();
-		}
+		externalObject.showCorrectAnswers();
 	}
 }
