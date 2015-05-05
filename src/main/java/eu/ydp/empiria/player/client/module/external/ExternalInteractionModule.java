@@ -4,7 +4,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
-import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModule
@@ -31,6 +31,8 @@ public class ExternalInteractionModule
 	protected void initalizeModule() {
 		ExternalInteractionModuleBean bean = externalInteractionModuleStructure.getBean();
 		presenter.setBean(bean);
+
+		externalInteractionResponseModel.setResponseModelChange(this);
 	}
 
 	@Override

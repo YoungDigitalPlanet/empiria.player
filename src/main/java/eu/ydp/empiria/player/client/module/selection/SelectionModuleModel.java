@@ -19,7 +19,7 @@ public class SelectionModuleModel extends AbstractResponseModel<String> {
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
-		super.responseModelChange = modelChangeListener;
+		super.setResponseModelChange(modelChangeListener);
 	}
 
 	@Override

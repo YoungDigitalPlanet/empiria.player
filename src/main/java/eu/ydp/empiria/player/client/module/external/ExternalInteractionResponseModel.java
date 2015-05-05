@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.external;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
@@ -15,6 +16,6 @@ public class ExternalInteractionResponseModel extends AbstractResponseModel<Stri
 
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
-		return null;
+		return Lists.newArrayList(values);
 	}
 }
