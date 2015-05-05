@@ -89,7 +89,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindTestResetButton();
 		bindSpeechScore();
 		bindSlideshow();
-		bineExternalInteraction();
+		bindExternalInteraction();
 	}
 
 	private void bindSlideshow() {
@@ -303,7 +303,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 	}
 
-	private void bineExternalInteraction() {
+	private void bindExternalInteraction() {
 		bindModuleScoped(ExternalInteractionResponseModel.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionResponseModel>>() {
 		});
 		bindModuleScoped(ExternalInteractionView.class, new TypeLiteral<Provider<ExternalInteractionView>>() {

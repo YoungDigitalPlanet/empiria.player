@@ -3,6 +3,8 @@ package eu.ydp.empiria.player.client.module.external.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.*;
 import com.google.gwt.user.client.ui.*;
+import eu.ydp.empiria.player.client.module.external.ExternalInteractionFrameLoadHandler;
+import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 
 public class ExternalInteractionViewImpl extends Composite implements ExternalInteractionView {
 
@@ -13,10 +15,15 @@ public class ExternalInteractionViewImpl extends Composite implements ExternalIn
 	}
 
 	@UiField
-	Frame frame;
+	ExternalInteractionFrame frame;
 
 	public ExternalInteractionViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	@Override
+	public void init(ExternalInteractionEmpiriaApi api, ExternalInteractionFrameLoadHandler onLoadHandler) {
+		frame.init(api, onLoadHandler);
 	}
 
 	@Override
