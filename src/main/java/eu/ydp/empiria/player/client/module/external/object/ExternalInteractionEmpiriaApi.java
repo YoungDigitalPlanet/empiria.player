@@ -15,5 +15,13 @@ public class ExternalInteractionEmpiriaApi {
 	public void onResultChange(ExternalInteractionStatus status) {
 		int done = status.getDone();
 		int errors = status.getErrors();
+		responseModel.clearAnswers();
+
+		for (int i = 1; i <= done; i++) {
+			responseModel.addAnswer(String.valueOf(i));
+		}
+		for (int i = 1; i <= errors; i++) {
+			responseModel.addAnswer(String.valueOf(-i));
+		}
 	}
 }

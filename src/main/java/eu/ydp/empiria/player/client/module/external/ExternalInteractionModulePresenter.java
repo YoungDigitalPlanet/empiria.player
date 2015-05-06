@@ -20,13 +20,16 @@ public class ExternalInteractionModulePresenter
 	private final ExternalInteractionView view;
 	private ExternalInteractionModuleBean externalInteractionModuleBean;
 	private ExternalInteractionEmpiriaApi empiriaApi;
+	private ExternalStateUtil stateUtil;
 	private ExternalInteractionObject externalObject;
 
 	@Inject
-	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths) {
+	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths,
+			ExternalStateUtil stateUtil) {
 		this.empiriaPaths = empiriaPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;
+		this.stateUtil = stateUtil;
 		this.externalObject = new ExternalInteractionNullObject();
 	}
 
@@ -82,10 +85,10 @@ public class ExternalInteractionModulePresenter
 	public void showAnswers(ShowAnswersType mode) {
 		switch (mode) {
 		case CORRECT:
-			showCorrectAnswers();
+			externalObject.showCorrectAnswers();
 			break;
 		case USER:
-			hideCorrectAnswers();
+			externalObject.hideCorrectAnswers();
 			break;
 		}
 	}
@@ -102,11 +105,12 @@ public class ExternalInteractionModulePresenter
 
 	public JSONArray getState() {
 		JavaScriptObject state = externalObject.getStateFromExternal();
-		return new JSONArray(state);
+		return stateUtil.wrapState(state);
 	}
 
 	public void setState(JSONArray stateAndStructure) {
-		externalObject.setStateFromEmpiriaOnExternal(stateAndStructure.getJavaScriptObject());
+		JavaScriptObject state = stateUtil.unwrapState(stateAndStructure);
+		externalObject.setStateFromEmpiriaOnExternal(state);
 	}
 
 	private void lock() {
@@ -120,10 +124,10 @@ public class ExternalInteractionModulePresenter
 	private void markAnswers(MarkAnswersType type) {
 		switch (type) {
 		case CORRECT:
-			markCorrectAnswers();
+			externalObject.markCorrectAnswers();
 			break;
 		case WRONG:
-			markWrongAnswers();
+			externalObject.markWrongAnswers();
 			break;
 		}
 	}
@@ -131,35 +135,11 @@ public class ExternalInteractionModulePresenter
 	private void unmarkAnswers(MarkAnswersType type) {
 		switch (type) {
 		case CORRECT:
-			unmarkCorrectAnswers();
+			externalObject.unmarkCorrectAnswers();
 			break;
 		case WRONG:
-			unmarkWrongAnswers();
+			externalObject.unmarkWrongAnswers();
 			break;
 		}
-	}
-
-	private void unmarkCorrectAnswers() {
-		externalObject.unmarkCorrectAnswers();
-	}
-
-	private void unmarkWrongAnswers() {
-		externalObject.unmarkWrongAnswers();
-	}
-
-	private void markCorrectAnswers() {
-		externalObject.markCorrectAnswers();
-	}
-
-	private void markWrongAnswers() {
-		externalObject.markWrongAnswers();
-	}
-
-	private void hideCorrectAnswers() {
-		externalObject.hideCorrectAnswers();
-	}
-
-	private void showCorrectAnswers() {
-		externalObject.showCorrectAnswers();
 	}
 }

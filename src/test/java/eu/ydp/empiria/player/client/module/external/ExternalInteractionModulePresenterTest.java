@@ -34,6 +34,8 @@ public class ExternalInteractionModulePresenterTest {
 	private ExternalInteractionEmpiriaApi empiriaApi;
 	@Mock
 	private ExternalInteractionObject externalObject;
+	@Mock
+	private ExternalStateUtil stateUtil;
 
 	@Before
 	public void init() {
@@ -151,7 +153,7 @@ public class ExternalInteractionModulePresenterTest {
 		// given
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray array = mock(JSONArray.class);
-		when(array.getJavaScriptObject()).thenReturn(jsObj);
+		when(stateUtil.unwrapState(array)).thenReturn(jsObj);
 
 		// when
 		testObj.setState(array);
@@ -164,12 +166,14 @@ public class ExternalInteractionModulePresenterTest {
 	public void shouldReturnState() {
 		// given
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
+		JSONArray jsonArray = mock(JSONArray.class);
 		when(externalObject.getStateFromExternal()).thenReturn(jsObj);
+		when(stateUtil.wrapState(jsObj)).thenReturn(jsonArray);
 
 		// when
 		JSONArray array = testObj.getState();
 
 		// then
-		assertThat(array.getJavaScriptObject()).isEqualTo(jsObj);
+		assertThat(array).isEqualTo(jsonArray);
 	}
 }
