@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEm
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionNullObject;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
+import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -16,30 +17,29 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 public class ExternalInteractionModulePresenter
 		implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalInteractionFrameLoadHandler {
 
+	private ExternalInteractionModuleStructure structure;
 	private final EmpiriaPaths empiriaPaths;
 	private final ExternalInteractionView view;
-	private ExternalInteractionModuleBean externalInteractionModuleBean;
-	private ExternalInteractionEmpiriaApi empiriaApi;
-	private ExternalStateUtil stateUtil;
+	private final ExternalInteractionEmpiriaApi empiriaApi;
+	private final ExternalStateEncoder stateEncoder;
 	private ExternalInteractionObject externalObject;
 
 	@Inject
-	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths,
-			ExternalStateUtil stateUtil) {
+	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, @ModuleScoped ExternalInteractionModuleStructure structure,
+			ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths, ExternalStateEncoder stateEncoder) {
+		this.structure = structure;
 		this.empiriaPaths = empiriaPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;
-		this.stateUtil = stateUtil;
+		this.stateEncoder = stateEncoder;
 		this.externalObject = new ExternalInteractionNullObject();
 	}
 
 	@Override
 	public void bindView() {
-		view.init(empiriaApi, this);
-
-		String src = externalInteractionModuleBean.getSrc();
+		String src = structure.getBean().getSrc();
 		String externalModuleFilePath = empiriaPaths.getMediaFilePath(src);
-		view.setUrl(externalModuleFilePath);
+		view.init(empiriaApi, this, externalModuleFilePath);
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class ExternalInteractionModulePresenter
 
 	@Override
 	public void setBean(ExternalInteractionModuleBean externalInteractionModuleBean) {
-		this.externalInteractionModuleBean = externalInteractionModuleBean;
 	}
 
 	@Override
@@ -105,11 +104,11 @@ public class ExternalInteractionModulePresenter
 
 	public JSONArray getState() {
 		JavaScriptObject state = externalObject.getStateFromExternal();
-		return stateUtil.wrapState(state);
+		return stateEncoder.encodeState(state);
 	}
 
 	public void setState(JSONArray stateAndStructure) {
-		JavaScriptObject state = stateUtil.unwrapState(stateAndStructure);
+		JavaScriptObject state = stateEncoder.decodeState(stateAndStructure);
 		externalObject.setStateFromEmpiriaOnExternal(state);
 	}
 

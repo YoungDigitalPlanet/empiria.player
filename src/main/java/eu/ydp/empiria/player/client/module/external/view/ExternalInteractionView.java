@@ -5,7 +5,5 @@ import eu.ydp.empiria.player.client.module.external.ExternalInteractionFrameLoad
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 
 public interface ExternalInteractionView extends IsWidget {
-	void init(ExternalInteractionEmpiriaApi api, ExternalInteractionFrameLoadHandler onLoadHandler);
-
-	void setUrl(String url);
+	void init(ExternalInteractionEmpiriaApi api, ExternalInteractionFrameLoadHandler onLoadHandler, String url);
 }

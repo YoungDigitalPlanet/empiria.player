@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
+import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import org.junit.Before;
@@ -35,11 +36,13 @@ public class ExternalInteractionModulePresenterTest {
 	@Mock
 	private ExternalInteractionObject externalObject;
 	@Mock
-	private ExternalStateUtil stateUtil;
+	private ExternalStateEncoder stateUtil;
+	@Mock
+	private ExternalInteractionModuleStructure structure;
 
 	@Before
 	public void init() {
-		testObj.setBean(externalInteractionModuleBean);
+		when(structure.getBean()).thenReturn(externalInteractionModuleBean);
 		testObj.onExternalModuleLoaded(externalObject);
 	}
 
@@ -57,8 +60,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.bindView();
 
 		// then
-		verify(view).init(empiriaApi, testObj);
-		verify(view).setUrl(expectedURL);
+		verify(view).init(empiriaApi, testObj, expectedURL);
 	}
 
 	@Test
@@ -153,7 +155,7 @@ public class ExternalInteractionModulePresenterTest {
 		// given
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray array = mock(JSONArray.class);
-		when(stateUtil.unwrapState(array)).thenReturn(jsObj);
+		when(stateUtil.decodeState(array)).thenReturn(jsObj);
 
 		// when
 		testObj.setState(array);
@@ -168,7 +170,7 @@ public class ExternalInteractionModulePresenterTest {
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray jsonArray = mock(JSONArray.class);
 		when(externalObject.getStateFromExternal()).thenReturn(jsObj);
-		when(stateUtil.wrapState(jsObj)).thenReturn(jsonArray);
+		when(stateUtil.encodeState(jsObj)).thenReturn(jsonArray);
 
 		// when
 		JSONArray array = testObj.getState();

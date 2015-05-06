@@ -5,9 +5,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
-public class ExternalStateUtilTest extends AbstractEmpiriaPlayerGWTTestCase {
+public class ExternalStateEncoderTest extends AbstractEmpiriaPlayerGWTTestCase {
 
-	private ExternalStateUtil testObj = new ExternalStateUtil();
+	private ExternalStateEncoder testObj = new ExternalStateEncoder();
 
 	public void testShouldWrapStateInJSONArray() {
 		// given
@@ -15,7 +15,7 @@ public class ExternalStateUtilTest extends AbstractEmpiriaPlayerGWTTestCase {
 		int expectedArraySize = 1;
 
 		// when
-		JSONArray jsonArray = testObj.wrapState(jsObject);
+		JSONArray jsonArray = testObj.encodeState(jsObject);
 
 		// then
 		assertEquals(expectedArraySize, jsonArray.size());
@@ -32,7 +32,7 @@ public class ExternalStateUtilTest extends AbstractEmpiriaPlayerGWTTestCase {
 		jsonArray.set(0, obj);
 
 		// when
-		JavaScriptObject jsObjectResult = testObj.unwrapState(jsonArray);
+		JavaScriptObject jsObjectResult = testObj.decodeState(jsonArray);
 
 		// then
 		assertEquals(state, jsObjectResult);

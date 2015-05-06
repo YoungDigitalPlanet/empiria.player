@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.external.object;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 
 public class ExternalInteractionNullObject implements ExternalInteractionObject {
 	@Override
@@ -10,7 +10,7 @@ public class ExternalInteractionNullObject implements ExternalInteractionObject 
 
 	@Override
 	public JavaScriptObject getStateFromExternal() {
-		return new JSONArray().getJavaScriptObject();
+		return new JSONObject().getJavaScriptObject();
 	}
 
 	@Override

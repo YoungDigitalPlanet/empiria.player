@@ -5,9 +5,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
-public class ExternalStateUtil {
+public class ExternalStateEncoder {
 
-	public JSONArray wrapState(JavaScriptObject state) {
+	public JSONArray encodeState(JavaScriptObject state) {
 		JSONObject obj = new JSONObject(state);
 		JSONArray jsonArray = new JSONArray();
 
@@ -15,7 +15,7 @@ public class ExternalStateUtil {
 		return jsonArray;
 	}
 
-	public JavaScriptObject unwrapState(JSONArray array) {
+	public JavaScriptObject decodeState(JSONArray array) {
 		if (array.size() > 0) {
 			JSONValue jsonValue = array.get(0);
 			return jsonValue.isObject().getJavaScriptObject();

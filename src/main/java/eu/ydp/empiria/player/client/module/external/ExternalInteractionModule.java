@@ -16,7 +16,7 @@ public class ExternalInteractionModule
 
 	@Inject
 	public ExternalInteractionModule(ExternalInteractionModulePresenter presenter, @ModuleScoped ExternalInteractionResponseModel model,
-			ExternalInteractionModuleStructure structure) {
+			@ModuleScoped ExternalInteractionModuleStructure structure) {
 		this.presenter = presenter;
 		this.externalInteractionResponseModel = model;
 		this.externalInteractionModuleStructure = structure;
@@ -29,9 +29,6 @@ public class ExternalInteractionModule
 
 	@Override
 	protected void initalizeModule() {
-		ExternalInteractionModuleBean bean = externalInteractionModuleStructure.getBean();
-		presenter.setBean(bean);
-
 		externalInteractionResponseModel.setResponseModelChange(this);
 	}
 
