@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.external.object;
 
 import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.sound.ExternalInteractionSoundApi;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -22,6 +23,8 @@ public class ExternalInteractionEmpiriaApiTest {
 	private ExternalInteractionEmpiriaApi testObj;
 	@Mock
 	private ExternalInteractionResponseModel responseModel;
+	@Mock
+	private ExternalInteractionSoundApi soundApi;
 	@Captor
 	private ArgumentCaptor<String> answersCaptor;
 
@@ -44,5 +47,65 @@ public class ExternalInteractionEmpiriaApiTest {
 		verify(responseModel, times(answersSize)).addAnswer(answersCaptor.capture());
 		List<String> resultList = answersCaptor.getAllValues();
 		assertThat(resultList).containsAll(expectedAnswers);
+	}
+
+	@Test
+	public void shouldDelegatePlay() {
+		// given
+		String src = "src";
+
+		// when
+		testObj.play(src);
+
+		// then
+		verify(soundApi).play(src);
+	}
+
+	@Test
+	public void shouldDelegatePlayLooped() {
+		// given
+		String src = "src";
+
+		// when
+		testObj.playLooped(src);
+
+		// then
+		verify(soundApi).playLooped(src);
+	}
+
+	@Test
+	public void shouldDelegatePause() {
+		// given
+		String src = "src";
+
+		// when
+		testObj.pause(src);
+
+		// then
+		verify(soundApi).pause(src);
+	}
+
+	@Test
+	public void shouldDelegateResume() {
+		// given
+		String src = "src";
+
+		// when
+		testObj.resume(src);
+
+		// then
+		verify(soundApi).resume(src);
+	}
+
+	@Test
+	public void shouldDelegateStop() {
+		// given
+		String src = "src";
+
+		// when
+		testObj.stop(src);
+
+		// then
+		verify(soundApi).stop(src);
 	}
 }
