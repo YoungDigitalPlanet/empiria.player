@@ -43,6 +43,6 @@ public class ExternalInteractionEmpiriaApiTest {
 		// then
 		verify(responseModel, times(answersSize)).addAnswer(answersCaptor.capture());
 		List<String> resultList = answersCaptor.getAllValues();
-		assertThat(resultList.containsAll(expectedAnswers)).isTrue();
+		assertThat(resultList).containsAll(expectedAnswers);
 	}
 }
