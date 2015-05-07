@@ -1,8 +1,13 @@
 package eu.ydp.empiria.player.client.module.external.view;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.*;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.module.external.ExternalInteractionFrameLoadHandler;
+import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 
 public class ExternalInteractionViewImpl extends Composite implements ExternalInteractionView {
 
@@ -13,14 +18,15 @@ public class ExternalInteractionViewImpl extends Composite implements ExternalIn
 	}
 
 	@UiField
-	Frame frame;
+	ExternalInteractionFrame frame;
 
 	public ExternalInteractionViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
-	public void setUrl(String url) {
+	public void init(ExternalInteractionEmpiriaApi api, ExternalInteractionFrameLoadHandler onLoadHandler, String url) {
+		frame.init(api, onLoadHandler);
 		frame.setUrl(url);
 	}
 }
