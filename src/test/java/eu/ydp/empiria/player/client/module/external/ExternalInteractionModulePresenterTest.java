@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.external;
 
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
@@ -7,6 +8,8 @@ import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.state.ExternalInteractionStateSaver;
+import eu.ydp.empiria.player.client.module.external.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +36,41 @@ public class ExternalInteractionModulePresenterTest {
 	private ExternalInteractionObject externalObject;
 	@Mock
 	private ExternalStateEncoder stateUtil;
+	@Mock
+	private ExternalInteractionStateSaver stateSaver;
 
 	@Before
 	public void init() {
+		Optional<JavaScriptObject> jsoOptional = Optional.absent();
+		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
 		testObj.onExternalModuleLoaded(externalObject);
+	}
+
+	@Test
+	public void shouldNotSetState_whenIsEmpty() {
+		// given
+		Optional<JavaScriptObject> jsoOptional = Optional.absent();
+		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+
+		// when
+		testObj.onExternalModuleLoaded(externalObject);
+
+		// then
+		verify(externalObject, never()).setStateFromEmpiriaOnExternal(any(JavaScriptObject.class));
+	}
+
+	@Test
+	public void shouldSetStateOnExternal_whenIsPresent() {
+		// given
+		JavaScriptObject jso = mock(JavaScriptObject.class);
+		Optional<JavaScriptObject> jsoOptional = Optional.of(jso);
+		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+
+		// when
+		testObj.onExternalModuleLoaded(externalObject);
+
+		// then
+		verify(externalObject).setStateFromEmpiriaOnExternal(jso);
 	}
 
 	@Test
@@ -174,7 +208,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.setState(array);
 
 		// then
-		verify(externalObject).setStateFromEmpiriaOnExternal(jsObj);
+		verify(stateSaver).setExternalState(jsObj);
 	}
 
 	@Test
@@ -190,5 +224,6 @@ public class ExternalInteractionModulePresenterTest {
 
 		// then
 		assertThat(array).isEqualTo(jsonArray);
+		verify(stateSaver).setExternalState(jsObj);
 	}
 }
