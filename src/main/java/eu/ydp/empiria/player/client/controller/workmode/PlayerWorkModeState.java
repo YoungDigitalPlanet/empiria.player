@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.workmode;
 
-import com.google.common.base.Optional;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.json.JSONStateSerializer;
@@ -13,8 +12,6 @@ public class PlayerWorkModeState implements IStateful {
 	@Inject
 	private JSONStateSerializer jsonStateSerializer;
 
-	private Optional<PlayerWorkMode> workModeFromState = Optional.absent();
-
 	@Override
 	public JSONArray getState() {
 		PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
@@ -24,12 +21,6 @@ public class PlayerWorkModeState implements IStateful {
 	@Override
 	public void setState(JSONArray array) {
 		String state = jsonStateSerializer.extractString(array);
-		workModeFromState = Optional.of(PlayerWorkMode.valueOf(state));
-	}
-
-	public void updateWorkModeFormState() {
-		if (workModeFromState.isPresent()) {
-			playerWorkModeService.forceToUpdateWorkMode(workModeFromState.get());
-		}
+		playerWorkModeService.forceToUpdateWorkMode(PlayerWorkMode.valueOf(state));
 	}
 }

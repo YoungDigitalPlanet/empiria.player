@@ -18,24 +18,9 @@ public class PlayerWorkModeStateTest {
 	@InjectMocks
 	private PlayerWorkModeState testObj;
 	@Mock
-	private EventsBus eventsBus;
-	@Mock
 	private PlayerWorkModeService playerWorkModeService;
 	@Mock
 	private JSONStateSerializer jsonStateUtil;
-
-	@Test
-	public void testShouldNotUpdateModeOnService() {
-		// given
-		JSONArray state = mock(JSONArray.class);
-		when(jsonStateUtil.extractString(state)).thenReturn("FULL");
-
-		// when
-		testObj.updateWorkModeFormState();
-
-		// then
-		verify(playerWorkModeService, never()).tryToUpdateWorkMode(any(PlayerWorkMode.class));
-	}
 
 	@Test
 	public void testShouldUpdateModeOnService() {
@@ -43,10 +28,8 @@ public class PlayerWorkModeStateTest {
 		JSONArray state = mock(JSONArray.class);
 		when(jsonStateUtil.extractString(state)).thenReturn("FULL");
 
-		testObj.setState(state);
-
 		// when
-		testObj.updateWorkModeFormState();
+		testObj.setState(state);
 
 		// then
 		verify(playerWorkModeService).forceToUpdateWorkMode(PlayerWorkMode.FULL);
