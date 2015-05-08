@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.external;
 
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
@@ -8,6 +9,8 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionNullObject;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.state.ExternalInteractionStateSaver;
+import eu.ydp.empiria.player.client.module.external.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -17,16 +20,18 @@ public class ExternalInteractionModulePresenter
 
 	private final ExternalInteractionView view;
 	private final ExternalInteractionEmpiriaApi empiriaApi;
+	private ExternalInteractionStateSaver stateSaver;
 	private final ExternalStateEncoder stateEncoder;
 	private ExternalInteractionObject externalObject;
 	private ExternalInteractionPaths externalPaths;
 
 	@Inject
 	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, @ModuleScoped ExternalInteractionPaths externalPaths,
-			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, ExternalStateEncoder stateEncoder) {
+			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalInteractionStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
 		this.externalPaths = externalPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;
+		this.stateSaver = stateSaver;
 		this.stateEncoder = stateEncoder;
 		this.externalObject = new ExternalInteractionNullObject();
 	}
@@ -95,16 +100,22 @@ public class ExternalInteractionModulePresenter
 	@Override
 	public void onExternalModuleLoaded(ExternalInteractionObject externalObject) {
 		this.externalObject = externalObject;
+
+		Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
+		if (externalState.isPresent()) {
+			externalObject.setStateFromEmpiriaOnExternal(externalState.get());
+		}
 	}
 
 	public JSONArray getState() {
 		JavaScriptObject state = externalObject.getStateFromExternal();
+		stateSaver.setExternalState(state);
 		return stateEncoder.encodeState(state);
 	}
 
 	public void setState(JSONArray stateAndStructure) {
 		JavaScriptObject state = stateEncoder.decodeState(stateAndStructure);
-		externalObject.setStateFromEmpiriaOnExternal(state);
+		stateSaver.setExternalState(state);
 	}
 
 	private void lock() {
