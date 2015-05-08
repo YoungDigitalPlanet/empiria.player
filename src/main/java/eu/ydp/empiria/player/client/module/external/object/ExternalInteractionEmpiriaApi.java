@@ -29,23 +29,7 @@ public class ExternalInteractionEmpiriaApi {
 		}
 	}
 
-	public void play(String src) {
-		soundApi.play(src);
-	}
-
-	public void playLooped(String src) {
-		soundApi.playLooped(src);
-	}
-
-	public void pause(String src) {
-		soundApi.pause(src);
-	}
-
-	public void resume(String src) {
-		soundApi.resume(src);
-	}
-
-	public void stop(String src) {
-		soundApi.stop(src);
+	public ExternalInteractionSoundApi soundApi() {
+		return soundApi;
 	}
 }

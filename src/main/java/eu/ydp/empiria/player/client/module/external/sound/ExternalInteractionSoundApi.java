@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.external.sound;
 
+import com.google.gwt.core.client.js.JsType;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.external.ExternalInteractionPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
+@JsType
 public class ExternalInteractionSoundApi {
 
 	@Inject
@@ -14,7 +16,7 @@ public class ExternalInteractionSoundApi {
 	@ModuleScoped
 	private ExternalInteractionPaths paths;
 
-	public void play(final String src) {
+	public void play(String src) {
 		String filePath = paths.getExternalFilePath(src);
 		wrappers.execute(filePath, soundActions.getPlayAction());
 	}
