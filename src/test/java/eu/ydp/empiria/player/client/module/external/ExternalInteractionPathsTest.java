@@ -8,9 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,12 +30,19 @@ public class ExternalInteractionPathsTest {
 	private String src = "src";
 	private String media = "media";
 
+	private Answer<String> pathAnswer = new Answer<String>() {
+		@Override
+		public String answer(InvocationOnMock invocation) throws Throwable {
+			return media + "/" + invocation.getArguments()[0];
+		}
+	};
+
 	@Before
 	public void init() {
 		when(structure.getBean()).thenReturn(bean);
 		when(bean.getSrc()).thenReturn(src);
-		String externalBasePath = media + "/" + src;
-		when(empiriaPaths.getMediaFilePath(src)).thenReturn(externalBasePath);
+
+		when(empiriaPaths.getMediaFilePath(anyString())).thenAnswer(pathAnswer);
 	}
 
 	@Test

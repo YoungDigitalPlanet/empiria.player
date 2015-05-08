@@ -20,11 +20,13 @@ public class ExternalInteractionPaths {
 
 	public String getExternalFilePath(String file) {
 		String externalBaseName = structure.getBean().getSrc();
-		return empiriaPaths.getMediaFilePath(externalBaseName) + "/" + file;
+		String relativeFilePath = externalBaseName + "/" + file;
+		return empiriaPaths.getMediaFilePath(relativeFilePath);
 	}
 
 	public String getExternalEntryPointPath() {
 		String externalBaseName = structure.getBean().getSrc();
-		return empiriaPaths.getMediaFilePath(externalBaseName) + "/" + EXTERNAL_ENTRY_POINT;
+		String relativeFilePath = externalBaseName + "/" + EXTERNAL_ENTRY_POINT;
+		return empiriaPaths.getMediaFilePath(relativeFilePath);
 	}
 }
