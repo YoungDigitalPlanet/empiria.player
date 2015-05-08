@@ -4,12 +4,10 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
-import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
-import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
-import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,35 +24,26 @@ public class ExternalInteractionModulePresenterTest {
 	@InjectMocks
 	private ExternalInteractionModulePresenter testObj;
 	@Mock
-	private ExternalInteractionModuleBean externalInteractionModuleBean;
-	@Mock
 	private ExternalInteractionView view;
 	@Mock
-	private EmpiriaPaths empiriaPaths;
+	private ExternalInteractionPaths externalPaths;
 	@Mock
 	private ExternalInteractionEmpiriaApi empiriaApi;
 	@Mock
 	private ExternalInteractionObject externalObject;
 	@Mock
 	private ExternalStateEncoder stateUtil;
-	@Mock
-	private ExternalInteractionModuleStructure structure;
 
 	@Before
 	public void init() {
-		when(structure.getBean()).thenReturn(externalInteractionModuleBean);
 		testObj.onExternalModuleLoaded(externalObject);
 	}
 
 	@Test
 	public void shouldInitializeView() {
 		// given
-		final String filename = "external.html";
-		final String expectedURL = "media/external.html";
-		when(externalInteractionModuleBean.getSrc()).thenReturn(filename);
-		when(empiriaPaths.getMediaFilePath(filename)).thenReturn(expectedURL);
-
-		testObj.setBean(externalInteractionModuleBean);
+		final String expectedURL = "media/external/index.html";
+		when(externalPaths.getExternalEntryPointPath()).thenReturn(expectedURL);
 
 		// when
 		testObj.bindView();
@@ -148,6 +137,30 @@ public class ExternalInteractionModulePresenterTest {
 
 		// then
 		verify(externalObject).unmarkWrongAnswers();
+	}
+
+	@Test
+	public void shouldShowCorrectAnswers() {
+		// given
+		ShowAnswersType type = ShowAnswersType.CORRECT;
+
+		// when
+		testObj.showAnswers(type);
+
+		// then
+		verify(externalObject).showCorrectAnswers();
+	}
+
+	@Test
+	public void shouldHideCorrectAnswers() {
+		// given
+		ShowAnswersType type = ShowAnswersType.USER;
+
+		// when
+		testObj.showAnswers(type);
+
+		// then
+		verify(externalObject).hideCorrectAnswers();
 	}
 
 	@Test

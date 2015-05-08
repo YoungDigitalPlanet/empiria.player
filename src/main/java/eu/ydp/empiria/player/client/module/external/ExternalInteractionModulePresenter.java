@@ -9,26 +9,22 @@ import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEm
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionNullObject;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleBean;
-import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
-import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModulePresenter
 		implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalInteractionFrameLoadHandler {
 
-	private ExternalInteractionModuleStructure structure;
-	private final EmpiriaPaths empiriaPaths;
 	private final ExternalInteractionView view;
 	private final ExternalInteractionEmpiriaApi empiriaApi;
 	private final ExternalStateEncoder stateEncoder;
 	private ExternalInteractionObject externalObject;
+	private ExternalInteractionPaths externalPaths;
 
 	@Inject
-	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, @ModuleScoped ExternalInteractionModuleStructure structure,
-			ExternalInteractionEmpiriaApi empiriaApi, EmpiriaPaths empiriaPaths, ExternalStateEncoder stateEncoder) {
-		this.structure = structure;
-		this.empiriaPaths = empiriaPaths;
+	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, @ModuleScoped ExternalInteractionPaths externalPaths,
+			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, ExternalStateEncoder stateEncoder) {
+		this.externalPaths = externalPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;
 		this.stateEncoder = stateEncoder;
@@ -37,8 +33,7 @@ public class ExternalInteractionModulePresenter
 
 	@Override
 	public void bindView() {
-		String src = structure.getBean().getSrc();
-		String externalModuleFilePath = empiriaPaths.getMediaFilePath(src);
+		String externalModuleFilePath = externalPaths.getExternalEntryPointPath();
 		view.init(empiriaApi, this, externalModuleFilePath);
 	}
 
