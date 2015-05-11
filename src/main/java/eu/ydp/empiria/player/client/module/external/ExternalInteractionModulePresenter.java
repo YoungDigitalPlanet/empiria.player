@@ -103,7 +103,7 @@ public class ExternalInteractionModulePresenter
 
 		Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
 		if (externalState.isPresent()) {
-			externalObject.setStateFromEmpiriaOnExternal(externalState.get());
+			externalObject.setStateOnExternal(externalState.get());
 		}
 	}
 

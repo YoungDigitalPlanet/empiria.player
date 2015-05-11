@@ -56,7 +56,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.onExternalModuleLoaded(externalObject);
 
 		// then
-		verify(externalObject, never()).setStateFromEmpiriaOnExternal(any(JavaScriptObject.class));
+		verify(externalObject, never()).setStateOnExternal(any(JavaScriptObject.class));
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.onExternalModuleLoaded(externalObject);
 
 		// then
-		verify(externalObject).setStateFromEmpiriaOnExternal(jso);
+		verify(externalObject).setStateOnExternal(jso);
 	}
 
 	@Test
