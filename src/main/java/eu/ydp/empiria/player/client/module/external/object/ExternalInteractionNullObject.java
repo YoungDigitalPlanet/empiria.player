@@ -5,7 +5,7 @@ import com.google.gwt.json.client.JSONObject;
 
 public class ExternalInteractionNullObject implements ExternalInteractionObject {
 	@Override
-	public void setStateFromEmpiriaOnExternal(JavaScriptObject state) {
+	public void setStateOnExternal(JavaScriptObject state) {
 	}
 
 	@Override

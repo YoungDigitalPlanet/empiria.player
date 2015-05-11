@@ -6,7 +6,7 @@ import com.google.gwt.core.client.js.JsType;
 @JsType
 public interface ExternalInteractionObject {
 
-	void setStateFromEmpiriaOnExternal(JavaScriptObject state);
+	void setStateOnExternal(JavaScriptObject state);
 
 	JavaScriptObject getStateFromExternal();
 
