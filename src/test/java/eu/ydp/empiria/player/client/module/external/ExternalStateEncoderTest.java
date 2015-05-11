@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.module.external.state.ExternalStateEncoder;
 
 public class ExternalStateEncoderTest extends AbstractEmpiriaPlayerGWTTestCase {
 
