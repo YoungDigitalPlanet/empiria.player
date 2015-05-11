@@ -14,3 +14,7 @@
 .qp-slideshow-button-pause.qp-slideshow-button-pause-up {
     display: none;
 }
+
+.qp-external-interaction-module-frame {
+    width: 100%;
+}
