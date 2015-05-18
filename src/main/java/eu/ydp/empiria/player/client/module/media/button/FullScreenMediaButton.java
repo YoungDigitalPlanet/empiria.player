@@ -35,7 +35,7 @@ public abstract class FullScreenMediaButton<H> extends AbstractMediaButton<H> im
 	protected void onClick() {
 		if (isFullScreenOpen() || isInFullScreen()) {
 			closeFullScreen();
-		} else {
+		} else if (!isInFullScreen()) {
 			openFullScreen();
 		}
 	}

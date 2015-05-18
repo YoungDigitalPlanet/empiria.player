@@ -10,7 +10,6 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class PicturePlayerFullScreenMediaButton extends FullScreenMediaButton<PicturePlayerFullScreenMediaButton> implements MediaEventHandler,
 																															 FullScreenEventHandler {
-
 	@Inject
 	private FullScreenModeProvider fullScreenModeProvider;
 	@Inject
