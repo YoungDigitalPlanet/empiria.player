@@ -12,70 +12,55 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MediaWrapperSoundActionsTest {
+public class ExternalSoundInstanceTest {
 
 	@InjectMocks
-	private MediaWrapperSoundActions testObj;
+	private ExternalSoundInstance testObj;
 	@Mock
 	private MediaWrapperController mediaWrapperController;
 	@Mock
 	private MediaWrapper<Widget> mediaWrapper;
 
 	@Test
-	public void shouldExecuteStopAndPlay() {
-		// given
-		MediaWrapperAction playAction = testObj.getPlayAction();
-
+	public void shouldDelegatePlay() {
 		// when
-		playAction.execute(mediaWrapper);
+		testObj.play();
 
 		// then
 		verify(mediaWrapperController).stopAndPlay(mediaWrapper);
 	}
 
 	@Test
-	public void shouldExecutePlayLooped() {
-		// given
-		MediaWrapperAction playAction = testObj.getPlayLoopedAction();
-
+	public void shouldDelegatePlayLooped() {
 		// when
-		playAction.execute(mediaWrapper);
+		testObj.playLooped();
 
 		// then
 		verify(mediaWrapperController).playLooped(mediaWrapper);
 	}
 
 	@Test
-	public void shouldExecuteStop() {
-		// given
-		MediaWrapperAction playAction = testObj.getStopAction();
-
+	public void shouldDelegateStop() {
 		// when
-		playAction.execute(mediaWrapper);
+		testObj.stop();
 
 		// then
 		verify(mediaWrapperController).stop(mediaWrapper);
 	}
 
 	@Test
-	public void shouldExecutePause() {
-		// given
-		MediaWrapperAction playAction = testObj.getPauseAction();
-
+	public void shouldDelegatePause() {
 		// when
-		playAction.execute(mediaWrapper);
+		testObj.pause();
 
 		// then
 		verify(mediaWrapperController).pause(mediaWrapper);
 	}
 
 	@Test
-	public void shouldExecuteResume() {
-		// given
-		MediaWrapperAction playAction = testObj.getResumeAction();
-
+	public void shouldDelegateResume() {
 		// when
-		playAction.execute(mediaWrapper);
+		testObj.resume();
 
 		// then
 		verify(mediaWrapperController).resume(mediaWrapper);

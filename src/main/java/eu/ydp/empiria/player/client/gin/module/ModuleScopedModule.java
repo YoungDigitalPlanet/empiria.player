@@ -48,7 +48,7 @@ import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.external.ExternalInteractionPaths;
 import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
 import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.sound.ExternalInteractionSoundApi;
+import eu.ydp.empiria.player.client.module.external.sound.ExternalSoundInstanceCreator;
 import eu.ydp.empiria.player.client.module.external.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.view.ExternalInteractionView;
@@ -349,7 +349,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(ExternalInteractionPaths.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionPaths>>() {
 		});
-		bindModuleScoped(ExternalInteractionSoundApi.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionSoundApi>>() {
+		bindModuleScoped(ExternalSoundInstanceCreator.class, new TypeLiteral<ModuleScopedProvider<ExternalSoundInstanceCreator>>() {
 		});
 		bindModuleScoped(ExternalInteractionEmpiriaApi.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionEmpiriaApi>>() {
 		});

@@ -3,7 +3,8 @@ package eu.ydp.empiria.player.client.module.external.object;
 import com.google.gwt.core.client.js.JsType;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
-import eu.ydp.empiria.player.client.module.external.sound.ExternalInteractionSoundApi;
+import eu.ydp.empiria.player.client.module.external.sound.ExternalSoundInstanceCallback;
+import eu.ydp.empiria.player.client.module.external.sound.ExternalSoundInstanceCreator;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 @JsType
@@ -14,7 +15,7 @@ public class ExternalInteractionEmpiriaApi {
 	private ExternalInteractionResponseModel responseModel;
 	@Inject
 	@ModuleScoped
-	private ExternalInteractionSoundApi soundApi;
+	private ExternalSoundInstanceCreator soundInstanceCreator;
 
 	public void onResultChange(ExternalInteractionStatus status) {
 		int done = status.getDone();
@@ -29,7 +30,7 @@ public class ExternalInteractionEmpiriaApi {
 		}
 	}
 
-	public ExternalInteractionSoundApi soundApi() {
-		return soundApi;
+	public void initSound(String src, ExternalSoundInstanceCallback callback) {
+		soundInstanceCreator.createSound(src, callback);
 	}
 }
