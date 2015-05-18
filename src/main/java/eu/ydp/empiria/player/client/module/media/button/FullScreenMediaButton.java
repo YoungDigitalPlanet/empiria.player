@@ -1,17 +1,14 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.media.*;
 
 public abstract class FullScreenMediaButton<H> extends AbstractMediaButton<H> implements MediaEventHandler {
+
 	@Inject
 	protected EventsBus eventsBus;
-
 	@Inject
 	protected PageScopeFactory scopeFactory;
 
@@ -38,7 +35,7 @@ public abstract class FullScreenMediaButton<H> extends AbstractMediaButton<H> im
 	protected void onClick() {
 		if (isFullScreenOpen() || isInFullScreen()) {
 			closeFullScreen();
-		} else if (!isInFullScreen()) {
+		} else {
 			openFullScreen();
 		}
 	}

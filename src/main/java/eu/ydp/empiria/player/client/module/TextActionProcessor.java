@@ -31,8 +31,8 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 	private ActionProcessorHelper getHelper() {
 		if (helper == null) {
 			helper = new ActionProcessorHelper(this);
-		}
 
+		}
 		return helper;
 	}
 

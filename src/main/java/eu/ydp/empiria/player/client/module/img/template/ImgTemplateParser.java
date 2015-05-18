@@ -25,10 +25,9 @@ import eu.ydp.empiria.player.client.module.img.ImgContent;
 import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
-import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
+import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButton;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected final static Set<String> CONTROLLERS = new HashSet<String>();
@@ -42,7 +41,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	private Provider<DefaultImgContent> defaultImgContentProvider;
 
 	@Inject
-	private Provider<PicturePlayerFullScreenMediaButon> fullScreenProvider;
+	private Provider<PicturePlayerFullScreenMediaButton> fullScreenProvider;
 
 	@Inject
 	private StyleSocket styleSocket;
@@ -90,11 +89,9 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	protected MediaController<?> createFullScreenButon() {
-		Element titleNodes = XMLUtils.getFirstElementWithTagName(baseElement, "title");
-		final String title = XMLUtils.getTextFromChilds(titleNodes);
-		final String srcFullScreen = baseElement.getAttribute("srcFullScreen");
-		PicturePlayerFullScreenMediaButon fullScreenMediaButon = fullScreenProvider.get();
-		fullScreenMediaButon.addImage(srcFullScreen, title);
+		PicturePlayerFullScreenMediaButton fullScreenMediaButon = fullScreenProvider.get();
+		fullScreenMediaButon.init(baseElement);
+
 		return fullScreenMediaButon;
 	}
 
@@ -189,7 +186,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	private boolean isFullScreenSupported() {
-		return PicturePlayerFullScreenMediaButon.isSupported(baseElement);
+		return PicturePlayerFullScreenMediaButton.isSupported(baseElement);
 	}
 
 	@Override

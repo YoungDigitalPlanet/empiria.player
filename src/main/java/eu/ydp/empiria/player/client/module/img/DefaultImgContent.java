@@ -1,17 +1,12 @@
 package eu.ydp.empiria.player.client.module.img;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
+import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButton;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class DefaultImgContent extends Composite implements ImgContent {
@@ -23,7 +18,6 @@ public class DefaultImgContent extends Composite implements ImgContent {
 
 	@UiField
 	protected Image image;
-
 	@UiField
 	protected FlowPanel container;
 
@@ -33,7 +27,7 @@ public class DefaultImgContent extends Composite implements ImgContent {
 	private boolean template = false;
 
 	@Inject
-	private PicturePlayerFullScreenMediaButon fullScreenMediaButon;
+	private PicturePlayerFullScreenMediaButton fullScreenMediaButton;
 
 	public DefaultImgContent() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -47,14 +41,18 @@ public class DefaultImgContent extends Composite implements ImgContent {
 	public void init(Element element, ModuleSocket moduleSocket) {
 		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
 		final String title = XMLUtils.getTextFromChilds(titleNodes);
-		final String srcFullScreen = element.getAttribute("srcFullScreen");
+
 		image.setAltText(title);
 		image.setUrl(element.getAttribute("src"));
-		if (srcFullScreen != null && !srcFullScreen.trim().isEmpty() && !template) {
-			fullScreenMediaButon.addImage(srcFullScreen, title);
-			fullScreenMediaButon.init();
-			container.add(fullScreenMediaButon);
-		}
+
+		initFullScreenMediaButton(element);
 	}
 
+
+	private void initFullScreenMediaButton(Element element) {
+		if(PicturePlayerFullScreenMediaButton.isSupported(element) && !template) {
+			fullScreenMediaButton.init(element);
+			container.add(fullScreenMediaButton);
+		}
+	}
 }
