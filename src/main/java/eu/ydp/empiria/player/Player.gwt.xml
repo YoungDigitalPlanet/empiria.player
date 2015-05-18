@@ -42,6 +42,7 @@
     <stylesheet src="lightbox2/css/lightbox.css"/>
     <stylesheet src="video-js/video-js.min.css"/>
     <stylesheet src="jqueryte/jquery-te-1.4.0.css"/>
+    <stylesheet src="magnific-popup/magnific-popup.css"/>
 
     <!-- LOGGER -->
     <!--  <replace-with class="eu.ydp.gwtutil.client.debug.log.DOMAppender"> -->
