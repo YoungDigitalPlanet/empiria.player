@@ -9,11 +9,16 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 
 public class PicturePlayerStructure extends AbstractModuleStructure<PicturePlayerBean, PicturePlayerJAXBParser> {
 
-	@Inject
 	private PicturePlayerJAXBParser parser;
-	@Inject
 	private XMLParser xmlParser;
+
 	@Inject
+	public PicturePlayerStructure(PicturePlayerJAXBParser parser, XMLParser xmlParser, IJSONService ijsonService) {
+		this.parser = parser;
+		this.xmlParser = xmlParser;
+		this.ijsonService = ijsonService;
+	}
+
 	private IJSONService ijsonService;
 
 	@Override

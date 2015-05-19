@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 
+import com.google.common.base.Strings;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 import javax.xml.bind.annotation.*;
 
@@ -7,7 +8,7 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "img")
 public class PicturePlayerBean extends ModuleBean {
 
-	@XmlElement
+	@XmlElement(name = "title")
 	private ImgTitleBean imgTitleBean;
 	@XmlAttribute
 	private String src;
@@ -46,5 +47,13 @@ public class PicturePlayerBean extends ModuleBean {
 
 	public void setFullscreenMode(String fullscreenMode) {
 		this.fullscreenMode = fullscreenMode;
+	}
+
+	public boolean hasTitle() {
+		return imgTitleBean != null;
+	}
+
+	public boolean hasFullscreen() {
+		return !Strings.isNullOrEmpty(srcFullScreen);
 	}
 }

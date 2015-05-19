@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 
-import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -8,13 +7,13 @@ import javax.xml.bind.annotation.*;
 public class ImgTitleBean {
 
 	@XmlValue
-	private XMLContent titleName;
+	private String titleName;
 
-	public XMLContent getTitleName() {
+	public String getTitleName() {
 		return titleName;
 	}
 
-	public void setTitleName(XMLContent titleName) {
+	public void setTitleName(String titleName) {
 		this.titleName = titleName;
 	}
 }

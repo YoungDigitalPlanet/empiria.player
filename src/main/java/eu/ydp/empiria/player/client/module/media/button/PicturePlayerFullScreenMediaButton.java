@@ -2,11 +2,12 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.gwt.xml.client.Element;
 import com.google.inject.*;
+import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.lightbox.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.fullscreen.*;
 import eu.ydp.empiria.player.client.util.events.media.*;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public class PicturePlayerFullScreenMediaButton extends FullScreenMediaButton<PicturePlayerFullScreenMediaButton> implements MediaEventHandler,
 																															 FullScreenEventHandler {
@@ -25,14 +26,15 @@ public class PicturePlayerFullScreenMediaButton extends FullScreenMediaButton<Pi
 		super(styleNames.QP_MEDIA_FULLSCREEN_BUTTON());
 	}
 
-	public void init(Element element) {
+	public void init(PicturePlayerBean bean) {
 		super.init();
-		Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");
 
-		this.title = XMLUtils.getTextFromChilds(titleNodes);
-		this.imageUrl = element.getAttribute("srcFullScreen");
+		if (bean.getImgTitleBean() != null) {
+//			title = bean.getImgTitleBean().getTitleName().getValue().toString();
+		}
+		this.imageUrl = bean.getSrcFullScreen();
 
-		String mode = element.getAttribute("fullscreenMode");
+		String mode = bean.getFullscreenMode();
 		this.fullScreen = fullScreenModeProvider.getFullscreen(mode);
 	}
 
@@ -52,6 +54,8 @@ public class PicturePlayerFullScreenMediaButton extends FullScreenMediaButton<Pi
 
 	@Override
 	protected void openFullScreen() {
+
+		ConsoleLog.alert(imageUrl + ", " + title);
 		fullScreen.openImage(imageUrl, title);
 	}
 

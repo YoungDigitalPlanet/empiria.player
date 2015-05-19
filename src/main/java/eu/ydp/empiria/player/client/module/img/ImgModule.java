@@ -9,7 +9,7 @@ import com.google.inject.*;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.bookmark.*;
-import eu.ydp.empiria.player.client.module.img.picture.player.DefaultImgContentModule;
+import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.geom.Rectangle;
@@ -28,7 +28,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	protected TemplateParserFactory parserFactory;
 
 	@Inject
-	protected Provider<DefaultImgContentModule> defaultImgContentProvider;
+	protected Provider<PicturePlayerModule> defaultImgContentProvider;
 	@Inject
 	private StyleSocket styleSocket;
 
