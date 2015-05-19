@@ -1,29 +1,23 @@
 package eu.ydp.empiria.player.client.module.img;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
-
-import java.util.Map;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NodeList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
+import com.google.gwt.xml.client.*;
+import com.google.inject.*;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
-import eu.ydp.empiria.player.client.module.Factory;
-import eu.ydp.empiria.player.client.module.InlineModuleBase;
-import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
-import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
+import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.bookmark.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.DefaultImgContentModule;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+import java.util.Map;
 
 /**
  * Klasa odpowiedzialna za renderwoanie elementu img.
- * 
  */
 public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, IBookmarkable {
 
@@ -34,7 +28,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	protected TemplateParserFactory parserFactory;
 
 	@Inject
-	protected Provider<DefaultImgContent> defaultImgContentProvider;
+	protected Provider<DefaultImgContentModule> defaultImgContentProvider;
 	@Inject
 	private StyleSocket styleSocket;
 
@@ -49,7 +43,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 
 	/**
 	 * buduke widok na starych zasadach
-	 * 
+	 *
 	 * @param element
 	 */
 	protected void createOldView(Element element) {
@@ -85,7 +79,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 
 	/**
 	 * buduje widok w oparciu o szablon
-	 * 
+	 *
 	 * @param baseElement
 	 * @param template
 	 */

@@ -11,13 +11,18 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.img.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.DefaultImgContentModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
+<<<<<<< Updated upstream
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
-import eu.ydp.empiria.player.client.module.media.button.*;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
+=======
+import eu.ydp.empiria.player.client.module.media.button.*;
+import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import java.util.*;
+>>>>>>> Stashed changes
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected final static Set<String> CONTROLLERS = new HashSet<String>();
