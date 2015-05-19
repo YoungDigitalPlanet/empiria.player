@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.lightbox2;
+package eu.ydp.empiria.player.client.lightbox;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
