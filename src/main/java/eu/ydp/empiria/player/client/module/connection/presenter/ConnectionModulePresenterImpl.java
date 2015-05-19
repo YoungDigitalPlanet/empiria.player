@@ -29,7 +29,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	ConnectionModuleModel model;
 
-	private boolean isAnswerTypeEqualsCorrect;
+	private ShowAnswersType lastAnswerType;
 
 	@Inject
 	private MultiplePairModuleView moduleView;
@@ -80,11 +80,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	public void showAnswers(ShowAnswersType mode) {
 		List<KeyValue<String, String>> answers = (mode == ShowAnswersType.CORRECT) ? model.getCorrectAnswers() : model.getCurrentAnswers();
 		showAnswers(answers, (mode == ShowAnswersType.CORRECT) ? NONE : NORMAL);
-		setAnswerType(mode);
-	}
-
-	private void setAnswerType(ShowAnswersType mode) {
-		isAnswerTypeEqualsCorrect = mode == ShowAnswersType.CORRECT;
+		lastAnswerType = mode;
 	}
 
 	@Override
@@ -124,7 +120,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 	private void repaintViewFromResponseModel() {
 		if (moduleView.isAttached()) {
 			reset();
-			showAnswers(isAnswerTypeEqualsCorrect ? ShowAnswersType.CORRECT : ShowAnswersType.USER);
+			showAnswers(lastAnswerType);
 		}
 	}
 
