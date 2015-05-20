@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "title")
-public class ImgTitleBean {
+public class PicturePlayerTitleBean {
 
 	@XmlValue
 	private String titleName;
 
-	public String getTitleName() {
+	public String getTitle() {
 		return titleName;
 	}
 

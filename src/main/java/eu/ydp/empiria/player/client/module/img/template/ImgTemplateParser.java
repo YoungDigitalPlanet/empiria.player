@@ -11,8 +11,7 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.img.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.media.button.MediaController;
-import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButton;
+import eu.ydp.empiria.player.client.module.media.button.*;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import java.util.*;
@@ -78,7 +77,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	protected MediaController<?> createFullScreenButon() {
 		PicturePlayerFullScreenMediaButton fullScreenMediaButon = fullScreenProvider.get();
-//		fullScreenMediaButon.init(baseElement);
+		//		fullScreenMediaButon.init(baseElement);
 
 		return fullScreenMediaButon;
 	}
@@ -174,7 +173,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	private boolean isFullScreenSupported() {
-		return PicturePlayerFullScreenMediaButton.isSupported(baseElement);
+		return baseElement.hasAttribute("srcFullScreen") && !baseElement.getAttribute("srcFullScreen").trim().isEmpty();
 	}
 
 	@Override

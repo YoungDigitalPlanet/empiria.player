@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.img.picture.player;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.img.ImgContent;
 import eu.ydp.empiria.player.client.module.img.picture.player.presenter.PicturePlayerPresenter;
@@ -23,8 +22,6 @@ public class PicturePlayerModule implements ImgContent {
 		this.presenter = presenter;
 	}
 
-	private boolean template = false;
-
 	@Override
 	public Widget asWidget() {
 		return presenter.getView();
@@ -32,13 +29,12 @@ public class PicturePlayerModule implements ImgContent {
 
 	@Override
 	public void init(Element element, ModuleSocket moduleSocket) {
-		ConsoleLog.alert(element.toString());
 		structure.createFromXml(element.toString(), ijsonService.createArray());
 		PicturePlayerBean bean = structure.getBean();
 		presenter.init(bean);
 	}
 
 	public void setTemplate(boolean template) {
-		this.template = template;
+		presenter.setTemplate(template);
 	}
 }

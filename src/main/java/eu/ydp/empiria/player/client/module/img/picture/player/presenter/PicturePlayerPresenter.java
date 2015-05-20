@@ -3,52 +3,50 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.img.picture.player.presenter.button.FullscreenButtonPresenter;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
-import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerViewImpl;
+import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 
 public class PicturePlayerPresenter {
 
-	private PicturePlayerViewImpl view;
-	private FullscreenButtonPresenter fullscreenButtonPresenter;
+	private PicturePlayerView view;
+	private PicturePlayerFullscreenController fullscreenController;
+	private PicturePlayerBean bean;
+
+	private boolean template = false;
 
 	@Inject
-	public PicturePlayerPresenter(PicturePlayerViewImpl view, FullscreenButtonPresenter fullscreenButtonPresenter) {
+	public PicturePlayerPresenter(PicturePlayerView view, PicturePlayerFullscreenController fullscreenController) {
 		this.view = view;
-		this.fullscreenButtonPresenter = fullscreenButtonPresenter;
+		this.fullscreenController = fullscreenController;
 	}
 
 	public void init(PicturePlayerBean bean) {
-		String title = getTitle(bean);
+		this.bean = bean;
 
-		view.setImage(title, bean.getSrc());
+		view.setPresenter(this);
+		view.setImage(bean.getTitle(), bean.getSrc());
 		initFullScreenMediaButton(bean);
 	}
 
-	private String getTitle(PicturePlayerBean bean) {
-		String title = "";
-		if (bean.hasTitle()) {
-			title = bean.getImgTitleBean().getTitleName();
-		}
-		return title;
-	}
-
 	private void initFullScreenMediaButton(PicturePlayerBean bean) {
-		if (bean.hasFullscreen()) {
-			fullscreenButtonPresenter.init(bean);
-			view.setClickHandler(onOpenFullscreen());
+		if (isFullscreenSupported(bean)) {
+			view.addFullscreenButton();
 		}
 	}
 
-	private ClickHandler onOpenFullscreen() {
-		return new ClickHandler() {
-			@Override public void onClick(ClickEvent event) {
-				fullscreenButtonPresenter.openFullScreen();
-			}
-		};
+	private boolean isFullscreenSupported(PicturePlayerBean bean) {
+		return bean.hasFullscreen() && !template;
+	}
+
+	public void openFullscreen() {
+		fullscreenController.openFullScreen(bean);
 	}
 
 	public Widget getView() {
 		return view.asWidget();
+	}
+
+	public void setTemplate(boolean template) {
+		this.template = template;
 	}
 }

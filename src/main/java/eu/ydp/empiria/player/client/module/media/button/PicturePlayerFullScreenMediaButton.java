@@ -29,8 +29,8 @@ public class PicturePlayerFullScreenMediaButton extends FullScreenMediaButton<Pi
 	public void init(PicturePlayerBean bean) {
 		super.init();
 
-		if (bean.getImgTitleBean() != null) {
-//			title = bean.getImgTitleBean().getTitleName().getValue().toString();
+		if (bean.getTitleBean() != null) {
+//			title = bean.getImgTitleBean().getTitle().getValue().toString();
 		}
 		this.imageUrl = bean.getSrcFullScreen();
 

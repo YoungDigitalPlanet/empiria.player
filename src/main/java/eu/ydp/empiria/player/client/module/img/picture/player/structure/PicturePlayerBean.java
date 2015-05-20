@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.*;
 public class PicturePlayerBean extends ModuleBean {
 
 	@XmlElement(name = "title")
-	private ImgTitleBean imgTitleBean;
+	private PicturePlayerTitleBean titleBean;
 	@XmlAttribute
 	private String src;
 	@XmlAttribute
@@ -17,12 +17,16 @@ public class PicturePlayerBean extends ModuleBean {
 	@XmlAttribute
 	private String fullscreenMode;
 
-	public ImgTitleBean getImgTitleBean() {
-		return imgTitleBean;
+	public PicturePlayerTitleBean getTitleBean() {
+		return titleBean;
 	}
 
-	public void setImgTitleBean(ImgTitleBean imgTitleBean) {
-		this.imgTitleBean = imgTitleBean;
+	public String getTitle() {
+		return hasTitle() ? titleBean.getTitle() : "";
+	}
+
+	public void setTitleBean(PicturePlayerTitleBean titleBean) {
+		this.titleBean = titleBean;
 	}
 
 	public String getSrc() {
@@ -50,7 +54,7 @@ public class PicturePlayerBean extends ModuleBean {
 	}
 
 	public boolean hasTitle() {
-		return imgTitleBean != null;
+		return titleBean != null;
 	}
 
 	public boolean hasFullscreen() {
