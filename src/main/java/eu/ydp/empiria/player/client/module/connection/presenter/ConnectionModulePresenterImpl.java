@@ -29,7 +29,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
 	ConnectionModuleModel model;
 
-	private ShowAnswersType lastAnswerType;
+	private ShowAnswersType lastAnswerType = ShowAnswersType.USER;
 
 	@Inject
 	private MultiplePairModuleView moduleView;

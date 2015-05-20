@@ -1,19 +1,7 @@
 package eu.ydp.empiria.player.client.module.connection.presenter;
 
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
@@ -32,6 +20,16 @@ import eu.ydp.empiria.player.client.module.connection.structure.MatchInteraction
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<MatchInteractionBean> {
@@ -68,6 +66,19 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		connectionModulePresenter.onConnectionEvent(event);
 		verify(connectionModulePresenter).reset();
 		verify(connectionModulePresenter).showAnswers(Matchers.eq(ShowAnswersType.USER));
+	}
+
+	@Test
+	public void shouldResetViewAndSetCorrectAnswersWhenCorrectAnswersAreShownOnRepaintEvent() {
+		PairConnectEvent event = new PairConnectEvent(PairConnectEventTypes.REPAINT_VIEW);
+
+		when(moduleView.isAttached()).thenReturn(true);
+
+		connectionModulePresenter.showAnswers(ShowAnswersType.CORRECT);
+		connectionModulePresenter.onConnectionEvent(event);
+
+		verify(connectionModulePresenter).reset();
+		verify(connectionModulePresenter, times(2)).showAnswers(Matchers.eq(ShowAnswersType.CORRECT));
 	}
 
 	@Test
@@ -253,7 +264,7 @@ public class ConnectionModulePresenterJUnitTest extends AbstractJAXBTestBase<Mat
 		Evaluate evaluate = Evaluate.USER;
 		Cardinality cardinality = Cardinality.MULTIPLE;
 		Response response = new ResponseBuilder().withCorrectAnswers(correctAnswers).withValues(values).withGroups(groups).withIdentifier(identifier)
-				.withEvaluate(evaluate).withCardinality(cardinality).build();
+												 .withEvaluate(evaluate).withCardinality(cardinality).build();
 		return response;
 	}
 
