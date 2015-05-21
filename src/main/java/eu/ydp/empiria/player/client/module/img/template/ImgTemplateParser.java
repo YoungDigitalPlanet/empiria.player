@@ -1,34 +1,20 @@
 package eu.ydp.empiria.player.client.module.img.template;
 
-import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
+import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.xml.client.*;
+import com.google.inject.*;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.module.img.DefaultImgContent;
-import eu.ydp.empiria.player.client.module.img.ExplorableImgContent;
-import eu.ydp.empiria.player.client.module.img.ImgContent;
-import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
+import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.img.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
-import eu.ydp.empiria.player.client.module.media.button.PicturePlayerFullScreenMediaButon;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
-import eu.ydp.gwtutil.client.xml.XMLUtils;
+import java.util.*;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
 	protected final static Set<String> CONTROLLERS = new HashSet<String>();
@@ -37,13 +23,8 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	@Inject
 	protected MediaControllerFactory controllerFactory;
-
 	@Inject
-	private Provider<DefaultImgContent> defaultImgContentProvider;
-
-	@Inject
-	private Provider<PicturePlayerFullScreenMediaButon> fullScreenProvider;
-
+	private Provider<PicturePlayerModule> defaultImgContentProvider;
 	@Inject
 	private StyleSocket styleSocket;
 
@@ -79,9 +60,6 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 			case MEDIA_DESCRIPTION:
 				controller = createWrapper(ModuleTagName.MEDIA_DESCRIPTION.tagName());
 				break;
-			case MEDIA_FULL_SCREEN_BUTTON:
-				controller = createFullScreenButon();
-				break;
 			default:
 				break;
 			}
@@ -89,18 +67,9 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 		return controller;
 	}
 
-	protected MediaController<?> createFullScreenButon() {
-		Element titleNodes = XMLUtils.getFirstElementWithTagName(baseElement, "title");
-		final String title = XMLUtils.getTextFromChilds(titleNodes);
-		final String srcFullScreen = baseElement.getAttribute("srcFullScreen");
-		PicturePlayerFullScreenMediaButon fullScreenMediaButon = fullScreenProvider.get();
-		fullScreenMediaButon.addImage(srcFullScreen, title);
-		return fullScreenMediaButon;
-	}
-
 	/**
 	 * tworzy widget na podstawie wezlow xml poprzez {@link InlineBodyGenerator}
-	 * 
+	 *
 	 * @param elementName
 	 * @return
 	 */
@@ -145,7 +114,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	/**
 	 * Tworzy obiekt img + labele
-	 * 
+	 *
 	 * @return
 	 */
 	private MediaController<?> createScreen() {
@@ -170,7 +139,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 
 	protected ImgContent createDefaultImgContent() {
 		ImgContent content = defaultImgContentProvider.get();
-		((DefaultImgContent) content).setTemplate(true);
+		((PicturePlayerModule) content).setTemplate(true);
 		return content;
 	}
 
@@ -189,7 +158,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
 	}
 
 	private boolean isFullScreenSupported() {
-		return PicturePlayerFullScreenMediaButon.isSupported(baseElement);
+		return baseElement.hasAttribute("srcFullScreen") && !baseElement.getAttribute("srcFullScreen").trim().isEmpty();
 	}
 
 	@Override
