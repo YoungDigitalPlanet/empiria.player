@@ -10,7 +10,7 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LightBoxModeProviderTest {
+public class LightBoxProviderTest {
 
 	@InjectMocks
 	private LightBoxProvider testObj;
