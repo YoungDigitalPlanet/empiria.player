@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.lightbox;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.*;
 
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox2.LightBox2;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific.popup.MagnificPopup;
