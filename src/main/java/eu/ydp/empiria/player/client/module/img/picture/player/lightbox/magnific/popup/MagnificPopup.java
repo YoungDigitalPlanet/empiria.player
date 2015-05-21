@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.lightbox.magnific.popup;
+package eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific.popup;
 
-import eu.ydp.empiria.player.client.lightbox.FullScreen;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 
-public class MagnificPopup implements FullScreen {
+public class MagnificPopup implements LightBox {
 
 	@Override
 	public void openImage(String imageSrc, String title) {

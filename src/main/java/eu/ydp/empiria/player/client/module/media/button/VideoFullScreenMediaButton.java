@@ -1,33 +1,67 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-
+import com.google.inject.*;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.media.*;
 
 /**
  * Przycisk przelaczania pomiedzy trybem pelnoekranowym a zwyklym
  */
-public class VideoFullScreenMediaButton extends FullScreenMediaButton<VideoFullScreenMediaButton> implements MediaEventHandler {
-	@Inject
+public class VideoFullScreenMediaButton extends AbstractMediaButton<VideoFullScreenMediaButton> implements MediaEventHandler {
+
 	private VideoFullScreenHelper fullScreenHelper;
+	private EventsBus eventsBus;
+	private Provider<VideoFullScreenMediaButton> buttonProvider;
+	private PageScopeFactory scopeFactory;
 
 	private Element fullScreenTemplate;
 	private MediaWrapper<?> mediaWrapper;
 	private MediaWrapper<?> fullScreenMediaWrapper;
+	protected boolean fullScreenOpen = false;
 
 	@Inject
-	Provider<VideoFullScreenMediaButton> buttonProvider;
-
-	@Inject
-	public VideoFullScreenMediaButton(StyleNameConstants styleNames) {
+	public VideoFullScreenMediaButton(StyleNameConstants styleNames, VideoFullScreenHelper fullScreenHelper, EventsBus eventsBus,
+			Provider<VideoFullScreenMediaButton> buttonProvider, PageScopeFactory scopeFactory) {
 		super(styleNames.QP_MEDIA_FULLSCREEN_BUTTON());
+
+		this.fullScreenHelper = fullScreenHelper;
+		this.eventsBus = eventsBus;
+		this.buttonProvider = buttonProvider;
+		this.scopeFactory = scopeFactory;
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_EXIT), this, scopeFactory.getCurrentPageScope());
+		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN), getMediaWrapper(), this, scopeFactory.getCurrentPageScope());
+	}
+
+	@Override
+	public void onMediaEvent(MediaEvent event) {
+		if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_OPEN) {
+			fullScreenOpen = true;
+		} else if (event.getType() == MediaEventTypes.ON_FULL_SCREEN_EXIT) {
+			fullScreenOpen = false;
+		}
+	}
+
+	public boolean isFullScreenOpen() {
+		return fullScreenOpen;
+	}
+
+	@Override
+	protected void onClick() {
+		if (isFullScreenOpen() || isInFullScreen()) {
+			closeFullScreen();
+		} else {
+			openFullScreen();
+		}
 	}
 
 	public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
@@ -52,21 +86,11 @@ public class VideoFullScreenMediaButton extends FullScreenMediaButton<VideoFullS
 		this.fullScreenTemplate = fullScreenTemplate;
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		eventsBus.addHandler(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_EXIT), this, scopeFactory.getCurrentPageScope());
-		eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_FULL_SCREEN_OPEN), getMediaWrapper(), this, scopeFactory.getCurrentPageScope());
-	}
-
-	@Override
-	protected void openFullScreen() {
+	private void openFullScreen() {
 		fullScreenHelper.openFullScreen(fullScreenMediaWrapper, mediaWrapper, fullScreenTemplate);
 	}
 
-	@Override
-	protected void closeFullScreen() {
+	private void closeFullScreen() {
 		fullScreenHelper.closeFullScreen();
 	}
-
 }

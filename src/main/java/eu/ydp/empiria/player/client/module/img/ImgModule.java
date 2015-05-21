@@ -28,7 +28,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 	protected TemplateParserFactory parserFactory;
 
 	@Inject
-	protected Provider<PicturePlayerModule> defaultImgContentProvider;
+	protected Provider<PicturePlayerModule> picturePlayerModuleProvider;
 	@Inject
 	private StyleSocket styleSocket;
 
@@ -56,7 +56,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 			if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
 				content = new ExplorableImgContent();
 			} else {
-				content = defaultImgContentProvider.get();
+				content = picturePlayerModuleProvider.get();
 			}
 		}
 		content.init(element, getModuleSocket());

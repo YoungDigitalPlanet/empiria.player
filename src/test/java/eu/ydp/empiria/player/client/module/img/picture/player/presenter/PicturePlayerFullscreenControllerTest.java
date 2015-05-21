@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.lightbox.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -15,9 +15,9 @@ public class PicturePlayerFullscreenControllerTest {
 	@InjectMocks
 	private PicturePlayerFullscreenController testObj;
 	@Mock
-	private FullScreenModeProvider modeProvider;
+	private LightBoxProvider modeProvider;
 	@Mock
-	private FullScreen fullScreen;
+	private LightBox lightBox;
 
 	private PicturePlayerBean bean = new PicturePlayerBean();
 	private PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
@@ -32,7 +32,7 @@ public class PicturePlayerFullscreenControllerTest {
 		bean.setSrcFullScreen(srcFullscreen);
 		bean.setTitleBean(titleBean);
 		bean.setFullscreenMode(mode);
-		when(modeProvider.getFullscreen(mode)).thenReturn(fullScreen);
+		when(modeProvider.getFullscreen(mode)).thenReturn(lightBox);
 	}
 
 	@Test
@@ -42,6 +42,6 @@ public class PicturePlayerFullscreenControllerTest {
 
 		// then
 		verify(modeProvider).getFullscreen(mode);
-		verify(fullScreen).openImage(srcFullscreen, title);
+		verify(lightBox).openImage(srcFullscreen, title);
 	}
 }

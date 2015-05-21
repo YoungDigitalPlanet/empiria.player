@@ -1,9 +1,9 @@
-package eu.ydp.empiria.player.client.lightbox.lightbox2;
+package eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox2;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import eu.ydp.empiria.player.client.lightbox.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.*;
 
-public class LightBox2 implements FullScreen {
+public class LightBox2 implements LightBox {
 
 	private final JavaScriptObject lightbox;
 

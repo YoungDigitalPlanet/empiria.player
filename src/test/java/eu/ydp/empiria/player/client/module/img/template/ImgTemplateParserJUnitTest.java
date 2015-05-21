@@ -237,17 +237,4 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 		assertNotNull(module);
 		verify(instance).createLabelledImgContent();
 	}
-
-	@Test
-	public void testCreateFullScreenButon() {
-		Document document = createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN);
-		createInstance(document);
-		MediaController<?> mediaController = mock(MediaController.class);
-
-		doReturn(mediaController).when(instance).createFullScreenButon();
-		MediaController<?> module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN),
-														  ModuleTagName.MEDIA_FULL_SCREEN_BUTTON);
-		assertEquals(mediaController, module);
-
-	}
 }

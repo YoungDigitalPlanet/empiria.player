@@ -1,20 +1,20 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.lightbox.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 
 public class PicturePlayerFullscreenController {
 
-	private FullScreenModeProvider fullScreenModeProvider;
+	private LightBoxProvider lightBoxProvider;
 
 	@Inject
-	public PicturePlayerFullscreenController(FullScreenModeProvider fullScreenModeProvider) {
-		this.fullScreenModeProvider = fullScreenModeProvider;
+	public PicturePlayerFullscreenController(LightBoxProvider lightBoxProvider) {
+		this.lightBoxProvider = lightBoxProvider;
 	}
 
 	public void openFullScreen(PicturePlayerBean bean) {
-		FullScreen fullScreen = fullScreenModeProvider.getFullscreen(bean.getFullscreenMode());
-		fullScreen.openImage(bean.getSrcFullScreen(), bean.getTitle());
+		LightBox lightBox = lightBoxProvider.getFullscreen(bean.getFullscreenMode());
+		lightBox.openImage(bean.getSrcFullScreen(), bean.getTitle());
 	}
 }

@@ -1,19 +1,19 @@
-package eu.ydp.empiria.player.client.lightbox;
+package eu.ydp.empiria.player.client.module.img.picture.player.lightbox;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import eu.ydp.empiria.player.client.lightbox.lightbox2.LightBox2;
-import eu.ydp.empiria.player.client.lightbox.magnific.popup.MagnificPopup;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox2.LightBox2;
+import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific.popup.MagnificPopup;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FullScreenModeProviderTest {
+public class LightBoxModeProviderTest {
 
 	@InjectMocks
-	private FullScreenModeProvider testObj;
+	private LightBoxProvider testObj;
 	@Mock
 	private MagnificPopup magnificPopup;
 	@Mock
@@ -25,7 +25,7 @@ public class FullScreenModeProviderTest {
 		String mode = "magnific";
 
 		// when
-		FullScreen fullscreen = testObj.getFullscreen(mode);
+		LightBox fullscreen = testObj.getFullscreen(mode);
 
 		// then
 		assertThat(fullscreen).isEqualTo(magnificPopup);
@@ -37,7 +37,7 @@ public class FullScreenModeProviderTest {
 		String mode = "unknown";
 
 		// when
-		FullScreen fullscreen = testObj.getFullscreen(mode);
+		LightBox fullscreen = testObj.getFullscreen(mode);
 
 		// then
 		assertThat(fullscreen).isEqualTo(lightBox2);
