@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 
-
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "slideshow")
 public class SlideshowBean {
