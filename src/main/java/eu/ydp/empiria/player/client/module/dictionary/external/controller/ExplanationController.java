@@ -29,8 +29,9 @@ public class ExplanationController {
 	}
 
 	public void init() {
-		addPlayButtonHandler();
+		addExplanationPlayButtonHandler();
 		addEntryExamplePanelHandler();
+		addEntryPlayButtonHandler();
 	}
 
 	public void processEntryAndPlaySound(Entry entry) {
@@ -61,17 +62,27 @@ public class ExplanationController {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {
-				explanationDescriptionSoundController.playOrStopDescriptionSound(entry);
+				explanationDescriptionSoundController.playOrStopExplanationSound(entry);
 			}
 		});
 	}
 
-	private void addPlayButtonHandler() {
+	private void addExplanationPlayButtonHandler() {
 		this.explanationView.addPlayButtonHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				explanationDescriptionSoundController.playOrStopDescriptionSound(entry);
+				explanationDescriptionSoundController.playOrStopExplanationSound(entry);
+			}
+		});
+	}
+
+	private void addEntryPlayButtonHandler(){
+		this.explanationView.addEntryPlayButtonHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				explanationDescriptionSoundController.playOrStopEntrySound(entry);
 			}
 		});
 	}

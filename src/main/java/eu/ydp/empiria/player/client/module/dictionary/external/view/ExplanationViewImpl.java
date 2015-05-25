@@ -60,6 +60,8 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	@UiField
 	PushButton playButton;
 	@UiField
+	PushButton entryPlayButton;
+	@UiField
 	Label labelLabel;
 
 	@Inject
@@ -80,8 +82,13 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	}
 
 	@Override
-	public void addPlayButtonHandler(ClickHandler handler) {
+		 public void addPlayButtonHandler(ClickHandler handler) {
 		playButton.addClickHandler(handler);
+	}
+
+	@Override
+	public void addEntryPlayButtonHandler(ClickHandler handler) {
+		entryPlayButton.addClickHandler(handler);
 	}
 
 	@Override
@@ -106,13 +113,23 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	}
 
 	@Override
-	public void setPlayingButtonStyle() {
+	public void setExplanationPlayButtonStyle() {
 		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON_PLAYING());
 	}
 
 	@Override
-	public void setStopButtonStyle() {
+	public void setExplanationStopButtonStyle() {
 		playButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_PLAY_BUTTON());
+	}
+
+	@Override
+	public void setEntryPlayButtonStyle() {
+		entryPlayButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_ENTRY_PLAY_BUTTON_PLAYING());
+	}
+
+	@Override
+	public void setEntryStopButtonStyle() {
+		entryPlayButton.setStylePrimaryName(styleNameConstants.QP_DICTIONARY_EXPLANATION_ENTRY_PLAY_BUTTON());
 	}
 
 }

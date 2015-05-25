@@ -14,12 +14,18 @@ public interface ExplanationView extends IsWidget {
 
 	void hide();
 
-	void setStopButtonStyle();
+	void setExplanationStopButtonStyle();
 
-	void setPlayingButtonStyle();
+	void setExplanationPlayButtonStyle();
+
+	void setEntryPlayButtonStyle();
+
+	void setEntryStopButtonStyle();
 
 	void addEntryExamplePanelHandler(MouseUpHandler mouseUpHandler);
 
 	void addPlayButtonHandler(ClickHandler clickHandler);
+
+	void addEntryPlayButtonHandler(ClickHandler handler);
 
 }

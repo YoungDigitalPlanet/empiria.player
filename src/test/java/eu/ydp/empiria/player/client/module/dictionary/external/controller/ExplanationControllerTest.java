@@ -137,7 +137,7 @@ public class ExplanationControllerTest {
 		mouseUpHandler.onMouseUp(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
+		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry);
 	}
 
 	@Test
@@ -161,6 +161,6 @@ public class ExplanationControllerTest {
 		clickHandler.onClick(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
+		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry);
 	}
 }

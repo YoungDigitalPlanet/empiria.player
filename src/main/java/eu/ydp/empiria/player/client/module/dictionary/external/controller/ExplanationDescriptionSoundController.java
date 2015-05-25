@@ -40,56 +40,103 @@ public class ExplanationDescriptionSoundController {
 		this.mediaWrapperCreator = mediaWrapperCreator;
 	}
 
-	private void playDescriptionSound(String filePath) {
+	private void playExplanationSoundFile(String filePath) {
 		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-				onMediaWrapperCallback(mw);
+				onExplanationMediaWrapperCallback(mw);
 			}
 
 		});
 	}
 
-	private void onMediaWrapperCallback(MediaWrapper<Widget> mw) {
+	private void playEntrySoundFile(String filePath) {
+		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
+
+			@Override
+			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
+				onEntryMediaWrapperCallback(mw);
+			}
+
+		});
+	}
+
+	private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
 		mediaWrapper = mw;
-		explanationView.setPlayingButtonStyle();
-		AbstractMediaEventHandler handler = createDescriptionSoundMediaHandler();
+		explanationView.setEntryPlayButtonStyle();
+		AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
 		addMediaHandlers(handler);
 		playing = true;
 		mediaWrapperController.stopAndPlay(mediaWrapper);
 	}
 
-	private AbstractMediaEventHandler createDescriptionSoundMediaHandler() {
+	private void onExplanationMediaWrapperCallback(MediaWrapper<Widget> mw) {
+		mediaWrapper = mw;
+		explanationView.setExplanationPlayButtonStyle();
+		AbstractMediaEventHandler handler = createExplanationSoundMediaHandler();
+		addMediaHandlers(handler);
+		playing = true;
+		mediaWrapperController.stopAndPlay(mediaWrapper);
+	}
+
+	private AbstractMediaEventHandler createExplanationSoundMediaHandler() {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
 				if (!MediaEventTypes.ON_PLAY.equals(event.getType())) {
-					explanationView.setStopButtonStyle();
+					explanationView.setExplanationStopButtonStyle();
 					playing = false;
 				}
 			}
 		};
 	}
 
-	public void playOrStopDescriptionSound(Entry entry) {
+	private AbstractMediaEventHandler createEntrySoundMediaHandler() {
+		return new AbstractMediaEventHandler() {
+			@Override
+			public void onMediaEvent(MediaEvent event) {
+				if (!MediaEventTypes.ON_PLAY.equals(event.getType())) {
+					explanationView.setEntryStopButtonStyle();
+					playing = false;
+				}
+			}
+		};
+	}
+
+	public void playOrStopExplanationSound(Entry entry) {
 		if (playing) {
 			stop();
 		} else {
 			String fileName = entry.getEntryExampleSound();
-			playDescrSound(fileName);
+			playExplanationLectorSound(fileName);
 		}
 	}
 
-	private void playDescrSound(String fileName) {
+	public void playOrStopEntrySound(Entry entry) {
+		if (playing) {
+			stop();
+		} else {
+			String fileName = entry.getEntrySound();
+			playEntryLectorSound(fileName);
+		}
+	}
+
+	private void playExplanationLectorSound(String fileName) {
 		if (fileName != null && !fileName.isEmpty()) {
-			playDescriptionSound(fileName);
+			playExplanationSoundFile(fileName);
+		}
+	}
+
+	private void playEntryLectorSound(String fileName) {
+		if (fileName != null && !fileName.isEmpty()) {
+			playEntrySoundFile(fileName);
 		}
 	}
 
 	public void stop() {
 		playing = false;
-		explanationView.setStopButtonStyle();
+		explanationView.setExplanationStopButtonStyle();
 		mediaWrapperController.stop(mediaWrapper);
 	}
 
