@@ -31,8 +31,6 @@ public class ExplanationControllerTest {
 	@Mock
 	private DictionaryModuleFactory dictionaryModuleFactory;
 
-	@Mock
-	private ExplanationEntrySoundController explanationEntrySoundController;
 
 	@Mock
 	private Entry entry;
@@ -43,7 +41,7 @@ public class ExplanationControllerTest {
 	@Before
 	public void setUp() {
 		when(dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView)).thenReturn(explanationDescriptionSoundController);
-		testObj = new ExplanationController(explanationView, explanationEntrySoundController, dictionaryModuleFactory);
+		testObj = new ExplanationController(explanationView, dictionaryModuleFactory);
 	}
 
 	@Test
@@ -56,18 +54,6 @@ public class ExplanationControllerTest {
 
 		// then
 		verify(explanationView).processEntry(entry);
-	}
-
-	@Test
-	public void shouldProcessAndPlayNotNullEntry() {
-		// given
-		Entry entry = mock(Entry.class);
-
-		// when
-		testObj.processEntryAndPlaySound(entry);
-
-		// then
-		verify(explanationEntrySoundController).playEntrySound(entry);
 	}
 
 	@Test

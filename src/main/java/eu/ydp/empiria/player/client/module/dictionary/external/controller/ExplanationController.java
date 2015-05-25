@@ -17,14 +17,12 @@ public class ExplanationController {
 	private final ExplanationView explanationView;
 
 	private Entry entry;
-	private final ExplanationEntrySoundController explanationEntrySoundController;
 	private final ExplanationDescriptionSoundController explanationDescriptionSoundController;
 
 	@Inject
-	public ExplanationController(ExplanationView explanationView, ExplanationEntrySoundController explanationEntrySoundController,
+	public ExplanationController(ExplanationView explanationView,
 			DictionaryModuleFactory dictionaryModuleFactory) {
 		this.explanationView = explanationView;
-		this.explanationEntrySoundController = explanationEntrySoundController;
 		this.explanationDescriptionSoundController = dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView);
 	}
 
@@ -36,7 +34,6 @@ public class ExplanationController {
 
 	public void processEntryAndPlaySound(Entry entry) {
 		processEntry(entry);
-		explanationEntrySoundController.playEntrySound(entry);
 	}
 
 	public void processEntry(Entry entry) {
