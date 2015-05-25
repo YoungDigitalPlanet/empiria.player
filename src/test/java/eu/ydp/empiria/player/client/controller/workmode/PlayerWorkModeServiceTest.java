@@ -105,7 +105,7 @@ public class PlayerWorkModeServiceTest {
 	}
 
 	@Test
-	public void shouldNotifyModule_ifTransitionIsInvalid() {
+	public void shouldNotNotifyModule_ifTransitionIsInvalid() {
 		// given
 		PlayerWorkMode invalidTransition = PlayerWorkMode.FULL;
 
