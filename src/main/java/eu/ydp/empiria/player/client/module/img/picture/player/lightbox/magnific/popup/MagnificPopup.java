@@ -10,19 +10,20 @@ public class MagnificPopup implements LightBox {
 	}
 
 	private native void openImageNative(String imageSrc, String title) /*-{
-		$wnd.$.magnificPopup.open({
-			items: {
-				src: imageSrc
-			},
-			type: 'image',
+		$wnd.setTimeout(function () {
+			$wnd.$.magnificPopup.open({
+				items: {
+					src: imageSrc
+				},
+				type: 'image',
 
-			image: {
-				titleSrc: function () {
-					return title
-				}
-			},
-
-			closeOnContentClick: true
-		});
+				image: {
+					titleSrc: function () {
+						return title
+					}
+				},
+				closeOnContentClick: true
+			});
+		}, 300)
 	}-*/;
 }
