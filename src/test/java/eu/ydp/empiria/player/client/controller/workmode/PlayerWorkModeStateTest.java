@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller.workmode;
 
 import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.json.JSONStateSerializer;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ public class PlayerWorkModeStateTest {
 		testObj.setState(state);
 
 		// then
-		verify(playerWorkModeService).forceToUpdateWorkMode(PlayerWorkMode.FULL);
+		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.FULL);
 	}
 
 	@Test
