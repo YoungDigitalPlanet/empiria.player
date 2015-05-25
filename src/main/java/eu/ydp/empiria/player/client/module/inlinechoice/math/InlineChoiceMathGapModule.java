@@ -220,17 +220,27 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 			if (lastValue != null) {
 				getResponse().remove(lastValue);
 			}
-			String currentValue = getSelectedOption();
 
+			String currentValue = getSelectedOption();
 			getResponse().add(currentValue);
 			lastValue = currentValue;
+
 			fireStateChanged(userInteract, isReset);
 		}
 	}
 
 	private String getSelectedOption() {
-		int selectedIndex = getListBox().getSelectedIndex();
-		return selectedIndex > 0 ? options.get(selectedIndex - 1) : "";
+		int selectedOption = getListBox().getSelectedIndex() - 1;
+
+		if (isNotEmptyOption(selectedOption)) {
+			return options.get(selectedOption);
+		} else {
+			return "";
+		}
+	}
+
+	private boolean isNotEmptyOption(int selectedIndex) {
+		return selectedIndex > 0;
 	}
 
 	private void updateResponse(boolean userInteract) {
