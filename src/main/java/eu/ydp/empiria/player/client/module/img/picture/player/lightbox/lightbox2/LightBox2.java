@@ -25,11 +25,9 @@ public class LightBox2 implements LightBox {
 	}
 
 	private native void openImageNative(String url, String title, JavaScriptObject lightbox) /*-{
-		$wnd.setTimeout(function () {
-			lightbox.clear();
-			lightbox.add(url, title);
-			lightbox.start();
-		}, 300)
+		lightbox.clear();
+		lightbox.add(url, title);
+		lightbox.start();
 
 	}-*/;
 
