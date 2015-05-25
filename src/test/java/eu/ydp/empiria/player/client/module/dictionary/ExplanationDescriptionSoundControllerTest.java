@@ -38,6 +38,7 @@ import eu.ydp.gwtutil.client.event.EventImpl.Type;
 public class ExplanationDescriptionSoundControllerTest {
 
 	private static final String FILE_NAME = "test.mp3";
+	private static final String ENTRY_FILE_NAME = "test.mp3";
 
 	@InjectMocks
 	private ExplanationDescriptionSoundController testObj;
@@ -86,6 +87,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	@Before
 	public void setUp() {
 		when(entryWithValidFileName.getEntryExampleSound()).thenReturn(FILE_NAME);
+		when(entryWithValidFileName.getEntrySound()).thenReturn(ENTRY_FILE_NAME);
 	}
 
 	@Test
@@ -111,7 +113,29 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldSetStopButtonCssWhenEventIsNotPlay() {
+	public void shouldPlayEntry() {
+		CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
+		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
+
+		// when
+		testObj.playOrStopEntrySound(entryWithValidFileName);
+
+		// then
+		verify(mediaWrapperCreator).create(eq(ENTRY_FILE_NAME), callbackReceiverCaptor.capture());
+		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		InOrder inOrder = inOrder(mocksCollector.getMocks());
+		inOrder.verify(explanationView).setEntryPlayButtonStyle();
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PAUSE, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_END, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_STOP, currentPageScope);
+		verifyInOrderSourceHandlerAdding(inOrder, MediaEventTypes.ON_PLAY, currentPageScope);
+
+		inOrder.verify(mediaWrapperController).stopAndPlay(mediaWrapper);
+	}
+
+	@Test
+	public void shouldSetStopButtonCssWhenEventIsNotPlayForDescription() {
 		// given
 		MediaEvent mediaEvent = mock(MediaEvent.class);
 		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_PAUSE);
@@ -134,7 +158,30 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldDoNothingWhenEventIsPlay() {
+	public void shouldSetStopButtonCssWhenEventIsNotPlayForEntry() {
+		// given
+		MediaEvent mediaEvent = mock(MediaEvent.class);
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_PAUSE);
+
+		CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
+		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
+
+		testObj.playOrStopEntrySound(entryWithValidFileName);
+		verify(mediaWrapperCreator).create(eq(ENTRY_FILE_NAME), callbackReceiverCaptor.capture());
+		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		verifySourceHandlerAdding(MediaEventTypes.ON_PLAY, currentPageScope);
+
+		// when
+		abstractMediaHandlerCaptor.getValue().onMediaEvent(mediaEvent);
+
+		// then
+		verify(explanationView).setEntryStopButtonStyle();
+
+	}
+
+	@Test
+	public void shouldDoNothingWhenEventIsPlayForDescription() {
 		// given
 		MediaEvent mediaEvent = mock(MediaEvent.class);
 		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_PLAY);
@@ -157,7 +204,30 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldNotPlayWhenFileNameIsNull() {
+	public void shouldDoNothingWhenEventIsPlayForEntry() {
+		// given
+		MediaEvent mediaEvent = mock(MediaEvent.class);
+		when(mediaEvent.getType()).thenReturn(MediaEventTypes.ON_PLAY);
+
+		CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
+		when(currentPageScropProvider.get()).thenReturn(currentPageScope);
+
+		testObj.playOrStopEntrySound(entryWithValidFileName);
+		verify(mediaWrapperCreator).create(eq(ENTRY_FILE_NAME), callbackReceiverCaptor.capture());
+		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		verifySourceHandlerAdding(MediaEventTypes.ON_PLAY, currentPageScope);
+
+		// when
+		abstractMediaHandlerCaptor.getValue().onMediaEvent(mediaEvent);
+
+		// then
+		verify(explanationView).setEntryPlayButtonStyle();
+		verifyNoMoreInteractions(explanationView);
+	}
+
+	@Test
+	public void shouldNotPlayWhenFileNameIsNullInDescription() {
 		// given
 		Entry entry = mock(Entry.class);
 
@@ -170,7 +240,20 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldNotPlayWhenFileNameIsEmptyString() {
+	public void shouldNotPlayWhenFileNameIsNullInEntry() {
+		// given
+		Entry entry = mock(Entry.class);
+
+		// when
+		testObj.playOrStopEntrySound(entry);
+
+		// then
+		verify(entry).getEntrySound();
+		verifyZeroInteractions(mocksCollector.getMocks());
+	}
+
+	@Test
+	public void shouldNotPlayWhenFileNameIsEmptyStringInDescription() {
 		// given
 		Entry entry = mock(Entry.class);
 		when(entry.getEntryExampleSound()).thenReturn("");
@@ -184,7 +267,21 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldStopPlaying() {
+	public void shouldNotPlayWhenFileNameIsEmptyStringInEntry() {
+		// given
+		Entry entry = mock(Entry.class);
+		when(entry.getEntryExampleSound()).thenReturn("");
+
+		// when
+		testObj.playOrStopEntrySound(entry);
+
+		// then
+		verify(entry).getEntrySound();
+		verifyZeroInteractions(mocksCollector.getMocks());
+	}
+
+	@Test
+	public void shouldStopPlayingWhenCalledInDescription() {
 		// given
 		testObj.playOrStopExplanationSound(entryWithValidFileName);
 
@@ -196,6 +293,22 @@ public class ExplanationDescriptionSoundControllerTest {
 
 		// then
 		verify(explanationView).setExplanationStopButtonStyle();
+		verify(mediaWrapperController).stop(mediaWrapper);
+	}
+
+	@Test
+	public void shouldStopPlayingWhenCalledInEntry() {
+		// given
+		testObj.playOrStopEntrySound(entryWithValidFileName);
+
+		// when
+		verify(mediaWrapperCreator).create(eq(ENTRY_FILE_NAME), callbackReceiverCaptor.capture());
+		callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
+
+		testObj.playOrStopEntrySound(entryWithValidFileName);
+
+		// then
+		verify(explanationView).setEntryPlayButtonStyle();
 		verify(mediaWrapperController).stop(mediaWrapper);
 	}
 

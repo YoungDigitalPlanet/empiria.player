@@ -163,4 +163,28 @@ public class ExplanationControllerTest {
 		// then
 		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry);
 	}
+
+	@Test
+	public void shouldCallPlayOrStopEntryOnPlayButtonClick() {
+		// given
+		String file = "test.mp3";
+		Entry entry = mock(Entry.class);
+		when(entry.getEntrySound()).thenReturn(file);
+
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock invocation) {
+				clickHandler = (ClickHandler) invocation.getArguments()[0];
+				return null;
+			}
+		}).when(explanationView).addEntryPlayButtonHandler(any(ClickHandler.class));
+
+		// when
+		testObj.init();
+		testObj.processEntry(entry);
+		clickHandler.onClick(null);
+
+		// then
+		verify(explanationDescriptionSoundController).playOrStopEntrySound(entry);
+	}
 }
