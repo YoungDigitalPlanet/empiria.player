@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.img.picture.player.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.uibinder.client.*;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.img.picture.player.presenter.PicturePlayerPresenter;
@@ -52,15 +51,6 @@ public class PicturePlayerViewImpl extends Composite implements PicturePlayerVie
 	private ClickHandler createOnOpenFullscreenCommand() {
 		return new ClickHandler() {
 			@Override public void onClick(ClickEvent event) {
-				Timer fullscreenDelay = createOpenFullscreenTimer();
-				fullscreenDelay.schedule(300);
-			}
-		};
-	}
-
-	private Timer createOpenFullscreenTimer() {
-		return new Timer() {
-			@Override public void run () {
 				presenter.openFullscreen();
 			}
 		};

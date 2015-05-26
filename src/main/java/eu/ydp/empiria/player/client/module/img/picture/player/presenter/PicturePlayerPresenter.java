@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
-import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
@@ -39,7 +38,7 @@ public class PicturePlayerPresenter {
 	}
 
 	public void openFullscreen() {
-		fullscreenController.openFullScreen(bean);
+		fullscreenController.openFullscreen(bean);
 	}
 
 	public Widget getView() {

@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import static org.mockito.Mockito.*;
 
-import com.google.gwt.event.dom.client.ClickHandler;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 import org.junit.*;
@@ -106,7 +105,7 @@ public class PicturePlayerPresenterTest {
 		testObj.openFullscreen();
 
 		// then
-		verify(fullscreenController).openFullScreen(bean);
+		verify(fullscreenController).openFullscreen(bean);
 
 	}
 }
