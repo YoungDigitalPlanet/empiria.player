@@ -21,7 +21,6 @@ public class MagnificPopup implements LightBox {
 					return title
 				}
 			},
-
 			closeOnContentClick: true
 		});
 	}-*/;

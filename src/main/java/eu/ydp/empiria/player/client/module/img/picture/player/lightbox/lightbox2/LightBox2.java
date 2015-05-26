@@ -28,6 +28,7 @@ public class LightBox2 implements LightBox {
 		lightbox.clear();
 		lightbox.add(url, title);
 		lightbox.start();
+
 	}-*/;
 
 }

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import static org.mockito.Mockito.*;
 
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.*;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.*;
 import org.junit.*;
@@ -18,6 +19,10 @@ public class PicturePlayerFullscreenControllerTest {
 	private LightBoxProvider modeProvider;
 	@Mock
 	private LightBox lightBox;
+	@Mock
+	private PicturePlayerFullscreenDelay fullscreenDelay;
+	@Mock
+	private UserAgentCheckerWrapper userAgentCheckerWrapper;
 
 	private PicturePlayerBean bean = new PicturePlayerBean();
 	private PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
@@ -36,12 +41,28 @@ public class PicturePlayerFullscreenControllerTest {
 	}
 
 	@Test
-	public void shouldOpenFullscreen() {
+	public void shouldOpenFullscreen_withoutDelay() {
+		// given
+		when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
+
 		// when
-		testObj.openFullScreen(bean);
+		testObj.openFullscreen(bean);
 
 		// then
 		verify(modeProvider).getFullscreen(mode);
 		verify(lightBox).openImage(srcFullscreen, title);
+	}
+
+	@Test
+	public void shouldOpenFullscreen_withDelay() {
+		// given
+		when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
+
+		// when
+		testObj.openFullscreen(bean);
+
+		// then
+		verify(modeProvider).getFullscreen(mode);
+		verify(fullscreenDelay).openImageWithDelay(lightBox, bean);
 	}
 }
