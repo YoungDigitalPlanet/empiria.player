@@ -240,7 +240,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	}
 
 	private boolean isNotEmptyOption(int selectedIndex) {
-		return selectedIndex > 0;
+		return selectedIndex > -1;
 	}
 
 	private void updateResponse(boolean userInteract) {
