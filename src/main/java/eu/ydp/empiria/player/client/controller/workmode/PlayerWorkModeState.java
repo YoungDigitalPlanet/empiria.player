@@ -21,6 +21,6 @@ public class PlayerWorkModeState implements IStateful {
 	@Override
 	public void setState(JSONArray array) {
 		String state = jsonStateSerializer.extractString(array);
-		playerWorkModeService.forceToUpdateWorkMode(PlayerWorkMode.valueOf(state));
+		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.valueOf(state));
 	}
 }
