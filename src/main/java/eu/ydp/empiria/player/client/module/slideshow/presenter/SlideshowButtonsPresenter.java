@@ -40,7 +40,7 @@ public class SlideshowButtonsPresenter {
 		controller.showPreviousSlide();
 	}
 
-	public void onPlayClick() {
+	public void onPlayPauseClick() {
 		if (buttonsView.isPlayButtonDown()) {
 			controller.playSlideshow();
 		} else {
