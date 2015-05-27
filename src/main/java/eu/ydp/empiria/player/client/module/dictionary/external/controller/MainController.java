@@ -52,8 +52,6 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 
 	private void processEntry(Entry entry, boolean playSound) {
 		if (playSound) {
-			explanationController.processEntryAndPlaySound(entry);
-		} else {
 			explanationController.processEntry(entry);
 		}
 	}

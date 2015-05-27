@@ -18,22 +18,20 @@ public class ExplanationController {
 
 	private Entry entry;
 	private final ExplanationDescriptionSoundController explanationDescriptionSoundController;
+	private final EntryDescriptionSoundController entryDescriptionSoundController;
 
 	@Inject
 	public ExplanationController(ExplanationView explanationView,
 			DictionaryModuleFactory dictionaryModuleFactory) {
 		this.explanationView = explanationView;
 		this.explanationDescriptionSoundController = dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView);
+		this.entryDescriptionSoundController = dictionaryModuleFactory.geEntryDescriptionSoundController(explanationView);
 	}
 
 	public void init() {
 		addExplanationPlayButtonHandler();
 		addEntryExamplePanelHandler();
 		addEntryPlayButtonHandler();
-	}
-
-	public void processEntryAndPlaySound(Entry entry) {
-		processEntry(entry);
 	}
 
 	public void processEntry(Entry entry) {
@@ -59,7 +57,7 @@ public class ExplanationController {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {
-				explanationDescriptionSoundController.playOrStopExplanationSound(entry);
+				entryDescriptionSoundController.playOrStopEntrySound(entry);
 			}
 		});
 	}
@@ -79,7 +77,7 @@ public class ExplanationController {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				explanationDescriptionSoundController.playOrStopEntrySound(entry);
+				entryDescriptionSoundController.playOrStopEntrySound(entry);
 			}
 		});
 	}

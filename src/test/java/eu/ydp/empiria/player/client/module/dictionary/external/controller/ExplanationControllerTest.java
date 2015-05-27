@@ -24,6 +24,9 @@ public class ExplanationControllerTest {
 	@Mock
 	private ExplanationDescriptionSoundController explanationDescriptionSoundController;
 
+	@Mock
+	private EntryDescriptionSoundController entryDescriptionSoundController;
+
 	private ExplanationController testObj;
 	@Mock
 	private ExplanationView explanationView;
@@ -41,6 +44,7 @@ public class ExplanationControllerTest {
 	@Before
 	public void setUp() {
 		when(dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView)).thenReturn(explanationDescriptionSoundController);
+		when(dictionaryModuleFactory.geEntryDescriptionSoundController(explanationView)).thenReturn(entryDescriptionSoundController);
 		testObj = new ExplanationController(explanationView, dictionaryModuleFactory);
 	}
 
@@ -103,30 +107,6 @@ public class ExplanationControllerTest {
 	}
 
 	@Test
-	public void shouldCallPlayOrStopDescriptionOnPanelMouseUp() {
-		// given
-		String file = "test.mp3";
-		Entry entry = mock(Entry.class);
-		when(entry.getEntryExampleSound()).thenReturn(file);
-
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) {
-				mouseUpHandler = (MouseUpHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(explanationView).addEntryExamplePanelHandler(any(MouseUpHandler.class));
-
-		// when
-		testObj.init();
-		testObj.processEntry(entry);
-		mouseUpHandler.onMouseUp(null);
-
-		// then
-		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry);
-	}
-
-	@Test
 	public void shouldCallPlayOrStopDescriptionOnPlayButtonClick() {
 		// given
 		String file = "test.mp3";
@@ -171,6 +151,6 @@ public class ExplanationControllerTest {
 		clickHandler.onClick(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopEntrySound(entry);
+		verify(entryDescriptionSoundController).playOrStopEntrySound(entry);
 	}
 }

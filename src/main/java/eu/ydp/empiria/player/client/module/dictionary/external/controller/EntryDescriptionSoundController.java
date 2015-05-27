@@ -1,12 +1,9 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -19,19 +16,22 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
-public class ExplanationDescriptionSoundController {
+import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+
+public class EntryDescriptionSoundController {
 
 	private final ExplanationView explanationView;
 	private final EventsBus eventsBus;
 	private final MediaWrapperController mediaWrapperController;
+
 	private final DictionaryMediaWrapperCreator mediaWrapperCreator;
 	private MediaWrapper<Widget> mediaWrapper;
 	private boolean playing;
 	private final Provider<CurrentPageScope> currentPageScopeProvider;
 
 	@Inject
-	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
-			Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator) {
+	public EntryDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
+										   Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator) {
 		this.explanationView = explanationView;
 		this.eventsBus = eventsBus;
 		this.mediaWrapperController = mediaWrapperController;
@@ -39,20 +39,20 @@ public class ExplanationDescriptionSoundController {
 		this.mediaWrapperCreator = mediaWrapperCreator;
 	}
 
-	private void playExplanationSoundFile(String filePath) {
+	private void playEntrySoundFile(String filePath) {
 		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-				onExplanationMediaWrapperCallback(mw);
+				onEntryMediaWrapperCallback(mw);
 			}
 
 		});
 	}
 
-	private void onExplanationMediaWrapperCallback(MediaWrapper<Widget> mw) {
-		explanationView.setExplanationPlayButtonStyle();
-		AbstractMediaEventHandler handler = createExplanationSoundMediaHandler();
+	private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
+		explanationView.setEntryPlayButtonStyle();
+		AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
 		playFromMediaWrapper(handler, mw);
 	}
 
@@ -63,36 +63,36 @@ public class ExplanationDescriptionSoundController {
 		mediaWrapperController.stopAndPlay(mediaWrapper);
 	}
 
-	private AbstractMediaEventHandler createExplanationSoundMediaHandler() {
+	private AbstractMediaEventHandler createEntrySoundMediaHandler() {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
 				if (!MediaEventTypes.ON_PLAY.equals(event.getType())) {
-					explanationView.setExplanationStopButtonStyle();
+					explanationView.setEntryStopButtonStyle();
 					playing = false;
 				}
 			}
 		};
 	}
 
-	public void playOrStopExplanationSound(Entry entry) {
+	public void playOrStopEntrySound(Entry entry) {
 		if (playing) {
 			stop();
 		} else {
-			String fileName = entry.getEntryExampleSound();
-			playExplanationLectorSound(fileName);
+			String fileName = entry.getEntrySound();
+			playEntryLectorSound(fileName);
 		}
 	}
 
-	private void playExplanationLectorSound(String fileName) {
+	private void playEntryLectorSound(String fileName) {
 		if (fileName != null && !fileName.isEmpty()) {
-			playExplanationSoundFile(fileName);
+			playEntrySoundFile(fileName);
 		}
 	}
 
 	public void stop() {
 		playing = false;
-		explanationView.setExplanationStopButtonStyle();
+		explanationView.setEntryStopButtonStyle();
 		mediaWrapperController.stop(mediaWrapper);
 	}
 
