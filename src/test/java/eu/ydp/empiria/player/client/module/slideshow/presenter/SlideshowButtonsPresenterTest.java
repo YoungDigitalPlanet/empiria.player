@@ -121,7 +121,7 @@ public class SlideshowButtonsPresenterTest {
 		when(buttonsView.isPlayButtonDown()).thenReturn(true);
 
 		// when
-		testObj.onPlayClick();
+		testObj.onPlayPauseClick();
 
 		// then
 		verify(slidesController).playSlideshow();
@@ -133,7 +133,7 @@ public class SlideshowButtonsPresenterTest {
 		when(buttonsView.isPlayButtonDown()).thenReturn(false);
 
 		// when
-		testObj.onPlayClick();
+		testObj.onPlayPauseClick();
 
 		// then
 		verify(slidesController).pauseSlideshow();
