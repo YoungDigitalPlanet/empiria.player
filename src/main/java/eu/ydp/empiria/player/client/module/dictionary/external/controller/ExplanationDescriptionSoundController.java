@@ -1,109 +1,69 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
 
+import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class ExplanationDescriptionSoundController {
 
+	private final DescriptionSoundController descriptionSoundController;
+
 	private final ExplanationView explanationView;
-	private final EventsBus eventsBus;
-	private final MediaWrapperController mediaWrapperController;
-	private final DictionaryMediaWrapperCreator mediaWrapperCreator;
-	private MediaWrapper<Widget> mediaWrapper;
-	private boolean playing;
-	private final Provider<CurrentPageScope> currentPageScopeProvider;
 
 	@Inject
-	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView, EventsBus eventsBus, MediaWrapperController mediaWrapperController,
-			Provider<CurrentPageScope> currentPageScopeProvider, DictionaryMediaWrapperCreator mediaWrapperCreator) {
+	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView,
+												 DictionaryModuleFactory dictionaryModuleFactory) {
 		this.explanationView = explanationView;
-		this.eventsBus = eventsBus;
-		this.mediaWrapperController = mediaWrapperController;
-		this.currentPageScopeProvider = currentPageScopeProvider;
-		this.mediaWrapperCreator = mediaWrapperCreator;
+		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController(explanationView);
 	}
 
-	private void playExplanationSoundFile(String filePath) {
-		mediaWrapperCreator.create(filePath, new CallbackReceiver<MediaWrapper<Widget>>() {
+	public void playOrStopExplanationSound(String filename) {
+		if(descriptionSoundController.isPlaying()){
+			stop();
+		}else {
+			descriptionSoundController.playDescriptionSound(filename, getCallbackReceiver());
+		}
+	}
+
+	private CallbackReceiver<MediaWrapper<Widget>> getCallbackReceiver(){
+		return new CallbackReceiver<MediaWrapper<Widget>>(){
 
 			@Override
 			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
 				onExplanationMediaWrapperCallback(mw);
 			}
-
-		});
+		};
 	}
 
 	private void onExplanationMediaWrapperCallback(MediaWrapper<Widget> mw) {
 		explanationView.setExplanationPlayButtonStyle();
 		AbstractMediaEventHandler handler = createExplanationSoundMediaHandler();
-		playFromMediaWrapper(handler, mw);
-	}
-
-	public void playFromMediaWrapper(AbstractMediaEventHandler handler, MediaWrapper<Widget> mw){
-		mediaWrapper = mw;
-		addMediaHandlers(handler);
-		playing = true;
-		mediaWrapperController.stopAndPlay(mediaWrapper);
+		descriptionSoundController.playFromMediaWrapper(handler, mw);
 	}
 
 	private AbstractMediaEventHandler createExplanationSoundMediaHandler() {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
-				if (!MediaEventTypes.ON_PLAY.equals(event.getType())) {
+				if (descriptionSoundController.isMediaEventNotOnPlay(event)) {
 					explanationView.setExplanationStopButtonStyle();
-					playing = false;
+					descriptionSoundController.stopPlaying();
 				}
 			}
 		};
 	}
 
-	public void playOrStopExplanationSound(Entry entry) {
-		if (playing) {
-			stop();
-		} else {
-			String fileName = entry.getEntryExampleSound();
-			playExplanationLectorSound(fileName);
-		}
-	}
-
-	private void playExplanationLectorSound(String fileName) {
-		if (fileName != null && !fileName.isEmpty()) {
-			playExplanationSoundFile(fileName);
-		}
-	}
-
 	public void stop() {
-		playing = false;
+		descriptionSoundController.stopPlaying();
 		explanationView.setExplanationStopButtonStyle();
-		mediaWrapperController.stop(mediaWrapper);
-	}
-
-	private void addMediaHandlers(AbstractMediaEventHandler handler) {
-		addMediaHandler(ON_PAUSE, handler);
-		addMediaHandler(ON_END, handler);
-		addMediaHandler(ON_STOP, handler);
-		addMediaHandler(ON_PLAY, handler);
-	}
-
-	private void addMediaHandler(MediaEventTypes type, MediaEventHandler handler) {
-		eventsBus.addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler, currentPageScopeProvider.get());
+		descriptionSoundController.stopMediaWrapper();
 	}
 }

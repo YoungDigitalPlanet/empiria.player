@@ -76,6 +76,7 @@ public class ExplanationControllerTest {
 
 		// then
 		verify(explanationDescriptionSoundController).stop();
+		verify(entryDescriptionSoundController).stop();
 		verify(explanationView).hide();
 	}
 
@@ -127,7 +128,7 @@ public class ExplanationControllerTest {
 		clickHandler.onClick(null);
 
 		// then
-		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry);
+		verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry.getEntryExampleSound());
 	}
 
 	@Test
@@ -151,6 +152,6 @@ public class ExplanationControllerTest {
 		clickHandler.onClick(null);
 
 		// then
-		verify(entryDescriptionSoundController).playOrStopEntrySound(entry);
+		verify(entryDescriptionSoundController).playOrStopEntrySound(entry.getEntrySound());
 	}
 }

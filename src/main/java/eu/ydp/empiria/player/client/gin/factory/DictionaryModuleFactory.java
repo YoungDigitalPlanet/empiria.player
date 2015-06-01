@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
+import eu.ydp.empiria.player.client.module.dictionary.external.controller.DescriptionSoundController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.EntryDescriptionSoundController;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationDescriptionSoundController;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
@@ -12,4 +13,6 @@ public interface DictionaryModuleFactory {
 	ExplanationDescriptionSoundController getExplanationDescriptionSoundController(ExplanationView view);
 
 	EntryDescriptionSoundController geEntryDescriptionSoundController(ExplanationView view);
+
+	DescriptionSoundController getDescriptionSoundController(ExplanationView view);
 }

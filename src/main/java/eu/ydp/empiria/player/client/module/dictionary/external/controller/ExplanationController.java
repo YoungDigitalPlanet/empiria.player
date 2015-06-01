@@ -45,6 +45,7 @@ public class ExplanationController {
 
 	public void hide() {
 		explanationDescriptionSoundController.stop();
+		entryDescriptionSoundController.stop();
 		explanationView.hide();
 	}
 
@@ -57,7 +58,7 @@ public class ExplanationController {
 
 			@Override
 			public void onMouseUp(MouseUpEvent event) {
-				entryDescriptionSoundController.playOrStopEntrySound(entry);
+				entryDescriptionSoundController.playOrStopEntrySound(entry.getEntrySound());
 			}
 		});
 	}
@@ -67,7 +68,7 @@ public class ExplanationController {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				explanationDescriptionSoundController.playOrStopExplanationSound(entry);
+				explanationDescriptionSoundController.playOrStopExplanationSound(entry.getEntryExampleSound());
 			}
 		});
 	}
@@ -77,7 +78,7 @@ public class ExplanationController {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				entryDescriptionSoundController.playOrStopEntrySound(entry);
+				entryDescriptionSoundController.playOrStopEntrySound(entry.getEntrySound());
 			}
 		});
 	}
