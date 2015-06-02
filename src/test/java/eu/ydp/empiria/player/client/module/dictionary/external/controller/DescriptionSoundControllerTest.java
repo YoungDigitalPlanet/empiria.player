@@ -57,36 +57,43 @@ public class DescriptionSoundControllerTest{
 
     @Test
     public void shouldPlayDescriptionSoundWhenFilenameIsNotNull() {
+        // when
+        testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
 
         // then
-        testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
-        verify(dictionaryMediaWrapperCreator).create(eq(FILE_NAME), callbackReceiverCaptor.capture());
+        verify(dictionaryMediaWrapperCreator).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
     public void shouldNotPlayDescriptionSoundWhenFilenameIsNull() {
-        // when
+        // given
         when(entry.getEntrySound()).thenReturn(null);
 
-        // then
+        // when
         testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
+
+        // then
         verify(dictionaryMediaWrapperCreator, never()).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
     public void shouldNotPlayDescriptionSoundWhenFilenameIsEmpty() {
-        // when
+        // given
         when(entry.getEntrySound()).thenReturn("");
 
-        // then
+        // when
         testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
+
+        // then
         verify(dictionaryMediaWrapperCreator, never()).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
     public void shouldAddAllMediaHandlersAndPlayWhenPlayFromMediaWrapperIsCalled() {
-        // when
+        // given
         when(currentPageScopeProvider.get()).thenReturn(currentPageScope);
+
+        // when
         testObject.playFromMediaWrapper(abstractMediaHandler, mediaWrapper);
 
         // then
@@ -123,7 +130,6 @@ public class DescriptionSoundControllerTest{
 
     @Test
     public void shouldStopMediaWrapperWhenStopMediaWrapperIsCalled(){
-
         // then
         testObject.playFromMediaWrapper(abstractMediaHandler,mediaWrapper);
         testObject.stopMediaWrapper();

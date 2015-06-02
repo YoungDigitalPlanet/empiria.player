@@ -56,10 +56,11 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldPlayWhenIsNotPlayingAndPlayOrStopMethodIsCalled() {
-
-		// when
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
 		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(true);
+
+		// when
 		testObj.playOrStopExplanationSound(FILE_NAME);
 
 		// then
@@ -75,10 +76,12 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldNotStopIfMediaWrapperIsNotPlayingAndPlayOrStopMethodIsCalled() {
-
-		// when
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
 		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(false);
+
+
+		// when
 		testObj.playOrStopExplanationSound(FILE_NAME);
 
 		// then
@@ -94,6 +97,7 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldStopPlayingWhenPlayingAndPlayOrStopMethodIsCalled() {
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(true);
 
 		// when

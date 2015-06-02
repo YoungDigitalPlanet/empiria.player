@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;

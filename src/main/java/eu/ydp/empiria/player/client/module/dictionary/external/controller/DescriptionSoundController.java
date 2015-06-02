@@ -1,11 +1,9 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
@@ -43,7 +41,7 @@ public class DescriptionSoundController {
     }
 
     private void playSoundIfFileNameNotEmpty(String fileName, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
-        if (fileName != null && !fileName.isEmpty()) {
+        if (!Strings.isNullOrEmpty(fileName)) {
             playSoundFile(fileName, callbackReceiver);
         }
     }

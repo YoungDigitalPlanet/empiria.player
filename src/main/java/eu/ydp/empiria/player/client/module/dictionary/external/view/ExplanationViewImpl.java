@@ -82,7 +82,7 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
 	}
 
 	@Override
-		 public void addPlayButtonHandler(ClickHandler handler) {
+	public void addPlayButtonHandler(ClickHandler handler) {
 		playButton.addClickHandler(handler);
 	}
 

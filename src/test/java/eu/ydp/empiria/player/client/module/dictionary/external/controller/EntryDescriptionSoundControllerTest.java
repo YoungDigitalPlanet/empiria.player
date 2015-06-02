@@ -57,10 +57,11 @@ public class EntryDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldPlayWhenIsNotPlayingAndPlayOrStopMethodIsCalled() {
-
-		// when
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
 		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(true);
+
+		// when
 		testObj.playOrStopEntrySound(entryWithValidFileName.getEntrySound());
 
 		// then
@@ -76,10 +77,12 @@ public class EntryDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldNotStopIfMediaWrapperIsNotPlayingAndPlayOrStopMethodIsCalled() {
-
-		// when
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
 		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(false);
+
+
+		// when
 		testObj.playOrStopEntrySound(entryWithValidFileName.getEntrySound());
 
 		// then
@@ -95,6 +98,7 @@ public class EntryDescriptionSoundControllerTest {
 
 	@Test
 	public void shouldStopPlayingWhenPlayingAndPlayOrStopMethodIsCalled() {
+		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(true);
 
 		// when
