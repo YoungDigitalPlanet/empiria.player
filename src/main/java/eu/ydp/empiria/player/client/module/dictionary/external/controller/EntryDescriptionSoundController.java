@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
@@ -18,9 +16,9 @@ public class EntryDescriptionSoundController {
 
 	@Inject
 	public EntryDescriptionSoundController(@Assisted ExplanationView explanationView,
-										   DictionaryModuleFactory dictionaryModuleFactory) {
+										   DescriptionSoundController descriptionSoundController) {
 
-		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController();
+		this.descriptionSoundController = descriptionSoundController;
 		this.explanationView = explanationView;
 
 	}
@@ -29,7 +27,7 @@ public class EntryDescriptionSoundController {
 		if(descriptionSoundController.isPlaying()){
 			stop();
 		}else {
-			descriptionSoundController.playDescriptionSound(filename, getCallbackReceiver());
+			descriptionSoundController.createMediaWrapper(filename, getCallbackReceiver());
 		}
 	}
 
@@ -53,10 +51,8 @@ public class EntryDescriptionSoundController {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
-				if (descriptionSoundController.isMediaEventNotOnPlay(event)) {
 					explanationView.setEntryStopButtonStyle();
 					descriptionSoundController.stopPlaying();
-				}
 			}
 		};
 	}

@@ -51,21 +51,19 @@ public class EntryDescriptionSoundControllerTest {
 
 	@Before
 	public void setUp() {
-		when(dictionaryModuleFactory.getDescriptionSoundController()).thenReturn(descriptionSoundController);
-		testObj = spy(new EntryDescriptionSoundController(explanationView, dictionaryModuleFactory));
+		testObj = spy(new EntryDescriptionSoundController(explanationView, descriptionSoundController));
 	}
 
 	@Test
-	public void shouldPlayWhenIsNotPlayingAndPlayOrStopMethodIsCalled() {
+	public void shouldPlay_whenIsNotPlayingAndPlayOrStopMethodIsCalled() {
 		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
-		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(true);
 
 		// when
 		testObj.playOrStopEntrySound(entryWithValidFileName.getEntrySound());
 
 		// then
-		verify(descriptionSoundController).playDescriptionSound(eq(entryWithValidFileName.getEntrySound()), callbackReceiverCaptor.capture());
+		verify(descriptionSoundController).createMediaWrapper(eq(entryWithValidFileName.getEntrySound()), callbackReceiverCaptor.capture());
 		CallbackReceiver<MediaWrapper<Widget>> value = callbackReceiverCaptor.getValue();
 		value.setCallbackReturnObject(mediaWrapper);
 		verify(descriptionSoundController).playFromMediaWrapper(abstractMediaHandlerCaptor.capture(), eq(mediaWrapper));
@@ -76,28 +74,7 @@ public class EntryDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldNotStopIfMediaWrapperIsNotPlayingAndPlayOrStopMethodIsCalled() {
-		// given
-		when(descriptionSoundController.isPlaying()).thenReturn(false);
-		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(false);
-
-
-		// when
-		testObj.playOrStopEntrySound(entryWithValidFileName.getEntrySound());
-
-		// then
-		verify(descriptionSoundController).playDescriptionSound(eq(entryWithValidFileName.getEntrySound()), callbackReceiverCaptor.capture());
-		CallbackReceiver<MediaWrapper<Widget>> value = callbackReceiverCaptor.getValue();
-		value.setCallbackReturnObject(mediaWrapper);
-		verify(descriptionSoundController).playFromMediaWrapper(abstractMediaHandlerCaptor.capture(), eq(mediaWrapper));
-		verify(explanationView).setEntryPlayButtonStyle();
-		abstractMediaHandlerCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(explanationView, never()).setEntryStopButtonStyle();
-		verify(descriptionSoundController, never()).stopPlaying();
-	}
-
-	@Test
-	public void shouldStopPlayingWhenPlayingAndPlayOrStopMethodIsCalled() {
+	public void shouldStopPlaying_whenPlayingAndPlayOrStopMethodIsCalled() {
 		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(true);
 

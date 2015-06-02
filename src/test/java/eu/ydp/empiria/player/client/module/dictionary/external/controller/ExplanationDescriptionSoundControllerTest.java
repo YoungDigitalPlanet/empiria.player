@@ -14,7 +14,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.gwt.user.client.ui.Widget;
 
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
@@ -50,21 +49,19 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Before
 	public void setUp() {
-		when(dictionaryModuleFactory.getDescriptionSoundController()).thenReturn(descriptionSoundController);
-		testObj = spy(new ExplanationDescriptionSoundController(explanationView, dictionaryModuleFactory));
+		testObj = spy(new ExplanationDescriptionSoundController(explanationView, descriptionSoundController));
 	}
 
 	@Test
-	public void shouldPlayWhenIsNotPlayingAndPlayOrStopMethodIsCalled() {
+	public void shouldPlay_whenIsNotPlayingAndPlayOrStopMethodIsCalled() {
 		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(false);
-		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(true);
 
 		// when
 		testObj.playOrStopExplanationSound(FILE_NAME);
 
 		// then
-		verify(descriptionSoundController).playDescriptionSound(eq(FILE_NAME), callbackReceiverCaptor.capture());
+		verify(descriptionSoundController).createMediaWrapper(eq(FILE_NAME), callbackReceiverCaptor.capture());
 		CallbackReceiver<MediaWrapper<Widget>> value = callbackReceiverCaptor.getValue();
 		value.setCallbackReturnObject(mediaWrapper);
 		verify(descriptionSoundController).playFromMediaWrapper(abstractMediaHandlerCaptor.capture(), eq(mediaWrapper));
@@ -75,28 +72,7 @@ public class ExplanationDescriptionSoundControllerTest {
 	}
 
 	@Test
-	public void shouldNotStopIfMediaWrapperIsNotPlayingAndPlayOrStopMethodIsCalled() {
-		// given
-		when(descriptionSoundController.isPlaying()).thenReturn(false);
-		when(descriptionSoundController.isMediaEventNotOnPlay(mediaEvent)).thenReturn(false);
-
-
-		// when
-		testObj.playOrStopExplanationSound(FILE_NAME);
-
-		// then
-		verify(descriptionSoundController).playDescriptionSound(eq(FILE_NAME), callbackReceiverCaptor.capture());
-		CallbackReceiver<MediaWrapper<Widget>> value = callbackReceiverCaptor.getValue();
-		value.setCallbackReturnObject(mediaWrapper);
-		verify(descriptionSoundController).playFromMediaWrapper(abstractMediaHandlerCaptor.capture(), eq(mediaWrapper));
-		verify(explanationView).setExplanationPlayButtonStyle();
-		abstractMediaHandlerCaptor.getValue().onMediaEvent(mediaEvent);
-		verify(explanationView, never()).setExplanationStopButtonStyle();
-		verify(descriptionSoundController, never()).stopPlaying();
-	}
-
-	@Test
-	public void shouldStopPlayingWhenPlayingAndPlayOrStopMethodIsCalled() {
+	public void shouldStopPlaying_whenPlayingAndPlayOrStopMethodIsCalled() {
 		// given
 		when(descriptionSoundController.isPlaying()).thenReturn(true);
 

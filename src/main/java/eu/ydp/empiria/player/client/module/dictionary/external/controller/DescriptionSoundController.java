@@ -36,22 +36,14 @@ public class DescriptionSoundController {
         this.currentPageScopeProvider = currentPageScopeProvider;
     }
 
-    public void playDescriptionSound(String fileName, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
-            playSoundIfFileNameNotEmpty(fileName, callbackReceiver);
-    }
-
-    private void playSoundIfFileNameNotEmpty(String fileName, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
+    public void createMediaWrapper(String fileName, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
         if (!Strings.isNullOrEmpty(fileName)) {
-            createMediaWrapper(fileName, callbackReceiver);
+            mediaWrapperCreator.create(fileName, callbackReceiver);
         }
     }
 
     public boolean isPlaying(){
         return playing;
-    }
-
-    private void createMediaWrapper(String filePath, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
-        mediaWrapperCreator.create(filePath, callbackReceiver);
     }
 
     public void playFromMediaWrapper(AbstractMediaEventHandler mediaEventHandler, MediaWrapper<Widget> mediaWrapper){
@@ -62,7 +54,7 @@ public class DescriptionSoundController {
     }
 
     private void addMediaHandlers(AbstractMediaEventHandler handler) {
-        MediaEventTypes[] eventTypes = {ON_PAUSE,ON_END,ON_STOP,ON_PLAY};
+        MediaEventTypes[] eventTypes = {ON_PAUSE,ON_END,ON_STOP};
         addMediaHandlers(eventTypes, handler);
     }
 
@@ -70,10 +62,6 @@ public class DescriptionSoundController {
         for(MediaEventTypes eventType:types){
             eventsBus.addHandlerToSource(MediaEvent.getType(eventType), mediaWrapper, handler, currentPageScopeProvider.get());
         }
-    }
-
-    public boolean isMediaEventNotOnPlay(MediaEvent event){
-        return !MediaEventTypes.ON_PLAY.equals(event.getType());
     }
 
     public void stopPlaying(){

@@ -56,40 +56,40 @@ public class DescriptionSoundControllerTest{
     }
 
     @Test
-    public void shouldPlayDescriptionSoundWhenFilenameIsNotNull() {
+    public void shouldCreateMediaWrapper_whenFilenameIsNotNull() {
         // when
-        testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
+        testObject.createMediaWrapper(entry.getEntrySound(), callbackReceiver);
 
         // then
         verify(dictionaryMediaWrapperCreator).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
-    public void shouldNotPlayDescriptionSoundWhenFilenameIsNull() {
+    public void shouldNotCreateMediaWrapper_whenFilenameIsNull() {
         // given
         when(entry.getEntrySound()).thenReturn(null);
 
         // when
-        testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
+        testObject.createMediaWrapper(entry.getEntrySound(), callbackReceiver);
 
         // then
         verify(dictionaryMediaWrapperCreator, never()).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
-    public void shouldNotPlayDescriptionSoundWhenFilenameIsEmpty() {
+    public void shouldNotCreateMediaWrapper_whenFilenameIsEmpty() {
         // given
         when(entry.getEntrySound()).thenReturn("");
 
         // when
-        testObject.playDescriptionSound(entry.getEntrySound(), callbackReceiver);
+        testObject.createMediaWrapper(entry.getEntrySound(), callbackReceiver);
 
         // then
         verify(dictionaryMediaWrapperCreator, never()).create(eq(FILE_NAME), eq(callbackReceiver));
     }
 
     @Test
-    public void shouldAddAllMediaHandlersAndPlayWhenPlayFromMediaWrapperIsCalled() {
+    public void shouldAddAllMediaHandlersAndPlay_whenPlayFromMediaWrapperIsCalled() {
         // given
         when(currentPageScopeProvider.get()).thenReturn(currentPageScope);
 
@@ -100,36 +100,11 @@ public class DescriptionSoundControllerTest{
         verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
         verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
         verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
-        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
         verify(mediaWrapperController).stopAndPlay(mediaWrapper);
     }
 
     @Test
-    public void shouldReturnFalseWhenMediaEventIsOnPlay (){
-        // given
-        MediaEvent onPlay = new MediaEvent(MediaEventTypes.ON_PLAY);
-
-        // when
-        boolean result = testObject.isMediaEventNotOnPlay(onPlay);
-
-        // then
-        assertFalse(result);
-    }
-
-    @Test
-    public void shouldReturnTrueWhenMediaEventIsNotPlay (){
-        // given
-        MediaEvent onPlay = new MediaEvent(MediaEventTypes.ON_PAUSE);
-
-        // when
-        boolean result = testObject.isMediaEventNotOnPlay(onPlay);
-
-        // then
-        assertTrue(result);
-    }
-
-    @Test
-    public void shouldStopMediaWrapperWhenStopMediaWrapperIsCalled(){
+    public void shouldStopMediaWrapper_whenStopMediaWrapperIsCalled(){
         // then
         testObject.playFromMediaWrapper(abstractMediaHandler,mediaWrapper);
         testObject.stopMediaWrapper();

@@ -13,6 +13,4 @@ public interface DictionaryModuleFactory {
 	ExplanationDescriptionSoundController getExplanationDescriptionSoundController(ExplanationView view);
 
 	EntryDescriptionSoundController geEntryDescriptionSoundController(ExplanationView view);
-
-	DescriptionSoundController getDescriptionSoundController();
 }

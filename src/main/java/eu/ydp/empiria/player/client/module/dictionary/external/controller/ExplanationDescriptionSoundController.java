@@ -4,7 +4,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
@@ -19,16 +18,16 @@ public class ExplanationDescriptionSoundController {
 
 	@Inject
 	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView,
-												 DictionaryModuleFactory dictionaryModuleFactory) {
+												 DescriptionSoundController descriptionSoundController) {
 		this.explanationView = explanationView;
-		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController();
+		this.descriptionSoundController = descriptionSoundController;
 	}
 
 	public void playOrStopExplanationSound(String filename) {
 		if(descriptionSoundController.isPlaying()){
 			stop();
 		}else {
-			descriptionSoundController.playDescriptionSound(filename, getCallbackReceiver());
+			descriptionSoundController.createMediaWrapper(filename, getCallbackReceiver());
 		}
 	}
 
@@ -52,10 +51,8 @@ public class ExplanationDescriptionSoundController {
 		return new AbstractMediaEventHandler() {
 			@Override
 			public void onMediaEvent(MediaEvent event) {
-				if (descriptionSoundController.isMediaEventNotOnPlay(event)) {
 					explanationView.setExplanationStopButtonStyle();
 					descriptionSoundController.stopPlaying();
-				}
 			}
 		};
 	}
