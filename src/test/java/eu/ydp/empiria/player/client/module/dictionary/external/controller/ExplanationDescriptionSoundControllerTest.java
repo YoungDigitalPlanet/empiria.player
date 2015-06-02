@@ -50,7 +50,7 @@ public class ExplanationDescriptionSoundControllerTest {
 
 	@Before
 	public void setUp() {
-		when(dictionaryModuleFactory.getDescriptionSoundController(explanationView)).thenReturn(descriptionSoundController);
+		when(dictionaryModuleFactory.getDescriptionSoundController()).thenReturn(descriptionSoundController);
 		testObj = spy(new ExplanationDescriptionSoundController(explanationView, dictionaryModuleFactory));
 	}
 

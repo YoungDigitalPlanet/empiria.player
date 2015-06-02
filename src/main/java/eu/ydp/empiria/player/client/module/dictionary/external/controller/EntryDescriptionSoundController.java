@@ -20,7 +20,7 @@ public class EntryDescriptionSoundController {
 	public EntryDescriptionSoundController(@Assisted ExplanationView explanationView,
 										   DictionaryModuleFactory dictionaryModuleFactory) {
 
-		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController(explanationView);
+		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController();
 		this.explanationView = explanationView;
 
 	}

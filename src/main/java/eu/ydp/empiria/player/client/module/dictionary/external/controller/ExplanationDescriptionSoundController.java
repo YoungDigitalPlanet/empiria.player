@@ -21,7 +21,7 @@ public class ExplanationDescriptionSoundController {
 	public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView,
 												 DictionaryModuleFactory dictionaryModuleFactory) {
 		this.explanationView = explanationView;
-		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController(explanationView);
+		this.descriptionSoundController = dictionaryModuleFactory.getDescriptionSoundController();
 	}
 
 	public void playOrStopExplanationSound(String filename) {
