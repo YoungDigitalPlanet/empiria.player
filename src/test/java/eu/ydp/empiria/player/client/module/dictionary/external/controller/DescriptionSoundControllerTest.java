@@ -14,16 +14,17 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DescriptionSoundControllerTest{
+public class DescriptionSoundControllerTest {
 
     private static final String FILE_NAME = "test.mp3";
 
@@ -104,9 +105,9 @@ public class DescriptionSoundControllerTest{
     }
 
     @Test
-    public void shouldStopMediaWrapper_whenStopMediaWrapperIsCalled(){
+    public void shouldStopMediaWrapper_whenStopMediaWrapperIsCalled() {
         // then
-        testObject.playFromMediaWrapper(abstractMediaHandler,mediaWrapper);
+        testObject.playFromMediaWrapper(abstractMediaHandler, mediaWrapper);
         testObject.stopMediaWrapper();
 
         // then

@@ -11,55 +11,55 @@ import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 
 public class EntryDescriptionSoundController {
 
-	private final DescriptionSoundController descriptionSoundController;
-	private final ExplanationView explanationView;
+    private final DescriptionSoundController descriptionSoundController;
+    private final ExplanationView explanationView;
 
-	@Inject
-	public EntryDescriptionSoundController(@Assisted ExplanationView explanationView,
-										   DescriptionSoundController descriptionSoundController) {
+    @Inject
+    public EntryDescriptionSoundController(@Assisted ExplanationView explanationView,
+                                           DescriptionSoundController descriptionSoundController) {
 
-		this.descriptionSoundController = descriptionSoundController;
-		this.explanationView = explanationView;
+        this.descriptionSoundController = descriptionSoundController;
+        this.explanationView = explanationView;
 
-	}
+    }
 
-	public void playOrStopEntrySound(String filename) {
-		if(descriptionSoundController.isPlaying()){
-			stop();
-		}else {
-			descriptionSoundController.createMediaWrapper(filename, getCallbackReceiver());
-		}
-	}
+    public void playOrStopEntrySound(String filename) {
+        if (descriptionSoundController.isPlaying()) {
+            stop();
+        } else {
+            descriptionSoundController.createMediaWrapper(filename, getCallbackReceiver());
+        }
+    }
 
-	private CallbackReceiver<MediaWrapper<Widget>> getCallbackReceiver(){
-		return new CallbackReceiver<MediaWrapper<Widget>>(){
+    private CallbackReceiver<MediaWrapper<Widget>> getCallbackReceiver() {
+        return new CallbackReceiver<MediaWrapper<Widget>>() {
 
-			@Override
-			public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-				onEntryMediaWrapperCallback(mw);
-			}
-		};
-	}
+            @Override
+            public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
+                onEntryMediaWrapperCallback(mw);
+            }
+        };
+    }
 
-	private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
-		explanationView.setEntryPlayButtonStyle();
-		AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
-		descriptionSoundController.playFromMediaWrapper(handler, mw);
-	}
+    private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
+        explanationView.setEntryPlayButtonStyle();
+        AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
+        descriptionSoundController.playFromMediaWrapper(handler, mw);
+    }
 
-	private AbstractMediaEventHandler createEntrySoundMediaHandler() {
-		return new AbstractMediaEventHandler() {
-			@Override
-			public void onMediaEvent(MediaEvent event) {
-					explanationView.setEntryStopButtonStyle();
-					descriptionSoundController.stopPlaying();
-			}
-		};
-	}
+    private AbstractMediaEventHandler createEntrySoundMediaHandler() {
+        return new AbstractMediaEventHandler() {
+            @Override
+            public void onMediaEvent(MediaEvent event) {
+                explanationView.setEntryStopButtonStyle();
+                descriptionSoundController.stopPlaying();
+            }
+        };
+    }
 
-	public void stop() {
-		descriptionSoundController.stopPlaying();
-		explanationView.setEntryStopButtonStyle();
-		descriptionSoundController.stopMediaWrapper();
-	}
+    public void stop() {
+        descriptionSoundController.stopPlaying();
+        explanationView.setEntryStopButtonStyle();
+        descriptionSoundController.stopMediaWrapper();
+    }
 }

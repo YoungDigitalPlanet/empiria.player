@@ -29,7 +29,7 @@ public class DescriptionSoundController {
     public DescriptionSoundController(MediaWrapperController mediaWrapperController,
                                       DictionaryMediaWrapperCreator mediaWrapperCreator,
                                       EventsBus eventsBus,
-                                      Provider<CurrentPageScope> currentPageScopeProvider){
+                                      Provider<CurrentPageScope> currentPageScopeProvider) {
         this.mediaWrapperController = mediaWrapperController;
         this.mediaWrapperCreator = mediaWrapperCreator;
         this.eventsBus = eventsBus;
@@ -42,11 +42,11 @@ public class DescriptionSoundController {
         }
     }
 
-    public boolean isPlaying(){
+    public boolean isPlaying() {
         return playing;
     }
 
-    public void playFromMediaWrapper(AbstractMediaEventHandler mediaEventHandler, MediaWrapper<Widget> mediaWrapper){
+    public void playFromMediaWrapper(AbstractMediaEventHandler mediaEventHandler, MediaWrapper<Widget> mediaWrapper) {
         this.mediaWrapper = mediaWrapper;
         addMediaHandlers(mediaEventHandler);
         playing = true;
@@ -54,21 +54,21 @@ public class DescriptionSoundController {
     }
 
     private void addMediaHandlers(AbstractMediaEventHandler handler) {
-        MediaEventTypes[] eventTypes = {ON_PAUSE,ON_END,ON_STOP};
+        MediaEventTypes[] eventTypes = {ON_PAUSE, ON_END, ON_STOP};
         addMediaHandlers(eventTypes, handler);
     }
 
     private void addMediaHandlers(MediaEventTypes[] types, MediaEventHandler handler) {
-        for(MediaEventTypes eventType:types){
+        for (MediaEventTypes eventType : types) {
             eventsBus.addHandlerToSource(MediaEvent.getType(eventType), mediaWrapper, handler, currentPageScopeProvider.get());
         }
     }
 
-    public void stopPlaying(){
+    public void stopPlaying() {
         playing = false;
     }
 
-    public void stopMediaWrapper(){
+    public void stopMediaWrapper() {
         mediaWrapperController.stop(mediaWrapper);
     }
 
