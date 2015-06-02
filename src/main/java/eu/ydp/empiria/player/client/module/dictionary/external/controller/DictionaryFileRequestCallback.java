@@ -14,17 +14,15 @@ public class DictionaryFileRequestCallback implements FileRequestCallback {
 
 	private static final int ENTRIES_PER_FILE = 50;
 	private final int index;
-	private final boolean playSound;
 	private final ExplanationListener explanationListener;
 	private final Logger logger;
 	private final EntryFactory entryFactory;
 
 	@Inject
-	public DictionaryFileRequestCallback(@Assisted int index, @Assisted boolean playSound, ExplanationListener explanationListener,
+	public DictionaryFileRequestCallback(@Assisted int index, ExplanationListener explanationListener,
 			EntryFactory entryFactory, Logger logger) {
 
 		this.index = index;
-		this.playSound = playSound;
 		this.explanationListener = explanationListener;
 		this.entryFactory = entryFactory;
 		this.logger = logger;
@@ -34,7 +32,7 @@ public class DictionaryFileRequestCallback implements FileRequestCallback {
 	public void onResponseReceived(FileRequest request, FileResponse response) {
 		Entry entry = createEntryFromResponse(response);
 
-		explanationListener.onEntryLoaded(entry, playSound);
+		explanationListener.onEntryLoaded(entry);
 	}
 
 	private Entry createEntryFromResponse(FileResponse response) {

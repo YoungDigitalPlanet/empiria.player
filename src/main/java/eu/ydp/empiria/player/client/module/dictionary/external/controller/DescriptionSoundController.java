@@ -42,7 +42,7 @@ public class DescriptionSoundController {
 
     private void playSoundIfFileNameNotEmpty(String fileName, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
         if (!Strings.isNullOrEmpty(fileName)) {
-            playSoundFile(fileName, callbackReceiver);
+            createMediaWrapper(fileName, callbackReceiver);
         }
     }
 
@@ -50,7 +50,7 @@ public class DescriptionSoundController {
         return playing;
     }
 
-    private void playSoundFile(String filePath, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
+    private void createMediaWrapper(String filePath, CallbackReceiver<MediaWrapper<Widget>> callbackReceiver) {
         mediaWrapperCreator.create(filePath, callbackReceiver);
     }
 

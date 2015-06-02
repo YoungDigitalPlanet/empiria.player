@@ -39,21 +39,19 @@ public class MainController implements WordsLoadingListener, ExplanationListener
 	}
 
 	@Override
-	public void onEntryLoaded(final Entry entry, final boolean playSound) {
+	public void onEntryLoaded(final Entry entry) {
 		if (Options.getViewType() == ViewType.HALF) {
 			mainView.hideMenu();
 			explanationController.show();
 		}
 
 		if (entry != null) {
-			processEntry(entry, playSound);
+			processEntry(entry);
 		}
 	}
 
-	private void processEntry(Entry entry, boolean playSound) {
-		if (playSound) {
+	private void processEntry(Entry entry) {
 			explanationController.processEntry(entry);
-		}
 	}
 
 	@Override
