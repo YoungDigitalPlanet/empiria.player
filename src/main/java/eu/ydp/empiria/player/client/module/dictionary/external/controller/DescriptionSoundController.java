@@ -62,14 +62,14 @@ public class DescriptionSoundController {
     }
 
     private void addMediaHandlers(AbstractMediaEventHandler handler) {
-        addMediaHandler(ON_PAUSE, handler);
-        addMediaHandler(ON_END, handler);
-        addMediaHandler(ON_STOP, handler);
-        addMediaHandler(ON_PLAY, handler);
+        MediaEventTypes[] eventTypes = {ON_PAUSE,ON_END,ON_STOP,ON_PLAY};
+        addMediaHandlers(eventTypes, handler);
     }
 
-    private void addMediaHandler(MediaEventTypes type, MediaEventHandler handler) {
-        eventsBus.addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler, currentPageScopeProvider.get());
+    private void addMediaHandlers(MediaEventTypes[] types, MediaEventHandler handler) {
+        for(MediaEventTypes eventType:types){
+            eventsBus.addHandlerToSource(MediaEvent.getType(eventType), mediaWrapper, handler, currentPageScopeProvider.get());
+        }
     }
 
     public boolean isMediaEventNotOnPlay(MediaEvent event){
