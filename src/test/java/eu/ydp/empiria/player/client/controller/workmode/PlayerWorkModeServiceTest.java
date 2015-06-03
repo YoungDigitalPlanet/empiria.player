@@ -14,7 +14,7 @@ public class PlayerWorkModeServiceTest {
 	@InjectMocks
 	private PlayerWorkModeService testObj;
 
-	@Mock(extraInterfaces = {WorkModePreviewClient.class, WorkModeTestClient.class})
+	@Mock(extraInterfaces = { WorkModePreviewClient.class, WorkModeTestClient.class })
 	private WorkModeClientType moduleToDisableAndEnable;
 	@Mock(extraInterfaces = WorkModeTestClient.class)
 	private WorkModeClientType moduleToDisable;
@@ -105,7 +105,7 @@ public class PlayerWorkModeServiceTest {
 	}
 
 	@Test
-	public void shouldNotifyModule_ifTransitionIsInvalid() {
+	public void shouldNotNotifyModule_ifTransitionIsInvalid() {
 		// given
 		PlayerWorkMode invalidTransition = PlayerWorkMode.FULL;
 
@@ -118,18 +118,5 @@ public class PlayerWorkModeServiceTest {
 
 		// then
 		verify((WorkModeTestClient) moduleToDisableAndEnable, never()).disableTestMode();
-	}
-
-	@Test
-	public void shouldNotifyModule_evenIfTransitionIsInvalid() {
-		// given
-		PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
-		testObj.registerModule(moduleToEnable);
-
-		// when
-		testObj.forceToUpdateWorkMode(validTransition);
-
-		// then
-		verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
 	}
 }
