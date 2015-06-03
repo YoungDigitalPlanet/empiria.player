@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
+import eu.ydp.empiria.player.client.module.external.ExternalInteractionModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
@@ -148,6 +149,8 @@ public class ModuleProviderFactory {
 	private Provider<TestResetButtonModule> testResetButtonModule;
 	@Inject
 	private Provider<SpeechScoreModule> speechScoreModule;
+	@Inject
+	private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -351,5 +354,9 @@ public class ModuleProviderFactory {
 
 	public Provider<SpeechScoreModule> getSpeechScoreModule() {
 		return speechScoreModule;
+	}
+
+	public Provider<ExternalInteractionModule> getExternalInteractionModule(){
+		return externalInteractionModuleProvider;
 	}
 }

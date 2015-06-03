@@ -35,7 +35,7 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	}
 
 	public Response getResponse() {
-		return response;
+		return super.getResponse();
 	}
 
 	public int getCurrentChoicePairingsNumber(String identifier) {
@@ -49,7 +49,7 @@ public class ConnectionModuleModel extends AbstractResponseModel<KeyValue<String
 	}
 
 	public boolean checkUserResonseContainsAnswer(String answer) {
-		return response.values.contains(answer);
+		return super.getResponse().values.contains(answer);
 	}
 
 	public int getCurrentOverallPairingsNumber() {

@@ -19,7 +19,7 @@ public class ColorfillInteractionModuleModel extends AbstractResponseModel<Strin
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
-		responseModelChange = modelChangeListener;
+		setResponseModelChange(modelChangeListener);
 	}
 
 	@Override
@@ -28,11 +28,11 @@ public class ColorfillInteractionModuleModel extends AbstractResponseModel<Strin
 	}
 
 	public Response getResponse() {
-		return this.response;
+		return super.getResponse();
 	}
 
 	public void setNewUserAnswers(List<String> answers) {
-		response.values = answers;
+		super.getResponse().values = answers;
 		onModelChange();
 	}
 }
