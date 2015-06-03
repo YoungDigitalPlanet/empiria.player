@@ -11,7 +11,8 @@ enum ScriptsSources implements ScriptUrl {
 	JQUERY_UI("jquery/jquery-ui-1.10.3.custom.min.js"),
 	JQUERY_UI_TOUCH("jquery/jquery.ui.touch-punch.min.js"),
 	JQUERY_SCROLL("jquery/jquery.smooth-scroll.min.js"),
-	LIGHTBOX("lightbox2/js/lightbox-min.js");
+	LIGHTBOX("lightbox2/js/lightbox-min.js"),
+	MAGNIFIC_POPUP("magnific-popup/magnific-popup.min.js");
 
 	private final String url;
 
