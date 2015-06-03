@@ -8,7 +8,7 @@
             <g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_TYPE_LABEL}" ui:field="typeLabel"/>
         </g:FlowPanel>
         <g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY}" ui:field="entryPanel">
-            <g:PushButton styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_PLAY_BUTTON}" ui:field="entryPlayButton/>
+            <g:PushButton styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_PLAY_BUTTON}" ui:field="entryPlayButton"/>
             <g:Label styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_LABEL}" ui:field="entryLabel"/>
         </g:FlowPanel>
         <g:FlowPanel styleName="{res.QP_DICTIONARY_EXPLANATION_ENTRY_DESCRIPTION}" ui:field="entryDescriptionPanel">
