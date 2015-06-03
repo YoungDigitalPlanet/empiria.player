@@ -1,8 +1,10 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
+import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
+import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,156 +13,143 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-
-import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
-import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExplanationControllerTest {
 
-	@Mock
-	private ExplanationDescriptionSoundController explanationDescriptionSoundController;
+    @Mock
+    private ExplanationDescriptionSoundController explanationDescriptionSoundController;
 
-	private ExplanationController testObj;
-	@Mock
-	private ExplanationView explanationView;
+    @Mock
+    private EntryDescriptionSoundController entryDescriptionSoundController;
 
-	@Mock
-	private DictionaryModuleFactory dictionaryModuleFactory;
+    private ExplanationController testObj;
+    @Mock
+    private ExplanationView explanationView;
 
-	@Mock
-	private ExplanationEntrySoundController explanationEntrySoundController;
+    @Mock
+    private DictionaryModuleFactory dictionaryModuleFactory;
 
-	@Mock
-	private Entry entry;
 
-	private ClickHandler clickHandler;
-	private MouseUpHandler mouseUpHandler;
+    @Mock
+    private Entry entry;
 
-	@Before
-	public void setUp() {
-		when(dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView)).thenReturn(explanationDescriptionSoundController);
-		testObj = new ExplanationController(explanationView, explanationEntrySoundController, dictionaryModuleFactory);
-	}
+    private ClickHandler clickHandler;
+    private MouseUpHandler mouseUpHandler;
 
-	@Test
-	public void shouldProcessNotNullEntry() {
-		// given
-		Entry entry = mock(Entry.class);
+    @Before
+    public void setUp() {
+        when(dictionaryModuleFactory.getExplanationDescriptionSoundController(explanationView)).thenReturn(explanationDescriptionSoundController);
+        when(dictionaryModuleFactory.geEntryDescriptionSoundController(explanationView)).thenReturn(entryDescriptionSoundController);
+        testObj = new ExplanationController(explanationView, dictionaryModuleFactory);
+    }
 
-		// when
-		testObj.processEntry(entry);
+    @Test
+    public void shouldProcessNotNullEntry() {
+        // given
+        Entry entry = mock(Entry.class);
 
-		// then
-		verify(explanationView).processEntry(entry);
-	}
+        // when
+        testObj.processEntry(entry);
 
-	@Test
-	public void shouldProcessAndPlayNotNullEntry() {
-		// given
-		Entry entry = mock(Entry.class);
+        // then
+        verify(explanationView).processEntry(entry);
+    }
 
-		// when
-		testObj.processEntryAndPlaySound(entry);
+    @Test
+    public void shouldShow() {
+        // when
+        testObj.show();
 
-		// then
-		verify(explanationEntrySoundController).playEntrySound(entry);
-	}
+        // then
+        verify(explanationView).show();
+    }
 
-	@Test
-	public void shouldShow() {
-		// when
-		testObj.show();
+    @Test
+    public void shouldStopPlayingSoundWhenHidingView() {
+        // when
+        testObj.hide();
 
-		// then
-		verify(explanationView).show();
-	}
+        // then
+        verify(explanationDescriptionSoundController).stop();
+        verify(entryDescriptionSoundController).stop();
+        verify(explanationView).hide();
+    }
 
-	@Test
-	public void shouldStopPlayingSoundWhenHidingView() {
-		// when
-		testObj.hide();
+    @Test
+    public void shouldAddViewHandlersOnInit() {
+        // given
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                mouseUpHandler = (MouseUpHandler) invocation.getArguments()[0];
+                return null;
+            }
+        }).when(explanationView).addEntryExamplePanelHandler(any(MouseUpHandler.class));
 
-		// then
-		verify(explanationDescriptionSoundController).stop();
-		verify(explanationView).hide();
-	}
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                clickHandler = (ClickHandler) invocation.getArguments()[0];
+                return null;
+            }
+        }).when(explanationView).addPlayButtonHandler(any(ClickHandler.class));
 
-	@Test
-	public void shouldAddViewHandlersOnInit() {
-		// given
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) {
-				mouseUpHandler = (MouseUpHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(explanationView).addEntryExamplePanelHandler(any(MouseUpHandler.class));
+        // when
+        testObj.init();
 
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) {
-				clickHandler = (ClickHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(explanationView).addPlayButtonHandler(any(ClickHandler.class));
+        // then
+        verify(explanationView).addPlayButtonHandler(clickHandler);
+        verify(explanationView).addEntryExamplePanelHandler(mouseUpHandler);
+    }
 
-		// when
-		testObj.init();
+    @Test
+    public void shouldCallPlayOrStopDescriptionOnPlayButtonClick() {
+        // given
+        String file = "test.mp3";
+        Entry entry = mock(Entry.class);
+        when(entry.getEntryExampleSound()).thenReturn(file);
 
-		// then
-		verify(explanationView).addPlayButtonHandler(clickHandler);
-		verify(explanationView).addEntryExamplePanelHandler(mouseUpHandler);
-	}
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                clickHandler = (ClickHandler) invocation.getArguments()[0];
+                return null;
+            }
+        }).when(explanationView).addPlayButtonHandler(any(ClickHandler.class));
 
-	@Test
-	public void shouldCallPlayOrStopDescriptionOnPanelMouseUp() {
-		// given
-		String file = "test.mp3";
-		Entry entry = mock(Entry.class);
-		when(entry.getEntryExampleSound()).thenReturn(file);
+        // when
+        testObj.init();
+        testObj.processEntry(entry);
+        clickHandler.onClick(null);
 
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) {
-				mouseUpHandler = (MouseUpHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(explanationView).addEntryExamplePanelHandler(any(MouseUpHandler.class));
+        // then
+        verify(explanationDescriptionSoundController).playOrStopExplanationSound(entry.getEntryExampleSound());
+    }
 
-		// when
-		testObj.init();
-		testObj.processEntry(entry);
-		mouseUpHandler.onMouseUp(null);
+    @Test
+    public void shouldCallPlayOrStopEntryOnPlayButtonClick() {
+        // given
+        String file = "test.mp3";
+        Entry entry = mock(Entry.class);
+        when(entry.getEntrySound()).thenReturn(file);
 
-		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
-	}
+        doAnswer(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) {
+                clickHandler = (ClickHandler) invocation.getArguments()[0];
+                return null;
+            }
+        }).when(explanationView).addEntryPlayButtonHandler(any(ClickHandler.class));
 
-	@Test
-	public void shouldCallPlayOrStopDescriptionOnPlayButtonClick() {
-		// given
-		String file = "test.mp3";
-		Entry entry = mock(Entry.class);
-		when(entry.getEntryExampleSound()).thenReturn(file);
+        // when
+        testObj.init();
+        testObj.processEntry(entry);
+        clickHandler.onClick(null);
 
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) {
-				clickHandler = (ClickHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(explanationView).addPlayButtonHandler(any(ClickHandler.class));
-
-		// when
-		testObj.init();
-		testObj.processEntry(entry);
-		clickHandler.onClick(null);
-
-		// then
-		verify(explanationDescriptionSoundController).playOrStopDescriptionSound(entry);
-	}
+        // then
+        verify(entryDescriptionSoundController).playOrStopEntrySound(entry.getEntrySound());
+    }
 }

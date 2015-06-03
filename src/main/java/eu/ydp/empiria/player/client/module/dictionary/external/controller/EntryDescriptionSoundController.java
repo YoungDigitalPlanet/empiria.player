@@ -9,20 +9,21 @@ import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
 
-public class ExplanationDescriptionSoundController {
+public class EntryDescriptionSoundController {
 
     private final DescriptionSoundController descriptionSoundController;
-
     private final ExplanationView explanationView;
 
     @Inject
-    public ExplanationDescriptionSoundController(@Assisted ExplanationView explanationView,
-                                                 DescriptionSoundController descriptionSoundController) {
-        this.explanationView = explanationView;
+    public EntryDescriptionSoundController(@Assisted ExplanationView explanationView,
+                                           DescriptionSoundController descriptionSoundController) {
+
         this.descriptionSoundController = descriptionSoundController;
+        this.explanationView = explanationView;
+
     }
 
-    public void playOrStopExplanationSound(String filename) {
+    public void playOrStopEntrySound(String filename) {
         if (descriptionSoundController.isPlaying()) {
             stop();
         } else {
@@ -35,22 +36,22 @@ public class ExplanationDescriptionSoundController {
 
             @Override
             public void setCallbackReturnObject(MediaWrapper<Widget> mw) {
-                onExplanationMediaWrapperCallback(mw);
+                onEntryMediaWrapperCallback(mw);
             }
         };
     }
 
-    private void onExplanationMediaWrapperCallback(MediaWrapper<Widget> mw) {
-        explanationView.setExplanationPlayButtonStyle();
-        AbstractMediaEventHandler handler = createExplanationSoundMediaHandler();
+    private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
+        explanationView.setEntryPlayButtonStyle();
+        AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
         descriptionSoundController.playFromMediaWrapper(handler, mw);
     }
 
-    private AbstractMediaEventHandler createExplanationSoundMediaHandler() {
+    private AbstractMediaEventHandler createEntrySoundMediaHandler() {
         return new AbstractMediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
-                explanationView.setExplanationStopButtonStyle();
+                explanationView.setEntryStopButtonStyle();
                 descriptionSoundController.stopPlaying();
             }
         };
@@ -58,7 +59,7 @@ public class ExplanationDescriptionSoundController {
 
     public void stop() {
         descriptionSoundController.stopPlaying();
-        explanationView.setExplanationStopButtonStyle();
+        explanationView.setEntryStopButtonStyle();
         descriptionSoundController.stopMediaWrapper();
     }
 }
