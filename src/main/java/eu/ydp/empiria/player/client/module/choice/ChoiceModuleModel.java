@@ -28,6 +28,6 @@ public class ChoiceModuleModel extends AbstractResponseModel<String> {
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
-		responseModelChange = modelChangeListener;
+		setResponseModelChange(modelChangeListener);
 	}
 }

@@ -17,7 +17,9 @@ public class ItemData {
 
 	public int itemIndex;
 	public String errorMessage;
-	public XmlData data;
-	public ItemActivityOptions activityOptions;
+	private XmlData data;
 
+	public XmlData getData() {
+		return data;
+	}
 }

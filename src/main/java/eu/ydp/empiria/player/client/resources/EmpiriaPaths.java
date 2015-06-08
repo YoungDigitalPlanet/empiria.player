@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.resources;
 
 import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
@@ -11,6 +10,21 @@ public class EmpiriaPaths {
 	@Inject
 	DataSourceManager dataSourceManager;
 	private static final String SEPARATOR = "/";
+
+	private String getScriptPath() {
+		ItemData itemData = dataSourceManager.getItemData(0);
+		return ensureTrailingSlash(itemData.getData().getBaseURL());
+	}
+
+	private String getMediaPath() {
+		String scriptPath = getScriptPath();
+		String mediaPath = scriptPath + "media";
+		return ensureTrailingSlash(mediaPath);
+	}
+
+	public String getMediaFilePath(String filename){
+		return getMediaPath() + filename;
+	}
 
 	public String getBasePath() {
 		AssessmentData assessmentData = dataSourceManager.getAssessmentData();
