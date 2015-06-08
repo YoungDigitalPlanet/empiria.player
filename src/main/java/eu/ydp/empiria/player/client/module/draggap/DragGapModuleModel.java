@@ -19,7 +19,7 @@ public class DragGapModuleModel extends AbstractResponseModel<String> {
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
-		this.responseModelChange = modelChangeListener;
+		this.setResponseModelChange(modelChangeListener);
 	}
 
 	@Override
@@ -28,6 +28,6 @@ public class DragGapModuleModel extends AbstractResponseModel<String> {
 	}
 
 	public Response getResponse() {
-		return this.response;
+		return super.getResponse();
 	}
 }
