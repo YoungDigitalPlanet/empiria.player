@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external.interaction.view;
+package eu.ydp.empiria.player.client.module.external.common.view;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.LoadEvent;
