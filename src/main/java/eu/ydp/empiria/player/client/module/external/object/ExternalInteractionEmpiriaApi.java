@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.external.object;
 
 import com.google.gwt.core.client.js.JsType;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
-import eu.ydp.empiria.player.client.module.external.sound.ExternalSoundInstanceCallback;
-import eu.ydp.empiria.player.client.module.external.sound.ExternalSoundInstanceCreator;
+import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCallback;
+import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 @JsType

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.external.object;
 
-import eu.ydp.empiria.player.client.module.external.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
