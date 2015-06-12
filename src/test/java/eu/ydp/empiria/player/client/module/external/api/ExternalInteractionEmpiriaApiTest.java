@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external.object;
+package eu.ydp.empiria.player.client.module.external.api;
 
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
 import org.junit.Test;

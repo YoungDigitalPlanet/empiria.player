@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external.object;
+package eu.ydp.empiria.player.client.module.external.api;
 
 import com.google.gwt.core.client.js.JsProperty;
 import com.google.gwt.core.client.js.JsType;

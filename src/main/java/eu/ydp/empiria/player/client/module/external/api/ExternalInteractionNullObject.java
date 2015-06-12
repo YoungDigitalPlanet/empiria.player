@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external.object;
+package eu.ydp.empiria.player.client.module.external.api;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONObject;

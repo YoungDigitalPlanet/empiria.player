@@ -6,8 +6,8 @@ import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionFrameLoadHandler;
-import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionObject;
 
 public class ExternalInteractionFrame extends Composite {
 

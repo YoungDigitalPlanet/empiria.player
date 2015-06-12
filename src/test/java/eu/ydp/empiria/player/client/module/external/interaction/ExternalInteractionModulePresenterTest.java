@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPa
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
-import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

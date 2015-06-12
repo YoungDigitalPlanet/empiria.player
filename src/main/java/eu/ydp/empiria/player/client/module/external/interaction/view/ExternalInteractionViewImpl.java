@@ -7,7 +7,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionFrameLoadHandler;
-import eu.ydp.empiria.player.client.module.external.object.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
 
 public class ExternalInteractionViewImpl extends Composite implements ExternalInteractionView {
 
