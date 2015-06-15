@@ -7,9 +7,9 @@ import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class ExternalInteractionStateSaverTest {
+public class ExternalStateSaverTest {
 
-	private ExternalInteractionStateSaver testObj = new ExternalInteractionStateSaver();
+	private ExternalStateSaver testObj = new ExternalStateSaver();
 
 	@Test
 	public void shouldReturnEmptyObject_whenStateIsNotSet() {

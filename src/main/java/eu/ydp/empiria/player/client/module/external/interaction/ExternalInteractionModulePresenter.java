@@ -6,30 +6,30 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionFrameLoadHandler;
+import eu.ydp.empiria.player.client.module.external.common.ExternalFrameLoadHandler;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
-import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApiNullObject;
-import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
-import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApiNullObject;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleBean;
 import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModulePresenter
-		implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalInteractionFrameLoadHandler {
+		implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalFrameLoadHandler<ExternalInteractionApi> {
 
 	private final ExternalInteractionView view;
 	private final ExternalInteractionEmpiriaApi empiriaApi;
-	private ExternalInteractionStateSaver stateSaver;
+	private final ExternalStateSaver stateSaver;
 	private final ExternalStateEncoder stateEncoder;
+	private final ExternalInteractionPaths externalPaths;
 	private ExternalInteractionApi externalApi;
-	private ExternalInteractionPaths externalPaths;
 
 	@Inject
 	public ExternalInteractionModulePresenter(@ModuleScoped ExternalInteractionView view, @ModuleScoped ExternalInteractionPaths externalPaths,
-			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalInteractionStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
+			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
 		this.externalPaths = externalPaths;
 		this.view = view;
 		this.empiriaApi = empiriaApi;

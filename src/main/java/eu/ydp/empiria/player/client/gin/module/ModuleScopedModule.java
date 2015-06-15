@@ -46,10 +46,10 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
+import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
-import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleStructure;
 import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
@@ -353,7 +353,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 		bindModuleScoped(ExternalInteractionEmpiriaApi.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionEmpiriaApi>>() {
 		});
-		bindModuleScoped(ExternalInteractionStateSaver.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionStateSaver>>() {
+		bindModuleScoped(ExternalStateSaver.class, new TypeLiteral<ModuleScopedProvider<ExternalStateSaver>>() {
 		});
 	}
 

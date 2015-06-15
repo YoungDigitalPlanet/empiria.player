@@ -13,7 +13,6 @@ public class ExternalInteractionEmpiriaApi extends ExternalEmpiriaApi {
 	@ModuleScoped
 	private ExternalInteractionResponseModel responseModel;
 
-
 	public void onResultChange(ExternalInteractionStatus status) {
 		int done = status.getDone();
 		int errors = status.getErrors();

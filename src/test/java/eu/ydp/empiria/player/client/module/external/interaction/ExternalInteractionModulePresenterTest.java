@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
-import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
@@ -38,7 +38,7 @@ public class ExternalInteractionModulePresenterTest {
 	@Mock
 	private ExternalStateEncoder stateUtil;
 	@Mock
-	private ExternalInteractionStateSaver stateSaver;
+	private ExternalStateSaver stateSaver;
 
 	@Before
 	public void init() {
