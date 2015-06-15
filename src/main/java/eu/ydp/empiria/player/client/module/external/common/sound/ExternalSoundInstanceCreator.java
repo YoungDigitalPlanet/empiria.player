@@ -4,19 +4,19 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.ExternalInteractionModuleFactory;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalSoundInstanceCreator {
 
-	private ExternalInteractionPaths paths;
+	private ExternalPaths paths;
 	private MediaWrapperCreator mediaWrapperCreator;
 	private ExternalInteractionModuleFactory moduleFactory;
 
 	@Inject
-	public ExternalSoundInstanceCreator(@ModuleScoped ExternalInteractionPaths paths, MediaWrapperCreator mediaWrapperCreator,
+	public ExternalSoundInstanceCreator(@ModuleScoped ExternalPaths paths, MediaWrapperCreator mediaWrapperCreator,
 			ExternalInteractionModuleFactory moduleFactory) {
 		this.paths = paths;
 		this.mediaWrapperCreator = mediaWrapperCreator;

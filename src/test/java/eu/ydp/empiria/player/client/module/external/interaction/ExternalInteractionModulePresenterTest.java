@@ -6,12 +6,12 @@ import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
-import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
-import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
-import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,15 +28,15 @@ public class ExternalInteractionModulePresenterTest {
 	@InjectMocks
 	private ExternalInteractionModulePresenter testObj;
 	@Mock
-	private ExternalInteractionView view;
+	private ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view;
 	@Mock
-	private ExternalInteractionPaths externalPaths;
+	private ExternalPaths externalPaths;
 	@Mock
 	private ExternalInteractionEmpiriaApi empiriaApi;
 	@Mock
 	private ExternalInteractionApi externalApi;
 	@Mock
-	private ExternalStateEncoder stateUtil;
+	private ExternalStateEncoder stateEncoder;
 	@Mock
 	private ExternalStateSaver stateSaver;
 
@@ -203,7 +203,7 @@ public class ExternalInteractionModulePresenterTest {
 		// given
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray array = mock(JSONArray.class);
-		when(stateUtil.decodeState(array)).thenReturn(jsObj);
+		when(stateEncoder.decodeState(array)).thenReturn(jsObj);
 
 		// when
 		testObj.setState(array);
@@ -218,7 +218,7 @@ public class ExternalInteractionModulePresenterTest {
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray jsonArray = mock(JSONArray.class);
 		when(externalApi.getStateFromExternal()).thenReturn(jsObj);
-		when(stateUtil.encodeState(jsObj)).thenReturn(jsonArray);
+		when(stateEncoder.encodeState(jsObj)).thenReturn(jsonArray);
 
 		// when
 		JSONArray array = testObj.getState();

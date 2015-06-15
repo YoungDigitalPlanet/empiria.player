@@ -1,8 +1,7 @@
 package eu.ydp.empiria.player.client.module.external.interaction;
 
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
-import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleBean;
-import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleStructure;
+import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,21 +14,19 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExternalInteractionPathsTest {
+public class ExternalPathsTest {
 
 	@InjectMocks
-	private ExternalInteractionPaths testObj;
+	private ExternalPaths testObj;
 	@Mock
 	private EmpiriaPaths empiriaPaths;
 	@Mock
-	private ExternalInteractionModuleStructure structure;
-	@Mock
-	private ExternalInteractionModuleBean bean;
+	private ExternalFolderNameProvider externalFolderNameProvider;
 
 	@Before
 	public void init() {
-		when(structure.getBean()).thenReturn(bean);
-		when(bean.getSrc()).thenReturn("src");
+		when(externalFolderNameProvider.getExternalFolderName()).thenReturn("src");
+		testObj.setExternalFolderNameProvider(externalFolderNameProvider);
 	}
 
 	@Test

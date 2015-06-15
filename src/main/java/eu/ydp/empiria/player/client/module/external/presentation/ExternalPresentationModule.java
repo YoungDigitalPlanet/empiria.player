@@ -5,20 +5,33 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ExternalPresentationModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILockable, IResetable {
+public class ExternalPresentationModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILockable, IResetable, ExternalFolderNameProvider {
+
+	public static final String SOURCE_ATTRIBUTE = "src";
+	private final ExternalPresentationPresenter presenter;
+	private final ExternalPaths externalPaths;
+	private String presentationName;
 
 	@Inject
-	private ExternalPresentationPresenter presenter;
+	public ExternalPresentationModule(ExternalPresentationPresenter presenter, @ModuleScoped ExternalPaths externalPaths) {
+		this.presenter = presenter;
+		this.externalPaths = externalPaths;
+	}
 
 	@Override
 	protected void initModule(Element element) {
+		presentationName = element.getAttribute(SOURCE_ATTRIBUTE);
+		externalPaths.setExternalFolderNameProvider(this);
 		presenter.init();
 	}
 
 	@Override
 	public String getIdentifier() {
-		return null;
+		return presentationName;
 	}
 
 	@Override
@@ -48,5 +61,10 @@ public class ExternalPresentationModule extends SimpleModuleBase implements ISta
 	@Override
 	public void reset() {
 		presenter.reset();
+	}
+
+	@Override
+	public String getExternalFolderName() {
+		return presentationName;
 	}
 }

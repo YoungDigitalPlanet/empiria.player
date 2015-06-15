@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.external.common.sound;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.gin.factory.ExternalInteractionModuleFactory;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class ExternalSoundInstanceCreatorTest {
 	@InjectMocks
 	private ExternalSoundInstanceCreator testObj;
 	@Mock
-	private ExternalInteractionPaths paths;
+	private ExternalPaths paths;
 	@Mock
 	private MediaWrapperCreator mediaWrapperCreator;
 	@Mock

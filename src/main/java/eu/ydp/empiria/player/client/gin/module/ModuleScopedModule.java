@@ -45,13 +45,12 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
-import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
+import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleStructure;
-import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
@@ -126,6 +125,7 @@ public class ModuleScopedModule extends AbstractGinModule {
 		bindTestResetButton();
 		bindSpeechScore();
 		bindSlideshow();
+		bindExternal();
 		bindExternalInteraction();
 	}
 
@@ -340,20 +340,21 @@ public class ModuleScopedModule extends AbstractGinModule {
 		});
 	}
 
-	private void bindExternalInteraction() {
-		bindModuleScoped(ExternalInteractionResponseModel.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionResponseModel>>() {
-		});
-		bindModuleScoped(ExternalInteractionView.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionView>>() {
-		});
-		bindModuleScoped(ExternalInteractionModuleStructure.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionModuleStructure>>() {
-		});
-		bindModuleScoped(ExternalInteractionPaths.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionPaths>>() {
+	private void bindExternal() {
+		bindModuleScoped(ExternalPaths.class, new TypeLiteral<ModuleScopedProvider<ExternalPaths>>() {
 		});
 		bindModuleScoped(ExternalSoundInstanceCreator.class, new TypeLiteral<ModuleScopedProvider<ExternalSoundInstanceCreator>>() {
 		});
 		bindModuleScoped(ExternalInteractionEmpiriaApi.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionEmpiriaApi>>() {
 		});
 		bindModuleScoped(ExternalStateSaver.class, new TypeLiteral<ModuleScopedProvider<ExternalStateSaver>>() {
+		});
+	}
+
+	private void bindExternalInteraction() {
+		bindModuleScoped(ExternalInteractionResponseModel.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionResponseModel>>() {
+		});
+		bindModuleScoped(ExternalInteractionModuleStructure.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionModuleStructure>>() {
 		});
 	}
 
