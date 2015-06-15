@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPa
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInteractionView;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +34,7 @@ public class ExternalInteractionModulePresenterTest {
 	@Mock
 	private ExternalInteractionEmpiriaApi empiriaApi;
 	@Mock
-	private ExternalInteractionObject externalObject;
+	private ExternalInteractionApi externalApi;
 	@Mock
 	private ExternalStateEncoder stateUtil;
 	@Mock
@@ -44,7 +44,7 @@ public class ExternalInteractionModulePresenterTest {
 	public void init() {
 		Optional<JavaScriptObject> jsoOptional = Optional.absent();
 		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-		testObj.onExternalModuleLoaded(externalObject);
+		testObj.onExternalModuleLoaded(externalApi);
 	}
 
 	@Test
@@ -54,10 +54,10 @@ public class ExternalInteractionModulePresenterTest {
 		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
 
 		// when
-		testObj.onExternalModuleLoaded(externalObject);
+		testObj.onExternalModuleLoaded(externalApi);
 
 		// then
-		verify(externalObject, never()).setStateOnExternal(any(JavaScriptObject.class));
+		verify(externalApi, never()).setStateOnExternal(any(JavaScriptObject.class));
 	}
 
 	@Test
@@ -68,10 +68,10 @@ public class ExternalInteractionModulePresenterTest {
 		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
 
 		// when
-		testObj.onExternalModuleLoaded(externalObject);
+		testObj.onExternalModuleLoaded(externalApi);
 
 		// then
-		verify(externalObject).setStateOnExternal(jso);
+		verify(externalApi).setStateOnExternal(jso);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.reset();
 
 		// then
-		verify(externalObject).reset();
+		verify(externalApi).reset();
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.setLocked(locked);
 
 		// then
-		verify(externalObject).lock();
+		verify(externalApi).lock();
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.setLocked(locked);
 
 		// then
-		verify(externalObject).unlock();
+		verify(externalApi).unlock();
 	}
 
 	@Test
@@ -132,7 +132,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.markAnswers(type, mode);
 
 		// then
-		verify(externalObject).markCorrectAnswers();
+		verify(externalApi).markCorrectAnswers();
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.markAnswers(type, mode);
 
 		// then
-		verify(externalObject).unmarkCorrectAnswers();
+		verify(externalApi).unmarkCorrectAnswers();
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.markAnswers(type, mode);
 
 		// then
-		verify(externalObject).markWrongAnswers();
+		verify(externalApi).markWrongAnswers();
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.markAnswers(type, mode);
 
 		// then
-		verify(externalObject).unmarkWrongAnswers();
+		verify(externalApi).unmarkWrongAnswers();
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.showAnswers(type);
 
 		// then
-		verify(externalObject).showCorrectAnswers();
+		verify(externalApi).showCorrectAnswers();
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class ExternalInteractionModulePresenterTest {
 		testObj.showAnswers(type);
 
 		// then
-		verify(externalObject).hideCorrectAnswers();
+		verify(externalApi).hideCorrectAnswers();
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class ExternalInteractionModulePresenterTest {
 		// given
 		JavaScriptObject jsObj = mock(JavaScriptObject.class);
 		JSONArray jsonArray = mock(JSONArray.class);
-		when(externalObject.getStateFromExternal()).thenReturn(jsObj);
+		when(externalApi.getStateFromExternal()).thenReturn(jsObj);
 		when(stateUtil.encodeState(jsObj)).thenReturn(jsonArray);
 
 		// when

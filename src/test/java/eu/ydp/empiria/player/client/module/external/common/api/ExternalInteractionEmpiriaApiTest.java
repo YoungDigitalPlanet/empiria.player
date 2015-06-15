@@ -1,6 +1,8 @@
-package eu.ydp.empiria.player.client.module.external.api;
+package eu.ydp.empiria.player.client.module.external.common.api;
 
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;

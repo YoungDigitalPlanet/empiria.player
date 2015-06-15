@@ -8,9 +8,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionFrameLoadHandler;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionNullObject;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApiNullObject;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleBean;
@@ -24,7 +24,7 @@ public class ExternalInteractionModulePresenter
 	private final ExternalInteractionEmpiriaApi empiriaApi;
 	private ExternalInteractionStateSaver stateSaver;
 	private final ExternalStateEncoder stateEncoder;
-	private ExternalInteractionObject externalObject;
+	private ExternalInteractionApi externalApi;
 	private ExternalInteractionPaths externalPaths;
 
 	@Inject
@@ -35,7 +35,7 @@ public class ExternalInteractionModulePresenter
 		this.empiriaApi = empiriaApi;
 		this.stateSaver = stateSaver;
 		this.stateEncoder = stateEncoder;
-		this.externalObject = new ExternalInteractionNullObject();
+		this.externalApi = new ExternalInteractionApiNullObject();
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ExternalInteractionModulePresenter
 
 	@Override
 	public void reset() {
-		externalObject.reset();
+		externalApi.reset();
 	}
 
 	@Override
@@ -86,10 +86,10 @@ public class ExternalInteractionModulePresenter
 	public void showAnswers(ShowAnswersType mode) {
 		switch (mode) {
 		case CORRECT:
-			externalObject.showCorrectAnswers();
+			externalApi.showCorrectAnswers();
 			break;
 		case USER:
-			externalObject.hideCorrectAnswers();
+			externalApi.hideCorrectAnswers();
 			break;
 		}
 	}
@@ -100,8 +100,8 @@ public class ExternalInteractionModulePresenter
 	}
 
 	@Override
-	public void onExternalModuleLoaded(ExternalInteractionObject externalObject) {
-		this.externalObject = externalObject;
+	public void onExternalModuleLoaded(ExternalInteractionApi externalObject) {
+		this.externalApi = externalObject;
 
 		Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
 		if (externalState.isPresent()) {
@@ -110,7 +110,7 @@ public class ExternalInteractionModulePresenter
 	}
 
 	public JSONArray getState() {
-		JavaScriptObject state = externalObject.getStateFromExternal();
+		JavaScriptObject state = externalApi.getStateFromExternal();
 		stateSaver.setExternalState(state);
 		return stateEncoder.encodeState(state);
 	}
@@ -121,20 +121,20 @@ public class ExternalInteractionModulePresenter
 	}
 
 	private void lock() {
-		externalObject.lock();
+		externalApi.lock();
 	}
 
 	private void unlock() {
-		externalObject.unlock();
+		externalApi.unlock();
 	}
 
 	private void markAnswers(MarkAnswersType type) {
 		switch (type) {
 		case CORRECT:
-			externalObject.markCorrectAnswers();
+			externalApi.markCorrectAnswers();
 			break;
 		case WRONG:
-			externalObject.markWrongAnswers();
+			externalApi.markWrongAnswers();
 			break;
 		}
 	}
@@ -142,10 +142,10 @@ public class ExternalInteractionModulePresenter
 	private void unmarkAnswers(MarkAnswersType type) {
 		switch (type) {
 		case CORRECT:
-			externalObject.unmarkCorrectAnswers();
+			externalApi.unmarkCorrectAnswers();
 			break;
 		case WRONG:
-			externalObject.unmarkWrongAnswers();
+			externalApi.unmarkWrongAnswers();
 			break;
 		}
 	}

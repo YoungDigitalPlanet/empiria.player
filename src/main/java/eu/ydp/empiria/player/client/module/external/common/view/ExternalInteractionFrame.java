@@ -6,8 +6,8 @@ import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Frame;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionFrameLoadHandler;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionObject;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 
 public class ExternalInteractionFrame extends Composite {
 
@@ -21,7 +21,7 @@ public class ExternalInteractionFrame extends Composite {
 		frame.addLoadHandler(new LoadHandler() {
 			@Override
 			public void onLoad(LoadEvent event) {
-				ExternalInteractionObject obj = init(frame.getElement(), api);
+				ExternalInteractionApi obj = init(frame.getElement(), api);
 				onLoadHandler.onExternalModuleLoaded(obj);
 			}
 		});
@@ -31,7 +31,7 @@ public class ExternalInteractionFrame extends Composite {
 		frame.setUrl(url);
 	}
 
-	private native ExternalInteractionObject init(Element frame, ExternalInteractionEmpiriaApi api)/*-{
+	private native ExternalInteractionApi init(Element frame, ExternalInteractionEmpiriaApi api)/*-{
         return frame.contentWindow.init(api);
     }-*/;
 }

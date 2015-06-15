@@ -1,21 +1,18 @@
-package eu.ydp.empiria.player.client.module.external.api;
+package eu.ydp.empiria.player.client.module.external.interaction.api;
 
 import com.google.gwt.core.client.js.JsType;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCallback;
-import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
+import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 @JsType
-public class ExternalInteractionEmpiriaApi {
+public class ExternalInteractionEmpiriaApi extends ExternalEmpiriaApi {
 
 	@Inject
 	@ModuleScoped
 	private ExternalInteractionResponseModel responseModel;
-	@Inject
-	@ModuleScoped
-	private ExternalSoundInstanceCreator soundInstanceCreator;
+
 
 	public void onResultChange(ExternalInteractionStatus status) {
 		int done = status.getDone();
@@ -30,7 +27,5 @@ public class ExternalInteractionEmpiriaApi {
 		}
 	}
 
-	public void initSound(String src, ExternalSoundInstanceCallback callback) {
-		soundInstanceCreator.createSound(src, callback);
-	}
+
 }

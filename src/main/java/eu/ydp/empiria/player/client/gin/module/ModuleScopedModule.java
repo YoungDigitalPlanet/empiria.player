@@ -47,7 +47,7 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.empiria.player.client.module.external.common.ExternalInteractionPaths;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
-import eu.ydp.empiria.player.client.module.external.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalInteractionStateSaver;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleStructure;
