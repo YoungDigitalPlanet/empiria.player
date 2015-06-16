@@ -6,24 +6,24 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
         type: "gap", isToken: true,
         texClass: MML.TEXCLASS.INNER,
 
-        toHTML: function (span) {
-            var newDiv = this.HTMLcreateSpan(span);
-            this.HTMLhandleSize(newDiv);
+        toHTML: function (parentElement) {
+            var mathWrapper = this.HTMLcreateSpan(parentElement);
+            this.HTMLhandleSize(mathWrapper);
 
             var id = this.attr['responseIdentifier'];
             var gap = window.getMathGap(id);
-            newDiv.appendChild(gap);
+            mathWrapper.appendChild(gap);
 
-            var HD = HTMLCSS.getHD(newDiv, true);
-            newDiv.bbox = {h: HD.h, d: HD.d, w: true, exactW: false};
+            var HD = HTMLCSS.getHD(mathWrapper, true);
+            mathWrapper.bbox = {h: HD.h, d: HD.d, w: true, exactW: false};
 
-            this.HTMLhandleSpace(newDiv);
-            this.HTMLhandleColor(newDiv);
-            this.HTMLhandleDir(newDiv);
+            this.HTMLhandleSpace(mathWrapper);
+            this.HTMLhandleColor(mathWrapper);
+            this.HTMLhandleDir(mathWrapper);
 
-            HTMLCSS.Measured(newDiv, span);
+            HTMLCSS.Measured(mathWrapper, parentElement);
 
-            return newDiv;
+            return mathWrapper;
         }
     });
 });
