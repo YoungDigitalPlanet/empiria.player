@@ -461,6 +461,12 @@ public interface StyleNameConstants extends Constants {
 	@DefaultStringValue("qp-external-interaction-module-frame")
 	public String QP_EXTERNAL_INTERACTION_MODULE_FRAME();
 
+    @DefaultStringValue("qp-external-presentation-module")
+    public String QP_EXTERNAL_PRESENTATION_MODULE();
+
+    @DefaultStringValue("qp-external-presentation-module-frame")
+    public String QP_EXTERNAL_PRESENTATION_MODULE_FRAME();
+
     @DefaultStringValue("qp-feedback-image")
     public String QP_FEEDBACK_IMAGE();
 
