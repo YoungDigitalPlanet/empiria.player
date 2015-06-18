@@ -37,8 +37,8 @@ public class ReportModule extends ContainerModuleBase implements OnModuleShowHan
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
-		super.initModule(element, moduleSocket, mil, bgs);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
+		super.initModule(element, moduleSocket, bgs);
 
 		ReportTableGenerator reportTableGenerator = new ReportTableGenerator(bgs, dataSourceDataSupplier, sessionDataSupplier);
 		table = reportTableGenerator.generate(element);

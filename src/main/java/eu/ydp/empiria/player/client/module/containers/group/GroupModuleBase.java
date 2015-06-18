@@ -28,8 +28,8 @@ public abstract class GroupModuleBase<T> extends BindingContainerModule<T> imple
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, bodyGeneratorSocket);
 
 		groupIdentifier = new DefaultGroupIdentifier(getModuleId());
 

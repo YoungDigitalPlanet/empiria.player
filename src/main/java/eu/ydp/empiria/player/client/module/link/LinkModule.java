@@ -112,8 +112,8 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> implements
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, bodyGeneratorSocket);
 
 		if (element.hasAttribute("itemIndex")) {
 			itemIndex = NumberUtils.tryParseInt(element.getAttribute("itemIndex"), -1);

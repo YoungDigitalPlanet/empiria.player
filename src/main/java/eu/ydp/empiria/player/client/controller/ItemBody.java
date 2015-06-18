@@ -65,7 +65,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		itemBodyModule = new ItemBodyModule();
 		modulesInstalator.setInitialParent(itemBodyModule);
-		itemBodyModule.initModule(itemBodyElement, moduleSocket, interactionEventsListener, generator);
+		itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
 
 		modules = new ArrayList<>();
 		modules.add(itemBodyModule);
