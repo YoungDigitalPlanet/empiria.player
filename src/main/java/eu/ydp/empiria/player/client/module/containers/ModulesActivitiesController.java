@@ -11,7 +11,7 @@ public class ModulesActivitiesController {
 
 	public void lock(List<IModule> modules, boolean state) {
 		for (IModule child : modules) {
-			if (child instanceof IActivity) {
+			if (child instanceof ILockable) {
 				((ILockable) child).lock(state);
 			}
 		}
