@@ -31,7 +31,7 @@ public class ExternalPresentationModule extends SimpleModuleBase implements ISta
 
 	@Override
 	public String getIdentifier() {
-		return presentationName;
+		return getModuleId();
 	}
 
 	@Override

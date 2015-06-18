@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.external.presentation;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class ExternalPresentationModuleTest {
@@ -26,10 +27,12 @@ public class ExternalPresentationModuleTest {
 	@Mock
 	private Element element;
 	private static final String source = "SOURCE";
+	private static final String ID = "ID";
 
 	@Before
 	public void setUp() throws Exception {
 		when(element.getAttribute("src")).thenReturn(source);
+		when(element.getAttribute("id")).thenReturn(ID);
 	}
 
 	@Test
@@ -46,13 +49,13 @@ public class ExternalPresentationModuleTest {
 	@Test
 	public void shouldReturnPresentationNameAsModuleIdentifier() {
 		// given
-		testObj.initModule(element);
+		testObj.initModule(element, mock(ModuleSocket.class), mock(InteractionEventsListener.class));
 
 		// when
 		String actual = testObj.getIdentifier();
 
 		// then
-		assertThat(actual).isEqualTo(source);
+		assertThat(actual).isEqualTo(ID);
 	}
 
 	@Test
