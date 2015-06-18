@@ -19,16 +19,12 @@ public class OrderInteractionModuleModel extends AbstractResponseModel<String> {
 	}
 
 	public void initialize(ResponseModelChangeListener modelChangeListener) {
-		responseModelChange = modelChangeListener;
+		setResponseModelChange(modelChangeListener);
 	}
 
 	@Override
 	protected List<String> parseResponse(Collection<String> values) {
 		return Lists.newArrayList(values);
-	}
-
-	public Response getResponse() {
-		return response;
 	}
 
 	@Override

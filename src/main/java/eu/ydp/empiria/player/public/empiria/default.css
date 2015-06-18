@@ -14,3 +14,15 @@
 .qp-slideshow-button-pause.qp-slideshow-button-pause-up {
     display: none;
 }
+
+.qp-external-interaction-module-frame {
+    width: 100%;
+}
+
+.qp-external-presentation-module-frame {
+    width: 100%;
+}
+
+.mfp-wrap {
+    z-index: 10000 !important;
+}

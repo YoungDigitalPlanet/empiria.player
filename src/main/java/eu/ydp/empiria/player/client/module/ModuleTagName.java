@@ -16,7 +16,7 @@ public enum ModuleTagName {
 			"imageFeedback"), INLINE_CONTAINER_STYLE_STRONG("b"), LABELLING_INTERACTION("labellingInteraction"), ORDER_INTERACTION("orderInteraction"), COLORFILL_INTERACTION(
 			"colorfillInteraction"), DRAG_GAP("dragInteraction"), TUTOR("tutor"), BUTTON("button"), DRAWING("drawing"), BONUS("bonus"), PROGRESS_BONUS(
 			"progressBonus"), VIDEO("video"), DICTIONARY("dictionaryButton"), OPEN_QUESTION("openQuestion"), TEST_PAGE_SUBMIT("testPageSubmitButton"), TEST_RESET(
-			"testResetButton"), SPEECH_SCORE("speechScore");
+			"testResetButton"), SPEECH_SCORE("speechScore"), EXTERNAL_INTERACTION("externalInteraction"), EXTERNAL_PRESENTATION("externalPresentation");
 	String name = null;
 
 	private ModuleTagName(String name) {

@@ -24,7 +24,9 @@ public class ExtensionsProvider {
 	private List<? extends Extension> extensions;
 
 	@Inject
-	public ExtensionsProvider(ModuleProviderFactory moduleProviderFactory, ModuleFactory moduleFactory, SoundProcessorManagerExtension soundProcessorManagerExtension, SingleModuleInstanceProvider singleModuleInstanceProvider, ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
+	public ExtensionsProvider(ModuleProviderFactory moduleProviderFactory, ModuleFactory moduleFactory,
+			SoundProcessorManagerExtension soundProcessorManagerExtension, SingleModuleInstanceProvider singleModuleInstanceProvider,
+			ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
 		this.moduleProviderFactory = moduleProviderFactory;
 		this.moduleFactory = moduleFactory;
 		this.soundProcessorManagerExtension = soundProcessorManagerExtension;
@@ -96,6 +98,8 @@ public class ExtensionsProvider {
 				new SimpleConnectorExtension(moduleProviderFactory.getImageActionProcessor(), ModuleTagName.IMAGE_FEEDBACK),
 				new SimpleConnectorExtension(moduleProviderFactory.getDrawingModule(), ModuleTagName.DRAWING),
 				new SimpleConnectorExtension(moduleProviderFactory.getTestResetButtonModule(), ModuleTagName.TEST_RESET, false),
+				new SimpleConnectorExtension(moduleProviderFactory.getExternalInteractionModule(), ModuleTagName.EXTERNAL_INTERACTION, true),
+				new SimpleConnectorExtension(moduleProviderFactory.getExternalPresentationModule(), ModuleTagName.EXTERNAL_PRESENTATION),
 				moduleProviderFactory.getMediaProcessor().get(),
 				PlayerGinjectorFactory.getPlayerGinjector().getMultiPage(),
 				PlayerGinjectorFactory.getPlayerGinjector().getPage(),

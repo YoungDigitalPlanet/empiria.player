@@ -1,24 +1,15 @@
 package eu.ydp.empiria.player.client.resources;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static junitparams.JUnitParamsRunner.*;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
-import static junitparams.JUnitParamsRunner.$;
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import junitparams.*;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import org.mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class EmpiriaPathsTest {
@@ -29,26 +20,44 @@ public class EmpiriaPathsTest {
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private DataSourceManager dataSourceManager;
 	@Mock
-	private XmlData xmlData;
+	private XmlData assesmentData;
+
+	@Mock
+	private XmlData itemData;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		when(dataSourceManager.getAssessmentData().getData()).thenReturn(xmlData);
+		when(dataSourceManager.getAssessmentData().getData()).thenReturn(assesmentData);
+		when(dataSourceManager.getItemData(0).getData()).thenReturn(itemData);
+	}
+
+	@Test
+	@Parameters(method = "itemURLParams")
+	public void shouldReturnMediaFilepath(String path) {
+		// given
+		String filepath = "external/module.html";
+		when(itemData.getBaseURL()).thenReturn(path);
+
+		// when
+		String actual = empiriaPaths.getMediaFilePath(filepath);
+
+		// then
+		assertThat(actual).isEqualTo("http://url/test/script_00001/media/external/module.html");
 	}
 
 	@Test
 	@Parameters(method = "baseURLParams")
 	public void shouldGetBasePath(String path) {
 		// when
-		when(xmlData.getBaseURL()).thenReturn(path);
+		when(assesmentData.getBaseURL()).thenReturn(path);
 		final String basePath = empiriaPaths.getBasePath();
 
 		// then
 		verify(dataSourceManager.getAssessmentData()).getData();
 		verify(dataSourceManager.getAssessmentData(), never()).getSkinData(); // skin
-																				// specific
-																				// data
+		// specific
+		// data
 		assertThat(basePath).isEqualTo("http://url/test/");
 	}
 
@@ -56,7 +65,7 @@ public class EmpiriaPathsTest {
 	@Parameters(method = "baseURLParams")
 	public void testGetCommonsPath(String path) throws Exception {
 		// when
-		when(xmlData.getBaseURL()).thenReturn(path);
+		when(assesmentData.getBaseURL()).thenReturn(path);
 		final String commonsPath = empiriaPaths.getCommonsPath();
 
 		// then
@@ -67,7 +76,7 @@ public class EmpiriaPathsTest {
 	@Parameters(method = "baseURLParams")
 	public void shouldGetFilePath(String path) {
 		// given
-		when(xmlData.getBaseURL()).thenReturn(path);
+		when(assesmentData.getBaseURL()).thenReturn(path);
 		final String filename = "file.png";
 
 		// when
@@ -83,7 +92,7 @@ public class EmpiriaPathsTest {
 		// given
 		final String relativePath = "some/dir";
 
-		when(xmlData.getBaseURL()).thenReturn(path);
+		when(assesmentData.getBaseURL()).thenReturn(path);
 		final String expected = "http://url/test/common/some/dir/";
 
 		// when
@@ -99,7 +108,7 @@ public class EmpiriaPathsTest {
 		// given
 		final String relativePath = "some/dir/";
 
-		when(xmlData.getBaseURL()).thenReturn(path);
+		when(assesmentData.getBaseURL()).thenReturn(path);
 		final String expected = "http://url/test/common/some/dir/";
 
 		// when
@@ -111,6 +120,10 @@ public class EmpiriaPathsTest {
 
 	Object[] baseURLParams() {
 		return $("http://url/test/", "http://url/test");
+	}
+
+	Object[] itemURLParams() {
+		return $("http://url/test/script_00001/", "http://url/test/script_00001");
 	}
 
 }

@@ -1,39 +1,24 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.junit.Before;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import com.google.gwt.dev.util.collect.HashMap;
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import com.google.gwt.thirdparty.guava.common.collect.Maps;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Singleton;
+import com.google.gwt.thirdparty.guava.common.collect.*;
+import com.google.inject.*;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
-import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.OutcomeVariablesInitializer;
+import eu.ydp.empiria.player.client.controller.variables.processor.*;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.*;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.*;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import java.util.*;
+import java.util.logging.Logger;
+import org.junit.Before;
 
 public class VariableProcessorFunctionalTestBase {
 
@@ -43,7 +28,6 @@ public class VariableProcessorFunctionalTestBase {
 	protected AnswerEvaluationSupplier answerEvaluationProvider;
 	protected ProcessingMode processingMode;
 
-	private final OutcomeVariablesInitializer outcomeVariablesInitializer = new OutcomeVariablesInitializer();
 	protected Injector injector;
 
 	@Before
@@ -120,7 +104,6 @@ public class VariableProcessorFunctionalTestBase {
 
 	protected Map<String, Outcome> prepareInitialOutcomes(Map<String, Response> responsesMap) {
 		Map<String, Outcome> outcomes = Maps.newHashMap();
-		outcomeVariablesInitializer.initializeOutcomeVariables(responsesMap, outcomes);
 		return outcomes;
 	}
 

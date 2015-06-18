@@ -86,15 +86,14 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 	private String stateAsync;
 
 	private final AssessmentFactory assessmentFactory;
-	private boolean pageLoadedFirstTime = true;
 
 	@Inject
 	public DeliveryEngine(PlayerViewSocket playerViewSocket, DataSourceManager dataManager, StyleSocket styleSocket, SessionDataManager sessionDataManager,
-	                      EventsBus eventsBus, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
-	                      ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
-	                      ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
-	                      AssessmentFactory assessmentFactory, PlayerWorkModeState playerWorkModeState,
-	                      FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider) {
+			EventsBus eventsBus, ModuleHandlerManager moduleHandlerManager, SessionTimeUpdater sessionTimeUpdater,
+			ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
+			ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
+			AssessmentFactory assessmentFactory, PlayerWorkModeState playerWorkModeState,
+			FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider) {
 		this.playerViewSocket = playerViewSocket;
 		this.dataManager = dataManager;
 		this.sessionDataManager = sessionDataManager;
@@ -349,12 +348,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TEST_PAGE_LOADED), new CurrentPageScope());
 			}
 			updatePageStyle();
-
-			if (pageLoadedFirstTime) {
-				playerWorkModeState.updateWorkModeFormState();
-				pageLoadedFirstTime = false;
-			}
-
 		}
 		if (event.getType() == FlowProcessingEventType.PAGE_CHANGING || event.getType() == FlowProcessingEventType.CHECK
 				|| event.getType() == FlowProcessingEventType.SHOW_ANSWERS) {
