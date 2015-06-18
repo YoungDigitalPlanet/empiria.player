@@ -1,9 +1,0 @@
-<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:e='urn:import:eu.ydp.empiria.player.client.module.external.view'>
-    <ui:with field="res" type="eu.ydp.empiria.player.client.resources.StyleNameConstants"/>
-    <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_EXTERNAL_INTERACTION_MODULE}">
-        <e:ExternalInteractionFrame ui:field="frame" styleName="{res.QP_EXTERNAL_INTERACTION_MODULE_FRAME}"/>
-    </g:FlowPanel>
-</ui:UiBinder>

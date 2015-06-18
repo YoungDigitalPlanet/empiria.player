@@ -1,21 +1,31 @@
 package eu.ydp.empiria.player.client.gin.factory;
 
-import com.google.inject.*;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
-import eu.ydp.empiria.player.client.controller.extensions.internal.modules.*;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.ImageActionProcessor;
+import eu.ydp.empiria.player.client.module.InlineContainerModule;
+import eu.ydp.empiria.player.client.module.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.bonus.BonusModule;
 import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillInteractionModule;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModule;
-import eu.ydp.empiria.player.client.module.containers.*;
+import eu.ydp.empiria.player.client.module.containers.DivModule;
+import eu.ydp.empiria.player.client.module.containers.SubHtmlContainerModule;
+import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
+import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
-import eu.ydp.empiria.player.client.module.external.ExternalInteractionModule;
+import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionModule;
+import eu.ydp.empiria.player.client.module.external.presentation.ExternalPresentationModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
@@ -151,6 +161,8 @@ public class ModuleProviderFactory {
 	private Provider<SpeechScoreModule> speechScoreModule;
 	@Inject
 	private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
+	@Inject
+	private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
 
 	public Provider<ConnectionModule> getConnectionModule() {
 		return connectionModule;
@@ -356,7 +368,11 @@ public class ModuleProviderFactory {
 		return speechScoreModule;
 	}
 
-	public Provider<ExternalInteractionModule> getExternalInteractionModule(){
+	public Provider<ExternalInteractionModule> getExternalInteractionModule() {
 		return externalInteractionModuleProvider;
+	}
+
+	public Provider<ExternalPresentationModule> getExternalPresentationModule() {
+		return externalPresentationModuleProvider;
 	}
 }
