@@ -1,27 +1,23 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
+import eu.ydp.empiria.player.client.module.*;
 
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IContainerModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class FeedbackPropertiesCollectorTestHelper {
 
 	private IModule sender;
 
-	private IContainerModule container;
+	private ISingleViewWithBodyModule container;
 
 	private Map<String, Variable> variables;
 
@@ -30,10 +26,10 @@ class FeedbackPropertiesCollectorTestHelper {
 	}
 
 	public void createHierarchy(ModuleInfo[] infos) {
-		createHierarchy(infos, IContainerModule.class);
+		createHierarchy(infos, ISingleViewWithBodyModule.class);
 	}
 
-	public void createHierarchy(ModuleInfo[] infos, Class<? extends IContainerModule> ModuleClass) {
+	public void createHierarchy(ModuleInfo[] infos, Class<? extends ISingleViewWithBodyModule> ModuleClass) {
 		container = mock(ModuleClass);
 
 		variables = Maps.newHashMap();

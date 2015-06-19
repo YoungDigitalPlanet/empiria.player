@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 import java.util.*;
 
-public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule, IContainerModule {
+public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule {
 
 	private static final String MINUS = "-";
 
