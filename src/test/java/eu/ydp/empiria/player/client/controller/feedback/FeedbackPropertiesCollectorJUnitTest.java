@@ -6,12 +6,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import org.junit.Before;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
-import eu.ydp.empiria.player.client.module.IContainerModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
@@ -131,7 +131,7 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 		assertThat(properties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(100.0)));
 	}
 
-	private void initializeModules(Class<? extends IContainerModule> ModuleClass) {
+	private void initializeModules(Class<? extends ISingleViewWithBodyModule> ModuleClass) {
 		helper.createHierarchy(moduleInfos, ModuleClass);
 		initializeproperties();
 	}

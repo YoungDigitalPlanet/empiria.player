@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 
 import java.util.List;
 
-public abstract class ContainerModuleBase extends ModuleBase implements IContainerModule {
+public abstract class ContainerModuleBase extends ModuleBase implements ISingleViewWithBodyModule {
 
     @Override
     public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bgs) {
