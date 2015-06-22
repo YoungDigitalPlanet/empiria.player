@@ -4,7 +4,5 @@ public interface DataLoaderEventListener {
 
 	public void onAssessmentLoaded();
 
-	public void onAssessmentLoadingError();
-
 	public void onDataReady();
 }

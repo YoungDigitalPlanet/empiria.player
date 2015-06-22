@@ -2,12 +2,9 @@ package eu.ydp.empiria.player.client.controller.delivery;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -19,9 +16,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
-import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest.NavigateGotoItem;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
@@ -47,15 +42,15 @@ public class DeliveryEngineGWTTestCase extends GWTTestCase {
 	protected DeliveryEngine de;
 	protected FlowRequestInvoker flowInvoker;
 
-	DeliveryEventType[] typesWithToc = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+	DeliveryEventType[] typesWithToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
 			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
-	DeliveryEventType[] typesNoToc = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
+	DeliveryEventType[] typesNoToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
 			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TEST_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
-	DeliveryEventType[] typesPageSwitch = { DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
+	DeliveryEventType[] typesPageSwitch = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
 			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED };
+			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
 	DeliveryEventType[] types;
 	private int counter = 0;
 
@@ -145,71 +140,4 @@ public class DeliveryEngineGWTTestCase extends GWTTestCase {
 		}
 
 	}
-
-	public void testParseFlowRequestNoState() {
-
-		int itemIndex = 1;
-
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-		de.setInitialItemIndex(itemIndex);
-
-		IFlowRequest flowRequest = de.parseFlowRequest(null);
-
-		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
-		assertEquals(itemIndex, navigableItem.getIndex());
-	}
-
-	public void testParseFlowRequestWithState() {
-
-		int initialItemIndex = 2;
-		int stateItemIndex = 5;
-
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-		de.initialItemIndex = initialItemIndex;
-
-		JSONArray arr = createJSonStateArr(stateItemIndex);
-
-		IFlowRequest flowRequest = de.parseFlowRequest(arr);
-
-		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
-		assertEquals(initialItemIndex, navigableItem.getIndex());
-
-	}
-
-	public void testParseFlowRequestWithStateNoInitial() {
-
-		int stateItemIndex = 5;
-
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-
-		JSONArray arr = createJSonStateArr(stateItemIndex);
-
-		IFlowRequest flowRequest = de.parseFlowRequest(arr);
-
-		NavigateGotoItem navigableItem = (NavigateGotoItem) flowRequest;
-		assertEquals(stateItemIndex, navigableItem.getIndex());
-
-	}
-
-	public void testParseFlowRequestNoStateNoInitial() {
-
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-
-		IFlowRequest flowRequest = de.parseFlowRequest(null);
-
-		assertEquals(null, flowRequest);
-
-	}
-
-	private JSONArray createJSonStateArr(int itemIndex) {
-		JSONArray arr = new JSONArray();
-		arr.isArray().set(0, new JSONNumber(itemIndex));
-
-		return arr;
-	}
-
 }
