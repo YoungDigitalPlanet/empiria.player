@@ -1,9 +1,10 @@
 package eu.ydp.empiria.player.client.module;
 
-import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-
 import java.util.List;
+
+import com.google.gwt.xml.client.Element;
+
+import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 
 public abstract class ContainerModuleBase extends ModuleBase implements ISingleViewWithBodyModule {
 

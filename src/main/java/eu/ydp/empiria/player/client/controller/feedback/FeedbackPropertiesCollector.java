@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import java.util.Map;
-
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
+
+import java.util.Map;
 
 public class FeedbackPropertiesCollector {
 

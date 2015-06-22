@@ -12,8 +12,8 @@ import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, IStateful, IUniqueModule, IActivity,
-		ILifecycleModule {
+public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, IActivity,
+		ILifecycleModule, StatefulModule {
 
 	private final TextEditorPresenter presenter;
 	private final TextEditorModelEncoder textEditorModelEncoder;

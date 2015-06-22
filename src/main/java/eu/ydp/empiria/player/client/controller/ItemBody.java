@@ -234,8 +234,9 @@ public class ItemBody implements WidgetWorkflowListener {
 		JSONObject states = new JSONObject();
 
 		for (IModule currModule : modules) {
-			if (currModule instanceof IStateful && currModule instanceof IUniqueModule) {
-				states.put(((IUniqueModule) currModule).getIdentifier(), ((IStateful) currModule).getState());
+			if (currModule instanceof StatefulModule) {
+				StatefulModule statefulModule = (StatefulModule) currModule;
+				states.put(statefulModule.getIdentifier(), statefulModule.getState());
 			}
 		}
 
