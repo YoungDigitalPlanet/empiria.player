@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 
-public abstract class ContainerModuleBase extends ModuleBase implements IContainerModule {
+public abstract class ContainerModuleBase extends ModuleBase implements ISingleViewWithBodyModule {
 
 	@Override
 	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
