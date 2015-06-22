@@ -9,7 +9,8 @@ import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNamePro
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ExternalPresentationModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILockable, IResetable, ExternalFolderNameProvider {
+public class ExternalPresentationModule extends SimpleModuleBase implements ILockable, IResetable, ExternalFolderNameProvider,
+		StatefulModule {
 
 	public static final String SOURCE_ATTRIBUTE = "src";
 	private final ExternalPresentationPresenter presenter;
