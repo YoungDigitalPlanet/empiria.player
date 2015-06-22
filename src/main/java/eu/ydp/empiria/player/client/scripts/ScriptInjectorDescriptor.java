@@ -12,7 +12,7 @@ public class ScriptInjectorDescriptor {
 
 			@Override
 			public String getUrl() {
-				return "jquery/jquery-1.10.2.min.js";
+				return "jquery/jquery-1.11.3.min.js";
 			}
 		};
 
