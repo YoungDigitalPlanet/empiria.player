@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.scripts;
 
 import eu.ydp.gwtutil.client.scripts.ScriptUrl;
 
-enum ScriptsAsyncLoading implements ScriptUrl {
+enum AsyncLoadingScripts implements ScriptUrl {
 
 	JQUERY_TE("jqueryte/jquery-te-1.4.0.min.js"),
 	VIDEO_JS("video-js/video.dev.js"),
@@ -15,7 +15,7 @@ enum ScriptsAsyncLoading implements ScriptUrl {
 	private final String url;
 
 
-	ScriptsAsyncLoading(String url) {
+	AsyncLoadingScripts(String url) {
 		this.url = url;
 	}
 

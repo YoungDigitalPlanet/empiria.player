@@ -5,7 +5,7 @@ import eu.ydp.gwtutil.client.scripts.ScriptUrl;
 /**
  * Created by ldomzalski on 2015-06-24.
  */
-public enum ScriptsSyncLoading implements ScriptUrl {
+public enum SyncLoadingScripts implements ScriptUrl {
 
     JQUERY("jquery/jquery-1.10.2.min.js"),
     CSS_PARSER("jscss/cssparser.js"),
@@ -14,7 +14,7 @@ public enum ScriptsSyncLoading implements ScriptUrl {
 
     private final String url;
 
-    ScriptsSyncLoading(String url) {
+    SyncLoadingScripts(String url) {
         this.url = url;
     }
 

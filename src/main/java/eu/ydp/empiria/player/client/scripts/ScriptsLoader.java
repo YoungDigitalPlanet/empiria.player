@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.scripts;
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
 import eu.ydp.gwtutil.client.scripts.AsynchronousScriptsLoader;
+import eu.ydp.gwtutil.client.scripts.SynchronousScriptsLoader;
 
 public class ScriptsLoader {
 
@@ -12,7 +13,7 @@ public class ScriptsLoader {
 	private AsynchronousScriptsLoader asynchronousScriptsLoader;
 
 	public void inject() {
-		synchronousScriptsLoader.injectScripts(ScriptsSyncLoading.values() ,new Callback<Void, Exception>() {
+		synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values() ,new Callback<Void, Exception>() {
 			@Override
 			public void onFailure(Exception reason) {
 
@@ -26,7 +27,7 @@ public class ScriptsLoader {
 	}
 
 	private void asyncScriptLoading() {
-		asynchronousScriptsLoader.inject(ScriptsAsyncLoading.values());
+		asynchronousScriptsLoader.inject(AsyncLoadingScripts.values());
 	}
 
 
