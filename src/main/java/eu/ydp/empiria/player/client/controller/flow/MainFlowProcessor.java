@@ -33,6 +33,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	// // NOPMD
 	private ItemParametersSocket itemParametersSocket; // NOPMD
 	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+	private EventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
 	private int currentPageIndex;
 	private PageType currentPageType;
 	private int itemsCount;
@@ -77,7 +78,6 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			if (isInitalized) {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, currentPageIndex, this));
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED, new FlowProcessingEvent(FlowProcessingEventType.PAGE_LOADED), this));
-				EventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
 				dispatcher.dispatch(new PageChangedEvent(currentPageIndex));
 			}
 		}

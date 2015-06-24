@@ -8,36 +8,34 @@ import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.util.events.pagechange.EventDispatcher;
 import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
 
-public class PageChangedEventTests extends AbstractEmpiriaPlayerGWTTestCase {
-	JSONObject jsonObject;
+public class PageChangedEventTest extends AbstractEmpiriaPlayerGWTTestCase {
+	JSONObject expectedJson;
 	PageChangedEvent pageChangedEvent;
 	EventDispatcher eventDispatcher;
 
-	private void prepare() {
-		jsonObject = new JSONObject();
+	@Override
+	protected void gwtSetUp() {
+		expectedJson = new JSONObject();
 		pageChangedEvent = new PageChangedEvent(1);
-		eventDispatcher = new EventDispatcher();
-
 	}
 
 	public void testShouldReturnSameValue_whenSameKeyIsGiven() {
 		//given
-		prepare();
-		jsonObject.put("new_page", new JSONNumber(1));
+		gwtSetUp();
+		expectedJson.put("new_page", new JSONNumber(1));
 		JSONObject payload = pageChangedEvent.getPayload();
-		//when
 		//then
-		assertEquals(jsonObject.get("new_page"), payload.get("new_page"));
+		assertEquals(expectedJson.get("new_page"), payload.get("new_page"));
 
 	}
 
 	public void testShouldSetAccurateTypeAndPageNumber_whenEventIsGiven() {
 		//given
-		prepare();
-		jsonObject.put("new_page", new JSONNumber(1));
-		jsonObject.put("type", new JSONString("page_change"));
+		gwtSetUp();
+		expectedJson.put("new_page", new JSONNumber(1));
+		expectedJson.put("type", new JSONString("page_change"));
 		//when
-		JavaScriptObject JSObject = jsonObject.getJavaScriptObject();
+		JavaScriptObject JSObject = expectedJson.getJavaScriptObject();
 		JavaScriptObject payload = pageChangedEvent.getJSObject();
 		//then
 		assertEquals(JSObject.toSource(), payload.toSource());
