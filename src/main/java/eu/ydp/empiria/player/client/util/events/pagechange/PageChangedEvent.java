@@ -4,6 +4,7 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 
 public class PageChangedEvent extends Event {
+
 	private final JSONObject payload;
 
 	public PageChangedEvent(int newPage) {

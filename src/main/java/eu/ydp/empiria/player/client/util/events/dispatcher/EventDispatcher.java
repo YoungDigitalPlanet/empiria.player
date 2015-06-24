@@ -5,6 +5,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.empiria.player.client.util.events.pagechange.Event;
 
 public class EventDispatcher {
+
 	private Optional<JavaScriptFunction> callbackFunction = Optional.absent();
 
 	public void setCallbackFunction(JavaScriptFunction callbackFunction) {
@@ -13,9 +14,9 @@ public class EventDispatcher {
 
 	public void dispatch(Event event) {
 		if (callbackFunction.isPresent()) {
-			JavaScriptFunction javaScriptCallbackFunction = callbackFunction.get();
-			JavaScriptObject JsObjectWithPayload = event.getJSObject();
-			javaScriptCallbackFunction.callback(JsObjectWithPayload);
+			JavaScriptFunction jsCallbackFunction = callbackFunction.get();
+			JavaScriptObject jsObjectWithPayload = event.getJSObject();
+			jsCallbackFunction.callback(jsObjectWithPayload);
 		}
 	}
 }

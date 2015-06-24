@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
 

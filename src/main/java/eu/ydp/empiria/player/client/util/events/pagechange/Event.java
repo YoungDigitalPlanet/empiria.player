@@ -5,6 +5,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
 public abstract class Event {
+
 	private final String type;
 
 	protected Event(String type) {
