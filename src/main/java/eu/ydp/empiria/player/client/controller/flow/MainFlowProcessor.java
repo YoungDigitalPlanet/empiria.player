@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.config.OptionsReader;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
-import eu.ydp.empiria.player.client.util.events.pagechange.EventDispatcher;
+import eu.ydp.empiria.player.client.util.events.dispatcher.EventDispatcher;
 import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;

@@ -19,6 +19,5 @@ public abstract class Event {
 		jsonWithTypeAndPayload.put("payload", new JSONObject(this.getPayload().getJavaScriptObject()));
 		return jsonWithTypeAndPayload.getJavaScriptObject();
 	}
-
 }
 

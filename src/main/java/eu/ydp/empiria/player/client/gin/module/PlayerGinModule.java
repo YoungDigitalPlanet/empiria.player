@@ -109,7 +109,7 @@ import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
-import eu.ydp.empiria.player.client.util.events.pagechange.EventDispatcher;
+import eu.ydp.empiria.player.client.util.events.dispatcher.EventDispatcher;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;

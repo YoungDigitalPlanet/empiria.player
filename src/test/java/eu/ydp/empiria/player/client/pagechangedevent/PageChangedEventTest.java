@@ -5,13 +5,12 @@ import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.util.events.pagechange.EventDispatcher;
 import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
 
 public class PageChangedEventTest extends AbstractEmpiriaPlayerGWTTestCase {
+
 	JSONObject expectedJson;
 	PageChangedEvent pageChangedEvent;
-	EventDispatcher eventDispatcher;
 
 	@Override
 	protected void gwtSetUp() {
@@ -26,7 +25,6 @@ public class PageChangedEventTest extends AbstractEmpiriaPlayerGWTTestCase {
 		JSONObject payload = pageChangedEvent.getPayload();
 		//then
 		assertEquals(expectedJson.get("new_page"), payload.get("new_page"));
-
 	}
 
 	public void testShouldSetAccurateTypeAndPageNumber_whenEventIsGiven() {
