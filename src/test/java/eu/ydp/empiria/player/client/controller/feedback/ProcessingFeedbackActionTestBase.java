@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import static org.mockito.Mockito.*;
-
-import com.google.inject.*;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.Provides;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
@@ -10,8 +10,13 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.module.IModule;
-import java.util.List;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import org.junit.Before;
+
+import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -21,7 +26,10 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 
 	protected SoundActionProcessorMock soundProcessor;
 
+	protected MathJaxNative mathJaxNative;
+
 	protected IModule source;
+	;
 
 	@Before
 	@Override
@@ -41,7 +49,8 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 			//
 		}
 
-		@Provides SoundActionProcessor getSoundActionProcessor() {
+		@Provides
+		SoundActionProcessor getSoundActionProcessor() {
 			return soundProcessor;
 		}
 
@@ -55,6 +64,11 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 			return mock(FeedbackSoundPlayer.class);
 		}
 
+		@Provides
+		public MathJaxNative getMathJaxNative() {
+			return mathJaxNative;
+		}
+
 	}
 
 	protected class Initializer {
@@ -62,6 +76,11 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 		public void initWithActions(List<FeedbackAction> actions) {
 			createCollector(actions);
 			createProcessor();
+			createMathJaxNative();
+		}
+
+		private void createMathJaxNative() {
+			mathJaxNative = mock(MathJaxNative.class);
 		}
 
 		private void createCollector(List<FeedbackAction> actions) {
