@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.scripts;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
-import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
-import eu.ydp.gwtutil.client.util.paths.UrlConverter;
+import eu.ydp.gwtutil.client.scripts.AsynchronousScriptsLoader;
+import eu.ydp.gwtutil.client.scripts.ScriptUrl;
 
 import java.util.*;
 
@@ -13,30 +13,25 @@ import java.util.*;
 public class SynchronousScriptsLoader {
 
     @Inject
-    private ScriptInjectorWrapper scriptInjectorWrapper;
-    @Inject
-    private UrlConverter urlConverter;
+    private AsynchronousScriptsLoader asynchronousScriptsLoader;
 
+    public void injectScripts(ScriptUrl[] scripts, Callback<Void, Exception> callback) {
 
-    public void injectScripts(Callback<Void, Exception> callback) {
-
-        List<ScriptsSyncLoading> scriptsList = new ArrayList<ScriptsSyncLoading>(Arrays.asList(ScriptsSyncLoading.values()));
+        List<ScriptUrl> scriptsList = new ArrayList<ScriptUrl>(Arrays.asList(scripts));
         Collections.reverse(scriptsList);
 
-        Stack<ScriptsSyncLoading> scriptsStack = new Stack<ScriptsSyncLoading>();
+        Stack<ScriptUrl> scriptsStack = new Stack<ScriptUrl>();
         scriptsStack.addAll(scriptsList);
         injectScript(scriptsStack, callback);
 
     }
 
-    private void injectScript(final Stack<ScriptsSyncLoading> scriptsStack, final Callback<Void, Exception> callback) {
+    private void injectScript(final Stack<ScriptUrl> scriptsStack, final Callback<Void, Exception> callback) {
         if (scriptsStack.empty()) {
             return;
         }
 
-        String correctUrl = urlConverter.getModuleRelativeUrl(scriptsStack.pop().getUrl());
-
-        scriptInjectorWrapper.fromUrl(correctUrl, new Callback<Void, Exception>() {
+        asynchronousScriptsLoader.inject(scriptsStack.pop(), new Callback<Void, Exception>() {
             @Override
             public void onFailure(Exception reason) {
 
@@ -51,8 +46,7 @@ public class SynchronousScriptsLoader {
                 }
             }
         });
+
     }
-
-
 
 }

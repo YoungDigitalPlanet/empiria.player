@@ -12,7 +12,7 @@ public class ScriptsLoader {
 	private AsynchronousScriptsLoader asynchronousScriptsLoader;
 
 	public void inject() {
-		synchronousScriptsLoader.injectScripts(new Callback<Void, Exception>() {
+		synchronousScriptsLoader.injectScripts(ScriptsSyncLoading.values() ,new Callback<Void, Exception>() {
 			@Override
 			public void onFailure(Exception reason) {
 
