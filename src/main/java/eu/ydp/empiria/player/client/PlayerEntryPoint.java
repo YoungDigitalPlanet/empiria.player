@@ -91,7 +91,7 @@ public class PlayerEntryPoint implements EntryPoint {
             }
 
             player.onEvent = function (funct) {
-                @eu.ydp.empiria.player.client.PlayerEntryPoint::onEvent(Leu/ydp/empiria/player/client/util/events/pagechange/JavaScriptFunction;)(funct);
+                @eu.ydp.empiria.player.client.PlayerEntryPoint::onEvent(Leu/ydp/empiria/player/client/util/events/dispatcher/JavaScriptFunction;)(funct);
             }
             return player;
         }
