@@ -1,14 +1,7 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
-import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
-import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
-import eu.ydp.empiria.player.client.controller.communication.ItemParameters;
-import eu.ydp.empiria.player.client.controller.communication.ItemParametersSocket;
-import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
-import eu.ydp.empiria.player.client.controller.communication.PageReference;
-import eu.ydp.empiria.player.client.controller.communication.PageType;
+import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -18,6 +11,8 @@ import eu.ydp.empiria.player.client.util.config.OptionsReader;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
+import eu.ydp.empiria.player.client.util.events.pagechange.EventDispatcher;
+import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -82,6 +77,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			if (isInitalized) {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, currentPageIndex, this));
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED, new FlowProcessingEvent(FlowProcessingEventType.PAGE_LOADED), this));
+				EventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
+				dispatcher.dispatch(new PageChangedEvent(currentPageIndex));
 			}
 		}
 	}
