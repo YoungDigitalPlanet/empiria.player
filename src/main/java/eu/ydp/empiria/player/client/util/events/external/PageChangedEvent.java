@@ -1,9 +1,9 @@
-package eu.ydp.empiria.player.client.util.events.pagechange;
+package eu.ydp.empiria.player.client.util.events.external;
 
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 
-public class PageChangedEvent extends Event {
+public class PageChangedEvent extends ExternalEvent {
 
 	private final JSONObject payload;
 
@@ -14,7 +14,7 @@ public class PageChangedEvent extends Event {
 	}
 
 	@Override
-	public JSONObject getPayload() {
+	protected JSONObject getPayload() {
 		return payload;
 	}
 }

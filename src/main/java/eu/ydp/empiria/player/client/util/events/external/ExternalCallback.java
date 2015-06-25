@@ -1,9 +1,9 @@
-package eu.ydp.empiria.player.client.util.events.dispatcher;
+package eu.ydp.empiria.player.client.util.events.external;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.js.JsType;
 
 @JsType
-public interface JavaScriptFunction {
+public interface ExternalCallback {
 	void callback(JavaScriptObject jso);
 }

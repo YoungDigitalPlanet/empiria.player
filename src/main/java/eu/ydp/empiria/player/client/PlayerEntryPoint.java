@@ -27,8 +27,8 @@ import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-import eu.ydp.empiria.player.client.util.events.dispatcher.EventDispatcher;
-import eu.ydp.empiria.player.client.util.events.dispatcher.JavaScriptFunction;
+import eu.ydp.empiria.player.client.util.events.external.ExternalCallback;
+import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -46,10 +46,9 @@ public class PlayerEntryPoint implements EntryPoint {
 	 * Player object
 	 */
 	private static Player player;
-	private static String url1;
 	private static JavaScriptObject jsObject;
 	private static String node_id;
-	private static List<Alternative<String, JavaScriptObject>> extensionsToLoad = new ArrayList<Alternative<String, JavaScriptObject>>();
+	private static List<Alternative<String, JavaScriptObject>> extensionsToLoad = new ArrayList<>();
 
 	/**
 	 * This is the entry point method.
@@ -74,31 +73,31 @@ public class PlayerEntryPoint implements EntryPoint {
 	private native void initJavaScriptAPI() /*-{
         // CreatePlayer
         $wnd.empiriaCreatePlayer = function (id) {
-            var player = @eu.ydp.empiria.player.client.PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
+            var player = @PlayerEntryPoint::createPlayer(Ljava/lang/String;)(id);
             player.load = function (url) {
                 @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Ljava/lang/String;)(url);
-            }
+            };
             player.loadFromData = function (assessmentData, itemDatas) {
-                @eu.ydp.empiria.player.client.PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
-            }
+                @PlayerEntryPoint::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
+            };
 
             // ładowanie rozszerzeń (pluginów i addonów)
             player.loadExtension = function (obj) {
                 if (typeof obj == 'object')
-                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
+                    @PlayerEntryPoint::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
                 else if (typeof obj == 'string')
-                    @eu.ydp.empiria.player.client.PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
-            }
+                    @PlayerEntryPoint::loadExtension(Ljava/lang/String;)(obj);
+            };
 
             player.onEvent = function (funct) {
-                @eu.ydp.empiria.player.client.PlayerEntryPoint::onEvent(Leu/ydp/empiria/player/client/util/events/dispatcher/JavaScriptFunction;)(funct);
-            }
+                @PlayerEntryPoint::onEvent(*)(funct);
+            };
             return player;
-        }
+        };
 
         $wnd.getPlayerVersion = function () {
             return @eu.ydp.empiria.player.client.version.Version::getVersion()();
-        }
+        };
 
         // Call App loaded function
         if (typeof $wnd.empiriaPlayerAppLoaded == 'function') {
@@ -151,11 +150,6 @@ public class PlayerEntryPoint implements EntryPoint {
 		player.load(url);
 	}
 
-	/**
-	 * Load assessment from string data
-	 *
-	 * @param url
-	 */
 	public static void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
 		GWT.runAsync(new RunAsyncCallback() {
 			@Override
@@ -201,8 +195,8 @@ public class PlayerEntryPoint implements EntryPoint {
 		extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForMain(extension));
 	}
 
-	public static void onEvent(JavaScriptFunction callbackFunction) {
-		EventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
+	public static void onEvent(ExternalCallback callbackFunction) {
+		ExternalEventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
 		dispatcher.setCallbackFunction(callbackFunction);
 	}
 }

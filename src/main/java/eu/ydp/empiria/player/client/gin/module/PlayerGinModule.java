@@ -107,9 +107,9 @@ import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHackImpl;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchRecognition;
 import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
-import eu.ydp.empiria.player.client.util.events.dispatcher.EventDispatcher;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.empiria.player.client.util.style.StyleToPropertyMappingHelper;
@@ -248,7 +248,7 @@ public class PlayerGinModule extends AbstractGinModule {
 		bind(LessonStateReset.class).asEagerSingleton();
 		bind(SoundProcessorManagerExtension.class).in(Singleton.class);
 		bind(ExtensionsProvider.class).in(Singleton.class);
-		bind(EventDispatcher.class).in((Singleton.class));
+		bind(ExternalEventDispatcher.class).in(Singleton.class);
 
 		install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
 		install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
 import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.events.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
-import eu.ydp.empiria.player.client.util.events.dispatcher.EventDispatcher;
-import eu.ydp.empiria.player.client.util.events.pagechange.PageChangedEvent;
+import eu.ydp.empiria.player.client.util.events.external.PageChangedEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
@@ -20,7 +20,10 @@ import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
 
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier, PlayerEventHandler {
 
-	public MainFlowProcessor() {
+	@Inject
+	public MainFlowProcessor(EventsBus eventsBus, ExternalEventDispatcher externalEventDispatcher) {
+		this.eventsBus = eventsBus;
+		this.externalEventDispatcher = externalEventDispatcher;
 		// flowExecutionEventsListener = feel;
 		flowOptions = OptionsReader.getFlowOptions();
 		displayOptions = new DisplayOptions();
@@ -32,8 +35,8 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 	// private final FlowProcessingEventsListener flowExecutionEventsListener;
 	// // NOPMD
 	private ItemParametersSocket itemParametersSocket; // NOPMD
-	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-	private EventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
+	private final EventsBus eventsBus;
+	private final ExternalEventDispatcher externalEventDispatcher;
 	private int currentPageIndex;
 	private PageType currentPageType;
 	private int itemsCount;
@@ -78,7 +81,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
 			if (isInitalized) {
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE, currentPageIndex, this));
 				eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_LOADED, new FlowProcessingEvent(FlowProcessingEventType.PAGE_LOADED), this));
-				dispatcher.dispatch(new PageChangedEvent(currentPageIndex));
+				externalEventDispatcher.dispatch(new PageChangedEvent(currentPageIndex));
 			}
 		}
 	}

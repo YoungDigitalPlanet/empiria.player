@@ -2,9 +2,12 @@ package eu.ydp.empiria.player.client.controller.flow;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import eu.ydp.empiria.player.RunOutsideTestSuite;
+import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
+import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 
 @RunOutsideTestSuite
 public class MainFlowProcessorGWTTestCase extends GWTTestCase {
@@ -15,7 +18,9 @@ public class MainFlowProcessorGWTTestCase extends GWTTestCase {
 	}
 
 	private MainFlowProcessor getMainFlowProcessor5TestPages() {
-		MainFlowProcessor mfp = new MainFlowProcessor();
+		EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+		ExternalEventDispatcher externalEventDispatcher = new ExternalEventDispatcher();
+		MainFlowProcessor mfp = new MainFlowProcessor(eventsBus, externalEventDispatcher);
 		mfp.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
 		mfp.init(5);
 		mfp.initFlow();
