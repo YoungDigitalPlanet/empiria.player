@@ -72,11 +72,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	private StyleSocket styleSocket;
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener interactionListener, BodyGeneratorSocket bodyGenerator) {
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
 		uiBinder = GWT.create(MathModuleViewUiBinder.class);
 		uiBinder.createAndBindUi(this);
 
-		super.initModule(element, moduleSocket, interactionListener, bodyGenerator);
+		super.initModule(element, moduleSocket, bodyGenerator);
 
 		moduleElement = element;
 		styles = styleSocket.getStyles(moduleElement);

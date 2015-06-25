@@ -15,7 +15,7 @@ public class AssessmentBodyModule extends SimpleContainerModuleBase<AssessmentBo
 	}
 
 	public void initModule(Element element, BodyGeneratorSocket generator) {
-		initModule(element, null, null, generator);
+		initModule(element, null, generator);
 	}
 
 	@Override

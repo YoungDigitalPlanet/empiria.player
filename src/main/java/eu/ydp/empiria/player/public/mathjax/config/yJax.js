@@ -19,6 +19,22 @@ var font = (function () {
     return isAndroidStackBrowser ? "STIX" : "TeX";
 })();
 
+MathJax.Hub.yElements = [];
+
+MathJax.Hub.yProcessElements = function () {
+    var elements = MathJax.Hub.yElements;
+    if (elements.length === 0) {
+        return;
+    }
+    if (elements.length === 1) {
+        elements = elements[0];
+    }
+
+    MathJax.Hub.Queue(["Process", MathJax.Hub, elements]);
+    MathJax.Hub.yElements = [];
+
+};
+
 MathJax.Hub.Config({
     config: ["MMLorHTML.js"],
     extensions: ["Gap.js"],

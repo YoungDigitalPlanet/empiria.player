@@ -4,9 +4,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
@@ -23,8 +21,8 @@ public abstract class SimpleContainerModuleBase<T> extends AbstractActivityConta
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, bodyGeneratorSocket);
 
 		readAttributes(element);
 		applyIdAndClassToView(getView());

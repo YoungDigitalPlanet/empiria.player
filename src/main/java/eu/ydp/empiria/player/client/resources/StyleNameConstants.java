@@ -665,6 +665,9 @@ public interface StyleNameConstants extends Constants {
     @DefaultStringValue("qp-math-choice-popup-option-empty")
     public String QP_MATH_CHOICE_POPUP_OPTION_EMPTY();
 
+    @DefaultStringValue("qp-math-jax-inline-container")
+    String QP_MATH_JAX_INLINE_CONTAINER();
+
     @DefaultStringValue("qp-mathinteraction")
     public String QP_MATHINTERACTION();
 
