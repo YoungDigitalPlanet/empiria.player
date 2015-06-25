@@ -84,7 +84,7 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	}-*/;
 
 	private native void setFlashFallback() /*-{
-		$wnd.vjs.options.flash.swf = @eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::FALLBACK_SWF;
+		$wnd.videojs.options.flash.swf = @eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::FALLBACK_SWF;
 	}-*/;
 
 	private native boolean isFlashFallback() /*-{
@@ -102,9 +102,9 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 		var options = $wnd.document.getElementById(playerId).getAttribute(
 				'data-setup')
 				|| '{}';
-		options = $wnd.vjs.JSON.parse(options);
+		options = $wnd.videojs.JSON.parse(options);
 
-		return $wnd.vjs(playerId, options);
+		return $wnd.videojs(playerId, options);
 	}-*/;
 
 	@Override
@@ -129,8 +129,8 @@ public class VideoPlayerNativeImpl implements VideoPlayerNative {
 	private native void disposeCurrentPlayerNative() /*-{
 		var playerId = this.@eu.ydp.empiria.player.client.module.video.view.VideoPlayerNativeImpl::playerId;
 
-		if ($wnd.vjs.players[playerId]) {
-			$wnd.vjs.players[playerId].dispose();
+		if ($wnd.videojs.players[playerId]) {
+			$wnd.videojs.players[playerId].dispose();
 		}
 
 	}-*/;
