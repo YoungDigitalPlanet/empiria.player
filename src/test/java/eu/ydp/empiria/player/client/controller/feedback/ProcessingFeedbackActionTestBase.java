@@ -29,7 +29,6 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 	protected MathJaxNative mathJaxNative;
 
 	protected IModule source;
-	;
 
 	@Before
 	@Override

@@ -47,7 +47,6 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 
 		verify(mathJaxNative).renderMath();
-		verifyNoMoreInteractions(mathJaxNative);
 	}
 
 	@Test
@@ -73,7 +72,6 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 		verify(textProcessor, times(2)).processSingleAction(argument.capture());
 
 		verify(mathJaxNative, times(2)).renderMath();
-		verifyNoMoreInteractions(mathJaxNative);
 
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 		List<FeedbackAction> processedActions = argument.getAllValues();

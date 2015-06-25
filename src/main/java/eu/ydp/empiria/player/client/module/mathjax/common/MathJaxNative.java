@@ -18,7 +18,7 @@ public class MathJaxNative {
 
 	private native void renderMathNative() /*-{
         var mathJax = $wnd.MathJax;
-        if (mathJax && mathJax.Hub.yProcessElements) {
+        if (mathJax) {
             mathJax.Hub.yProcessElements();
         }
     }-*/;

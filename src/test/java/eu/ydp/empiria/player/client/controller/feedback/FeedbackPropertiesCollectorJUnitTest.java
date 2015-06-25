@@ -13,7 +13,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
 public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 
 	private static final String MODULE_3 = "MODULE_3";
