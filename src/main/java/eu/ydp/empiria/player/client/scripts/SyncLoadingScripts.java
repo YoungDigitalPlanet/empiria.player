@@ -2,9 +2,6 @@ package eu.ydp.empiria.player.client.scripts;
 
 import eu.ydp.gwtutil.client.scripts.ScriptUrl;
 
-/**
- * Created by ldomzalski on 2015-06-24.
- */
 public enum SyncLoadingScripts implements ScriptUrl {
 
     JQUERY("jquery/jquery-1.11.3.min.js"),

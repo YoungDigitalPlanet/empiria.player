@@ -12,18 +12,19 @@ public class ScriptsLoader {
 	@Inject
 	private AsynchronousScriptsLoader asynchronousScriptsLoader;
 
+	private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
+		@Override
+		public void onFailure(Exception reason) {
+		}
+
+		@Override
+		public void onSuccess(Void result) {
+			asyncScriptLoading();
+		}
+	};
+
 	public void inject() {
-		synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values() ,new Callback<Void, Exception>() {
-			@Override
-			public void onFailure(Exception reason) {
-
-			}
-
-			@Override
-			public void onSuccess(Void result) {
-				asyncScriptLoading();
-			}
-		});
+		synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values() , callback);
 	}
 
 	private void asyncScriptLoading() {
