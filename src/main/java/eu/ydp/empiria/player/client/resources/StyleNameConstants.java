@@ -668,6 +668,9 @@ public interface StyleNameConstants extends Constants {
     @DefaultStringValue("qp-math-jax-inline-container")
     String QP_MATH_JAX_INLINE_CONTAINER();
 
+    @DefaultStringValue("qp-math-jax-interaction-container")
+    String QP_MATH_JAX_INTERACTION_CONTAINER();
+
     @DefaultStringValue("qp-mathinteraction")
     public String QP_MATHINTERACTION();
 

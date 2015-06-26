@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.math;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class MathGapModel {
@@ -9,7 +10,6 @@ public class MathGapModel {
 	protected String uid;
 	protected int index;
 
-	protected MathModule parentMathModule;
 	protected Map<String, String> mathStyles;
 
 	public String getUid() {
@@ -20,15 +20,10 @@ public class MathGapModel {
 		this.uid = uid;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
 	public Map<String, String> getMathStyles() {
+		if(mathStyles == null) {
+			mathStyles = Maps.newHashMap();
+		}
 		return mathStyles;
 	}
 
