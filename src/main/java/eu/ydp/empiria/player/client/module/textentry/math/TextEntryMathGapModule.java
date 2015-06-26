@@ -12,7 +12,6 @@ import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
-import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 import javax.annotation.PostConstruct;

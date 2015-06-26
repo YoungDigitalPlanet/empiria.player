@@ -7,10 +7,9 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 public class MathGapModel {
 
-	protected String uid;
-	protected int index;
+	private String uid;
 
-	protected Map<String, String> mathStyles;
+	private Map<String, String> mathStyles;
 
 	public String getUid() {
 		return (uid == null) ? StringUtils.EMPTY_STRING : uid;
