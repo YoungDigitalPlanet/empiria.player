@@ -1,23 +1,22 @@
 package eu.ydp.empiria.player.client.module.textentry.math;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.math.MathGap;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
+import eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
 
 public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap, SourcelistClient {
 
@@ -27,6 +26,8 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 
 	@Inject
 	TextEntryMathGapModulePresenter textEntryPresenter;
+	@Inject
+	private MathJaxGapContainer gapContainer;
 
 	@Inject
 	MathSubAndSupUtil subAndSupUtil;
@@ -47,14 +48,13 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 
 		applyIdAndClassToView((Widget) presenter.getContainer());
 		initStyles();
+		gapContainer.addMathGap(this);
 	}
 
-	public void setUpGap() {
+	@Override
+	public void onSetUp() {
+		super.onSetUp();
 		registerBindingContexts();
-	}
-
-	public void startGap() {
-		setBindingValues();
 	}
 
 	@Override
@@ -93,11 +93,6 @@ public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap,
 	@Override
 	public String getUid() {
 		return mathGapModel.getUid();
-	}
-
-	@Override
-	public void setIndex(int index) {
-		mathGapModel.getUid();
 	}
 
 	protected void setDimensions() {

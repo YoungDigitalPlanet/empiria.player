@@ -11,7 +11,7 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
             this.HTMLhandleSize(mathWrapper);
 
             var id = this.attr['responseIdentifier'];
-            var gap = window.getMathGap(id);
+            var gap = MathJax.Hub.getMathGap(id);
             mathWrapper.appendChild(gap);
 
             var HD = HTMLCSS.getHD(mathWrapper, true);

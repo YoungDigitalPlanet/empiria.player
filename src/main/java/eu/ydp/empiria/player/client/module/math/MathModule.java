@@ -86,16 +86,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		initializePanels();
 		initializeMathPlayer();
 		generateGaps(bodyGenerator);
-		setIndexesOnGaps();
 		setGapMathStyles();
-	}
-
-	private void setIndexesOnGaps() {
-		int index = 0;
-
-		for (MathGap gap : getMathGaps()) {
-			gap.setIndex(index++);
-		}
 	}
 
 	protected void setGapMathStyles() {
@@ -146,23 +137,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	@Override
 	public void onSetUp() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).setUpGap();
-			}
-		}
-
 		placeGaps();
 	}
 
 	@Override
 	public void onStart() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).startGap();
-			}
-		}
-
 		setSizeOfGapDummies();
 
 		mathInteractionManager = createMath();

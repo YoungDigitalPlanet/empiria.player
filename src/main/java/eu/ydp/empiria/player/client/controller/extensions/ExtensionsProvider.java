@@ -61,6 +61,7 @@ public class ExtensionsProvider {
 				new SimpleConnectorExtension(moduleProviderFactory.getMathTextModule(), ModuleTagName.MATH_TEXT, false, true),
 				new SimpleConnectorExtension(moduleProviderFactory.getInlineMathJaxModule(), ModuleTagName.INLINE_MATH_JAX, false, true),
 				new SimpleConnectorExtension(moduleProviderFactory.getMathModule(), ModuleTagName.MATH_INTERACTION),
+				new SimpleConnectorExtension(moduleProviderFactory.getInteractionMathJaxModule(), ModuleTagName.INTERACTION_MATH_JAX),
 				new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.OBJECT, false, true),
 				new SimpleConnectorExtension(moduleProviderFactory.getSlideshowPlayerModule(), ModuleTagName.SLIDESHOW_PLAYER),
 				new SimpleConnectorExtension(moduleProviderFactory.getFlashModule(), ModuleTagName.FLASH),
