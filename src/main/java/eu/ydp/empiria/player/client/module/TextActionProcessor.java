@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -62,10 +63,21 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 			ShowTextAction textAction = (ShowTextAction) action;
 			Element element = textAction.getContent().getValue();
 			Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
-			mathJaxNative.renderMath();
-			feedbackPresenter.setTextElement(widget);
-			feedbackPresenter.show();
+			JavaScriptObject mathJaxCallback = createCallback(widget);
+			mathJaxNative.renderMath(mathJaxCallback);
 		}
+	}
+
+	private native JavaScriptObject createCallback(Widget widget)/*-{
+		var that = this;
+		return function(){
+			that.@TextActionProcessor::showFeedback(*)(widget);
+		};
+	}-*/;
+
+	private void showFeedback(Widget widget){
+		feedbackPresenter.setTextElement(widget);
+		feedbackPresenter.show();
 	}
 
 	@Override

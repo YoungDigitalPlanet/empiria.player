@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.mathjax.common;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 
 public class MathJaxNative {
@@ -20,6 +21,17 @@ public class MathJaxNative {
         var mathJax = $wnd.MathJax;
         if (mathJax) {
             mathJax.Hub.yProcessElements();
+        }
+    }-*/;
+
+	public void renderMath(JavaScriptObject jso) {
+		renderMathNative(jso);
+	}
+
+	private native void renderMathNative(JavaScriptObject jso) /*-{
+        var mathJax = $wnd.MathJax;
+        if (mathJax) {
+            mathJax.Hub.yProcessElements(jso);
         }
     }-*/;
 }

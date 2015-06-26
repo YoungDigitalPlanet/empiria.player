@@ -21,18 +21,20 @@ var font = (function () {
 
 MathJax.Hub.yElements = [];
 
-MathJax.Hub.yProcessElements = function () {
+MathJax.Hub.yProcessElements = function (callback) {
     var elements = MathJax.Hub.yElements;
     if (elements.length === 0) {
+        if (typeof(callback) === 'function') {
+            callback();
+        }
         return;
     }
     if (elements.length === 1) {
         elements = elements[0];
     }
 
-    MathJax.Hub.Queue(["Process", MathJax.Hub, elements]);
+    MathJax.Hub.Queue(["Process", MathJax.Hub, elements, callback]);
     MathJax.Hub.yElements = [];
-
 };
 
 MathJax.Hub.Config({
