@@ -13,8 +13,8 @@ import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
 
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class PlayStopMediaButtonTest {
 

@@ -29,8 +29,8 @@ import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoIm
 import eu.ydp.empiria.player.client.module.object.impl.HTML5AudioImpl;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 

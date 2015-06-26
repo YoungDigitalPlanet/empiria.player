@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundEx
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public abstract class AbstractHTML5MediaExecutorJUnitBase {
 

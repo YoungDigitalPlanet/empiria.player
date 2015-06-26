@@ -8,7 +8,7 @@ import java.util.Map;
 import com.google.gwt.event.shared.EventHandler;
 
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class PointerEventsCoordinates {

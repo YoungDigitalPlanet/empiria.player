@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import org.junit.Before;

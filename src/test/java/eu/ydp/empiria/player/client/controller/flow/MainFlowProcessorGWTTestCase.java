@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 
 @RunOutsideTestSuite

@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.*;
 
 public abstract class FullScreenMediaButton<H> extends AbstractMediaButton<H> implements MediaEventHandler {
 

@@ -11,11 +11,11 @@ import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 public class Video extends com.google.gwt.media.client.Video implements MediaEventHandler {

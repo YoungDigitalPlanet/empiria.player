@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.tutor;
 
-import eu.ydp.empiria.player.client.util.events.AbstractEvent;
-import eu.ydp.empiria.player.client.util.events.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
+import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
 
 public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes> {
 

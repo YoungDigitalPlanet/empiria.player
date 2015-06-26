@@ -8,15 +8,15 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProces
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
-import eu.ydp.empiria.player.client.util.events.page.PageEvent;
-import eu.ydp.empiria.player.client.util.events.page.PageEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.page.PageEvent;
+import eu.ydp.empiria.player.client.util.events.internal.page.PageEventTypes;
 import eu.ydp.empiria.player.client.util.events.external.PageChangedEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier, PlayerEventHandler {
 

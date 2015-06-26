@@ -9,9 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 
 @SuppressWarnings("PMD")
 public class ConnectionEventHandlerJUnitTest {

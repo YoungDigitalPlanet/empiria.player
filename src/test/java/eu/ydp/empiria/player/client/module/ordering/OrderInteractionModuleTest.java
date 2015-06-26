@@ -13,8 +13,8 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;
 import eu.ydp.empiria.player.client.module.ordering.presenter.OrderInteractionPresenter;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderInteractionModuleTest {

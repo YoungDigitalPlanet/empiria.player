@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller;
 
-import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes.*;
 
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
@@ -16,11 +16,11 @@ import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.page.*;
-import eu.ydp.empiria.player.client.util.events.player.*;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.page.*;
+import eu.ydp.empiria.player.client.util.events.internal.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.*;
 import eu.ydp.empiria.player.client.view.item.*;
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {

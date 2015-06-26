@@ -8,8 +8,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.media.client.Video;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEvent;
-import eu.ydp.empiria.player.client.util.events.fullscreen.VideoFullScreenEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.fullscreen.VideoFullScreenEvent;
+import eu.ydp.empiria.player.client.util.events.internal.fullscreen.VideoFullScreenEventHandler;
 
 /**
  * Klasa pomocnicza do obslugi trybu pelnoekranowego w przegladarkach

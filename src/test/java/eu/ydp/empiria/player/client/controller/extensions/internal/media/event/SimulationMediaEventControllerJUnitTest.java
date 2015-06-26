@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.*;
-import eu.ydp.empiria.player.client.util.events.media.*;
+import eu.ydp.empiria.player.client.util.events.internal.media.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class SimulationMediaEventControllerJUnitTest {
