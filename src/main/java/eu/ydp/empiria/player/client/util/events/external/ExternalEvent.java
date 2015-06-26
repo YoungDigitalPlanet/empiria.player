@@ -6,6 +6,8 @@ import com.google.gwt.json.client.JSONString;
 
 public abstract class ExternalEvent {
 
+	public static final String EVENT_TYPE = "type";
+	public static final String EVENT_PAYLOAD = "payload";
 	private final String type;
 
 	protected ExternalEvent(String type) {
@@ -16,10 +18,10 @@ public abstract class ExternalEvent {
 
 	public JavaScriptObject getJSONObject() {
 		JSONObject jsonEvent = new JSONObject();
-		jsonEvent.put("type", new JSONString(type));
+		jsonEvent.put(EVENT_TYPE, new JSONString(type));
 
 		JavaScriptObject jsPayload = getPayload().getJavaScriptObject();
-		jsonEvent.put("payload", new JSONObject(jsPayload));
+		jsonEvent.put(EVENT_PAYLOAD, new JSONObject(jsPayload));
 
 		return jsonEvent.getJavaScriptObject();
 	}

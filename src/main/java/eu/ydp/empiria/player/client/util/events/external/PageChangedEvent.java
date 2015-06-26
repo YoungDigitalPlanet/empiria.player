@@ -5,12 +5,14 @@ import com.google.gwt.json.client.JSONObject;
 
 public class PageChangedEvent extends ExternalEvent {
 
+	public static final String EVENT_NAME = "page_changed";
+	public static final String PAGE_INDEX_FIELD = "new_page";
 	private final JSONObject payload;
 
 	public PageChangedEvent(int newPage) {
-		super("page_changed");
+		super(EVENT_NAME);
 		this.payload = new JSONObject();
-		this.payload.put("new_page", new JSONNumber(newPage));
+		this.payload.put(PAGE_INDEX_FIELD, new JSONNumber(newPage));
 	}
 
 	@Override
