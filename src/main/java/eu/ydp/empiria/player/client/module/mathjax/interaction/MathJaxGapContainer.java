@@ -17,7 +17,7 @@ public class MathJaxGapContainer {
 	private native void initJavaScriptApi() /*-{
         var that = this;
         $wnd.MathJax.Hub.getMathGap = function (identifier) {
-            return that.@eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer::getMathGapElement(Ljava/lang/String;)(identifier);
+            return that.@MathJaxGapContainer::getMathGapElement(*)(identifier);
         };
     }-*/;
 
