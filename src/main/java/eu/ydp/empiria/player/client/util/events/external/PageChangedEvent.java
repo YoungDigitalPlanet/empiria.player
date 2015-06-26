@@ -10,7 +10,6 @@ public class PageChangedEvent extends ExternalEvent {
 	private final JSONObject payload;
 
 	public PageChangedEvent(int newPage) {
-		super(EVENT_NAME);
 		this.payload = new JSONObject();
 		this.payload.put(PAGE_INDEX_FIELD, new JSONNumber(newPage));
 	}
@@ -18,5 +17,10 @@ public class PageChangedEvent extends ExternalEvent {
 	@Override
 	protected JSONObject getPayload() {
 		return payload;
+	}
+
+	@Override
+	protected String getEventType() {
+		return EVENT_NAME;
 	}
 }

@@ -8,16 +8,13 @@ public abstract class ExternalEvent {
 
 	public static final String EVENT_TYPE = "type";
 	public static final String EVENT_PAYLOAD = "payload";
-	private final String type;
-
-	protected ExternalEvent(String type) {
-		this.type = type;
-	}
 
 	protected abstract JSONObject getPayload();
+	protected abstract String getEventType();
 
 	public JavaScriptObject getJSONObject() {
 		JSONObject jsonEvent = new JSONObject();
+		String type = getEventType();
 		jsonEvent.put(EVENT_TYPE, new JSONString(type));
 
 		JavaScriptObject jsPayload = getPayload().getJavaScriptObject();
