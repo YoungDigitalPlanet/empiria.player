@@ -21,8 +21,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.scroll.WindowToStickieScroller;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.*;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.events.animation.*;
 

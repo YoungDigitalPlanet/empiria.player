@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Binder;
@@ -16,10 +15,10 @@ import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 @SuppressWarnings("PMD")

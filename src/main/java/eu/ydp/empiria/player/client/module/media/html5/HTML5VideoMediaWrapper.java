@@ -8,10 +8,10 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.AbstractHTML5MediaExecutor;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.object.impl.Media;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 

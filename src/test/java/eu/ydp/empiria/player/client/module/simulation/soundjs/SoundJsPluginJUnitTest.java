@@ -22,10 +22,10 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class SoundJsPluginJUnitTest {

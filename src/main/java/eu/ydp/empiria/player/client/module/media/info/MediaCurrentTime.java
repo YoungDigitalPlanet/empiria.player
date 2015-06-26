@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
-import eu.ydp.empiria.player.client.util.events.media.*;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.media.*;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1

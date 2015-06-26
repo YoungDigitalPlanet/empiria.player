@@ -5,8 +5,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerMoveHandler;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerMoveEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.pointer.PointerMoveHandler;
 
 public class PointerMoveHandlerOnImage implements PointerMoveHandler {
 

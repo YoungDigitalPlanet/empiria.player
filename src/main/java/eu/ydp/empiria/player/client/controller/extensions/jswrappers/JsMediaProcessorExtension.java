@@ -18,14 +18,14 @@ import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.SourceUtil;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
 /**
  * @deprecated Use {@link ExternalMediaProcessor} instead.

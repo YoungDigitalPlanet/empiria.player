@@ -23,11 +23,11 @@ import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
 @SuppressWarnings("unused")
 @RunWith(JUnitParamsRunner.class)

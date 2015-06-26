@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.controller.session.times;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
 public class SessionTimeUpdater implements PlayerEventHandler {
 

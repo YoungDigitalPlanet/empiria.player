@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.dragdrop.DragDropEventTypes;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;

@@ -14,11 +14,11 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {

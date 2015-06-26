@@ -18,9 +18,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.params.MediaStatus;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.date.DateService;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 

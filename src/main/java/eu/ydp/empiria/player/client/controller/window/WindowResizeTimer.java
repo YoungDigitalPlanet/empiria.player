@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.controller.window;
 
 import com.google.gwt.user.client.Timer;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.*;
 
 public class WindowResizeTimer extends Timer {
 

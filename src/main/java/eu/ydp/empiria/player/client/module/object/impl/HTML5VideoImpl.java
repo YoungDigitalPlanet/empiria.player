@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public class HTML5VideoImpl extends FlowPanel implements Video {
 

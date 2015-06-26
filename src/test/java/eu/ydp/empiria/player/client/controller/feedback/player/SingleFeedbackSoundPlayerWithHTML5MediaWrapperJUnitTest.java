@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback.player;
 
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5AudioMediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.module.object.impl;
 import com.google.gwt.media.client.Video;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * domyslna implementacja dla androida

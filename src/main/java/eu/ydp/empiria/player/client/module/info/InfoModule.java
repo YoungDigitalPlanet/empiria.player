@@ -22,11 +22,11 @@ import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.NumberUtils;
 
 public class InfoModule extends SimpleModuleBase implements ILifecycleModule, PlayerEventHandler {

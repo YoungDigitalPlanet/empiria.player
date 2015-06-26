@@ -22,7 +22,8 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnIma
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -80,4 +81,7 @@ public interface PlayerGinjector extends Ginjector {
 	TouchHandlerOnImageProvider getTouchHandlerOnImageProvider();
 
 	ScriptsLoader getScriptsLoader();
+
+	ExternalEventDispatcher getEventDispatcher();
+
 }

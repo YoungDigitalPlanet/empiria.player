@@ -9,9 +9,9 @@ import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.user.client.Timer;
 
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class VideoControlHideTimer implements TouchEndHandler, ClickHandler, MouseMoveHandler {
 	private final Timer controlsHideTimer;

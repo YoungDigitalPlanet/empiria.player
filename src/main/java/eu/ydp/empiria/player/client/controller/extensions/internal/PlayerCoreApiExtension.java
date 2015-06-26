@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectMo
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public class PlayerCoreApiExtension extends InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension,
 		DeliveryEventsListenerExtension {

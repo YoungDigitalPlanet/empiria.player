@@ -15,9 +15,9 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.*;
 
 public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
 

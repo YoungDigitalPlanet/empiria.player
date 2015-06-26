@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMedi
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class VideoExecutorSwf extends ExecutorSwf {
 

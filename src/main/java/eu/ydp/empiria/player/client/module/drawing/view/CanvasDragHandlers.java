@@ -4,9 +4,9 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.Command;

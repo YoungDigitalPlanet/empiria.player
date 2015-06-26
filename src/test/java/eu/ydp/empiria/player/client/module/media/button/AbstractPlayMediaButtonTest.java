@@ -15,10 +15,10 @@ import com.google.gwt.junit.GWTMockUtilities;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class AbstractPlayMediaButtonTest extends AbstractTestBase {
 

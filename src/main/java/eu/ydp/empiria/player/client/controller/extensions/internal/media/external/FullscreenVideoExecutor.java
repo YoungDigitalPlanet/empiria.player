@@ -8,9 +8,9 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class FullscreenVideoExecutor implements MediaExecutor<Widget>, FullscreenVideoConnectorListener {
 

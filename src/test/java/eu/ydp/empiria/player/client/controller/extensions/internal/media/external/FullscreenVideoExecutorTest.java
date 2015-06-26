@@ -24,8 +24,8 @@ import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.external.FullscreenVideoMediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 
 @RunWith(JUnitParamsRunner.class)
 public class FullscreenVideoExecutorTest extends AbstractTestWithMocksBase {

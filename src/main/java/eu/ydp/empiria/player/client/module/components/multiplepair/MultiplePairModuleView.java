@@ -5,8 +5,8 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 
 public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidget {
 

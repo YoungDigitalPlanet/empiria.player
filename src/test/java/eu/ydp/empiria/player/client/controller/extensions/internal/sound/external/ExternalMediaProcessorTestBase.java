@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.wrapper.ExternalMediaProxy;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.wrapper.ExternalMediaWrapper;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.timer.Timer;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.client.util.BrowserNativeInterface;

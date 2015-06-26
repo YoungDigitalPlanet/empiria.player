@@ -13,8 +13,8 @@ import org.junit.runner.RunWith;
 import com.google.gwt.user.client.ui.Widget;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 @RunWith(JUnitParamsRunner.class)
 public class ExternalMediaProcessorRequestsTest extends ExternalMediaProcessorTestBase {
