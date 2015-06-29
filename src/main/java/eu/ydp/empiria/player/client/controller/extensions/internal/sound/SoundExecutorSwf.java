@@ -6,8 +6,8 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaCompleteHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayEvent;
 import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaPlayHandler;
 import eu.ydp.empiria.gwtflashmedia.client.event.HasFlashMediaHandlers;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class SoundExecutorSwf extends ExecutorSwf {
 

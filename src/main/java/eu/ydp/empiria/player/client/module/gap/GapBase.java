@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.binding.Bindable;
 import eu.ydp.empiria.player.client.module.binding.BindingGroupIdentifier;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.BindingValue;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 

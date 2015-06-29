@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
 import static eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType.*;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 import static junitparams.JUnitParamsRunner.*;
 import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Matchers.*;
@@ -29,9 +29,9 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 @RunWith(JUnitParamsRunner.class)
 public class HTML5MediaEventMapperJUnitTest {

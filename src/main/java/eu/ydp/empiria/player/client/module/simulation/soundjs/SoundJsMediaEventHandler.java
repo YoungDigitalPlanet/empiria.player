@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.simulation.soundjs;
 import com.google.gwt.media.client.MediaBase;
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 public class SoundJsMediaEventHandler implements MediaEventHandler {

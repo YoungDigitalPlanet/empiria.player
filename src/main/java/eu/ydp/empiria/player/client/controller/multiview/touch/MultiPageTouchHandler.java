@@ -6,8 +6,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 

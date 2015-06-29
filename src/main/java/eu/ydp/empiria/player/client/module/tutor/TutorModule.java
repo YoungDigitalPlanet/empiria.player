@@ -13,8 +13,8 @@ import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackM
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackTutorClient;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;
 import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TutorModule extends SimpleModuleBase implements PowerFeedbackTutorClient {

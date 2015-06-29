@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.controller.window;
 import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;

@@ -8,7 +8,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.*;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
 import java.util.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;

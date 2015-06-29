@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEventListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 /**
  * Translates FlowExecutionEvents into

@@ -14,8 +14,8 @@ import com.google.gwt.dom.client.NativeEvent;
 
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchTypes;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchTypes;
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 

@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 public class DefaultMediaEventController implements MediaEventController {

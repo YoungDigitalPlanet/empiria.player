@@ -19,7 +19,7 @@ import eu.ydp.empiria.gwtflashmedia.client.event.FlashMediaVolumeChangeHandler;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 /**
  * Wrapper dla mediow swf

@@ -21,8 +21,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockito;
 
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 @RunWith(JUnitParamsRunner.class)

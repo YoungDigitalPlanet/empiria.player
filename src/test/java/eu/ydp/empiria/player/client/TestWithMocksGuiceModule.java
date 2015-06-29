@@ -36,8 +36,8 @@ import eu.ydp.empiria.player.client.module.object.impl.ExternalFullscreenVideoIm
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.UniqueIdGenerator;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.bus.PlayerEventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.PlayerEventsBus;
 import eu.ydp.gwtutil.client.date.DateService;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;

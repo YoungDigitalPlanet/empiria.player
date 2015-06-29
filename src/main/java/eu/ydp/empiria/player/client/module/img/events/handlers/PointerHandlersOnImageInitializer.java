@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.pointer.PointerUp
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerDownEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerUpEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerDownEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerMoveEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerUpEvent;
 
 public class PointerHandlersOnImageInitializer implements ITouchHandlerOnImageInitializer {
 

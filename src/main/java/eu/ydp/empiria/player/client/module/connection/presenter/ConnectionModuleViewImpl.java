@@ -24,8 +24,8 @@ import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceRectangleFinder;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.gwtutil.client.util.geom.Size;
 

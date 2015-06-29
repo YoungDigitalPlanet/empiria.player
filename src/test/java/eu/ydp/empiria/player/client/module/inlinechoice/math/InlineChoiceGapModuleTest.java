@@ -1,40 +1,51 @@
 package eu.ydp.empiria.player.client.module.inlinechoice.math;
 
-import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.xml.client.Element;
-import com.google.gwtmockito.GwtMockitoTestRunner;
-import com.google.inject.Binder;
-import com.google.inject.Key;
-import com.google.inject.Module;
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.math.MathGapModel;
-import eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer;
-import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
-import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
-import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
-import org.junit.*;
-import org.junit.runner.RunWith;
-import org.mockito.Matchers;
-
-import java.util.*;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.Matchers;
+
+import com.google.gwt.junit.GWTMockUtilities;
+import com.google.gwt.xml.client.Element;
+import com.google.inject.Binder;
+import com.google.inject.Key;
+import com.google.inject.Module;
+
+import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.gap.GapBinder;
+import eu.ydp.empiria.player.client.module.math.MathGapModel;
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
+
 @SuppressWarnings("PMD")
-@RunWith(GwtMockitoTestRunner.class)
 public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	InlineChoiceMathGapModule instance;
 	ExListBox listBox;
 	EventsBus eventsBus;
+
+	GapBinder gapBinder;
 
 	@BeforeClass
 	public static void disarm() {
@@ -68,16 +79,14 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 		listBox = mock(ExListBox.class);
 		doReturn(listBox).when(presenter).getListBox();
 		MathGapModel mathGapModel = new MathGapModel();
-		setUp(new Class<?>[] {}, new Class<?>[] { MathJaxGapContainer.class }, new Class<?>[] { EventsBus.class },
-				new CustomGuiceModule(presenter, mathGapModel));
+		setUp(new Class<?>[] {}, new Class<?>[] {}, new Class<?>[] { EventsBus.class }, new CustomGuiceModule(presenter, mathGapModel));
 		eventsBus = injector.getInstance(EventsBus.class);
 		instance = injector.getInstance(InlineChoiceMathGapModule.class);
 	}
 
 	@Test
 	public void testPostConstruct() {
-		verify(eventsBus).addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED)), Matchers.eq(instance),
-				Matchers.any(EventScope.class));
+		verify(eventsBus).addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED)), Matchers.eq(instance), Matchers.any(EventScope.class));
 	}
 
 	@Test
