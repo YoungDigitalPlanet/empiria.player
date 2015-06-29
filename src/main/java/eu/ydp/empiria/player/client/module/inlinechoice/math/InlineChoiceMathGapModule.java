@@ -2,23 +2,37 @@ package eu.ydp.empiria.player.client.module.inlinechoice.math;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.user.client.ui.*;
-import com.google.gwt.xml.client.*;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.InlineHTML;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
-import eu.ydp.empiria.player.client.module.math.*;
-import eu.ydp.empiria.player.client.resources.*;
+import eu.ydp.empiria.player.client.module.math.MathGap;
+import eu.ydp.empiria.player.client.module.math.MathGapModel;
+import eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer;
+import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.NumberUtils;
-import eu.ydp.gwtutil.client.components.exlistbox.*;
+import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxChangeListener;
+import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import java.util.*;
+
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class InlineChoiceMathGapModule extends GapBase implements MathGap, PlayerEventHandler {
 
@@ -36,6 +50,8 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	protected PageScopeFactory pageScopeFactory;
 	@Inject
 	private StyleSocket styleSocket;
+	@Inject
+	private MathJaxGapContainer gapContainer;
 
 	@Inject
 	@PageScoped
@@ -84,6 +100,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 
 		setListBoxEmptyOption();
 		options = createOptions(getModuleElement(), getModuleSocket());
+		gapContainer.addMathGap(this);
 	}
 
 	protected void setListBoxEmptyOption() {
@@ -188,11 +205,6 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 	@Override
 	public String getUid() {
 		return mathGapModel.getUid();
-	}
-
-	@Override
-	public void setIndex(int index) {
-		mathGapModel.getUid();
 	}
 
 	@Override

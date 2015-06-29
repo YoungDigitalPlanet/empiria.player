@@ -33,6 +33,8 @@ import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.math.InlineChoiceMathGapModule;
 import eu.ydp.empiria.player.client.module.labelling.LabellingModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
+import eu.ydp.empiria.player.client.module.mathjax.inline.InlineMathJaxModule;
+import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
@@ -123,6 +125,10 @@ public class ModuleProviderFactory {
 	private Provider<SimpleTextModule> simpleTextModule;
 	@Inject
 	private Provider<MathTextModule> mathTextModule;
+	@Inject
+	private Provider<InlineMathJaxModule> inlineMathJaxModule;
+	@Inject
+	private Provider<InteractionMathJaxModule> interactionMathJaxModule;
 	@Inject
 	private Provider<FlashModule> flashModule;
 	@Inject
@@ -296,6 +302,10 @@ public class ModuleProviderFactory {
 		return mathTextModule;
 	}
 
+	public Provider<InlineMathJaxModule> getInlineMathJaxModule() {
+		return inlineMathJaxModule;
+	}
+
 	public Provider<FlashModule> getFlashModule() {
 		return flashModule;
 	}
@@ -374,5 +384,9 @@ public class ModuleProviderFactory {
 
 	public Provider<ExternalPresentationModule> getExternalPresentationModule() {
 		return externalPresentationModuleProvider;
+	}
+
+	public Provider<InteractionMathJaxModule> getInteractionMathJaxModule() {
+		return interactionMathJaxModule;
 	}
 }

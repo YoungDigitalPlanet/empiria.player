@@ -72,11 +72,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 	private StyleSocket styleSocket;
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener interactionListener, BodyGeneratorSocket bodyGenerator) {
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
 		uiBinder = GWT.create(MathModuleViewUiBinder.class);
 		uiBinder.createAndBindUi(this);
 
-		super.initModule(element, moduleSocket, interactionListener, bodyGenerator);
+		super.initModule(element, moduleSocket, bodyGenerator);
 
 		moduleElement = element;
 		styles = styleSocket.getStyles(moduleElement);
@@ -86,16 +86,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 		initializePanels();
 		initializeMathPlayer();
 		generateGaps(bodyGenerator);
-		setIndexesOnGaps();
 		setGapMathStyles();
-	}
-
-	private void setIndexesOnGaps() {
-		int index = 0;
-
-		for (MathGap gap : getMathGaps()) {
-			gap.setIndex(index++);
-		}
 	}
 
 	protected void setGapMathStyles() {
@@ -146,23 +137,11 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
 
 	@Override
 	public void onSetUp() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).setUpGap();
-			}
-		}
-
 		placeGaps();
 	}
 
 	@Override
 	public void onStart() {
-		for (MathGap gap : getMathGaps()) {
-			if (gap instanceof TextEntryMathGapModule) {
-				((TextEntryMathGapModule) gap).startGap();
-			}
-		}
-
 		setSizeOfGapDummies();
 
 		mathInteractionManager = createMath();
