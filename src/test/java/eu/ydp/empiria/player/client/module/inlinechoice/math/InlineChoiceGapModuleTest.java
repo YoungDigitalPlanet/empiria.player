@@ -12,11 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 
 import com.google.gwt.junit.GWTMockUtilities;
@@ -40,6 +42,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
 @SuppressWarnings("PMD")
+@RunWith(GwtMockitoTestRunner.class)
 public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	InlineChoiceMathGapModule instance;
 	ExListBox listBox;
