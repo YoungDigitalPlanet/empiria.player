@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SelectionChoiceGridElementImpl extends FlowPanel implements SelectionChoiceGridElement {
 
-	@Override
-	public Widget asWidget() {
-		return this;
-	}
+    @Override
+    public Widget asWidget() {
+        return this;
+    }
 }

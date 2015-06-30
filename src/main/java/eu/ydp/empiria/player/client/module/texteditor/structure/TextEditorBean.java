@@ -9,14 +9,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.NONE)
 public class TextEditorBean {
 
-	@XmlAttribute
-	private String identifier;
+    @XmlAttribute
+    private String identifier;
 
-	public String getIdentifier() {
-		return identifier;
-	}
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 }

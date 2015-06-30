@@ -22,41 +22,41 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalSoundInstanceCreatorTest {
 
-	@InjectMocks
-	private ExternalSoundInstanceCreator testObj;
-	@Mock
-	private ExternalPaths paths;
-	@Mock
-	private MediaWrapperCreator mediaWrapperCreator;
-	@Mock
-	private ExternalInteractionModuleFactory moduleFactory;
-	@Mock
-	private ExternalSoundInstanceCallback callback;
-	@Mock
-	private MediaWrapper<Widget> audioWrapper;
-	@Mock
-	private ExternalSoundInstance soundInstance;
-	@Captor
-	private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> argumentCaptor;
+    @InjectMocks
+    private ExternalSoundInstanceCreator testObj;
+    @Mock
+    private ExternalPaths paths;
+    @Mock
+    private MediaWrapperCreator mediaWrapperCreator;
+    @Mock
+    private ExternalInteractionModuleFactory moduleFactory;
+    @Mock
+    private ExternalSoundInstanceCallback callback;
+    @Mock
+    private MediaWrapper<Widget> audioWrapper;
+    @Mock
+    private ExternalSoundInstance soundInstance;
+    @Captor
+    private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> argumentCaptor;
 
-	@Before
-	public void init() {
-		when(paths.getExternalFilePath("ok.mp3")).thenReturn("external/ok.mp3");
-		when(moduleFactory.getExternalSoundInstance(audioWrapper)).thenReturn(soundInstance);
-	}
+    @Before
+    public void init() {
+        when(paths.getExternalFilePath("ok.mp3")).thenReturn("external/ok.mp3");
+        when(moduleFactory.getExternalSoundInstance(audioWrapper)).thenReturn(soundInstance);
+    }
 
-	@Test
-	public void shouldCreateSound() {
-		// given
-		String src = "ok.mp3";
+    @Test
+    public void shouldCreateSound() {
+        // given
+        String src = "ok.mp3";
 
-		// when
-		testObj.createSound(src, callback);
-		verify(mediaWrapperCreator).createMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
-		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = argumentCaptor.getValue();
-		callbackReceiver.setCallbackReturnObject(audioWrapper);
+        // when
+        testObj.createSound(src, callback);
+        verify(mediaWrapperCreator).createMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
+        CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = argumentCaptor.getValue();
+        callbackReceiver.setCallbackReturnObject(audioWrapper);
 
-		// then
-		verify(callback).onSoundCreated(soundInstance, src);
-	}
+        // then
+        verify(callback).onSoundCreated(soundInstance, src);
+    }
 }

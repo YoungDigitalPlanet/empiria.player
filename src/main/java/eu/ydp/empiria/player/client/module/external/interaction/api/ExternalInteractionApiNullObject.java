@@ -4,27 +4,27 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalApiNullOb
 
 public class ExternalInteractionApiNullObject extends ExternalApiNullObject implements ExternalInteractionApi {
 
-	@Override
-	public void showCorrectAnswers() {
-	}
+    @Override
+    public void showCorrectAnswers() {
+    }
 
-	@Override
-	public void hideCorrectAnswers() {
-	}
+    @Override
+    public void hideCorrectAnswers() {
+    }
 
-	@Override
-	public void markCorrectAnswers() {
-	}
+    @Override
+    public void markCorrectAnswers() {
+    }
 
-	@Override
-	public void unmarkCorrectAnswers() {
-	}
+    @Override
+    public void unmarkCorrectAnswers() {
+    }
 
-	@Override
-	public void markWrongAnswers() {
-	}
+    @Override
+    public void markWrongAnswers() {
+    }
 
-	@Override
-	public void unmarkWrongAnswers() {
-	}
+    @Override
+    public void unmarkWrongAnswers() {
+    }
 }

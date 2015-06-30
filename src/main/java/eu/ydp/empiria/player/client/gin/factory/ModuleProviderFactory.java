@@ -59,334 +59,334 @@ import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 import eu.ydp.empiria.player.client.module.video.VideoModule;
 
 public class ModuleProviderFactory {
-	@Inject
-	private Provider<ConnectionModule> connectionModule;
-	@Inject
-	private Provider<SourceListModule> sourceListModule;
-	@Inject
-	private Provider<ObjectModule> objectModule;
-	@Inject
-	private Provider<PageInPageModule> pageInPageModule;
-	@Inject
-	private Provider<TextActionProcessor> textActionProcessor;
-	@Inject
-	private Provider<ImageActionProcessor> imageActionProcessor;
-	@Inject
-	private Provider<ImgModule> imgModule;
-	@Inject
-	private Provider<SelectionModule> selectionModule;
-	@Inject
-	private Provider<InlineContainerModule> inlineContainerModule;
-	@Inject
-	private Provider<DefaultMediaProcessorExtension> mediaProcessor;
-	@Inject
-	private Provider<MathModule> mathModule;
-	@Inject
-	private Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
-	@Inject
-	private Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
-	@Inject
-	private Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
-	@Inject
-	private Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
-	@Inject
-	private Provider<InlineChoiceModule> inlineChoiceModule;
-	@Inject
-	private Provider<IdentificationModule> identificationModule;
-	@Inject
-	private Provider<SimulationModule> simulationModule;
-	@Inject
-	private Provider<SlideshowPlayerModule> slideshowPlayerModule;
-	@Inject
-	private Provider<LabellingModule> labellingModule;
-	@Inject
-	private Provider<OrderInteractionModule> orderInteractionModule;
-	@Inject
-	private Provider<ChoiceModule> choiceModule;
-	@Inject
-	private Provider<InlineChoiceMathGapModule> inlineChoiceMathGapModule;
-	@Inject
-	private Provider<TextEntryGapModule> textEntryGapModule;
-	@Inject
-	private Provider<TextEntryMathGapModule> textEntryMathGapModule;
-	@Inject
-	private Provider<DragGapModule> dragGapModule;
-	@Inject
-	private Provider<DivModule> divModule;
-	@Inject
-	private Provider<GroupModule> groupModule;
-	@Inject
-	private Provider<SpanModule> spanModule;
-	@Inject
-	private Provider<TextInteractionModule> textInteractionModule;
-	@Inject
-	private Provider<ColorfillInteractionModule> colorfillInteractionModule;
-	@Inject
-	private Provider<SimpleTextModule> simpleTextModule;
-	@Inject
-	private Provider<MathTextModule> mathTextModule;
-	@Inject
-	private Provider<InlineMathJaxModule> inlineMathJaxModule;
-	@Inject
-	private Provider<InteractionMathJaxModule> interactionMathJaxModule;
-	@Inject
-	private Provider<FlashModule> flashModule;
-	@Inject
-	private Provider<PromptModule> promptModule;
-	@Inject
-	private Provider<TableModule> tableModule;
-	@Inject
-	private Provider<ShapeModule> shapeModule;
-	@Inject
-	private Provider<SupHtmlContainerModule> supHtmlContainerModule;
-	@Inject
-	private Provider<SubHtmlContainerModule> subHtmlContainerModule;
-	@Inject
-	private Provider<TutorModule> tutor;
-	@Inject
-	private Provider<ButtonModule> buttonModule;
-	@Inject
-	private Provider<TutorApiExtension> tutorApiExtension;
-	@Inject
-	private Provider<DrawingModule> drawingModule;
-	@Inject
-	private Provider<BonusModule> bonusModule;
-	@Inject
-	private Provider<ProgressBonusModule> progressBonusModule;
-	@Inject
-	private Provider<VideoModule> videoModule;
-	@Inject
-	private Provider<DictionaryModule> dictionaryModule;
-	@Inject
-	private Provider<TextEditorModule> textEditorModule;
-	@Inject
-	private Provider<TestPageSubmitButtonModule> testPageSubmitButtonModule;
-	@Inject
-	private Provider<TestResetButtonModule> testResetButtonModule;
-	@Inject
-	private Provider<SpeechScoreModule> speechScoreModule;
-	@Inject
-	private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
-	@Inject
-	private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
+    @Inject
+    private Provider<ConnectionModule> connectionModule;
+    @Inject
+    private Provider<SourceListModule> sourceListModule;
+    @Inject
+    private Provider<ObjectModule> objectModule;
+    @Inject
+    private Provider<PageInPageModule> pageInPageModule;
+    @Inject
+    private Provider<TextActionProcessor> textActionProcessor;
+    @Inject
+    private Provider<ImageActionProcessor> imageActionProcessor;
+    @Inject
+    private Provider<ImgModule> imgModule;
+    @Inject
+    private Provider<SelectionModule> selectionModule;
+    @Inject
+    private Provider<InlineContainerModule> inlineContainerModule;
+    @Inject
+    private Provider<DefaultMediaProcessorExtension> mediaProcessor;
+    @Inject
+    private Provider<MathModule> mathModule;
+    @Inject
+    private Provider<CheckButtonModuleConnectorExtension> checkButtonModuleConnectorExtension;
+    @Inject
+    private Provider<ShowAnswersButtonModuleConnectorExtension> showAnswersButtonModuleConnectorExtension;
+    @Inject
+    private Provider<AudioMuteButtonModuleConnectorExtension> audioMuteButtonModuleConnectorExtension;
+    @Inject
+    private Provider<ResetButtonModuleConnectorExtension> resetButtonModuleConnectorExtension;
+    @Inject
+    private Provider<InlineChoiceModule> inlineChoiceModule;
+    @Inject
+    private Provider<IdentificationModule> identificationModule;
+    @Inject
+    private Provider<SimulationModule> simulationModule;
+    @Inject
+    private Provider<SlideshowPlayerModule> slideshowPlayerModule;
+    @Inject
+    private Provider<LabellingModule> labellingModule;
+    @Inject
+    private Provider<OrderInteractionModule> orderInteractionModule;
+    @Inject
+    private Provider<ChoiceModule> choiceModule;
+    @Inject
+    private Provider<InlineChoiceMathGapModule> inlineChoiceMathGapModule;
+    @Inject
+    private Provider<TextEntryGapModule> textEntryGapModule;
+    @Inject
+    private Provider<TextEntryMathGapModule> textEntryMathGapModule;
+    @Inject
+    private Provider<DragGapModule> dragGapModule;
+    @Inject
+    private Provider<DivModule> divModule;
+    @Inject
+    private Provider<GroupModule> groupModule;
+    @Inject
+    private Provider<SpanModule> spanModule;
+    @Inject
+    private Provider<TextInteractionModule> textInteractionModule;
+    @Inject
+    private Provider<ColorfillInteractionModule> colorfillInteractionModule;
+    @Inject
+    private Provider<SimpleTextModule> simpleTextModule;
+    @Inject
+    private Provider<MathTextModule> mathTextModule;
+    @Inject
+    private Provider<InlineMathJaxModule> inlineMathJaxModule;
+    @Inject
+    private Provider<InteractionMathJaxModule> interactionMathJaxModule;
+    @Inject
+    private Provider<FlashModule> flashModule;
+    @Inject
+    private Provider<PromptModule> promptModule;
+    @Inject
+    private Provider<TableModule> tableModule;
+    @Inject
+    private Provider<ShapeModule> shapeModule;
+    @Inject
+    private Provider<SupHtmlContainerModule> supHtmlContainerModule;
+    @Inject
+    private Provider<SubHtmlContainerModule> subHtmlContainerModule;
+    @Inject
+    private Provider<TutorModule> tutor;
+    @Inject
+    private Provider<ButtonModule> buttonModule;
+    @Inject
+    private Provider<TutorApiExtension> tutorApiExtension;
+    @Inject
+    private Provider<DrawingModule> drawingModule;
+    @Inject
+    private Provider<BonusModule> bonusModule;
+    @Inject
+    private Provider<ProgressBonusModule> progressBonusModule;
+    @Inject
+    private Provider<VideoModule> videoModule;
+    @Inject
+    private Provider<DictionaryModule> dictionaryModule;
+    @Inject
+    private Provider<TextEditorModule> textEditorModule;
+    @Inject
+    private Provider<TestPageSubmitButtonModule> testPageSubmitButtonModule;
+    @Inject
+    private Provider<TestResetButtonModule> testResetButtonModule;
+    @Inject
+    private Provider<SpeechScoreModule> speechScoreModule;
+    @Inject
+    private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
+    @Inject
+    private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
 
-	public Provider<ConnectionModule> getConnectionModule() {
-		return connectionModule;
-	}
+    public Provider<ConnectionModule> getConnectionModule() {
+        return connectionModule;
+    }
 
-	public Provider<SourceListModule> getSourceListModule() {
-		return sourceListModule;
-	}
+    public Provider<SourceListModule> getSourceListModule() {
+        return sourceListModule;
+    }
 
-	public Provider<ObjectModule> getObjectModule() {
-		return objectModule;
-	}
+    public Provider<ObjectModule> getObjectModule() {
+        return objectModule;
+    }
 
-	public Provider<PageInPageModule> getPageInPageModule() {
-		return pageInPageModule;
-	}
+    public Provider<PageInPageModule> getPageInPageModule() {
+        return pageInPageModule;
+    }
 
-	public Provider<TextActionProcessor> getTextActionProcessor() {
-		return textActionProcessor;
-	}
+    public Provider<TextActionProcessor> getTextActionProcessor() {
+        return textActionProcessor;
+    }
 
-	public Provider<ImageActionProcessor> getImageActionProcessor() {
-		return imageActionProcessor;
-	}
+    public Provider<ImageActionProcessor> getImageActionProcessor() {
+        return imageActionProcessor;
+    }
 
-	public Provider<ImgModule> getImgModule() {
-		return imgModule;
-	}
+    public Provider<ImgModule> getImgModule() {
+        return imgModule;
+    }
 
-	public Provider<InlineContainerModule> getInlineContainerModule() {
-		return inlineContainerModule;
-	}
+    public Provider<InlineContainerModule> getInlineContainerModule() {
+        return inlineContainerModule;
+    }
 
-	public Provider<SelectionModule> getSelectionModule() {
-		return selectionModule;
-	}
+    public Provider<SelectionModule> getSelectionModule() {
+        return selectionModule;
+    }
 
-	public Provider<DefaultMediaProcessorExtension> getMediaProcessor() {
-		return mediaProcessor;
-	}
+    public Provider<DefaultMediaProcessorExtension> getMediaProcessor() {
+        return mediaProcessor;
+    }
 
-	public Provider<MathModule> getMathModule() {
-		return mathModule;
-	}
+    public Provider<MathModule> getMathModule() {
+        return mathModule;
+    }
 
-	public Provider<InlineChoiceModule> getInlineChoiceModule() {
-		return inlineChoiceModule;
-	}
+    public Provider<InlineChoiceModule> getInlineChoiceModule() {
+        return inlineChoiceModule;
+    }
 
-	public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {
-		return checkButtonModuleConnectorExtension;
-	}
+    public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {
+        return checkButtonModuleConnectorExtension;
+    }
 
-	public Provider<ShowAnswersButtonModuleConnectorExtension> getShowAnswersButtonModuleConnectorExtension() {
-		return showAnswersButtonModuleConnectorExtension;
-	}
+    public Provider<ShowAnswersButtonModuleConnectorExtension> getShowAnswersButtonModuleConnectorExtension() {
+        return showAnswersButtonModuleConnectorExtension;
+    }
 
-	public Provider<AudioMuteButtonModuleConnectorExtension> getAudioMuteButtonModuleConnectorExtension() {
-		return audioMuteButtonModuleConnectorExtension;
-	}
+    public Provider<AudioMuteButtonModuleConnectorExtension> getAudioMuteButtonModuleConnectorExtension() {
+        return audioMuteButtonModuleConnectorExtension;
+    }
 
-	public Provider<ResetButtonModuleConnectorExtension> getResetButtonModuleConnectorExtension() {
-		return resetButtonModuleConnectorExtension;
-	}
+    public Provider<ResetButtonModuleConnectorExtension> getResetButtonModuleConnectorExtension() {
+        return resetButtonModuleConnectorExtension;
+    }
 
-	public Provider<IdentificationModule> getIdentificationModule() {
-		return identificationModule;
-	}
+    public Provider<IdentificationModule> getIdentificationModule() {
+        return identificationModule;
+    }
 
-	public Provider<SimulationModule> getSimulationModule() {
-		return simulationModule;
-	}
+    public Provider<SimulationModule> getSimulationModule() {
+        return simulationModule;
+    }
 
-	public Provider<SlideshowPlayerModule> getSlideshowPlayerModule() {
-		return slideshowPlayerModule;
-	}
+    public Provider<SlideshowPlayerModule> getSlideshowPlayerModule() {
+        return slideshowPlayerModule;
+    }
 
-	public Provider<LabellingModule> getLabellingModule() {
-		return labellingModule;
-	}
+    public Provider<LabellingModule> getLabellingModule() {
+        return labellingModule;
+    }
 
-	public Provider<OrderInteractionModule> getOrderInteractionModule() {
-		return orderInteractionModule;
-	}
+    public Provider<OrderInteractionModule> getOrderInteractionModule() {
+        return orderInteractionModule;
+    }
 
-	public Provider<ChoiceModule> getChoiceModule() {
-		return choiceModule;
-	}
+    public Provider<ChoiceModule> getChoiceModule() {
+        return choiceModule;
+    }
 
-	public Provider<InlineChoiceMathGapModule> getInlineChoiceMathGapModule() {
-		return inlineChoiceMathGapModule;
-	}
+    public Provider<InlineChoiceMathGapModule> getInlineChoiceMathGapModule() {
+        return inlineChoiceMathGapModule;
+    }
 
-	public Provider<TextEntryGapModule> getTextEntryGapModule() {
-		return textEntryGapModule;
-	}
+    public Provider<TextEntryGapModule> getTextEntryGapModule() {
+        return textEntryGapModule;
+    }
 
-	public Provider<TextEntryMathGapModule> getTextEntryMathGapModule() {
-		return textEntryMathGapModule;
-	}
+    public Provider<TextEntryMathGapModule> getTextEntryMathGapModule() {
+        return textEntryMathGapModule;
+    }
 
-	public Provider<DragGapModule> getDragGapModule() {
-		return dragGapModule;
-	}
+    public Provider<DragGapModule> getDragGapModule() {
+        return dragGapModule;
+    }
 
-	public Provider<ColorfillInteractionModule> getColorfillInteractionModule() {
-		return colorfillInteractionModule;
-	}
+    public Provider<ColorfillInteractionModule> getColorfillInteractionModule() {
+        return colorfillInteractionModule;
+    }
 
-	public Provider<DivModule> getDivModule() {
-		return divModule;
-	}
+    public Provider<DivModule> getDivModule() {
+        return divModule;
+    }
 
-	public Provider<GroupModule> getGroupModule() {
-		return groupModule;
-	}
+    public Provider<GroupModule> getGroupModule() {
+        return groupModule;
+    }
 
-	public Provider<SpanModule> getSpanModule() {
-		return spanModule;
-	}
+    public Provider<SpanModule> getSpanModule() {
+        return spanModule;
+    }
 
-	public Provider<TextInteractionModule> getTextInteractionModule() {
-		return textInteractionModule;
-	}
+    public Provider<TextInteractionModule> getTextInteractionModule() {
+        return textInteractionModule;
+    }
 
-	public Provider<SimpleTextModule> getSimpleTextModule() {
-		return simpleTextModule;
-	}
+    public Provider<SimpleTextModule> getSimpleTextModule() {
+        return simpleTextModule;
+    }
 
-	public Provider<MathTextModule> getMathTextModule() {
-		return mathTextModule;
-	}
+    public Provider<MathTextModule> getMathTextModule() {
+        return mathTextModule;
+    }
 
-	public Provider<InlineMathJaxModule> getInlineMathJaxModule() {
-		return inlineMathJaxModule;
-	}
+    public Provider<InlineMathJaxModule> getInlineMathJaxModule() {
+        return inlineMathJaxModule;
+    }
 
-	public Provider<FlashModule> getFlashModule() {
-		return flashModule;
-	}
+    public Provider<FlashModule> getFlashModule() {
+        return flashModule;
+    }
 
-	public Provider<PromptModule> getPromptModule() {
-		return promptModule;
-	}
+    public Provider<PromptModule> getPromptModule() {
+        return promptModule;
+    }
 
-	public Provider<TableModule> getTableModule() {
-		return tableModule;
-	}
+    public Provider<TableModule> getTableModule() {
+        return tableModule;
+    }
 
-	public Provider<ShapeModule> getShapeModule() {
-		return shapeModule;
-	}
+    public Provider<ShapeModule> getShapeModule() {
+        return shapeModule;
+    }
 
-	public Provider<SupHtmlContainerModule> getSupHtmlContainerModule() {
-		return supHtmlContainerModule;
-	}
+    public Provider<SupHtmlContainerModule> getSupHtmlContainerModule() {
+        return supHtmlContainerModule;
+    }
 
-	public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
-		return subHtmlContainerModule;
-	}
+    public Provider<SubHtmlContainerModule> getSubHtmlContainerModule() {
+        return subHtmlContainerModule;
+    }
 
-	public Provider<TutorModule> getTutorModule() {
-		return tutor;
-	}
+    public Provider<TutorModule> getTutorModule() {
+        return tutor;
+    }
 
-	public Provider<ButtonModule> getButtonModule() {
-		return buttonModule;
-	}
+    public Provider<ButtonModule> getButtonModule() {
+        return buttonModule;
+    }
 
-	public Provider<TutorApiExtension> getTutorApiExtension() {
-		return tutorApiExtension;
-	}
+    public Provider<TutorApiExtension> getTutorApiExtension() {
+        return tutorApiExtension;
+    }
 
-	public Provider<DrawingModule> getDrawingModule() {
-		return drawingModule;
-	}
+    public Provider<DrawingModule> getDrawingModule() {
+        return drawingModule;
+    }
 
-	public Provider<BonusModule> getBonusModule() {
-		return bonusModule;
-	}
+    public Provider<BonusModule> getBonusModule() {
+        return bonusModule;
+    }
 
-	public Provider<ProgressBonusModule> getProgressBonusModule() {
-		return progressBonusModule;
-	}
+    public Provider<ProgressBonusModule> getProgressBonusModule() {
+        return progressBonusModule;
+    }
 
-	public Provider<VideoModule> getVideoModule() {
-		return videoModule;
-	}
+    public Provider<VideoModule> getVideoModule() {
+        return videoModule;
+    }
 
-	public Provider<DictionaryModule> getDictionaryModule() {
-		return dictionaryModule;
-	}
+    public Provider<DictionaryModule> getDictionaryModule() {
+        return dictionaryModule;
+    }
 
-	public Provider<TextEditorModule> getTextEditorModule() {
-		return textEditorModule;
-	}
+    public Provider<TextEditorModule> getTextEditorModule() {
+        return textEditorModule;
+    }
 
-	public Provider<TestPageSubmitButtonModule> getTestPageSubmitButtonModule() {
-		return testPageSubmitButtonModule;
-	}
+    public Provider<TestPageSubmitButtonModule> getTestPageSubmitButtonModule() {
+        return testPageSubmitButtonModule;
+    }
 
-	public Provider<TestResetButtonModule> getTestResetButtonModule() {
-		return testResetButtonModule;
-	}
+    public Provider<TestResetButtonModule> getTestResetButtonModule() {
+        return testResetButtonModule;
+    }
 
-	public Provider<SpeechScoreModule> getSpeechScoreModule() {
-		return speechScoreModule;
-	}
+    public Provider<SpeechScoreModule> getSpeechScoreModule() {
+        return speechScoreModule;
+    }
 
-	public Provider<ExternalInteractionModule> getExternalInteractionModule() {
-		return externalInteractionModuleProvider;
-	}
+    public Provider<ExternalInteractionModule> getExternalInteractionModule() {
+        return externalInteractionModuleProvider;
+    }
 
-	public Provider<ExternalPresentationModule> getExternalPresentationModule() {
-		return externalPresentationModuleProvider;
-	}
+    public Provider<ExternalPresentationModule> getExternalPresentationModule() {
+        return externalPresentationModuleProvider;
+    }
 
-	public Provider<InteractionMathJaxModule> getInteractionMathJaxModule() {
-		return interactionMathJaxModule;
-	}
+    public Provider<InteractionMathJaxModule> getInteractionMathJaxModule() {
+        return interactionMathJaxModule;
+    }
 }

@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public interface SpeechScoreLinkView extends IsWidget {
-	void addHandler(Command command);
+    void addHandler(Command command);
 
-	void buildLink(String linkText, String href);
+    void buildLink(String linkText, String href);
 }

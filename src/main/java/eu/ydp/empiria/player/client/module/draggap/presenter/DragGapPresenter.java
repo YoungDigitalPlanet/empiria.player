@@ -7,9 +7,9 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public interface DragGapPresenter extends ActivityPresenter<DragGapModuleModel, DragGapBean> {
 
-	void setContent(String itemId);
+    void setContent(String itemId);
 
-	void removeContent();
+    void removeContent();
 
-	void setGapDimensions(HasDimensions size);
+    void setGapDimensions(HasDimensions size);
 }

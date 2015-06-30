@@ -8,13 +8,13 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.A
  */
 public class HTML5MediaExecutorDelegator {
 
-	private AbstractHTML5MediaExecutor executor;
+    private AbstractHTML5MediaExecutor executor;
 
-	public AbstractHTML5MediaExecutor getExecutor() {
-		return executor;
-	}
+    public AbstractHTML5MediaExecutor getExecutor() {
+        return executor;
+    }
 
-	public void setExecutor(AbstractHTML5MediaExecutor executor) {
-		this.executor = executor;
-	}
+    public void setExecutor(AbstractHTML5MediaExecutor executor) {
+        this.executor = executor;
+    }
 }

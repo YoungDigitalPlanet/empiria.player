@@ -1,35 +1,35 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bonus;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 public class BonusServiceTest {
 
-	private BonusService bonusService;
+    private BonusService bonusService;
 
-	@Before
-	public void setUp() throws Exception {
-		bonusService = new BonusService();
-	}
+    @Before
+    public void setUp() throws Exception {
+        bonusService = new BonusService();
+    }
 
-	@Test
-	public void shouldReturnPropperBonusForId() {
-		// given
-		String bonusId = "BONUS_ID";
-		BonusConfig bonusConfig = mock(BonusConfig.class);
-		bonusService.registerBonus(bonusId, bonusConfig);
+    @Test
+    public void shouldReturnPropperBonusForId() {
+        // given
+        String bonusId = "BONUS_ID";
+        BonusConfig bonusConfig = mock(BonusConfig.class);
+        bonusService.registerBonus(bonusId, bonusConfig);
 
-		String bonusId2 = "BONUS_ID2";
-		BonusConfig bonusConfig2 = mock(BonusConfig.class);
-		bonusService.registerBonus(bonusId2, bonusConfig2);
+        String bonusId2 = "BONUS_ID2";
+        BonusConfig bonusConfig2 = mock(BonusConfig.class);
+        bonusService.registerBonus(bonusId2, bonusConfig2);
 
-		// when
-		BonusConfig returned = bonusService.getBonusConfig(bonusId);
+        // when
+        BonusConfig returned = bonusService.getBonusConfig(bonusId);
 
-		// then
-		assertThat(returned).isEqualTo(bonusConfig);
-	}
+        // then
+        assertThat(returned).isEqualTo(bonusConfig);
+    }
 }

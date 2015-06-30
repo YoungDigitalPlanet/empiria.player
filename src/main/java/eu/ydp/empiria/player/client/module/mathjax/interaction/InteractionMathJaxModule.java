@@ -18,42 +18,42 @@ import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 
 public class InteractionMathJaxModule extends AbstractActivityContainerModuleBase {
 
-	private MathJaxPresenter presenter;
-	private RootPanelDelegate rootPanel;
+    private MathJaxPresenter presenter;
+    private RootPanelDelegate rootPanel;
 
-	@Inject
-	public InteractionMathJaxModule(MathJaxModuleFactory factory, @InteractionMathJax MathJaxView view, RootPanelDelegate rootPanel) {
-		this.rootPanel = rootPanel;
-		this.presenter = factory.getMathJaxPresenter(view);
-	}
+    @Inject
+    public InteractionMathJaxModule(MathJaxModuleFactory factory, @InteractionMathJax MathJaxView view, RootPanelDelegate rootPanel) {
+        this.rootPanel = rootPanel;
+        this.presenter = factory.getMathJaxPresenter(view);
+    }
 
-	@Override
-	public Widget getView() {
-		return presenter.getView();
-	}
+    @Override
+    public Widget getView() {
+        return presenter.getView();
+    }
 
-	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
-		super.initModule(element, moduleSocket, bodyGenerator);
+    @Override
+    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
+        super.initModule(element, moduleSocket, bodyGenerator);
 
-		initPresenter(element);
-		generateGaps(element, bodyGenerator);
-	}
+        initPresenter(element);
+        generateGaps(element, bodyGenerator);
+    }
 
-	private void generateGaps(Element element, BodyGeneratorSocket bodyGenerator) {
-		Panel gapContainer = new FlowPanel();
-		gapContainer.setVisible(false);
-		rootPanel.getRootPanel().add(gapContainer);
+    private void generateGaps(Element element, BodyGeneratorSocket bodyGenerator) {
+        Panel gapContainer = new FlowPanel();
+        gapContainer.setVisible(false);
+        rootPanel.getRootPanel().add(gapContainer);
 
-		NodeList gaps = element.getElementsByTagName("gap");
-		for (int i = 0; i < gaps.getLength(); i++) {
-			Node gap = gaps.item(i);
-			bodyGenerator.processNode(gap, gapContainer);
-		}
-	}
+        NodeList gaps = element.getElementsByTagName("gap");
+        for (int i = 0; i < gaps.getLength(); i++) {
+            Node gap = gaps.item(i);
+            bodyGenerator.processNode(gap, gapContainer);
+        }
+    }
 
-	private void initPresenter(Element element) {
-		String mmlScript = element.getChildNodes().toString();
-		presenter.setMmlScript(mmlScript);
-	}
+    private void initPresenter(Element element) {
+        String mmlScript = element.getChildNodes().toString();
+        presenter.setMmlScript(mmlScript);
+    }
 }

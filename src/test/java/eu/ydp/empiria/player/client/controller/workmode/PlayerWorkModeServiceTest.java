@@ -11,112 +11,112 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerWorkModeServiceTest {
 
-	@InjectMocks
-	private PlayerWorkModeService testObj;
+    @InjectMocks
+    private PlayerWorkModeService testObj;
 
-	@Mock(extraInterfaces = { WorkModePreviewClient.class, WorkModeTestClient.class })
-	private WorkModeClientType moduleToDisableAndEnable;
-	@Mock(extraInterfaces = WorkModeTestClient.class)
-	private WorkModeClientType moduleToDisable;
-	@Mock(extraInterfaces = WorkModePreviewClient.class)
-	private WorkModeClientType moduleToEnable;
-	@Mock
-	private WorkModeClientType moduleWithoutInterfaces;
+    @Mock(extraInterfaces = {WorkModePreviewClient.class, WorkModeTestClient.class})
+    private WorkModeClientType moduleToDisableAndEnable;
+    @Mock(extraInterfaces = WorkModeTestClient.class)
+    private WorkModeClientType moduleToDisable;
+    @Mock(extraInterfaces = WorkModePreviewClient.class)
+    private WorkModeClientType moduleToEnable;
+    @Mock
+    private WorkModeClientType moduleWithoutInterfaces;
 
-	@Test
-	public void shouldSetModeOnModuleDuringRegistration_disablingAndEnabling() {
-		// given
-		PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
-		PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
+    @Test
+    public void shouldSetModeOnModuleDuringRegistration_disablingAndEnabling() {
+        // given
+        PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
+        PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
 
-		testObj.tryToUpdateWorkMode(previousWorkMode);
-		testObj.tryToUpdateWorkMode(currentWorkMode);
+        testObj.tryToUpdateWorkMode(previousWorkMode);
+        testObj.tryToUpdateWorkMode(currentWorkMode);
 
-		// when
-		testObj.registerModule(moduleToDisableAndEnable);
+        // when
+        testObj.registerModule(moduleToDisableAndEnable);
 
-		// then
-		verify((WorkModeTestClient) moduleToDisableAndEnable).disableTestMode();
-		verify((WorkModePreviewClient) moduleToDisableAndEnable).enablePreviewMode();
-		verifyNoMoreInteractions(moduleToDisableAndEnable);
-	}
+        // then
+        verify((WorkModeTestClient) moduleToDisableAndEnable).disableTestMode();
+        verify((WorkModePreviewClient) moduleToDisableAndEnable).enablePreviewMode();
+        verifyNoMoreInteractions(moduleToDisableAndEnable);
+    }
 
-	@Test
-	public void shouldSetModeOnModuleDuringRegistration_disabling() {
-		// given
-		PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
-		PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
+    @Test
+    public void shouldSetModeOnModuleDuringRegistration_disabling() {
+        // given
+        PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
+        PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
 
-		testObj.tryToUpdateWorkMode(previousWorkMode);
-		testObj.tryToUpdateWorkMode(currentWorkMode);
+        testObj.tryToUpdateWorkMode(previousWorkMode);
+        testObj.tryToUpdateWorkMode(currentWorkMode);
 
-		// when
-		testObj.registerModule(moduleToDisable);
+        // when
+        testObj.registerModule(moduleToDisable);
 
-		// then
-		verify((WorkModeTestClient) moduleToDisable).disableTestMode();
-		verifyNoMoreInteractions(moduleToDisable);
-	}
+        // then
+        verify((WorkModeTestClient) moduleToDisable).disableTestMode();
+        verifyNoMoreInteractions(moduleToDisable);
+    }
 
-	@Test
-	public void shouldSetModeOnModuleDuringRegistration_enabling() {
-		// given
-		PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
-		PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
+    @Test
+    public void shouldSetModeOnModuleDuringRegistration_enabling() {
+        // given
+        PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
+        PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
 
-		testObj.tryToUpdateWorkMode(previousWorkMode);
-		testObj.tryToUpdateWorkMode(currentWorkMode);
+        testObj.tryToUpdateWorkMode(previousWorkMode);
+        testObj.tryToUpdateWorkMode(currentWorkMode);
 
-		// when
-		testObj.registerModule(moduleToEnable);
+        // when
+        testObj.registerModule(moduleToEnable);
 
-		// then
-		verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
-		verifyNoMoreInteractions(moduleToEnable);
-	}
+        // then
+        verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
+        verifyNoMoreInteractions(moduleToEnable);
+    }
 
-	@Test
-	public void shouldSetModeOnModuleDuringRegistration_() {
-		// given
-		PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
-		PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
+    @Test
+    public void shouldSetModeOnModuleDuringRegistration_() {
+        // given
+        PlayerWorkMode previousWorkMode = PlayerWorkMode.TEST;
+        PlayerWorkMode currentWorkMode = PlayerWorkMode.PREVIEW;
 
-		testObj.tryToUpdateWorkMode(previousWorkMode);
-		testObj.tryToUpdateWorkMode(currentWorkMode);
+        testObj.tryToUpdateWorkMode(previousWorkMode);
+        testObj.tryToUpdateWorkMode(currentWorkMode);
 
-		// when
-		testObj.registerModule(moduleWithoutInterfaces);
+        // when
+        testObj.registerModule(moduleWithoutInterfaces);
 
-		// then
-		verifyZeroInteractions(moduleWithoutInterfaces);
-	}
+        // then
+        verifyZeroInteractions(moduleWithoutInterfaces);
+    }
 
-	@Test
-	public void shouldNotifyModule_ifTransitionIsValid() {
-		// given
-		PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
-		testObj.registerModule(moduleToEnable);
+    @Test
+    public void shouldNotifyModule_ifTransitionIsValid() {
+        // given
+        PlayerWorkMode validTransition = PlayerWorkMode.PREVIEW;
+        testObj.registerModule(moduleToEnable);
 
-		// when
-		testObj.tryToUpdateWorkMode(validTransition);
+        // when
+        testObj.tryToUpdateWorkMode(validTransition);
 
-		// then
-		verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
-	}
+        // then
+        verify((WorkModePreviewClient) moduleToEnable).enablePreviewMode();
+    }
 
-	@Test
-	public void shouldNotNotifyModule_ifTransitionIsInvalid() {
-		// given
-		PlayerWorkMode invalidTransition = PlayerWorkMode.FULL;
+    @Test
+    public void shouldNotNotifyModule_ifTransitionIsInvalid() {
+        // given
+        PlayerWorkMode invalidTransition = PlayerWorkMode.FULL;
 
-		PlayerWorkMode initialState = PlayerWorkMode.TEST;
-		testObj.tryToUpdateWorkMode(initialState);
-		testObj.registerModule(moduleToDisableAndEnable);
+        PlayerWorkMode initialState = PlayerWorkMode.TEST;
+        testObj.tryToUpdateWorkMode(initialState);
+        testObj.registerModule(moduleToDisableAndEnable);
 
-		// when
-		testObj.tryToUpdateWorkMode(invalidTransition);
+        // when
+        testObj.tryToUpdateWorkMode(invalidTransition);
 
-		// then
-		verify((WorkModeTestClient) moduleToDisableAndEnable, never()).disableTestMode();
-	}
+        // then
+        verify((WorkModeTestClient) moduleToDisableAndEnable, never()).disableTestMode();
+    }
 }

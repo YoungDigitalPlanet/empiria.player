@@ -4,8 +4,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public interface VideoFullScreenView {
 
-	public abstract FlowPanel getContainer();
+    public abstract FlowPanel getContainer();
 
-	public abstract FlowPanel getControls();
+    public abstract FlowPanel getControls();
 
 }

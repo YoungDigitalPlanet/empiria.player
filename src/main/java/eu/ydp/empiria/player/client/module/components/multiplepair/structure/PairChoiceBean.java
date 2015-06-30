@@ -1,14 +1,13 @@
 package eu.ydp.empiria.player.client.module.components.multiplepair.structure;
 
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasFixed;
 
 public interface PairChoiceBean extends HasFixed {
-	public abstract String getIdentifier();
+    public abstract String getIdentifier();
 
-	public abstract int getMatchMax();
+    public abstract int getMatchMax();
 
-	public abstract XMLContent getXmlContent();
+    public abstract XMLContent getXmlContent();
 
 }

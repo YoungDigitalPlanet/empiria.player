@@ -15,53 +15,53 @@ import java.util.List;
 
 public class OrderInteractionViewImpl implements OrderInteractionView {
 
-	@Inject
-	private OrderInteractionViewItems viewItems;
+    @Inject
+    private OrderInteractionViewItems viewItems;
 
-	@Inject
-	private OrderInteractionViewWidget viewWidget;
+    @Inject
+    private OrderInteractionViewWidget viewWidget;
 
-	@Inject
-	private OrderInteractionViewItemStyles interactionViewItemStyles;
+    @Inject
+    private OrderInteractionViewItemStyles interactionViewItemStyles;
 
-	@Override
-	public void createItem(OrderingItem orderingItem, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
-		Widget widgetItem = bodyGenerator.generateInlineBody(xmlContent.getValue());
-		addItem(orderingItem, widgetItem);
-	}
+    @Override
+    public void createItem(OrderingItem orderingItem, XMLContent xmlContent, InlineBodyGeneratorSocket bodyGenerator) {
+        Widget widgetItem = bodyGenerator.generateInlineBody(xmlContent.getValue());
+        addItem(orderingItem, widgetItem);
+    }
 
-	private void addItem(OrderingItem orderingItem, Widget widgetItem) {
-		OrderInteractionViewItem viewItem = viewItems.addItem(orderingItem.getId(), widgetItem);
-		viewWidget.add(viewItem);
-	}
+    private void addItem(OrderingItem orderingItem, Widget widgetItem) {
+        OrderInteractionViewItem viewItem = viewItems.addItem(orderingItem.getId(), widgetItem);
+        viewWidget.add(viewItem);
+    }
 
-	@Override
-	public void setChildrenOrder(List<String> childOrder) {
-		List<IsWidget> itemsInOrder = viewItems.getItemsInOrder(childOrder);
-		putItemsOnView(itemsInOrder);
-	}
+    @Override
+    public void setChildrenOrder(List<String> childOrder) {
+        List<IsWidget> itemsInOrder = viewItems.getItemsInOrder(childOrder);
+        putItemsOnView(itemsInOrder);
+    }
 
-	private void putItemsOnView(List<IsWidget> itemsInOrder) {
-		viewWidget.putItemsOnView(itemsInOrder);
-	}
+    private void putItemsOnView(List<IsWidget> itemsInOrder) {
+        viewWidget.putItemsOnView(itemsInOrder);
+    }
 
-	@Override
-	public void setChildStyles(OrderingItem item) {
-		interactionViewItemStyles.applyStylesOnWidget(item, viewItems.getItem(item.getId()));
-	}
+    @Override
+    public void setChildStyles(OrderingItem item) {
+        interactionViewItemStyles.applyStylesOnWidget(item, viewItems.getItem(item.getId()));
+    }
 
-	@Override
-	public void setOrientation(OrderInteractionOrientation orientation) {
-		viewWidget.setOrientation(orientation);
-	}
+    @Override
+    public void setOrientation(OrderInteractionOrientation orientation) {
+        viewWidget.setOrientation(orientation);
+    }
 
-	@Override
-	public Widget asWidget() {
-		return viewWidget.asWidget();
-	}
+    @Override
+    public Widget asWidget() {
+        return viewWidget.asWidget();
+    }
 
-	@Override
-	public String getMainPanelUniqueCssClass() {
-		return viewWidget.getMainPanelUniqueCssClass();
-	}
+    @Override
+    public String getMainPanelUniqueCssClass() {
+        return viewWidget.getMainPanelUniqueCssClass();
+    }
 }

@@ -5,25 +5,25 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 
 public class ActionProcessorHelper extends AbstractFeedbackActionProcessor {
 
-	private final ActionProcessorTarget target;
+    private final ActionProcessorTarget target;
 
-	public ActionProcessorHelper(ActionProcessorTarget target) {
-		this.target = target;
-	}
+    public ActionProcessorHelper(ActionProcessorTarget target) {
+        this.target = target;
+    }
 
-	@Override
-	protected boolean canProcessAction(FeedbackAction action) {
-		return target.canProcessAction(action);
-	}
+    @Override
+    protected boolean canProcessAction(FeedbackAction action) {
+        return target.canProcessAction(action);
+    }
 
-	@Override
-	protected void processSingleAction(FeedbackAction action) {
-		target.processSingleAction(action);
-	}
+    @Override
+    protected void processSingleAction(FeedbackAction action) {
+        target.processSingleAction(action);
+    }
 
-	@Override
-	protected void clearFeedback() {
-		target.clearFeedback();
-	}
+    @Override
+    protected void clearFeedback() {
+        target.clearFeedback();
+    }
 
 }

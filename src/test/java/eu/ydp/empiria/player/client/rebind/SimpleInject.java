@@ -5,17 +5,17 @@ import com.google.inject.Inject;
 @SuppressWarnings("PMD")
 public class SimpleInject {
 
-	@Inject
-	InjectObj inject;
+    @Inject
+    InjectObj inject;
 
-	public SimpleInject() {
-	}
+    public SimpleInject() {
+    }
 
-	public SimpleInject(String module) {
-	}
+    public SimpleInject(String module) {
+    }
 
-	public InjectObj getInject() {
-		return inject;
-	}
+    public InjectObj getInject() {
+        return inject;
+    }
 
 }

@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
 public interface TutorPopupPresenter {
 
-	void init(String tutorId);
+    void init(String tutorId);
 
-	void show();
+    void show();
 
-	void clicked(PersonaViewDto personaDto);
+    void clicked(PersonaViewDto personaDto);
 
 }

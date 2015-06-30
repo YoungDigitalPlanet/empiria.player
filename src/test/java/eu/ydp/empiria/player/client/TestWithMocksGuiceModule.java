@@ -52,66 +52,66 @@ import static org.mockito.Mockito.withSettings;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
 
-	public TestWithMocksGuiceModule() {
-		super();
-	}
+    public TestWithMocksGuiceModule() {
+        super();
+    }
 
-	public TestWithMocksGuiceModule(Class<?>... ignoreClassList) {
-		super(ignoreClassList);
-	}
+    public TestWithMocksGuiceModule(Class<?>... ignoreClassList) {
+        super(ignoreClassList);
+    }
 
-	public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy) {
-		super(classToOmit, classToSpy);
-	}
+    public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy) {
+        super(classToOmit, classToSpy);
+    }
 
-	@Override
-	public void configure() {
-		bindToSingletonOrMockInstance(StyleNameConstants.class);
-		bindToSingletonOrMockInstance(ExternalFullscreenVideoConnector.class);
-		bindToSingletonOrMockInstance(EventsBus.class, PlayerEventsBus.class);
-		bindToSingletonOrMockInstance(MediaConnector.class);
-		bindToSingletonOrMockInstance(UniqueIdGenerator.class);
-		bindToSingletonOrMockInstance(ExternalMediaEngine.class);
-		bindToSingletonOrMockInstance(MediaConnectorListener.class, ExternalMediaEngine.class);
-		bindToSingletonOrMockInstance(SingleMediaPlayback.class);
-		bindToSingletonOrMockInstance(DateService.class);
-		bindToSingletonOrMockInstance(MediaExecutorsStopper.class);
-		bindToSingletonOrMockInstance(LabellingView.class);
-		bindToSingletonOrMockInstance(LabellingChildView.class);
-		bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
-		bindToSingletonOrMockInstance(PageScopeFactory.class);
-		bindToSingletonOrMockInstance(StyleSocket.class);
-		bindToSingletonOrMockInstance(ToolFactory.class);
-		bindToSingletonOrMockInstance(DrawCommandFactory.class);
-		bindToSingletonOrMockInstance(ModuleScopeStack.class);
-		bindToSingletonOrMockInstance(ClearAllDrawCommand.class);
-		bindToSingletonOrMockInstance(ModuleScopedLazyProvider.class);
-		bindToSingletonOrMockInstance(Logger.class);
+    @Override
+    public void configure() {
+        bindToSingletonOrMockInstance(StyleNameConstants.class);
+        bindToSingletonOrMockInstance(ExternalFullscreenVideoConnector.class);
+        bindToSingletonOrMockInstance(EventsBus.class, PlayerEventsBus.class);
+        bindToSingletonOrMockInstance(MediaConnector.class);
+        bindToSingletonOrMockInstance(UniqueIdGenerator.class);
+        bindToSingletonOrMockInstance(ExternalMediaEngine.class);
+        bindToSingletonOrMockInstance(MediaConnectorListener.class, ExternalMediaEngine.class);
+        bindToSingletonOrMockInstance(SingleMediaPlayback.class);
+        bindToSingletonOrMockInstance(DateService.class);
+        bindToSingletonOrMockInstance(MediaExecutorsStopper.class);
+        bindToSingletonOrMockInstance(LabellingView.class);
+        bindToSingletonOrMockInstance(LabellingChildView.class);
+        bindToSingletonOrMockInstance(LabellingModuleJAXBParserFactory.class);
+        bindToSingletonOrMockInstance(PageScopeFactory.class);
+        bindToSingletonOrMockInstance(StyleSocket.class);
+        bindToSingletonOrMockInstance(ToolFactory.class);
+        bindToSingletonOrMockInstance(DrawCommandFactory.class);
+        bindToSingletonOrMockInstance(ModuleScopeStack.class);
+        bindToSingletonOrMockInstance(ClearAllDrawCommand.class);
+        bindToSingletonOrMockInstance(ModuleScopedLazyProvider.class);
+        bindToSingletonOrMockInstance(Logger.class);
 
-		bindToSingletonInModuleScoped(ToolboxView.class);
-		bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
-		bindToSingletonInModuleScoped(CanvasPresenter.class);
-		bindToSingletonInModuleScoped(DrawingBean.class);
-		bindToSingletonInModuleScoped(DrawCanvas.class);
-		bindToSingletonInModuleScoped(CanvasView.class);
+        bindToSingletonInModuleScoped(ToolboxView.class);
+        bindToSingletonInModuleScoped(ToolboxButtonCreator.class);
+        bindToSingletonInModuleScoped(CanvasPresenter.class);
+        bindToSingletonInModuleScoped(DrawingBean.class);
+        bindToSingletonInModuleScoped(DrawCanvas.class);
+        bindToSingletonInModuleScoped(CanvasView.class);
 
-		bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
-		bindToClassOrMockProvider(IStickieView.class);
-		bindToClassOrMockProvider(StickiesProcessorExtension.class);
-		bindToClassOrMockProvider(IPlayerContainersAccessor.class);
-		bindToClassOrMockProvider(CenterPositionFinder.class);
-		bindToClassOrMockProvider(RangeCreator.class);
-		bindToClassOrMockProvider(WidgetSizeHelper.class);
-		bindToClassOrMockProvider(ViewportHelper.class);
-		bindToClassOrMockProvider(FullscreenVideoExecutor.class);
-		bindToClassOrMockProvider(FullscreenVideoMediaWrapper.class);
-		bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
-		bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
-		bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
-		bindToClassOrMockProvider(SurfaceRectangleFinder.class);
+        bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
+        bindToClassOrMockProvider(IStickieView.class);
+        bindToClassOrMockProvider(StickiesProcessorExtension.class);
+        bindToClassOrMockProvider(IPlayerContainersAccessor.class);
+        bindToClassOrMockProvider(CenterPositionFinder.class);
+        bindToClassOrMockProvider(RangeCreator.class);
+        bindToClassOrMockProvider(WidgetSizeHelper.class);
+        bindToClassOrMockProvider(ViewportHelper.class);
+        bindToClassOrMockProvider(FullscreenVideoExecutor.class);
+        bindToClassOrMockProvider(FullscreenVideoMediaWrapper.class);
+        bindToClassOrMockProvider(ExternalFullscreenVideoImpl.class);
+        bindToClassOrMockProvider(Scheduler.class, SchedulerMockImpl.class);
+        bindToClassOrMockProvider(Timer.class, TimerAccessibleMock.class);
+        bindToClassOrMockProvider(SurfaceRectangleFinder.class);
 
-		install(new FactoryModuleBuilder().implement(IStickieView.class, StickieView.class).implement(IStickiePresenter.class, StickiePresenter.class)
-				.build(StickieFactory.class));
-	}
+        install(new FactoryModuleBuilder().implement(IStickieView.class, StickieView.class).implement(IStickiePresenter.class, StickiePresenter.class)
+                .build(StickieFactory.class));
+    }
 
 }

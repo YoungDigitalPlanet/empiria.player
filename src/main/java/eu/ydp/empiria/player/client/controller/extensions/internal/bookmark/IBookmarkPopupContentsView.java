@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
 public interface IBookmarkPopupContentsView {
 
-	void setPresenter(IBookmarkPopupContentsPresenter presenter);
+    void setPresenter(IBookmarkPopupContentsPresenter presenter);
 
-	void setBookmarkTitle(String title);
+    void setBookmarkTitle(String title);
 
-	String getBookmarkTitle();
+    String getBookmarkTitle();
 }

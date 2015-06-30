@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.extern
 
 public interface FullscreenVideoConnector {
 
-	void addConnectorListener(String id, FullscreenVideoConnectorListener listener);
+    void addConnectorListener(String id, FullscreenVideoConnectorListener listener);
 
-	void openFullscreen(String id, Iterable<String> sources, double currentTimeMillis);
+    void openFullscreen(String id, Iterable<String> sources, double currentTimeMillis);
 }

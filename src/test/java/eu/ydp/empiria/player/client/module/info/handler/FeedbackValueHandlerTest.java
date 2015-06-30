@@ -17,38 +17,38 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FeedbackValueHandlerTest {
 
-	@InjectMocks
-	private FeedbackValueHandler testObj;
+    @InjectMocks
+    private FeedbackValueHandler testObj;
 
-	@Mock
-	private SessionDataSupplier sessionDataSupplier;
-	@Mock
-	private DataSourceDataSupplier dataSourceDataSupplier;
-	@Mock
-	private ResultForPageIndexProvider resultForPageIndexProvider;
+    @Mock
+    private SessionDataSupplier sessionDataSupplier;
+    @Mock
+    private DataSourceDataSupplier dataSourceDataSupplier;
+    @Mock
+    private ResultForPageIndexProvider resultForPageIndexProvider;
 
-	@Mock
-	private ContentFieldInfo contentFieldInfo;
-	@Mock
-	private ProgressToStringRangeMap reportFeedbacks;
-	private final String EXPECTED_FEEDBACK = "feedback";
-	private int itemIndex = 1;
+    @Mock
+    private ContentFieldInfo contentFieldInfo;
+    @Mock
+    private ProgressToStringRangeMap reportFeedbacks;
+    private final String EXPECTED_FEEDBACK = "feedback";
+    private int itemIndex = 1;
 
 
-	@Before
-	public void setUp() {
-		Integer result = 10;
-		when(resultForPageIndexProvider.get(itemIndex)).thenReturn(result);
-		when(dataSourceDataSupplier.getItemFeedbacks(itemIndex)).thenReturn(reportFeedbacks);
-		when(reportFeedbacks.getValueForProgress(result)).thenReturn(EXPECTED_FEEDBACK);
-	}
+    @Before
+    public void setUp() {
+        Integer result = 10;
+        when(resultForPageIndexProvider.get(itemIndex)).thenReturn(result);
+        when(dataSourceDataSupplier.getItemFeedbacks(itemIndex)).thenReturn(reportFeedbacks);
+        when(reportFeedbacks.getValueForProgress(result)).thenReturn(EXPECTED_FEEDBACK);
+    }
 
-	@Test
-	public void shouldGetValue() {
-		// when
-		String actualFeedback = testObj.getValue(contentFieldInfo, itemIndex);
+    @Test
+    public void shouldGetValue() {
+        // when
+        String actualFeedback = testObj.getValue(contentFieldInfo, itemIndex);
 
-		// then
-		assertThat(actualFeedback).isEqualTo(EXPECTED_FEEDBACK);
-	}
+        // then
+        assertThat(actualFeedback).isEqualTo(EXPECTED_FEEDBACK);
+    }
 }

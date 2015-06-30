@@ -5,13 +5,13 @@ import java.util.List;
 
 public class IgnoredModules {
 
-	private final List<String> ignoredList = new ArrayList<>();
+    private final List<String> ignoredList = new ArrayList<>();
 
-	public void addIgnoredID(String id) {
-		ignoredList.add(id);
-	}
+    public void addIgnoredID(String id) {
+        ignoredList.add(id);
+    }
 
-	public boolean isIgnored(String id) {
-		return ignoredList.contains(id);
-	}
+    public boolean isIgnored(String id) {
+        return ignoredList.contains(id);
+    }
 }

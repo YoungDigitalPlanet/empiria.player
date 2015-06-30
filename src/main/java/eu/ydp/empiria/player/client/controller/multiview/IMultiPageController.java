@@ -2,21 +2,21 @@ package eu.ydp.empiria.player.client.controller.multiview;
 
 public interface IMultiPageController {
 
-	void animatePageSwitch();
+    void animatePageSwitch();
 
-	boolean isAnimationRunning();
+    boolean isAnimationRunning();
 
-	boolean isZoomed();
+    boolean isZoomed();
 
-	void move(boolean swipeRight, float f);
+    void move(boolean swipeRight, float f);
 
-	void resetFocusAndStyles();
+    void resetFocusAndStyles();
 
-	void switchPage();
+    void switchPage();
 
-	void detachAttachPanels();
+    void detachAttachPanels();
 
-	void reset();
+    void reset();
 
-	void setVisiblePage(int pageNumber);
+    void setVisiblePage(int pageNumber);
 }

@@ -4,14 +4,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public interface Animation {
 
-	void goTo(FlowPanel toAnimate, int xPosition, double duration);
+    void goTo(FlowPanel toAnimate, int xPosition, double duration);
 
-	void addAnimationEndCallback(AnimationEndCallback endCallback);
+    void addAnimationEndCallback(AnimationEndCallback endCallback);
 
-	void removeAnimationEndCallback(AnimationEndCallback endCallback);
+    void removeAnimationEndCallback(AnimationEndCallback endCallback);
 
-	double getPositionX();
+    double getPositionX();
 
-	boolean isRunning();
+    boolean isRunning();
 
 }

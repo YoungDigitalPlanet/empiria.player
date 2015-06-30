@@ -2,5 +2,5 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound.extern
 
 public interface MediaParams {
 
-	int getDurationMillis();
+    int getDurationMillis();
 }

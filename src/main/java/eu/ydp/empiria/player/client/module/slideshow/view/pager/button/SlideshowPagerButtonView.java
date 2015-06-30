@@ -4,9 +4,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public interface SlideshowPagerButtonView extends IsWidget {
-	void setOnClickCommand(Command onClickCommand);
+    void setOnClickCommand(Command onClickCommand);
 
-	void activatePagerButton();
+    void activatePagerButton();
 
-	void deactivatePagerButton();
+    void deactivatePagerButton();
 }

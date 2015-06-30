@@ -4,6 +4,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 public interface PosterResources extends ClientBundle {
-	@Source("img/default_poster.png")
-	ImageResource defaultPoster();
+    @Source("img/default_poster.png")
+    ImageResource defaultPoster();
 }

@@ -14,35 +14,35 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class MathJaxPresenterTest {
 
-	@InjectMocks
-	private MathJaxPresenter testObj;
-	@Mock
-	private MathJaxNative mathJaxNative;
-	@Mock
-	private MathJaxView view;
-	@Mock
-	private Element scriptElement;
+    @InjectMocks
+    private MathJaxPresenter testObj;
+    @Mock
+    private MathJaxNative mathJaxNative;
+    @Mock
+    private MathJaxView view;
+    @Mock
+    private Element scriptElement;
 
-	@Before
-	public void init() {
-		Widget widget = mock(Widget.class);
-		com.google.gwt.user.client.Element viewElement = mock(com.google.gwt.user.client.Element.class);
-		when(view.asWidget()).thenReturn(widget);
-		when(widget.getElement()).thenReturn(viewElement);
-		when(viewElement.getFirstChildElement()).thenReturn(scriptElement);
-	}
+    @Before
+    public void init() {
+        Widget widget = mock(Widget.class);
+        com.google.gwt.user.client.Element viewElement = mock(com.google.gwt.user.client.Element.class);
+        when(view.asWidget()).thenReturn(widget);
+        when(widget.getElement()).thenReturn(viewElement);
+        when(viewElement.getFirstChildElement()).thenReturn(scriptElement);
+    }
 
-	@Test
-	public void shouldSetUpView_andAddScriptElementToRender() {
-		// given
-		String script = "script";
+    @Test
+    public void shouldSetUpView_andAddScriptElementToRender() {
+        // given
+        String script = "script";
 
-		// when
-		testObj.setMmlScript(script);
+        // when
+        testObj.setMmlScript(script);
 
-		// then
-		verify(view).setMmlScript(script);
-		verify(mathJaxNative).addElementToRender(scriptElement);
-	}
+        // then
+        verify(view).setMmlScript(script);
+        verify(mathJaxNative).addElementToRender(scriptElement);
+    }
 
 }

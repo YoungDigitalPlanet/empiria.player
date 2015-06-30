@@ -25,81 +25,81 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class MediaWrapperCreatorJUnitTest {
 
-	@InjectMocks
-	private MediaWrapperCreator testObj;
+    @InjectMocks
+    private MediaWrapperCreator testObj;
 
-	@Mock
-	private EventsBus eventsBus;
-	@Mock
-	private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
+    @Mock
+    private EventsBus eventsBus;
+    @Mock
+    private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
 
-	@Mock
-	private CallbackReceiver callbackReceiver;
-	@Mock
-	private MimeSourceProvider mimeSourceProvider;
+    @Mock
+    private CallbackReceiver callbackReceiver;
+    @Mock
+    private MimeSourceProvider mimeSourceProvider;
 
-	@Captor
-	private ArgumentCaptor<PlayerEvent> playerEventCaptor;
+    @Captor
+    private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
-	private final Map<String, String> sourcesWithTypes = Maps.newHashMap();
-	private final String sourcesKey = "file.mp3";
+    private final Map<String, String> sourcesWithTypes = Maps.newHashMap();
+    private final String sourcesKey = "file.mp3";
 
-	@Test
-	public void shouldCreateMediaWrapper() {
-		// given
-		when(mimeSourceProvider.getSourcesWithTypeByExtension(sourcesKey)).thenReturn(sourcesWithTypes);
+    @Test
+    public void shouldCreateMediaWrapper() {
+        // given
+        when(mimeSourceProvider.getSourcesWithTypeByExtension(sourcesKey)).thenReturn(sourcesWithTypes);
 
-		// when
-		testObj.createMediaWrapper(sourcesKey, callbackReceiver);
+        // when
+        testObj.createMediaWrapper(sourcesKey, callbackReceiver);
 
-		// then
-		verify(eventsBus).fireEvent(playerEventCaptor.capture());
+        // then
+        verify(eventsBus).fireEvent(playerEventCaptor.capture());
 
-		PlayerEvent capturedEvent = playerEventCaptor.getValue();
+        PlayerEvent capturedEvent = playerEventCaptor.getValue();
 
-		BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
-		CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
+        BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
+        CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
 
-		assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
-		assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
-		assertThat(capturedConfiguration.isFeedback()).isEqualTo(true);
-		assertThat(capturedCallback).isEqualTo(callbackReceiver);
-	}
+        assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
+        assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
+        assertThat(capturedConfiguration.isFeedback()).isEqualTo(true);
+        assertThat(capturedCallback).isEqualTo(callbackReceiver);
+    }
 
-	@Test
-	public void shouldCreateDefaultMediaWrapper() {
-		// when
-		testObj.createMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
+    @Test
+    public void shouldCreateDefaultMediaWrapper() {
+        // when
+        testObj.createMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
 
-		// then
-		verify(eventsBus).fireEvent(playerEventCaptor.capture());
-		PlayerEvent capturedEvent = playerEventCaptor.getValue();
-		BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
-		CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
+        // then
+        verify(eventsBus).fireEvent(playerEventCaptor.capture());
+        PlayerEvent capturedEvent = playerEventCaptor.getValue();
+        BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
+        CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
 
-		assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
-		assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
-		assertThat(capturedConfiguration.isFeedback()).isEqualTo(true);
-		assertThat(capturedCallback).isEqualTo(callbackReceiver);
-	}
+        assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
+        assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
+        assertThat(capturedConfiguration.isFeedback()).isEqualTo(true);
+        assertThat(capturedCallback).isEqualTo(callbackReceiver);
+    }
 
-	@Test
-	public void shouldCreateSimulationMediaWrapper() {
-		// given
-		when(simulationMediaEventControllerProvider.get()).thenReturn(mock(SimulationMediaEventController.class));
+    @Test
+    public void shouldCreateSimulationMediaWrapper() {
+        // given
+        when(simulationMediaEventControllerProvider.get()).thenReturn(mock(SimulationMediaEventController.class));
 
-		// when
-		testObj.createSimulationMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
+        // when
+        testObj.createSimulationMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
 
-		// then
-		verify(eventsBus).fireEvent(playerEventCaptor.capture());
-		PlayerEvent capturedEvent = playerEventCaptor.getValue();
-		BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
-		CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
+        // then
+        verify(eventsBus).fireEvent(playerEventCaptor.capture());
+        PlayerEvent capturedEvent = playerEventCaptor.getValue();
+        BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
+        CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
 
-		assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
-		assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
-		assertThat(capturedConfiguration.getMediaEventControllerOpt().get()).isNotNull();
-		assertThat(capturedCallback).isEqualTo(callbackReceiver);
-	}
+        assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
+        assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
+        assertThat(capturedConfiguration.getMediaEventControllerOpt().get()).isNotNull();
+        assertThat(capturedCallback).isEqualTo(callbackReceiver);
+    }
 }

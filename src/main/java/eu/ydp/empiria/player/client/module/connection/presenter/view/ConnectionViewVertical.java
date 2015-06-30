@@ -23,88 +23,88 @@ import java.util.Map;
 
 public class ConnectionViewVertical extends AbstractConnectionView {
 
-	private static ConnectionViewUiBinder uiBinder = GWT.create(ConnectionViewUiBinder.class);
+    private static ConnectionViewUiBinder uiBinder = GWT.create(ConnectionViewUiBinder.class);
 
-	interface ConnectionViewUiBinder extends UiBinder<Widget, ConnectionViewVertical> {
-	}
+    interface ConnectionViewUiBinder extends UiBinder<Widget, ConnectionViewVertical> {
+    }
 
-	@UiField
-	protected FlowPanel leftColumn;
+    @UiField
+    protected FlowPanel leftColumn;
 
-	@UiField
-	protected FlowPanel centerColumn;
+    @UiField
+    protected FlowPanel centerColumn;
 
-	@UiField
-	protected FlowPanel rightColumn;
+    @UiField
+    protected FlowPanel rightColumn;
 
-	@UiField
-	protected FlowPanel view;
+    @UiField
+    protected FlowPanel view;
 
-	Map<String, String> errorStyles = null, correctStyles = null;
+    Map<String, String> errorStyles = null, correctStyles = null;
 
-	protected HasTouchHandlers touchRecognition;
+    protected HasTouchHandlers touchRecognition;
 
-	@PostConstruct
-	public void createAndBindUi() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    @PostConstruct
+    public void createAndBindUi() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	private void initTouchRecognition() {
-		if (touchRecognition == null) {
-			touchRecognition = touchRecognitionFactory.getTouchRecognition(this, !UserAgentChecker.isMobileUserAgent(), true);
-			touchRecognition.addTouchHandlers(this, getTouchTypes());
-		}
-	}
+    private void initTouchRecognition() {
+        if (touchRecognition == null) {
+            touchRecognition = touchRecognitionFactory.getTouchRecognition(this, !UserAgentChecker.isMobileUserAgent(), true);
+            touchRecognition.addTouchHandlers(this, getTouchTypes());
+        }
+    }
 
-	private Type<TouchHandler, TouchTypes>[] getTouchTypes() {
-		Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_CANCEL);
-		if (isDrawFollowTouch()) {
-			types = ObjectArrays.concat(types, TouchEvent.getType(TouchTypes.TOUCH_MOVE));
-		}
-		return types;
-	}
+    private Type<TouchHandler, TouchTypes>[] getTouchTypes() {
+        Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_CANCEL);
+        if (isDrawFollowTouch()) {
+            types = ObjectArrays.concat(types, TouchEvent.getType(TouchTypes.TOUCH_MOVE));
+        }
+        return types;
+    }
 
-	@Override
-	public void addFirstColumnItem(ConnectionItem item) {
-		leftColumn.add(item);
-	}
+    @Override
+    public void addFirstColumnItem(ConnectionItem item) {
+        leftColumn.add(item);
+    }
 
-	@Override
-	public void addSecondColumnItem(ConnectionItem item) {
-		rightColumn.add(item);
-	}
+    @Override
+    public void addSecondColumnItem(ConnectionItem item) {
+        rightColumn.add(item);
+    }
 
-	@Override
-	public void addElementToMainView(IsWidget widget) {
-		view.insert(widget, 0);
-	}
+    @Override
+    public void addElementToMainView(IsWidget widget) {
+        view.insert(widget, 0);
+    }
 
-	@Override
-	public void onTouchStart(NativeEvent event) {
-		ConnectionMoveStartEvent connectionEvent = new ConnectionMoveStartEvent(getPositionX(event), getPositionY(event), event);
-		callOnMoveStartHandlers(connectionEvent);
+    @Override
+    public void onTouchStart(NativeEvent event) {
+        ConnectionMoveStartEvent connectionEvent = new ConnectionMoveStartEvent(getPositionX(event), getPositionY(event), event);
+        callOnMoveStartHandlers(connectionEvent);
 
-	}
+    }
 
-	@Override
-	public void onTouchEnd(NativeEvent event) {
-		ConnectionMoveEndEvent connectionMoveEndEvent = new ConnectionMoveEndEvent(getPositionX(event), getPositionY(event), event);
-		callOnMoveEndHandlers(connectionMoveEndEvent);
-	}
+    @Override
+    public void onTouchEnd(NativeEvent event) {
+        ConnectionMoveEndEvent connectionMoveEndEvent = new ConnectionMoveEndEvent(getPositionX(event), getPositionY(event), event);
+        callOnMoveEndHandlers(connectionMoveEndEvent);
+    }
 
-	@Override
-	public void onTouchCancel(NativeEvent event) {
-		callOnMoveCancelHandlers();
-	}
+    @Override
+    public void onTouchCancel(NativeEvent event) {
+        callOnMoveCancelHandlers();
+    }
 
-	@Override
-	protected FlowPanel getView() {
-		return view;
-	}
+    @Override
+    protected FlowPanel getView() {
+        return view;
+    }
 
-	@Override
-	public Widget asWidget() {
-		initTouchRecognition();
-		return this;
-	}
+    @Override
+    public Widget asWidget() {
+        initTouchRecognition();
+        return this;
+    }
 }

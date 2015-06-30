@@ -4,6 +4,6 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public interface StateChangedModuleInteractionListener {
 
-	public void onStateChanged(boolean userInteract, IUniqueModule sender);
+    public void onStateChanged(boolean userInteract, IUniqueModule sender);
 
 }

@@ -10,57 +10,57 @@ import eu.ydp.empiria.player.client.module.external.interaction.structure.Extern
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModule
-		extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean>
-		implements ExternalFolderNameProvider {
+        extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean>
+        implements ExternalFolderNameProvider {
 
-	private final ExternalInteractionModulePresenter presenter;
-	private final ExternalInteractionResponseModel externalInteractionResponseModel;
-	private final ExternalInteractionModuleStructure externalInteractionModuleStructure;
-	private final ExternalPaths externalPaths;
+    private final ExternalInteractionModulePresenter presenter;
+    private final ExternalInteractionResponseModel externalInteractionResponseModel;
+    private final ExternalInteractionModuleStructure externalInteractionModuleStructure;
+    private final ExternalPaths externalPaths;
 
-	@Inject
-	public ExternalInteractionModule(ExternalInteractionModulePresenter presenter, @ModuleScoped ExternalInteractionResponseModel model,
-			@ModuleScoped ExternalInteractionModuleStructure structure,
-			@ModuleScoped ExternalPaths externalPaths) {
-		this.presenter = presenter;
-		this.externalInteractionResponseModel = model;
-		this.externalInteractionModuleStructure = structure;
-		this.externalPaths = externalPaths;
-	}
+    @Inject
+    public ExternalInteractionModule(ExternalInteractionModulePresenter presenter, @ModuleScoped ExternalInteractionResponseModel model,
+                                     @ModuleScoped ExternalInteractionModuleStructure structure,
+                                     @ModuleScoped ExternalPaths externalPaths) {
+        this.presenter = presenter;
+        this.externalInteractionResponseModel = model;
+        this.externalInteractionModuleStructure = structure;
+        this.externalPaths = externalPaths;
+    }
 
-	@Override
-	protected ExternalInteractionModulePresenter getPresenter() {
-		return presenter;
-	}
+    @Override
+    protected ExternalInteractionModulePresenter getPresenter() {
+        return presenter;
+    }
 
-	@Override
-	protected void initalizeModule() {
-		externalInteractionResponseModel.setResponseModelChange(this);
-		externalPaths.setExternalFolderNameProvider(this);
-	}
+    @Override
+    protected void initalizeModule() {
+        externalInteractionResponseModel.setResponseModelChange(this);
+        externalPaths.setExternalFolderNameProvider(this);
+    }
 
-	@Override
-	protected ExternalInteractionResponseModel getResponseModel() {
-		return externalInteractionResponseModel;
-	}
+    @Override
+    protected ExternalInteractionResponseModel getResponseModel() {
+        return externalInteractionResponseModel;
+    }
 
-	@Override
-	protected ExternalInteractionModuleStructure getStructure() {
-		return externalInteractionModuleStructure;
-	}
+    @Override
+    protected ExternalInteractionModuleStructure getStructure() {
+        return externalInteractionModuleStructure;
+    }
 
-	@Override
-	public JSONArray getState() {
-		return presenter.getState();
-	}
+    @Override
+    public JSONArray getState() {
+        return presenter.getState();
+    }
 
-	@Override
-	public void setState(JSONArray stateAndStructure) {
-		presenter.setState(stateAndStructure);
-	}
+    @Override
+    public void setState(JSONArray stateAndStructure) {
+        presenter.setState(stateAndStructure);
+    }
 
-	@Override
-	public String getExternalFolderName() {
-		return externalInteractionModuleStructure.getBean().getSrc();
-	}
+    @Override
+    public String getExternalFolderName() {
+        return externalInteractionModuleStructure.getBean().getSrc();
+    }
 }

@@ -17,33 +17,33 @@ import java.util.Set;
 @RunWith(AllTests.class)
 public class SpockTestSuite {
 
-	private final static Predicate<String> onlyClassEndsWithTest = new Predicate<String>() {
-		@Override
-		public boolean apply(final String name) {
-			return name.endsWith("Test.class");
-		}
-	};
+    private final static Predicate<String> onlyClassEndsWithTest = new Predicate<String>() {
+        @Override
+        public boolean apply(final String name) {
+            return name.endsWith("Test.class");
+        }
+    };
 
-	public static TestSuite suite() {
-		MockitoConfiguration.setenableClassCache(false);
-		TestSuite spockSuite = new TestSuite();
+    public static TestSuite suite() {
+        MockitoConfiguration.setenableClassCache(false);
+        TestSuite spockSuite = new TestSuite();
 
-		Iterable<Class<? extends Specification>> filteredClasses = getTestClasses();
-		for (Class<? extends Specification> clazz : filteredClasses) {
-			JUnit4TestAdapter adapter = new JUnit4TestAdapter(clazz);
-			spockSuite.addTest(adapter);
-		}
-		return spockSuite;
-	}
+        Iterable<Class<? extends Specification>> filteredClasses = getTestClasses();
+        for (Class<? extends Specification> clazz : filteredClasses) {
+            JUnit4TestAdapter adapter = new JUnit4TestAdapter(clazz);
+            spockSuite.addTest(adapter);
+        }
+        return spockSuite;
+    }
 
-	private static Set<Class<? extends Specification>> getTestClasses() {
-		Reflections reflections = createSpockTestReflections();
-		return reflections.getSubTypesOf(Specification.class);
-	}
+    private static Set<Class<? extends Specification>> getTestClasses() {
+        Reflections reflections = createSpockTestReflections();
+        return reflections.getSubTypesOf(Specification.class);
+    }
 
-	private static Reflections createSpockTestReflections() {
-		ConfigurationBuilder inputFilterByName = new ConfigurationBuilder().filterInputsBy(new FilterBuilder().add(onlyClassEndsWithTest));
-		inputFilterByName.setUrls(ClasspathHelper.forPackage("eu.ydp.empiria"));
-		return inputFilterByName.build();
-	}
+    private static Reflections createSpockTestReflections() {
+        ConfigurationBuilder inputFilterByName = new ConfigurationBuilder().filterInputsBy(new FilterBuilder().add(onlyClassEndsWithTest));
+        inputFilterByName.setUrls(ClasspathHelper.forPackage("eu.ydp.empiria"));
+        return inputFilterByName.build();
+    }
 }

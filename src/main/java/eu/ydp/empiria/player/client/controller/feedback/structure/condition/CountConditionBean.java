@@ -9,29 +9,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "countCondition")
 public class CountConditionBean extends FeedbackConditionBase implements FeedbackCondition {
 
-	@XmlAttribute(name = "count")
-	private Integer count;
+    @XmlAttribute(name = "count")
+    private Integer count;
 
-	@XmlAttribute(name = "operator")
-	private String operator;
+    @XmlAttribute(name = "operator")
+    private String operator;
 
-	public Integer getCount() {
-		return count;
-	}
+    public Integer getCount() {
+        return count;
+    }
 
-	public void setCount(Integer count) {
-		this.count = count;
-	}
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
-	public String getOperator() {
-		return operator;
-	}
+    public String getOperator() {
+        return operator;
+    }
 
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
-	public FeedbackCondition getCondition() {
-		return getAllConditions().get(0);
-	}
+    public FeedbackCondition getCondition() {
+        return getAllConditions().get(0);
+    }
 }

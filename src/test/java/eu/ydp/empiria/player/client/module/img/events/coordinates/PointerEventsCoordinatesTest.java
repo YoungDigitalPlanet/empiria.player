@@ -1,8 +1,9 @@
 package eu.ydp.empiria.player.client.module.img.events.coordinates;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
+import com.google.gwt.event.shared.EventHandler;
+import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerEvent;
+import eu.ydp.empiria.player.client.util.position.Point;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,176 +11,173 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.event.shared.EventHandler;
-
-import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
-import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerEvent;
-import eu.ydp.empiria.player.client.util.position.Point;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PointerEventsCoordinatesTest {
 
-	@InjectMocks
-	private PointerEventsCoordinates testObj;
-	@Mock
-	private PointerEvent<? extends EventHandler> pointerEvent;
+    @InjectMocks
+    private PointerEventsCoordinates testObj;
+    @Mock
+    private PointerEvent<? extends EventHandler> pointerEvent;
 
-	private final int id = 1;
+    private final int id = 1;
 
-	@Before
-	public void setup() {
-		when(pointerEvent.getPointerId()).thenReturn(id);
-	}
+    @Before
+    public void setup() {
+        when(pointerEvent.getPointerId()).thenReturn(id);
+    }
 
-	@Test
-	public void shouldAddEvent_ifIsNotFirstTouch() {
-		// given
-		int x = 1;
-		int y = 1;
-		when(pointerEvent.getClientX()).thenReturn(x);
-		when(pointerEvent.getClientY()).thenReturn(y);
+    @Test
+    public void shouldAddEvent_ifIsNotFirstTouch() {
+        // given
+        int x = 1;
+        int y = 1;
+        when(pointerEvent.getClientX()).thenReturn(x);
+        when(pointerEvent.getClientY()).thenReturn(y);
 
-		Point assumedPoint = new Point(x, y);
+        Point assumedPoint = new Point(x, y);
 
-		// when
-		testObj.addEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
 
-		// then
-		assertEquals(assumedPoint, testObj.getPoint(0));
-	}
+        // then
+        assertEquals(assumedPoint, testObj.getPoint(0));
+    }
 
-	@Test
-	public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent() {
-		// given
-		int x = 1;
-		int y = 1;
-		when(pointerEvent.getClientX()).thenReturn(x);
-		when(pointerEvent.getClientY()).thenReturn(y);
-		testObj.addEvent(pointerEvent);
+    @Test
+    public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent() {
+        // given
+        int x = 1;
+        int y = 1;
+        when(pointerEvent.getClientX()).thenReturn(x);
+        when(pointerEvent.getClientY()).thenReturn(y);
+        testObj.addEvent(pointerEvent);
 
-		Point assumedPoint = new Point(x, y);
+        Point assumedPoint = new Point(x, y);
 
-		// when
-		testObj.addEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
 
-		// then
-		assertEquals(assumedPoint, testObj.getPoint(0));
-	}
+        // then
+        assertEquals(assumedPoint, testObj.getPoint(0));
+    }
 
-	@Test
-	public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent_ifIsPrimary() {
-		// given
-		int x = 1;
-		int y = 1;
-		when(pointerEvent.getClientX()).thenReturn(x);
-		when(pointerEvent.getClientY()).thenReturn(y);
-		when(pointerEvent.isPrimary()).thenReturn(true);
-		testObj.addEvent(pointerEvent);
+    @Test
+    public void shouldAddEvent_ifIsNotFirstTouchAnd_ifAlreadyContainsEvent_ifIsPrimary() {
+        // given
+        int x = 1;
+        int y = 1;
+        when(pointerEvent.getClientX()).thenReturn(x);
+        when(pointerEvent.getClientY()).thenReturn(y);
+        when(pointerEvent.isPrimary()).thenReturn(true);
+        testObj.addEvent(pointerEvent);
 
-		Point assumedPoint = new Point(x, y);
+        Point assumedPoint = new Point(x, y);
 
-		// when
-		testObj.addEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
 
-		// then
-		assertEquals(assumedPoint, testObj.getPoint(0));
-	}
+        // then
+        assertEquals(assumedPoint, testObj.getPoint(0));
+    }
 
-	@Test
-	public void shouldAddEvent_ifIsFirstTouch() {
-		// given
-		int x = 1;
-		int y = 1;
-		when(pointerEvent.getClientX()).thenReturn(x);
-		when(pointerEvent.getClientY()).thenReturn(y);
-		when(pointerEvent.isPrimary()).thenReturn(true);
+    @Test
+    public void shouldAddEvent_ifIsFirstTouch() {
+        // given
+        int x = 1;
+        int y = 1;
+        when(pointerEvent.getClientX()).thenReturn(x);
+        when(pointerEvent.getClientY()).thenReturn(y);
+        when(pointerEvent.isPrimary()).thenReturn(true);
 
-		Point assumedPoint = new Point(x, y);
+        Point assumedPoint = new Point(x, y);
 
-		// when
-		testObj.addEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
 
-		// then
-		assertEquals(assumedPoint, testObj.getPoint(0));
-	}
+        // then
+        assertEquals(assumedPoint, testObj.getPoint(0));
+    }
 
-	@Test
-	public void shouldReturnLength() {
-		// given
+    @Test
+    public void shouldReturnLength() {
+        // given
 
-		// when
-		testObj.addEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
 
-		// then
-		assertEquals(1, testObj.getLength());
-	}
+        // then
+        assertEquals(1, testObj.getLength());
+    }
 
-	@Test
-	public void shouldRemoveEvent() {
-		// given
+    @Test
+    public void shouldRemoveEvent() {
+        // given
 
-		// when
-		testObj.addEvent(pointerEvent);
-		testObj.removeEvent(pointerEvent);
+        // when
+        testObj.addEvent(pointerEvent);
+        testObj.removeEvent(pointerEvent);
 
-		// then
-		assertEquals(0, testObj.getLength());
-	}
+        // then
+        assertEquals(0, testObj.getLength());
+    }
 
-	@Test
-	public void shouldReturnTouchOnImageEvent() {
-		// given
+    @Test
+    public void shouldReturnTouchOnImageEvent() {
+        // given
 
-		// when
-		TouchOnImageEvent result = testObj.getTouchOnImageEvent();
+        // when
+        TouchOnImageEvent result = testObj.getTouchOnImageEvent();
 
-		// then
-		assertNotNull(result);
-	}
+        // then
+        assertNotNull(result);
+    }
 
-	@Test
-	public void shouldContainsOneEvent() {
-		// given
-		testObj.addEvent(pointerEvent);
+    @Test
+    public void shouldContainsOneEvent() {
+        // given
+        testObj.addEvent(pointerEvent);
 
-		// when
-		boolean result = testObj.isOnePointer();
+        // when
+        boolean result = testObj.isOnePointer();
 
-		// then
-		assertTrue(result);
-	}
+        // then
+        assertTrue(result);
+    }
 
-	@Test
-	public void shouldNotContainsOneEvent() {
-		// given
+    @Test
+    public void shouldNotContainsOneEvent() {
+        // given
 
-		// when
-		boolean result = testObj.isOnePointer();
+        // when
+        boolean result = testObj.isOnePointer();
 
-		// then
-		assertFalse(result);
-	}
+        // then
+        assertFalse(result);
+    }
 
-	@Test
-	public void shouldBeEmpty() {
-		// given
+    @Test
+    public void shouldBeEmpty() {
+        // given
 
-		// when
-		boolean result = testObj.isEmpty();
+        // when
+        boolean result = testObj.isEmpty();
 
-		// then
-		assertTrue(result);
-	}
+        // then
+        assertTrue(result);
+    }
 
-	@Test
-	public void shouldNotBeEmpty() {
-		// given
-		testObj.addEvent(pointerEvent);
+    @Test
+    public void shouldNotBeEmpty() {
+        // given
+        testObj.addEvent(pointerEvent);
 
-		// when
-		boolean result = testObj.isEmpty();
+        // when
+        boolean result = testObj.isEmpty();
 
-		// then
-		assertFalse(result);
-	}
+        // then
+        assertFalse(result);
+    }
 }

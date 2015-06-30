@@ -16,14 +16,14 @@ import eu.ydp.empiria.player.client.module.external.presentation.view.ExternalPr
 
 public class ExternalGinModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(new TypeLiteral<ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi>>() {
-		}).to(ExternalInteractionViewImpl.class);
-		bind(new TypeLiteral<ExternalView<ExternalApi, ExternalEmpiriaApi>>() {
-		}).to(ExternalPresentationViewImpl.class);
+    @Override
+    protected void configure() {
+        bind(new TypeLiteral<ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi>>() {
+        }).to(ExternalInteractionViewImpl.class);
+        bind(new TypeLiteral<ExternalView<ExternalApi, ExternalEmpiriaApi>>() {
+        }).to(ExternalPresentationViewImpl.class);
 
-		bind(ExternalStateEncoder.class).in(Singleton.class);
-		install(new GinFactoryModuleBuilder().build(ExternalInteractionModuleFactory.class));
-	}
+        bind(ExternalStateEncoder.class).in(Singleton.class);
+        install(new GinFactoryModuleBuilder().build(ExternalInteractionModuleFactory.class));
+    }
 }

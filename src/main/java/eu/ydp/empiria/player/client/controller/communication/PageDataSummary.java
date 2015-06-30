@@ -4,15 +4,15 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSo
 
 public class PageDataSummary extends PageData {
 
-	public PageDataSummary(String[] ts) {
-		super(PageType.SUMMARY);
-		titles = ts;
-	}
+    public PageDataSummary(String[] ts) {
+        super(PageType.SUMMARY);
+        titles = ts;
+    }
 
-	public String[] titles;
-	public SessionDataSocket sessionData;
+    public String[] titles;
+    public SessionDataSocket sessionData;
 
-	public void setAssessmentSessionData(SessionDataSocket sdc) {
-		sessionData = sdc;
-	}
+    public void setAssessmentSessionData(SessionDataSocket sdc) {
+        sessionData = sdc;
+    }
 }

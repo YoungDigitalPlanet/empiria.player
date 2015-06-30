@@ -8,17 +8,17 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class WorkModeParserForAssessment {
 
-	public Optional<PlayerWorkMode> parse(XmlData data) {
-		Node node = data.getDocument()
-		                .getFirstChild()
-		                .getAttributes()
-		                .getNamedItem("mode");
+    public Optional<PlayerWorkMode> parse(XmlData data) {
+        Node node = data.getDocument()
+                .getFirstChild()
+                .getAttributes()
+                .getNamedItem("mode");
 
-		if (node == null) {
-			return Optional.absent();
-		} else {
-			return Enums.getIfPresent(PlayerWorkMode.class, node.getNodeValue()
-			                                                    .toUpperCase());
-		}
-	}
+        if (node == null) {
+            return Optional.absent();
+        } else {
+            return Enums.getIfPresent(PlayerWorkMode.class, node.getNodeValue()
+                    .toUpperCase());
+        }
+    }
 }

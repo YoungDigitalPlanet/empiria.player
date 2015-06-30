@@ -13,31 +13,31 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SpeechScoreLinkViewImpl extends Composite implements SpeechScoreLinkView {
 
-	@UiTemplate("SpeechScoreLinkView.ui.xml")
-	interface SpeechScoreViewUiBinder extends UiBinder<FlowPanel, SpeechScoreLinkViewImpl> {
-	}
+    @UiTemplate("SpeechScoreLinkView.ui.xml")
+    interface SpeechScoreViewUiBinder extends UiBinder<FlowPanel, SpeechScoreLinkViewImpl> {
+    }
 
-	private static SpeechScoreViewUiBinder uiBinder = GWT.create(SpeechScoreViewUiBinder.class);
+    private static SpeechScoreViewUiBinder uiBinder = GWT.create(SpeechScoreViewUiBinder.class);
 
-	public SpeechScoreLinkViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public SpeechScoreLinkViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@UiField
-	Anchor link;
+    @UiField
+    Anchor link;
 
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
+    @Inject
+    private UserInteractionHandlerFactory userInteractionHandlerFactory;
 
-	@Override
-	public void addHandler(Command command) {
-		userInteractionHandlerFactory.createUserClickHandler(command)
-		                             .apply(link);
-	}
+    @Override
+    public void addHandler(Command command) {
+        userInteractionHandlerFactory.createUserClickHandler(command)
+                .apply(link);
+    }
 
-	@Override
-	public void buildLink(String linkText, String href) {
-		link.setText(linkText);
-		link.setHref(href);
-	}
+    @Override
+    public void buildLink(String linkText, String href) {
+        link.setText(linkText);
+        link.setHref(href);
+    }
 }

@@ -4,11 +4,11 @@ import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowPlayerBe
 
 public class SlideshowTemplateInterpreter {
 
-	public boolean isPagerTemplateActivate(SlideshowPlayerBean slideshowPlayer) {
-		if (slideshowPlayer.hasTemplate()) {
-			return slideshowPlayer.getTemplate().hasSlideshowPager();
-		}
+    public boolean isPagerTemplateActivate(SlideshowPlayerBean slideshowPlayer) {
+        if (slideshowPlayer.hasTemplate()) {
+            return slideshowPlayer.getTemplate().hasSlideshowPager();
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

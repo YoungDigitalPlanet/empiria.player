@@ -19,63 +19,63 @@ import javax.annotation.PostConstruct;
 
 public class TextEntryMathGapModulePresenter extends TextEntryGapModulePresenterBase implements BlurHandler {
 
-	@UiTemplate("TextEntryMathGap.ui.xml")
-	interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryMathGapModulePresenter> {
-	}
+    @UiTemplate("TextEntryMathGap.ui.xml")
+    interface TextEntryGapModuleUiBinder extends UiBinder<Widget, TextEntryMathGapModulePresenter> {
+    }
 
-	private final TextEntryGapModuleUiBinder uiBinder = GWT.create(TextEntryGapModuleUiBinder.class);
+    private final TextEntryGapModuleUiBinder uiBinder = GWT.create(TextEntryGapModuleUiBinder.class);
 
-	@UiField
-	protected FlowPanel mainPanel;
-	@UiField
-	protected FlowPanel markPanel;
-	@UiField(provided = true)
-	protected Widget textBoxWidget;
-	private BlurHandler changeHandler;
+    @UiField
+    protected FlowPanel mainPanel;
+    @UiField
+    protected FlowPanel markPanel;
+    @UiField(provided = true)
+    protected Widget textBoxWidget;
+    private BlurHandler changeHandler;
 
-	@PostConstruct
-	public void postConstruct() {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox());
-		textBoxWidget = droppable.getDroppableWidget();
-		textBox = droppable.getOriginalWidget();
-		uiBinder.createAndBindUi(this);
+    @PostConstruct
+    public void postConstruct() {
+        droppable = dragDropHelper.enableDropForWidget(new TextBox());
+        textBoxWidget = droppable.getDroppableWidget();
+        textBox = droppable.getOriginalWidget();
+        uiBinder.createAndBindUi(this);
 
-		dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
+        dropZoneGuardian = new DropZoneGuardian(droppable, mainPanel, styleNames);
 
-		textBox.addBlurHandler(this);
-	}
+        textBox.addBlurHandler(this);
+    }
 
-	@Override
-	public void installViewInContainer(HasWidgets container) {
-		container.add(mainPanel);
-	}
+    @Override
+    public void installViewInContainer(HasWidgets container) {
+        container.add(mainPanel);
+    }
 
-	@Override
-	public HasWidgets getContainer() {
-		return mainPanel;
-	}
+    @Override
+    public HasWidgets getContainer() {
+        return mainPanel;
+    }
 
-	@Override
-	public void setMarkMode(String mode) {
-		markPanel.addStyleDependentName(mode);
-	}
+    @Override
+    public void setMarkMode(String mode) {
+        markPanel.addStyleDependentName(mode);
+    }
 
-	@Override
-	public void removeMarking() {
-		markPanel.removeStyleDependentName(GapModulePresenter.NONE);
-		markPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
-		markPanel.removeStyleDependentName(GapModulePresenter.WRONG);
-	}
+    @Override
+    public void removeMarking() {
+        markPanel.removeStyleDependentName(GapModulePresenter.NONE);
+        markPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
+        markPanel.removeStyleDependentName(GapModulePresenter.WRONG);
+    }
 
-	@Override
-	public void addPresenterHandler(PresenterHandler handler) {
-		changeHandler = handler;
-	}
+    @Override
+    public void addPresenterHandler(PresenterHandler handler) {
+        changeHandler = handler;
+    }
 
-	@Override
-	public void onBlur(BlurEvent event) {
-		if (changeHandler != null) {
-			changeHandler.onBlur(event);
-		}
-	}
+    @Override
+    public void onBlur(BlurEvent event) {
+        if (changeHandler != null) {
+            changeHandler.onBlur(event);
+        }
+    }
 }

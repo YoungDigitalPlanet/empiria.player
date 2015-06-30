@@ -1,10 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<g:FlowPanel ui:field="containerPanel" styleName="qp-object-container">
-		<g:FlowPanel ui:field="contentPanel" styleName="qp-object-content"/>
-		<g:FlowPanel ui:field="titlePanel" styleName="qp-object-title"/>
-		<g:FlowPanel ui:field="descriptionPanel" styleName="qp-object-description"/>
-	</g:FlowPanel>
+    <g:FlowPanel ui:field="containerPanel" styleName="qp-object-container">
+        <g:FlowPanel ui:field="contentPanel" styleName="qp-object-content"/>
+        <g:FlowPanel ui:field="titlePanel" styleName="qp-object-title"/>
+        <g:FlowPanel ui:field="descriptionPanel" styleName="qp-object-description"/>
+    </g:FlowPanel>
 </ui:UiBinder>

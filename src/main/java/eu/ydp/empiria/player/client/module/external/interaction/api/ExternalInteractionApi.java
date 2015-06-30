@@ -6,15 +6,15 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalApi;
 @JsType
 public interface ExternalInteractionApi extends ExternalApi {
 
-	void showCorrectAnswers();
+    void showCorrectAnswers();
 
-	void hideCorrectAnswers();
+    void hideCorrectAnswers();
 
-	void markCorrectAnswers();
+    void markCorrectAnswers();
 
-	void unmarkCorrectAnswers();
+    void unmarkCorrectAnswers();
 
-	void markWrongAnswers();
+    void markWrongAnswers();
 
-	void unmarkWrongAnswers();
+    void unmarkWrongAnswers();
 }

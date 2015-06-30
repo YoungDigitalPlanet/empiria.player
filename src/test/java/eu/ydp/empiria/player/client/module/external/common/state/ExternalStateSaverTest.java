@@ -9,29 +9,29 @@ import static org.mockito.Mockito.mock;
 
 public class ExternalStateSaverTest {
 
-	private ExternalStateSaver testObj = new ExternalStateSaver();
+    private ExternalStateSaver testObj = new ExternalStateSaver();
 
-	@Test
-	public void shouldReturnEmptyObject_whenStateIsNotSet() {
-		// when
-		Optional<JavaScriptObject> state = testObj.getExternalState();
-		boolean isPresent = state.isPresent();
+    @Test
+    public void shouldReturnEmptyObject_whenStateIsNotSet() {
+        // when
+        Optional<JavaScriptObject> state = testObj.getExternalState();
+        boolean isPresent = state.isPresent();
 
-		// then
-		assertThat(isPresent).isFalse();
-	}
+        // then
+        assertThat(isPresent).isFalse();
+    }
 
-	@Test
-	public void shouldReturnState() {
-		// given
-		JavaScriptObject expectedState = mock(JavaScriptObject.class);
-		testObj.setExternalState(expectedState);
+    @Test
+    public void shouldReturnState() {
+        // given
+        JavaScriptObject expectedState = mock(JavaScriptObject.class);
+        testObj.setExternalState(expectedState);
 
-		// when
-		Optional<JavaScriptObject> resultState = testObj.getExternalState();
+        // when
+        Optional<JavaScriptObject> resultState = testObj.getExternalState();
 
-		// then
-		assertThat(resultState.isPresent()).isTrue();
-		assertThat(resultState.get()).isEqualTo(expectedState);
-	}
+        // then
+        assertThat(resultState.isPresent()).isTrue();
+        assertThat(resultState.get()).isEqualTo(expectedState);
+    }
 }

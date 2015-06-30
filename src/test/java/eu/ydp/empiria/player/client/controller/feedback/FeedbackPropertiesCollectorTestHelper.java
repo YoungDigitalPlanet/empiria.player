@@ -5,7 +5,10 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 import java.util.List;
 import java.util.Map;
@@ -15,123 +18,123 @@ import static org.mockito.Mockito.when;
 
 class FeedbackPropertiesCollectorTestHelper {
 
-	private IModule sender;
+    private IModule sender;
 
-	private ISingleViewWithBodyModule container;
+    private ISingleViewWithBodyModule container;
 
-	private Map<String, Variable> variables;
+    private Map<String, Variable> variables;
 
-	public FeedbackPropertiesCollectorTestHelper() {
-		variables = Maps.newHashMap();
-	}
+    public FeedbackPropertiesCollectorTestHelper() {
+        variables = Maps.newHashMap();
+    }
 
-	public void createHierarchy(ModuleInfo[] infos) {
-		createHierarchy(infos, ISingleViewWithBodyModule.class);
-	}
+    public void createHierarchy(ModuleInfo[] infos) {
+        createHierarchy(infos, ISingleViewWithBodyModule.class);
+    }
 
-	public void createHierarchy(ModuleInfo[] infos, Class<? extends ISingleViewWithBodyModule> ModuleClass) {
-		container = mock(ModuleClass);
+    public void createHierarchy(ModuleInfo[] infos, Class<? extends ISingleViewWithBodyModule> ModuleClass) {
+        container = mock(ModuleClass);
 
-		variables = Maps.newHashMap();
-		List<IModule> children = Lists.newArrayList();
+        variables = Maps.newHashMap();
+        List<IModule> children = Lists.newArrayList();
 
-		for (ModuleInfo info : infos) {
-			children.add(createUniqueModuleMock(container, info.getId(), createOutcomeVariables(info)));
-		}
+        for (ModuleInfo info : infos) {
+            children.add(createUniqueModuleMock(container, info.getId(), createOutcomeVariables(info)));
+        }
 
-		sender = children.get(0);
-		when(container.getChildren()).thenReturn(children);
-	}
+        sender = children.get(0);
+        when(container.getChildren()).thenReturn(children);
+    }
 
-	public Map<String, Outcome> createOutcomeVariables(ModuleInfo info) {
-		OutcomeCreator creator = new OutcomeCreator(info.getId());
+    public Map<String, Outcome> createOutcomeVariables(ModuleInfo info) {
+        OutcomeCreator creator = new OutcomeCreator(info.getId());
 
-		return OutcomeListBuilder.init().put(creator.createDoneOutcome(info.getDone())).put(creator.createTodoOutcome(info.getTodo()))
-				.put(creator.createErrorsOutcome(info.getErrors())).put(creator.createLastChangeOutcome(info.getId()))
-				.put(creator.createLastMistakenOutcome(info.getLastMistaken())).getMap();
-	}
+        return OutcomeListBuilder.init().put(creator.createDoneOutcome(info.getDone())).put(creator.createTodoOutcome(info.getTodo()))
+                .put(creator.createErrorsOutcome(info.getErrors())).put(creator.createLastChangeOutcome(info.getId()))
+                .put(creator.createLastMistakenOutcome(info.getLastMistaken())).getMap();
+    }
 
-	public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables) {
-		IUniqueModule module = mock(IUniqueModule.class);
-		when(module.getIdentifier()).thenReturn(id);
-		when(module.getParentModule()).thenReturn(parent);
+    public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables) {
+        IUniqueModule module = mock(IUniqueModule.class);
+        when(module.getIdentifier()).thenReturn(id);
+        when(module.getParentModule()).thenReturn(parent);
 
-		this.variables.putAll(variables);
+        this.variables.putAll(variables);
 
-		return module;
-	}
+        return module;
+    }
 
-	public Map<String, Variable> getVariables() {
-		return variables;
-	}
+    public Map<String, Variable> getVariables() {
+        return variables;
+    }
 
-	public IModule getSender() {
-		return sender;
-	}
+    public IModule getSender() {
+        return sender;
+    }
 
-	public IModule getContainer() {
-		return container;
-	}
+    public IModule getContainer() {
+        return container;
+    }
 
-	protected static class ModuleInfo {
+    protected static class ModuleInfo {
 
-		private final String id;
+        private final String id;
 
-		private LastMistaken lastMistaken;
+        private LastMistaken lastMistaken;
 
-		private int todo;
+        private int todo;
 
-		private int done;
+        private int done;
 
-		private int errors;
+        private int errors;
 
-		public ModuleInfo(String id) {
-			this.id = id;
-		}
+        public ModuleInfo(String id) {
+            this.id = id;
+        }
 
-		public static ModuleInfo create(String id) {
-			return new ModuleInfo(id);
-		}
+        public static ModuleInfo create(String id) {
+            return new ModuleInfo(id);
+        }
 
-		public String getId() {
-			return id;
-		}
+        public String getId() {
+            return id;
+        }
 
-		public ModuleInfo setLastOk(LastMistaken isLastOk) {
-			this.lastMistaken = isLastOk;
-			return this;
-		}
+        public ModuleInfo setLastOk(LastMistaken isLastOk) {
+            this.lastMistaken = isLastOk;
+            return this;
+        }
 
-		public LastMistaken getLastMistaken() {
-			return lastMistaken;
-		}
+        public LastMistaken getLastMistaken() {
+            return lastMistaken;
+        }
 
-		public ModuleInfo setTodo(int todo) {
-			this.todo = todo;
-			return this;
-		}
+        public ModuleInfo setTodo(int todo) {
+            this.todo = todo;
+            return this;
+        }
 
-		public int getTodo() {
-			return todo;
-		}
+        public int getTodo() {
+            return todo;
+        }
 
-		public ModuleInfo setDone(int done) {
-			this.done = done;
-			return this;
-		}
+        public ModuleInfo setDone(int done) {
+            this.done = done;
+            return this;
+        }
 
-		public int getDone() {
-			return done;
-		}
+        public int getDone() {
+            return done;
+        }
 
-		public ModuleInfo setErrors(int errors) {
-			this.errors = errors;
-			return this;
-		}
+        public ModuleInfo setErrors(int errors) {
+            this.errors = errors;
+            return this;
+        }
 
-		public int getErrors() {
-			return errors;
-		}
+        public int getErrors() {
+            return errors;
+        }
 
-	}
+    }
 }

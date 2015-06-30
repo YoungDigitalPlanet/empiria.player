@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 public interface TutorCommand {
 
-	void execute();
+    void execute();
 
-	void terminate();
+    void terminate();
 
-	boolean isFinished();
+    boolean isFinished();
 }

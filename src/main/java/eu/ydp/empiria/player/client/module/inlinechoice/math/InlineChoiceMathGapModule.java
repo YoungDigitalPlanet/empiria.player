@@ -36,234 +36,234 @@ import java.util.Map;
 
 public class InlineChoiceMathGapModule extends GapBase implements MathGap, PlayerEventHandler {
 
-	protected List<String> options;
+    protected List<String> options;
 
-	protected boolean hasEmptyOption = false;
+    protected boolean hasEmptyOption = false;
 
-	@Inject
-	protected StyleNameConstants styleNames;
+    @Inject
+    protected StyleNameConstants styleNames;
 
-	@Inject
-	protected EventsBus eventsBus;
+    @Inject
+    protected EventsBus eventsBus;
 
-	@Inject
-	protected PageScopeFactory pageScopeFactory;
-	@Inject
-	private StyleSocket styleSocket;
-	@Inject
-	private MathJaxGapContainer gapContainer;
+    @Inject
+    protected PageScopeFactory pageScopeFactory;
+    @Inject
+    private StyleSocket styleSocket;
+    @Inject
+    private MathJaxGapContainer gapContainer;
 
-	@Inject
-	@PageScoped
-	private ResponseSocket responseSocket;
+    @Inject
+    @PageScoped
+    private ResponseSocket responseSocket;
 
-	@Inject
-	@ModuleScoped
-	MathGapModel mathGapModel;
+    @Inject
+    @ModuleScoped
+    MathGapModel mathGapModel;
 
-	@Inject
-	private InlineChoiceMathGapModulePresenter inlineChoicePresenter;
+    @Inject
+    private InlineChoiceMathGapModulePresenter inlineChoicePresenter;
 
-	@PostConstruct
-	public void postConstruct() {
-		this.presenter = inlineChoicePresenter;
+    @PostConstruct
+    public void postConstruct() {
+        this.presenter = inlineChoicePresenter;
 
-		getListBox().setChangeListener(new ExListBoxChangeListener() {
-			@Override
-			public void onChange() {
-				updateResponse(true);
-			}
-		});
-		eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, pageScopeFactory.getCurrentPageScope());
-	}
+        getListBox().setChangeListener(new ExListBoxChangeListener() {
+            @Override
+            public void onChange() {
+                updateResponse(true);
+            }
+        });
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_SWIPE_STARTED), this, pageScopeFactory.getCurrentPageScope());
+    }
 
-	@Override
-	protected ResponseSocket getResponseSocket() {
-		return responseSocket;
-	}
+    @Override
+    protected ResponseSocket getResponseSocket() {
+        return responseSocket;
+    }
 
-	protected IsExListBox getListBox() {
-		return inlineChoicePresenter.getListBox();
-	}
+    protected IsExListBox getListBox() {
+        return inlineChoicePresenter.getListBox();
+    }
 
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
-		HasWidgets placeholder = placeholders.get(0);
-		presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
+    @Override
+    public void installViews(List<HasWidgets> placeholders) {
+        HasWidgets placeholder = placeholders.get(0);
+        presenter.installViewInContainer(((HasWidgets) ((Widget) placeholder).getParent()));
 
-		String uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
-		mathGapModel.setUid(uid);
+        String uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
+        mathGapModel.setUid(uid);
 
-		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
-		mathGapModel.getMathStyles().putAll(styles);
-		initParametersBasedOnMathStyles();
+        Map<String, String> styles = styleSocket.getStyles(getModuleElement());
+        mathGapModel.getMathStyles().putAll(styles);
+        initParametersBasedOnMathStyles();
 
-		setListBoxEmptyOption();
-		options = createOptions(getModuleElement(), getModuleSocket());
-		gapContainer.addMathGap(this);
-	}
+        setListBoxEmptyOption();
+        options = createOptions(getModuleElement(), getModuleSocket());
+        gapContainer.addMathGap(this);
+    }
 
-	protected void setListBoxEmptyOption() {
-		if (hasEmptyOption) {
-			Widget emptyOptionInBody = new InlineHTML(GapBase.INLINE_HTML_NBSP);
-			emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-			Widget emptyOptionInPopup = new InlineHTML(GapBase.INLINE_HTML_NBSP);
-			emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
-			getListBox().addOption(emptyOptionInBody, emptyOptionInPopup);
-			getListBox().setSelectedIndex(0);
-		} else {
-			getListBox().setSelectedIndex(-1);
-		}
-	}
+    protected void setListBoxEmptyOption() {
+        if (hasEmptyOption) {
+            Widget emptyOptionInBody = new InlineHTML(GapBase.INLINE_HTML_NBSP);
+            emptyOptionInBody.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+            Widget emptyOptionInPopup = new InlineHTML(GapBase.INLINE_HTML_NBSP);
+            emptyOptionInPopup.setStyleName(styleNames.QP_MATH_CHOICE_POPUP_OPTION_EMPTY());
+            getListBox().addOption(emptyOptionInBody, emptyOptionInPopup);
+            getListBox().setSelectedIndex(0);
+        } else {
+            getListBox().setSelectedIndex(-1);
+        }
+    }
 
-	List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
-		NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
-		List<String> options = new ArrayList<String>();
+    List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
+        NodeList optionNodes = moduleElement.getElementsByTagName(EmpiriaTagConstants.NAME_INLINE_CHOICE);
+        List<String> options = new ArrayList<String>();
 
-		for (int o = 0; o < optionNodes.getLength(); o++) {
-			String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
-			options.add(currId);
-			Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-			Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
-			getListBox().addOption(baseBody, popupBody);
-		}
+        for (int o = 0; o < optionNodes.getLength(); o++) {
+            String currId = ((Element) optionNodes.item(o)).getAttribute(EmpiriaTagConstants.ATTR_IDENTIFIER);
+            options.add(currId);
+            Widget baseBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+            Widget popupBody = moduleSocket.getInlineBodyGeneratorSocket().generateInlineBody(optionNodes.item(o));
+            getListBox().addOption(baseBody, popupBody);
+        }
 
-		return options;
-	}
+        return options;
+    }
 
-	protected void initParametersBasedOnMathStyles() {
-		initDimensionBasedOnMathStyles();
-		checkHasEmptyOptionBasedOnMathStyles();
-	}
+    protected void initParametersBasedOnMathStyles() {
+        initDimensionBasedOnMathStyles();
+        checkHasEmptyOptionBasedOnMathStyles();
+    }
 
-	private void checkHasEmptyOptionBasedOnMathStyles() {
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
-			hasEmptyOption = mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
-					EmpiriaStyleNameConstants.VALUE_SHOW);
-		}
-	}
+    private void checkHasEmptyOptionBasedOnMathStyles() {
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION)) {
+            hasEmptyOption = mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_INLINECHOICE_EMPTY_OPTION).equalsIgnoreCase(
+                    EmpiriaStyleNameConstants.VALUE_SHOW);
+        }
+    }
 
-	private void initDimensionBasedOnMathStyles() {
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
-			presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
-		}
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
-			presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
-		}
-	}
+    private void initDimensionBasedOnMathStyles() {
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)) {
+            presenter.setWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_WIDTH)), Unit.PX);
+        }
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)) {
+            presenter.setHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_DROP_HEIGHT)), Unit.PX);
+        }
+    }
 
-	public void setValue(String valueIdentifier) {
-		getListBox().setSelectedIndex(indexInternalToView(valueIdentifier));
-	}
+    public void setValue(String valueIdentifier) {
+        getListBox().setSelectedIndex(indexInternalToView(valueIdentifier));
+    }
 
-	@Override
-	public void reset() {
-		getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
-		updateResponse(true);
-	}
+    @Override
+    public void reset() {
+        getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
+        updateResponse(true);
+    }
 
-	@Override
-	public void onPlayerEvent(PlayerEvent event) {
-		if (event.getType() == PlayerEventTypes.PAGE_SWIPE_STARTED) {
-			getListBox().hidePopup();
-		}
-	}
+    @Override
+    public void onPlayerEvent(PlayerEvent event) {
+        if (event.getType() == PlayerEventTypes.PAGE_SWIPE_STARTED) {
+            getListBox().hidePopup();
+        }
+    }
 
-	@Override
-	public Widget getContainer() {
-		return (Widget) presenter.getContainer();
-	}
+    @Override
+    public Widget getContainer() {
+        return (Widget) presenter.getContainer();
+    }
 
-	@Override
-	public void setGapHeight(int gapHeight) {
-		presenter.setHeight(gapHeight, Unit.PX);
-	}
+    @Override
+    public void setGapHeight(int gapHeight) {
+        presenter.setHeight(gapHeight, Unit.PX);
+    }
 
-	public int getGapHeight() {
-		return presenter.getOffsetHeight();
-	}
+    public int getGapHeight() {
+        return presenter.getOffsetHeight();
+    }
 
-	@Override
-	public void setGapWidth(int gapWidth) {
-		presenter.setWidth(gapWidth, Unit.PX);
-	}
+    @Override
+    public void setGapWidth(int gapWidth) {
+        presenter.setWidth(gapWidth, Unit.PX);
+    }
 
-	public int getGapWidth() {
-		return presenter.getOffsetWidth();
-	}
+    public int getGapWidth() {
+        return presenter.getOffsetWidth();
+    }
 
-	@Override
-	public void setGapFontSize(int gapFontSize) {
-		presenter.setFontSize(gapFontSize, Unit.PX);
-	}
+    @Override
+    public void setGapFontSize(int gapFontSize) {
+        presenter.setFontSize(gapFontSize, Unit.PX);
+    }
 
-	@Override
-	public void setMathStyles(Map<String, String> mathStyles) {
-		mathGapModel.setMathStyles(mathStyles);
-	}
+    @Override
+    public void setMathStyles(Map<String, String> mathStyles) {
+        mathGapModel.setMathStyles(mathStyles);
+    }
 
-	@Override
-	public String getUid() {
-		return mathGapModel.getUid();
-	}
+    @Override
+    public String getUid() {
+        return mathGapModel.getUid();
+    }
 
-	@Override
-	public void setState(JSONArray newState) {
-		super.setState(newState);
-	}
+    @Override
+    public void setState(JSONArray newState) {
+        super.setState(newState);
+    }
 
-	@Override
-	protected void setCorrectAnswer() {
-		setValue(getCorrectAnswer());
-	}
+    @Override
+    protected void setCorrectAnswer() {
+        setValue(getCorrectAnswer());
+    }
 
-	@Override
-	protected void setPreviousAnswer() {
-		setValue(getCurrentResponseValue());
-	}
+    @Override
+    protected void setPreviousAnswer() {
+        setValue(getCurrentResponseValue());
+    }
 
-	@Override
-	protected void updateResponse(boolean userInteract, boolean isReset) {
-		if (showingAnswer) {
-			return;
-		}
+    @Override
+    protected void updateResponse(boolean userInteract, boolean isReset) {
+        if (showingAnswer) {
+            return;
+        }
 
-		if (getResponse() != null) {
-			if (lastValue != null) {
-				getResponse().remove(lastValue);
-			}
+        if (getResponse() != null) {
+            if (lastValue != null) {
+                getResponse().remove(lastValue);
+            }
 
-			String currentValue = getSelectedOption();
-			getResponse().add(currentValue);
-			lastValue = currentValue;
+            String currentValue = getSelectedOption();
+            getResponse().add(currentValue);
+            lastValue = currentValue;
 
-			fireStateChanged(userInteract, isReset);
-		}
-	}
+            fireStateChanged(userInteract, isReset);
+        }
+    }
 
-	private String getSelectedOption() {
-		int selectedOption = getListBox().getSelectedIndex() - 1;
+    private String getSelectedOption() {
+        int selectedOption = getListBox().getSelectedIndex() - 1;
 
-		if (isNotEmptyOption(selectedOption)) {
-			return options.get(selectedOption);
-		} else {
-			return "";
-		}
-	}
+        if (isNotEmptyOption(selectedOption)) {
+            return options.get(selectedOption);
+        } else {
+            return "";
+        }
+    }
 
-	private boolean isNotEmptyOption(int selectedIndex) {
-		return selectedIndex > -1;
-	}
+    private boolean isNotEmptyOption(int selectedIndex) {
+        return selectedIndex > -1;
+    }
 
-	private void updateResponse(boolean userInteract) {
-		updateResponse(userInteract, false);
-	}
+    private void updateResponse(boolean userInteract) {
+        updateResponse(userInteract, false);
+    }
 
-	private int indexInternalToView(String valueIdentifier) {
-		int valueIndex = options.indexOf(valueIdentifier);
-		if (hasEmptyOption) {
-			valueIndex++;
-		}
-		return valueIndex;
-	}
+    private int indexInternalToView(String valueIdentifier) {
+        int valueIndex = options.indexOf(valueIdentifier);
+        if (hasEmptyOption) {
+            valueIndex++;
+        }
+        return valueIndex;
+    }
 }

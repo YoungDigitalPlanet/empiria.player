@@ -8,28 +8,28 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Repor
 
 public class ModuleConnectorExtensionProvider {
 
-	@Inject
-	private ReportModuleConnectorExtension reportModuleConnectorExtension;
-	@Inject
-	private PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension;
-	@Inject
-	private NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension;
-	@Inject
-	private PageSwitchModuleConnectorExtension pageSwitchModuleConnectorExtension;
+    @Inject
+    private ReportModuleConnectorExtension reportModuleConnectorExtension;
+    @Inject
+    private PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension;
+    @Inject
+    private NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension;
+    @Inject
+    private PageSwitchModuleConnectorExtension pageSwitchModuleConnectorExtension;
 
-	public ReportModuleConnectorExtension getReportModuleConnectorExtension() {
-		return reportModuleConnectorExtension;
-	}
+    public ReportModuleConnectorExtension getReportModuleConnectorExtension() {
+        return reportModuleConnectorExtension;
+    }
 
-	public PrevPageButtonModuleConnectorExtension getPrevPageButtonModuleConnectorExtension() {
-		return prevPageButtonModuleConnectorExtension;
-	}
+    public PrevPageButtonModuleConnectorExtension getPrevPageButtonModuleConnectorExtension() {
+        return prevPageButtonModuleConnectorExtension;
+    }
 
-	public NextPageButtonModuleConnectorExtension getNextPageButtonModuleConnectorExtension() {
-		return nextPageButtonModuleConnectorExtension;
-	}
+    public NextPageButtonModuleConnectorExtension getNextPageButtonModuleConnectorExtension() {
+        return nextPageButtonModuleConnectorExtension;
+    }
 
-	public PageSwitchModuleConnectorExtension getPageSwitchModuleConnectorExtension() {
-		return pageSwitchModuleConnectorExtension;
-	}
+    public PageSwitchModuleConnectorExtension getPageSwitchModuleConnectorExtension() {
+        return pageSwitchModuleConnectorExtension;
+    }
 }

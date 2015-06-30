@@ -20,31 +20,31 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalInteractionEmpiriaApiTest {
 
-	@InjectMocks
-	private ExternalInteractionEmpiriaApi testObj;
-	@Mock
-	private ExternalInteractionResponseModel responseModel;
-	@Captor
-	private ArgumentCaptor<String> answersCaptor;
+    @InjectMocks
+    private ExternalInteractionEmpiriaApi testObj;
+    @Mock
+    private ExternalInteractionResponseModel responseModel;
+    @Captor
+    private ArgumentCaptor<String> answersCaptor;
 
-	@Test
-	public void shouldReplaceExternalState() {
-		// given
-		int done = 5;
-		int errors = 3;
-		ExternalInteractionStatus status = mock(ExternalInteractionStatus.class);
-		when(status.getDone()).thenReturn(done);
-		when(status.getErrors()).thenReturn(errors);
+    @Test
+    public void shouldReplaceExternalState() {
+        // given
+        int done = 5;
+        int errors = 3;
+        ExternalInteractionStatus status = mock(ExternalInteractionStatus.class);
+        when(status.getDone()).thenReturn(done);
+        when(status.getErrors()).thenReturn(errors);
 
-		List<String> expectedAnswers = Arrays.asList("1", "2", "3", "4", "5", "-1", "-2", "-3");
-		int answersSize = expectedAnswers.size();
+        List<String> expectedAnswers = Arrays.asList("1", "2", "3", "4", "5", "-1", "-2", "-3");
+        int answersSize = expectedAnswers.size();
 
-		// when
-		testObj.onResultChange(status);
+        // when
+        testObj.onResultChange(status);
 
-		// then
-		verify(responseModel, times(answersSize)).addAnswer(answersCaptor.capture());
-		List<String> resultList = answersCaptor.getAllValues();
-		assertThat(resultList).containsAll(expectedAnswers);
-	}
+        // then
+        verify(responseModel, times(answersSize)).addAnswer(answersCaptor.capture());
+        List<String> resultList = answersCaptor.getAllValues();
+        assertThat(resultList).containsAll(expectedAnswers);
+    }
 }

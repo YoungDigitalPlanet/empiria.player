@@ -5,14 +5,14 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 
 public abstract class ModuleExtension extends InternalExtension {
 
-	@Override
-	public ExtensionType getType() {
-		return ExtensionType.EXTENSION_MODULE;
-	}
+    @Override
+    public ExtensionType getType() {
+        return ExtensionType.EXTENSION_MODULE;
+    }
 
-	@Override
-	public void init() {
+    @Override
+    public void init() {
 
-	}
+    }
 
 }

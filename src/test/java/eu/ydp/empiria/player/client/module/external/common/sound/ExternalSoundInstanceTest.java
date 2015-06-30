@@ -14,55 +14,55 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalSoundInstanceTest {
 
-	@InjectMocks
-	private ExternalSoundInstance testObj;
-	@Mock
-	private MediaWrapperController mediaWrapperController;
-	@Mock
-	private MediaWrapper<Widget> mediaWrapper;
+    @InjectMocks
+    private ExternalSoundInstance testObj;
+    @Mock
+    private MediaWrapperController mediaWrapperController;
+    @Mock
+    private MediaWrapper<Widget> mediaWrapper;
 
-	@Test
-	public void shouldDelegatePlay() {
-		// when
-		testObj.play();
+    @Test
+    public void shouldDelegatePlay() {
+        // when
+        testObj.play();
 
-		// then
-		verify(mediaWrapperController).stopAndPlay(mediaWrapper);
-	}
+        // then
+        verify(mediaWrapperController).stopAndPlay(mediaWrapper);
+    }
 
-	@Test
-	public void shouldDelegatePlayLooped() {
-		// when
-		testObj.playLooped();
+    @Test
+    public void shouldDelegatePlayLooped() {
+        // when
+        testObj.playLooped();
 
-		// then
-		verify(mediaWrapperController).playLooped(mediaWrapper);
-	}
+        // then
+        verify(mediaWrapperController).playLooped(mediaWrapper);
+    }
 
-	@Test
-	public void shouldDelegateStop() {
-		// when
-		testObj.stop();
+    @Test
+    public void shouldDelegateStop() {
+        // when
+        testObj.stop();
 
-		// then
-		verify(mediaWrapperController).stop(mediaWrapper);
-	}
+        // then
+        verify(mediaWrapperController).stop(mediaWrapper);
+    }
 
-	@Test
-	public void shouldDelegatePause() {
-		// when
-		testObj.pause();
+    @Test
+    public void shouldDelegatePause() {
+        // when
+        testObj.pause();
 
-		// then
-		verify(mediaWrapperController).pause(mediaWrapper);
-	}
+        // then
+        verify(mediaWrapperController).pause(mediaWrapper);
+    }
 
-	@Test
-	public void shouldDelegateResume() {
-		// when
-		testObj.resume();
+    @Test
+    public void shouldDelegateResume() {
+        // when
+        testObj.resume();
 
-		// then
-		verify(mediaWrapperController).resume(mediaWrapper);
-	}
+        // then
+        verify(mediaWrapperController).resume(mediaWrapper);
+    }
 }

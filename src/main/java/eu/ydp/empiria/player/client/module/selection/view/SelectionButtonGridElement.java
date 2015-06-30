@@ -1,20 +1,19 @@
 package eu.ydp.empiria.player.client.module.selection.view;
 
 import com.google.gwt.event.dom.client.ClickHandler;
-
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public interface SelectionButtonGridElement extends SelectionGridElement {
 
-	void addClickHandler(ClickHandler clickHandler);
+    void addClickHandler(ClickHandler clickHandler);
 
-	void select();
+    void select();
 
-	void unselect();
+    void unselect();
 
-	void setButtonEnabled(boolean b);
+    void setButtonEnabled(boolean b);
 
-	void updateStyle();
+    void updateStyle();
 
-	void updateStyle(UserAnswerType styleState);
+    void updateStyle(UserAnswerType styleState);
 }

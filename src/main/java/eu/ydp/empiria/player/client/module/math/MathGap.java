@@ -1,20 +1,20 @@
 package eu.ydp.empiria.player.client.module.math;
 
-import java.util.Map;
-
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
 
-public interface MathGap extends IUniqueModule{
-	Widget getContainer();
+import java.util.Map;
 
-	String getUid();
+public interface MathGap extends IUniqueModule {
+    Widget getContainer();
 
-	void setGapWidth(int gapWidth);
+    String getUid();
 
-	void setGapHeight(int gapHeight);
+    void setGapWidth(int gapWidth);
 
-	void setGapFontSize(int gapFontSize);
+    void setGapHeight(int gapHeight);
 
-	void setMathStyles(Map<String, String> mathStyles);
+    void setGapFontSize(int gapFontSize);
+
+    void setMathStyles(Map<String, String> mathStyles);
 }

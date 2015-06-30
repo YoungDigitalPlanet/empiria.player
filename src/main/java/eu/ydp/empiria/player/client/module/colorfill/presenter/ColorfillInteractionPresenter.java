@@ -8,8 +8,8 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ColorfillInteractionPresenter extends ActivityPresenter<ColorfillInteractionModuleModel, ColorfillInteractionBean> {
 
-	void imageColorChanged(Area area);
+    void imageColorChanged(Area area);
 
-	void buttonClicked(ColorModel color);
+    void buttonClicked(ColorModel color);
 
 }

@@ -19,40 +19,40 @@ import static org.mockito.Mockito.when;
 @RunWith(GwtMockitoTestRunner.class)
 public class CanvasImageDataProviderJUnitTest {
 
-	private CanvasImageDataProvider canvasImageDataProvider;
-	private UserAgentUtil userAgentUtil;
-	private final CanvasImageView canvasStubView = Mockito.mock(CanvasImageView.class);
+    private CanvasImageDataProvider canvasImageDataProvider;
+    private UserAgentUtil userAgentUtil;
+    private final CanvasImageView canvasStubView = Mockito.mock(CanvasImageView.class);
 
-	@Before
-	public void setUp() throws Exception {
-		userAgentUtil = Mockito.mock(UserAgentUtil.class);
-		canvasImageDataProvider = new CanvasImageDataProvider(userAgentUtil);
+    @Before
+    public void setUp() throws Exception {
+        userAgentUtil = Mockito.mock(UserAgentUtil.class);
+        canvasImageDataProvider = new CanvasImageDataProvider(userAgentUtil);
 
-		Canvas canvas = Mockito.mock(Canvas.class);
-		when(canvasStubView.getCanvas()).thenReturn(canvas);
+        Canvas canvas = Mockito.mock(Canvas.class);
+        when(canvasStubView.getCanvas()).thenReturn(canvas);
 
-		Context2d context = Mockito.mock(Context2d.class);
-		when(canvas.getContext2d()).thenReturn(context);
+        Context2d context = Mockito.mock(Context2d.class);
+        when(canvas.getContext2d()).thenReturn(context);
 
-		ImageData imageData = Mockito.mock(ImageData.class);
-		when(context.getImageData(0, 0, 0, 0)).thenReturn(imageData);
-	}
+        ImageData imageData = Mockito.mock(ImageData.class);
+        when(context.getImageData(0, 0, 0, 0)).thenReturn(imageData);
+    }
 
-	@Test
-	public void shouldReturnSlowerImplemntationOfCanvasImageDataWhenOnInternetExplorer() throws Exception {
-		when(userAgentUtil.isIE()).thenReturn(true);
+    @Test
+    public void shouldReturnSlowerImplemntationOfCanvasImageDataWhenOnInternetExplorer() throws Exception {
+        when(userAgentUtil.isIE()).thenReturn(true);
 
-		ICanvasImageData imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
+        ICanvasImageData imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 
-		assertTrue(imageData instanceof CanvasImageDataSlower);
-	}
+        assertTrue(imageData instanceof CanvasImageDataSlower);
+    }
 
-	@Test
-	public void shouldReturnFasterImplemntationOfCanvasImageDataWhenSomethingElseThanInternetExplorer() throws Exception {
-		when(userAgentUtil.isIE()).thenReturn(false);
+    @Test
+    public void shouldReturnFasterImplemntationOfCanvasImageDataWhenSomethingElseThanInternetExplorer() throws Exception {
+        when(userAgentUtil.isIE()).thenReturn(false);
 
-		ICanvasImageData imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
+        ICanvasImageData imageData = canvasImageDataProvider.getCanvasImageData(canvasStubView);
 
-		assertTrue(imageData instanceof CanvasImageData);
-	}
+        assertTrue(imageData instanceof CanvasImageData);
+    }
 }

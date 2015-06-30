@@ -5,22 +5,22 @@ package eu.ydp.empiria.player.client.module.components.multiplepair;
  * answer
  */
 public enum MultiplePairModuleConnectType {
-	/**
-	 * wrong answer
-	 */
-	WRONG,
-	/**
-	 * correct answer
-	 */
-	CORRECT,
+    /**
+     * wrong answer
+     */
+    WRONG,
+    /**
+     * correct answer
+     */
+    CORRECT,
 
-	/**
-	 * nothing selected when in marking answer mode
-	 */
-	NONE,
+    /**
+     * nothing selected when in marking answer mode
+     */
+    NONE,
 
-	/**
-	 * user's answer
-	 */
-	NORMAL
+    /**
+     * user's answer
+     */
+    NORMAL
 }

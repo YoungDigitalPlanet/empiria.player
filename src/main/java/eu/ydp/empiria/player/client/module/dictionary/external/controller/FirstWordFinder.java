@@ -1,28 +1,27 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
-import java.util.List;
-
 import com.google.common.base.Optional;
-
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 
+import java.util.List;
+
 public class FirstWordFinder {
-	
-	public Optional<WordsResult> find(Words words) {
-		Optional<String> firstIndex = words.getFirstIndex();
-		Optional<WordsResult> foundWords = Optional.absent();
 
-		if (firstIndex.isPresent()) {
-			foundWords = Optional.of(getWords(words, firstIndex.get()));
-		}
+    public Optional<WordsResult> find(Words words) {
+        Optional<String> firstIndex = words.getFirstIndex();
+        Optional<WordsResult> foundWords = Optional.absent();
 
-		return foundWords;
-	}
+        if (firstIndex.isPresent()) {
+            foundWords = Optional.of(getWords(words, firstIndex.get()));
+        }
 
-	private WordsResult getWords(Words words, String firstIndex) {
-		List<String> wordsByLetter = words.getWordsByLetter(firstIndex);
-		int baseIndex = words.getBaseIndexes().get(firstIndex);
+        return foundWords;
+    }
 
-		return new WordsResult(wordsByLetter, baseIndex);
-	}
+    private WordsResult getWords(Words words, String firstIndex) {
+        List<String> wordsByLetter = words.getWordsByLetter(firstIndex);
+        int baseIndex = words.getBaseIndexes().get(firstIndex);
+
+        return new WordsResult(wordsByLetter, baseIndex);
+    }
 }

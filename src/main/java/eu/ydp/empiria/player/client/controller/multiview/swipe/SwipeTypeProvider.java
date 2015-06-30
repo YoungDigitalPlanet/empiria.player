@@ -10,20 +10,20 @@ import eu.ydp.gwtutil.client.xml.XMLParser;
 import java.util.Map;
 
 public class SwipeTypeProvider implements Provider<SwipeType> {
-	@Inject
-	private StyleSocket styleSocket;
-	@Inject
-	XMLParser xmlParser;
+    @Inject
+    private StyleSocket styleSocket;
+    @Inject
+    XMLParser xmlParser;
 
-	@Override
-	public SwipeType get() {
-		String xml = "<root><swipeoptions class=\"qp-swipe-options\"/></root>";
-		Element firstChild = (Element) xmlParser.parse(xml).getDocumentElement().getFirstChild();
-		Map<String, String> styles = styleSocket.getStyles(firstChild);
-		if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
-			return SwipeType.DISABLED;
-		} else {
-			return SwipeType.DEFAULT;
-		}
-	}
+    @Override
+    public SwipeType get() {
+        String xml = "<root><swipeoptions class=\"qp-swipe-options\"/></root>";
+        Element firstChild = (Element) xmlParser.parse(xml).getDocumentElement().getFirstChild();
+        Map<String, String> styles = styleSocket.getStyles(firstChild);
+        if (styles.get(EmpiriaStyleNameConstants.EMPIRIA_SWIPE_DISABLE_ANIMATION) != null) {
+            return SwipeType.DISABLED;
+        } else {
+            return SwipeType.DEFAULT;
+        }
+    }
 }

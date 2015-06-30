@@ -1,189 +1,194 @@
 package eu.ydp.empiria.player.client.module.identification;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
-import eu.ydp.empiria.player.client.module.identification.predicates.*;
+import eu.ydp.empiria.player.client.module.identification.predicates.ChoiceToIdentifierTransformer;
+import eu.ydp.empiria.player.client.module.identification.predicates.SelectedChoicePredicate;
 import eu.ydp.empiria.player.client.module.identification.presenter.SelectableChoicePresenter;
-import java.util.List;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import java.util.List;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class IdentificationChoicesManagerTest {
 
-	@InjectMocks
-	private IdentificationChoicesManager testObj;
-	@Mock
-	private SelectableChoicePresenter firstPresenter;
-	@Mock
-	private SelectableChoicePresenter secondPresenter;
-	@Mock
-	private SelectedChoicePredicate selectedChoicePredicate;
-	@Mock
-	private ChoiceToIdentifierTransformer choiceToIdentifierTransformer;
+    @InjectMocks
+    private IdentificationChoicesManager testObj;
+    @Mock
+    private SelectableChoicePresenter firstPresenter;
+    @Mock
+    private SelectableChoicePresenter secondPresenter;
+    @Mock
+    private SelectedChoicePredicate selectedChoicePredicate;
+    @Mock
+    private ChoiceToIdentifierTransformer choiceToIdentifierTransformer;
 
-	@Before
-	public void init() {
-		testObj.addChoice(firstPresenter);
-		testObj.addChoice(secondPresenter);
-	}
+    @Before
+    public void init() {
+        testObj.addChoice(firstPresenter);
+        testObj.addChoice(secondPresenter);
+    }
 
-	@Test
-	public void shouldLockChoices() {
-		// given
+    @Test
+    public void shouldLockChoices() {
+        // given
 
-		// when
-		testObj.lockAll();
+        // when
+        testObj.lockAll();
 
-		// then
-		verify(firstPresenter).lock();
-		verify(secondPresenter).lock();
-	}
+        // then
+        verify(firstPresenter).lock();
+        verify(secondPresenter).lock();
+    }
 
-	@Test
-	public void shouldUnlockChoices() {
-		// given
+    @Test
+    public void shouldUnlockChoices() {
+        // given
 
-		// when
-		testObj.unlockAll();
+        // when
+        testObj.unlockAll();
 
-		// then
-		verify(firstPresenter).unlock();
-		verify(secondPresenter).unlock();
-	}
+        // then
+        verify(firstPresenter).unlock();
+        verify(secondPresenter).unlock();
+    }
 
-	@Test
-	public void shouldMarkAnswers() {
-		// given
-		String firstId = "firstId";
-		String secondId = "secondId";
-		when(firstPresenter.getIdentifier()).thenReturn(firstId);
-		when(secondPresenter.getIdentifier()).thenReturn(secondId);
-		
-		CorrectAnswers correctAnswers = mock(CorrectAnswers.class);
-		boolean firstChoiceIsCorrectAnswer = true;
-		when(correctAnswers.containsAnswer(firstId)).thenReturn(firstChoiceIsCorrectAnswer);
-		boolean secondChoiceIsCorrectAnswer = false;
-		when(correctAnswers.containsAnswer(secondId)).thenReturn(secondChoiceIsCorrectAnswer);
+    @Test
+    public void shouldMarkAnswers() {
+        // given
+        String firstId = "firstId";
+        String secondId = "secondId";
+        when(firstPresenter.getIdentifier()).thenReturn(firstId);
+        when(secondPresenter.getIdentifier()).thenReturn(secondId);
 
-		boolean mark = true;
-		
-		// when
-		testObj.markAnswers(mark, correctAnswers);
+        CorrectAnswers correctAnswers = mock(CorrectAnswers.class);
+        boolean firstChoiceIsCorrectAnswer = true;
+        when(correctAnswers.containsAnswer(firstId)).thenReturn(firstChoiceIsCorrectAnswer);
+        boolean secondChoiceIsCorrectAnswer = false;
+        when(correctAnswers.containsAnswer(secondId)).thenReturn(secondChoiceIsCorrectAnswer);
 
-		// then
-		verify(firstPresenter).markAnswers(mark, firstChoiceIsCorrectAnswer);
-		verify(secondPresenter).markAnswers(mark, secondChoiceIsCorrectAnswer);
-	}
+        boolean mark = true;
 
-	@Test
-	public void shouldClearSelection() {
-		// given
+        // when
+        testObj.markAnswers(mark, correctAnswers);
 
-		// when
-		testObj.clearSelections();
+        // then
+        verify(firstPresenter).markAnswers(mark, firstChoiceIsCorrectAnswer);
+        verify(secondPresenter).markAnswers(mark, secondChoiceIsCorrectAnswer);
+    }
 
-		// then
-		verify(firstPresenter).setSelected(false);
-		verify(secondPresenter).setSelected(false);
-	}
+    @Test
+    public void shouldClearSelection() {
+        // given
 
-	@Test
-	public void shouldRestoreView() {
-		// given
-		String firstId = "firstId";
-		String secondId = "secondId";
-		when(firstPresenter.getIdentifier()).thenReturn(firstId);
-		when(secondPresenter.getIdentifier()).thenReturn(secondId);
+        // when
+        testObj.clearSelections();
 
-		List<String> selectedChoices = Lists.newArrayList();
-		selectedChoices.add(firstId);
+        // then
+        verify(firstPresenter).setSelected(false);
+        verify(secondPresenter).setSelected(false);
+    }
 
-		// when
-		testObj.restoreView(selectedChoices);
+    @Test
+    public void shouldRestoreView() {
+        // given
+        String firstId = "firstId";
+        String secondId = "secondId";
+        when(firstPresenter.getIdentifier()).thenReturn(firstId);
+        when(secondPresenter.getIdentifier()).thenReturn(secondId);
 
-		// then
-		verify(firstPresenter).setSelected(true);
-		verify(secondPresenter).setSelected(false);
-	}
+        List<String> selectedChoices = Lists.newArrayList();
+        selectedChoices.add(firstId);
 
-	@Test
-	public void shouldSelectAnswers() {
-		// given
-		String firstId = "firstId";
-		String secondId = "secondId";
-		when(firstPresenter.getIdentifier()).thenReturn(firstId);
-		when(secondPresenter.getIdentifier()).thenReturn(secondId);
+        // when
+        testObj.restoreView(selectedChoices);
 
-		CorrectAnswers correctAnswers = mock(CorrectAnswers.class);
-		boolean firstChoiceIsCorrectAnswer = true;
-		when(correctAnswers.containsAnswer(firstId)).thenReturn(firstChoiceIsCorrectAnswer);
-		boolean secondChoiceIsCorrectAnswer = false;
-		when(correctAnswers.containsAnswer(secondId)).thenReturn(secondChoiceIsCorrectAnswer);
+        // then
+        verify(firstPresenter).setSelected(true);
+        verify(secondPresenter).setSelected(false);
+    }
 
-		// when
-		testObj.selectCorrectAnswers(correctAnswers);
+    @Test
+    public void shouldSelectAnswers() {
+        // given
+        String firstId = "firstId";
+        String secondId = "secondId";
+        when(firstPresenter.getIdentifier()).thenReturn(firstId);
+        when(secondPresenter.getIdentifier()).thenReturn(secondId);
 
-		// then
-		verify(firstPresenter).setSelected(firstChoiceIsCorrectAnswer);
-		verify(secondPresenter).setSelected(secondChoiceIsCorrectAnswer);
-	}
+        CorrectAnswers correctAnswers = mock(CorrectAnswers.class);
+        boolean firstChoiceIsCorrectAnswer = true;
+        when(correctAnswers.containsAnswer(firstId)).thenReturn(firstChoiceIsCorrectAnswer);
+        boolean secondChoiceIsCorrectAnswer = false;
+        when(correctAnswers.containsAnswer(secondId)).thenReturn(secondChoiceIsCorrectAnswer);
 
-	@Test
-	public void shouldSetNewState() {
-		// given
-		boolean firstChoiceIsSelected = true;
-		boolean secondChoiceIsSelected = false;
-		JSONArray newState = mock(JSONArray.class, Mockito.RETURNS_DEEP_STUBS);
-		when(newState.get(0).isBoolean().booleanValue()).thenReturn(firstChoiceIsSelected);
-		when(newState.get(1).isBoolean().booleanValue()).thenReturn(secondChoiceIsSelected);
+        // when
+        testObj.selectCorrectAnswers(correctAnswers);
 
-		// when
-		testObj.setState(newState);
+        // then
+        verify(firstPresenter).setSelected(firstChoiceIsCorrectAnswer);
+        verify(secondPresenter).setSelected(secondChoiceIsCorrectAnswer);
+    }
 
-		// then
-		verify(firstPresenter).setSelected(firstChoiceIsSelected);
-		verify(secondPresenter).setSelected(secondChoiceIsSelected);
-	}
+    @Test
+    public void shouldSetNewState() {
+        // given
+        boolean firstChoiceIsSelected = true;
+        boolean secondChoiceIsSelected = false;
+        JSONArray newState = mock(JSONArray.class, Mockito.RETURNS_DEEP_STUBS);
+        when(newState.get(0).isBoolean().booleanValue()).thenReturn(firstChoiceIsSelected);
+        when(newState.get(1).isBoolean().booleanValue()).thenReturn(secondChoiceIsSelected);
 
-	@Test
-	public void shouldReturnOnlySelectedChoices() {
-		// given
-		when(selectedChoicePredicate.apply(firstPresenter)).thenReturn(true);
-		when(selectedChoicePredicate.apply(secondPresenter)).thenReturn(false);
+        // when
+        testObj.setState(newState);
 
-		// when
-		List<SelectableChoicePresenter> selectedChoices = testObj.getSelectedChoices();
+        // then
+        verify(firstPresenter).setSelected(firstChoiceIsSelected);
+        verify(secondPresenter).setSelected(secondChoiceIsSelected);
+    }
 
-		// then
-		assertThat(selectedChoices).containsExactly(firstPresenter);
-	}
+    @Test
+    public void shouldReturnOnlySelectedChoices() {
+        // given
+        when(selectedChoicePredicate.apply(firstPresenter)).thenReturn(true);
+        when(selectedChoicePredicate.apply(secondPresenter)).thenReturn(false);
 
-	@Test
-	public void shouldReturnIdentifiersOfSelectedChoices() {
-		// given
-		String firstId = "firstId";
-		String secondId = "secondId";
-		when(firstPresenter.getIdentifier()).thenReturn(firstId);
-		when(secondPresenter.getIdentifier()).thenReturn(secondId);
+        // when
+        List<SelectableChoicePresenter> selectedChoices = testObj.getSelectedChoices();
 
-		when(selectedChoicePredicate.apply(firstPresenter)).thenReturn(true);
-		when(selectedChoicePredicate.apply(secondPresenter)).thenReturn(false);
+        // then
+        assertThat(selectedChoices).containsExactly(firstPresenter);
+    }
 
-		when(choiceToIdentifierTransformer.apply(firstPresenter)).thenReturn(firstId);
-		when(choiceToIdentifierTransformer.apply(secondPresenter)).thenReturn(secondId);
+    @Test
+    public void shouldReturnIdentifiersOfSelectedChoices() {
+        // given
+        String firstId = "firstId";
+        String secondId = "secondId";
+        when(firstPresenter.getIdentifier()).thenReturn(firstId);
+        when(secondPresenter.getIdentifier()).thenReturn(secondId);
 
-		// when
-		List<String> selectedChoices = testObj.getIdentifiersSelectedChoices();
+        when(selectedChoicePredicate.apply(firstPresenter)).thenReturn(true);
+        when(selectedChoicePredicate.apply(secondPresenter)).thenReturn(false);
 
-		// then
-		assertThat(selectedChoices).containsExactly(firstId);
-	}
+        when(choiceToIdentifierTransformer.apply(firstPresenter)).thenReturn(firstId);
+        when(choiceToIdentifierTransformer.apply(secondPresenter)).thenReturn(secondId);
+
+        // when
+        List<String> selectedChoices = testObj.getIdentifiersSelectedChoices();
+
+        // then
+        assertThat(selectedChoices).containsExactly(firstId);
+    }
 
 }

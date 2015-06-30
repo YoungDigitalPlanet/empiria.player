@@ -9,14 +9,14 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "eraserButton")
 public class EraserButton {
 
-	@XmlValue
-	private String description;
+    @XmlValue
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

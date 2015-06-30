@@ -12,48 +12,48 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SelectionModule extends AbstractInteractionModule<SelectionModule, SelectionModuleModel, SelectionInteractionBean> {
 
-	private final SelectionModulePresenter selectionModulePresenter;
-	private final SelectionModuleStructure structure;
-	private final SelectionModuleModel model;
+    private final SelectionModulePresenter selectionModulePresenter;
+    private final SelectionModuleStructure structure;
+    private final SelectionModuleModel model;
 
-	@Inject
-	public SelectionModule(SelectionModulePresenter selectionModulePresenter, SelectionModuleStructure structure, @ModuleScoped SelectionModuleModel model) {
-		this.selectionModulePresenter = selectionModulePresenter;
-		this.structure = structure;
-		this.model = model;
-	}
+    @Inject
+    public SelectionModule(SelectionModulePresenter selectionModulePresenter, SelectionModuleStructure structure, @ModuleScoped SelectionModuleModel model) {
+        this.selectionModulePresenter = selectionModulePresenter;
+        this.structure = structure;
+        this.model = model;
+    }
 
-	@Override
-	protected ActivityPresenter<SelectionModuleModel, SelectionInteractionBean> getPresenter() {
-		return selectionModulePresenter;
-	}
+    @Override
+    protected ActivityPresenter<SelectionModuleModel, SelectionInteractionBean> getPresenter() {
+        return selectionModulePresenter;
+    }
 
-	@Override
-	protected void initalizeModule() {
-		getResponse().setCountMode(getCountMode());
-		model.initialize(this);
-	}
+    @Override
+    protected void initalizeModule() {
+        getResponse().setCountMode(getCountMode());
+        model.initialize(this);
+    }
 
-	@Override
-	protected SelectionModuleModel getResponseModel() {
-		return model;
-	}
+    @Override
+    protected SelectionModuleModel getResponseModel() {
+        return model;
+    }
 
-	@Override
-	protected AbstractModuleStructure<SelectionInteractionBean, ? extends JAXBParserFactory<SelectionInteractionBean>> getStructure() {
-		return structure;
-	}
+    @Override
+    protected AbstractModuleStructure<SelectionInteractionBean, ? extends JAXBParserFactory<SelectionInteractionBean>> getStructure() {
+        return structure;
+    }
 
-	@Override
-	public boolean isIgnored() {
-		return getStructure().getBean().isIgnored();
-	}
+    @Override
+    public boolean isIgnored() {
+        return getStructure().getBean().isIgnored();
+    }
 
-	@Override
-	public void markAnswers(boolean mark) {
-		if (isIgnored()) {
-			return;
-		}
-		super.markAnswers(mark);
-	}
+    @Override
+    public void markAnswers(boolean mark) {
+        if (isIgnored()) {
+            return;
+        }
+        super.markAnswers(mark);
+    }
 }

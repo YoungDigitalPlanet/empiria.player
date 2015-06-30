@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.controller.variables;
 
-import java.util.Set;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+
+import java.util.Set;
 
 public interface VariableProviderSocket {
 
-	public abstract Set<String> getVariableIdentifiers();
+    public abstract Set<String> getVariableIdentifiers();
 
-	public abstract Variable getVariableValue(String identifier);
+    public abstract Variable getVariableValue(String identifier);
 
 }

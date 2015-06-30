@@ -4,27 +4,27 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 
 public interface ActivityCommandsListener {
 
-	void checkPage();
+    void checkPage();
 
-	void showAnswersPage();
+    void showAnswersPage();
 
-	void continuePage();
+    void continuePage();
 
-	void resetPage();
+    void resetPage();
 
-	void lockPage();
+    void lockPage();
 
-	void unlockPage();
+    void unlockPage();
 
-	void checkGroup(GroupIdentifier gi);
+    void checkGroup(GroupIdentifier gi);
 
-	void showAnswersGroup(GroupIdentifier gi);
+    void showAnswersGroup(GroupIdentifier gi);
 
-	void continueGroup(GroupIdentifier gi);
+    void continueGroup(GroupIdentifier gi);
 
-	void resetGroup(GroupIdentifier gi);
+    void resetGroup(GroupIdentifier gi);
 
-	void lockGroup(GroupIdentifier gi);
+    void lockGroup(GroupIdentifier gi);
 
-	void unlockGroup(GroupIdentifier gi);
+    void unlockGroup(GroupIdentifier gi);
 }

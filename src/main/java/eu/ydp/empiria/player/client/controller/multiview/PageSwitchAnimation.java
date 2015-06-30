@@ -15,56 +15,56 @@ import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 public class PageSwitchAnimation {
 
-	@Inject
-	private WindowDelegate windowDelegate;
-	@Inject
-	private Instance<Animation> animation;
-	@Inject
-	private EventsBus eventsBus;
-	@Inject
-	private Scheduler scheduler;
+    @Inject
+    private WindowDelegate windowDelegate;
+    @Inject
+    private Instance<Animation> animation;
+    @Inject
+    private EventsBus eventsBus;
+    @Inject
+    private Scheduler scheduler;
 
-	private AnimationEndCallback animationCallback = null;
+    private AnimationEndCallback animationCallback = null;
 
-	public void animatePageSwitch(
-			final MultiPageController multiPageController,
-			final float from, final float to,
-			final NavigationButtonDirection direction,
-			final int duration, final boolean onlyPositionReset) {
-		if (Math.abs(from - to) > 1) {
-			if (!onlyPositionReset) {
-				windowDelegate.scrollTo(0, 0);
-			}
-			animation.get().removeAnimationEndCallback(animationCallback);
-			animationCallback = new AnimationEndCallback() {
-				@Override
-				public void onComplate(int position) {
-					scheduler.scheduleDeferred(new ScheduledCommand() {
-						@Override
-						public void execute() {
-							multiPageController.resetFocusAndStyles();
-							if (direction != null) {
-								multiPageController.invokeNavigationRequest(direction);
-							}
-							if (!onlyPositionReset) {
-								eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
-							}
-							multiPageController.setCurrentPosition(to);
-						}
-					});
-				}
-			};
-			animation.get().addAnimationEndCallback(animationCallback);
-			FlowPanel target = multiPageController.getMainPanel();
-			int width = multiPageController.getWidth();
-			int xPosition = Math.round((to / width)) * width;
-			animation.get().goTo(target, xPosition, duration);
-		} else if (!onlyPositionReset) {
-			eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
-		}
-	}
+    public void animatePageSwitch(
+            final MultiPageController multiPageController,
+            final float from, final float to,
+            final NavigationButtonDirection direction,
+            final int duration, final boolean onlyPositionReset) {
+        if (Math.abs(from - to) > 1) {
+            if (!onlyPositionReset) {
+                windowDelegate.scrollTo(0, 0);
+            }
+            animation.get().removeAnimationEndCallback(animationCallback);
+            animationCallback = new AnimationEndCallback() {
+                @Override
+                public void onComplate(int position) {
+                    scheduler.scheduleDeferred(new ScheduledCommand() {
+                        @Override
+                        public void execute() {
+                            multiPageController.resetFocusAndStyles();
+                            if (direction != null) {
+                                multiPageController.invokeNavigationRequest(direction);
+                            }
+                            if (!onlyPositionReset) {
+                                eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
+                            }
+                            multiPageController.setCurrentPosition(to);
+                        }
+                    });
+                }
+            };
+            animation.get().addAnimationEndCallback(animationCallback);
+            FlowPanel target = multiPageController.getMainPanel();
+            int width = multiPageController.getWidth();
+            int xPosition = Math.round((to / width)) * width;
+            animation.get().goTo(target, xPosition, duration);
+        } else if (!onlyPositionReset) {
+            eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_VIEW_LOADED));
+        }
+    }
 
-	public boolean isAnimationRunning() {
-		return animation.get().isRunning();
-	}
+    public boolean isAnimationRunning() {
+        return animation.get().isRunning();
+    }
 }

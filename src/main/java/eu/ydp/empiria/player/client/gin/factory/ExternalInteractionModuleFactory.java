@@ -5,5 +5,5 @@ import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundIn
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public interface ExternalInteractionModuleFactory {
-	ExternalSoundInstance getExternalSoundInstance(MediaWrapper<Widget> audioWrapper);
+    ExternalSoundInstance getExternalSoundInstance(MediaWrapper<Widget> audioWrapper);
 }

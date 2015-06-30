@@ -17,63 +17,63 @@ import javax.annotation.PostConstruct;
 
 public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 
-	@UiTemplate("TextEntryModule.ui.xml")
-	interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {
-	}
+    @UiTemplate("TextEntryModule.ui.xml")
+    interface TextEntryModuleUiBinder extends UiBinder<Widget, TextEntryModulePresenter> {
+    }
 
-	private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
+    private final TextEntryModuleUiBinder uiBinder = GWT.create(TextEntryModuleUiBinder.class);
 
-	@UiField(provided = true)
-	protected Widget textBoxWidget;
-	@UiField
-	protected Panel moduleWidget;
-	@Inject
-	private TextBoxChangeHandler textBoxChangeHandler;
+    @UiField(provided = true)
+    protected Widget textBoxWidget;
+    @UiField
+    protected Panel moduleWidget;
+    @Inject
+    private TextBoxChangeHandler textBoxChangeHandler;
 
-	@PostConstruct
-	public void postConstruct() {
-		droppable = dragDropHelper.enableDropForWidget(new TextBox());
-		textBoxWidget = droppable.getDroppableWidget();
-		textBox = droppable.getOriginalWidget();
-		uiBinder.createAndBindUi(this);
+    @PostConstruct
+    public void postConstruct() {
+        droppable = dragDropHelper.enableDropForWidget(new TextBox());
+        textBoxWidget = droppable.getDroppableWidget();
+        textBox = droppable.getOriginalWidget();
+        uiBinder.createAndBindUi(this);
 
-		dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
-	}
+        dropZoneGuardian = new DropZoneGuardian(droppable, moduleWidget, styleNames);
+    }
 
-	@Override
-	public void installViewInContainer(HasWidgets container) {
-		container.add(moduleWidget);
+    @Override
+    public void installViewInContainer(HasWidgets container) {
+        container.add(moduleWidget);
 
-		moduleWidget.setStyleName(styleNames.QP_TEXTENTRY(), true);
-	}
+        moduleWidget.setStyleName(styleNames.QP_TEXTENTRY(), true);
+    }
 
-	@Override
-	public HasWidgets getContainer() {
-		return moduleWidget;
-	}
+    @Override
+    public HasWidgets getContainer() {
+        return moduleWidget;
+    }
 
-	@Override
-	public void setMarkMode(String mode) {
-		String markStyleName;
+    @Override
+    public void setMarkMode(String mode) {
+        String markStyleName;
 
-		if (GapModulePresenter.CORRECT.equals(mode)) {
-			markStyleName = styleNames.QP_TEXT_TEXTENTRY_CORRECT();
-		} else if (GapModulePresenter.WRONG.equals(mode)) {
-			markStyleName = styleNames.QP_TEXT_TEXTENTRY_WRONG();
-		} else {
-			markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();
-		}
+        if (GapModulePresenter.CORRECT.equals(mode)) {
+            markStyleName = styleNames.QP_TEXT_TEXTENTRY_CORRECT();
+        } else if (GapModulePresenter.WRONG.equals(mode)) {
+            markStyleName = styleNames.QP_TEXT_TEXTENTRY_WRONG();
+        } else {
+            markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();
+        }
 
-		moduleWidget.setStylePrimaryName(markStyleName);
-	}
+        moduleWidget.setStylePrimaryName(markStyleName);
+    }
 
-	@Override
-	public void removeMarking() {
-		moduleWidget.setStylePrimaryName(styleNames.QP_TEXT_TEXTENTRY());
-	}
+    @Override
+    public void removeMarking() {
+        moduleWidget.setStylePrimaryName(styleNames.QP_TEXT_TEXTENTRY());
+    }
 
-	@Override
-	public void addPresenterHandler(PresenterHandler handler) {
-		textBoxChangeHandler.bind(droppable, handler);
-	}
+    @Override
+    public void addPresenterHandler(PresenterHandler handler) {
+        textBoxChangeHandler.bind(droppable, handler);
+    }
 }

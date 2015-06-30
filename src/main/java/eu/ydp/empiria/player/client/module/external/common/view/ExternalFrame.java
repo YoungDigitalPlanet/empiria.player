@@ -11,27 +11,27 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaAp
 
 public class ExternalFrame<T extends ExternalApi> extends Composite {
 
-	private final Frame frame = new Frame();
+    private final Frame frame = new Frame();
 
-	public ExternalFrame() {
-		initWidget(frame);
-	}
+    public ExternalFrame() {
+        initWidget(frame);
+    }
 
-	public void init(final ExternalEmpiriaApi api, final ExternalFrameLoadHandler<T> onLoadHandler) {
-		frame.addLoadHandler(new LoadHandler() {
-			@Override
-			public void onLoad(LoadEvent event) {
-				T obj = init(frame.getElement(), api);
-				onLoadHandler.onExternalModuleLoaded(obj);
-			}
-		});
-	}
+    public void init(final ExternalEmpiriaApi api, final ExternalFrameLoadHandler<T> onLoadHandler) {
+        frame.addLoadHandler(new LoadHandler() {
+            @Override
+            public void onLoad(LoadEvent event) {
+                T obj = init(frame.getElement(), api);
+                onLoadHandler.onExternalModuleLoaded(obj);
+            }
+        });
+    }
 
-	public void setUrl(String url) {
-		frame.setUrl(url);
-	}
+    public void setUrl(String url) {
+        frame.setUrl(url);
+    }
 
-	private native T init(Element frame, ExternalEmpiriaApi api)/*-{
+    private native T init(Element frame, ExternalEmpiriaApi api)/*-{
         return frame.contentWindow.init(api);
     }-*/;
 }

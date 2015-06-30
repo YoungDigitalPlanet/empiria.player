@@ -28,109 +28,109 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("PMD")
 public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
-	private static final String DISABLED_STYLE_NAME = "qp-reset-button-disabled";
+    private static final String DISABLED_STYLE_NAME = "qp-reset-button-disabled";
 
-	ResetButtonModule instance;
-	FlowRequestInvoker requestInvoker;
-	protected ClickHandler handler;
+    ResetButtonModule instance;
+    FlowRequestInvoker requestInvoker;
+    protected ClickHandler handler;
 
-	private CustomPushButton button;
-	private StyleNameConstants styleNameConstants;
+    private CustomPushButton button;
+    private StyleNameConstants styleNameConstants;
 
-	private static class CustomGuiceModule implements Module {
-		@Override
-		public void configure(Binder binder) {
-			binder.bind(CustomPushButton.class)
-				  .toInstance(mock(CustomPushButton.class));
-		}
-	}
+    private static class CustomGuiceModule implements Module {
+        @Override
+        public void configure(Binder binder) {
+            binder.bind(CustomPushButton.class)
+                    .toInstance(mock(CustomPushButton.class));
+        }
+    }
 
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
+    @BeforeClass
+    public static void disarm() {
+        GWTMockUtilities.disarm();
+    }
 
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
+    @AfterClass
+    public static void rearm() {
+        GWTMockUtilities.restore();
+    }
 
-	@Before
-	public void before() {
-		setUp(new Class<?>[] { CustomPushButton.class }, new Class<?>[] { }, new Class<?>[] { EventsBus.class }, new CustomGuiceModule());
-		instance = spy(injector.getInstance(ResetButtonModule.class));
-		requestInvoker = mock(FlowRequestInvoker.class);
-		instance.setFlowRequestsInvoker(requestInvoker);
-		button = injector.getInstance(CustomPushButton.class);
-		styleNameConstants = injector.getInstance(StyleNameConstants.class);
-		doAnswer(new Answer<ClickHandler>() {
+    @Before
+    public void before() {
+        setUp(new Class<?>[]{CustomPushButton.class}, new Class<?>[]{}, new Class<?>[]{EventsBus.class}, new CustomGuiceModule());
+        instance = spy(injector.getInstance(ResetButtonModule.class));
+        requestInvoker = mock(FlowRequestInvoker.class);
+        instance.setFlowRequestsInvoker(requestInvoker);
+        button = injector.getInstance(CustomPushButton.class);
+        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        doAnswer(new Answer<ClickHandler>() {
 
-			@Override
-			public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
-				handler = (ClickHandler) invocation.getArguments()[0];
-				return null;
-			}
-		}).when(button)
-		  .addClickHandler(any(ClickHandler.class));
-	}
+            @Override
+            public ClickHandler answer(InvocationOnMock invocation) throws Throwable {
+                handler = (ClickHandler) invocation.getArguments()[0];
+                return null;
+            }
+        }).when(button)
+                .addClickHandler(any(ClickHandler.class));
+    }
 
-	@Test
-	public void testOnDeliveryEvent() {
-		Mockito.verifyZeroInteractions(requestInvoker);
-	}
+    @Test
+    public void testOnDeliveryEvent() {
+        Mockito.verifyZeroInteractions(requestInvoker);
+    }
 
-	@Test
-	public void testInvokeRequest() {
-		doReturn(null).when(instance)
-					  .getCurrentGroupIdentifier();
+    @Test
+    public void testInvokeRequest() {
+        doReturn(null).when(instance)
+                .getCurrentGroupIdentifier();
 
-		instance.invokeRequest();
-		verify(requestInvoker).invokeRequest(Matchers.any(FlowRequest.Reset.class));
-	}
+        instance.invokeRequest();
+        verify(requestInvoker).invokeRequest(Matchers.any(FlowRequest.Reset.class));
+    }
 
-	@Test
-	public void testGetStyleName() {
-		assertEquals("qp-reset-button", instance.getStyleName());
-	}
+    @Test
+    public void testGetStyleName() {
+        assertEquals("qp-reset-button", instance.getStyleName());
+    }
 
-	@Test
-	public void shouldNotInvokeActionInPreviewMode() {
-		// given
-		instance.initModule(mock(Element.class));
-		doReturn(null).when(instance)
-					  .getCurrentGroupIdentifier();
-		instance.setFlowRequestsInvoker(requestInvoker);
-		instance.enablePreviewMode();
+    @Test
+    public void shouldNotInvokeActionInPreviewMode() {
+        // given
+        instance.initModule(mock(Element.class));
+        doReturn(null).when(instance)
+                .getCurrentGroupIdentifier();
+        instance.setFlowRequestsInvoker(requestInvoker);
+        instance.enablePreviewMode();
 
-		// when
-		handler.onClick(null);
+        // when
+        handler.onClick(null);
 
-		// then
-		verifyZeroInteractions(requestInvoker);
-	}
+        // then
+        verifyZeroInteractions(requestInvoker);
+    }
 
-	@Test
-	public void shouldNotOverwriteStyleInPreview() {
-		// given
-		final String inactiveStyleName = "STYLE_NAME";
-		instance.initModule(mock(Element.class));
-		doReturn(null).when(instance)
-					  .getCurrentGroupIdentifier();
-		when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
-		instance.enablePreviewMode();
+    @Test
+    public void shouldNotOverwriteStyleInPreview() {
+        // given
+        final String inactiveStyleName = "STYLE_NAME";
+        instance.initModule(mock(Element.class));
+        doReturn(null).when(instance)
+                .getCurrentGroupIdentifier();
+        when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
+        instance.enablePreviewMode();
 
-		// when
-		instance.updateStyleName();
+        // when
+        instance.updateStyleName();
 
-		// then
-		InOrder inOrder = inOrder(button);
-		inOrder.verify(button)
-			   .setStyleName(DISABLED_STYLE_NAME);
-		inOrder.verify(button)
-			   .addStyleName(inactiveStyleName);
-		inOrder.verify(button)
-			   .setStyleName(DISABLED_STYLE_NAME);
-		inOrder.verify(button)
-			   .addStyleName(inactiveStyleName);
-	}
+        // then
+        InOrder inOrder = inOrder(button);
+        inOrder.verify(button)
+                .setStyleName(DISABLED_STYLE_NAME);
+        inOrder.verify(button)
+                .addStyleName(inactiveStyleName);
+        inOrder.verify(button)
+                .setStyleName(DISABLED_STYLE_NAME);
+        inOrder.verify(button)
+                .addStyleName(inactiveStyleName);
+    }
 }

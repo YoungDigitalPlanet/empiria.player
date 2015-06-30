@@ -8,29 +8,29 @@ import java.util.Collection;
 
 public class MultiPageControllerStyleManager {
 
-	@Inject
-	private StyleNameConstants styleNames;
+    @Inject
+    private StyleNameConstants styleNames;
 
-	public void clearPagesStyles(Collection<FlowPanel> keyPanels) {
-		for (FlowPanel flowPanel : keyPanels) {
-			flowPanel.removeStyleName(styleNames.QP_PAGE_UNSELECTED());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_SELECTED());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_PREV());
-			flowPanel.removeStyleName(styleNames.QP_PAGE_NEXT());
-		}
-	}
+    public void clearPagesStyles(Collection<FlowPanel> keyPanels) {
+        for (FlowPanel flowPanel : keyPanels) {
+            flowPanel.removeStyleName(styleNames.QP_PAGE_UNSELECTED());
+            flowPanel.removeStyleName(styleNames.QP_PAGE_SELECTED());
+            flowPanel.removeStyleName(styleNames.QP_PAGE_PREV());
+            flowPanel.removeStyleName(styleNames.QP_PAGE_NEXT());
+        }
+    }
 
-	public void setPageStyles(FlowPanel panel, boolean isChangeToNextPage) {
-		panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
-		String pageDirectionChangeStyle = findPageDirectionChangeStyle(isChangeToNextPage);
-		panel.addStyleName(pageDirectionChangeStyle);
-	}
+    public void setPageStyles(FlowPanel panel, boolean isChangeToNextPage) {
+        panel.addStyleName(styleNames.QP_PAGE_UNSELECTED());
+        String pageDirectionChangeStyle = findPageDirectionChangeStyle(isChangeToNextPage);
+        panel.addStyleName(pageDirectionChangeStyle);
+    }
 
-	private String findPageDirectionChangeStyle(boolean isChangeToNextPage) {
-		if (isChangeToNextPage) {
-			return styleNames.QP_PAGE_NEXT();
-		} else {
-			return styleNames.QP_PAGE_PREV();
-		}
-	}
+    private String findPageDirectionChangeStyle(boolean isChangeToNextPage) {
+        if (isChangeToNextPage) {
+            return styleNames.QP_PAGE_NEXT();
+        } else {
+            return styleNames.QP_PAGE_PREV();
+        }
+    }
 }

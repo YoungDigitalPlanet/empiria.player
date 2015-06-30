@@ -4,5 +4,5 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public interface PlayerJsObjectModifierExtension {
 
-	public void setPlayerJsObject(JavaScriptObject playerJsObject);
+    public void setPlayerJsObject(JavaScriptObject playerJsObject);
 }

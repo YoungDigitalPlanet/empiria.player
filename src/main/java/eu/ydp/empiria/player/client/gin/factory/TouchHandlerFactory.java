@@ -17,22 +17,22 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.toucho
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnStartHandler;
 
 public interface TouchHandlerFactory {
-	PointerMoveHandlerOnImage createPointerMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);
+    PointerMoveHandlerOnImage createPointerMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);
 
-	PointerDownHandlerOnImage createPointerDownHandlerOnImage(TouchOnImageStartHandler touchOnStartHandler);
+    PointerDownHandlerOnImage createPointerDownHandlerOnImage(TouchOnImageStartHandler touchOnStartHandler);
 
-	PointerUpHandlerOnImage createPointerUpHandlerOnImage(TouchOnImageEndHandler touchOnEndHandler);
+    PointerUpHandlerOnImage createPointerUpHandlerOnImage(TouchOnImageEndHandler touchOnEndHandler);
 
-	TouchMoveHandlerOnImage createTouchMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);
+    TouchMoveHandlerOnImage createTouchMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);
 
-	TouchStartHandlerOnImage createTouchStartHandlerOnImage(TouchOnImageStartHandler touchStartHandler);
+    TouchStartHandlerOnImage createTouchStartHandlerOnImage(TouchOnImageStartHandler touchStartHandler);
 
-	TouchEndHandlerOnImage createTouchEndHandlerOnImage(TouchOnImageEndHandler touchEndHandler);
+    TouchEndHandlerOnImage createTouchEndHandlerOnImage(TouchOnImageEndHandler touchEndHandler);
 
-	PointerDownHandlerImpl createPointerDownHandler(TouchOnStartHandler touchOnStartHandler);
+    PointerDownHandlerImpl createPointerDownHandler(TouchOnStartHandler touchOnStartHandler);
 
-	PointerMoveHandlerImpl createPointerMoveHandler(TouchOnMoveHandler touchOnStartHandler);
+    PointerMoveHandlerImpl createPointerMoveHandler(TouchOnMoveHandler touchOnStartHandler);
 
-	PointerUpHandlerImpl createPointerUpHandler(TouchOnEndHandler touchOnStartHandler);
+    PointerUpHandlerImpl createPointerUpHandler(TouchOnEndHandler touchOnStartHandler);
 
 }

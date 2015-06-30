@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.module.media.progress.ProgressBarUpdateEvent
 
 public interface ProgressBarFactory {
 
-	ProgressBarEndEventHandler createProgressBarEndEventHandler(MediaProgressBarImpl progressBar);
+    ProgressBarEndEventHandler createProgressBarEndEventHandler(MediaProgressBarImpl progressBar);
 
-	ProgressBarUpdateEventHandler createProgressBarUpdateEventHandler(MediaProgressBarImpl progressBar);
+    ProgressBarUpdateEventHandler createProgressBarUpdateEventHandler(MediaProgressBarImpl progressBar);
 }

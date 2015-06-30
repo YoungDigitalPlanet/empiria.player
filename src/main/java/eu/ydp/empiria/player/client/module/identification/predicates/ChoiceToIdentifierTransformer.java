@@ -5,8 +5,8 @@ import eu.ydp.empiria.player.client.module.identification.presenter.SelectableCh
 
 public class ChoiceToIdentifierTransformer implements Function<SelectableChoicePresenter, String> {
 
-	@Override
-	public String apply(SelectableChoicePresenter input) {
-		return input.getIdentifier();
-	}
+    @Override
+    public String apply(SelectableChoicePresenter input) {
+        return input.getIdentifier();
+    }
 }
