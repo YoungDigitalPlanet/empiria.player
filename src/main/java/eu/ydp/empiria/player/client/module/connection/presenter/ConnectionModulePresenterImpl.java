@@ -11,8 +11,8 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;

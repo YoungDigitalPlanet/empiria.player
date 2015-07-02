@@ -1,18 +1,28 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import com.google.common.collect.Lists;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
+import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.google.common.collect.Lists;
-import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
-import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
-import java.util.List;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-
+@RunWith(GwtMockitoTestRunner.class)
 public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
 
 	private TextActionProcessor textProcessor;
@@ -40,6 +50,8 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 		assertThat(processedAction, is(instanceOf(ShowTextAction.class)));
 		assertThat(((ShowTextAction) processedAction).getContent().toString(), is(equalTo("Good")));
 		assertThat(collector.getActions().size(), is(equalTo(0)));
+
+		verify(mathJaxNative).renderMath(Mockito.isA(JavaScriptObject.class));
 	}
 
 	@Test
@@ -63,6 +75,9 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 		// then
 		ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 		verify(textProcessor, times(2)).processSingleAction(argument.capture());
+
+		verify(mathJaxNative, times(2)).renderMath(Mockito.isA(JavaScriptObject.class));
+
 		assertThat(collector.getActions().size(), is(equalTo(0)));
 		List<FeedbackAction> processedActions = argument.getAllValues();
 

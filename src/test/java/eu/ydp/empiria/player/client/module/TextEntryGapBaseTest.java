@@ -20,9 +20,9 @@ import eu.ydp.empiria.player.client.module.textentry.DragContentController;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModulePresenter;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TextEntryGapBaseTest {

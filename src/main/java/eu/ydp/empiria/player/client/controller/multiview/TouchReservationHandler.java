@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.multiview;
 
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 
 class TouchReservationHandler implements PlayerEventHandler {
 	private IMultiPageController multiPageController;

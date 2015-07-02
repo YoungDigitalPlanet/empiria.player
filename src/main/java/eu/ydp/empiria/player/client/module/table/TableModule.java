@@ -40,8 +40,8 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bgs) {
-		super.initModule(element, moduleSocket, mil, bgs);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
+		super.initModule(element, moduleSocket, bgs);
 
 		FlexTable table = new FlexTable();
 		table.setStyleName(styleNames.QP_TABLE_TABLE());

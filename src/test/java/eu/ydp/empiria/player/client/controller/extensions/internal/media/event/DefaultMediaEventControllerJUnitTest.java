@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.event;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 import static junitparams.JUnitParamsRunner.*;
 import static org.mockito.Mockito.*;
 
@@ -24,8 +24,8 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 @RunWith(JUnitParamsRunner.class)

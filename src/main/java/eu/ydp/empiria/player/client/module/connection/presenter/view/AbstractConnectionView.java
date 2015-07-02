@@ -22,9 +22,9 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveH
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartHandler;
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.TouchEvent;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;

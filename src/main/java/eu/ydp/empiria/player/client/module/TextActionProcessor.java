@@ -1,14 +1,21 @@
 package eu.ydp.empiria.player.client.module;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.*;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.processor.*;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcessorHelper;
+import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.gwtutil.client.StringUtils;
+
 import java.util.List;
 
 public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
@@ -17,6 +24,8 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
 	@Inject
 	private TextFeedback feedbackPresenter;
+	@Inject
+	private MathJaxNative mathJaxNative;
 
 	@Inject
 	private Provider<TextActionProcessor> provider;
@@ -54,9 +63,21 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 			ShowTextAction textAction = (ShowTextAction) action;
 			Element element = textAction.getContent().getValue();
 			Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
-			feedbackPresenter.setTextElement(widget);
-			feedbackPresenter.show();
+			JavaScriptObject mathJaxCallback = createCallback(widget);
+			mathJaxNative.renderMath(mathJaxCallback);
 		}
+	}
+
+	private native JavaScriptObject createCallback(Widget widget)/*-{
+		var that = this;
+		return function(){
+			that.@TextActionProcessor::showFeedback(*)(widget);
+		};
+	}-*/;
+
+	private void showFeedback(Widget widget){
+		feedbackPresenter.setTextElement(widget);
+		feedbackPresenter.show();
 	}
 
 	@Override

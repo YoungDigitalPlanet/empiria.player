@@ -18,8 +18,8 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairM
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEvent;
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;

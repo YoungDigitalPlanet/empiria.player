@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.dom.drag.NativeDragDataObject;
-import eu.ydp.empiria.player.client.util.events.dragdrop.DragDropEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.dragdrop.DragDropEventTypes;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.client.util.geom.Size;
 

@@ -10,10 +10,10 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEvent;
-import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEventHandler;
-import eu.ydp.empiria.player.client.util.events.feedback.FeedbackEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEvent;
+import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEventTypes;
 
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor implements FeedbackEventHandler {
 

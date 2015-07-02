@@ -9,24 +9,21 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 import eu.ydp.empiria.player.client.module.progressbonus.presenter.ProgressBonusPresenter;
 import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusView;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ProgressBonusModule extends SimpleModuleBase implements IStateful, IUniqueModule, ILifecycleModule {
+public class ProgressBonusModule extends SimpleModuleBase implements ILifecycleModule, StatefulModule {
 
 	private static final String PROGRESS_BONUS_ID_ATTR = "progressBonusId";
 

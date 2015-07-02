@@ -8,9 +8,9 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 import eu.ydp.empiria.player.client.controller.Page;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
-import eu.ydp.empiria.player.client.util.events.scope.PageScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
 
 /**
  * Testy dla {@link EventScope}

@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class SoundJsPlugin implements SoundApiForJs {
 

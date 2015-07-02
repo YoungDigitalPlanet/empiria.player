@@ -1,7 +1,10 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
+import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
@@ -9,7 +12,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.execution.MainFlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.processing.IFlowRequestProcessor;
-import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCommand;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvoker;
@@ -42,10 +44,6 @@ public final class FlowManager {
 		flowProcessor.setFlowOptions(oprions);
 	}
 
-	public FlowOptions getFlowOptions() {
-		return flowProcessor.getFlowOptions();
-	}
-
 	public void addCommandProcessor(IFlowRequestProcessor processor) {
 		flowRequestInvoker.addRequestProcessor(processor);
 	}
@@ -56,10 +54,6 @@ public final class FlowManager {
 
 	public int getCurrentPageIndex() {
 		return flowProcessor.getCurrentPageIndex();
-	}
-
-	public ActivityMode getActivityMode() {
-		return flowProcessor.getActivityMode();
 	}
 
 	public PageReference getPageReference() {
@@ -82,20 +76,12 @@ public final class FlowManager {
 		flowRequestInvoker.invokeRequest(request);
 	}
 
-	public void invokeFlowCommand(IFlowCommand command) { // NOPMD
-
-	}
-
 	public void setDisplayOptions(DisplayOptions options) {
 		flowProcessor.setDisplayOptions(options);
 	}
 
 	public DisplayOptions getDisplayOptions() {
 		return flowProcessor.getDisplayOptions();
-	}
-
-	public void gotoPage(int index) {
-		flowProcessor.gotoPage(index);
 	}
 
 	public IFlowSocket getFlowSocket() {
@@ -106,5 +92,17 @@ public final class FlowManager {
 				flowRequestInvoker.invokeRequest(command);
 			}
 		};
+	}
+
+	public JSONValue getState() {
+		JSONValue state;
+		if (getCurrentPageType() == PageType.TEST) {
+			state = new JSONNumber(getCurrentPageIndex());
+		} else if (getCurrentPageType() == PageType.TOC || getCurrentPageType() == PageType.SUMMARY) {
+			state = new JSONString(getCurrentPageType().toString());
+		} else {
+			state = JSONNull.getInstance();
+		}
+		return state;
 	}
 }

@@ -1,22 +1,32 @@
 package eu.ydp.empiria.player.client.controller;
 
-import com.google.gwt.core.client.*;
-import com.google.gwt.json.client.*;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.controller.body.*;
+import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
+import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
+import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
+import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
-import eu.ydp.empiria.player.client.controller.workmode.*;
+import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.module.containers.group.*;
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemBody implements WidgetWorkflowListener {
 
@@ -37,19 +47,21 @@ public class ItemBody implements WidgetWorkflowListener {
 	private boolean stateIsLoaded = false;
 
 	private final ModulesStateLoader modulesStateLoader;
+	private MathJaxNative mathJaxNative;
 	private final IgnoredModules ignoredModules;
 	private final PlayerWorkModeService playerWorkModeService;
 
 	@Inject
 	public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
 			InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-			IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService) {
+			IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative) {
 
 		this.moduleSocket = moduleSocket;
 		this.options = options;
 		this.modulesRegistrySocket = modulesRegistrySocket;
 		this.moduleHandlerManager = moduleHandlerManager;
 		this.modulesStateLoader = modulesStateLoader;
+		this.mathJaxNative = mathJaxNative;
 
 		parenthood = new ParenthoodManager();
 
@@ -65,7 +77,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		itemBodyModule = new ItemBodyModule();
 		modulesInstalator.setInitialParent(itemBodyModule);
-		itemBodyModule.initModule(itemBodyElement, moduleSocket, interactionEventsListener, generator);
+		itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
 
 		modules = new ArrayList<>();
 		modules.add(itemBodyModule);
@@ -92,6 +104,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
 		attached = true;
 		setState(stateAsync);
+		mathJaxNative.renderMath();
 	}
 
 	@Override
@@ -234,8 +247,9 @@ public class ItemBody implements WidgetWorkflowListener {
 		JSONObject states = new JSONObject();
 
 		for (IModule currModule : modules) {
-			if (currModule instanceof IStateful && currModule instanceof IUniqueModule) {
-				states.put(((IUniqueModule) currModule).getIdentifier(), ((IStateful) currModule).getState());
+			if (currModule instanceof StatefulModule) {
+				StatefulModule statefulModule = (StatefulModule) currModule;
+				states.put(statefulModule.getIdentifier(), statefulModule.getState());
 			}
 		}
 
@@ -265,13 +279,13 @@ public class ItemBody implements WidgetWorkflowListener {
 	}
 
 	private native JavaScriptObject createJsSocket()/*-{
-		var socket = {};
-		var instance = this;
-		socket.getModuleSockets = function() {
-			return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
-		};
-		return socket;
-	}-*/;
+        var socket = {};
+        var instance = this;
+        socket.getModuleSockets = function () {
+            return instance.@eu.ydp.empiria.player.client.controller.ItemBody::getModuleJsSockets()();
+        };
+        return socket;
+    }-*/;
 
 	private JavaScriptObject getModuleJsSockets() {
 		eu.ydp.empiria.player.client.controller.communication.sockets.ModuleInterferenceSocket[] moduleSockets = getModuleSockets();

@@ -19,11 +19,11 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.command.SetStyleNameCommand;
 import eu.ydp.gwtutil.client.event.factory.Command;
@@ -112,8 +112,8 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> implements
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, bodyGeneratorSocket);
 
 		if (element.hasAttribute("itemIndex")) {
 			itemIndex = NumberUtils.tryParseInt(element.getAttribute("itemIndex"), -1);

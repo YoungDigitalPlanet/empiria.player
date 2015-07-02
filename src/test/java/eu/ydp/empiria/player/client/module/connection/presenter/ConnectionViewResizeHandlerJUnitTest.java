@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import eu.ydp.empiria.player.client.util.events.multiplepair.PairConnectEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 
 @SuppressWarnings("PMD")
 public class ConnectionViewResizeHandlerJUnitTest {

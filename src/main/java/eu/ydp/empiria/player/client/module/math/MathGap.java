@@ -3,19 +3,18 @@ package eu.ydp.empiria.player.client.module.math;
 import java.util.Map;
 
 import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.module.IUniqueModule;
 
-public interface MathGap {
-	public Widget getContainer();
+public interface MathGap extends IUniqueModule{
+	Widget getContainer();
 
-	public String getUid();
+	String getUid();
 
-	public void setIndex(int index);
+	void setGapWidth(int gapWidth);
 
-	public void setGapWidth(int gapWidth);
+	void setGapHeight(int gapHeight);
 
-	public void setGapHeight(int gapHeight);
+	void setGapFontSize(int gapFontSize);
 
-	public void setGapFontSize(int gapFontSize);
-
-	public void setMathStyles(Map<String, String> mathStyles);
+	void setMathStyles(Map<String, String> mathStyles);
 }

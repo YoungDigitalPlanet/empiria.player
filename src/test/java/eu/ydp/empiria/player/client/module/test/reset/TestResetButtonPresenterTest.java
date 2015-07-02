@@ -20,8 +20,8 @@ import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.module.test.reset.view.TestResetButtonView;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.reset.LessonResetEvent;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEvent;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 @RunWith(GwtMockitoTestRunner.class)

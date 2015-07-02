@@ -2,9 +2,8 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IContainerModule;
 
-public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements IContainerModule, IActivity {
+public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements IActivity {
 
 	private final ModulesActivitiesController modulesActivitiesController;
 

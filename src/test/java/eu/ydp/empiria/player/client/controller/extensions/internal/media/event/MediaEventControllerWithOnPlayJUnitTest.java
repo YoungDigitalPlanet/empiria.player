@@ -23,8 +23,8 @@ import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.AbstractMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 @RunWith(JUnitParamsRunner.class)
 public class MediaEventControllerWithOnPlayJUnitTest {

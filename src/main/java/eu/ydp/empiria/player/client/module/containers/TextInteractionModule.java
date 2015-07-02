@@ -23,8 +23,8 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
 	}
 
 	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener mil, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, mil, bodyGeneratorSocket);
+	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+		super.initModule(element, moduleSocket, bodyGeneratorSocket);
 	}
 
 	@Override

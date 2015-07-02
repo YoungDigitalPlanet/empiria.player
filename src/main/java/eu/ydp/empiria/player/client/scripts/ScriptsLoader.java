@@ -2,42 +2,34 @@ package eu.ydp.empiria.player.client.scripts;
 
 import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
-import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
-import eu.ydp.gwtutil.client.scripts.*;
-import eu.ydp.gwtutil.client.util.paths.UrlConverter;
+import eu.ydp.gwtutil.client.scripts.AsynchronousScriptsLoader;
+import eu.ydp.gwtutil.client.scripts.SynchronousScriptsLoader;
 
 public class ScriptsLoader {
 
 	@Inject
-	private ScriptInjectorWrapper scriptInjectorWrapper;
-	@Inject
-	private UrlConverter urlConverter;
+	private SynchronousScriptsLoader synchronousScriptsLoader;
 	@Inject
 	private AsynchronousScriptsLoader asynchronousScriptsLoader;
-	@Inject
-	private ScriptInjectorDescriptor scriptInjectorDescriptor;
 
 	private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
-
 		@Override
 		public void onFailure(Exception reason) {
 		}
 
 		@Override
 		public void onSuccess(Void result) {
-			injectOthers();
+			asyncScriptLoading();
 		}
 	};
 
-
 	public void inject() {
-		ScriptUrl firstScript = scriptInjectorDescriptor.getFirstScript();
-		String correctUrl = urlConverter.getModuleRelativeUrl(firstScript);
-		scriptInjectorWrapper.fromUrl(correctUrl, callback);
+		synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values() , callback);
 	}
 
-	private void injectOthers() {
-		ScriptUrl[] scripts = scriptInjectorDescriptor.getOtherScripts();
-		asynchronousScriptsLoader.inject(scripts);
+	private void asyncScriptLoading() {
+		asynchronousScriptsLoader.inject(AsyncLoadingScripts.values());
 	}
+
+
 }
