@@ -14,24 +14,27 @@ public class MathJaxNative {
     }
 
     private native void addElementNative(Element element) /*-{
+        if (!$wnd.MathJax.Hub.yElements) {
+            $wnd.MathJax.Hub.yElements = [];
+        }
         $wnd.MathJax.Hub.yElements.push(element);
     }-*/;
 
     private native void renderMathNative() /*-{
         var mathJax = $wnd.MathJax;
-        if (mathJax) {
+        if (mathJax && typeof(mathJax.Hub.yProcessElements) === 'function') {
             mathJax.Hub.yProcessElements();
         }
     }-*/;
 
-    public void renderMath(JavaScriptObject jso) {
-        renderMathNative(jso);
+    public void renderMath(JavaScriptObject callback) {
+        renderMathNative(callback);
     }
 
-    private native void renderMathNative(JavaScriptObject jso) /*-{
+    private native void renderMathNative(JavaScriptObject callback) /*-{
         var mathJax = $wnd.MathJax;
-        if (mathJax) {
-            mathJax.Hub.yProcessElements(jso);
+        if (mathJax && typeof(mathJax.Hub.yProcessElements) === 'function') {
+            mathJax.Hub.yProcessElements(callback);
         }
     }-*/;
 }
