@@ -20,136 +20,136 @@ import java.util.Map;
 
 public class TextEntryMathGapModule extends TextEntryGapBase implements MathGap, SourcelistClient {
 
-	@Inject
-	@ModuleScoped
-	MathGapModel mathGapModel;
+    @Inject
+    @ModuleScoped
+    MathGapModel mathGapModel;
 
-	@Inject
-	TextEntryMathGapModulePresenter textEntryPresenter;
-	@Inject
-	private MathJaxGapContainer gapContainer;
+    @Inject
+    TextEntryMathGapModulePresenter textEntryPresenter;
+    @Inject
+    private MathJaxGapContainer gapContainer;
 
-	@Inject
-	MathSubAndSupUtil subAndSupUtil;
+    @Inject
+    MathSubAndSupUtil subAndSupUtil;
 
-	@PostConstruct
-	@Override
-	public void postConstruct() {
-		this.presenter = textEntryPresenter;
-		super.postConstruct();
-	}
+    @PostConstruct
+    @Override
+    public void postConstruct() {
+        this.presenter = textEntryPresenter;
+        super.postConstruct();
+    }
 
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
-		installViewInPlaceholder(placeholders.get(0));
+    @Override
+    public void installViews(List<HasWidgets> placeholders) {
+        installViewInPlaceholder(placeholders.get(0));
 
-		String uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
-		mathGapModel.setUid(uid);
+        String uid = getElementAttributeValue(EmpiriaTagConstants.ATTR_UID);
+        mathGapModel.setUid(uid);
 
-		applyIdAndClassToView((Widget) presenter.getContainer());
-		initStyles();
-		gapContainer.addMathGap(this);
-	}
+        applyIdAndClassToView((Widget) presenter.getContainer());
+        initStyles();
+        gapContainer.addMathGap(this);
+    }
 
-	@Override
-	public void onSetUp() {
-		super.onSetUp();
-		registerBindingContexts();
-	}
+    @Override
+    public void onSetUp() {
+        super.onSetUp();
+        registerBindingContexts();
+    }
 
-	@Override
-	public Widget getContainer() {
-		return (Widget) presenter.getContainer();
-	}
+    @Override
+    public Widget getContainer() {
+        return (Widget) presenter.getContainer();
+    }
 
-	@Override
-	public void setGapHeight(int gapHeight) {
-		presenter.setHeight(gapHeight, Unit.PX);
-	}
+    @Override
+    public void setGapHeight(int gapHeight) {
+        presenter.setHeight(gapHeight, Unit.PX);
+    }
 
-	public int getGapHeight() {
-		return presenter.getOffsetHeight();
-	}
+    public int getGapHeight() {
+        return presenter.getOffsetHeight();
+    }
 
-	@Override
-	public void setGapWidth(int gapWidth) {
-		presenter.setWidth(gapWidth, Unit.PX);
-	}
+    @Override
+    public void setGapWidth(int gapWidth) {
+        presenter.setWidth(gapWidth, Unit.PX);
+    }
 
-	public int getGapWidth() {
-		return presenter.getOffsetWidth();
-	}
+    public int getGapWidth() {
+        return presenter.getOffsetWidth();
+    }
 
-	@Override
-	public void setGapFontSize(int gapFontSize) {
-		presenter.setFontSize(gapFontSize, Unit.PX);
-	}
+    @Override
+    public void setGapFontSize(int gapFontSize) {
+        presenter.setFontSize(gapFontSize, Unit.PX);
+    }
 
-	@Override
-	public void setMathStyles(Map<String, String> mathStyles) {
-		mathGapModel.setMathStyles(mathStyles);
-	}
+    @Override
+    public void setMathStyles(Map<String, String> mathStyles) {
+        mathGapModel.setMathStyles(mathStyles);
+    }
 
-	@Override
-	public String getUid() {
-		return mathGapModel.getUid();
-	}
+    @Override
+    public String getUid() {
+        return mathGapModel.getUid();
+    }
 
-	protected void setDimensions() {
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)) {
-			setGapWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)));
-		}
+    protected void setDimensions() {
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)) {
+            setGapWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_WIDTH)));
+        }
 
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)) {
-			setGapHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)));
-		}
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)) {
+            setGapHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_HEIGHT)));
+        }
 
-		if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)) {
-			setGapFontSize(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)));
-		}
+        if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)) {
+            setGapFontSize(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_FONT_SIZE)));
+        }
 
-		if (subAndSupUtil.isSubOrSup(getModuleElement(), getModuleElement().getParentNode())) {
-			if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_WIDTH)) {
-				setGapWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_WIDTH)));
-			} else {
-				setGapWidth((int) (getGapWidth() * 0.7));
-			}
+        if (subAndSupUtil.isSubOrSup(getModuleElement(), getModuleElement().getParentNode())) {
+            if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_WIDTH)) {
+                setGapWidth(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_WIDTH)));
+            } else {
+                setGapWidth((int) (getGapWidth() * 0.7));
+            }
 
-			if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_HEIGHT)) {
-				setGapHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_HEIGHT)));
-			} else {
-				setGapHeight((int) (getGapWidth() * 0.7));
-			}
+            if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_HEIGHT)) {
+                setGapHeight(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_HEIGHT)));
+            } else {
+                setGapHeight((int) (getGapWidth() * 0.7));
+            }
 
-			if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE)) {
-				setGapFontSize(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE)));
-			} else {
-				setGapFontSize((int) (getGapWidth() * 0.7));
-			}
-		}
-	}
+            if (mathGapModel.containsStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE)) {
+                setGapFontSize(NumberUtils.tryParseInt(mathGapModel.getStyle(EmpiriaStyleNameConstants.EMPIRIA_MATH_GAP_SUBSUP_FONT_SIZE)));
+            } else {
+                setGapFontSize((int) (getGapWidth() * 0.7));
+            }
+        }
+    }
 
-	private void initStyles() {
-		readStyles();
-		updateStyles();
-	}
+    private void initStyles() {
+        readStyles();
+        updateStyles();
+    }
 
-	private void readStyles() {
-		Map<String, String> styles = styleSocket.getStyles(getModuleElement());
-		mathGapModel.getMathStyles().putAll(styles);
-	}
+    private void readStyles() {
+        Map<String, String> styles = styleSocket.getStyles(getModuleElement());
+        mathGapModel.getMathStyles().putAll(styles);
+    }
 
-	private void updateStyles() {
-		setDimensions();
-		setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
-		initReplacements(mathGapModel.getMathStyles());
-	}
+    private void updateStyles() {
+        setDimensions();
+        setMaxlengthBinding(mathGapModel.getMathStyles(), getModuleElement());
+        setWidthBinding(mathGapModel.getMathStyles(), getModuleElement());
+        initReplacements(mathGapModel.getMathStyles());
+    }
 
-	private void installViewInPlaceholder(HasWidgets placeholder) {
-		Widget placeholderWidget = (Widget) placeholder;
-		HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
-		presenter.installViewInContainer(placeholderParent);
-		placeholderWidget.removeFromParent();
-	}
+    private void installViewInPlaceholder(HasWidgets placeholder) {
+        Widget placeholderWidget = (Widget) placeholder;
+        HasWidgets placeholderParent = (HasWidgets) placeholderWidget.getParent();
+        presenter.installViewInContainer(placeholderParent);
+        placeholderWidget.removeFromParent();
+    }
 }

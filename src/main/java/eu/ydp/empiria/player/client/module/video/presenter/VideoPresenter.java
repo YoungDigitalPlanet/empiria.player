@@ -10,39 +10,39 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 public class VideoPresenter {
 
-	private final VideoView view;
-	private final VideoPlayerReattacher reAttachHack;
-	private final VideoPlayerBuilder videoPlayerBuilder;
-	private final UserAgentUtil userAgentUtil;
-	private final VideoModuleFactory videoModuleFactory;
+    private final VideoView view;
+    private final VideoPlayerReattacher reAttachHack;
+    private final VideoPlayerBuilder videoPlayerBuilder;
+    private final UserAgentUtil userAgentUtil;
+    private final VideoModuleFactory videoModuleFactory;
 
 
-	@Inject
-	public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerBuilder videoPlayerAttacher, @ModuleScoped VideoPlayerReattacher reAttachHack,
-			UserAgentUtil userAgentUtil, VideoModuleFactory videoModuleFactory) {
-		this.view = view;
-		this.videoPlayerBuilder = videoPlayerAttacher;
-		this.reAttachHack = reAttachHack;
-		this.userAgentUtil = userAgentUtil;
-		this.videoModuleFactory = videoModuleFactory;
-	}
+    @Inject
+    public VideoPresenter(@ModuleScoped VideoView view, @ModuleScoped VideoPlayerBuilder videoPlayerAttacher, @ModuleScoped VideoPlayerReattacher reAttachHack,
+                          UserAgentUtil userAgentUtil, VideoModuleFactory videoModuleFactory) {
+        this.view = view;
+        this.videoPlayerBuilder = videoPlayerAttacher;
+        this.reAttachHack = reAttachHack;
+        this.userAgentUtil = userAgentUtil;
+        this.videoModuleFactory = videoModuleFactory;
+    }
 
-	public void start() {
-		view.createView();
+    public void start() {
+        view.createView();
 
-		VideoPlayer videoPlayer = videoPlayerBuilder.build();
-		view.attachVideoPlayer(videoPlayer);
-		reAttachHack.registerReattachHandlerToView(view);
-		initVideoForBookshelf(videoPlayer);
-	}
+        VideoPlayer videoPlayer = videoPlayerBuilder.build();
+        view.attachVideoPlayer(videoPlayer);
+        reAttachHack.registerReattachHandlerToView(view);
+        initVideoForBookshelf(videoPlayer);
+    }
 
-	private void initVideoForBookshelf(VideoPlayer videoPlayer) {
-		if (userAgentUtil.isAndroidBrowser() && userAgentUtil.isAIR()) {
-			videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer).init(view);
-		}
-	}
+    private void initVideoForBookshelf(VideoPlayer videoPlayer) {
+        if (userAgentUtil.isAndroidBrowser() && userAgentUtil.isAIR()) {
+            videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer).init(view);
+        }
+    }
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 }

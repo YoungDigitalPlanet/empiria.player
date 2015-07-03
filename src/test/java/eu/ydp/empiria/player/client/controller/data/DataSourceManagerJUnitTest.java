@@ -11,19 +11,19 @@ import static org.mockito.Mockito.verify;
 
 public class DataSourceManagerJUnitTest extends TestCase {
 
-	public void testMainPreloaderAddedAndRemoved() {
-		DataSourceManager dsm = new DataSourceManager(new AssessmentDataSourceManager());
+    public void testMainPreloaderAddedAndRemoved() {
+        DataSourceManager dsm = new DataSourceManager(new AssessmentDataSourceManager());
 
-		ForIsWidget mockRootPanel = mock(ForIsWidget.class);
-		IsWidget mockImage = mock(IsWidget.class);
+        ForIsWidget mockRootPanel = mock(ForIsWidget.class);
+        IsWidget mockImage = mock(IsWidget.class);
 
-		dsm.loadMainDocument("", mockRootPanel, mockImage);
-		verify(mockRootPanel).add(any(IsWidget.class));
+        dsm.loadMainDocument("", mockRootPanel, mockImage);
+        verify(mockRootPanel).add(any(IsWidget.class));
 
-		DataLoaderEventListener mockListener = mock(DataLoaderEventListener.class);
-		dsm.setDataLoaderEventListener(mockListener);
+        DataLoaderEventListener mockListener = mock(DataLoaderEventListener.class);
+        dsm.setDataLoaderEventListener(mockListener);
 
-		dsm.onLoadFinished(mockImage, mockRootPanel);
-		verify(mockRootPanel).remove(any(int.class));
-	}
+        dsm.onLoadFinished(mockImage, mockRootPanel);
+        verify(mockRootPanel).remove(any(int.class));
+    }
 }

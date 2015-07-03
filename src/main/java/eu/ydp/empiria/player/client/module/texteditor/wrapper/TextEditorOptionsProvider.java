@@ -6,19 +6,19 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 public class TextEditorOptionsProvider implements Provider<TextEditorOptions> {
 
-	@Inject
-	private UserAgentUtil userAgentUtil;
-	@Inject
-	private TextEditorDesktopOptions desktopOptions;
-	@Inject
-	private TextEditorMobileOptions mobileOptions;
+    @Inject
+    private UserAgentUtil userAgentUtil;
+    @Inject
+    private TextEditorDesktopOptions desktopOptions;
+    @Inject
+    private TextEditorMobileOptions mobileOptions;
 
-	@Override
-	public TextEditorOptions get() {
-		if (userAgentUtil.isMobileUserAgent()) {
-			return mobileOptions;
+    @Override
+    public TextEditorOptions get() {
+        if (userAgentUtil.isMobileUserAgent()) {
+            return mobileOptions;
 
-		}
-		return desktopOptions;
-	}
+        }
+        return desktopOptions;
+    }
 }

@@ -4,8 +4,8 @@ import com.google.gwt.dom.client.NativeEvent;
 
 public class ConnectionMoveStartEvent extends ConnectionMoveEvent {
 
-	public ConnectionMoveStartEvent(double xPos, double yPos, NativeEvent event) {
-		super(xPos, yPos, event);
-	}
+    public ConnectionMoveStartEvent(double xPos, double yPos, NativeEvent event) {
+        super(xPos, yPos, event);
+    }
 
 }

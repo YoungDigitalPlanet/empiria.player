@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.data.events;
 
 public interface DataLoaderEventListener {
 
-	public void onAssessmentLoaded();
+    public void onAssessmentLoaded();
 
-	public void onDataReady();
+    public void onDataReady();
 }

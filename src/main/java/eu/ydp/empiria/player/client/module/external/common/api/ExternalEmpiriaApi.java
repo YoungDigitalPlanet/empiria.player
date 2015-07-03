@@ -9,11 +9,11 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 @JsType
 public class ExternalEmpiriaApi {
 
-	@Inject
-	@ModuleScoped
-	private ExternalSoundInstanceCreator soundInstanceCreator;
+    @Inject
+    @ModuleScoped
+    private ExternalSoundInstanceCreator soundInstanceCreator;
 
-	public void initSound(String src, ExternalSoundInstanceCallback callback) {
-		soundInstanceCreator.createSound(src, callback);
-	}
+    public void initSound(String src, ExternalSoundInstanceCallback callback) {
+        soundInstanceCreator.createSound(src, callback);
+    }
 }

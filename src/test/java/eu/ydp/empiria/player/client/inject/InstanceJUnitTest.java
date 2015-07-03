@@ -1,42 +1,40 @@
 package eu.ydp.empiria.player.client.inject;
 
-import static org.junit.Assert.assertTrue;
-
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.AbstractTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.Inject;
-
-import eu.ydp.empiria.player.client.AbstractTestBase;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("PMD")
 public class InstanceJUnitTest extends AbstractTestBase {
 
-	private static class InstanceToInject {
+    private static class InstanceToInject {
 
-	}
+    }
 
-	private static class ObjectWithInstance {
-		@Inject
-		Instance<InstanceToInject> instance;
+    private static class ObjectWithInstance {
+        @Inject
+        Instance<InstanceToInject> instance;
 
-		public InstanceToInject getInstance() {
-			return instance.get();
-		}
-	}
+        public InstanceToInject getInstance() {
+            return instance.get();
+        }
+    }
 
-	ObjectWithInstance instance;
+    ObjectWithInstance instance;
 
-	@Before
-	public void before() {
-		instance = injector.getInstance(ObjectWithInstance.class);
-	}
+    @Before
+    public void before() {
+        instance = injector.getInstance(ObjectWithInstance.class);
+    }
 
-	@Test
-	public void testGet() {
-		InstanceToInject injectInstance = instance.getInstance();
-		InstanceToInject injectInstance2 = instance.getInstance();
-		assertTrue(injectInstance == injectInstance2);
-	}
+    @Test
+    public void testGet() {
+        InstanceToInject injectInstance = instance.getInstance();
+        InstanceToInject injectInstance2 = instance.getInstance();
+        assertTrue(injectInstance == injectInstance2);
+    }
 
 }

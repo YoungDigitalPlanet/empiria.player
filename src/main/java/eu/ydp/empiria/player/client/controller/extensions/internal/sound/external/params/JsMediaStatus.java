@@ -4,12 +4,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public final class JsMediaStatus extends JavaScriptObject implements MediaStatus {
 
-	protected JsMediaStatus() {
-	}
+    protected JsMediaStatus() {
+    }
 
-	@Override
-	public native int getCurrentTimeMillis() /*-{
-												return this.currentTime;
-												}-*/;
+    @Override
+    public native int getCurrentTimeMillis() /*-{
+        return this.currentTime;
+    }-*/;
 
 }

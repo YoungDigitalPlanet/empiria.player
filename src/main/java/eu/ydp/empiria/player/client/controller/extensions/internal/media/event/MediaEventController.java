@@ -5,5 +5,5 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaEx
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 
 public interface MediaEventController {
-	void onMediaEvent(MediaEvent event, MediaExecutor<?> executor, AbstractMediaProcessor processor);
+    void onMediaEvent(MediaEvent event, MediaExecutor<?> executor, AbstractMediaProcessor processor);
 }

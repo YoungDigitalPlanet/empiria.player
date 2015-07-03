@@ -2,22 +2,22 @@ package eu.ydp.empiria.player.client;
 
 public interface EntryPointEventListener {
 
-	void onNavigateNextItem();
+    void onNavigateNextItem();
 
-	void onNavigatePreviousItem();
+    void onNavigatePreviousItem();
 
-	void onNavigateFinishItem();
+    void onNavigateFinishItem();
 
-	void onNavigateFinishAssessment();
+    void onNavigateFinishAssessment();
 
-	void onNavigateResetItem();
+    void onNavigateResetItem();
 
-	void onNavigateContinueItem();
+    void onNavigateContinueItem();
 
-	void onNavigateResetAssessment();
+    void onNavigateResetAssessment();
 
-	void onNavigateSummaryAssessment();
+    void onNavigateSummaryAssessment();
 
-	void onNavigateContinueAssessment();
+    void onNavigateContinueAssessment();
 
 }

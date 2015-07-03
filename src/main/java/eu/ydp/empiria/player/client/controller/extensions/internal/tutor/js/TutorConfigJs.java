@@ -5,14 +5,14 @@ import com.google.gwt.core.client.JsArray;
 
 public class TutorConfigJs extends JavaScriptObject {
 
-	protected TutorConfigJs() {
-	}
+    protected TutorConfigJs() {
+    }
 
-	public final native JsArray<TutorActionJs> getActions()/*-{
-															return this.actions;
-															}-*/;
+    public final native JsArray<TutorActionJs> getActions()/*-{
+        return this.actions;
+    }-*/;
 
-	public final native JsArray<TutorJs> getTutors()/*-{
-													return this.tutors;
-													}-*/;
+    public final native JsArray<TutorJs> getTutors()/*-{
+        return this.tutors;
+    }-*/;
 }

@@ -5,18 +5,18 @@ import com.google.gwt.user.client.ui.PushButton;
 
 public class PushButtonWithIndex extends PushButton {
 
-	public PushButtonWithIndex(String text) {
-		super(text);
-		this.getElement().getElementsByTagName("input").getItem(0).getStyle().setPosition(Position.RELATIVE);
-	}
+    public PushButtonWithIndex(String text) {
+        super(text);
+        this.getElement().getElementsByTagName("input").getItem(0).getStyle().setPosition(Position.RELATIVE);
+    }
 
-	protected int index = -1;
+    protected int index = -1;
 
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

@@ -1,16 +1,16 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style>
-		.imagearea{
-			cursor: move;
-		}
-	</ui:style>
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
-	<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_WINDOW}' ui:field="windowPanel" >
-		<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_PANEL} {style.imagearea}' ui:field="imagePanel" >
-			<g:Image styleName="{res.QP_IMG_EXPLORABLE_IMAGE_IMG_IMG}" ui:field="image" />
-		</g:FlowPanel>
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .imagearea {
+            cursor: move;
+        }
+    </ui:style>
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_WINDOW}' ui:field="windowPanel">
+        <g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_IMG_PANEL} {style.imagearea}' ui:field="imagePanel">
+            <g:Image styleName="{res.QP_IMG_EXPLORABLE_IMAGE_IMG_IMG}" ui:field="image"/>
+        </g:FlowPanel>
+    </g:FlowPanel>
 
 </ui:UiBinder>

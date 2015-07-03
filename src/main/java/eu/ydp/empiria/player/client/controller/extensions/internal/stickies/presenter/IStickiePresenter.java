@@ -5,19 +5,19 @@ import eu.ydp.gwtutil.client.geom.Point;
 
 public interface IStickiePresenter {
 
-	void negateStickieMinimize();
+    void negateStickieMinimize();
 
-	void deleteStickie();
+    void deleteStickie();
 
-	void updateStickieView();
+    void updateStickieView();
 
-	void centerPositionToView();
+    void centerPositionToView();
 
-	void setView(IStickieView stickieView);
+    void setView(IStickieView stickieView);
 
-	void correctStickiePosition();
+    void correctStickiePosition();
 
-	void changeContentText(String textToAppend);
+    void changeContentText(String textToAppend);
 
-	void moveStickieToPosition(Point<Integer> newPosition);
+    void moveStickieToPosition(Point<Integer> newPosition);
 }

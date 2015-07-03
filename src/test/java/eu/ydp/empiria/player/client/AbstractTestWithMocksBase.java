@@ -4,8 +4,8 @@ import eu.ydp.gwtutil.test.AbstractMockingTestBase;
 
 public abstract class AbstractTestWithMocksBase extends AbstractMockingTestBase<TestWithMocksGuiceModule> {
 
-	public AbstractTestWithMocksBase() {
-		super(TestWithMocksGuiceModule.class);
-	}
+    public AbstractTestWithMocksBase() {
+        super(TestWithMocksGuiceModule.class);
+    }
 
 }

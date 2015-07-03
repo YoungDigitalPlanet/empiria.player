@@ -5,6 +5,6 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Feed
 
 public interface FeedbackMatcher {
 
-	boolean match(FeedbackCondition condition, FeedbackProperties properties);
+    boolean match(FeedbackCondition condition, FeedbackProperties properties);
 
 }

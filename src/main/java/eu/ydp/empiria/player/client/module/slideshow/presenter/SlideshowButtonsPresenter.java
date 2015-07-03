@@ -7,48 +7,48 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SlideshowButtonsPresenter {
 
-	private final SlideshowButtonsView buttonsView;
-	private SlideshowController controller;
+    private final SlideshowButtonsView buttonsView;
+    private SlideshowController controller;
 
-	@Inject
-	public SlideshowButtonsPresenter(@ModuleScoped SlideshowButtonsView buttonsView) {
-		this.buttonsView = buttonsView;
-		buttonsView.setPresenter(this);
-	}
+    @Inject
+    public SlideshowButtonsPresenter(@ModuleScoped SlideshowButtonsView buttonsView) {
+        this.buttonsView = buttonsView;
+        buttonsView.setPresenter(this);
+    }
 
-	public void setSlideshowController(SlideshowController controller) {
-		this.controller = controller;
-	}
+    public void setSlideshowController(SlideshowController controller) {
+        this.controller = controller;
+    }
 
-	public void setEnabledNextButton(boolean enabled) {
-		buttonsView.setEnabledNextButton(enabled);
-	}
+    public void setEnabledNextButton(boolean enabled) {
+        buttonsView.setEnabledNextButton(enabled);
+    }
 
-	public void setEnabledPreviousButton(boolean enabled) {
-		buttonsView.setEnabledPreviousButton(enabled);
-	}
+    public void setEnabledPreviousButton(boolean enabled) {
+        buttonsView.setEnabledPreviousButton(enabled);
+    }
 
-	public void setPlayButtonDown(boolean isDown) {
-		buttonsView.setPlayButtonDown(isDown);
-	}
+    public void setPlayButtonDown(boolean isDown) {
+        buttonsView.setPlayButtonDown(isDown);
+    }
 
-	public void onNextClick() {
-		controller.showNextSlide();
-	}
+    public void onNextClick() {
+        controller.showNextSlide();
+    }
 
-	public void onPreviousClick() {
-		controller.showPreviousSlide();
-	}
+    public void onPreviousClick() {
+        controller.showPreviousSlide();
+    }
 
-	public void onPlayPauseClick() {
-		if (buttonsView.isPlayButtonDown()) {
-			controller.playSlideshow();
-		} else {
-			controller.pauseSlideshow();
-		}
-	}
+    public void onPlayPauseClick() {
+        if (buttonsView.isPlayButtonDown()) {
+            controller.playSlideshow();
+        } else {
+            controller.pauseSlideshow();
+        }
+    }
 
-	public void onStopClick() {
-		controller.stopSlideshow();
-	}
+    public void onStopClick() {
+        controller.stopSlideshow();
+    }
 }

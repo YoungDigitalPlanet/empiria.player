@@ -14,31 +14,31 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class VideoPlayerBuilderTest {
 
-	@InjectMocks
-	private VideoPlayerBuilder testObj;
-	@Mock
-	private VideoPlayerFactory playerPactory;
-	@Mock
-	private VideoModuleFactory moduleFactory;
-	@Mock
-	private VideoBean videoBean;
+    @InjectMocks
+    private VideoPlayerBuilder testObj;
+    @Mock
+    private VideoPlayerFactory playerPactory;
+    @Mock
+    private VideoModuleFactory moduleFactory;
+    @Mock
+    private VideoBean videoBean;
 
-	@Test
-	public void shouldCreateVideoPlayer() {
-		// given
-		VideoPlayer videoPlayer = mock(VideoPlayer.class);
-		when(playerPactory.create(videoBean)).thenReturn(videoPlayer);
+    @Test
+    public void shouldCreateVideoPlayer() {
+        // given
+        VideoPlayer videoPlayer = mock(VideoPlayer.class);
+        when(playerPactory.create(videoBean)).thenReturn(videoPlayer);
 
-		final VideoPlayerAttachHandler mockHandler = mock(VideoPlayerAttachHandler.class);
-		when(moduleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer)).thenReturn(mockHandler);
+        final VideoPlayerAttachHandler mockHandler = mock(VideoPlayerAttachHandler.class);
+        when(moduleFactory.createAttachHandlerForRegisteringPauseEvent(videoPlayer)).thenReturn(mockHandler);
 
-		// when
-		testObj.build();
+        // when
+        testObj.build();
 
-		// then
-		verify(moduleFactory).createAttachHandlerForRegisteringPauseEvent(videoPlayer);
-		verify(videoPlayer).addAttachHandler(mockHandler);
+        // then
+        verify(moduleFactory).createAttachHandlerForRegisteringPauseEvent(videoPlayer);
+        verify(videoPlayer).addAttachHandler(mockHandler);
 
-	}
+    }
 
 }

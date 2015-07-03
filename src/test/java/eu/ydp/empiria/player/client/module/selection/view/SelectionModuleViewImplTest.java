@@ -20,194 +20,194 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class SelectionModuleViewImplTest {
 
-	private Grid grid;
-	private Panel panel;
-	private ClickHandler clickHandler;
-	private SelectionButtonGridElementImpl firstButtonGridElement;
-	private SelectionButtonGridElementImpl secondButtonGridElement;
-	private SelectionElementGenerator gridGenerator;
+    private Grid grid;
+    private Panel panel;
+    private ClickHandler clickHandler;
+    private SelectionButtonGridElementImpl firstButtonGridElement;
+    private SelectionButtonGridElementImpl secondButtonGridElement;
+    private SelectionElementGenerator gridGenerator;
 
-	private SelectionModuleViewImpl selectionView;
+    private SelectionModuleViewImpl selectionView;
 
-	@Before
-	public void setup() {
-		gridGenerator = mock(SelectionElementGenerator.class);
+    @Before
+    public void setup() {
+        gridGenerator = mock(SelectionElementGenerator.class);
 
-		selectionView = new SelectionModuleViewImpl(gridGenerator);
+        selectionView = new SelectionModuleViewImpl(gridGenerator);
 
-		selectionView.selectionGrid = grid = mock(Grid.class);
-		selectionView.mainPanel = panel = mock(Panel.class);
-		selectionView.promptWidget = mock(Widget.class);
-		clickHandler = mock(ClickHandler.class);
-		firstButtonGridElement = mock(SelectionButtonGridElementImpl.class);
-		secondButtonGridElement = mock(SelectionButtonGridElementImpl.class);
-	}
+        selectionView.selectionGrid = grid = mock(Grid.class);
+        selectionView.mainPanel = panel = mock(Panel.class);
+        selectionView.promptWidget = mock(Widget.class);
+        clickHandler = mock(ClickHandler.class);
+        firstButtonGridElement = mock(SelectionButtonGridElementImpl.class);
+        secondButtonGridElement = mock(SelectionButtonGridElementImpl.class);
+    }
 
-	@Test
-	public void testSetGridSize() {
-		// when
-		int rows = 5;
-		int cols = 7;
+    @Test
+    public void testSetGridSize() {
+        // when
+        int rows = 5;
+        int cols = 7;
 
-		selectionView.setGridSize(rows, cols);
+        selectionView.setGridSize(rows, cols);
 
-		// then
-		verify(grid).resize(rows + 1, cols + 1);
-	}
+        // then
+        verify(grid).resize(rows + 1, cols + 1);
+    }
 
-	@Test
-	public void testSetItemDisplayedName() {
-		// when
-		SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
-		SelectionItemGridElementImpl gridElement = mock(SelectionItemGridElementImpl.class);
-		XMLContent item = new XMLContent() {
-			@Override
-			public Element getValue() {
-				return mock(Element.class);
-			}
-		};
+    @Test
+    public void testSetItemDisplayedName() {
+        // when
+        SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
+        SelectionItemGridElementImpl gridElement = mock(SelectionItemGridElementImpl.class);
+        XMLContent item = new XMLContent() {
+            @Override
+            public Element getValue() {
+                return mock(Element.class);
+            }
+        };
 
-		when(gridGenerator.createItemDisplayElement(Matchers.any(Element.class))).thenReturn(gridElement);
+        when(gridGenerator.createItemDisplayElement(Matchers.any(Element.class))).thenReturn(gridElement);
 
-		selectionView.setItemDisplayedName(item, position);
-		// then
+        selectionView.setItemDisplayedName(item, position);
+        // then
 
-		verify(gridGenerator).createItemDisplayElement(Matchers.any(Element.class));
-		verify(grid).setWidget(0, 0, gridElement.asWidget());
-	}
+        verify(gridGenerator).createItemDisplayElement(Matchers.any(Element.class));
+        verify(grid).setWidget(0, 0, gridElement.asWidget());
+    }
 
-	@Test
-	public void testSetChoiceOptionDisplayedName() {
-		// when
-		SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
-		SelectionChoiceGridElementImpl gridElement = mock(SelectionChoiceGridElementImpl.class);
-		XMLContent item = new XMLContent() {
-			@Override
-			public Element getValue() {
-				return mock(Element.class);
-			}
-		};
+    @Test
+    public void testSetChoiceOptionDisplayedName() {
+        // when
+        SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
+        SelectionChoiceGridElementImpl gridElement = mock(SelectionChoiceGridElementImpl.class);
+        XMLContent item = new XMLContent() {
+            @Override
+            public Element getValue() {
+                return mock(Element.class);
+            }
+        };
 
-		when(gridGenerator.createChoiceDisplayElement(Matchers.any(Element.class))).thenReturn(gridElement);
+        when(gridGenerator.createChoiceDisplayElement(Matchers.any(Element.class))).thenReturn(gridElement);
 
-		selectionView.setChoiceOptionDisplayedName(item, position);
-		// then
+        selectionView.setChoiceOptionDisplayedName(item, position);
+        // then
 
-		verify(gridGenerator).createChoiceDisplayElement(Matchers.any(Element.class));
-		verify(grid).setWidget(0, 0, gridElement.asWidget());
-	}
+        verify(gridGenerator).createChoiceDisplayElement(Matchers.any(Element.class));
+        verify(grid).setWidget(0, 0, gridElement.asWidget());
+    }
 
-	@Test
-	public void testCreateButtonForItemChoicePair() {
-		// when
-		SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
-		String styleName = "styleName";
+    @Test
+    public void testCreateButtonForItemChoicePair() {
+        // when
+        SelectionGridElementPosition position = new SelectionGridElementPosition(0, 0);
+        String styleName = "styleName";
 
-		when(gridGenerator.createChoiceButtonElement(styleName)).thenReturn(firstButtonGridElement);
+        when(gridGenerator.createChoiceButtonElement(styleName)).thenReturn(firstButtonGridElement);
 
-		selectionView.createButtonForItemChoicePair(position, styleName);
-		// then
+        selectionView.createButtonForItemChoicePair(position, styleName);
+        // then
 
-		verify(gridGenerator).createChoiceButtonElement(styleName);
-		verify(grid).setWidget(0, 0, firstButtonGridElement.asWidget());
-	}
+        verify(gridGenerator).createChoiceButtonElement(styleName);
+        verify(grid).setWidget(0, 0, firstButtonGridElement.asWidget());
+    }
 
-	@Test
-	public void testAddClickHandlerToButton() {
-		// when
-		addButtonsToGrid();
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+    @Test
+    public void testAddClickHandlerToButton() {
+        // when
+        addButtonsToGrid();
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
 
-		selectionView.addClickHandlerToButton(firstPosition, clickHandler);
-		selectionView.addClickHandlerToButton(secondPosition, clickHandler);
-		// then
+        selectionView.addClickHandlerToButton(firstPosition, clickHandler);
+        selectionView.addClickHandlerToButton(secondPosition, clickHandler);
+        // then
 
-		verify(firstButtonGridElement).addClickHandler(clickHandler);
-		verify(secondButtonGridElement).addClickHandler(clickHandler);
-	}
+        verify(firstButtonGridElement).addClickHandler(clickHandler);
+        verify(secondButtonGridElement).addClickHandler(clickHandler);
+    }
 
-	@Test
-	public void testSelectButton() {
-		// when
-		addButtonsToGrid();
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+    @Test
+    public void testSelectButton() {
+        // when
+        addButtonsToGrid();
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
 
-		selectionView.selectButton(firstPosition);
-		selectionView.selectButton(secondPosition);
-		// then
+        selectionView.selectButton(firstPosition);
+        selectionView.selectButton(secondPosition);
+        // then
 
-		verify(firstButtonGridElement).select();
-		verify(secondButtonGridElement).select();
-	}
+        verify(firstButtonGridElement).select();
+        verify(secondButtonGridElement).select();
+    }
 
-	@Test
-	public void testUnselectButton() {
-		// when
-		addButtonsToGrid();
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+    @Test
+    public void testUnselectButton() {
+        // when
+        addButtonsToGrid();
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
 
-		selectionView.unselectButton(firstPosition);
-		selectionView.unselectButton(secondPosition);
-		// then
+        selectionView.unselectButton(firstPosition);
+        selectionView.unselectButton(secondPosition);
+        // then
 
-		verify(firstButtonGridElement).unselect();
-		verify(secondButtonGridElement).unselect();
-	}
+        verify(firstButtonGridElement).unselect();
+        verify(secondButtonGridElement).unselect();
+    }
 
-	@Test
-	public void testLockButton() {
-		// when
-		addButtonsToGrid();
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+    @Test
+    public void testLockButton() {
+        // when
+        addButtonsToGrid();
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
 
-		boolean lock = true;
+        boolean lock = true;
 
-		selectionView.lockButton(firstPosition, lock);
-		selectionView.lockButton(secondPosition, lock);
-		// then
+        selectionView.lockButton(firstPosition, lock);
+        selectionView.lockButton(secondPosition, lock);
+        // then
 
-		verify(firstButtonGridElement).setButtonEnabled(!lock);
-		verify(secondButtonGridElement).setButtonEnabled(!lock);
-	}
+        verify(firstButtonGridElement).setButtonEnabled(!lock);
+        verify(secondButtonGridElement).setButtonEnabled(!lock);
+    }
 
-	@Test
-	public void testUpdateButtonStyle() {
-		// when
-		addButtonsToGrid();
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+    @Test
+    public void testUpdateButtonStyle() {
+        // when
+        addButtonsToGrid();
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
 
-		UserAnswerType answerType = UserAnswerType.CORRECT;
+        UserAnswerType answerType = UserAnswerType.CORRECT;
 
-		selectionView.updateButtonStyle(firstPosition, answerType);
-		selectionView.updateButtonStyle(secondPosition, answerType);
-		// then
+        selectionView.updateButtonStyle(firstPosition, answerType);
+        selectionView.updateButtonStyle(secondPosition, answerType);
+        // then
 
-		verify(firstButtonGridElement).updateStyle(answerType);
-		verify(secondButtonGridElement).updateStyle(answerType);
-	}
+        verify(firstButtonGridElement).updateStyle(answerType);
+        verify(secondButtonGridElement).updateStyle(answerType);
+    }
 
-	@Test
-	public void testAsWidget() {
-		// then
-		Assert.assertEquals(selectionView.asWidget(), panel);
+    @Test
+    public void testAsWidget() {
+        // then
+        Assert.assertEquals(selectionView.asWidget(), panel);
 
-	}
+    }
 
-	private void addButtonsToGrid() {
-		SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
-		SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
-		String firstStyleName = "styleName1";
-		String secondStyleName = "styleName2";
+    private void addButtonsToGrid() {
+        SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
+        SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 1);
+        String firstStyleName = "styleName1";
+        String secondStyleName = "styleName2";
 
-		when(gridGenerator.createChoiceButtonElement(firstStyleName)).thenReturn(firstButtonGridElement);
-		when(gridGenerator.createChoiceButtonElement(secondStyleName)).thenReturn(secondButtonGridElement);
+        when(gridGenerator.createChoiceButtonElement(firstStyleName)).thenReturn(firstButtonGridElement);
+        when(gridGenerator.createChoiceButtonElement(secondStyleName)).thenReturn(secondButtonGridElement);
 
-		selectionView.createButtonForItemChoicePair(firstPosition, firstStyleName);
-		selectionView.createButtonForItemChoicePair(secondPosition, secondStyleName);
-	}
+        selectionView.createButtonForItemChoicePair(firstPosition, firstStyleName);
+        selectionView.createButtonForItemChoicePair(secondPosition, secondStyleName);
+    }
 }

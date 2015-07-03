@@ -4,10 +4,10 @@ import eu.ydp.empiria.player.client.module.video.VideoPlayerControl;
 
 public interface VideoPlayerNative extends VideoPlayerControl {
 
-	void initPlayer(String playerId);
+    void initPlayer(String playerId);
 
-	void disposeCurrentPlayer();
+    void disposeCurrentPlayer();
 
-	public void disablePointerEvents();
+    public void disablePointerEvents();
 
 }

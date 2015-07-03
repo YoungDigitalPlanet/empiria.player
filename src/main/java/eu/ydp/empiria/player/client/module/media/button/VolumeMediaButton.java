@@ -6,58 +6,57 @@ import com.google.gwt.user.client.ui.Panel;
 
 /**
  * przycisk zmiany glosnosci dzwieku
- * 
+ *
  * @author plelakowski
- * 
  */
 public class VolumeMediaButton extends AbstractMediaButton<VolumeMediaButton> {
-	public VolumeMediaButton() {
-		super("qp-media-volume");
-	}
+    public VolumeMediaButton() {
+        super("qp-media-volume");
+    }
 
-	VolumeScrollBar volumeScrollBar = new VolumeScrollBar();
-	boolean attached = false;
+    VolumeScrollBar volumeScrollBar = new VolumeScrollBar();
+    boolean attached = false;
 
-	@Override
-	public VolumeMediaButton getNewInstance() {
-		return new VolumeMediaButton();
-	}
+    @Override
+    public VolumeMediaButton getNewInstance() {
+        return new VolumeMediaButton();
+    }
 
-	@Override
-	public void init() {
-		super.init();
-		if (isSupported()) {
-			volumeScrollBar.setMediaDescriptor(getMediaWrapper());
-			volumeScrollBar.init();
-			volumeScrollBar.setVisible(false);
+    @Override
+    public void init() {
+        super.init();
+        if (isSupported()) {
+            volumeScrollBar.setMediaDescriptor(getMediaWrapper());
+            volumeScrollBar.init();
+            volumeScrollBar.setVisible(false);
 
-		}
-	}
+        }
+    }
 
-	@Override
-	protected void onClick() {
-		setActive(!isActive());
-		if (!attached) {
-			volumeScrollBar.getElement().getStyle().setPosition(Position.ABSOLUTE);
-			((Panel) getParent()).add(volumeScrollBar);
-			attached = true;
-		}
-		changeStyleForClick();
-		if (isActive()) {
-			volumeScrollBar.setVisible(true);
-			int width = volumeScrollBar.getElement().getAbsoluteRight() - volumeScrollBar.getElement().getAbsoluteLeft();
-			width = getElement().getAbsoluteRight() - getElement().getAbsoluteLeft() - width;
-			volumeScrollBar.getElement().getStyle().setLeft(getElement().getAbsoluteLeft() + width / 2, Unit.PX);
-			int height = volumeScrollBar.getElement().getAbsoluteBottom() - volumeScrollBar.getElement().getAbsoluteTop();
-			volumeScrollBar.getElement().getStyle().setTop(getElement().getAbsoluteTop() - height, Unit.PX);
+    @Override
+    protected void onClick() {
+        setActive(!isActive());
+        if (!attached) {
+            volumeScrollBar.getElement().getStyle().setPosition(Position.ABSOLUTE);
+            ((Panel) getParent()).add(volumeScrollBar);
+            attached = true;
+        }
+        changeStyleForClick();
+        if (isActive()) {
+            volumeScrollBar.setVisible(true);
+            int width = volumeScrollBar.getElement().getAbsoluteRight() - volumeScrollBar.getElement().getAbsoluteLeft();
+            width = getElement().getAbsoluteRight() - getElement().getAbsoluteLeft() - width;
+            volumeScrollBar.getElement().getStyle().setLeft(getElement().getAbsoluteLeft() + width / 2, Unit.PX);
+            int height = volumeScrollBar.getElement().getAbsoluteBottom() - volumeScrollBar.getElement().getAbsoluteTop();
+            volumeScrollBar.getElement().getStyle().setTop(getElement().getAbsoluteTop() - height, Unit.PX);
 
-		} else {
-			volumeScrollBar.setVisible(false);
-		}
-	}
+        } else {
+            volumeScrollBar.setVisible(false);
+        }
+    }
 
-	@Override
-	public boolean isSupported() {
-		return getMediaAvailableOptions().isVolumeChangeSupported();
-	}
+    @Override
+    public boolean isSupported() {
+        return getMediaAvailableOptions().isVolumeChangeSupported();
+    }
 }

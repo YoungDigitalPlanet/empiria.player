@@ -10,23 +10,23 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public interface DragGapView extends IsWidget {
 
-	void removeContent();
+    void removeContent();
 
-	void lock(boolean lock);
+    void lock(boolean lock);
 
-	void setDragDisabled(boolean disabled);
+    void setDragDisabled(boolean disabled);
 
-	void updateStyle(UserAnswerType answerType);
+    void updateStyle(UserAnswerType answerType);
 
-	void setDragStartHandler(DragStartHandler dragGapStartDragHandler);
+    void setDragStartHandler(DragStartHandler dragGapStartDragHandler);
 
-	void setDragEndHandler(DragEndHandler dragEndHandler);
+    void setDragEndHandler(DragEndHandler dragEndHandler);
 
-	DroppableObject<FlowPanelWithDropZone> enableDropCapabilities();
+    DroppableObject<FlowPanelWithDropZone> enableDropCapabilities();
 
-	void setHeight(int height);
+    void setHeight(int height);
 
-	void setWidth(int width);
+    void setWidth(int width);
 
-	void setItemContent(SourcelistItemValue item);
+    void setItemContent(SourcelistItemValue item);
 }

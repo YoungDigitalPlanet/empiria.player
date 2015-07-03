@@ -21,144 +21,144 @@ import java.util.List;
 
 public class ChoiceModulePresenterImpl implements ChoiceModulePresenter {
 
-	private List<SimpleChoicePresenter> choices;
+    private List<SimpleChoicePresenter> choices;
 
-	private InlineBodyGeneratorSocket bodyGenerator;
+    private InlineBodyGeneratorSocket bodyGenerator;
 
-	private ChoiceInteractionBean bean;
+    private ChoiceInteractionBean bean;
 
-	private final ChoiceModuleModel model;
+    private final ChoiceModuleModel model;
 
-	private final ChoiceModuleView view;
+    private final ChoiceModuleView view;
 
-	private final SimpleChoicePresenterFactory choiceModuleFactory;
+    private final SimpleChoicePresenterFactory choiceModuleFactory;
 
-	private final ChoiceModuleListener listener;
+    private final ChoiceModuleListener listener;
 
-	@Inject
-	public ChoiceModulePresenterImpl(SimpleChoicePresenterFactory choiceModuleFactory, @ModuleScoped ChoiceModuleModel model,
-			@ModuleScoped ChoiceModuleView view) {
-		this.choiceModuleFactory = choiceModuleFactory;
-		this.model = model;
-		this.view = view;
-		listener = new ChoiceModuleListenerImpl(model, this);
-	}
+    @Inject
+    public ChoiceModulePresenterImpl(SimpleChoicePresenterFactory choiceModuleFactory, @ModuleScoped ChoiceModuleModel model,
+                                     @ModuleScoped ChoiceModuleView view) {
+        this.choiceModuleFactory = choiceModuleFactory;
+        this.model = model;
+        this.view = view;
+        listener = new ChoiceModuleListenerImpl(model, this);
+    }
 
-	@Override
-	public void bindView() {
-		initializePrompt();
-		initializeChoices();
-	}
+    @Override
+    public void bindView() {
+        initializePrompt();
+        initializeChoices();
+    }
 
-	private void initializePrompt() {
-		bodyGenerator.generateInlineBody(bean.getPrompt(), view.getPrompt());
-	}
+    private void initializePrompt() {
+        bodyGenerator.generateInlineBody(bean.getPrompt(), view.getPrompt());
+    }
 
-	private void initializeChoices() {
-		choices = new ArrayList<SimpleChoicePresenter>();
+    private void initializeChoices() {
+        choices = new ArrayList<SimpleChoicePresenter>();
 
-		view.clear();
+        view.clear();
 
-		for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
-			SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(choice, bodyGenerator);
-			choices.add(choicePresenter);
-			view.addChoice(choicePresenter.asWidget());
-			choicePresenter.setListener(listener);
-		}
-	}
+        for (SimpleChoiceBean choice : bean.getSimpleChoices()) {
+            SimpleChoicePresenter choicePresenter = createSimpleChoicePresenter(choice, bodyGenerator);
+            choices.add(choicePresenter);
+            view.addChoice(choicePresenter.asWidget());
+            choicePresenter.setListener(listener);
+        }
+    }
 
-	private SimpleChoicePresenter createSimpleChoicePresenter(SimpleChoiceBean choice, InlineBodyGeneratorSocket bodyGenerator) {
+    private SimpleChoicePresenter createSimpleChoicePresenter(SimpleChoiceBean choice, InlineBodyGeneratorSocket bodyGenerator) {
 
-		return choiceModuleFactory.getSimpleChoicePresenter(choice, bodyGenerator);
-	}
+        return choiceModuleFactory.getSimpleChoicePresenter(choice, bodyGenerator);
+    }
 
-	@Override
-	public Widget asWidget() {
-		return view.asWidget();
-	}
+    @Override
+    public Widget asWidget() {
+        return view.asWidget();
+    }
 
-	@Override
-	public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
-		this.bodyGenerator = bodyGenerator;
-	}
+    @Override
+    public void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator) {
+        this.bodyGenerator = bodyGenerator;
+    }
 
-	@Override
-	public void setLocked(boolean locked) {
-		for (SimpleChoicePresenter choice : choices) {
-			choice.setLocked(locked);
-		}
-	}
+    @Override
+    public void setLocked(boolean locked) {
+        for (SimpleChoicePresenter choice : choices) {
+            choice.setLocked(locked);
+        }
+    }
 
-	@Override
-	public void reset() {
-		for (SimpleChoicePresenter choice : choices) {
-			choice.reset();
-		}
-	}
+    @Override
+    public void reset() {
+        for (SimpleChoicePresenter choice : choices) {
+            choice.reset();
+        }
+    }
 
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		for (SimpleChoicePresenter choice : choices) {
-			String choiceIdentifier = choice.getIdentifier();
-			boolean mark = isChoiceMarkType(type, choiceIdentifier);
+    @Override
+    public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+        for (SimpleChoicePresenter choice : choices) {
+            String choiceIdentifier = choice.getIdentifier();
+            boolean mark = isChoiceMarkType(type, choiceIdentifier);
 
-			if (choice.isSelected() && mark) {
-				choice.markAnswer(type, mode);
-			}
-		}
-	}
+            if (choice.isSelected() && mark) {
+                choice.markAnswer(type, mode);
+            }
+        }
+    }
 
-	private boolean isChoiceMarkType(MarkAnswersType type, String choiceIdentifier) {
-		boolean is = false;
+    private boolean isChoiceMarkType(MarkAnswersType type, String choiceIdentifier) {
+        boolean is = false;
 
-		switch (type) {
-		case CORRECT:
-			is = model.isCorrectAnswer(choiceIdentifier);
-			break;
-		case WRONG:
-			is = model.isWrongAnswer(choiceIdentifier);
-			break;
-		}
+        switch (type) {
+            case CORRECT:
+                is = model.isCorrectAnswer(choiceIdentifier);
+                break;
+            case WRONG:
+                is = model.isWrongAnswer(choiceIdentifier);
+                break;
+        }
 
-		return is;
-	}
+        return is;
+    }
 
-	@Override
-	public void showAnswers(ShowAnswersType type) {
-		for (SimpleChoicePresenter choice : choices) {
-			String choiceIdentifier = choice.getIdentifier();
-			boolean select = isChoiceAnswerType(type, choiceIdentifier);
-			choice.setSelected(select);
-		}
-	}
+    @Override
+    public void showAnswers(ShowAnswersType type) {
+        for (SimpleChoicePresenter choice : choices) {
+            String choiceIdentifier = choice.getIdentifier();
+            boolean select = isChoiceAnswerType(type, choiceIdentifier);
+            choice.setSelected(select);
+        }
+    }
 
-	private boolean isChoiceAnswerType(ShowAnswersType type, String choiceIdentifier) {
-		boolean select = false;
+    private boolean isChoiceAnswerType(ShowAnswersType type, String choiceIdentifier) {
+        boolean select = false;
 
-		switch (type) {
-		case CORRECT:
-			select = model.isCorrectAnswer(choiceIdentifier);
-			break;
-		case USER:
-			select = model.isUserAnswer(choiceIdentifier);
-			break;
-		}
+        switch (type) {
+            case CORRECT:
+                select = model.isCorrectAnswer(choiceIdentifier);
+                break;
+            case USER:
+                select = model.isUserAnswer(choiceIdentifier);
+                break;
+        }
 
-		return select;
-	}
+        return select;
+    }
 
-	@Override
-	public void setBean(ChoiceInteractionBean bean) {
-		this.bean = bean;
-	}
+    @Override
+    public void setBean(ChoiceInteractionBean bean) {
+        this.bean = bean;
+    }
 
-	@Override
-	public void setModel(ChoiceModuleModel model) {
-		// this.model = model;
-	}
+    @Override
+    public void setModel(ChoiceModuleModel model) {
+        // this.model = model;
+    }
 
-	@Override
-	public void setModuleSocket(ModuleSocket socket) {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public void setModuleSocket(ModuleSocket socket) {
+        // TODO Auto-generated method stub
+    }
 }

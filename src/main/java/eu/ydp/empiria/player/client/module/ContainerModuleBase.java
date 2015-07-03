@@ -7,16 +7,16 @@ import java.util.List;
 
 public abstract class ContainerModuleBase extends ModuleBase implements ISingleViewWithBodyModule {
 
-	@Override
-	public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bgs) {
-		initModule(ms);
-		readAttributes(element);
-		applyIdAndClassToView(getView());
-	}
+    @Override
+    public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bgs) {
+        initModule(ms);
+        readAttributes(element);
+        applyIdAndClassToView(getView());
+    }
 
-	@Override
-	public List<IModule> getChildrenModules() {
-		return getModuleSocket().getChildren(this);
-	}
+    @Override
+    public List<IModule> getChildrenModules() {
+        return getModuleSocket().getChildren(this);
+    }
 
 }

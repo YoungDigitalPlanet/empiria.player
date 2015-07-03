@@ -6,15 +6,15 @@ import eu.ydp.empiria.player.client.module.colorfill.view.ColorfillAreaClickList
 
 public class AreaClickListener implements ColorfillAreaClickListener {
 
-	private final ColorfillInteractionPresenter interactionPresenter;
+    private final ColorfillInteractionPresenter interactionPresenter;
 
-	public AreaClickListener(ColorfillInteractionPresenter interactionPresenter) {
-		this.interactionPresenter = interactionPresenter;
-	}
+    public AreaClickListener(ColorfillInteractionPresenter interactionPresenter) {
+        this.interactionPresenter = interactionPresenter;
+    }
 
-	@Override
-	public void onAreaClick(Area area) {
-		interactionPresenter.imageColorChanged(area);
-	}
+    @Override
+    public void onAreaClick(Area area) {
+        interactionPresenter.imageColorChanged(area);
+    }
 
 }

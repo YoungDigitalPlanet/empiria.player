@@ -7,13 +7,13 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 
 public class ResponsesTestingHelper {
 
-	public Response getResponse(String identifier, String value) {
-		return new ResponseBuilder().withIdentifier(identifier).withCurrentUserAnswers(value).build();
-	}
+    public Response getResponse(String identifier, String value) {
+        return new ResponseBuilder().withIdentifier(identifier).withCurrentUserAnswers(value).build();
+    }
 
-	public Response getResponse(String identifier, String userAnswer, String correctAnswer) {
-		CorrectAnswers answer = new CorrectAnswers();
-		answer.add(new ResponseValue(correctAnswer));
-		return new ResponseBuilder().withIdentifier(identifier).withCurrentUserAnswers(userAnswer).withCorrectAnswers(correctAnswer).build();
-	}
+    public Response getResponse(String identifier, String userAnswer, String correctAnswer) {
+        CorrectAnswers answer = new CorrectAnswers();
+        answer.add(new ResponseValue(correctAnswer));
+        return new ResponseBuilder().withIdentifier(identifier).withCurrentUserAnswers(userAnswer).withCorrectAnswers(correctAnswer).build();
+    }
 }

@@ -4,9 +4,9 @@ import com.google.gwt.dom.client.Style;
 
 public interface VisibilityClient {
 
-	int getScrollTop();
+    int getScrollTop();
 
-	void setScrollTop(int scrolls);
+    void setScrollTop(int scrolls);
 
-	Style getElementStyle();
+    Style getElementStyle();
 }

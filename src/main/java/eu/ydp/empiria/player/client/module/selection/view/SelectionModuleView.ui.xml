@@ -1,9 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
-	<g:FlowPanel ui:field="mainPanel" styleName="{res.QP_SELECTION_MODULE}">
-		<g:InlineHTML ui:field="promptWidget" styleName="{res.QP_PROMPT}"/>
-		<g:Grid ui:field="selectionGrid" styleName="{res.QP_SELECTION_TABLE}"/>
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
+    <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_SELECTION_MODULE}">
+        <g:InlineHTML ui:field="promptWidget" styleName="{res.QP_PROMPT}"/>
+        <g:Grid ui:field="selectionGrid" styleName="{res.QP_SELECTION_TABLE}"/>
+    </g:FlowPanel>
 </ui:UiBinder> 

@@ -10,32 +10,32 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 @JsType
 public class ExternalSoundInstance {
 
-	private final MediaWrapperController mediaWrapperController;
-	private final MediaWrapper<Widget> audioWrapper;
+    private final MediaWrapperController mediaWrapperController;
+    private final MediaWrapper<Widget> audioWrapper;
 
-	@Inject
-	public ExternalSoundInstance(@Assisted MediaWrapper<Widget> audioWrapper, MediaWrapperController mediaWrapperController) {
-		this.audioWrapper = audioWrapper;
-		this.mediaWrapperController = mediaWrapperController;
-	}
+    @Inject
+    public ExternalSoundInstance(@Assisted MediaWrapper<Widget> audioWrapper, MediaWrapperController mediaWrapperController) {
+        this.audioWrapper = audioWrapper;
+        this.mediaWrapperController = mediaWrapperController;
+    }
 
-	public void play() {
-		mediaWrapperController.stopAndPlay(audioWrapper);
-	}
+    public void play() {
+        mediaWrapperController.stopAndPlay(audioWrapper);
+    }
 
-	public void playLooped() {
-		mediaWrapperController.playLooped(audioWrapper);
-	}
+    public void playLooped() {
+        mediaWrapperController.playLooped(audioWrapper);
+    }
 
-	public void stop() {
-		mediaWrapperController.stop(audioWrapper);
-	}
+    public void stop() {
+        mediaWrapperController.stop(audioWrapper);
+    }
 
-	public void pause() {
-		mediaWrapperController.pause(audioWrapper);
-	}
+    public void pause() {
+        mediaWrapperController.pause(audioWrapper);
+    }
 
-	public void resume() {
-		mediaWrapperController.resume(audioWrapper);
-	}
+    public void resume() {
+        mediaWrapperController.resume(audioWrapper);
+    }
 }

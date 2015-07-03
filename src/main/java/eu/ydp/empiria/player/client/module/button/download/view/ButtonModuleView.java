@@ -5,11 +5,11 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ButtonModuleView extends IsWidget {
 
-	void setDescription(String description);
+    void setDescription(String description);
 
-	void setId(String id);
+    void setId(String id);
 
-	void setUrl(String url);
+    void setUrl(String url);
 
-	void addAnchorClickHandler(ClickHandler clickHandler);
+    void addAnchorClickHandler(ClickHandler clickHandler);
 }

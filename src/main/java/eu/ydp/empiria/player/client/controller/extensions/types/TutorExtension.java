@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorCo
 
 public interface TutorExtension {
 
-	String getTutorId();
+    String getTutorId();
 
-	TutorConfig getTutorConfig();
+    TutorConfig getTutorConfig();
 }

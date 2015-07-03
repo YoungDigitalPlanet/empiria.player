@@ -5,17 +5,17 @@ import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
 public class JSONStateSerializerTest extends AbstractEmpiriaPlayerGWTTestCase {
 
-	private JSONStateSerializer testObj = new JSONStateSerializer();
+    private JSONStateSerializer testObj = new JSONStateSerializer();
 
-	public void testShouldGetCreatedString() {
-		// given
-		final String EXPECTED = "value";
-		JSONArray state = testObj.createWithString(EXPECTED);
+    public void testShouldGetCreatedString() {
+        // given
+        final String EXPECTED = "value";
+        JSONArray state = testObj.createWithString(EXPECTED);
 
-		// when
-		String result = testObj.extractString(state);
+        // when
+        String result = testObj.extractString(state);
 
-		// then
-		assertEquals(result, EXPECTED);
-	}
+        // then
+        assertEquals(result, EXPECTED);
+    }
 }

@@ -14,13 +14,13 @@ import eu.ydp.empiria.player.client.module.mathjax.interaction.view.InteractionM
 
 public class MathJaxGinModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(MathJaxView.class).annotatedWith(InlineMathJax.class).to(InlineMathJaxView.class);
-		bind(MathJaxView.class).annotatedWith(InteractionMathJax.class).to(InteractionMathJaxView.class);
-		bind(MathJaxNative.class).in(Singleton.class);
-		bind(MathJaxGapContainer.class).in(Singleton.class);
+    @Override
+    protected void configure() {
+        bind(MathJaxView.class).annotatedWith(InlineMathJax.class).to(InlineMathJaxView.class);
+        bind(MathJaxView.class).annotatedWith(InteractionMathJax.class).to(InteractionMathJaxView.class);
+        bind(MathJaxNative.class).in(Singleton.class);
+        bind(MathJaxGapContainer.class).in(Singleton.class);
 
-		install(new GinFactoryModuleBuilder().build(MathJaxModuleFactory.class));
-	}
+        install(new GinFactoryModuleBuilder().build(MathJaxModuleFactory.class));
+    }
 }

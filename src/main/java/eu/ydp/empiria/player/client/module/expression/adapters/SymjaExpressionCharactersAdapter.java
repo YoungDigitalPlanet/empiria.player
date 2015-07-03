@@ -4,24 +4,24 @@ import com.google.inject.Inject;
 
 public class SymjaExpressionCharactersAdapter {
 
-	@Inject
-	private DefaultExpressionCharactersAdapter defaultAdapter;
+    @Inject
+    private DefaultExpressionCharactersAdapter defaultAdapter;
 
-	public String process(String expression) {
-		expression = fixOperators(expression);
-		expression = defaultAdapter.process(expression);
-		return expression;
-	}
+    public String process(String expression) {
+        expression = fixOperators(expression);
+        expression = defaultAdapter.process(expression);
+        return expression;
+    }
 
-	private String fixOperators(String expression) {
-		if (!containsGreaterLessThanOrEquals(expression)) {
-			expression = expression.replaceFirst("=", "==");
-		}
-		return expression;
-	}
+    private String fixOperators(String expression) {
+        if (!containsGreaterLessThanOrEquals(expression)) {
+            expression = expression.replaceFirst("=", "==");
+        }
+        return expression;
+    }
 
-	private boolean containsGreaterLessThanOrEquals(String expression) {
-		return expression.matches("^.*?(>=|=>|<=|=<).*$");
-	}
+    private boolean containsGreaterLessThanOrEquals(String expression) {
+        return expression.matches("^.*?(>=|=>|<=|=<).*$");
+    }
 
 }

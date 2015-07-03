@@ -7,29 +7,29 @@ import eu.ydp.gwtutil.client.scripts.SynchronousScriptsLoader;
 
 public class ScriptsLoader {
 
-	@Inject
-	private SynchronousScriptsLoader synchronousScriptsLoader;
-	@Inject
-	private AsynchronousScriptsLoader asynchronousScriptsLoader;
+    @Inject
+    private SynchronousScriptsLoader synchronousScriptsLoader;
+    @Inject
+    private AsynchronousScriptsLoader asynchronousScriptsLoader;
 
-	private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
-		@Override
-		public void onFailure(Exception reason) {
-		}
+    private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
+        @Override
+        public void onFailure(Exception reason) {
+        }
 
-		@Override
-		public void onSuccess(Void result) {
-			asyncScriptLoading();
-		}
-	};
+        @Override
+        public void onSuccess(Void result) {
+            asyncScriptLoading();
+        }
+    };
 
-	public void inject() {
-		synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values() , callback);
-	}
+    public void inject() {
+        synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values(), callback);
+    }
 
-	private void asyncScriptLoading() {
-		asynchronousScriptsLoader.inject(AsyncLoadingScripts.values());
-	}
+    private void asyncScriptLoading() {
+        asynchronousScriptsLoader.inject(AsyncLoadingScripts.values());
+    }
 
 
 }

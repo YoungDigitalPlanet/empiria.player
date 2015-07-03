@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ScrollbarPanel extends Composite {
@@ -17,8 +16,8 @@ public class ScrollbarPanel extends Composite {
     interface ScrollbarPanelUiBinder extends UiBinder<Widget, ScrollbarPanel> {
     }
 
-	@Inject
-	private StyleNameConstants styleNameConstants;
+    @Inject
+    private StyleNameConstants styleNameConstants;
 
     @UiField
     AbsolutePanel scrollPanelContainer;

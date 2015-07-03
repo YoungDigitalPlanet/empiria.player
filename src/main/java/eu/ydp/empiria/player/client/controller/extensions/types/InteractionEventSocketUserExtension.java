@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 
 public interface InteractionEventSocketUserExtension {
 
-	void setInteractionEventsListener(InteractionEventsListener listener);
+    void setInteractionEventsListener(InteractionEventsListener listener);
 }

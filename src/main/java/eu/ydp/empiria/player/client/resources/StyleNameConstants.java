@@ -454,12 +454,12 @@ public interface StyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-dropzone-over")
     public String QP_DROPZONE_OVER();
-    
-	@DefaultStringValue("qp-external-interaction-module")
-	public String QP_EXTERNAL_INTERACTION_MODULE();
 
-	@DefaultStringValue("qp-external-interaction-module-frame")
-	public String QP_EXTERNAL_INTERACTION_MODULE_FRAME();
+    @DefaultStringValue("qp-external-interaction-module")
+    public String QP_EXTERNAL_INTERACTION_MODULE();
+
+    @DefaultStringValue("qp-external-interaction-module-frame")
+    public String QP_EXTERNAL_INTERACTION_MODULE_FRAME();
 
     @DefaultStringValue("qp-external-presentation-module")
     public String QP_EXTERNAL_PRESENTATION_MODULE();

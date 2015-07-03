@@ -2,13 +2,13 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 public interface ResultVariables {
 
-	int getTodo();
+    int getTodo();
 
-	int getDone();
+    int getDone();
 
-	int getMistakes();
+    int getMistakes();
 
-	int getErrors();
+    int getErrors();
 
-	LastMistaken getLastMistaken();
+    LastMistaken getLastMistaken();
 }

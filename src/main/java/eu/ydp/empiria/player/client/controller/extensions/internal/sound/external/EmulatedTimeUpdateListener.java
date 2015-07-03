@@ -4,6 +4,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 
 public interface EmulatedTimeUpdateListener {
 
-	void emulatedTimeUpdate(MediaStatus status);
+    void emulatedTimeUpdate(MediaStatus status);
 
 }

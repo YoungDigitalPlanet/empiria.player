@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.colorfill;
 
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
-
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -12,36 +11,36 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillInteractionModule extends
-		AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> {
+        AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> {
 
-	@Inject
-	private ColorfillInteractionPresenter presenter;
-	@Inject
-	@ModuleScoped
-	private ColorfillInteractionModuleModel moduleModel;
+    @Inject
+    private ColorfillInteractionPresenter presenter;
+    @Inject
+    @ModuleScoped
+    private ColorfillInteractionModuleModel moduleModel;
 
-	@Inject
-	@ModuleScoped
-	private ColorfillInteractionStructure colorfillInteractionStructure;
+    @Inject
+    @ModuleScoped
+    private ColorfillInteractionStructure colorfillInteractionStructure;
 
-	@Override
-	protected ActivityPresenter<ColorfillInteractionModuleModel, ColorfillInteractionBean> getPresenter() {
-		return presenter;
-	}
+    @Override
+    protected ActivityPresenter<ColorfillInteractionModuleModel, ColorfillInteractionBean> getPresenter() {
+        return presenter;
+    }
 
-	@Override
-	protected void initalizeModule() {
-		moduleModel.initialize(this);
-	}
+    @Override
+    protected void initalizeModule() {
+        moduleModel.initialize(this);
+    }
 
-	@Override
-	protected ColorfillInteractionModuleModel getResponseModel() {
-		return moduleModel;
-	}
+    @Override
+    protected ColorfillInteractionModuleModel getResponseModel() {
+        return moduleModel;
+    }
 
-	@Override
-	protected AbstractModuleStructure<ColorfillInteractionBean, ? extends JAXBParserFactory<ColorfillInteractionBean>> getStructure() {
-		return colorfillInteractionStructure;
-	}
+    @Override
+    protected AbstractModuleStructure<ColorfillInteractionBean, ? extends JAXBParserFactory<ColorfillInteractionBean>> getStructure() {
+        return colorfillInteractionStructure;
+    }
 
 }

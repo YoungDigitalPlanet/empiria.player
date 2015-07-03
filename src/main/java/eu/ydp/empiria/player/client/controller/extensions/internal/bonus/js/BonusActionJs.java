@@ -5,14 +5,14 @@ import com.google.gwt.core.client.JsArray;
 
 public class BonusActionJs extends JavaScriptObject {
 
-	protected BonusActionJs() {
-	}
+    protected BonusActionJs() {
+    }
 
-	public final native String getType() /*-{
-											return this.type;
-											}-*/;
+    public final native String getType() /*-{
+        return this.type;
+    }-*/;
 
-	public final native JsArray<BonusResourceJs> getBonuses() /*-{
-																return this.bonuses;
-																}-*/;
+    public final native JsArray<BonusResourceJs> getBonuses() /*-{
+        return this.bonuses;
+    }-*/;
 }

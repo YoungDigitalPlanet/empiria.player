@@ -5,14 +5,14 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class TouchOnImageStartHandler {
 
-	private final CanvasMoveEvents canvasMoveEvents;
+    private final CanvasMoveEvents canvasMoveEvents;
 
-	public TouchOnImageStartHandler(CanvasMoveEvents canvasMoveEvents) {
-		this.canvasMoveEvents = canvasMoveEvents;
-	}
+    public TouchOnImageStartHandler(CanvasMoveEvents canvasMoveEvents) {
+        this.canvasMoveEvents = canvasMoveEvents;
+    }
 
-	public void onStart(TouchOnImageEvent touchOnImageEvent) {
-		Point point = touchOnImageEvent.getPoint(0);
-		canvasMoveEvents.onMoveStart(point);
-	}
+    public void onStart(TouchOnImageEvent touchOnImageEvent) {
+        Point point = touchOnImageEvent.getPoint(0);
+        canvasMoveEvents.onMoveStart(point);
+    }
 }

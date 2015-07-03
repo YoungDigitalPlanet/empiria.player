@@ -4,14 +4,14 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ICanvasImageData {
 
-	int getImageHeight();
+    int getImageHeight();
 
-	int getImageWidth();
+    int getImageWidth();
 
-	ColorModel getRgbColor(int x, int y);
+    ColorModel getRgbColor(int x, int y);
 
-	void setColor(ColorModel color, int x, int y);
+    void setColor(ColorModel color, int x, int y);
 
-	void flush();
+    void flush();
 
 }

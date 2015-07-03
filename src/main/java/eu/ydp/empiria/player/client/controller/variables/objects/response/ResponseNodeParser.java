@@ -11,19 +11,19 @@ import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 
 public class ResponseNodeParser {
 
-	private final ResponseNodeJAXBParserFactory responseNodeJAXBParserFactory;
-	private final ResponseBeanConverter responseBeanConverter;
+    private final ResponseNodeJAXBParserFactory responseNodeJAXBParserFactory;
+    private final ResponseBeanConverter responseBeanConverter;
 
-	@Inject
-	public ResponseNodeParser(ResponseNodeJAXBParserFactory responseNodeJAXBParserFactory, ResponseBeanConverter responseBeanConverter) {
-		this.responseNodeJAXBParserFactory = responseNodeJAXBParserFactory;
-		this.responseBeanConverter = responseBeanConverter;
-	}
+    @Inject
+    public ResponseNodeParser(ResponseNodeJAXBParserFactory responseNodeJAXBParserFactory, ResponseBeanConverter responseBeanConverter) {
+        this.responseNodeJAXBParserFactory = responseNodeJAXBParserFactory;
+        this.responseBeanConverter = responseBeanConverter;
+    }
 
-	public Response parseResponseFromNode(String responseDeclaration) {
-		JAXBParser<ResponseBean> jaxbParser = responseNodeJAXBParserFactory.create();
-		ResponseBean responseJAXBModel = jaxbParser.parse(responseDeclaration);
-		return responseBeanConverter.convert(responseJAXBModel);
-	}
+    public Response parseResponseFromNode(String responseDeclaration) {
+        JAXBParser<ResponseBean> jaxbParser = responseNodeJAXBParserFactory.create();
+        ResponseBean responseJAXBModel = jaxbParser.parse(responseDeclaration);
+        return responseBeanConverter.convert(responseJAXBModel);
+    }
 
 }

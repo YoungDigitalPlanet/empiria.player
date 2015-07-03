@@ -4,55 +4,58 @@ import com.google.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.media.*;
+import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import java.util.*;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class SlideshowSounds {
 
-	private final Map<String, MediaWrapper<Widget>> sounds = Maps.newHashMap();
-	
-	private final MediaWrapperCreator mediaWrapperCreator;
-	private final MimeSourceProvider mimeSourceProvider;
+    private final Map<String, MediaWrapper<Widget>> sounds = Maps.newHashMap();
 
-	@Inject
-	public SlideshowSounds(MediaWrapperCreator slideshowMediaWrapperCreator, MimeSourceProvider mimeSourceProvider) {
-		this.mediaWrapperCreator = slideshowMediaWrapperCreator;
-		this.mimeSourceProvider = mimeSourceProvider;
-	}
+    private final MediaWrapperCreator mediaWrapperCreator;
+    private final MimeSourceProvider mimeSourceProvider;
 
-	public MediaWrapper<Widget> getSound(String audiopath) {
-		return sounds.get(audiopath);
-	}
+    @Inject
+    public SlideshowSounds(MediaWrapperCreator slideshowMediaWrapperCreator, MimeSourceProvider mimeSourceProvider) {
+        this.mediaWrapperCreator = slideshowMediaWrapperCreator;
+        this.mimeSourceProvider = mimeSourceProvider;
+    }
 
-	public void initSound(String audiopath) {
-		if (!sounds.containsKey(audiopath)) {
-			createMediaWrapper(audiopath);
-		}
-	}
+    public MediaWrapper<Widget> getSound(String audiopath) {
+        return sounds.get(audiopath);
+    }
 
-	public boolean containsWrapper(MediaWrapper<Widget> mediaWrapper) {
-		return sounds.containsValue(mediaWrapper);
-	}
+    public void initSound(String audiopath) {
+        if (!sounds.containsKey(audiopath)) {
+            createMediaWrapper(audiopath);
+        }
+    }
 
-	public Collection<MediaWrapper<Widget>> getAllSounds() {
-		return sounds.values();
-	}
+    public boolean containsWrapper(MediaWrapper<Widget> mediaWrapper) {
+        return sounds.containsValue(mediaWrapper);
+    }
 
-	private void createMediaWrapper(String audiopath) {
-		Map<String, String> sourceWithType = mimeSourceProvider.getSourcesWithTypeByExtension(audiopath);
-		CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = createCallbackReceiver(audiopath);
+    public Collection<MediaWrapper<Widget>> getAllSounds() {
+        return sounds.values();
+    }
 
-		mediaWrapperCreator.createMediaWrapper(audiopath, sourceWithType, callbackReceiver);
-	}
+    private void createMediaWrapper(String audiopath) {
+        Map<String, String> sourceWithType = mimeSourceProvider.getSourcesWithTypeByExtension(audiopath);
+        CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = createCallbackReceiver(audiopath);
 
-	private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audiopath) {
-		return new CallbackReceiver<MediaWrapper<Widget>>() {
+        mediaWrapperCreator.createMediaWrapper(audiopath, sourceWithType, callbackReceiver);
+    }
 
-			@Override
-			public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
-				sounds.put(audiopath, mediaWrapper);
-			}
-		};
-	}
+    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audiopath) {
+        return new CallbackReceiver<MediaWrapper<Widget>>() {
+
+            @Override
+            public void setCallbackReturnObject(MediaWrapper<Widget> mediaWrapper) {
+                sounds.put(audiopath, mediaWrapper);
+            }
+        };
+    }
 }

@@ -7,13 +7,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class InfinityProgressWidget extends Composite implements ProgressView {
 
-	private static InfinityProgressWidgetUiBinder uiBinder = GWT.create(InfinityProgressWidgetUiBinder.class);
+    private static InfinityProgressWidgetUiBinder uiBinder = GWT.create(InfinityProgressWidgetUiBinder.class);
 
-	interface InfinityProgressWidgetUiBinder extends UiBinder<Widget, InfinityProgressWidget> {
-	}
+    interface InfinityProgressWidgetUiBinder extends UiBinder<Widget, InfinityProgressWidget> {
+    }
 
-	public InfinityProgressWidget() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public InfinityProgressWidget() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
 }

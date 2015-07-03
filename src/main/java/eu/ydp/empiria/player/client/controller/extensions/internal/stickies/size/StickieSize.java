@@ -2,20 +2,22 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.stickies.siz
 
 public class StickieSize {
 
-	private final int width;
-	private final int height;
+    private final int width;
+    private final int height;
 
-	public StickieSize(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
+    public StickieSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public int getHeight() {
-		return height;
-	};
+    public int getHeight() {
+        return height;
+    }
+
+    ;
 
 }

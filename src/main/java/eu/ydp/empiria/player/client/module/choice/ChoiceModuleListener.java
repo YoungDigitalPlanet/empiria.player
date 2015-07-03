@@ -4,6 +4,6 @@ import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresente
 
 public interface ChoiceModuleListener {
 
-	void onChoiceClick(SimpleChoicePresenter choice);
+    void onChoiceClick(SimpleChoicePresenter choice);
 
 }

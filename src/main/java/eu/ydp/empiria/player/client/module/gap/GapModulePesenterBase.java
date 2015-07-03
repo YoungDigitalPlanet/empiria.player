@@ -5,35 +5,35 @@ import com.google.gwt.user.client.ui.UIObject;
 
 public abstract class GapModulePesenterBase implements GapModulePresenter {
 
-	public abstract UIObject getComponent();
+    public abstract UIObject getComponent();
 
-	@Override
-	public void setWidth(double value, Unit unit) {
-		getComponent().setWidth(value + unit.getType());
-	}
+    @Override
+    public void setWidth(double value, Unit unit) {
+        getComponent().setWidth(value + unit.getType());
+    }
 
-	@Override
-	public int getOffsetWidth() {
-		return getComponent().getOffsetWidth();
-	}
+    @Override
+    public int getOffsetWidth() {
+        return getComponent().getOffsetWidth();
+    }
 
-	@Override
-	public void setHeight(double value, Unit unit) {
-		getComponent().setHeight(value + unit.getType());
-	}
+    @Override
+    public void setHeight(double value, Unit unit) {
+        getComponent().setHeight(value + unit.getType());
+    }
 
-	@Override
-	public int getOffsetHeight() {
-		return getComponent().getOffsetHeight();
-	}
+    @Override
+    public int getOffsetHeight() {
+        return getComponent().getOffsetHeight();
+    }
 
-	@Override
-	public void setFontSize(double value, Unit unit) {
-		getComponent().getElement().getStyle().setFontSize(value, unit);
-	}
+    @Override
+    public void setFontSize(double value, Unit unit) {
+        getComponent().getElement().getStyle().setFontSize(value, unit);
+    }
 
-	@Override
-	public int getFontSize() {
-		return Integer.parseInt(getComponent().getElement().getStyle().getFontSize().replace("px", ""));
-	}
+    @Override
+    public int getFontSize() {
+        return Integer.parseInt(getComponent().getElement().getStyle().getFontSize().replace("px", ""));
+    }
 }

@@ -7,28 +7,27 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import eu.ydp.empiria.player.client.module.model.image.ImageShowDelegate;
 import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
 
 public class ProgressBonusViewImpl extends Composite implements ProgressBonusView {
 
-	private static ProgressBonusViewImplUiBinder uiBinder = GWT.create(ProgressBonusViewImplUiBinder.class);
+    private static ProgressBonusViewImplUiBinder uiBinder = GWT.create(ProgressBonusViewImplUiBinder.class);
 
-	@UiTemplate("ProgressBonusView.ui.xml")
-	interface ProgressBonusViewImplUiBinder extends UiBinder<Widget, ProgressBonusViewImpl> {
-	}
+    @UiTemplate("ProgressBonusView.ui.xml")
+    interface ProgressBonusViewImplUiBinder extends UiBinder<Widget, ProgressBonusViewImpl> {
+    }
 
-	public ProgressBonusViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public ProgressBonusViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@UiField
-	public FlowPanel content;
+    @UiField
+    public FlowPanel content;
 
-	@Override
-	public void showImage(ShowImageDTO dto) {
-		ImageShowDelegate showImage = new ImageShowDelegate(dto);
-		showImage.showOnWidget(content);
-	}
+    @Override
+    public void showImage(ShowImageDTO dto) {
+        ImageShowDelegate showImage = new ImageShowDelegate(dto);
+        showImage.showOnWidget(content);
+    }
 }

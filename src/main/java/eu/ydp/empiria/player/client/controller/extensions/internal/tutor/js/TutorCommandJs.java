@@ -4,14 +4,14 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class TutorCommandJs extends JavaScriptObject {
 
-	protected TutorCommandJs() {
-	}
+    protected TutorCommandJs() {
+    }
 
-	public final native String getType()/*-{
-										return this.type;
-										}-*/;
+    public final native String getType()/*-{
+        return this.type;
+    }-*/;
 
-	public final native String getAsset()/*-{
-											return this.asset;
-											}-*/;
+    public final native String getAsset()/*-{
+        return this.asset;
+    }-*/;
 }

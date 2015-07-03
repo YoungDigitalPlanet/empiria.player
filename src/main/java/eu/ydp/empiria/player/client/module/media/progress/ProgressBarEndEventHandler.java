@@ -10,21 +10,21 @@ import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent
 
 public class ProgressBarEndEventHandler extends AbstractMediaEventHandler {
 
-	private final MediaProgressBarImpl progressBar;
-	private final EventsBus eventsBus;
+    private final MediaProgressBarImpl progressBar;
+    private final EventsBus eventsBus;
 
-	@Inject
-	public ProgressBarEndEventHandler(@Assisted MediaProgressBarImpl progressBar, EventsBus eventsBus) {
-		this.progressBar = progressBar;
-		this.eventsBus = eventsBus;
+    @Inject
+    public ProgressBarEndEventHandler(@Assisted MediaProgressBarImpl progressBar, EventsBus eventsBus) {
+        this.progressBar = progressBar;
+        this.eventsBus = eventsBus;
 
-	}
+    }
 
-	@Override
-	public void onMediaEvent(MediaEvent event) {
-		double steep = progressBar.getScrollWidth() / progressBar.getMediaWrapper().getDuration();
-		progressBar.moveScroll((int) (steep * progressBar.getMediaWrapper().getCurrentTime()));
-		eventsBus.fireEventFromSource(new MediaEvent(PAUSE, progressBar.getMediaWrapper()), progressBar.getMediaWrapper());
-	}
+    @Override
+    public void onMediaEvent(MediaEvent event) {
+        double steep = progressBar.getScrollWidth() / progressBar.getMediaWrapper().getDuration();
+        progressBar.moveScroll((int) (steep * progressBar.getMediaWrapper().getCurrentTime()));
+        eventsBus.fireEventFromSource(new MediaEvent(PAUSE, progressBar.getMediaWrapper()), progressBar.getMediaWrapper());
+    }
 
 }

@@ -4,13 +4,13 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 
 public interface TutorPopupView {
 
-	void setSelected(int personaIndex);
+    void setSelected(int personaIndex);
 
-	void show();
+    void show();
 
-	void hide();
+    void hide();
 
-	void addPersona(PersonaViewDto personaViewDto);
+    void addPersona(PersonaViewDto personaViewDto);
 
-	void addClickHandlerToPersona(Command command, int presonaIndex);
+    void addClickHandlerToPersona(Command command, int presonaIndex);
 }

@@ -25,206 +25,206 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalInteractionModulePresenterTest {
 
-	@InjectMocks
-	private ExternalInteractionModulePresenter testObj;
-	@Mock
-	private ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view;
-	@Mock
-	private ExternalPaths externalPaths;
-	@Mock
-	private ExternalInteractionEmpiriaApi empiriaApi;
-	@Mock
-	private ExternalInteractionApi externalApi;
-	@Mock
-	private ExternalStateEncoder stateEncoder;
-	@Mock
-	private ExternalStateSaver stateSaver;
+    @InjectMocks
+    private ExternalInteractionModulePresenter testObj;
+    @Mock
+    private ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view;
+    @Mock
+    private ExternalPaths externalPaths;
+    @Mock
+    private ExternalInteractionEmpiriaApi empiriaApi;
+    @Mock
+    private ExternalInteractionApi externalApi;
+    @Mock
+    private ExternalStateEncoder stateEncoder;
+    @Mock
+    private ExternalStateSaver stateSaver;
 
-	@Before
-	public void init() {
-		Optional<JavaScriptObject> jsoOptional = Optional.absent();
-		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-		testObj.onExternalModuleLoaded(externalApi);
-	}
+    @Before
+    public void init() {
+        Optional<JavaScriptObject> jsoOptional = Optional.absent();
+        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+        testObj.onExternalModuleLoaded(externalApi);
+    }
 
-	@Test
-	public void shouldNotSetState_whenIsEmpty() {
-		// given
-		Optional<JavaScriptObject> jsoOptional = Optional.absent();
-		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+    @Test
+    public void shouldNotSetState_whenIsEmpty() {
+        // given
+        Optional<JavaScriptObject> jsoOptional = Optional.absent();
+        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
 
-		// when
-		testObj.onExternalModuleLoaded(externalApi);
+        // when
+        testObj.onExternalModuleLoaded(externalApi);
 
-		// then
-		verify(externalApi, never()).setStateOnExternal(any(JavaScriptObject.class));
-	}
+        // then
+        verify(externalApi, never()).setStateOnExternal(any(JavaScriptObject.class));
+    }
 
-	@Test
-	public void shouldSetStateOnExternal_whenIsPresent() {
-		// given
-		JavaScriptObject jso = mock(JavaScriptObject.class);
-		Optional<JavaScriptObject> jsoOptional = Optional.of(jso);
-		when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+    @Test
+    public void shouldSetStateOnExternal_whenIsPresent() {
+        // given
+        JavaScriptObject jso = mock(JavaScriptObject.class);
+        Optional<JavaScriptObject> jsoOptional = Optional.of(jso);
+        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
 
-		// when
-		testObj.onExternalModuleLoaded(externalApi);
+        // when
+        testObj.onExternalModuleLoaded(externalApi);
 
-		// then
-		verify(externalApi).setStateOnExternal(jso);
-	}
+        // then
+        verify(externalApi).setStateOnExternal(jso);
+    }
 
-	@Test
-	public void shouldInitializeView() {
-		// given
-		final String expectedURL = "media/external/index.html";
-		when(externalPaths.getExternalEntryPointPath()).thenReturn(expectedURL);
+    @Test
+    public void shouldInitializeView() {
+        // given
+        final String expectedURL = "media/external/index.html";
+        when(externalPaths.getExternalEntryPointPath()).thenReturn(expectedURL);
 
-		// when
-		testObj.bindView();
+        // when
+        testObj.bindView();
 
-		// then
-		verify(view).init(empiriaApi, testObj, expectedURL);
-	}
+        // then
+        verify(view).init(empiriaApi, testObj, expectedURL);
+    }
 
-	@Test
-	public void shouldResetExternalObject() {
-		// given
+    @Test
+    public void shouldResetExternalObject() {
+        // given
 
-		// when
-		testObj.reset();
+        // when
+        testObj.reset();
 
-		// then
-		verify(externalApi).reset();
-	}
+        // then
+        verify(externalApi).reset();
+    }
 
-	@Test
-	public void shouldLock() {
-		// given
-		boolean locked = true;
+    @Test
+    public void shouldLock() {
+        // given
+        boolean locked = true;
 
-		// when
-		testObj.setLocked(locked);
+        // when
+        testObj.setLocked(locked);
 
-		// then
-		verify(externalApi).lock();
-	}
+        // then
+        verify(externalApi).lock();
+    }
 
-	@Test
-	public void shouldUnlock() {
-		// given
-		boolean locked = false;
+    @Test
+    public void shouldUnlock() {
+        // given
+        boolean locked = false;
 
-		// when
-		testObj.setLocked(locked);
+        // when
+        testObj.setLocked(locked);
 
-		// then
-		verify(externalApi).unlock();
-	}
+        // then
+        verify(externalApi).unlock();
+    }
 
-	@Test
-	public void shouldMarkCorrectAnswers() {
-		// given
-		MarkAnswersMode mode = MarkAnswersMode.MARK;
-		MarkAnswersType type = MarkAnswersType.CORRECT;
+    @Test
+    public void shouldMarkCorrectAnswers() {
+        // given
+        MarkAnswersMode mode = MarkAnswersMode.MARK;
+        MarkAnswersType type = MarkAnswersType.CORRECT;
 
-		// when
-		testObj.markAnswers(type, mode);
+        // when
+        testObj.markAnswers(type, mode);
 
-		// then
-		verify(externalApi).markCorrectAnswers();
-	}
+        // then
+        verify(externalApi).markCorrectAnswers();
+    }
 
-	@Test
-	public void shouldUnmarkCorrectAnswers() {
-		// given
-		MarkAnswersMode mode = MarkAnswersMode.UNMARK;
-		MarkAnswersType type = MarkAnswersType.CORRECT;
+    @Test
+    public void shouldUnmarkCorrectAnswers() {
+        // given
+        MarkAnswersMode mode = MarkAnswersMode.UNMARK;
+        MarkAnswersType type = MarkAnswersType.CORRECT;
 
-		// when
-		testObj.markAnswers(type, mode);
+        // when
+        testObj.markAnswers(type, mode);
 
-		// then
-		verify(externalApi).unmarkCorrectAnswers();
-	}
+        // then
+        verify(externalApi).unmarkCorrectAnswers();
+    }
 
-	@Test
-	public void shouldMarkWrongAnswers() {
-		// given
-		MarkAnswersMode mode = MarkAnswersMode.MARK;
-		MarkAnswersType type = MarkAnswersType.WRONG;
+    @Test
+    public void shouldMarkWrongAnswers() {
+        // given
+        MarkAnswersMode mode = MarkAnswersMode.MARK;
+        MarkAnswersType type = MarkAnswersType.WRONG;
 
-		// when
-		testObj.markAnswers(type, mode);
+        // when
+        testObj.markAnswers(type, mode);
 
-		// then
-		verify(externalApi).markWrongAnswers();
-	}
+        // then
+        verify(externalApi).markWrongAnswers();
+    }
 
-	@Test
-	public void shouldUnmarkWrongAnswers() {
-		// given
-		MarkAnswersMode mode = MarkAnswersMode.UNMARK;
-		MarkAnswersType type = MarkAnswersType.WRONG;
+    @Test
+    public void shouldUnmarkWrongAnswers() {
+        // given
+        MarkAnswersMode mode = MarkAnswersMode.UNMARK;
+        MarkAnswersType type = MarkAnswersType.WRONG;
 
-		// when
-		testObj.markAnswers(type, mode);
+        // when
+        testObj.markAnswers(type, mode);
 
-		// then
-		verify(externalApi).unmarkWrongAnswers();
-	}
+        // then
+        verify(externalApi).unmarkWrongAnswers();
+    }
 
-	@Test
-	public void shouldShowCorrectAnswers() {
-		// given
-		ShowAnswersType type = ShowAnswersType.CORRECT;
+    @Test
+    public void shouldShowCorrectAnswers() {
+        // given
+        ShowAnswersType type = ShowAnswersType.CORRECT;
 
-		// when
-		testObj.showAnswers(type);
+        // when
+        testObj.showAnswers(type);
 
-		// then
-		verify(externalApi).showCorrectAnswers();
-	}
+        // then
+        verify(externalApi).showCorrectAnswers();
+    }
 
-	@Test
-	public void shouldHideCorrectAnswers() {
-		// given
-		ShowAnswersType type = ShowAnswersType.USER;
+    @Test
+    public void shouldHideCorrectAnswers() {
+        // given
+        ShowAnswersType type = ShowAnswersType.USER;
 
-		// when
-		testObj.showAnswers(type);
+        // when
+        testObj.showAnswers(type);
 
-		// then
-		verify(externalApi).hideCorrectAnswers();
-	}
+        // then
+        verify(externalApi).hideCorrectAnswers();
+    }
 
-	@Test
-	public void shouldSetState() {
-		// given
-		JavaScriptObject jsObj = mock(JavaScriptObject.class);
-		JSONArray array = mock(JSONArray.class);
-		when(stateEncoder.decodeState(array)).thenReturn(jsObj);
+    @Test
+    public void shouldSetState() {
+        // given
+        JavaScriptObject jsObj = mock(JavaScriptObject.class);
+        JSONArray array = mock(JSONArray.class);
+        when(stateEncoder.decodeState(array)).thenReturn(jsObj);
 
-		// when
-		testObj.setState(array);
+        // when
+        testObj.setState(array);
 
-		// then
-		verify(stateSaver).setExternalState(jsObj);
-	}
+        // then
+        verify(stateSaver).setExternalState(jsObj);
+    }
 
-	@Test
-	public void shouldReturnState() {
-		// given
-		JavaScriptObject jsObj = mock(JavaScriptObject.class);
-		JSONArray jsonArray = mock(JSONArray.class);
-		when(externalApi.getStateFromExternal()).thenReturn(jsObj);
-		when(stateEncoder.encodeState(jsObj)).thenReturn(jsonArray);
+    @Test
+    public void shouldReturnState() {
+        // given
+        JavaScriptObject jsObj = mock(JavaScriptObject.class);
+        JSONArray jsonArray = mock(JSONArray.class);
+        when(externalApi.getStateFromExternal()).thenReturn(jsObj);
+        when(stateEncoder.encodeState(jsObj)).thenReturn(jsonArray);
 
-		// when
-		JSONArray array = testObj.getState();
+        // when
+        JSONArray array = testObj.getState();
 
-		// then
-		assertThat(array).isEqualTo(jsonArray);
-		verify(stateSaver).setExternalState(jsObj);
-	}
+        // then
+        assertThat(array).isEqualTo(jsonArray);
+        verify(stateSaver).setExternalState(jsObj);
+    }
 }

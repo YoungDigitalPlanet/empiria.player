@@ -11,21 +11,21 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public interface ConnectionView extends IsWidget, HasDimensions {
 
-	void addFirstColumnItem(ConnectionItem item);
+    void addFirstColumnItem(ConnectionItem item);
 
-	void addSecondColumnItem(ConnectionItem item);
+    void addSecondColumnItem(ConnectionItem item);
 
-	void addElementToMainView(IsWidget widget);
+    void addElementToMainView(IsWidget widget);
 
-	void addConnectionMoveHandler(ConnectionMoveHandler handler);
+    void addConnectionMoveHandler(ConnectionMoveHandler handler);
 
-	void addConnectionMoveEndHandler(ConnectionMoveEndHandler handler);
+    void addConnectionMoveEndHandler(ConnectionMoveEndHandler handler);
 
-	void addConnectionMoveStartHandler(ConnectionMoveStartHandler handler);
+    void addConnectionMoveStartHandler(ConnectionMoveStartHandler handler);
 
-	void addConnectionMoveCancelHandler(ConnectionMoveCancelHandler handler);
+    void addConnectionMoveCancelHandler(ConnectionMoveCancelHandler handler);
 
-	void setDrawFollowTouch(boolean followTouch);
+    void setDrawFollowTouch(boolean followTouch);
 
-	Element getElement();
+    Element getElement();
 }

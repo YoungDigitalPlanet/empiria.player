@@ -5,24 +5,24 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 public class VariableUtil {
 
-	private VariableProviderSocket variableProvider;
+    private VariableProviderSocket variableProvider;
 
-	public VariableUtil(VariableProviderSocket variableProvider) {
-		this.variableProvider = variableProvider;
-	}
+    public VariableUtil(VariableProviderSocket variableProvider) {
+        this.variableProvider = variableProvider;
+    }
 
-	public String getVariableValue(String name, String defaultValue) {
-		Variable var = variableProvider.getVariableValue(name);
-		String value = defaultValue;
-		if (var != null) {
-			value = var.getValuesShort();
-		}
-		return value;
-	}
+    public String getVariableValue(String name, String defaultValue) {
+        Variable var = variableProvider.getVariableValue(name);
+        String value = defaultValue;
+        if (var != null) {
+            value = var.getValuesShort();
+        }
+        return value;
+    }
 
-	public int getVariableIntValue(String name, int defaultValue) {
-		String defaultValueString = String.valueOf(defaultValue);
-		String variableValue = getVariableValue(name, defaultValueString);
-		return NumberUtils.tryParseInt(variableValue, defaultValue);
-	}
+    public int getVariableIntValue(String name, int defaultValue) {
+        String defaultValueString = String.valueOf(defaultValue);
+        String variableValue = getVariableValue(name, defaultValueString);
+        return NumberUtils.tryParseInt(variableValue, defaultValue);
+    }
 }

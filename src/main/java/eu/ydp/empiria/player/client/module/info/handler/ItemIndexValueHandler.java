@@ -4,9 +4,9 @@ import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
 public class ItemIndexValueHandler implements FieldValueHandler {
 
-	@Override
-	public String getValue(ContentFieldInfo info, int refItemIndex) {
-		return String.valueOf(refItemIndex + 1);
-	}
+    @Override
+    public String getValue(ContentFieldInfo info, int refItemIndex) {
+        return String.valueOf(refItemIndex + 1);
+    }
 
 }

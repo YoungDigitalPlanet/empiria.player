@@ -1,26 +1,25 @@
 package eu.ydp.empiria.player.client.module.connection;
 
-import java.util.Map;
-
 import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.util.position.Point;
+
+import java.util.Map;
 
 public interface ConnectionSurfaceView extends IsWidget {
 
-	void clear();
+    void clear();
 
-	void drawLine(Point relativeStart, Point relativeEnd);
+    void drawLine(Point relativeStart, Point relativeEnd);
 
-	void applyStyles(Map<String, String> styles);
+    void applyStyles(Map<String, String> styles);
 
-	void removeFromParent();
+    void removeFromParent();
 
-	boolean isPointOnPath(Point relativePoint);
+    boolean isPointOnPath(Point relativePoint);
 
-	void setOffsetLeft(int offsetLeft);
+    void setOffsetLeft(int offsetLeft);
 
-	int getOffsetLeft();
+    int getOffsetLeft();
 
-	void setOffsetTop(int offsetTop);
+    void setOffsetTop(int offsetTop);
 }

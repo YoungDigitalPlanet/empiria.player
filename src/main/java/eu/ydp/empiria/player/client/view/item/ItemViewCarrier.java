@@ -7,48 +7,48 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ItemViewCarrier {
 
-	private Widget titleView;
-	private Widget contentView;
-	private Widget scoreView;
-	private Panel errorView;
+    private Widget titleView;
+    private Widget contentView;
+    private Widget scoreView;
+    private Panel errorView;
 
-	public ItemViewCarrier(Widget title, Widget _contentView, Widget _scoreView) {
-		titleView = title;
-		contentView = _contentView;
-		scoreView = _scoreView;
-		errorView = null;
-	}
+    public ItemViewCarrier(Widget title, Widget _contentView, Widget _scoreView) {
+        titleView = title;
+        contentView = _contentView;
+        scoreView = _scoreView;
+        errorView = null;
+    }
 
-	public ItemViewCarrier(Widget _contentView) {
-		contentView = _contentView;
-	}
+    public ItemViewCarrier(Widget _contentView) {
+        contentView = _contentView;
+    }
 
-	public ItemViewCarrier(String err) {
-		errorView = new FlowPanel();
-		errorView.setStyleName("qp-item-error");
+    public ItemViewCarrier(String err) {
+        errorView = new FlowPanel();
+        errorView.setStyleName("qp-item-error");
 
-		Label errorLabel = new Label(err);
-		errorLabel.setStyleName("qp-item-error-text");
-		errorView.add(errorLabel);
-	}
+        Label errorLabel = new Label(err);
+        errorLabel.setStyleName("qp-item-error-text");
+        errorView.add(errorLabel);
+    }
 
-	public boolean isError() {
-		return errorView != null;
-	}
+    public boolean isError() {
+        return errorView != null;
+    }
 
-	public Widget getErrorView() {
-		return errorView;
-	}
+    public Widget getErrorView() {
+        return errorView;
+    }
 
-	public Widget getTitleView() {
-		return titleView;
-	}
+    public Widget getTitleView() {
+        return titleView;
+    }
 
-	public Widget getContentView() {
-		return contentView;
-	}
+    public Widget getContentView() {
+        return contentView;
+    }
 
-	public Widget getScoreView() {
-		return scoreView;
-	}
+    public Widget getScoreView() {
+        return scoreView;
+    }
 }

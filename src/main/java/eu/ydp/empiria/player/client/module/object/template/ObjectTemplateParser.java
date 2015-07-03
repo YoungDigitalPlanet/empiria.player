@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.object.template;
 
-import java.util.Set;
-
 import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -10,7 +8,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
@@ -21,136 +18,138 @@ import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButt
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
+import java.util.Set;
+
 public class ObjectTemplateParser extends AbstractTemplateParser {
-	private Element fullScreenTemplate;
+    private Element fullScreenTemplate;
 
-	private static final Set<String> CONTROLLERS = Sets.newHashSet();
-	private MediaWrapper<?> mediaWrapper;
-	private MediaWrapper<?> fullScreenMediaWrapper;
+    private static final Set<String> CONTROLLERS = Sets.newHashSet();
+    private MediaWrapper<?> mediaWrapper;
+    private MediaWrapper<?> fullScreenMediaWrapper;
 
-	@Inject
-	protected MediaControllerFactory factory;
+    @Inject
+    protected MediaControllerFactory factory;
 
-	private boolean fullScreen = false;
+    private boolean fullScreen = false;
 
-	public ObjectTemplateParser() {
-		if (CONTROLLERS.isEmpty()) {
-			CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_VOLUME_BAR.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_TOTAL_TIME.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
-			CONTROLLERS.add(ModuleTagName.MEDIA_SCREEN.tagName());
-		}
-	}
+    public ObjectTemplateParser() {
+        if (CONTROLLERS.isEmpty()) {
+            CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_VOLUME_BAR.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_TOTAL_TIME.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
+            CONTROLLERS.add(ModuleTagName.MEDIA_SCREEN.tagName());
+        }
+    }
 
-	protected Widget getMediaObject() {
-		Widget mediaObjectWidget;
-		if (fullScreen) {
-			mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
-		} else {
-			FlowPanel videoContainer = new FlowPanel();
-			videoContainer.add(mediaWrapper.getMediaObject());
-			videoContainer.getElement().getStyle().setPosition(Position.RELATIVE);
-			mediaObjectWidget = videoContainer;
-		}
-		return mediaObjectWidget;
-	}
+    protected Widget getMediaObject() {
+        Widget mediaObjectWidget;
+        if (fullScreen) {
+            mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
+        } else {
+            FlowPanel videoContainer = new FlowPanel();
+            videoContainer.add(mediaWrapper.getMediaObject());
+            videoContainer.getElement().getStyle().setPosition(Position.RELATIVE);
+            mediaObjectWidget = videoContainer;
+        }
+        return mediaObjectWidget;
+    }
 
-	@Override
-	public void beforeParse(Node mainNode, Widget parent) {
-		// kompatybilnosc wsteczna z szablonami bez media_screen
-		if (isNotMediaScreenDefinedInTemplate()) {
-			attachMediaScreenToRootOfTemplate(parent);
-		}
-	}
+    @Override
+    public void beforeParse(Node mainNode, Widget parent) {
+        // kompatybilnosc wsteczna z szablonami bez media_screen
+        if (isNotMediaScreenDefinedInTemplate()) {
+            attachMediaScreenToRootOfTemplate(parent);
+        }
+    }
 
-	private boolean isNotMediaScreenDefinedInTemplate() {
-		return !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName());
-	}
+    private boolean isNotMediaScreenDefinedInTemplate() {
+        return !isModuleInTemplate(ModuleTagName.MEDIA_SCREEN.tagName());
+    }
 
-	private void attachMediaScreenToRootOfTemplate(Widget parent) {
-		if (fullScreen) {
-			attachMediaScreenToFullscreenTemplate(parent);
-		} else {
-			attachMediaScreenToNotFullscreenTemplate(parent);
-		}
-	}
+    private void attachMediaScreenToRootOfTemplate(Widget parent) {
+        if (fullScreen) {
+            attachMediaScreenToFullscreenTemplate(parent);
+        } else {
+            attachMediaScreenToNotFullscreenTemplate(parent);
+        }
+    }
 
-	private void attachMediaScreenToFullscreenTemplate(Widget parent) {
-		Widget parentWrapper = parent.getParent();
-		if (parentWrapper instanceof HasWidgets) {
-			HasWidgets parentPanel = (HasWidgets) parentWrapper;
-			parentPanel.add(getMediaObject());
-		}
-	}
+    private void attachMediaScreenToFullscreenTemplate(Widget parent) {
+        Widget parentWrapper = parent.getParent();
+        if (parentWrapper instanceof HasWidgets) {
+            HasWidgets parentPanel = (HasWidgets) parentWrapper;
+            parentPanel.add(getMediaObject());
+        }
+    }
 
-	private void attachMediaScreenToNotFullscreenTemplate(Widget parent) {
-		if (parent instanceof HasWidgets) {
-			((HasWidgets) parent).add(getMediaObject());
-		}
-	}
+    private void attachMediaScreenToNotFullscreenTemplate(Widget parent) {
+        if (parent instanceof HasWidgets) {
+            ((HasWidgets) parent).add(getMediaObject());
+        }
+    }
 
-	@Override
-	public void parse(Node mainNode, Widget parent) {
-		super.parse(mainNode, parent);
+    @Override
+    public void parse(Node mainNode, Widget parent) {
+        super.parse(mainNode, parent);
 
-	}
+    }
 
-	public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
-		this.mediaWrapper = mediaDescriptor;
-	}
+    public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
+        this.mediaWrapper = mediaDescriptor;
+    }
 
-	public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
-		this.fullScreenMediaWrapper = fullScreenMediaWrapper;
-	}
+    public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
+        this.fullScreenMediaWrapper = fullScreenMediaWrapper;
+    }
 
-	@Override
-	protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
-		MediaController<?> controller = null;
-		if (ModuleTagName.MEDIA_TEXT_TRACK.tagName().equals(moduleName)) {
-			String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
-			TextTrackKind trackKind = TextTrackKind.SUBTITLES;
-			try {
-				trackKind = TextTrackKind.valueOf(kind.toUpperCase()); // NOPMD
-			} catch (IllegalArgumentException exception) { // NOPMD
+    @Override
+    protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
+        MediaController<?> controller = null;
+        if (ModuleTagName.MEDIA_TEXT_TRACK.tagName().equals(moduleName)) {
+            String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
+            TextTrackKind trackKind = TextTrackKind.SUBTITLES;
+            try {
+                trackKind = TextTrackKind.valueOf(kind.toUpperCase()); // NOPMD
+            } catch (IllegalArgumentException exception) { // NOPMD
 
-			}
-			controller = factory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
-		} else if (ModuleTagName.MEDIA_SCREEN.tagName().equals(moduleName)) {
-			controller = new MediaControllerWrapper<Widget>(getMediaObject());
-		} else {
-			controller = factory.get(ModuleTagName.getTag(moduleName));
-		}
-		if (controller != null) {
-			controller.setMediaDescriptor(mediaWrapper);
-			controller.setFullScreen(fullScreen);
-		}
-		if (controller instanceof VideoFullScreenMediaButton) {
-			((VideoFullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
-			((VideoFullScreenMediaButton) controller).setMediaWrapper(mediaWrapper);
-			((VideoFullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
-		}
+            }
+            controller = factory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
+        } else if (ModuleTagName.MEDIA_SCREEN.tagName().equals(moduleName)) {
+            controller = new MediaControllerWrapper<Widget>(getMediaObject());
+        } else {
+            controller = factory.get(ModuleTagName.getTag(moduleName));
+        }
+        if (controller != null) {
+            controller.setMediaDescriptor(mediaWrapper);
+            controller.setFullScreen(fullScreen);
+        }
+        if (controller instanceof VideoFullScreenMediaButton) {
+            ((VideoFullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
+            ((VideoFullScreenMediaButton) controller).setMediaWrapper(mediaWrapper);
+            ((VideoFullScreenMediaButton) controller).setFullScreenMediaWrapper(fullScreenMediaWrapper);
+        }
 
-		return controller;
-	}
+        return controller;
+    }
 
-	@Override
-	protected boolean isModuleSupported(String moduleName) {
-		return CONTROLLERS.contains(moduleName);
-	}
+    @Override
+    protected boolean isModuleSupported(String moduleName) {
+        return CONTROLLERS.contains(moduleName);
+    }
 
-	public void setFullScreenTemplate(Element fullScreenTemplate) {
-		this.fullScreenTemplate = fullScreenTemplate;
-	}
+    public void setFullScreenTemplate(Element fullScreenTemplate) {
+        this.fullScreenTemplate = fullScreenTemplate;
+    }
 
-	public void setFullScreen(boolean fullScreen) {
-		this.fullScreen = fullScreen;
-	}
+    public void setFullScreen(boolean fullScreen) {
+        this.fullScreen = fullScreen;
+    }
 }

@@ -1,102 +1,99 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import java.util.List;
-
+import com.google.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
+import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorPersonaProperties;
-import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TutorPopupPresenterImplTest {
-	@Mock
-	private TutorPopupView tutorPopupView;
-	@Mock
-	private TutorService tutorService;
-	@Mock
-	private PersonaToViewDtoConverter personaConverter;
-	@Mock
-	private TutorConfig tutorConfig;
+    @Mock
+    private TutorPopupView tutorPopupView;
+    @Mock
+    private TutorService tutorService;
+    @Mock
+    private PersonaToViewDtoConverter personaConverter;
+    @Mock
+    private TutorConfig tutorConfig;
 
-	@InjectMocks
-	private TutorPopupPresenterImpl tutorPopupPresenterImpl;
-	private final String tutorId = "tutorId";
-	private final List<TutorPersonaProperties> personas = Lists.newArrayList();
-	private final List<PersonaViewDto> viewPersonas = Lists.newArrayList();
+    @InjectMocks
+    private TutorPopupPresenterImpl tutorPopupPresenterImpl;
+    private final String tutorId = "tutorId";
+    private final List<TutorPersonaProperties> personas = Lists.newArrayList();
+    private final List<PersonaViewDto> viewPersonas = Lists.newArrayList();
 
-	@Before
-	public void setUp() {
-		when(tutorService.getTutorConfig(tutorId)).thenReturn(tutorConfig);
+    @Before
+    public void setUp() {
+        when(tutorService.getTutorConfig(tutorId)).thenReturn(tutorConfig);
 
-		when(tutorConfig.getPersonas()).thenReturn(personas);
+        when(tutorConfig.getPersonas()).thenReturn(personas);
 
-		when(personaConverter.convert(personas)).thenReturn(viewPersonas);
+        when(personaConverter.convert(personas)).thenReturn(viewPersonas);
 
-		tutorPopupPresenterImpl.init(tutorId);
-	}
+        tutorPopupPresenterImpl.init(tutorId);
+    }
 
-	@Test
-	public void testInit() throws Exception {
-		// given
-		int index = 5;
-		PersonaViewDto viewPersona = new PersonaViewDto(index, "URL");
-		viewPersonas.add(viewPersona);
-		viewPersona = new PersonaViewDto(++index, "URL");
-		viewPersonas.add(viewPersona);
+    @Test
+    public void testInit() throws Exception {
+        // given
+        int index = 5;
+        PersonaViewDto viewPersona = new PersonaViewDto(index, "URL");
+        viewPersonas.add(viewPersona);
+        viewPersona = new PersonaViewDto(++index, "URL");
+        viewPersonas.add(viewPersona);
 
-		// when
-		tutorPopupPresenterImpl.init(tutorId);
+        // when
+        tutorPopupPresenterImpl.init(tutorId);
 
-		// then
-		for (PersonaViewDto personaViewDto : viewPersonas) {
-			verify(tutorPopupView).addPersona(personaViewDto);
-			verify(tutorPopupView).addClickHandlerToPersona(Matchers.any(PopupClickCommand.class), eq(personaViewDto.getPersonaIndex()));
-		}
-	}
+        // then
+        for (PersonaViewDto personaViewDto : viewPersonas) {
+            verify(tutorPopupView).addPersona(personaViewDto);
+            verify(tutorPopupView).addClickHandlerToPersona(Matchers.any(PopupClickCommand.class), eq(personaViewDto.getPersonaIndex()));
+        }
+    }
 
-	@Test
-	public void testShow() throws Exception {
-		// given
-		Integer index = 5;
+    @Test
+    public void testShow() throws Exception {
+        // given
+        Integer index = 5;
 
-		PersonaService personaService = mock(PersonaService.class);
-		when(tutorService.getTutorPersonaService(tutorId)).thenReturn(personaService);
-		when(personaService.getCurrentPersonaIndex()).thenReturn(index);
+        PersonaService personaService = mock(PersonaService.class);
+        when(tutorService.getTutorPersonaService(tutorId)).thenReturn(personaService);
+        when(personaService.getCurrentPersonaIndex()).thenReturn(index);
 
-		// when
-		tutorPopupPresenterImpl.show();
+        // when
+        tutorPopupPresenterImpl.show();
 
-		// then
-		verify(tutorPopupView).setSelected(index);
-		verify(tutorPopupView).show();
-	}
+        // then
+        verify(tutorPopupView).setSelected(index);
+        verify(tutorPopupView).show();
+    }
 
-	@Test
-	public void testClicked() throws Exception {
-		// given
-		int index = 7;
-		PersonaViewDto personaView = new PersonaViewDto(index, "avatarUrl");
-		PersonaService personaService = mock(PersonaService.class);
-		when(tutorService.getTutorPersonaService(tutorId)).thenReturn(personaService);
+    @Test
+    public void testClicked() throws Exception {
+        // given
+        int index = 7;
+        PersonaViewDto personaView = new PersonaViewDto(index, "avatarUrl");
+        PersonaService personaService = mock(PersonaService.class);
+        when(tutorService.getTutorPersonaService(tutorId)).thenReturn(personaService);
 
-		// then
-		tutorPopupPresenterImpl.clicked(personaView);
+        // then
+        tutorPopupPresenterImpl.clicked(personaView);
 
-		// when
-		verify(personaService).setCurrentPersonaIndex(index);
-	}
+        // when
+        verify(personaService).setCurrentPersonaIndex(index);
+    }
 }

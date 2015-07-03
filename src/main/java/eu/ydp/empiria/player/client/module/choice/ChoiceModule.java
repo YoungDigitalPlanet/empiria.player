@@ -13,59 +13,59 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
 
-	private ChoiceModuleStructure choiceStructure;
+    private ChoiceModuleStructure choiceStructure;
 
-	private ChoiceModuleModel moduleModel;
+    private ChoiceModuleModel moduleModel;
 
-	private ChoiceModulePresenter presenter;
+    private ChoiceModulePresenter presenter;
 
-	@Inject
-	public ChoiceModule(ChoiceModuleStructure choiceStructure, @ModuleScoped ChoiceModuleModel moduleModel, @ModuleScoped ChoiceModulePresenter presenter) {
-		this.choiceStructure = choiceStructure;
-		this.moduleModel = moduleModel;
-		this.presenter = presenter;
-	}
+    @Inject
+    public ChoiceModule(ChoiceModuleStructure choiceStructure, @ModuleScoped ChoiceModuleModel moduleModel, @ModuleScoped ChoiceModulePresenter presenter) {
+        this.choiceStructure = choiceStructure;
+        this.moduleModel = moduleModel;
+        this.presenter = presenter;
+    }
 
-	@Override
-	protected void initalizeModule() {
-		choiceStructure.setMulti(isMulti());
-		if (isMulti()) {
-			getResponse().setCountMode(getCountMode());
-		}
-		presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
+    @Override
+    protected void initalizeModule() {
+        choiceStructure.setMulti(isMulti());
+        if (isMulti()) {
+            getResponse().setCountMode(getCountMode());
+        }
+        presenter.setInlineBodyGenerator(getModuleSocket().getInlineBodyGeneratorSocket());
 
-		moduleModel.initialize(this);
-	}
+        moduleModel.initialize(this);
+    }
 
-	private boolean isMulti() {
-		return Cardinality.MULTIPLE == getResponse().cardinality;
-	}
+    private boolean isMulti() {
+        return Cardinality.MULTIPLE == getResponse().cardinality;
+    }
 
-	@Override
-	protected ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> getPresenter() {
-		return presenter;
-	}
+    @Override
+    protected ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> getPresenter() {
+        return presenter;
+    }
 
-	@Override
-	protected ChoiceModuleModel getResponseModel() {
-		return moduleModel;
-	}
+    @Override
+    protected ChoiceModuleModel getResponseModel() {
+        return moduleModel;
+    }
 
-	@Override
-	protected AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser> getStructure() {
-		return choiceStructure;
-	}
+    @Override
+    protected AbstractModuleStructure<ChoiceInteractionBean, ChoiceModuleJAXBParser> getStructure() {
+        return choiceStructure;
+    }
 
-	@Override
-	public boolean isIgnored() {
-		return getStructure().getBean().isIgnored();
-	}
+    @Override
+    public boolean isIgnored() {
+        return getStructure().getBean().isIgnored();
+    }
 
-	@Override
-	public void markAnswers(boolean mark) {
-		if (isIgnored()) {
-			return;
-		}
-		super.markAnswers(mark);
-	}
+    @Override
+    public void markAnswers(boolean mark) {
+        if (isIgnored()) {
+            return;
+        }
+        super.markAnswers(mark);
+    }
 }

@@ -11,30 +11,30 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalSoundInstanceCreator {
 
-	private ExternalPaths paths;
-	private MediaWrapperCreator mediaWrapperCreator;
-	private ExternalInteractionModuleFactory moduleFactory;
+    private ExternalPaths paths;
+    private MediaWrapperCreator mediaWrapperCreator;
+    private ExternalInteractionModuleFactory moduleFactory;
 
-	@Inject
-	public ExternalSoundInstanceCreator(@ModuleScoped ExternalPaths paths, MediaWrapperCreator mediaWrapperCreator,
-			ExternalInteractionModuleFactory moduleFactory) {
-		this.paths = paths;
-		this.mediaWrapperCreator = mediaWrapperCreator;
-		this.moduleFactory = moduleFactory;
-	}
+    @Inject
+    public ExternalSoundInstanceCreator(@ModuleScoped ExternalPaths paths, MediaWrapperCreator mediaWrapperCreator,
+                                        ExternalInteractionModuleFactory moduleFactory) {
+        this.paths = paths;
+        this.mediaWrapperCreator = mediaWrapperCreator;
+        this.moduleFactory = moduleFactory;
+    }
 
-	public void createSound(final String audioName, final ExternalSoundInstanceCallback callback) {
-		String audioPath = paths.getExternalFilePath(audioName);
-		mediaWrapperCreator.createMediaWrapper(audioPath, createCallbackReceiver(audioName, callback));
-	}
+    public void createSound(final String audioName, final ExternalSoundInstanceCallback callback) {
+        String audioPath = paths.getExternalFilePath(audioName);
+        mediaWrapperCreator.createMediaWrapper(audioPath, createCallbackReceiver(audioName, callback));
+    }
 
-	private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback) {
-		return new CallbackReceiver<MediaWrapper<Widget>>() {
-			@Override
-			public void setCallbackReturnObject(MediaWrapper<Widget> audioWrapper) {
-				ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper);
-				callback.onSoundCreated(soundInstance, audioName);
-			}
-		};
-	}
+    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback) {
+        return new CallbackReceiver<MediaWrapper<Widget>>() {
+            @Override
+            public void setCallbackReturnObject(MediaWrapper<Widget> audioWrapper) {
+                ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper);
+                callback.onSoundCreated(soundInstance, audioName);
+            }
+        };
+    }
 }

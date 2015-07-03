@@ -15,25 +15,25 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SingleFeedbackSoundPlayerWithHTML5MediaWrapperJUnitTest {
 
-	private SingleFeedbackSoundPlayer testObj;
-	@Mock
-	private EventsBus eventsBus;
-	@Mock
-	private HTML5AudioMediaWrapper mediaWrapper;
-	@Mock
-	private Provider<HTML5MediaForFeedbacksAvailableOptions> optionsProvider;
+    private SingleFeedbackSoundPlayer testObj;
+    @Mock
+    private EventsBus eventsBus;
+    @Mock
+    private HTML5AudioMediaWrapper mediaWrapper;
+    @Mock
+    private Provider<HTML5MediaForFeedbacksAvailableOptions> optionsProvider;
 
-	@Mock
-	private HTML5MediaForFeedbacksAvailableOptions options;
+    @Mock
+    private HTML5MediaForFeedbacksAvailableOptions options;
 
-	@Before
-	public void before() {
-		when(optionsProvider.get()).thenReturn(options);
-		testObj = new SingleFeedbackSoundPlayer(mediaWrapper, eventsBus, optionsProvider);
-	}
+    @Before
+    public void before() {
+        when(optionsProvider.get()).thenReturn(options);
+        testObj = new SingleFeedbackSoundPlayer(mediaWrapper, eventsBus, optionsProvider);
+    }
 
-	@Test
-	public void shouldOverrideWrapperOptions() {
-		verify(mediaWrapper).setMediaAvailableOptions(options);
-	}
+    @Test
+    public void shouldOverrideWrapperOptions() {
+        verify(mediaWrapper).setMediaAvailableOptions(options);
+    }
 }

@@ -2,10 +2,8 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.xml.client.Element;
-
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
@@ -14,51 +12,51 @@ import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class TextInteractionModule extends BindingContainerModule<TextInteractionModule> implements IBookmarkable {
 
-	private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-	private final BookmarkingHelper bookmarkingHelper;
+    private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+    private final BookmarkingHelper bookmarkingHelper;
 
-	public TextInteractionModule() {
-		setContainerStyleName(styleNames.QP_TEXTINTERACTION());
-		bookmarkingHelper = new BookmarkingHelper(getView());
-	}
+    public TextInteractionModule() {
+        setContainerStyleName(styleNames.QP_TEXTINTERACTION());
+        bookmarkingHelper = new BookmarkingHelper(getView());
+    }
 
-	@Override
-	public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
-		super.initModule(element, moduleSocket, bodyGeneratorSocket);
-	}
+    @Override
+    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
+        super.initModule(element, moduleSocket, bodyGeneratorSocket);
+    }
 
-	@Override
-	public TextInteractionModule getNewInstance() {
-		return new TextInteractionModule();
-	}
+    @Override
+    public TextInteractionModule getNewInstance() {
+        return new TextInteractionModule();
+    }
 
-	@Override
-	public void setBookmarkingStyleName(String styleName) {
-		bookmarkingHelper.setBookmarkingStyleName(styleName);
-	}
+    @Override
+    public void setBookmarkingStyleName(String styleName) {
+        bookmarkingHelper.setBookmarkingStyleName(styleName);
+    }
 
-	@Override
-	public void removeBookmarkingStyleName() {
-		bookmarkingHelper.removeBookmarkingStyleName();
-	}
+    @Override
+    public void removeBookmarkingStyleName() {
+        bookmarkingHelper.removeBookmarkingStyleName();
+    }
 
-	@Override
-	public void setClickCommand(final Command command) {
-		bookmarkingHelper.setClickCommand(command);
-	}
+    @Override
+    public void setClickCommand(final Command command) {
+        bookmarkingHelper.setClickCommand(command);
+    }
 
-	@Override
-	public String getBookmarkHtmlBody() {
-		return getView().getElement().getInnerText();
-	}
+    @Override
+    public String getBookmarkHtmlBody() {
+        return getView().getElement().getInnerText();
+    }
 
-	@Override
-	public Rectangle getViewArea() {
-		return bookmarkingHelper.getViewArea();
-	}
+    @Override
+    public Rectangle getViewArea() {
+        return bookmarkingHelper.getViewArea();
+    }
 
-	@Override
-	public String getDefaultBookmarkTitle() {
-		return BookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
-	}
+    @Override
+    public String getDefaultBookmarkTitle() {
+        return BookmarkingHelper.getDefaultBookmarkTitle(getView().getElement().getInnerText());
+    }
 }

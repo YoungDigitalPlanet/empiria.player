@@ -11,21 +11,21 @@ import com.google.inject.Provider;
  */
 public class HiddenWidgetCreator {
 
-	/**
-	 * IOS nie lubi jak kilka elelemntow audio znajduje sie obok siebie dlatego dla kazdego nowo dodawanego elementu tworzymy nowy kontener.
-	 */
-	@Inject
-	Provider<HiddenContainerWidget> containerWidget;
+    /**
+     * IOS nie lubi jak kilka elelemntow audio znajduje sie obok siebie dlatego dla kazdego nowo dodawanego elementu tworzymy nowy kontener.
+     */
+    @Inject
+    Provider<HiddenContainerWidget> containerWidget;
 
-	public void addWidgetToHiddenContainerOnRootPanel(final Widget widget) {
+    public void addWidgetToHiddenContainerOnRootPanel(final Widget widget) {
 
-		HiddenContainerWidget hiddenContainerWidget = containerWidget.get();
-		hiddenContainerWidget.addWidgetToContainer(widget);
-		addPanelToRootPanel(hiddenContainerWidget);
+        HiddenContainerWidget hiddenContainerWidget = containerWidget.get();
+        hiddenContainerWidget.addWidgetToContainer(widget);
+        addPanelToRootPanel(hiddenContainerWidget);
 
-	}
+    }
 
-	private void addPanelToRootPanel(Widget hiddenPanel) {
-		RootPanel.get().add(hiddenPanel);
-	}
+    private void addPanelToRootPanel(Widget hiddenPanel) {
+        RootPanel.get().add(hiddenPanel);
+    }
 }

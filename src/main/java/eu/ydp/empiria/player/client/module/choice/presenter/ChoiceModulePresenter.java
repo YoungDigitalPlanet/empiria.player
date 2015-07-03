@@ -7,6 +7,6 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceInteractionBea
 
 public interface ChoiceModulePresenter extends ActivityPresenter<ChoiceModuleModel, ChoiceInteractionBean> {
 
-	void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
+    void setInlineBodyGenerator(InlineBodyGeneratorSocket bodyGenerator);
 
 }

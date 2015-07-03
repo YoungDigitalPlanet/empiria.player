@@ -17,161 +17,161 @@ import java.util.List;
 
 public class ExtensionsManager implements IStateful {
 
-	public List<Extension> extensions;
+    public List<Extension> extensions;
 
-	@Inject
-	private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
-	@Inject
-	private Provider<ExternalMediaProcessor> externalMediaProcessor;
+    @Inject
+    private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
+    @Inject
+    private Provider<ExternalMediaProcessor> externalMediaProcessor;
 
-	public ExtensionsManager() {
-		extensions = new ArrayList<Extension>();
-	}
+    public ExtensionsManager() {
+        extensions = new ArrayList<Extension>();
+    }
 
-	public void init() {
+    public void init() {
 
-		for (Extension ext : extensions) {
-			ext.init();
-		}
-	}
+        for (Extension ext : extensions) {
+            ext.init();
+        }
+    }
 
-	private Extension getExtensionInstance(ExtensionType exType) {
-		Extension currExt = null;
-		if (exType != null) {
-			switch (exType) {
-			case EXTENSION_PROCESSOR_FLOW_REQUEST:
-				currExt = new JsFlowRequestProcessorExtension();
-				break;
-			case EXTENSION_PROCESSOR_MEDIA:
-				currExt = new JsMediaProcessorExtension();
-				break;
-			case EXTENSION_LISTENER_DELIVERY_EVENTS:
-				currExt = new JsDeliveryEventsListenerExtension();
-				break;
-			case EXTENSION_SOCKET_USER_STYLE_CLIENT:
-				currExt = new JsStyleSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
-				currExt = new JsSessionDataSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT:
-				currExt = new JsDataSourceDataSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT:
-				currExt = new JsFlowDataSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_FLOW_COMMAND:
-				currExt = new JsFlowCommandSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_FLOW_REQUEST:
-				currExt = new JsFlowRequestSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_INTERFERENCE_PAGE:
-				currExt = new JsPageInterferenceSocketUserExtension();
-				break;
-			case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
-				currExt = new JsInteractionEventSocketUserExtension();
-				break;
-			case EXTENSION_VIEW_ASSESSMENT_HEADER:
-				currExt = new JsAssessmentHeaderViewExtension();
-				break;
-			case EXTENSION_VIEW_ASSESSMENT_FOOTER:
-				currExt = new JsAssessmentFooterViewExtension();
-				break;
-			case EXTENSION_CLIENT_STATEFUL:
-				currExt = new JsStatefulExtension();
-				break;
-			case EXTENSION_PLAYER_JS_OBJECT_USER:
-				currExt = new JsPlayerJsObjectUserExtension();
-				break;
-			case EXTENSION_TUTOR:
-				currExt = new JsTutorExtension();
-				break;
-			case EXTENSION_BONUS:
-				currExt = new JsBonusExtension();
-				break;
-			case EXTENSION_PROGRESS_BONUS:
-				currExt = new JsProgressBonusExtension();
-				break;
-			default:
-				break;
-			}
-		}
-		return currExt;
-	}
+    private Extension getExtensionInstance(ExtensionType exType) {
+        Extension currExt = null;
+        if (exType != null) {
+            switch (exType) {
+                case EXTENSION_PROCESSOR_FLOW_REQUEST:
+                    currExt = new JsFlowRequestProcessorExtension();
+                    break;
+                case EXTENSION_PROCESSOR_MEDIA:
+                    currExt = new JsMediaProcessorExtension();
+                    break;
+                case EXTENSION_LISTENER_DELIVERY_EVENTS:
+                    currExt = new JsDeliveryEventsListenerExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_STYLE_CLIENT:
+                    currExt = new JsStyleSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
+                    currExt = new JsSessionDataSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_DATA_SOURCE_DATA_CLIENT:
+                    currExt = new JsDataSourceDataSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_FLOW_DATA_CLIENT:
+                    currExt = new JsFlowDataSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_FLOW_COMMAND:
+                    currExt = new JsFlowCommandSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_FLOW_REQUEST:
+                    currExt = new JsFlowRequestSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_INTERFERENCE_PAGE:
+                    currExt = new JsPageInterferenceSocketUserExtension();
+                    break;
+                case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
+                    currExt = new JsInteractionEventSocketUserExtension();
+                    break;
+                case EXTENSION_VIEW_ASSESSMENT_HEADER:
+                    currExt = new JsAssessmentHeaderViewExtension();
+                    break;
+                case EXTENSION_VIEW_ASSESSMENT_FOOTER:
+                    currExt = new JsAssessmentFooterViewExtension();
+                    break;
+                case EXTENSION_CLIENT_STATEFUL:
+                    currExt = new JsStatefulExtension();
+                    break;
+                case EXTENSION_PLAYER_JS_OBJECT_USER:
+                    currExt = new JsPlayerJsObjectUserExtension();
+                    break;
+                case EXTENSION_TUTOR:
+                    currExt = new JsTutorExtension();
+                    break;
+                case EXTENSION_BONUS:
+                    currExt = new JsBonusExtension();
+                    break;
+                case EXTENSION_PROGRESS_BONUS:
+                    currExt = new JsProgressBonusExtension();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return currExt;
+    }
 
-	public List<Extension> addExtension(JavaScriptObject extensionJsObject) {
-		String extType = getFieldType(extensionJsObject);
-		List<Extension> currExtensions = new ArrayList<Extension>();
-		if (extType != null) {
-			String[] extTypes = extType.split(",");
+    public List<Extension> addExtension(JavaScriptObject extensionJsObject) {
+        String extType = getFieldType(extensionJsObject);
+        List<Extension> currExtensions = new ArrayList<Extension>();
+        if (extType != null) {
+            String[] extTypes = extType.split(",");
 
-			for (String currExtTypeString : extTypes) {
-				ExtensionType currExtType = ExtensionType.fromString(currExtTypeString.trim());
-				Extension currExt = getExtensionInstance(currExtType);
-				if (currExt instanceof JsExtension) {
-					((JsExtension) currExt).initJs(extensionJsObject);
-					extensions.add(currExt);
-					currExtensions.add(currExt);
-				}
-			}
-		}
-		return currExtensions;
-	}
+            for (String currExtTypeString : extTypes) {
+                ExtensionType currExtType = ExtensionType.fromString(currExtTypeString.trim());
+                Extension currExt = getExtensionInstance(currExtType);
+                if (currExt instanceof JsExtension) {
+                    ((JsExtension) currExt).initJs(extensionJsObject);
+                    extensions.add(currExt);
+                    currExtensions.add(currExt);
+                }
+            }
+        }
+        return currExtensions;
+    }
 
-	public Extension addExtension(Extension extension) {
-		extensions.add(extension);
-		return extension;
+    public Extension addExtension(Extension extension) {
+        extensions.add(extension);
+        return extension;
 
-	}
+    }
 
-	private native String getFieldType(JavaScriptObject jsObject)/*-{
+    private native String getFieldType(JavaScriptObject jsObject)/*-{
         if (typeof jsObject.getType == 'function')
             return jsObject.getType();
         return null;
     }-*/;
 
-	public List<Extension> getExtensions() {
-		return extensions;
-	}
+    public List<Extension> getExtensions() {
+        return extensions;
+    }
 
-	public Extension getInternaleExtensionByName(String name) {
-		Extension retValue = null;
-		if ("DefaultAssessmentHeaderViewExtension".equals(name)) {
-			retValue = new DefaultAssessmentHeaderViewExtension();
-		}
-		if ("DefaultAssessmentFooterViewExtension".equals(name)) {
-			retValue = new DefaultAssessmentFooterViewExtension();
-		}
-		if ("DefaultSoundProcessorExtension".equals(name)) {
-			retValue = defaultMediaProcessor.get();
-		}
-		if ("ExternalMediaProcessorExtension".equals(name)) {
-			retValue = externalMediaProcessor.get();
-		}
-		return retValue;
-	}
+    public Extension getInternaleExtensionByName(String name) {
+        Extension retValue = null;
+        if ("DefaultAssessmentHeaderViewExtension".equals(name)) {
+            retValue = new DefaultAssessmentHeaderViewExtension();
+        }
+        if ("DefaultAssessmentFooterViewExtension".equals(name)) {
+            retValue = new DefaultAssessmentFooterViewExtension();
+        }
+        if ("DefaultSoundProcessorExtension".equals(name)) {
+            retValue = defaultMediaProcessor.get();
+        }
+        if ("ExternalMediaProcessorExtension".equals(name)) {
+            retValue = externalMediaProcessor.get();
+        }
+        return retValue;
+    }
 
-	@Override
-	public JSONArray getState() {
-		JSONArray arr = new JSONArray();
-		for (Extension ext : extensions) {
-			if (ext instanceof StatefulExtension) {
-				arr.set(arr.size(), ((StatefulExtension) ext).getState());
-			}
-		}
-		return arr;
-	}
+    @Override
+    public JSONArray getState() {
+        JSONArray arr = new JSONArray();
+        for (Extension ext : extensions) {
+            if (ext instanceof StatefulExtension) {
+                arr.set(arr.size(), ((StatefulExtension) ext).getState());
+            }
+        }
+        return arr;
+    }
 
-	@Override
-	public void setState(JSONArray newState) {
-		int counter = 0;
-		for (Extension ext : extensions) {
-			if (ext instanceof StatefulExtension && counter < newState.size()) {
-				((StatefulExtension) ext).setState(newState.get(counter).isArray());
-				counter++;
-			}
-		}
-	}
+    @Override
+    public void setState(JSONArray newState) {
+        int counter = 0;
+        for (Extension ext : extensions) {
+            if (ext instanceof StatefulExtension && counter < newState.size()) {
+                ((StatefulExtension) ext).setState(newState.get(counter).isArray());
+                counter++;
+            }
+        }
+    }
 
 }

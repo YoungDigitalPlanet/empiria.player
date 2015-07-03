@@ -18,51 +18,51 @@ import static org.mockito.Mockito.when;
 @RunWith(GwtMockitoTestRunner.class)
 public class DragDataObjectFromEventExtractorJUnitTest {
 
-	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
-	private OverlayTypesParser overlayTypesParser;
+    private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
+    private OverlayTypesParser overlayTypesParser;
 
-	@Before
-	public void setUp() throws Exception {
-		overlayTypesParser = Mockito.mock(OverlayTypesParser.class);
-		dataObjectFromEventExtractor = new DragDataObjectFromEventExtractor(overlayTypesParser);
-	}
+    @Before
+    public void setUp() throws Exception {
+        overlayTypesParser = Mockito.mock(OverlayTypesParser.class);
+        dataObjectFromEventExtractor = new DragDataObjectFromEventExtractor(overlayTypesParser);
+    }
 
-	@Test
-	public void shouldExtractObjectWhenJsonIsValid() throws Exception {
-		DropEvent dropEvent = Mockito.mock(DropEvent.class);
+    @Test
+    public void shouldExtractObjectWhenJsonIsValid() throws Exception {
+        DropEvent dropEvent = Mockito.mock(DropEvent.class);
 
-		String json = "some json";
-		when(dropEvent.getData("json")).thenReturn(json);
+        String json = "some json";
+        when(dropEvent.getData("json")).thenReturn(json);
 
-		when(overlayTypesParser.isValidJSON(json)).thenReturn(true);
+        when(overlayTypesParser.isValidJSON(json)).thenReturn(true);
 
-		NativeDragDataObject nativeDragData = Mockito.mock(NativeDragDataObject.class);
-		when(overlayTypesParser.get(json)).thenReturn(nativeDragData);
+        NativeDragDataObject nativeDragData = Mockito.mock(NativeDragDataObject.class);
+        when(overlayTypesParser.get(json)).thenReturn(nativeDragData);
 
-		Optional<DragDataObject> extracted = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(dropEvent);
+        Optional<DragDataObject> extracted = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(dropEvent);
 
-		verify(dropEvent).stopPropagation();
-		verify(dropEvent).preventDefault();
-		assertThat(extracted.get()).isEqualTo(nativeDragData);
-	}
+        verify(dropEvent).stopPropagation();
+        verify(dropEvent).preventDefault();
+        assertThat(extracted.get()).isEqualTo(nativeDragData);
+    }
 
-	@Test
-	public void shouldReturnAbsentWhenJsonIsNotValid() throws Exception {
-		DropEvent dropEvent = Mockito.mock(DropEvent.class);
+    @Test
+    public void shouldReturnAbsentWhenJsonIsNotValid() throws Exception {
+        DropEvent dropEvent = Mockito.mock(DropEvent.class);
 
-		String json = "some json";
-		when(dropEvent.getData("json")).thenReturn(json);
+        String json = "some json";
+        when(dropEvent.getData("json")).thenReturn(json);
 
-		when(overlayTypesParser.isValidJSON(json)).thenReturn(false);
+        when(overlayTypesParser.isValidJSON(json)).thenReturn(false);
 
-		NativeDragDataObject nativeDragData = Mockito.mock(NativeDragDataObject.class);
-		when(overlayTypesParser.get(json)).thenReturn(nativeDragData);
+        NativeDragDataObject nativeDragData = Mockito.mock(NativeDragDataObject.class);
+        when(overlayTypesParser.get(json)).thenReturn(nativeDragData);
 
-		Optional<DragDataObject> extracted = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(dropEvent);
+        Optional<DragDataObject> extracted = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(dropEvent);
 
-		verify(dropEvent).stopPropagation();
-		verify(dropEvent).preventDefault();
-		assertThat(extracted.isPresent()).isEqualTo(false);
-	}
+        verify(dropEvent).stopPropagation();
+        verify(dropEvent).preventDefault();
+        assertThat(extracted.isPresent()).isEqualTo(false);
+    }
 
 }

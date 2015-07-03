@@ -4,14 +4,14 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 
 class TouchReservationHandler implements PlayerEventHandler {
-	private IMultiPageController multiPageController;
+    private IMultiPageController multiPageController;
 
-	public TouchReservationHandler(IMultiPageController multiPageController) {
-		this.multiPageController = multiPageController;
-	}
+    public TouchReservationHandler(IMultiPageController multiPageController) {
+        this.multiPageController = multiPageController;
+    }
 
-	@Override
-	public void onPlayerEvent(PlayerEvent event) {
-		multiPageController.reset();
-	}
+    @Override
+    public void onPlayerEvent(PlayerEvent event) {
+        multiPageController.reset();
+    }
 }

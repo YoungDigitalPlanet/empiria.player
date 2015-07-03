@@ -4,37 +4,37 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class PageSwitchListBox extends ListBox implements IPageSwitchWidget {
 
-	@Override
-	public void setItemsCount(Integer itemsCount) {
-		initializeList(itemsCount);
-	}
+    @Override
+    public void setItemsCount(Integer itemsCount) {
+        initializeList(itemsCount);
+    }
 
-	@Override
-	public void setCurrentIndex(Integer value) {
-		setSelectedIndex(value);
-	}
+    @Override
+    public void setCurrentIndex(Integer value) {
+        setSelectedIndex(value);
+    }
 
-	@Override
-	public Integer getCurrentIndex() {
-		return getSelectedIndex();
-	}
+    @Override
+    public Integer getCurrentIndex() {
+        return getSelectedIndex();
+    }
 
-	@Override
-	public void enable() {
-		setEnabled(true);
-	}
+    @Override
+    public void enable() {
+        setEnabled(true);
+    }
 
-	@Override
-	public void disable() {
-		setEnabled(false);
-	}
+    @Override
+    public void disable() {
+        setEnabled(false);
+    }
 
-	private void initializeList(Integer itemsNum) {
-		Integer itemIndex;
+    private void initializeList(Integer itemsNum) {
+        Integer itemIndex;
 
-		for (Integer i = 0; i < itemsNum; i++) {
-			itemIndex = i + 1;
-			addItem(itemIndex.toString());
-		}
-	}
+        for (Integer i = 0; i < itemsNum; i++) {
+            itemIndex = i + 1;
+            addItem(itemIndex.toString());
+        }
+    }
 }

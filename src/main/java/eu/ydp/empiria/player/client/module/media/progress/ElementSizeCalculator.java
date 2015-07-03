@@ -4,8 +4,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public class ElementSizeCalculator {
-	public int getWidth(IsWidget widget) {
-		Element element = widget.asWidget().getElement();
-		return element.getAbsoluteRight() - element.getAbsoluteLeft();
-	}
+    public int getWidth(IsWidget widget) {
+        Element element = widget.asWidget().getElement();
+        return element.getAbsoluteRight() - element.getAbsoluteLeft();
+    }
 }
