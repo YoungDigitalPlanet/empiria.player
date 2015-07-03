@@ -23,6 +23,22 @@
     width: 100%;
 }
 
+.mfp-bg {
+    z-index: 21042 !important;
+}
+
 .mfp-wrap {
-    z-index: 10000 !important;
+    z-index: 21043 !important;
+}
+
+.mfp-content {
+    z-index: 21045 !important;
+}
+
+.mfp-preloader {
+    z-index: 21044 !important;
+}
+
+button.mfp-close, button.mfp-arrow {
+    z-index: 21046 !important;
 }
