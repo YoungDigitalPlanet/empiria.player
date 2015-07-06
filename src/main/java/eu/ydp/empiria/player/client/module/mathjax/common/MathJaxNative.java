@@ -14,9 +14,6 @@ public class MathJaxNative {
     }
 
     private native void addElementNative(Element element) /*-{
-        if (!$wnd.MathJax.Hub.yElements) {
-            $wnd.MathJax.Hub.yElements = [];
-        }
         $wnd.MathJax.Hub.yElements.push(element);
     }-*/;
 
