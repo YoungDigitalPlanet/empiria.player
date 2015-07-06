@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.module.tutor.TutorEvent;
 import eu.ydp.empiria.player.client.module.tutor.TutorEventTypes;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public class PersonaService {
 

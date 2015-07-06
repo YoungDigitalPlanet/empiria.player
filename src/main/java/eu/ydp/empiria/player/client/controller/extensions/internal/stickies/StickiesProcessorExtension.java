@@ -25,10 +25,10 @@ import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectMo
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.geom.MathUtil;
 
 public class StickiesProcessorExtension extends InternalExtension implements DataSourceDataSocketUserExtension, PlayerJsObjectModifierExtension,

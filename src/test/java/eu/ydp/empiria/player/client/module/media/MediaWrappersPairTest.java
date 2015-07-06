@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.media;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEvent.getType;
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent.getType;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,11 +24,11 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.gin.factory.MediaWrappersPairFactory;
 import eu.ydp.empiria.player.client.media.Video;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.media.MediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
-import eu.ydp.empiria.player.client.util.events.scope.PageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 

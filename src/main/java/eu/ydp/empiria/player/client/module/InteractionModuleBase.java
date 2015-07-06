@@ -12,10 +12,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestSubmittedClient;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, WorkModeTestSubmittedClient, IIgnored {

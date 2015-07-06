@@ -13,8 +13,8 @@ import eu.ydp.empiria.player.client.controller.extensions.types.MediaProcessorEx
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 
 public class ExternalMediaProcessor extends AbstractMediaProcessor implements MediaProcessorExtension {
 

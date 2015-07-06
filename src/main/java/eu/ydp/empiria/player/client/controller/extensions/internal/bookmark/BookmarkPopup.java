@@ -8,9 +8,9 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContentsPresenter {

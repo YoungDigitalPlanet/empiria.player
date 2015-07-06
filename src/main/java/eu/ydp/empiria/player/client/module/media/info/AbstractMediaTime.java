@@ -5,7 +5,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public abstract class AbstractMediaTime<H> extends AbstractMediaButton<H> {
 	NumberFormat formatter = NumberFormat.getFormat("##00");

@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.module.media.progress;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.AbstractMediaEventHandler;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.PAUSE;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.PAUSE;
 
 public class ProgressBarEndEventHandler extends AbstractMediaEventHandler {
 

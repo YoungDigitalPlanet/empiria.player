@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 
 public class JsInteractionEventSocketUserExtension extends AbstractJsExtension implements InteractionEventSocketUserExtension {
 	private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();

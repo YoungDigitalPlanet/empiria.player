@@ -1,19 +1,19 @@
 package eu.ydp.empiria.player.client.module.mediator.powerfeedback;
 
-import static eu.ydp.empiria.player.client.util.events.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
+import static eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes.OUTCOME_STATE_CHANGED;
 
 import com.google.inject.Inject;
 
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.EndHandler;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEvent;
-import eu.ydp.empiria.player.client.util.events.state.StateChangeEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
+import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventHandler;
 
 public class PowerFeedbackMediator {
 

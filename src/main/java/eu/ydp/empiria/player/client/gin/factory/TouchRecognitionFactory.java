@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.assistedinject.Assisted;
 
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.HasTouchHandlers;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTouchHandlers;
 
 public interface TouchRecognitionFactory {
 	/**

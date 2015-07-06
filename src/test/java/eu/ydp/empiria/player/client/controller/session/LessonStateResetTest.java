@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.reset.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.reset.*;
 import eu.ydp.gwtutil.client.event.EventImpl.Type;
 
 @RunWith(MockitoJUnitRunner.class)

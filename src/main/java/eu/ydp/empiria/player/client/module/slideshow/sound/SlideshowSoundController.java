@@ -4,8 +4,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.media.*;
 import eu.ydp.empiria.player.client.module.slideshow.SlideEndHandler;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.*;
 import java.util.Collection;
 
 public class SlideshowSoundController implements MediaEventHandler {

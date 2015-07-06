@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.controller.session;
 
 import com.google.inject.Inject;
 
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.reset.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.reset.*;
 
 public class LessonStateReset implements LessonResetEventHandler {
 

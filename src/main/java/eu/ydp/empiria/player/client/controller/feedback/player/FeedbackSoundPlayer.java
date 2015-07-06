@@ -11,8 +11,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.callback.CallbackReceiver;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class FeedbackSoundPlayer {

@@ -15,9 +15,9 @@ import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveE
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.HasConnectionMoveHandlers;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 

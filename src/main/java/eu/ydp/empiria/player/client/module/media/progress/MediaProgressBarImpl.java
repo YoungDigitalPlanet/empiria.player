@@ -14,14 +14,14 @@ import eu.ydp.empiria.player.client.module.media.button.AbstractMediaScroll;
 import eu.ydp.empiria.player.client.module.media.button.SimpleMediaButton;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ComputedStyle;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 import javax.annotation.PostConstruct;
 
-import static eu.ydp.empiria.player.client.util.events.media.MediaEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 
 public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
 

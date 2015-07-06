@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
@@ -31,16 +32,17 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.scope.EventScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 
 @SuppressWarnings("PMD")
+@RunWith(GwtMockitoTestRunner.class)
 public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 	InlineChoiceMathGapModule instance;
 	ExListBox listBox;

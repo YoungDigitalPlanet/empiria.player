@@ -9,12 +9,12 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.touch.TouchStartH
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerDownHandlerImpl;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerMoveHandlerImpl;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.pointer.PointerUpHandlerImpl;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnEndHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.handlers.touchon.TouchOnStartHandler;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.pointer.PointerDownHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.pointer.PointerMoveHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.pointer.PointerUpHandlerImpl;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnEndHandler;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnMoveHandler;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnStartHandler;
 
 public interface TouchHandlerFactory {
 	PointerMoveHandlerOnImage createPointerMoveHandlerOnImage(TouchOnImageMoveHandler touchOnMoveHandler);

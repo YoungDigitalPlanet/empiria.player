@@ -8,10 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.junit.client.GWTTestCase;
 
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.*;
 
 public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 
@@ -121,7 +118,7 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
 		return state;
 	}
 
-	public class ModuleMock implements IUniqueModule, IStateful {
+	public class ModuleMock implements StatefulModule {
 
 		private final String identifier;
 		private JSONArray newState;

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.simulation;
 
-import static eu.ydp.empiria.player.client.util.events.player.PlayerEventTypes.*;
+import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.*;
 
 import com.google.common.base.*;
 import com.google.gwt.canvas.client.Canvas;
@@ -13,8 +13,8 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
 import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsPlugin;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.player.*;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.*;
 import eu.ydp.gwtcreatejs.client.handler.*;
 import eu.ydp.gwtcreatejs.client.loader.*;
 

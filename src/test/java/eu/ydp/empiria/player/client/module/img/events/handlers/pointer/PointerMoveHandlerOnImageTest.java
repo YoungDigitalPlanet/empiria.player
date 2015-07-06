@@ -12,7 +12,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.module.img.events.coordinates.PointerEventsCoordinates;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
-import eu.ydp.empiria.player.client.util.events.dom.emulate.events.pointer.PointerMoveEvent;
+import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerMoveEvent;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class PointerMoveHandlerOnImageTest {

@@ -25,11 +25,6 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 			}
 
 			@Override
-			public void onAssessmentLoadingError() {
-				fail("Assessment not loaded");
-			}
-
-			@Override
 			public void onAssessmentLoaded() {
 
 			}
@@ -50,11 +45,6 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 			}
 
 			@Override
-			public void onAssessmentLoadingError() {
-				fail("Assessment not loaded");
-			}
-
-			@Override
 			public void onAssessmentLoaded() {
 
 			}
@@ -71,11 +61,6 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 			@Override
 			public void onDataReady() {
 				assertEquals("Interactive text", dsm.getItemTitle(0));
-			}
-
-			@Override
-			public void onAssessmentLoadingError() {
-				fail("Assessment not loaded");
 			}
 
 			@Override
@@ -104,11 +89,6 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 			}
 
 			@Override
-			public void onAssessmentLoadingError() {
-				fail("Assessment not loaded");
-			}
-
-			@Override
 			public void onAssessmentLoaded() {
 
 			}
@@ -127,11 +107,6 @@ public class DataSourceManagerGWTTestCase extends GWTTestCase {
 			@Override
 			public void onDataReady() {
 				assertEquals(dsm.getMode(), DataSourceManagerMode.SERVING);
-			}
-
-			@Override
-			public void onAssessmentLoadingError() {
-				fail("Assessment not loaded");
 			}
 
 			@Override

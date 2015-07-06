@@ -91,7 +91,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
 		if (module instanceof ISingleViewWithBodyModule) {
 			parenthood.pushParent((ISingleViewWithBodyModule) module);
-			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, interactionListener, bodyGeneratorSocket);
+			((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket);
 			parenthood.popParent();
 		} else if (module instanceof ISingleViewSimpleModule) {
 			((ISingleViewSimpleModule) module).initModule(element, moduleSocket, interactionListener);

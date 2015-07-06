@@ -23,7 +23,7 @@ import eu.ydp.empiria.player.client.module.connection.*;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.connection.structure.*;
-import eu.ydp.empiria.player.client.util.events.multiplepair.*;
+import eu.ydp.empiria.player.client.util.events.internal.multiplepair.*;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;

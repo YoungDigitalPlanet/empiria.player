@@ -12,8 +12,8 @@ import eu.ydp.empiria.player.client.controller.multiview.ResizeContinuousUpdater
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.util.dom.redraw.ForceRedrawHack;
-import eu.ydp.empiria.player.client.util.events.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.scope.CurrentPageScope;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class ResizeContinuousUpdaterJUnitTest {
 
