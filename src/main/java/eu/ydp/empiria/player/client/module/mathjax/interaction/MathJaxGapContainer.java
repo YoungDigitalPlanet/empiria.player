@@ -16,7 +16,7 @@ public class MathJaxGapContainer {
 
     private native void initJavaScriptApi() /*-{
         var that = this;
-        $wnd.MathJax.Hub.getMathGap = function (identifier) {
+        getMathGap = function (identifier) {
             return that.@MathJaxGapContainer::getMathGapElement(*)(identifier);
         };
     }-*/;

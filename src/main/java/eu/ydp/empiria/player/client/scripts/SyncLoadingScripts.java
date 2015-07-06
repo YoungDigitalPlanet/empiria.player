@@ -7,7 +7,8 @@ public enum SyncLoadingScripts implements ScriptUrl {
     JQUERY("jquery/jquery-1.11.3.min.js"),
     CSS_PARSER("jscss/cssparser.js"),
     JQUERY_UI("jquery/jquery-ui.min.js"),
-    JQUERY_UI_TOUCH("jquery/jquery.ui.touch-punch.min.js");
+    JQUERY_UI_TOUCH("jquery/jquery.ui.touch-punch.min.js"),
+    MATH_JAX("mathjax/MathJax.js?config=yJax&locale=en");
 
     private final String url;
 
@@ -19,6 +20,5 @@ public enum SyncLoadingScripts implements ScriptUrl {
     public String getUrl() {
         return url;
     }
-
 
 }

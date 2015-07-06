@@ -1,4 +1,4 @@
-var font = (function () {
+var renderer = (function () {
     var navU = navigator.userAgent;
 
     // Android Mobile
@@ -16,9 +16,8 @@ var font = (function () {
 
     // Native Android Browser
     var isAndroidStackBrowser = isAndroidMobile && (appleWebKitVersion !== null && appleWebKitVersion < 537) || (chromeVersion !== null && chromeVersion < 37);
-    return isAndroidStackBrowser ? "STIX" : "TeX";
+    return isAndroidStackBrowser ? "SVG" : "HTML-CSS";
 })();
-
 MathJax.Hub.yElements = [];
 
 MathJax.Hub.yProcessElements = function (callback) {
@@ -38,20 +37,28 @@ MathJax.Hub.yProcessElements = function (callback) {
 };
 
 MathJax.Hub.Config({
-    config: ["MMLorHTML.js"],
     extensions: ["Gap.js"],
-    jax: ["input/MathML", "output/HTML-CSS", "output/NativeMML"],
+    jax: ["input/MathML", "output/" + renderer],
     showMathMenu: false,
     showMathMenuMSIE: false,
     showProcessingMessages: false,
     messageStyle: "none",
     "HTML-CSS": {
-        availableFonts: [font],
-        preferredFont: font,
-        webFont: font,
+        availableFonts: ["TeX"],
+        preferredFont: "TeX",
+        webFont: "TeX",
         imageFont: null,
         matchFontHeight: true
+    },
+    SVG: {
+        font: "TeX"
     }
 });
+
+(function () {
+    var HUB = MathJax.Hub;
+
+    HUB.Queue(["setRenderer", HUB, renderer, "jax/mml"]);
+})();
 
 MathJax.Ajax.loadComplete("[MathJax]/config/yJax.js");

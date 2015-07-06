@@ -1,6 +1,8 @@
 MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
     var HTMLCSS = MathJax.OutputJax["HTML-CSS"];
     var MML = MathJax.ElementJax.mml;
+    var SVG = MathJax.OutputJax.SVG;
+    var getMathGap = document.getElementById("empiria.player").contentWindow.getMathGap;
 
     MML.gap = MML.mbase.Subclass({
         type: "gap", isToken: true,
@@ -11,7 +13,7 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
             this.HTMLhandleSize(mathWrapper);
 
             var id = this.attr['responseIdentifier'];
-            var gap = MathJax.Hub.getMathGap(id);
+            var gap = getMathGap(id);
             mathWrapper.appendChild(gap);
 
             var HD = HTMLCSS.getHD(mathWrapper, true);
@@ -24,6 +26,55 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
             HTMLCSS.Measured(mathWrapper, parentElement);
 
             return mathWrapper;
+        },
+        toSVG: function () {
+            var FOREIGN = SVG.BBOX.Subclass({type: "foreignObject", removeable: false});
+            var parentSvg = SVG.BBOX();
+            this.SVGhandleSpace(parentSvg);
+
+            var span = SVG.textSVG.parentNode;
+            var id = this.attr['responseIdentifier'];
+            var gap = getMathGap(id);
+
+            span.insertBefore(gap, SVG.textSVG);
+            var w = gap.offsetWidth, h = gap.offsetHeight;
+            var strut = MathJax.HTML.addElement(gap, "span", {
+                style: {
+                    display: "inline-block", overflow: "hidden", height: h + "px",
+                    width: "1px", marginRight: "-1px"
+                }
+            });
+            var d = gap.offsetHeight - h;
+            if (h === d) {
+                h /= 2;
+            } else {
+                h -= d;
+            }
+            gap.removeChild(strut);
+            span.removeChild(gap);
+
+            var scale = 1000 / SVG.em;
+            var svg = FOREIGN({
+                y: (-h) + "px", width: w + "px", height: (h + d) + "px",
+                transform: "scale(" + scale + ") matrix(1 0 0 -1 0 0)"
+            });
+
+            svg.element.appendChild(gap);
+
+            svg.w = w * scale;
+            svg.h = h * scale;
+            svg.d = d * scale;
+            svg.r = svg.w;
+            svg.l = 0;
+            svg.Clean();
+            this.SVGhandleColor(svg);
+            this.SVGsaveData(svg);
+
+            parentSvg.Add(svg, parentSvg.w, 0, true);
+            parentSvg.Clean();
+            this.SVGhandleColor(parentSvg);
+            this.SVGsaveData(parentSvg);
+            return parentSvg;
         }
     });
 });

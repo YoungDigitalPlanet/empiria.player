@@ -10,8 +10,7 @@ enum AsyncLoadingScripts implements ScriptUrl {
     FA_VIDEO("video/FAVideo.js"),
     JQUERY_SCROLL("jquery/jquery.smooth-scroll.min.js"),
     LIGHTBOX("lightbox2/js/lightbox-min.js"),
-    MAGNIFIC_POPUP("magnific-popup/magnific-popup.min.js"),
-    MATH_JAX("mathjax/MathJax.js?config=yJax&locale=en");
+    MAGNIFIC_POPUP("magnific-popup/magnific-popup.min.js");
 
     private final String url;
 
