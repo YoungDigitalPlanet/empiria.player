@@ -94,20 +94,6 @@ public class BookmarkProcessorExtensionJUnitTest {
         assertThat(bookmarks, contains(b1, b3));
     }
 
-    @Test
-    public void isChildOfTrue() {
-        HasChildren parent = mock(HasChildren.class);
-        IModule child = mock(IModule.class, RETURNS_DEEP_STUBS);
-        when(child.getParentModule().getParentModule()).thenReturn(parent);
-    }
-
-    @Test
-    public void isChildOfFalse() {
-        HasChildren parent = mock(HasChildren.class);
-        IModule child = mock(IModule.class, RETURNS_DEEP_STUBS);
-        when(child.getParentModule().getParentModule()).thenReturn(parent);
-    }
-
     int BOOKMARKING_INDEX = 2;
 
     @Test
