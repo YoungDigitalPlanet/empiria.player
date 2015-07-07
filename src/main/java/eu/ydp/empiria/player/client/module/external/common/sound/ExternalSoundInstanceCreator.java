@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.external.common.sound;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.ExternalInteractionModuleFactory;
@@ -23,16 +24,16 @@ public class ExternalSoundInstanceCreator {
         this.moduleFactory = moduleFactory;
     }
 
-    public void createSound(final String audioName, final ExternalSoundInstanceCallback callback) {
+    public void createSound(final String audioName, final ExternalSoundInstanceCallback callback, Optional<OnEndCallback> onEndCallback) {
         String audioPath = paths.getExternalFilePath(audioName);
-        mediaWrapperCreator.createMediaWrapper(audioPath, createCallbackReceiver(audioName, callback));
+        mediaWrapperCreator.createMediaWrapper(audioPath, createCallbackReceiver(audioName, callback, onEndCallback));
     }
 
-    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback) {
+    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback, final Optional<OnEndCallback> onEndCallback) {
         return new CallbackReceiver<MediaWrapper<Widget>>() {
             @Override
             public void setCallbackReturnObject(MediaWrapper<Widget> audioWrapper) {
-                ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper);
+                ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback);
                 callback.onSoundCreated(soundInstance, audioName);
             }
         };

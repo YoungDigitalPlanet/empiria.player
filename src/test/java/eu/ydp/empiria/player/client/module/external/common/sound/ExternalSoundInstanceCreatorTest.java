@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.external.common.sound;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.gin.factory.ExternalInteractionModuleFactory;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
@@ -38,11 +39,12 @@ public class ExternalSoundInstanceCreatorTest {
     private ExternalSoundInstance soundInstance;
     @Captor
     private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> argumentCaptor;
+    private Optional<OnEndCallback> onEndCallback = Optional.absent();
 
     @Before
     public void init() {
         when(paths.getExternalFilePath("ok.mp3")).thenReturn("external/ok.mp3");
-        when(moduleFactory.getExternalSoundInstance(audioWrapper)).thenReturn(soundInstance);
+        when(moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback)).thenReturn(soundInstance);
     }
 
     @Test
@@ -51,7 +53,7 @@ public class ExternalSoundInstanceCreatorTest {
         String src = "ok.mp3";
 
         // when
-        testObj.createSound(src, callback);
+        testObj.createSound(src, callback, onEndCallback);
         verify(mediaWrapperCreator).createMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
         CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = argumentCaptor.getValue();
         callbackReceiver.setCallbackReturnObject(audioWrapper);
