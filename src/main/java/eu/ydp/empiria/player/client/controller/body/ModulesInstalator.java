@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
+import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.module.*;

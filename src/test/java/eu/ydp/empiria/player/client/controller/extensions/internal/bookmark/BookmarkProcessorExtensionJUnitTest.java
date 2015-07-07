@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension.Mode;
 import eu.ydp.empiria.player.client.module.HasChildren;
+import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
@@ -31,7 +32,6 @@ public class BookmarkProcessorExtensionJUnitTest {
     @Before
     public void setUp() {
         bookmarkProcessor = spy(new BookmarkProcessorExtension());
-        doNothing().when(bookmarkProcessor).initInjection();
         doNothing().when(bookmarkProcessor).editBookmark(any(IBookmarkable.class));
         bookmarkProcessor.eventsBus = mock(EventsBus.class);
         bookmarkProcessor.styleNames = mock(StyleNameConstants.class);
@@ -39,6 +39,7 @@ public class BookmarkProcessorExtensionJUnitTest {
         when(bookmarkProcessor.dataSourceSupplier.getItemTitle(any(Integer.class))).thenReturn("Mock title 1");
         doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();
         doReturn(SELECTABLE).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTABLE();
+
     }
 
     @Test
@@ -49,9 +50,9 @@ public class BookmarkProcessorExtensionJUnitTest {
 
     @Test
     public void containsInteractionHasChildren() {
-        List<IModule> childList1 = ListCreator.create(mock(IModule.class)).add(mock(IModule.class)).add(mock(IInteractionModule.class)).build();
+        List<HasParent> childList1 = ListCreator.create(mock(HasParent.class)).add(mock(IModule.class)).add(mock(IInteractionModule.class)).build();
         HasChildren module = mock(HasChildren.class);
-        when(module.getChildrenModules()).thenReturn(childList1);
+        when(module.getNestedChildren()).thenReturn(childList1);
         assertThat(bookmarkProcessor.containsInteraction(module), is(true));
     }
 
@@ -62,16 +63,22 @@ public class BookmarkProcessorExtensionJUnitTest {
         assertThat(bookmarkProcessor.parentRegistered(mock(IModule.class)), is(false));
     }
 
-    interface BookmarkableHasChildren extends IBookmarkable, HasChildren {
-    }
-
     @Test
     public void checkParentsExists() {
-        List<BookmarkableHasChildren> bookmarks = ListCreator.create(mock(BookmarkableHasChildren.class)).add(mock(BookmarkableHasChildren.class)).build();
+        // given
+        IBookmarkable bookmarkable = mock(IBookmarkable.class, withSettings().extraInterfaces(HasChildren.class));
+        List<IBookmarkable> bookmarks = ListCreator.create(bookmarkable).add(mock(IBookmarkable.class)).build();
         doReturn(bookmarks).when(bookmarkProcessor).getModulesForCurrentItem();
         IModule module = mock(IModule.class);
-        when(module.getParentModule()).thenReturn(bookmarks.get(1));
-        assertThat(bookmarkProcessor.parentRegistered(module), is(true));
+        List<HasChildren> parents = new ArrayList<>();
+        parents.add((HasChildren) bookmarkable);
+        when(module.getNestedParents()).thenReturn(parents);
+
+        // when
+        boolean result = bookmarkProcessor.parentRegistered(module);
+
+        // then
+        assertThat(result, is(true));
     }
 
     @Test
@@ -82,10 +89,8 @@ public class BookmarkProcessorExtensionJUnitTest {
         List<IBookmarkable> bookmarks = ListCreator.create(b1).add(b2).add(b3).build();
         doReturn(bookmarks).when(bookmarkProcessor).getModulesForCurrentItem();
         HasChildren parentModule = mock(HasChildren.class);
-        when(parentModule.getChildrenModules()).thenReturn(ListCreator.create(new ArrayList<IModule>()).add(b2).build());
-        doReturn(false).when(bookmarkProcessor).isChildOf(any(IModule.class), any(IModule.class));
-        doReturn(true).when(bookmarkProcessor).isChildOf(b2, parentModule);
-        bookmarkProcessor.removeChildren(parentModule);
+        when(parentModule.getNestedChildren()).thenReturn(ListCreator.create(new ArrayList<HasParent>()).add(b2).build());
+        bookmarkProcessor.removeBookmarkableChildren(parentModule);
         assertThat(bookmarks, contains(b1, b3));
     }
 
@@ -94,7 +99,6 @@ public class BookmarkProcessorExtensionJUnitTest {
         HasChildren parent = mock(HasChildren.class);
         IModule child = mock(IModule.class, RETURNS_DEEP_STUBS);
         when(child.getParentModule().getParentModule()).thenReturn(parent);
-        assertThat(bookmarkProcessor.isChildOf(child, parent), is(true));
     }
 
     @Test
@@ -102,7 +106,6 @@ public class BookmarkProcessorExtensionJUnitTest {
         HasChildren parent = mock(HasChildren.class);
         IModule child = mock(IModule.class, RETURNS_DEEP_STUBS);
         when(child.getParentModule().getParentModule()).thenReturn(parent);
-        assertThat(bookmarkProcessor.isChildOf(child, mock(HasChildren.class)), is(false));
     }
 
     int BOOKMARKING_INDEX = 2;
@@ -246,7 +249,7 @@ public class BookmarkProcessorExtensionJUnitTest {
         List<StackMap<Integer, BookmarkProperties>> bookmarks = bookmarkProcessor.bookmarks;
         doReturn(null).when(bookmarkProcessor).getExternalBookmarks();
         // when
-        bookmarkProcessor.parseExternalBookarks();
+        bookmarkProcessor.parseExternalBookmarks();
         // then
         assertThat(bookmarks, notNullValue());
         assertThat(bookmarks, empty());

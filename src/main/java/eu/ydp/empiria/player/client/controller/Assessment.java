@@ -205,6 +205,22 @@ public class Assessment {
         }
 
         @Override
+        public List<HasParent> getNestedChildren(HasChildren parent) {
+            if (body != null) {
+                return body.getNestedChildren(parent);
+            }
+            return null;
+        }
+
+        @Override
+        public List<HasChildren> getNestedParents(HasParent child) {
+            if (body != null) {
+                return body.getNestedParents(child);
+            }
+            return null;
+        }
+
+        @Override
         public Stack<HasChildren> getParentsHierarchy(IModule module) {
             Stack<HasChildren> hierarchy = new Stack<HasChildren>();
             HasChildren currParent = getParent(module);

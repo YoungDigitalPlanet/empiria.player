@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.*;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IInlineContainerModule;

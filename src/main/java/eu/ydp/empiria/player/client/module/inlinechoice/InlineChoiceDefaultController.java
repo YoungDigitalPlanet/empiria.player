@@ -27,11 +27,10 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 import java.io.Serializable;
 import java.util.List;
 
-public class InlineChoiceDefaultController implements InlineChoiceController {
+public class InlineChoiceDefaultController extends ParentedModuleBase implements InlineChoiceController {
 
     private Response response;
     private String responseIdentifier;
-    private ModuleSocket moduleSocket;
     private AccessibleListBox listBox;
     private boolean shuffle = false;
     private String lastValue = null;
@@ -50,7 +49,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
     @Override
     public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
-        this.moduleSocket = moduleSocket;
+        initModule(moduleSocket);
     }
 
     @Override
@@ -338,15 +337,5 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
     @Override
     public void setShowEmptyOption(boolean seo) {
         showEmptyOption = seo;
-    }
-
-    @Override
-    public HasChildren getParentModule() {
-        return moduleSocket.getParent(this);
-    }
-
-    @Override
-    public List<IModule> getChildren() {
-        return moduleSocket.getChildren(this);
     }
 }

@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 
-public class DefaultAudioPlayerModule implements AudioPlayerModule {
+public class DefaultAudioPlayerModule extends ParentedModuleBase implements AudioPlayerModule {
     @Inject
     private EventsBus eventsBus;
     @Inject
@@ -42,13 +43,12 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
     private CustomPushButton button;
     private boolean playing;
     private boolean enabled = true;
-    private ModuleSocket moduleSocket;
     private MediaWrapper<?> mediaWrapper;
     private Map<String, String> sources;
 
     @Override
     public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
-        this.moduleSocket = moduleSocket;
+        initModule(moduleSocket);
         sources = SourceUtil.getSource(element, "audio");
         button.setStyleName(styleNameConstants.QP_AUDIOPLAYER_BUTTON());
         button.getElement().setId(moduleId);
@@ -151,15 +151,5 @@ public class DefaultAudioPlayerModule implements AudioPlayerModule {
                 play();
             }
         }
-    }
-
-    @Override
-    public HasChildren getParentModule() {
-        return moduleSocket.getParent(this);
-    }
-
-    @Override
-    public List<IModule> getChildren() {
-        return moduleSocket.getChildren(this);
     }
 }

@@ -93,7 +93,7 @@
         <when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio"/>
     </replace-with>
 
-    <replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalAudioImpl">
+    <replace-with class="eu.ydp.empiria.player.client.module.object.impl.flash.FlashLocalAudioImpl">
         <when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio"/>
         <any>
             <when-property-is name="run.local" value="true"/>
