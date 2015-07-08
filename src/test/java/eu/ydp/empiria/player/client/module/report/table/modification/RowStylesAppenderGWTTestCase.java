@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.report.table.modification;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlexTable;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class RowStylesAppenderGWTTestCase extends GWTTestCase {
+public class RowStylesAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private RowStylesAppender testObj;
 
@@ -46,10 +46,4 @@ public class RowStylesAppenderGWTTestCase extends GWTTestCase {
         String tabelHTML = flexTable.getElement().getInnerHTML();
         assertEquals(tabelHTML, OUTPUT);
     }
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
-
 }

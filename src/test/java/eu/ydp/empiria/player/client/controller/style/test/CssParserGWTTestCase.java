@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.controller.style.test;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
@@ -16,16 +16,11 @@ import eu.ydp.empiria.player.client.style.StyleDocument;
 import java.util.Map;
 import java.util.Set;
 
-public class CssParserGWTTestCase extends GWTTestCase {
+public class CssParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private final String css1 = "customselector { width: 100px; customProperty: abc; } .customClass { height: 100px; xyz: 200; }";
     private final String css2 = "h2 { font-size: 5em; } customselector { width: 200px; customproperty: xyz; color: #666; } .customClass { width: 10px; } orderInteraction { module-layout: vertical; }";
     private final String css3 = "h1 { font-weight: bold; }";
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
 
     private static native String parseCSS() /*-{
         var css = "customselector { width: 100px; customProperty: abc } .customClass { height: 100px; xyz: 200 }";

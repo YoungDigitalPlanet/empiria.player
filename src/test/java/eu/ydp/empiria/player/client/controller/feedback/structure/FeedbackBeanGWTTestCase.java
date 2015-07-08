@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.junit.client.GWTTestCase;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Prop
 
 import java.util.List;
 
-public class FeedbackBeanGWTTestCase extends GWTTestCase {
+public class FeedbackBeanGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private FeedbackBean feedback;
 
@@ -112,10 +112,5 @@ public class FeedbackBeanGWTTestCase extends GWTTestCase {
         assertTrue(firstSource.getType().equals("audio/mp4"));
         assertTrue(secondSource.getSrc().equals("sound.ogg"));
         assertTrue(secondSource.getType().equals("audio/ogg"));
-    }
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
     }
 }

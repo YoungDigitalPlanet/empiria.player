@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
 
-public class DataSourceDataSocketUserExtensionGWTTestCase extends ExtensionTestGWTTestCase {
+public class DataSourceDataSocketUserExtensionGWTTestCase extends ExtensionGWTTestCase {
 
     protected DeliveryEngine de;
     protected DataSourceDataSupplier dsds;

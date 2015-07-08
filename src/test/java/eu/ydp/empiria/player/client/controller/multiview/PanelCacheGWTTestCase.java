@@ -2,18 +2,14 @@ package eu.ydp.empiria.player.client.controller.multiview;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.ui.FlowPanel;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 @SuppressWarnings("PMD")
-public class PanelCacheGWTTestCase extends GWTTestCase {
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class PanelCacheGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testPageViewWithSwipeAndWithout() {
         PanelCache cache = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getPanelCache();

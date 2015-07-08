@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.Extension;
-import eu.ydp.empiria.player.client.controller.extensions.ExtensionTestGWTTestCase;
+import eu.ydp.empiria.player.client.controller.extensions.ExtensionGWTTestCase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ModuleExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
@@ -26,7 +26,7 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TextGapFocusOutGWTTestCase extends ExtensionTestGWTTestCase {
+public abstract class TextGapFocusOutGWTTestCase extends ExtensionGWTTestCase {
 
     private boolean passed = false;
 
