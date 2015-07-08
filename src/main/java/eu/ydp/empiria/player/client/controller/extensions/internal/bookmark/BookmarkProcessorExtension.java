@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -190,13 +191,17 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
     void removeBookmarkableChildren(IModule parentModule) {
         List<IBookmarkable> modulesForCurrentItem = getModulesForCurrentItem();
+        List<IBookmarkable> bookmarksToRemove = Lists.newArrayList();
+
         if (parentModule instanceof HasChildren) {
             List<HasParent> allChildren = ((HasChildren) parentModule).getNestedChildren();
             for (IBookmarkable b : modulesForCurrentItem) {
                 if (allChildren.contains(b)) {
-                    modulesForCurrentItem.remove(b);
+                    bookmarksToRemove.add(b);
                 }
             }
+
+            modulesForCurrentItem.removeAll(bookmarksToRemove);
         }
     }
 

@@ -12,12 +12,13 @@ import static org.mockito.Mockito.mock;
 public class NestedParenthoodManagerTest {
 
     private NestedParenthoodManager testObj = new NestedParenthoodManager();
+    private HasParent child = mock(HasParent.class);
+    private HasChildren parent = mock(HasChildren.class);
+    private HasChildren grandParent = mock(HasChildren.class);
 
     @Test
     public void shouldAddChildToParent() {
         // given
-        HasParent child = mock(HasParent.class);
-        HasChildren parent = mock(HasChildren.class);
         testObj.addParent(parent);
         testObj.addChildToParent(child, parent);
 
@@ -25,15 +26,12 @@ public class NestedParenthoodManagerTest {
         List<HasParent> nestedChildren = testObj.getNestedChildren(parent);
 
         // then
-        assertThat(nestedChildren.contains(child)).isTrue();
+        assertThat(nestedChildren).contains(child);
     }
 
     @Test
     public void shouldAddChildToGrandParent() {
         // given
-        HasParent child = mock(HasParent.class);
-        HasChildren parent = mock(HasChildren.class);
-        HasChildren grandParent = mock(HasChildren.class);
         testObj.addParent(grandParent);
         testObj.addChildToParent(parent, grandParent);
         testObj.addParent(parent);
@@ -43,14 +41,12 @@ public class NestedParenthoodManagerTest {
         List<HasParent> nestedChildren = testObj.getNestedChildren(grandParent);
 
         // then
-        assertThat(nestedChildren.contains(child)).isTrue();
+        assertThat(nestedChildren).contains(child);
     }
 
     @Test
     public void shouldAddParentToChild() {
         // given
-        HasParent child = mock(HasParent.class);
-        HasChildren parent = mock(HasChildren.class);
         testObj.addParent(parent);
         testObj.addChildToParent(child, parent);
 
@@ -58,15 +54,12 @@ public class NestedParenthoodManagerTest {
         List<HasChildren> nestedParents = testObj.getNestedParents(child);
 
         // then
-        assertThat(nestedParents.contains(parent)).isTrue();
+        assertThat(nestedParents).contains(parent);
     }
 
     @Test
     public void shouldAddGrandParentToChild() {
         // given
-        HasParent child = mock(HasParent.class);
-        HasChildren parent = mock(HasChildren.class);
-        HasChildren grandParent = mock(HasChildren.class);
         testObj.addParent(grandParent);
         testObj.addChildToParent(parent, grandParent);
         testObj.addParent(parent);
@@ -76,6 +69,6 @@ public class NestedParenthoodManagerTest {
         List<HasChildren> nestedParents = testObj.getNestedParents(child);
 
         // then
-        assertThat(nestedParents.contains(grandParent)).isTrue();
+        assertThat(nestedParents).contains(grandParent);
     }
 }
