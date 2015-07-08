@@ -1,20 +1,15 @@
 package eu.ydp.empiria.player.client.controller.variables.manager;
 
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.variables.IVariableCreator;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 
-public class VariableManagerGWTTestCase extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class VariableManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private class CustomVariable extends Variable {
 

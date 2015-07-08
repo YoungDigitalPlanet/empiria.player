@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
-public class StatefulExtensionGWTTestCase extends ExtensionTestGWTTestCase {
+public class StatefulExtensionGWTTestCase extends ExtensionGWTTestCase {
 
     protected DeliveryEngine de;
     protected boolean passed1 = false;

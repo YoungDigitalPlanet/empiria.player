@@ -4,14 +4,14 @@ import com.google.common.collect.Lists;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.junit.client.GWTTestCase;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.StatefulModule;
 
 import java.util.List;
 
-public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
+public class ModulesStateLoaderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private ModulesStateLoader loader;
 
@@ -26,11 +26,6 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
     private ModuleMock secondModule;
 
     private List<IModule> modules;
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
 
     @Override
     protected void gwtSetUp() throws Exception {

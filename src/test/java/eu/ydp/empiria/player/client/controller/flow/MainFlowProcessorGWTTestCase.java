@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import eu.ydp.empiria.player.RunOutsideTestSuite;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -10,12 +10,7 @@ import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 @RunOutsideTestSuite
-public class MainFlowProcessorGWTTestCase extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class MainFlowProcessorGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private MainFlowProcessor getMainFlowProcessor5TestPages() {
         EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
