@@ -53,6 +53,11 @@ public class InlineContainerModule extends InlineModuleBase implements IInlineCo
     }
 
     @Override
+    public List<HasParent> getNestedChildren() {
+        return getModuleSocket().getNestedChildren(this);
+    }
+
+    @Override
     public InlineContainerModule getNewInstance() {
         return new InlineContainerModule();
     }

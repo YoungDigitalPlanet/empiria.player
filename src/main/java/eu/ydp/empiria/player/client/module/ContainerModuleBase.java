@@ -19,4 +19,8 @@ public abstract class ContainerModuleBase extends ModuleBase implements ISingleV
         return getModuleSocket().getChildren(this);
     }
 
+    @Override
+    public List<HasParent> getNestedChildren() {
+        return getModuleSocket().getNestedChildren(this);
+    }
 }

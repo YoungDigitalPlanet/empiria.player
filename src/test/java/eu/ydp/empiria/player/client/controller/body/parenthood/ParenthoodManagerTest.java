@@ -1,6 +1,7 @@
-package eu.ydp.empiria.player.client.controller.body;
+package eu.ydp.empiria.player.client.controller.body.parenthood;
 
 import com.google.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;

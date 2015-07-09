@@ -14,7 +14,11 @@ public interface ParenthoodSocket {
 
     List<IModule> getChildren(IModule parent);
 
+    List<HasParent> getNestedChildren(HasChildren parent);
+
+    List<HasChildren> getNestedParents(HasParent child);
+
     Stack<HasChildren> getParentsHierarchy(IModule module);
 
-    public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module);
+    Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module);
 }

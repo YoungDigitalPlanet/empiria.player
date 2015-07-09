@@ -140,6 +140,11 @@ public class ModulesStateLoaderGWTTestCase extends GWTTestCase {
         }
 
         @Override
+        public List<HasChildren> getNestedParents() {
+            return null;
+        }
+
+        @Override
         public JSONArray getState() {
             return newState;
         }
