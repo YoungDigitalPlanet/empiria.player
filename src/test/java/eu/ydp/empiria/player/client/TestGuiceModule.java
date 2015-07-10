@@ -37,8 +37,6 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView;
-import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenViewImpl;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
@@ -157,7 +155,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
         bind(LogAppender.class).to(ConsoleAppender.class);
         bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
-        bind(VideoFullScreenView.class).toInstance(mock(VideoFullScreenViewImpl.class));
         install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new FactoryModuleBuilder().build(PageScopeFactory.class));
         install(new FactoryModuleBuilder().build(TextTrackFactory.class));

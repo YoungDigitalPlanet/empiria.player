@@ -32,7 +32,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
                     .toInstance(mock(NativeHTML5FullScreenHelper.class));
             binder.bind(VideoFullScreenHelper.class)
                     .toInstance(spy(new VideoFullScreenHelper()));
-
+            binder.bind(VideoFullScreenView.class).toInstance(mock(VideoFullScreenViewImpl.class));
         }
     }
 
