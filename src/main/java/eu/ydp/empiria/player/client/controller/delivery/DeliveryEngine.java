@@ -184,7 +184,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
             assessmentController.reset();
             sessionDataManager.setState((JSONArray) state.get(1));
             extensionsManager.setState(state.get(2).isArray());
-            if (state.size() > 2) {
+            if (state.size() > 3) {
                 playerWorkModeState.setState(state.get(3).isArray());
             }
             flowManager.deinitFlow();
