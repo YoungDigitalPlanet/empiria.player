@@ -65,18 +65,18 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
     public void openFullScreenMobileTest() {
         before(UserAgentCheckerNativeInterfaceMock.FIREFOX_ANDROID);
         doNothing().when(instance)
-                .openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
+                .openFullScreenMobile(Matchers.any(MediaWrapper.class));
         instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-        verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
+        verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class));
     }
 
     @Test
     public void openFullScreenSafariTest() {
         before(UserAgentCheckerNativeInterfaceMock.SAFARI);
         doNothing().when(instance)
-                .openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
+                .openFullScreenMobile(Matchers.any(MediaWrapper.class));
         instance.openFullScreen(mock(MediaWrapper.class), mock(MediaWrapper.class), mock(Element.class));
-        verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class), Matchers.any(MediaWrapper.class));
+        verify(instance).openFullScreenMobile(Matchers.any(MediaWrapper.class));
     }
 
     @Test
