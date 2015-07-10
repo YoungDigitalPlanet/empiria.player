@@ -11,20 +11,17 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
-public class PageInPageModule extends SimpleModuleBase implements Factory<PageInPageModule> {
+public class PageInPageModule extends SimpleModuleBase {
 
     private Panel pagePanel;
 
     @Inject
-    protected StyleNameConstants styleNames;
-
+    private StyleNameConstants styleNames;
     @Inject
-    protected ModuleProviderFactory providerFactory;
-
-    protected MultiPageController controller = PlayerGinjectorFactory.getPlayerGinjector().getMultiPage();
+    private MultiPageController controller;
 
     @Override
-    public void initModule(Element element) { // NOPMD
+    public void initModule(Element element) {
     }
 
     @Override
@@ -35,10 +32,4 @@ public class PageInPageModule extends SimpleModuleBase implements Factory<PageIn
         }
         return pagePanel;
     }
-
-    @Override
-    public PageInPageModule getNewInstance() {
-        return providerFactory.getPageInPageModule().get();
-    }
-
 }
