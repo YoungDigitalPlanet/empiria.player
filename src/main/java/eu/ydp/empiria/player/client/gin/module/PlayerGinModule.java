@@ -91,6 +91,8 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenViewImpl;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
