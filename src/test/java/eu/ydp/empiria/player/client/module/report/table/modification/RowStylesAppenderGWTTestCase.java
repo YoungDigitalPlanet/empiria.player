@@ -15,7 +15,7 @@ public class RowStylesAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
     //@formatter:off
     private final String OUTPUT = "" +
             "<colgroup>" +
-            "<col></col></colgroup>" +
+            "<col></colgroup>" +
             "<tbody align=\"left\">" +
             "<tr></tr>" +
             "<tr></tr>" +
@@ -34,7 +34,7 @@ public class RowStylesAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
         testObj = new RowStylesAppender(styleNameConstants);
     }
 
-    public void testAppend() {
+    public void testShouldAddStylesToRow() {
         // given
         FlexTable flexTable = new FlexTable();
         CellCoords cellCoords = new CellCoords(2, 3);
