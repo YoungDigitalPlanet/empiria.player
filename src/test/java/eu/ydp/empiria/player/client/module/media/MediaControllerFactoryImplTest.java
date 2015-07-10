@@ -86,7 +86,7 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
             }
         });
 
-        AbstractMediaController<?> abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
+        AbstractMediaController abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
         assertThat(abstractMediaController).isNotNull();
         assertThat(abstractMediaController).isInstanceOf(MediaProgressBarAndroid.class);
 
@@ -95,7 +95,7 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
     @Test
     public void testProgressBarGetDesktop() {
         when(userAgentUtil.isMobileUserAgent((MobileUserAgent[]) Matchers.anyVararg())).thenReturn(false);
-        AbstractMediaController<?> abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
+        AbstractMediaController abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
         assertThat(abstractMediaController).isNotNull();
         assertThat(abstractMediaController).isInstanceOf(MediaProgressBarImpl.class);
 

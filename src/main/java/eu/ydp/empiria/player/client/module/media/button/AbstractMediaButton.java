@@ -13,7 +13,7 @@ import static com.google.gwt.user.client.Event.*;
  *
  * @param <T> typ przycisku dla {@link Factory}
  */
-public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> {
+public abstract class AbstractMediaButton extends AbstractMediaController {
     private String baseStyleName;
     private String onClickStyleName;
     private String hoverStyleName;
@@ -37,6 +37,10 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
         setStyleNames();
         this.singleClick = singleClick;
         initWidget(divElement);
+    }
+
+    public AbstractMediaButton(String baseStyleName) {
+        this(baseStyleName, true);
     }
 
     @Override
@@ -63,10 +67,6 @@ public abstract class AbstractMediaButton<T> extends AbstractMediaController<T> 
         } else {
             sinkEvents(ONMOUSEOVER | ONMOUSEOUT | ONMOUSEDOWN | ONMOUSEUP);
         }
-    }
-
-    public AbstractMediaButton(String baseStyleName) {
-        this(baseStyleName, true);
     }
 
     @Override

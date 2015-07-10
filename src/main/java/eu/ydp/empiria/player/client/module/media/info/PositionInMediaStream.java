@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
@@ -11,15 +12,14 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 /**
  * Widget wyswietlajacy pozycje w strumieniu oraz dlugosc calego strumienia
  */
-public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
+public class PositionInMediaStream extends AbstractMediaTime {
 
-    @Inject
-    private EventsBus eventsBus;
-    @Inject
     private ProgressUpdateLogic progressUpdateLogic;
 
-    public PositionInMediaStream() {
+    @Inject
+    public PositionInMediaStream(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic) {
         super(styleNames.QP_MEDIA_POSITIONINSTREAM());
+        this.progressUpdateLogic = progressUpdateLogic;
     }
 
     @Override
@@ -48,10 +48,5 @@ public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStre
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler, scope);
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler, scope);
         }
-    }
-
-    @Override
-    public PositionInMediaStream getNewInstance() {
-        return new PositionInMediaStream();
     }
 }

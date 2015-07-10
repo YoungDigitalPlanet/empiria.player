@@ -8,8 +8,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
@@ -20,8 +20,9 @@ import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 import java.util.Iterator;
 
-public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
-    protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
+public class VolumeScrollBar extends AbstractMediaScroll {
+
+    private final StyleNameConstants styleNames; // NOPMD
 
     private static VolumeScrollBarUiBinder uiBinder = GWT.create(VolumeScrollBarUiBinder.class);
 
@@ -29,7 +30,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
     }
 
     @UiField(provided = true)
-    protected SimpleMediaButton button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
+    protected SimpleMediaButton button;
     @UiField
     protected FlowPanel progressBar;
 
@@ -43,16 +44,16 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
     protected FlowPanel afterButton;
 
     protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    protected PositionHelper positionHelper = PlayerGinjectorFactory.getPlayerGinjector().getPositionHelper();
+    private final EventsBus eventsBus;
+    private final PositionHelper positionHelper;
 
-    public VolumeScrollBar() {
+    @Inject
+    public VolumeScrollBar(StyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper) {
+        this.styleNames = styleNames;
+        this.eventsBus = eventsBus;
+        this.positionHelper = positionHelper;
+        button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
         initWidget(uiBinder.createAndBindUi(this));
-    }
-
-    @Override
-    public VolumeScrollBar getNewInstance() {
-        return new VolumeScrollBar();
     }
 
     @Override

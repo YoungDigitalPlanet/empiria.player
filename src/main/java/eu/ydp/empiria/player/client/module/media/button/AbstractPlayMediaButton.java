@@ -8,13 +8,10 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
-public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> {
+public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
 
     @Inject
     protected EventsBus eventsBus;
-
-    @Inject
-    private Provider<T> provider;
 
     public AbstractPlayMediaButton(String baseStyleName) {
         super(baseStyleName);
@@ -35,11 +32,6 @@ public abstract class AbstractPlayMediaButton<T> extends AbstractMediaButton<T> 
     @Override
     public boolean isSupported() {
         return getMediaAvailableOptions().isPlaySupported();
-    }
-
-    @Override
-    public T getNewInstance() {
-        return provider.get();
     }
 
     protected void initButtonStyleChangeHandlers() {

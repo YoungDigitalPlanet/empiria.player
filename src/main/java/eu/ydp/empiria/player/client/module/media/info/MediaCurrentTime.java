@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -11,18 +13,14 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
  * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
  * sekunda
  */
-public class MediaCurrentTime extends AbstractMediaTime<MediaCurrentTime> {
+public class MediaCurrentTime extends AbstractMediaTime {
 
-    @Inject
     private ProgressUpdateLogic progressUpdateLogic;
 
-    public MediaCurrentTime() {
+    @Inject
+    public MediaCurrentTime(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic) {
         super(styleNames.QP_MEDIA_CURRENTTIME());
-    }
-
-    @Override
-    public MediaCurrentTime getNewInstance() {
-        return new MediaCurrentTime();
+        this.progressUpdateLogic = progressUpdateLogic;
     }
 
     @Override

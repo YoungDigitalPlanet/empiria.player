@@ -111,8 +111,8 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
     }
 
     @Override
-    protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
-        MediaController<?> controller = null;
+    protected MediaController getMediaControllerNewInstance(String moduleName, Node node) {
+        MediaController controller;
         if (ModuleTagName.MEDIA_TEXT_TRACK.tagName().equals(moduleName)) {
             String kind = XMLUtils.getAttributeAsString((Element) node, "kind", TextTrackKind.SUBTITLES.name());
             TextTrackKind trackKind = TextTrackKind.SUBTITLES;
@@ -123,7 +123,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
             }
             controller = factory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
         } else if (ModuleTagName.MEDIA_SCREEN.tagName().equals(moduleName)) {
-            controller = new MediaControllerWrapper<Widget>(getMediaObject());
+            controller = new MediaControllerWrapper(getMediaObject());
         } else {
             controller = factory.get(ModuleTagName.getTag(moduleName));
         }

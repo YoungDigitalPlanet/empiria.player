@@ -28,12 +28,10 @@ import java.util.Set;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE;
 
 public class ImgTemplateParser extends AbstractTemplateParser {
-    protected final static Set<String> CONTROLLERS = new HashSet<String>();
+    protected final static Set<String> CONTROLLERS = new HashSet<>();
     private final Element baseElement;
     private final ModuleSocket moduleSocket;
 
-    @Inject
-    protected MediaControllerFactory controllerFactory;
     @Inject
     private Provider<PicturePlayerModule> defaultImgContentProvider;
     @Inject
@@ -57,8 +55,8 @@ public class ImgTemplateParser extends AbstractTemplateParser {
     }
 
     @Override
-    protected MediaController<?> getMediaControllerNewInstance(String moduleName, Node node) {
-        MediaController<?> controller = null;
+    protected MediaController getMediaControllerNewInstance(String moduleName, Node node) {
+        MediaController controller = null;
         if (isModuleSupported(moduleName)) {
             ModuleTagName tagName = ModuleTagName.getTag(moduleName);
             switch (tagName) {
@@ -84,8 +82,8 @@ public class ImgTemplateParser extends AbstractTemplateParser {
      * @param elementName
      * @return
      */
-    private MediaController<?> createWrapper(String elementName) {
-        MediaController<?> moduleWrapper = null;
+    private MediaController createWrapper(String elementName) {
+        MediaController moduleWrapper = null;
         if (isNodeHaveChildren(elementName)) {
             moduleWrapper = createModuleWrapper(elementName);
         } else {
@@ -94,16 +92,16 @@ public class ImgTemplateParser extends AbstractTemplateParser {
         return moduleWrapper;
     }
 
-    protected MediaController<?> createEmptyModuleWrapper() {
+    protected MediaController createEmptyModuleWrapper() {
         return new ModuleWrapper(new FlowPanel());
     }
 
-    protected MediaController<?> createModuleWrapperForWidget(IsWidget widget) {
+    protected MediaController createModuleWrapperForWidget(IsWidget widget) {
         return new ModuleWrapper(widget);
     }
 
-    private MediaController<?> createModuleWrapper(String elementName) {
-        MediaController<?> moduleWrapper = null;
+    private MediaController createModuleWrapper(String elementName) {
+        MediaController moduleWrapper = null;
         Widget widget = generateInlineBody(elementName);
         if (widget == null) {
             moduleWrapper = createEmptyModuleWrapper();
@@ -128,7 +126,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
      *
      * @return
      */
-    private MediaController<?> createScreen() {
+    private MediaController createScreen() {
         ImgContent content;
         if (isLabelledImgContent()) {
             content = createLabelledImgContent();
@@ -154,7 +152,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
         return content;
     }
 
-    private MediaController<?> initContentAndCreateModuleWrapper(ImgContent content) {
+    private MediaController initContentAndCreateModuleWrapper(ImgContent content) {
         content.init(baseElement, moduleSocket);
         return createModuleWrapperForWidget(content);
     }

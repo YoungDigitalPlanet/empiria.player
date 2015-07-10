@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -8,14 +11,11 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 /**
  * Widget prezentujacy dlugosc pliku audio lub video
  */
-public class MediaTotalTime extends AbstractMediaTime<MediaTotalTime> {
-    public MediaTotalTime() {
-        super(styleNames.QP_MEDIA_TOTALTIME());
-    }
+public class MediaTotalTime extends AbstractMediaTime {
 
-    @Override
-    public MediaTotalTime getNewInstance() {
-        return new MediaTotalTime();
+    @Inject
+    public MediaTotalTime(StyleNameConstants styleNames) {
+        super(styleNames.QP_MEDIA_TOTALTIME());
     }
 
     @Override

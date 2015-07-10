@@ -83,11 +83,11 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
 
     }
 
-    private MediaController<?> createMediaController(Document document, ModuleTagName moduleName) {
+    private MediaController createMediaController(Document document, ModuleTagName moduleName) {
         doReturn(mock(MediaController.class)).when(instance).createEmptyModuleWrapper();
         doReturn(mock(MediaController.class)).when(instance).createModuleWrapperForWidget(Matchers.any(Widget.class));
         Node mediaScreenNode = document.getElementsByTagName(moduleName.tagName()).item(0);
-        MediaController<?> module = instance.getMediaControllerNewInstance(moduleName.tagName(), mediaScreenNode);
+        MediaController module = instance.getMediaControllerNewInstance(moduleName.tagName(), mediaScreenNode);
         return module;
     }
 
@@ -114,34 +114,34 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
         Mockito.verifyNoMoreInteractions(instance);
     }
 
-    private MediaController<?> getModule(String xml, ModuleTagName moduleName) {
+    private MediaController getModule(String xml, ModuleTagName moduleName) {
         Document document = createDocument(xml);
         createInstance(document);
-        MediaController<?> module = createMediaController(document, moduleName);
+        MediaController module = createMediaController(document, moduleName);
         return module;
     }
 
     @Test
     public void testCreateMediaTitleNoContentInXMLElement() {
-        MediaController<?> module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_TITLE);
+        MediaController module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_TITLE);
         assertNotNull(module);
     }
 
     @Test
     public void testCreateMediaTitleWithContentInXMLElement() {
-        MediaController<?> module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_TITLE);
+        MediaController module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_TITLE);
         assertNotNull(module);
     }
 
     @Test
     public void testCreateMediaDescriptionNoContentInXMLElement() {
-        MediaController<?> module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_DESCRIPTION);
+        MediaController module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_DESCRIPTION);
         assertNotNull(module);
     }
 
     @Test
     public void testCreateMediaDescriptionNoElementInXML() {
-        MediaController<?> module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_DESCRIPTION, ModuleTagName.MEDIA_DESCRIPTION);
+        MediaController module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_DESCRIPTION, ModuleTagName.MEDIA_DESCRIPTION);
 
         assertNotNull(module);
         verify(instance).createEmptyModuleWrapper();
@@ -155,14 +155,14 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
         doReturn(null).when(bodyGeneratorSocket).generateInlineBody(Matchers.any(Node.class));
         doReturn(bodyGeneratorSocket).when(moduleSocket).getInlineBodyGeneratorSocket();
 
-        MediaController<?> module = createMediaController(document, ModuleTagName.MEDIA_DESCRIPTION);
+        MediaController module = createMediaController(document, ModuleTagName.MEDIA_DESCRIPTION);
         assertNotNull(module);
         verify(instance).createEmptyModuleWrapper();
     }
 
     @Test
     public void testCreateMediaDescriptionWithContentInXMLElement() {
-        MediaController<?> module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_DESCRIPTION);
+        MediaController module = getModule(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN, ModuleTagName.MEDIA_DESCRIPTION);
 
         assertNotNull(module);
     }
@@ -221,7 +221,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
         createInstance(document);
         ImgContent imgContentMock = mock(ImgContent.class);
         doReturn(imgContentMock).when(instance).createDefaultImgContent();
-        MediaController<?> module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
+        MediaController module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
         assertNotNull(module);
         verify(instance).createDefaultImgContent();
 
@@ -237,7 +237,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
         configMap.put(EmpiriaStyleNameConstants.EMPIRIA_IMG_MODE, "explorable");
         doReturn(configMap).when(styleSocket).getStyles(Matchers.any(Element.class));
 
-        MediaController<?> module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
+        MediaController module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
         assertNotNull(module);
         verify(instance).createExplorableImgContent();
     }
@@ -249,7 +249,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
         ImgContent imgContentMock = mock(ImgContent.class);
         doReturn(imgContentMock).when(instance).createLabelledImgContent();
 
-        MediaController<?> module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
+        MediaController module = createMediaController(createDocument(Templates.TEMPLATE_WITHOUT_CONTENT_WITH_FULLSCREEN), ModuleTagName.MEDIA_SCREEN);
         assertNotNull(module);
         verify(instance).createLabelledImgContent();
     }

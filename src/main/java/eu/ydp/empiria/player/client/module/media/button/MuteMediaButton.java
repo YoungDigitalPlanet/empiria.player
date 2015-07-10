@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
@@ -13,14 +13,15 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
  *
  * @author plelakowski
  */
-public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
-    protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
+public class MuteMediaButton extends AbstractMediaButton {
 
-    public MuteMediaButton() {
+    private final EventsBus eventsBus;
+
+    @Inject
+    public MuteMediaButton(StyleNameConstants styleNames, EventsBus eventsBus) {
         super(styleNames.QP_MEDIA_MUTE());
+        this.eventsBus = eventsBus;
     }
-
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
     @Override
     protected void onClick() {
@@ -42,11 +43,6 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
             }
         };
         eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, new CurrentPageScope());
-    }
-
-    @Override
-    public MuteMediaButton getNewInstance() {
-        return new MuteMediaButton();
     }
 
     @Override

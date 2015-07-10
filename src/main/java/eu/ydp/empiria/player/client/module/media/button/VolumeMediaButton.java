@@ -3,24 +3,21 @@ package eu.ydp.empiria.player.client.module.media.button;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.inject.Inject;
 
 /**
  * przycisk zmiany glosnosci dzwieku
  *
  * @author plelakowski
  */
-public class VolumeMediaButton extends AbstractMediaButton<VolumeMediaButton> {
+public class VolumeMediaButton extends AbstractMediaButton {
     public VolumeMediaButton() {
         super("qp-media-volume");
     }
 
-    VolumeScrollBar volumeScrollBar = new VolumeScrollBar();
+    @Inject
+    private VolumeScrollBar volumeScrollBar;
     boolean attached = false;
-
-    @Override
-    public VolumeMediaButton getNewInstance() {
-        return new VolumeMediaButton();
-    }
 
     @Override
     public void init() {

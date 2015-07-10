@@ -23,7 +23,7 @@ import javax.annotation.PostConstruct;
 
 import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 
-public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
+public class MediaProgressBarImpl extends AbstractMediaScroll implements MediaProgressBar {
 
     interface MediaProgressBarUiBinder extends UiBinder<Widget, MediaProgressBarImpl> {
     }
@@ -75,11 +75,6 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
             buttonWidth = elementSizeCalculator.getWidth(button);
         }
         return buttonWidth;
-    }
-
-    @Override
-    public MediaProgressBarImpl getNewInstance() {
-        return new MediaProgressBarImpl();
     }
 
     @Override

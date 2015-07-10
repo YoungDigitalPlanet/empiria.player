@@ -57,8 +57,8 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
     private UserAgentUtil userAgentUtil;
 
     @Override
-    public AbstractMediaController<?> get(ModuleTagName moduleType) {
-        AbstractMediaController<?> mediaController = null;
+    public AbstractMediaController get(ModuleTagName moduleType) {
+        AbstractMediaController mediaController = null;
         if (moduleType != null) {
             switch (moduleType) {
                 case MEDIA_PLAY_PAUSE_BUTTON:
@@ -98,7 +98,7 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
         return mediaController;
     }
 
-    private AbstractMediaController<?> getMediaProgressBar() {
+    private AbstractMediaController getMediaProgressBar() {
         if (userAgentUtil.isMobileUserAgent(MobileUserAgent.ANDROID23, MobileUserAgent.ANDROID3, MobileUserAgent.ANDROID321, MobileUserAgent.ANDROID4)) {
             return mediaProgressBarAndroidProvider.get();
         }
@@ -106,8 +106,8 @@ public class MediaControllerFactoryImpl implements MediaControllerFactory {
     }
 
     @Override
-    public MediaController<?> get(ModuleTagName moduleType, Object... args) {
-        MediaController<?> controller = null;
+    public MediaController get(ModuleTagName moduleType, Object... args) {
+        MediaController controller = null;
         if (args == null || args.length == 0) {
             controller = get(moduleType);
         } else if (moduleType == ModuleTagName.MEDIA_TEXT_TRACK && args.length == 1 && args[0] instanceof TextTrackKind) {

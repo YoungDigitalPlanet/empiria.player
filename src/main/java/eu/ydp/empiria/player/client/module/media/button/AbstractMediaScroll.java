@@ -5,8 +5,8 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
@@ -16,12 +16,13 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> {
+public abstract class AbstractMediaScroll extends AbstractMediaController {
     private boolean pressed = false;
     private boolean mediaReady = false;
     private boolean initialized;
     protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+    @Inject
+    protected EventsBus eventsBus;
 
     /**
      * metoda wywolywana gdy pojawi sie jedno z obslugiwanych zdarzen
