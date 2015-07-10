@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
+import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImgContent;
 import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -34,6 +35,8 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
 
     @Inject
     protected Provider<PicturePlayerModule> picturePlayerModuleProvider;
+    @Inject
+    private Provider<ExplorableImgContent> explorableImgContentProvider;
     @Inject
     private StyleSocket styleSocket;
 
@@ -59,7 +62,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
         } else {
             Map<String, String> styles = styleSocket.getStyles(element);
             if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
-                content = new ExplorableImgContent();
+                content = explorableImgContentProvider.get();
             } else {
                 content = picturePlayerModuleProvider.get();
             }
