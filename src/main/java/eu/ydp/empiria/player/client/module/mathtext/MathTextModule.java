@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Font;
 import eu.ydp.empiria.player.client.module.Factory;
@@ -15,6 +16,9 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
 
     private static final byte BASELINE_TO_VERTICAL_ALIGN_FACTOR = -1;
     protected Panel mainPanel;
+
+    @Inject
+    private MathTextFontInitializer mathTextFontInitializer;
 
     @Override
     public void initModule(Element element) {
@@ -35,8 +39,7 @@ public class MathTextModule extends InlineModuleBase implements Factory<MathText
     }
 
     private void initFont(Element element, MathPlayerManager mpm) {
-        MathTextFontInitializer fontHelper = new MathTextFontInitializer();
-        Font font = fontHelper.initialize(this, getModuleSocket(), element);
+        Font font = mathTextFontInitializer.initialize(this, getModuleSocket(), element);
         mpm.setFont(font);
     }
 
