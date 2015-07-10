@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import junit.framework.Test;
 
-public class CssParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
+public class StyleDataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
 	private StyleDataSourceManager testObj = new StyleDataSourceManager();
 	private final String css1 = "customselector { width: 100px; customProperty: abc; } .customClass { height: 100px; xyz: 200; }";
