@@ -1,11 +1,9 @@
 package eu.ydp.empiria.player.client.controller.events.delivery;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
-import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventsHandler;
 import eu.ydp.empiria.player.client.controller.events.interaction.*;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,28 +17,22 @@ import java.util.Map;
  */
 public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsSocket {
 
-    protected List<FlowActivityEventsHandler> flowActivityEventsListeners;
-    protected List<DeliveryEventsListener> deliveryEventsListeners;
-    protected List<StateChangedInteractionEventListener> stateChangedInteractionEventsListeners;
-    protected final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    protected Map<DeliveryEventType, FlowActivityEventType> map;
+    private List<DeliveryEventsListener> deliveryEventsListeners;
+    private List<StateChangedInteractionEventListener> stateChangedInteractionEventsListeners;
+    private Map<DeliveryEventType, FlowActivityEventType> map;
 
+    @Inject
     public DeliveryEventsHub() {
-        flowActivityEventsListeners = new ArrayList<FlowActivityEventsHandler>();
-        deliveryEventsListeners = new ArrayList<DeliveryEventsListener>();
-        stateChangedInteractionEventsListeners = new ArrayList<StateChangedInteractionEventListener>();
+        deliveryEventsListeners = new ArrayList<>();
+        stateChangedInteractionEventsListeners = new ArrayList<>();
 
-        map = new HashMap<DeliveryEventType, FlowActivityEventType>();
+        map = new HashMap<>();
         map.put(DeliveryEventType.CHECK, FlowActivityEventType.CHECK);
 
     }
 
     public void addDeliveryEventsListener(DeliveryEventsListener del) {
         deliveryEventsListeners.add(del);
-    }
-
-    public void addFlowActivityEventsListener(FlowActivityEventsHandler fael) {
-        flowActivityEventsListeners.add(fael);
     }
 
     @Override
