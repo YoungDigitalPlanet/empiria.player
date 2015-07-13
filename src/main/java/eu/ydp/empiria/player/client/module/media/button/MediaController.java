@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.IsWidget;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 

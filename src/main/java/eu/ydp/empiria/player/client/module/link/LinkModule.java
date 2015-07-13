@@ -27,7 +27,7 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 import javax.annotation.PostConstruct;
 
-public class LinkModule extends SimpleContainerModuleBase<LinkModule> implements WorkModeTestClient {
+public class LinkModule extends SimpleContainerModuleBase implements WorkModeTestClient {
 
     protected FlowRequestInvoker flowRequestInvoker;
     protected Panel mainPanel;
@@ -140,11 +140,6 @@ public class LinkModule extends SimpleContainerModuleBase<LinkModule> implements
 
     private void setPrimaryStyleName() {
         mainPanel.setStyleName(styleNames.QP_LINK());
-    }
-
-    @Override
-    public LinkModule getNewInstance() {
-        return null;
     }
 
     @Override

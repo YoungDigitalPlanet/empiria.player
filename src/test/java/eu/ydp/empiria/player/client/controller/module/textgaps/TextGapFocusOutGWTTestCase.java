@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Modul
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.OneViewInteractionModuleBase;
@@ -107,7 +106,7 @@ public abstract class TextGapFocusOutGWTTestCase extends ExtensionTestGWTTestCas
 
     }
 
-    protected class MockModule extends OneViewInteractionModuleBase implements Factory<MockModule> {
+    protected class MockModule extends OneViewInteractionModuleBase {
 
         private final EventsBus eventsBus = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getEventsBus();
 
@@ -177,11 +176,5 @@ public abstract class TextGapFocusOutGWTTestCase extends ExtensionTestGWTTestCas
         @Override
         public void onClose() {
         }
-
-        @Override
-        public MockModule getNewInstance() {
-            return new MockModule();
-        }
-
     }
 }

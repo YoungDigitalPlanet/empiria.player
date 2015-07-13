@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;

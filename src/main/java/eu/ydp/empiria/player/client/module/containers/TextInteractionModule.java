@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
-public class TextInteractionModule extends BindingContainerModule<TextInteractionModule> implements IBookmarkable {
+public class TextInteractionModule extends BindingContainerModule implements IBookmarkable {
 
     private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
     private final BookmarkingHelper bookmarkingHelper;
@@ -23,11 +23,6 @@ public class TextInteractionModule extends BindingContainerModule<TextInteractio
     @Override
     public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
         super.initModule(element, moduleSocket, bodyGeneratorSocket);
-    }
-
-    @Override
-    public TextInteractionModule getNewInstance() {
-        return new TextInteractionModule();
     }
 
     @Override

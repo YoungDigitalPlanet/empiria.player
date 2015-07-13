@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.media.button;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 import static com.google.gwt.user.client.Event.*;
@@ -11,7 +10,6 @@ import static com.google.gwt.user.client.Event.*;
 /**
  * bazowy przycisk dla kontrolerow multimediow
  *
- * @param <T> typ przycisku dla {@link Factory}
  */
 public abstract class AbstractMediaButton extends AbstractMediaController {
     private String baseStyleName;
