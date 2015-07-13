@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
+import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.img.ImgContent;
@@ -51,6 +52,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
             binder.install(new FactoryModuleBuilder().build(TemplateParserFactory.class));
             binder.bind(PicturePlayerView.class).to(PicturePlayerViewImpl.class);
             binder.bind(PicturePlayerJAXBParser.class).to(PicturePlayerJAXBParserMock.class);
+            binder.install(new FactoryModuleBuilder().build(TouchHandlerFactory.class));
         }
     }
 
