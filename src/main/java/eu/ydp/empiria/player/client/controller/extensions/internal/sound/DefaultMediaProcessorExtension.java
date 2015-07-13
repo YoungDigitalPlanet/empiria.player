@@ -51,6 +51,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
     private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
     @Inject
     private MediaChecker mediaChecker;
+    @Inject
+    private Provider<VideoExecutorSwf> videoExecutorSwfProvider;
+    @Inject
+    private Provider<SoundExecutorSwf> soundExecutorSwfProvider;
 
     @Override
     public void initMediaProcessor() {
@@ -159,13 +163,13 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
     }
 
     private MediaExecutor<Widget> createSWFVideoMediaExecutor() {
-        VideoExecutorSwf executor = new VideoExecutorSwf();
+        VideoExecutorSwf executor = videoExecutorSwfProvider.get();
         executor.setMediaWrapper(new SwfMediaWrapper());
         return executor;
     }
 
     private MediaExecutor<Widget> createSWFSoundMediaExecutor() {
-        SoundExecutorSwf executor = new SoundExecutorSwf();
+        SoundExecutorSwf executor = soundExecutorSwfProvider.get();
         executor.setMediaWrapper(new SwfMediaWrapper());
         return executor;
     }
