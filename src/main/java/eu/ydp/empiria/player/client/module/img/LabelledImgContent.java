@@ -17,7 +17,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -38,8 +37,9 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
     }
 
     @Inject
-    public LabelledImgContent(StyleSocket styleSocket) {
+    public LabelledImgContent(StyleSocket styleSocket, StyleNameConstants styleNames) {
         this.styleSocket = styleSocket;
+        this.styleNames = styleNames;
         canvas = Canvas.createIfSupported();
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.setWidgetPosition(image, 0, 0);
@@ -56,8 +56,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
     @UiField(provided = true)
     protected Canvas canvas;
     private final StyleSocket styleSocket;
-
-    private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+    private final StyleNameConstants styleNames;
 
     private Map<String, String> styles;
 
