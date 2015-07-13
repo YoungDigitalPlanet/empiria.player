@@ -25,57 +25,57 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class VideoPlayerReattacherTest {
 
-	@InjectMocks
-	private VideoPlayerReattacher testObj;
-	@Mock
-	private EventsBus eventsBus;
-	@Mock
-	private VideoPlayerBuilder videoPlayerBuilder;
-	@Mock
-	private Provider<CurrentPageScope> pageScopeProvider;
-	@Mock
-	private VideoView view;
+    @InjectMocks
+    private VideoPlayerReattacher testObj;
+    @Mock
+    private EventsBus eventsBus;
+    @Mock
+    private VideoPlayerBuilder videoPlayerBuilder;
+    @Mock
+    private Provider<CurrentPageScope> pageScopeProvider;
+    @Mock
+    private VideoView view;
 
-	private PlayerEventHandler playerEventHandler;
-	private CurrentPageScope currentPageScope;
+    private PlayerEventHandler playerEventHandler;
+    private CurrentPageScope currentPageScope;
 
-	@Before
-	public void setUp() {
-		preparePageScope();
-		prepareHandler();
-	}
+    @Before
+    public void setUp() {
+        preparePageScope();
+        prepareHandler();
+    }
 
-	@Test
-	public void shouldAtachNewVideoPlayer() {
-		// given
-		testObj.registerReattachHandlerToView(view);
-		final VideoPlayer mockPlayer = mock(VideoPlayer.class);
-		when(videoPlayerBuilder.build()).thenReturn(mockPlayer);
+    @Test
+    public void shouldAtachNewVideoPlayer() {
+        // given
+        testObj.registerReattachHandlerToView(view);
+        final VideoPlayer mockPlayer = mock(VideoPlayer.class);
+        when(videoPlayerBuilder.build()).thenReturn(mockPlayer);
 
-		// when
-		playerEventHandler.onPlayerEvent(null);
+        // when
+        playerEventHandler.onPlayerEvent(null);
 
-		// then
-		verify(view).attachVideoPlayer(mockPlayer);
-	}
+        // then
+        verify(view).attachVideoPlayer(mockPlayer);
+    }
 
-	private void preparePageScope() {
-		currentPageScope = mock(CurrentPageScope.class);
-		when(pageScopeProvider.get()).thenReturn(currentPageScope);
-	}
+    private void preparePageScope() {
+        currentPageScope = mock(CurrentPageScope.class);
+        when(pageScopeProvider.get()).thenReturn(currentPageScope);
+    }
 
-	private void prepareHandler() {
-		Type<PlayerEventHandler, PlayerEventTypes> eventType = PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED);
+    private void prepareHandler() {
+        Type<PlayerEventHandler, PlayerEventTypes> eventType = PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED);
 
-		Answer<Void> answer = new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocation) throws Throwable {
-				playerEventHandler = (PlayerEventHandler) invocation.getArguments()[1];
-				return null;
-			}
+        Answer<Void> answer = new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                playerEventHandler = (PlayerEventHandler) invocation.getArguments()[1];
+                return null;
+            }
 
-		};
-		doAnswer(answer).when(eventsBus)
-						.addHandler(eq(eventType), any(PlayerEventHandler.class), eq(currentPageScope));
-	}
+        };
+        doAnswer(answer).when(eventsBus)
+                .addHandler(eq(eventType), any(PlayerEventHandler.class), eq(currentPageScope));
+    }
 }

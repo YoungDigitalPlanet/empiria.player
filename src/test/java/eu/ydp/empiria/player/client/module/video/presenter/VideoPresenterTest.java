@@ -18,54 +18,54 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class VideoPresenterTest {
 
-	@InjectMocks
-	private VideoPresenter testObj;
-	@Mock
-	private VideoPlayerReattacher videoPlayerReattacher;
-	@Mock
-	private VideoPlayerBuilder videoPlayerBuilder;
-	@Mock
-	private VideoView view;
-	@Mock
-	private VideoPlayer videoPlayer;
-	@Mock
-	private UserAgentUtil userAgentUtil;
-	@Mock
-	private VideoModuleFactory videoModuleFactory;
-	@Mock
-	private VideoPlayerForBookshelfOnAndroid videoPlayerForBookshelfOnAndroid;
+    @InjectMocks
+    private VideoPresenter testObj;
+    @Mock
+    private VideoPlayerReattacher videoPlayerReattacher;
+    @Mock
+    private VideoPlayerBuilder videoPlayerBuilder;
+    @Mock
+    private VideoView view;
+    @Mock
+    private VideoPlayer videoPlayer;
+    @Mock
+    private UserAgentUtil userAgentUtil;
+    @Mock
+    private VideoModuleFactory videoModuleFactory;
+    @Mock
+    private VideoPlayerForBookshelfOnAndroid videoPlayerForBookshelfOnAndroid;
 
-	@Before
-	public void init() {
-		when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
-		when(videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer)).thenReturn(videoPlayerForBookshelfOnAndroid);
-	}
+    @Before
+    public void init() {
+        when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
+        when(videoModuleFactory.createVideoPlayerForBookshelf(videoPlayer)).thenReturn(videoPlayerForBookshelfOnAndroid);
+    }
 
-	@Test
-	public void shouldCreateViewAndApplyHackWhenStart() {
-		// given
-		VideoPlayer videoPlayer = mock(VideoPlayer.class);
-		when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
+    @Test
+    public void shouldCreateViewAndApplyHackWhenStart() {
+        // given
+        VideoPlayer videoPlayer = mock(VideoPlayer.class);
+        when(videoPlayerBuilder.build()).thenReturn(videoPlayer);
 
-		// when
-		testObj.start();
+        // when
+        testObj.start();
 
-		// then
-		verify(view).createView();
-		verify(view).attachVideoPlayer(isA(VideoPlayer.class));
-		verify(videoPlayerReattacher).registerReattachHandlerToView(view);
-	}
+        // then
+        verify(view).createView();
+        verify(view).attachVideoPlayer(isA(VideoPlayer.class));
+        verify(videoPlayerReattacher).registerReattachHandlerToView(view);
+    }
 
-	@Test
-	public void shouldInitVideoForBookshelfWhenIsOnAndroidAndAIR() {
-		// given
-		when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
-		when(userAgentUtil.isAIR()).thenReturn(true);
+    @Test
+    public void shouldInitVideoForBookshelfWhenIsOnAndroidAndAIR() {
+        // given
+        when(userAgentUtil.isAndroidBrowser()).thenReturn(true);
+        when(userAgentUtil.isAIR()).thenReturn(true);
 
-		//when
-		testObj.start();
+        //when
+        testObj.start();
 
-		//then
-		verify(videoPlayerForBookshelfOnAndroid).init(view);
-	}
+        //then
+        verify(videoPlayerForBookshelfOnAndroid).init(view);
+    }
 }

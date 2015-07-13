@@ -6,9 +6,9 @@ import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
 public interface VideoModuleFactory {
-	VideoPlayer createVideoPlayer(VideoElementWrapper videoElement);
+    VideoPlayer createVideoPlayer(VideoElementWrapper videoElement);
 
-	VideoPlayerForBookshelfOnAndroid createVideoPlayerForBookshelf(VideoPlayer videoPlayer);
+    VideoPlayerForBookshelfOnAndroid createVideoPlayerForBookshelf(VideoPlayer videoPlayer);
 
-	VideoPlayerAttachHandler createAttachHandlerForRegisteringPauseEvent(VideoPlayer videoPlayer);
+    VideoPlayerAttachHandler createAttachHandlerForRegisteringPauseEvent(VideoPlayer videoPlayer);
 }

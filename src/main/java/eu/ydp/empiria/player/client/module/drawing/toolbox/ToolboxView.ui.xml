@@ -1,16 +1,16 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:t="urn:import:eu.ydp.empiria.player.client.module.drawing.toolbox.view">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
-		field="res" />
-	<g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX}" >
-		<t:ToolboxButton ui:field="pencilButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_PENCIL}" />
-		<g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX_PALETTE_CONTAINER}">
-			<t:ToolboxButton ui:field="paletteButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_PALETTE}" />
-			<t:ToolboxPalette ui:field="palette"/>
-		</g:FlowPanel>
-		<t:ToolboxButton ui:field="eraserButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_ERASER}" />
-		<t:ToolboxButton ui:field="clearAllButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_CLEARALL}" />
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:t="urn:import:eu.ydp.empiria.player.client.module.drawing.toolbox.view">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
+             field="res"/>
+    <g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX}">
+        <t:ToolboxButton ui:field="pencilButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_PENCIL}"/>
+        <g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX_PALETTE_CONTAINER}">
+            <t:ToolboxButton ui:field="paletteButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_PALETTE}"/>
+            <t:ToolboxPalette ui:field="palette"/>
+        </g:FlowPanel>
+        <t:ToolboxButton ui:field="eraserButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_ERASER}"/>
+        <t:ToolboxButton ui:field="clearAllButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_CLEARALL}"/>
+    </g:FlowPanel>
 </ui:UiBinder>

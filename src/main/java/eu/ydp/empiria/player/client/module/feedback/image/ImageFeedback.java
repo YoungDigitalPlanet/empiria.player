@@ -2,12 +2,12 @@ package eu.ydp.empiria.player.client.module.feedback.image;
 
 public interface ImageFeedback {
 
-	void setUrl(String text);
+    void setUrl(String text);
 
-	String getUrl();
+    String getUrl();
 
-	void show();
+    void show();
 
-	void hide();
+    void hide();
 
 }

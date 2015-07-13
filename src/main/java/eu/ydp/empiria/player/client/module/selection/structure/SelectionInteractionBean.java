@@ -10,81 +10,81 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class SelectionInteractionBean extends InteractionModuleBean implements HasShuffle {
 
-	@XmlAttribute
-	private int matchMax;
+    @XmlAttribute
+    private int matchMax;
 
-	@XmlAttribute
-	private int maxAssociations;
+    @XmlAttribute
+    private int maxAssociations;
 
-	@XmlAttribute
-	private boolean multi;
+    @XmlAttribute
+    private boolean multi;
 
-	@XmlAttribute
-	private boolean shuffle;
+    @XmlAttribute
+    private boolean shuffle;
 
-	@XmlAttribute
-	private boolean ignored;
+    @XmlAttribute
+    private boolean ignored;
 
-	@XmlElement(name = "simpleChoice")
-	private List<SelectionSimpleChoiceBean> simpleChoices;
+    @XmlElement(name = "simpleChoice")
+    private List<SelectionSimpleChoiceBean> simpleChoices;
 
-	@XmlElement(name = "item")
-	private List<SelectionItemBean> items;
+    @XmlElement(name = "item")
+    private List<SelectionItemBean> items;
 
-	public int getMatchMax() {
-		return matchMax;
-	}
+    public int getMatchMax() {
+        return matchMax;
+    }
 
-	public void setMatchMax(int matchMax) {
-		this.matchMax = matchMax;
-	}
+    public void setMatchMax(int matchMax) {
+        this.matchMax = matchMax;
+    }
 
-	public List<SelectionSimpleChoiceBean> getSimpleChoices() {
-		return simpleChoices;
-	}
+    public List<SelectionSimpleChoiceBean> getSimpleChoices() {
+        return simpleChoices;
+    }
 
-	public void setSimpleChoices(List<SelectionSimpleChoiceBean> simpleChoices) {
-		this.simpleChoices = simpleChoices;
-	}
+    public void setSimpleChoices(List<SelectionSimpleChoiceBean> simpleChoices) {
+        this.simpleChoices = simpleChoices;
+    }
 
-	public int getMaxAssociations() {
-		return maxAssociations;
-	}
+    public int getMaxAssociations() {
+        return maxAssociations;
+    }
 
-	public void setMaxAssociations(int maxAssociations) {
-		this.maxAssociations = maxAssociations;
-	}
+    public void setMaxAssociations(int maxAssociations) {
+        this.maxAssociations = maxAssociations;
+    }
 
-	public boolean isMulti() {
-		return multi;
-	}
+    public boolean isMulti() {
+        return multi;
+    }
 
-	public void setMulti(boolean multi) {
-		this.multi = multi;
-	}
+    public void setMulti(boolean multi) {
+        this.multi = multi;
+    }
 
-	public List<SelectionItemBean> getItems() {
-		return items;
-	}
+    public List<SelectionItemBean> getItems() {
+        return items;
+    }
 
-	public void setItems(List<SelectionItemBean> items) {
-		this.items = items;
-	}
+    public void setItems(List<SelectionItemBean> items) {
+        this.items = items;
+    }
 
-	@Override
-	public boolean isShuffle() {
-		return shuffle;
-	}
+    @Override
+    public boolean isShuffle() {
+        return shuffle;
+    }
 
-	public void setShuffle(boolean shuffle) {
-		this.shuffle = shuffle;
-	}
+    public void setShuffle(boolean shuffle) {
+        this.shuffle = shuffle;
+    }
 
-	public boolean isIgnored() {
-		return ignored;
-	}
+    public boolean isIgnored() {
+        return ignored;
+    }
 
-	public void setIgnored(boolean ignored) {
-		this.ignored = ignored;
-	}
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
+    }
 }

@@ -6,40 +6,40 @@ import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
 
 public class TextEditorModelEncoderTest extends AbstractEmpiriaPlayerGWTTestCase {
 
-	final static String DUMMY_TEXT = "DUMMY_TEXT";
-	final TextEditorModel model = new TextEditorModel(DUMMY_TEXT);
+    final static String DUMMY_TEXT = "DUMMY_TEXT";
+    final TextEditorModel model = new TextEditorModel(DUMMY_TEXT);
 
-	TextEditorModelEncoder testObj = new TextEditorModelEncoder();
+    TextEditorModelEncoder testObj = new TextEditorModelEncoder();
 
-	public void testEncoding() throws Exception {
-		// given
-		String expected = "[\"" + DUMMY_TEXT + "\"]";
+    public void testEncoding() throws Exception {
+        // given
+        String expected = "[\"" + DUMMY_TEXT + "\"]";
 
-		// when
-		JSONArray actual = testObj.encodeModel(model);
+        // when
+        JSONArray actual = testObj.encodeModel(model);
 
-		// then
-		assertEquals(expected, actual.toString());
-	}
+        // then
+        assertEquals(expected, actual.toString());
+    }
 
-	public void testDecoding() throws Exception {
-		// given
-		final String input = "[\"" + DUMMY_TEXT + "\"]";
-		JSONArray incomingState = (JSONArray) JSONParser.parseLenient(input);
+    public void testDecoding() throws Exception {
+        // given
+        final String input = "[\"" + DUMMY_TEXT + "\"]";
+        JSONArray incomingState = (JSONArray) JSONParser.parseLenient(input);
 
-		// when
-		TextEditorModel actual = testObj.decodeModel(incomingState);
+        // when
+        TextEditorModel actual = testObj.decodeModel(incomingState);
 
-		// then
-		assertEquals(model, actual);
-	}
+        // then
+        assertEquals(model, actual);
+    }
 
-	public void testEncodeAndDecode() throws Exception {
-		// when
-		JSONArray encoded = testObj.encodeModel(model);
-		TextEditorModel actual = testObj.decodeModel(encoded);
+    public void testEncodeAndDecode() throws Exception {
+        // when
+        JSONArray encoded = testObj.encodeModel(model);
+        TextEditorModel actual = testObj.decodeModel(encoded);
 
-		//then
-		assertEquals(model, actual);
-	}
+        //then
+        assertEquals(model, actual);
+    }
 }

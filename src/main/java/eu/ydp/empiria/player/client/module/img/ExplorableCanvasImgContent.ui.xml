@@ -1,23 +1,24 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.canvasadapter.client" xmlns:components="urn:import:eu.ydp.empiria.player.client.components">
-	<ui:style>
-		.imagearea{
-			cursor: move;
-		}
-	</ui:style>
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE}" ui:field="mainPanel">
-		<g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
-			<g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_PANEL} {style.imagearea}' ui:field="imagePanel" >
-				<components:PanelWithScrollbars ui:field="scrollbarsPanel">
-					<c:CanvasAdapter styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="imageCanvas" />
-				</components:PanelWithScrollbars>
-			</g:FlowPanel>
-		</g:FlowPanel>
-		<g:FlowPanel ui:field="toolbox" styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
-			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMIN}" ui:field="zoominButton" />
-			<g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMOUT}" ui:field="zoomoutButton" />
-		</g:FlowPanel>
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:eu.ydp.canvasadapter.client"
+             xmlns:components="urn:import:eu.ydp.empiria.player.client.components">
+    <ui:style>
+        .imagearea {
+            cursor: move;
+        }
+    </ui:style>
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE}" ui:field="mainPanel">
+        <g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
+            <g:FlowPanel addStyleNames='{res.QP_IMG_EXPLORABLE_IMAGE_PANEL} {style.imagearea}' ui:field="imagePanel">
+                <components:PanelWithScrollbars ui:field="scrollbarsPanel">
+                    <c:CanvasAdapter styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="imageCanvas"/>
+                </components:PanelWithScrollbars>
+            </g:FlowPanel>
+        </g:FlowPanel>
+        <g:FlowPanel ui:field="toolbox" styleName="{res.QP_IMG_EXPLORABLE_TOOLBOX}">
+            <g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMIN}" ui:field="zoominButton"/>
+            <g:PushButton styleName="{res.QP_IMG_EXPLORABLE_ZOOMOUT}" ui:field="zoomoutButton"/>
+        </g:FlowPanel>
+    </g:FlowPanel>
 </ui:UiBinder>

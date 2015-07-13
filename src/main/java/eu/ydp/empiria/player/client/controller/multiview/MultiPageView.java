@@ -10,51 +10,51 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class MultiPageView extends FlowPanel implements ResizeHandler {
-	private MultiPageController controller;
+    private MultiPageController controller;
 
-	public MultiPageView() {
-		Window.addResizeHandler(this);
-	}
+    public MultiPageView() {
+        Window.addResizeHandler(this);
+    }
 
-	public void setController(MultiPageController controller) {
-		this.controller = controller;
-	}
+    public void setController(MultiPageController controller) {
+        this.controller = controller;
+    }
 
-	@Override
-	protected void onAttach() {
-		setSwipeDisabled(controller.isSwipeDisabled());
-		super.onAttach();
-	}
+    @Override
+    protected void onAttach() {
+        setSwipeDisabled(controller.isSwipeDisabled());
+        super.onAttach();
+    }
 
-	public void setSwipeDisabled(boolean swipeDisabled) {
-		Style style = controller.getStyle();
-		Style elementStyle = getElement().getStyle();
+    public void setSwipeDisabled(boolean swipeDisabled) {
+        Style style = controller.getStyle();
+        Style elementStyle = getElement().getStyle();
 
-		style.setWidth(controller.getWidth(), Unit.PCT);
+        style.setWidth(controller.getWidth(), Unit.PCT);
 
-		if (swipeDisabled) {
-			style.clearPosition();
-			style.clearTop();
-			style.clearLeft();
-			elementStyle.clearPosition();
-		} else {
-			style.setPosition(Position.ABSOLUTE);
-			style.setTop(0, Unit.PX);
-			style.setLeft(0, Unit.PX);
-			elementStyle.setPosition(Position.RELATIVE);
-		}
+        if (swipeDisabled) {
+            style.clearPosition();
+            style.clearTop();
+            style.clearLeft();
+            elementStyle.clearPosition();
+        } else {
+            style.setPosition(Position.ABSOLUTE);
+            style.setTop(0, Unit.PX);
+            style.setLeft(0, Unit.PX);
+            elementStyle.setPosition(Position.RELATIVE);
+        }
 
-		setSwipeLength();
-	}
+        setSwipeLength();
+    }
 
-	@Override
-	public void onResize(ResizeEvent event) {
-		setSwipeLength();
-	}
+    @Override
+    public void onResize(ResizeEvent event) {
+        setSwipeLength();
+    }
 
-	private void setSwipeLength() {
-		if (controller != null) {
-			controller.setSwipeLength(RootPanel.get().getOffsetWidth() / 5);
-		}
-	}
+    private void setSwipeLength() {
+        if (controller != null) {
+            controller.setSwipeLength(RootPanel.get().getOffsetWidth() / 5);
+        }
+    }
 }

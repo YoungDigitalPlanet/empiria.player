@@ -4,21 +4,21 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 
 public interface SelectableChoiceView extends IsWidget {
-	void setCoverId(String coverId);
+    void setCoverId(String coverId);
 
-	void markNotSelectedAnswerCorrect();
+    void markNotSelectedAnswerCorrect();
 
-	void markNotSelectedAnswerWrong();
+    void markNotSelectedAnswerWrong();
 
-	void markSelectedAnswerCorrect();
+    void markSelectedAnswerCorrect();
 
-	void markSelectedAnswerWrong();
+    void markSelectedAnswerWrong();
 
-	void markSelectedOption();
+    void markSelectedOption();
 
-	void unmarkSelectedOption();
+    void unmarkSelectedOption();
 
-	void lock();
+    void lock();
 
-	void unlock();
+    void unlock();
 }

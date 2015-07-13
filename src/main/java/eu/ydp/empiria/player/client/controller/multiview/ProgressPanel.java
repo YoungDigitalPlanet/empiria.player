@@ -7,13 +7,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ProgressPanel extends Composite {
 
-	private static ProgressPanelUiBinder uiBinder = GWT.create(ProgressPanelUiBinder.class);
+    private static ProgressPanelUiBinder uiBinder = GWT.create(ProgressPanelUiBinder.class);
 
-	interface ProgressPanelUiBinder extends UiBinder<Widget, ProgressPanel> {
-	}
+    interface ProgressPanelUiBinder extends UiBinder<Widget, ProgressPanel> {
+    }
 
-	public ProgressPanel() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public ProgressPanel() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
 }

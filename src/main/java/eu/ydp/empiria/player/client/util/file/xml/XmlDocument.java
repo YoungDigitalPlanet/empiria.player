@@ -26,46 +26,43 @@ package eu.ydp.empiria.player.client.util.file.xml;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import com.google.gwt.xml.client.impl.DOMParseException;
-
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.TextDocument;
 
 public class XmlDocument {
 
-	private DocumentLoadCallback<Document> callback;
-	private String url;
+    private DocumentLoadCallback<Document> callback;
+    private String url;
 
-	/**
-	 * Loads an XML document.
-	 * 
-	 * @param u
-	 *            Document URL
-	 * @param c
-	 *            Callback with on success and on error handlers
-	 */
-	public XmlDocument(String u, DocumentLoadCallback<Document> c) {
+    /**
+     * Loads an XML document.
+     *
+     * @param u Document URL
+     * @param c Callback with on success and on error handlers
+     */
+    public XmlDocument(String u, DocumentLoadCallback<Document> c) {
 
-		this.callback = c;
-		this.url = u;
+        this.callback = c;
+        this.url = u;
 
-		new TextDocument(url, new DocumentLoadCallback<String>() {
+        new TextDocument(url, new DocumentLoadCallback<String>() {
 
-			@Override
-			public void loadingError(String message) {
-				callback.loadingError(message);
-			}
+            @Override
+            public void loadingError(String message) {
+                callback.loadingError(message);
+            }
 
-			@Override
-			public void finishedLoading(String text, String baseUrl) {
-				try {
-					Document dom = XMLParser.parse(text);
-					callback.finishedLoading(dom, baseUrl);
-				} catch (DOMParseException e) {
-					e.printStackTrace();
-					callback.loadingError("Could not parse file: " + url);
-				}
-			}
-		});
+            @Override
+            public void finishedLoading(String text, String baseUrl) {
+                try {
+                    Document dom = XMLParser.parse(text);
+                    callback.finishedLoading(dom, baseUrl);
+                } catch (DOMParseException e) {
+                    e.printStackTrace();
+                    callback.loadingError("Could not parse file: " + url);
+                }
+            }
+        });
 
-	}
+    }
 }

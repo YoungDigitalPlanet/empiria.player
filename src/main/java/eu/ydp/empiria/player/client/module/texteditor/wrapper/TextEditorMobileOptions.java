@@ -4,12 +4,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 class TextEditorMobileOptions implements TextEditorOptions {
 
-	@Override
-	public JavaScriptObject getOptions() {
-		return getMobileOptions();
-	}
+    @Override
+    public JavaScriptObject getOptions() {
+        return getMobileOptions();
+    }
 
-	private native final JavaScriptObject getMobileOptions() /*-{
+    private native final JavaScriptObject getMobileOptions() /*-{
         var options = {
             fsize: false,
             format: false,

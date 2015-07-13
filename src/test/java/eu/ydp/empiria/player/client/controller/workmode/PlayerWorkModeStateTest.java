@@ -14,38 +14,38 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PlayerWorkModeStateTest {
 
-	@InjectMocks
-	private PlayerWorkModeState testObj;
-	@Mock
-	private PlayerWorkModeService playerWorkModeService;
-	@Mock
-	private JSONStateSerializer jsonStateUtil;
+    @InjectMocks
+    private PlayerWorkModeState testObj;
+    @Mock
+    private PlayerWorkModeService playerWorkModeService;
+    @Mock
+    private JSONStateSerializer jsonStateUtil;
 
-	@Test
-	public void testShouldUpdateModeOnService() {
-		// given
-		JSONArray state = mock(JSONArray.class);
-		when(jsonStateUtil.extractString(state)).thenReturn("FULL");
+    @Test
+    public void testShouldUpdateModeOnService() {
+        // given
+        JSONArray state = mock(JSONArray.class);
+        when(jsonStateUtil.extractString(state)).thenReturn("FULL");
 
-		// when
-		testObj.setState(state);
+        // when
+        testObj.setState(state);
 
-		// then
-		verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.FULL);
-	}
+        // then
+        verify(playerWorkModeService).tryToUpdateWorkMode(PlayerWorkMode.FULL);
+    }
 
-	@Test
-	public void shouldReturnStateWithCurrentWorkMode() {
-		// given
-		final JSONArray EXPECTED = mock(JSONArray.class);
+    @Test
+    public void shouldReturnStateWithCurrentWorkMode() {
+        // given
+        final JSONArray EXPECTED = mock(JSONArray.class);
 
-		when(playerWorkModeService.getCurrentWorkMode()).thenReturn(PlayerWorkMode.FULL);
-		when(jsonStateUtil.createWithString("FULL")).thenReturn(EXPECTED);
+        when(playerWorkModeService.getCurrentWorkMode()).thenReturn(PlayerWorkMode.FULL);
+        when(jsonStateUtil.createWithString("FULL")).thenReturn(EXPECTED);
 
-		// when
-		JSONArray actual = testObj.getState();
+        // when
+        JSONArray actual = testObj.getState();
 
-		// then
-		assertThat(actual).isEqualTo(EXPECTED);
-	}
+        // then
+        assertThat(actual).isEqualTo(EXPECTED);
+    }
 }

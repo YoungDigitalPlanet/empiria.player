@@ -13,33 +13,33 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class LabellingChildViewImpl extends Composite implements LabellingChildView {
 
-	private static LabellingChildContainerUiBinder uiBinder = GWT.create(LabellingChildContainerUiBinder.class);
+    private static LabellingChildContainerUiBinder uiBinder = GWT.create(LabellingChildContainerUiBinder.class);
 
-	interface LabellingChildContainerUiBinder extends UiBinder<Widget, LabellingChildViewImpl> {
-	}
+    interface LabellingChildContainerUiBinder extends UiBinder<Widget, LabellingChildViewImpl> {
+    }
 
-	@UiField
-	FlowPanel container;
+    @UiField
+    FlowPanel container;
 
-	public LabellingChildViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public LabellingChildViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public IsWidget getView() {
-		return this;
-	}
+    @Override
+    public IsWidget getView() {
+        return this;
+    }
 
-	@Override
-	public ForIsWidget getContainer() {
-		return container;
-	}
+    @Override
+    public ForIsWidget getContainer() {
+        return container;
+    }
 
-	@Override
-	public void setPosition(int left, int top) {
-		Style style = container.getElement().getStyle();
-		style.setLeft(left, Unit.PX);
-		style.setTop(top, Unit.PX);
-	}
+    @Override
+    public void setPosition(int left, int top) {
+        Style style = container.getElement().getStyle();
+        style.setLeft(left, Unit.PX);
+        style.setTop(top, Unit.PX);
+    }
 
 }

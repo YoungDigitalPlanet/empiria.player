@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
 import eu.ydp.empiria.player.client.module.expression.ExpressionReplacer;
 import eu.ydp.empiria.player.client.module.expression.TextBoxExpressionReplacer;
@@ -21,70 +20,70 @@ import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 
 public abstract class TextEntryGapModulePresenterBase extends GapModulePesenterBase {
 
-	@Inject
-	private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
-	@Inject
-	private TextBoxExpressionReplacer expressionReplacer;
-	@Inject
-	protected StyleNameConstants styleNames;
-	@Inject
-	protected DragDropHelper dragDropHelper;
+    @Inject
+    private DragDataObjectFromEventExtractor dataObjectFromEventExtractor;
+    @Inject
+    private TextBoxExpressionReplacer expressionReplacer;
+    @Inject
+    protected StyleNameConstants styleNames;
+    @Inject
+    protected DragDropHelper dragDropHelper;
 
-	protected DroppableObject<TextBox> droppable;
-	protected TextBox textBox;
-	protected DropZoneGuardian dropZoneGuardian;
+    protected DroppableObject<TextBox> droppable;
+    protected TextBox textBox;
+    protected DropZoneGuardian dropZoneGuardian;
 
-	public abstract void addPresenterHandler(PresenterHandler handler);
+    public abstract void addPresenterHandler(PresenterHandler handler);
 
-	public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
-		droppable.addDropHandler(new DropHandler() {
-			@Override
-			public void onDrop(DropEvent event) {
-				Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
-				if (objectFromEvent.isPresent()) {
-					dragGapDropHandler.onDrop(objectFromEvent.get());
-				}
-			}
-		});
-	}
+    public void addDomHandlerOnObjectDrop(final GapDropHandler dragGapDropHandler) {
+        droppable.addDropHandler(new DropHandler() {
+            @Override
+            public void onDrop(DropEvent event) {
+                Optional<DragDataObject> objectFromEvent = dataObjectFromEventExtractor.extractDroppedObjectFromEvent(event);
+                if (objectFromEvent.isPresent()) {
+                    dragGapDropHandler.onDrop(objectFromEvent.get());
+                }
+            }
+        });
+    }
 
-	@Override
-	public void setMaxLength(int length) {
-		textBox.setMaxLength(length);
-	}
+    @Override
+    public void setMaxLength(int length) {
+        textBox.setMaxLength(length);
+    }
 
-	public void removeFocusFromTextField() {
-		textBox.getElement().blur();
-	}
+    public void removeFocusFromTextField() {
+        textBox.getElement().blur();
+    }
 
-	public void makeExpressionReplacements(ExpressionReplacer replacer) {
-		expressionReplacer.makeReplacements(textBox, replacer);
-	}
+    public void makeExpressionReplacements(ExpressionReplacer replacer) {
+        expressionReplacer.makeReplacements(textBox, replacer);
+    }
 
-	@Override
-	public void setText(String text) {
-		textBox.setValue(text, true);
-	}
+    @Override
+    public void setText(String text) {
+        textBox.setValue(text, true);
+    }
 
-	public String getText() {
-		return textBox.getText();
-	}
+    public String getText() {
+        return textBox.getText();
+    }
 
-	@Override
-	public void setViewEnabled(boolean enabled) {
-		textBox.setEnabled(enabled);
-	}
+    @Override
+    public void setViewEnabled(boolean enabled) {
+        textBox.setEnabled(enabled);
+    }
 
-	@Override
-	public UIObject getComponent() {
-		return textBox;
-	}
+    @Override
+    public UIObject getComponent() {
+        return textBox;
+    }
 
-	public void lockDragZone() {
-		dropZoneGuardian.lockDropZone();
-	}
+    public void lockDragZone() {
+        dropZoneGuardian.lockDropZone();
+    }
 
-	public void unlockDragZone() {
-		dropZoneGuardian.unlockDropZone();
-	}
+    public void unlockDragZone() {
+        dropZoneGuardian.unlockDropZone();
+    }
 }

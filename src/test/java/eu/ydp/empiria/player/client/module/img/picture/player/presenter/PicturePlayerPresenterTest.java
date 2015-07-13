@@ -1,111 +1,115 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
-import static org.mockito.Mockito.*;
-
-import eu.ydp.empiria.player.client.module.img.picture.player.structure.*;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerTitleBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PicturePlayerPresenterTest {
 
-	@InjectMocks
-	private PicturePlayerPresenter testObj;
-	@Mock
-	private PicturePlayerView view;
-	@Mock
-	private PicturePlayerFullscreenController fullscreenController;
+    @InjectMocks
+    private PicturePlayerPresenter testObj;
+    @Mock
+    private PicturePlayerView view;
+    @Mock
+    private PicturePlayerFullscreenController fullscreenController;
 
-	private PicturePlayerBean bean = new PicturePlayerBean();
-	private PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
+    private PicturePlayerBean bean = new PicturePlayerBean();
+    private PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
 
-	private String src = "src";
-	private String srcFullscreen = "src_f";
-	private String title = "title";
+    private String src = "src";
+    private String srcFullscreen = "src_f";
+    private String title = "title";
 
-	@Before
-	public void setUp() throws Exception {
-		bean.setSrc(src);
-		bean.setSrcFullScreen(srcFullscreen);
-		titleBean.setTitleName(title);
-		bean.setTitleBean(titleBean);
-	}
+    @Before
+    public void setUp() throws Exception {
+        bean.setSrc(src);
+        bean.setSrcFullScreen(srcFullscreen);
+        titleBean.setTitleName(title);
+        bean.setTitleBean(titleBean);
+    }
 
-	@Test
-	public void shouldInitFullPicturePlayer() {
-		// when
-		testObj.init(bean);
+    @Test
+    public void shouldInitFullPicturePlayer() {
+        // when
+        testObj.init(bean);
 
-		// then
-		verify(view).setImage(title, src);
-		verify(view).addFullscreenButton();
-	}
+        // then
+        verify(view).setImage(title, src);
+        verify(view).addFullscreenButton();
+    }
 
-	@Test
-	public void shouldNotInitFullscreen_whenModuleIsTemplate() {
-		// given
-		testObj.setTemplate(true);
+    @Test
+    public void shouldNotInitFullscreen_whenModuleIsTemplate() {
+        // given
+        testObj.setTemplate(true);
 
-		// when
-		testObj.init(bean);
+        // when
+        testObj.init(bean);
 
-		// then
-		verify(view).setImage(title, src);
-		verify(view, never()).addFullscreenButton();
-	}
+        // then
+        verify(view).setImage(title, src);
+        verify(view, never()).addFullscreenButton();
+    }
 
-	@Test
-	public void shouldNotInitFullscreen_whenSrcFullscreenIsNull() {
-		// given
-		bean.setSrcFullScreen(null);
+    @Test
+    public void shouldNotInitFullscreen_whenSrcFullscreenIsNull() {
+        // given
+        bean.setSrcFullScreen(null);
 
-		// when
-		testObj.init(bean);
+        // when
+        testObj.init(bean);
 
-		// then
-		verify(view).setImage(title, src);
-		verify(view, never()).addFullscreenButton();
-	}
+        // then
+        verify(view).setImage(title, src);
+        verify(view, never()).addFullscreenButton();
+    }
 
-	@Test
-	public void shouldNotInitFullscreen_whenSrcFullscreenIsEmpty() {
-		// given
-		bean.setSrcFullScreen("");
+    @Test
+    public void shouldNotInitFullscreen_whenSrcFullscreenIsEmpty() {
+        // given
+        bean.setSrcFullScreen("");
 
-		// when
-		testObj.init(bean);
+        // when
+        testObj.init(bean);
 
-		// then
-		verify(view).setImage(title, src);
-		verify(view, never()).addFullscreenButton();
-	}
+        // then
+        verify(view).setImage(title, src);
+        verify(view, never()).addFullscreenButton();
+    }
 
-	@Test
-	public void shouldSetEmptyTitle_whenTitleNotSet() {
-		// given
-		bean.setTitleBean(null);
+    @Test
+    public void shouldSetEmptyTitle_whenTitleNotSet() {
+        // given
+        bean.setTitleBean(null);
 
-		// when
-		testObj.init(bean);
+        // when
+        testObj.init(bean);
 
-		// then
-		verify(view).setImage("", src);
-		verify(view).addFullscreenButton();
-	}
+        // then
+        verify(view).setImage("", src);
+        verify(view).addFullscreenButton();
+    }
 
-	@Test
-	public void shouldOpenFullscreen() {
-		// given
-		testObj.init(bean);
+    @Test
+    public void shouldOpenFullscreen() {
+        // given
+        testObj.init(bean);
 
-		// when
-		testObj.openFullscreen();
+        // when
+        testObj.openFullscreen();
 
-		// then
-		verify(fullscreenController).openFullscreen(bean);
+        // then
+        verify(fullscreenController).openFullscreen(bean);
 
-	}
+    }
 }

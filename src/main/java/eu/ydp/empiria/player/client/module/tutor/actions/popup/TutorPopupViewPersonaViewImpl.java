@@ -10,22 +10,22 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class TutorPopupViewPersonaViewImpl extends Composite implements TutorPopupViewPersonaView {
 
-	private static TutorPopupViewPersonaViewUiBinder uiBinder = GWT.create(TutorPopupViewPersonaViewUiBinder.class);
+    private static TutorPopupViewPersonaViewUiBinder uiBinder = GWT.create(TutorPopupViewPersonaViewUiBinder.class);
 
-	interface TutorPopupViewPersonaViewUiBinder extends UiBinder<Widget, TutorPopupViewPersonaViewImpl> {
-	}
+    interface TutorPopupViewPersonaViewUiBinder extends UiBinder<Widget, TutorPopupViewPersonaViewImpl> {
+    }
 
-	@UiField
-	FlowPanel container;
+    @UiField
+    FlowPanel container;
 
-	public TutorPopupViewPersonaViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public TutorPopupViewPersonaViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public void setAvatarUrl(String avatarUrl) {
-		Image image = new Image(avatarUrl);
-		container.add(image);
-	}
+    @Override
+    public void setAvatarUrl(String avatarUrl) {
+        Image image = new Image(avatarUrl);
+        container.add(image);
+    }
 
 }

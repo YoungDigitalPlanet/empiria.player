@@ -1,17 +1,19 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.InlineHTML;
+import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 
 public class SourceListViewItemContentFactory {
 
-	public IsWidget getSourceListViewItemContent(SourcelistItemType type, String content) {
-		IsWidget widget;
-		if (type == SourcelistItemType.IMAGE) {
-			widget = new Image(content);
-		} else {
-			widget = new InlineHTML(content);
-		}
-		return widget;
-	}
+    public IsWidget getSourceListViewItemContent(SourcelistItemType type, String content) {
+        IsWidget widget;
+        if (type == SourcelistItemType.IMAGE) {
+            widget = new Image(content);
+        } else {
+            widget = new InlineHTML(content);
+        }
+        return widget;
+    }
 }

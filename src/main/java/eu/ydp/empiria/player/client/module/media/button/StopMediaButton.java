@@ -6,32 +6,30 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 /**
- * 
  * przycisk stop
- * 
+ *
  * @author plelakowski
- * 
  */
 public class StopMediaButton extends AbstractMediaButton<StopMediaButton> {
-	protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
-	public StopMediaButton() {
-		super("qp-media-stop", false);
-	}
+    public StopMediaButton() {
+        super("qp-media-stop", false);
+    }
 
-	@Override
-	protected void onClick() {
-		changeStyleForClick();
-		eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, getMediaWrapper()), getMediaWrapper());
-	}
+    @Override
+    protected void onClick() {
+        changeStyleForClick();
+        eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.STOP, getMediaWrapper()), getMediaWrapper());
+    }
 
-	@Override
-	public StopMediaButton getNewInstance() {
-		return new StopMediaButton();
-	}
+    @Override
+    public StopMediaButton getNewInstance() {
+        return new StopMediaButton();
+    }
 
-	@Override
-	public boolean isSupported() {
-		return getMediaAvailableOptions().isStopSupported();
-	}
+    @Override
+    public boolean isSupported() {
+        return getMediaAvailableOptions().isStopSupported();
+    }
 }

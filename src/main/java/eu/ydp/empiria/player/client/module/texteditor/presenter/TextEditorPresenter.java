@@ -9,57 +9,57 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TextEditorPresenter {
 
-	private final TextEditorView view;
-	private final TextEditorJSWrapper textEditorJSWrapper;
-	private String moduleId;
+    private final TextEditorView view;
+    private final TextEditorJSWrapper textEditorJSWrapper;
+    private String moduleId;
 
-	@Inject
-	public TextEditorPresenter(@ModuleScoped TextEditorView view, TextEditorJSWrapper textEditorJSWrapper) {
-		this.view = view;
-		this.textEditorJSWrapper = textEditorJSWrapper;
-	}
+    @Inject
+    public TextEditorPresenter(@ModuleScoped TextEditorView view, TextEditorJSWrapper textEditorJSWrapper) {
+        this.view = view;
+        this.textEditorJSWrapper = textEditorJSWrapper;
+    }
 
-	public void init(String moduleId) {
-		this.moduleId = moduleId;
-		view.init();
-	}
+    public void init(String moduleId) {
+        this.moduleId = moduleId;
+        view.init();
+    }
 
-	public void convertEditor() {
-		textEditorJSWrapper.convert(moduleId);
-	}
+    public void convertEditor() {
+        textEditorJSWrapper.convert(moduleId);
+    }
 
-	public void setTextEditorModel(TextEditorModel textEditorModel) {
-		setContent(textEditorModel.getContent());
-	}
+    public void setTextEditorModel(TextEditorModel textEditorModel) {
+        setContent(textEditorModel.getContent());
+    }
 
-	public TextEditorModel getTextEditorModel() {
-		return new TextEditorModel(getContent());
-	}
+    public TextEditorModel getTextEditorModel() {
+        return new TextEditorModel(getContent());
+    }
 
-	private void setContent(String text) {
-		textEditorJSWrapper.setContent(moduleId, text);
-	}
+    private void setContent(String text) {
+        textEditorJSWrapper.setContent(moduleId, text);
+    }
 
-	private String getContent() {
-		return textEditorJSWrapper.getContent(moduleId);
-	}
+    private String getContent() {
+        return textEditorJSWrapper.getContent(moduleId);
+    }
 
-	public void lock() {
-		textEditorJSWrapper.lock(moduleId);
-		view.lock();
-	}
+    public void lock() {
+        textEditorJSWrapper.lock(moduleId);
+        view.lock();
+    }
 
-	public void unlock() {
-		textEditorJSWrapper.unlock(moduleId);
-		view.unlock();
-	}
+    public void unlock() {
+        textEditorJSWrapper.unlock(moduleId);
+        view.unlock();
+    }
 
-	public void enablePreviewMode() {
-		textEditorJSWrapper.lock(moduleId);
-		view.enablePreviewMode();
-	}
+    public void enablePreviewMode() {
+        textEditorJSWrapper.lock(moduleId);
+        view.enablePreviewMode();
+    }
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 }

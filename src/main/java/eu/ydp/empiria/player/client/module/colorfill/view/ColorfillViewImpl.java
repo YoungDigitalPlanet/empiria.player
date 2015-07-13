@@ -19,139 +19,139 @@ import java.util.Map;
 
 public class ColorfillViewImpl implements ColorfillInteractionView {
 
-	private static ColorfillViewWidgetUiBinder uiBinder = GWT.create(ColorfillViewWidgetUiBinder.class);
+    private static ColorfillViewWidgetUiBinder uiBinder = GWT.create(ColorfillViewWidgetUiBinder.class);
 
-	@UiTemplate("ColorfillView.ui.xml")
-	interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {
-	}
+    @UiTemplate("ColorfillView.ui.xml")
+    interface ColorfillViewWidgetUiBinder extends UiBinder<Widget, ColorfillViewImpl> {
+    }
 
-	@UiField
-	FlowPanel container;
+    @UiField
+    FlowPanel container;
 
-	@UiField(provided = true)
-	ColorfillCanvas canvas;
+    @UiField(provided = true)
+    ColorfillCanvas canvas;
 
-	@UiField(provided = true)
-	ColorfillPalette palette;
+    @UiField(provided = true)
+    ColorfillPalette palette;
 
-	@UiField
-	AbsolutePanel imageContainer;
+    @UiField
+    AbsolutePanel imageContainer;
 
-	@UiField(provided = true)
-	ColorfillCorrectImage correctImageCanvas;
+    @UiField(provided = true)
+    ColorfillCorrectImage correctImageCanvas;
 
-	@UiField
-	AnswersMarkingPanel correctAnswersMarkingPanel;
+    @UiField
+    AnswersMarkingPanel correctAnswersMarkingPanel;
 
-	@UiField
-	AnswersMarkingPanel wrongAnswersMarkingPanel;
+    @UiField
+    AnswersMarkingPanel wrongAnswersMarkingPanel;
 
-	@Inject
-	public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
-		this.canvas = canvas;
-		this.palette = palette;
-		this.correctImageCanvas = correctImageCanvas;
+    @Inject
+    public ColorfillViewImpl(ColorfillCanvas canvas, ColorfillPalette palette, ColorfillCorrectImage correctImageCanvas) {
+        this.canvas = canvas;
+        this.palette = palette;
+        this.correctImageCanvas = correctImageCanvas;
 
-		uiBinder.createAndBindUi(this);
-	}
+        uiBinder.createAndBindUi(this);
+    }
 
-	@Override
-	public Widget asWidget() {
-		return container;
-	}
+    @Override
+    public Widget asWidget() {
+        return container;
+    }
 
-	@Override
-	public void setImage(Image image) {
-		String px = Unit.PX.toString()
-						   .toLowerCase();
-		String width = image.getWidth() + px;
-		String height = image.getHeight() + px;
-		imageContainer.setSize(width, height);
+    @Override
+    public void setImage(Image image) {
+        String px = Unit.PX.toString()
+                .toLowerCase();
+        String width = image.getWidth() + px;
+        String height = image.getHeight() + px;
+        imageContainer.setSize(width, height);
 
-		canvas.setImage(image);
-	}
+        canvas.setImage(image);
+    }
 
-	@Override
-	public void createButton(ColorModel color, String description) {
-		palette.createButton(color, description);
-	}
+    @Override
+    public void createButton(ColorModel color, String description) {
+        palette.createButton(color, description);
+    }
 
-	@Override
-	public void selectButton(ColorModel color) {
-		palette.selectButton(color);
-	}
+    @Override
+    public void selectButton(ColorModel color) {
+        palette.selectButton(color);
+    }
 
-	@Override
-	public void deselectButton(ColorModel color) {
-		palette.deselectButton(color);
-	}
+    @Override
+    public void deselectButton(ColorModel color) {
+        palette.deselectButton(color);
+    }
 
-	@Override
-	public void setButtonClickListener(ColorfillButtonClickListener listener) {
-		palette.setButtonClickListener(listener);
-	}
+    @Override
+    public void setButtonClickListener(ColorfillButtonClickListener listener) {
+        palette.setButtonClickListener(listener);
+    }
 
-	@Override
-	public void setColor(Area area, ColorModel color) {
-		canvas.setColor(area, color);
-	}
+    @Override
+    public void setColor(Area area, ColorModel color) {
+        canvas.setColor(area, color);
+    }
 
-	@Override
-	public ColorModel getColor(Area area) {
-		return canvas.getColor(area);
-	}
+    @Override
+    public ColorModel getColor(Area area) {
+        return canvas.getColor(area);
+    }
 
-	@Override
-	public void setColors(Map<Area, ColorModel> colors) {
-		canvas.setColors(colors);
-	}
+    @Override
+    public void setColors(Map<Area, ColorModel> colors) {
+        canvas.setColors(colors);
+    }
 
-	@Override
-	public void setAreaClickListener(ColorfillAreaClickListener listener) {
-		canvas.setAreaClickListener(listener);
-	}
+    @Override
+    public void setAreaClickListener(ColorfillAreaClickListener listener) {
+        canvas.setAreaClickListener(listener);
+    }
 
-	@Override
-	public void reset() {
-		canvas.reset();
-	}
+    @Override
+    public void reset() {
+        canvas.reset();
+    }
 
-	@Override
-	public void setCorrectImage(Image correctImage) {
-		correctImageCanvas.setImageUrl(correctImage);
-	}
+    @Override
+    public void setCorrectImage(Image correctImage) {
+        correctImageCanvas.setImageUrl(correctImage);
+    }
 
-	@Override
-	public void showUserAnswers() {
-		canvas.asWidget()
-			  .setVisible(true);
-		correctImageCanvas.hide();
-	}
+    @Override
+    public void showUserAnswers() {
+        canvas.asWidget()
+                .setVisible(true);
+        correctImageCanvas.hide();
+    }
 
-	@Override
-	public void showCorrectAnswers() {
-		canvas.asWidget()
-			  .setVisible(false);
-		correctImageCanvas.show();
-	}
+    @Override
+    public void showCorrectAnswers() {
+        canvas.asWidget()
+                .setVisible(false);
+        correctImageCanvas.show();
+    }
 
-	@Override
-	public void markCorrectAnswers(List<Area> pointsToMark) {
-		correctAnswersMarkingPanel.markAndShow(pointsToMark);
-	}
+    @Override
+    public void markCorrectAnswers(List<Area> pointsToMark) {
+        correctAnswersMarkingPanel.markAndShow(pointsToMark);
+    }
 
-	@Override
-	public void unmarkCorrectAnswers() {
-		correctAnswersMarkingPanel.clearAndHide();
-	}
+    @Override
+    public void unmarkCorrectAnswers() {
+        correctAnswersMarkingPanel.clearAndHide();
+    }
 
-	@Override
-	public void markWrongAnswers(List<Area> pointsToMark) {
-		wrongAnswersMarkingPanel.markAndShow(pointsToMark);
-	}
+    @Override
+    public void markWrongAnswers(List<Area> pointsToMark) {
+        wrongAnswersMarkingPanel.markAndShow(pointsToMark);
+    }
 
-	@Override
-	public void unmarkWrongAnswers() {
-		wrongAnswersMarkingPanel.clearAndHide();
-	}
+    @Override
+    public void unmarkWrongAnswers() {
+        wrongAnswersMarkingPanel.clearAndHide();
+    }
 }

@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound.extern
 
 public interface MediaConnector {
 
-	void init(String id, Iterable<String> sources);
+    void init(String id, Iterable<String> sources);
 
-	void seek(String id, int timeMillis);
+    void seek(String id, int timeMillis);
 
-	void play(String id);
+    void play(String id);
 
-	void pause(String id);
+    void pause(String id);
 }

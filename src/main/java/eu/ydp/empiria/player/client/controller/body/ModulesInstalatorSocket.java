@@ -5,11 +5,11 @@ import com.google.gwt.xml.client.Element;
 
 public interface ModulesInstalatorSocket {
 
-	public boolean isModuleSupported(String nodeName);
+    public boolean isModuleSupported(String nodeName);
 
-	public boolean isMultiViewModule(String nodeName);
+    public boolean isMultiViewModule(String nodeName);
 
-	public void registerModuleView(Element element, HasWidgets parent);
+    public void registerModuleView(Element element, HasWidgets parent);
 
-	public void createSingleViewModule(Element element, HasWidgets parent, BodyGeneratorSocket moduleGeneratorSocket);
+    public void createSingleViewModule(Element element, HasWidgets parent, BodyGeneratorSocket moduleGeneratorSocket);
 }

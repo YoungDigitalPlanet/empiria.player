@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ColorfillButtonClickListener {
 
-	public void onButtonClick(ColorModel color);
+    public void onButtonClick(ColorModel color);
 }

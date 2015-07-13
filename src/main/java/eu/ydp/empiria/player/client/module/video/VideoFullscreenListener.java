@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.video;
 
 public interface VideoFullscreenListener {
 
-	void onEnterFullscreen();
+    void onEnterFullscreen();
 
-	void onExitFullscreen();
+    void onExitFullscreen();
 }

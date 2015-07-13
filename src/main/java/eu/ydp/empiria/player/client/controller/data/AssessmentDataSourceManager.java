@@ -19,246 +19,246 @@ import java.util.List;
 
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
-	public AssessmentDataSourceManager() {
-		itemsCount = -1;
-		errorMessage = "";
-		skinData = new SkinDataSourceManager(this);
-	}
+    public AssessmentDataSourceManager() {
+        itemsCount = -1;
+        errorMessage = "";
+        skinData = new SkinDataSourceManager(this);
+    }
 
-	private XmlData data;
-	private AssessmentData assessmentData;
-	private AssessmentDataLoaderEventListener listener;
-	private StyleLinkDeclaration styleDeclaration;
-	private int itemsCount;
-	private String errorMessage;
-	private LibraryLink libraryLink;
-	private final SkinDataSourceManager skinData;
-	private boolean isDefaultData;
-	private List<Element> items = null;
+    private XmlData data;
+    private AssessmentData assessmentData;
+    private AssessmentDataLoaderEventListener listener;
+    private StyleLinkDeclaration styleDeclaration;
+    private int itemsCount;
+    private String errorMessage;
+    private LibraryLink libraryLink;
+    private final SkinDataSourceManager skinData;
+    private boolean isDefaultData;
+    private List<Element> items = null;
 
-	@Inject
-	private WorkModeParserForAssessment workModeParser;
-	@Inject
-	private PlayerWorkModeService playerWorkModeService;
+    @Inject
+    private WorkModeParserForAssessment workModeParser;
+    @Inject
+    private PlayerWorkModeService playerWorkModeService;
 
-	public void setSkinListener(AssessmentDataLoaderEventListener listener) {
-		this.listener = listener;
-	}
+    public void setSkinListener(AssessmentDataLoaderEventListener listener) {
+        this.listener = listener;
+    }
 
-	public void initializeAssessmentData(XmlData data) {
-		if (isItemDocument(data.getDocument())) {
-			isDefaultData = true;
-			initializeDefaultData();
-		} else {
-			isDefaultData = false;
-			initializeData(data);
-		}
-	}
+    public void initializeAssessmentData(XmlData data) {
+        if (isItemDocument(data.getDocument())) {
+            isDefaultData = true;
+            initializeDefaultData();
+        } else {
+            isDefaultData = false;
+            initializeData(data);
+        }
+    }
 
-	public void setAssessmentData(XmlData data) {
-		this.data = data;
-		this.assessmentData = new AssessmentData(data, null);
-	}
+    public void setAssessmentData(XmlData data) {
+        this.data = data;
+        this.assessmentData = new AssessmentData(data, null);
+    }
 
-	public void setAssessmentLoadingError(String err) {
-		String detail = "";
-		if (err != null && err.indexOf(':') != -1) {
-			detail = err.substring(0, err.indexOf(':'));
-		}
-		errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
-	}
+    public void setAssessmentLoadingError(String err) {
+        String detail = "";
+        if (err != null && err.indexOf(':') != -1) {
+            detail = err.substring(0, err.indexOf(':'));
+        }
+        errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
+    }
 
-	private void initializeDefaultData() {
-		data = new XmlData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
-		itemsCount = 1;
-		styleDeclaration = new StyleLinkDeclaration(data.getDocument()
-		                                                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		listener.onAssessmentDataLoaded();
-	}
+    private void initializeDefaultData() {
+        data = new XmlData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
+        itemsCount = 1;
+        styleDeclaration = new StyleLinkDeclaration(data.getDocument()
+                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
+        listener.onAssessmentDataLoaded();
+    }
 
-	private void initializeData(XmlData xmlData) {
-		String skinUrl = getSkinUrl(xmlData.getDocument());
+    private void initializeData(XmlData xmlData) {
+        String skinUrl = getSkinUrl(xmlData.getDocument());
 
-		data = xmlData;
-		itemsCount = -1;
-		styleDeclaration = new StyleLinkDeclaration(data.getDocument()
-		                                                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
-		libraryLink = new LibraryLink(data.getDocument()
-		                                  .getElementsByTagName("extensionsLibrary"), data.getBaseURL());
-		setWorkMode();
+        data = xmlData;
+        itemsCount = -1;
+        styleDeclaration = new StyleLinkDeclaration(data.getDocument()
+                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
+        libraryLink = new LibraryLink(data.getDocument()
+                .getElementsByTagName("extensionsLibrary"), data.getBaseURL());
+        setWorkMode();
 
-		if (skinUrl == null) {
-			assessmentData = new AssessmentData(data, null);
-			listener.onAssessmentDataLoaded();
-		} else {
-			skinUrl = data.getBaseURL()
-			              .concat(skinUrl);
+        if (skinUrl == null) {
+            assessmentData = new AssessmentData(data, null);
+            listener.onAssessmentDataLoaded();
+        } else {
+            skinUrl = data.getBaseURL()
+                    .concat(skinUrl);
 
-			skinData.load(skinUrl);
-		}
-	}
+            skinData.load(skinUrl);
+        }
+    }
 
-	private void setWorkMode() {
-		Optional<PlayerWorkMode> workMode = workModeParser.parse(data);
-		if (workMode.isPresent()) {
-			playerWorkModeService.tryToUpdateWorkMode(workMode.get());
-		}
-	}
+    private void setWorkMode() {
+        Optional<PlayerWorkMode> workMode = workModeParser.parse(data);
+        if (workMode.isPresent()) {
+            playerWorkModeService.tryToUpdateWorkMode(workMode.get());
+        }
+    }
 
-	public XmlData getAssessmentXMLData() {
-		return data;
-	}
+    public XmlData getAssessmentXMLData() {
+        return data;
+    }
 
-	public AssessmentData getAssessmentData() {
-		return assessmentData;
-	}
+    public AssessmentData getAssessmentData() {
+        return assessmentData;
+    }
 
-	public boolean isError() {
-		return errorMessage.length() > 0;
-	}
+    public boolean isError() {
+        return errorMessage.length() > 0;
+    }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public boolean hasLibrary() {
-		return libraryLink.hasLink();
-	}
+    public boolean hasLibrary() {
+        return libraryLink.hasLink();
+    }
 
-	public String getLibraryLink() {
-		return libraryLink.getLink();
-	}
+    public String getLibraryLink() {
+        return libraryLink.getLink();
+    }
 
-	public boolean isDefaultData() {
-		return isDefaultData;
-	}
+    public boolean isDefaultData() {
+        return isDefaultData;
+    }
 
-	public String getAssessmentTitle() {
-		String title = "";
-		if (data != null) {
-			try {
-				Node rootNode = data.getDocument()
-				                    .getElementsByTagName("assessmentTest")
-				                    .item(0);
-				title = ((Element) rootNode).getAttribute("title");
-			} catch (Exception e) {
-			}
+    public String getAssessmentTitle() {
+        String title = "";
+        if (data != null) {
+            try {
+                Node rootNode = data.getDocument()
+                        .getElementsByTagName("assessmentTest")
+                        .item(0);
+                title = ((Element) rootNode).getAttribute("title");
+            } catch (Exception e) {
+            }
 
-		}
-		return title;
-	}
+        }
+        return title;
+    }
 
-	public String[] getItemUrls() {
+    public String[] getItemUrls() {
 
-		String[] itemUrls = new String[0];
+        String[] itemUrls = new String[0];
 
-		if (data != null) {
-			try {
-				NodeList nodes = data.getDocument()
-				                     .getElementsByTagName("assessmentItemRef");
-				String[] tmpItemUrls = new String[nodes.getLength()];
-				for (int i = 0; i < nodes.getLength(); i++) {
-					Node itemRefNode = nodes.item(i);
+        if (data != null) {
+            try {
+                NodeList nodes = data.getDocument()
+                        .getElementsByTagName("assessmentItemRef");
+                String[] tmpItemUrls = new String[nodes.getLength()];
+                for (int i = 0; i < nodes.getLength(); i++) {
+                    Node itemRefNode = nodes.item(i);
 
-					String name = "href";
-					if (((Element) itemRefNode).getAttribute(name)
-					                           .startsWith("http")) {
-						tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(name);
-					} else {
-						tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(name);
-					}
-				}
-				itemUrls = tmpItemUrls;
-			} catch (Exception e) {// NOPMD
-			}
-		}
+                    String name = "href";
+                    if (((Element) itemRefNode).getAttribute(name)
+                            .startsWith("http")) {
+                        tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(name);
+                    } else {
+                        tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(name);
+                    }
+                }
+                itemUrls = tmpItemUrls;
+            } catch (Exception e) {// NOPMD
+            }
+        }
 
-		return itemUrls;
-	}
+        return itemUrls;
+    }
 
-	/**
-	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 *
-	 * @param index index wezla
-	 * @return Element lub null gdy element o podanym indeksie nie istnieje
-	 */
-	public Element getItem(int index) {
-		if (data != null && items == null) {
-			try {
-				items = new ArrayList<Element>();
-				NodeList nodes = data.getDocument()
-				                     .getElementsByTagName("assessmentItemRef");
-				for (int x = 0; x < nodes.getLength(); ++x) {
-					Node n = nodes.item(x);
-					if (n.getNodeType() == Node.ELEMENT_NODE) {
-						items.add((Element) n);
-					}
-				}
-			} catch (Exception e) {
+    /**
+     * Zwraca wezel assessmentItemRef o wskazanym id
+     *
+     * @param index index wezla
+     * @return Element lub null gdy element o podanym indeksie nie istnieje
+     */
+    public Element getItem(int index) {
+        if (data != null && items == null) {
+            try {
+                items = new ArrayList<Element>();
+                NodeList nodes = data.getDocument()
+                        .getElementsByTagName("assessmentItemRef");
+                for (int x = 0; x < nodes.getLength(); ++x) {
+                    Node n = nodes.item(x);
+                    if (n.getNodeType() == Node.ELEMENT_NODE) {
+                        items.add((Element) n);
+                    }
+                }
+            } catch (Exception e) {
 
-			}
-		}
-		if (items != null && index < items.size() && index > -1) {
-			return items.get(index);
-		}
-		return null;
-	}
+            }
+        }
+        if (items != null && index < items.size() && index > -1) {
+            return items.get(index);
+        }
+        return null;
+    }
 
-	public int getItemsCount() {
-		if (itemsCount == -1) {
-			itemsCount = getItemUrls().length;
-		}
+    public int getItemsCount() {
+        if (itemsCount == -1) {
+            itemsCount = getItemUrls().length;
+        }
 
-		return itemsCount;
-	}
+        return itemsCount;
+    }
 
-	public List<String> getStyleLinksForUserAgent(String userAgent) {
-		List<String> declarations = new ArrayList<String>();
+    public List<String> getStyleLinksForUserAgent(String userAgent) {
+        List<String> declarations = new ArrayList<String>();
 
-		if (styleDeclaration != null) {
-			declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
-		}
+        if (styleDeclaration != null) {
+            declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
+        }
 
-		declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
+        declarations.addAll(skinData.getStyleLinksForUserAgent(userAgent));
 
-		return declarations;
-	}
+        return declarations;
+    }
 
-	@Override
-	public void onSkinLoad() {
-		assessmentData = new AssessmentData(data, skinData.getSkinData());
-		listener.onAssessmentDataLoaded();
-	}
+    @Override
+    public void onSkinLoad() {
+        assessmentData = new AssessmentData(data, skinData.getSkinData());
+        listener.onAssessmentDataLoaded();
+    }
 
-	@Override
-	public void onSkinLoadError() {
-		assessmentData = new AssessmentData(data, null);
-		listener.onAssessmentDataLoaded();
-	}
+    @Override
+    public void onSkinLoadError() {
+        assessmentData = new AssessmentData(data, null);
+        listener.onAssessmentDataLoaded();
+    }
 
-	private String getSkinUrl(Document document) {
-		String url = null;
+    private String getSkinUrl(Document document) {
+        String url = null;
 
-		try {
-			Node testViewNode = document.getElementsByTagName("testView")
-			                            .item(0);
-			url = testViewNode.getAttributes()
-			                  .getNamedItem("href")
-			                  .getNodeValue();
-		} catch (Exception e) {
-		}
+        try {
+            Node testViewNode = document.getElementsByTagName("testView")
+                    .item(0);
+            url = testViewNode.getAttributes()
+                    .getNamedItem("href")
+                    .getNodeValue();
+        } catch (Exception e) {
+        }
 
-		return url;
-	}
+        return url;
+    }
 
-	private boolean isItemDocument(Document doc) {
-		try {
-			return doc.getDocumentElement()
-			          .getNodeName()
-			          .equals("assessmentItem");
-		} catch (Exception e) {
-		}
-		return true;
-	}
+    private boolean isItemDocument(Document doc) {
+        try {
+            return doc.getDocumentElement()
+                    .getNodeName()
+                    .equals("assessmentItem");
+        } catch (Exception e) {
+        }
+        return true;
+    }
 
 }

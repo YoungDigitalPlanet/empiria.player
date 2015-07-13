@@ -11,40 +11,40 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
 
-	private static ImageFeedbackViewUiBinder uiBinder = GWT.create(ImageFeedbackViewUiBinder.class);
+    private static ImageFeedbackViewUiBinder uiBinder = GWT.create(ImageFeedbackViewUiBinder.class);
 
-	@UiTemplate("ImageFeedbackView.ui.xml")
-	interface ImageFeedbackViewUiBinder extends UiBinder<Widget, ImageFeedbackPresenter> {
-	}
+    @UiTemplate("ImageFeedbackView.ui.xml")
+    interface ImageFeedbackViewUiBinder extends UiBinder<Widget, ImageFeedbackPresenter> {
+    }
 
-	public ImageFeedbackPresenter() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public ImageFeedbackPresenter() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@UiField
-	FlowPanel feedbackImageModule;
+    @UiField
+    FlowPanel feedbackImageModule;
 
-	@UiField
-	Image feedbackImage;
+    @UiField
+    Image feedbackImage;
 
-	@Override
-	public void setUrl(String url) {
-		feedbackImage.setUrl(url);
-	}
+    @Override
+    public void setUrl(String url) {
+        feedbackImage.setUrl(url);
+    }
 
-	@Override
-	public String getUrl() {
-		return feedbackImage.getUrl();
-	}
+    @Override
+    public String getUrl() {
+        return feedbackImage.getUrl();
+    }
 
-	@Override
-	public void show() {
-		this.setVisible(true);
-	}
+    @Override
+    public void show() {
+        this.setVisible(true);
+    }
 
-	@Override
-	public void hide() {
-		this.setVisible(false);
-	}
+    @Override
+    public void hide() {
+        this.setVisible(false);
+    }
 
 }

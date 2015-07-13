@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.feedback.player.SingleFeedbackSou
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 public interface SingleFeedbackSoundPlayerFactory {
-	public SingleFeedbackSoundPlayer getSingleFeedbackSoundPlayer(MediaWrapper<?> mediaWrapper);
+    public SingleFeedbackSoundPlayer getSingleFeedbackSoundPlayer(MediaWrapper<?> mediaWrapper);
 }

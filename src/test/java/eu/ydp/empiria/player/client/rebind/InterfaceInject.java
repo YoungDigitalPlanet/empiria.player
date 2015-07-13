@@ -5,17 +5,17 @@ import com.google.inject.Inject;
 @SuppressWarnings("PMD")
 public class InterfaceInject {
 
-	@Inject
-	InjectInterface inject;
+    @Inject
+    InjectInterface inject;
 
-	public InterfaceInject() {
-	}
+    public InterfaceInject() {
+    }
 
-	public InterfaceInject(String module) {
-	}
+    public InterfaceInject(String module) {
+    }
 
-	public InjectInterface getInject() {
-		return inject;
-	}
+    public InjectInterface getInject() {
+        return inject;
+    }
 
 }

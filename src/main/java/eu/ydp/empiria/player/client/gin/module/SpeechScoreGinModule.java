@@ -6,8 +6,8 @@ import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkViewI
 
 public class SpeechScoreGinModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(SpeechScoreLinkView.class).to(SpeechScoreLinkViewImpl.class);
-	}
+    @Override
+    protected void configure() {
+        bind(SpeechScoreLinkView.class).to(SpeechScoreLinkViewImpl.class);
+    }
 }

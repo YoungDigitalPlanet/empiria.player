@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
 
 public interface AssessmentFooterViewExtension extends ViewExtension {
 
-	public ViewSocket getAssessmentFooterViewSocket();
+    public ViewSocket getAssessmentFooterViewSocket();
 }

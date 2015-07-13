@@ -5,10 +5,10 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface LabellingChildView {
 
-	IsWidget getView();
+    IsWidget getView();
 
-	HasWidgets.ForIsWidget getContainer();
+    HasWidgets.ForIsWidget getContainer();
 
-	void setPosition(int left, int top);
+    void setPosition(int left, int top);
 
 }

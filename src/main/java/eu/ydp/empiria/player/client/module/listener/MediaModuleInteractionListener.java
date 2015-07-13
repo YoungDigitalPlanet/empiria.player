@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteracti
 
 public interface MediaModuleInteractionListener {
 
-	public void onMediaSoundPlay(String url, MediaInteractionSoundEventCallback callback);
+    public void onMediaSoundPlay(String url, MediaInteractionSoundEventCallback callback);
 }

@@ -4,7 +4,7 @@ import com.google.gwt.user.client.Window;
 
 public class URLOpenService {
 
-	public void open(String path) {
-		Window.open(path, "_blank", "");
-	}
+    public void open(String path) {
+        Window.open(path, "_blank", "");
+    }
 }

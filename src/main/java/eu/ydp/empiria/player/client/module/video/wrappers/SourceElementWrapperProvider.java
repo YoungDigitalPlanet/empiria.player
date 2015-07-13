@@ -6,9 +6,9 @@ import com.google.inject.Provider;
 
 public class SourceElementWrapperProvider implements Provider<SourceElementWrapper> {
 
-	@Override
-	public SourceElementWrapper get() {
-		SourceElement sourceElement = Document.get().createSourceElement();
-		return new SourceElementWrapper(sourceElement);
-	}
+    @Override
+    public SourceElementWrapper get() {
+        SourceElement sourceElement = Document.get().createSourceElement();
+        return new SourceElementWrapper(sourceElement);
+    }
 }

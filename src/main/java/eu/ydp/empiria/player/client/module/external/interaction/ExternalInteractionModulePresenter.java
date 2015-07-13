@@ -18,136 +18,136 @@ import eu.ydp.empiria.player.client.module.external.interaction.structure.Extern
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModulePresenter
-		implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalFrameLoadHandler<ExternalInteractionApi> {
+        implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalFrameLoadHandler<ExternalInteractionApi> {
 
-	private final ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view;
-	private final ExternalInteractionEmpiriaApi empiriaApi;
-	private final ExternalStateSaver stateSaver;
-	private final ExternalStateEncoder stateEncoder;
-	private final ExternalPaths externalPaths;
-	private ExternalInteractionApi externalApi;
+    private final ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view;
+    private final ExternalInteractionEmpiriaApi empiriaApi;
+    private final ExternalStateSaver stateSaver;
+    private final ExternalStateEncoder stateEncoder;
+    private final ExternalPaths externalPaths;
+    private ExternalInteractionApi externalApi;
 
-	@Inject
-	public ExternalInteractionModulePresenter(ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view,
-			@ModuleScoped ExternalPaths externalPaths,
-			@ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
-		this.externalPaths = externalPaths;
-		this.view = view;
-		this.empiriaApi = empiriaApi;
-		this.stateSaver = stateSaver;
-		this.stateEncoder = stateEncoder;
-		this.externalApi = new ExternalInteractionApiNullObject();
-	}
+    @Inject
+    public ExternalInteractionModulePresenter(ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view,
+                                              @ModuleScoped ExternalPaths externalPaths,
+                                              @ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
+        this.externalPaths = externalPaths;
+        this.view = view;
+        this.empiriaApi = empiriaApi;
+        this.stateSaver = stateSaver;
+        this.stateEncoder = stateEncoder;
+        this.externalApi = new ExternalInteractionApiNullObject();
+    }
 
-	@Override
-	public void bindView() {
-		String externalModuleFilePath = externalPaths.getExternalEntryPointPath();
-		view.init(empiriaApi, this, externalModuleFilePath);
-	}
+    @Override
+    public void bindView() {
+        String externalModuleFilePath = externalPaths.getExternalEntryPointPath();
+        view.init(empiriaApi, this, externalModuleFilePath);
+    }
 
-	@Override
-	public void reset() {
-		externalApi.reset();
-	}
+    @Override
+    public void reset() {
+        externalApi.reset();
+    }
 
-	@Override
-	public void setModel(ExternalInteractionResponseModel model) {
-	}
+    @Override
+    public void setModel(ExternalInteractionResponseModel model) {
+    }
 
-	@Override
-	public void setModuleSocket(ModuleSocket socket) {
-	}
+    @Override
+    public void setModuleSocket(ModuleSocket socket) {
+    }
 
-	@Override
-	public void setBean(ExternalInteractionModuleBean externalInteractionModuleBean) {
-	}
+    @Override
+    public void setBean(ExternalInteractionModuleBean externalInteractionModuleBean) {
+    }
 
-	@Override
-	public void setLocked(boolean locked) {
-		if (locked) {
-			lock();
-		} else {
-			unlock();
-		}
-	}
+    @Override
+    public void setLocked(boolean locked) {
+        if (locked) {
+            lock();
+        } else {
+            unlock();
+        }
+    }
 
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		switch (mode) {
-		case MARK:
-			markAnswers(type);
-			break;
-		case UNMARK:
-			unmarkAnswers(type);
-			break;
-		}
-	}
+    @Override
+    public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+        switch (mode) {
+            case MARK:
+                markAnswers(type);
+                break;
+            case UNMARK:
+                unmarkAnswers(type);
+                break;
+        }
+    }
 
-	@Override
-	public void showAnswers(ShowAnswersType mode) {
-		switch (mode) {
-		case CORRECT:
-			externalApi.showCorrectAnswers();
-			break;
-		case USER:
-			externalApi.hideCorrectAnswers();
-			break;
-		}
-	}
+    @Override
+    public void showAnswers(ShowAnswersType mode) {
+        switch (mode) {
+            case CORRECT:
+                externalApi.showCorrectAnswers();
+                break;
+            case USER:
+                externalApi.hideCorrectAnswers();
+                break;
+        }
+    }
 
-	@Override
-	public Widget asWidget() {
-		return view.asWidget();
-	}
+    @Override
+    public Widget asWidget() {
+        return view.asWidget();
+    }
 
-	@Override
-	public void onExternalModuleLoaded(ExternalInteractionApi externalObject) {
-		this.externalApi = externalObject;
+    @Override
+    public void onExternalModuleLoaded(ExternalInteractionApi externalObject) {
+        this.externalApi = externalObject;
 
-		Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
-		if (externalState.isPresent()) {
-			externalObject.setStateOnExternal(externalState.get());
-		}
-	}
+        Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
+        if (externalState.isPresent()) {
+            externalObject.setStateOnExternal(externalState.get());
+        }
+    }
 
-	public JSONArray getState() {
-		JavaScriptObject state = externalApi.getStateFromExternal();
-		stateSaver.setExternalState(state);
-		return stateEncoder.encodeState(state);
-	}
+    public JSONArray getState() {
+        JavaScriptObject state = externalApi.getStateFromExternal();
+        stateSaver.setExternalState(state);
+        return stateEncoder.encodeState(state);
+    }
 
-	public void setState(JSONArray stateAndStructure) {
-		JavaScriptObject state = stateEncoder.decodeState(stateAndStructure);
-		stateSaver.setExternalState(state);
-	}
+    public void setState(JSONArray stateAndStructure) {
+        JavaScriptObject state = stateEncoder.decodeState(stateAndStructure);
+        stateSaver.setExternalState(state);
+    }
 
-	private void lock() {
-		externalApi.lock();
-	}
+    private void lock() {
+        externalApi.lock();
+    }
 
-	private void unlock() {
-		externalApi.unlock();
-	}
+    private void unlock() {
+        externalApi.unlock();
+    }
 
-	private void markAnswers(MarkAnswersType type) {
-		switch (type) {
-		case CORRECT:
-			externalApi.markCorrectAnswers();
-			break;
-		case WRONG:
-			externalApi.markWrongAnswers();
-			break;
-		}
-	}
+    private void markAnswers(MarkAnswersType type) {
+        switch (type) {
+            case CORRECT:
+                externalApi.markCorrectAnswers();
+                break;
+            case WRONG:
+                externalApi.markWrongAnswers();
+                break;
+        }
+    }
 
-	private void unmarkAnswers(MarkAnswersType type) {
-		switch (type) {
-		case CORRECT:
-			externalApi.unmarkCorrectAnswers();
-			break;
-		case WRONG:
-			externalApi.unmarkWrongAnswers();
-			break;
-		}
-	}
+    private void unmarkAnswers(MarkAnswersType type) {
+        switch (type) {
+            case CORRECT:
+                externalApi.unmarkCorrectAnswers();
+                break;
+            case WRONG:
+                externalApi.unmarkWrongAnswers();
+                break;
+        }
+    }
 }

@@ -10,21 +10,21 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SimulationModuleViewImpl extends Composite implements SimulationModuleView {
 
-	private static SimulationModuleViewUiBinder uiBinder = GWT.create(SimulationModuleViewUiBinder.class);
+    private static SimulationModuleViewUiBinder uiBinder = GWT.create(SimulationModuleViewUiBinder.class);
 
-	interface SimulationModuleViewUiBinder extends UiBinder<Widget, SimulationModuleViewImpl> {
-	}
+    interface SimulationModuleViewUiBinder extends UiBinder<Widget, SimulationModuleViewImpl> {
+    }
 
-	@UiField
-	protected Panel mainPanel;
+    @UiField
+    protected Panel mainPanel;
 
-	public SimulationModuleViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public SimulationModuleViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public void add(IsWidget child) {
-		mainPanel.add(child);
-	}
+    @Override
+    public void add(IsWidget child) {
+        mainPanel.add(child);
+    }
 
 }

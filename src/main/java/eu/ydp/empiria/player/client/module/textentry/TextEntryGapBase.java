@@ -24,188 +24,188 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 
 public abstract class TextEntryGapBase extends GapBase implements SourcelistClient {
 
-	private static final String SOURCE_LIST_ID = "sourcelistId";
+    private static final String SOURCE_LIST_ID = "sourcelistId";
 
-	@Inject
-	@PageScoped
-	protected SourcelistManager sourcelistManager;
+    @Inject
+    @PageScoped
+    protected SourcelistManager sourcelistManager;
 
-	@Inject
-	protected StyleSocket styleSocket;
+    @Inject
+    protected StyleSocket styleSocket;
 
-	@Inject
-	protected DragContentController dragContentController;
+    @Inject
+    protected DragContentController dragContentController;
 
-	@Inject
-	@PageScoped
-	protected ResponseSocket responseSocket;
+    @Inject
+    @PageScoped
+    protected ResponseSocket responseSocket;
 
-	public void postConstruct() {
-		addHandlersInPresenter();
-	}
+    public void postConstruct() {
+        addHandlersInPresenter();
+    }
 
-	private void addHandlersInPresenter() {
-		getTextEntryPresenter().addPresenterHandler(new TextEntryPresenterHandler());
-		getTextEntryPresenter().addDomHandlerOnObjectDrop(new TextEntryDomHandler());
-	}
+    private void addHandlersInPresenter() {
+        getTextEntryPresenter().addPresenterHandler(new TextEntryPresenterHandler());
+        getTextEntryPresenter().addDomHandlerOnObjectDrop(new TextEntryDomHandler());
+    }
 
-	@Override
-	public void installViews(List<HasWidgets> placeholders) {
-		// implementacja wyżej
-	}
+    @Override
+    public void installViews(List<HasWidgets> placeholders) {
+        // implementacja wyżej
+    }
 
-	@Override
-	protected void setPreviousAnswer() {
-		presenter.setText(getCurrentResponseValue());
-	}
+    @Override
+    protected void setPreviousAnswer() {
+        presenter.setText(getCurrentResponseValue());
+    }
 
-	@Override
-	protected ResponseSocket getResponseSocket() {
-		return responseSocket;
-	}
+    @Override
+    protected ResponseSocket getResponseSocket() {
+        return responseSocket;
+    }
 
-	@Override
-	public void reset() {
-		if (!Strings.isNullOrEmpty(getTextEntryPresenter().getText())) {
-			presenter.setText(StringUtils.EMPTY_STRING);
-			updateResponse(false, true);
-		}
-		sourcelistManager.onUserValueChanged();
-	}
+    @Override
+    public void reset() {
+        if (!Strings.isNullOrEmpty(getTextEntryPresenter().getText())) {
+            presenter.setText(StringUtils.EMPTY_STRING);
+            updateResponse(false, true);
+        }
+        sourcelistManager.onUserValueChanged();
+    }
 
-	@Override
-	public void onStart() {
-		sourcelistManager.registerModule(this);
-		setBindingValues();
-	}
+    @Override
+    public void onStart() {
+        sourcelistManager.registerModule(this);
+        setBindingValues();
+    }
 
-	@Override
-	public String getDragItemId() {
-		return getTextEntryPresenter().getText();
-	}
+    @Override
+    public String getDragItemId() {
+        return getTextEntryPresenter().getText();
+    }
 
-	@Override
-	public void removeDragItem() {
-		presenter.setText("");
-	}
+    @Override
+    public void removeDragItem() {
+        presenter.setText("");
+    }
 
-	@Override
-	public void setDragItem(String itemId) {
-		SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
-		String newText = dragContentController.getTextFromItemAppropriateToType(item);
+    @Override
+    public void setDragItem(String itemId) {
+        SourcelistItemValue item = sourcelistManager.getValue(itemId, getIdentifier());
+        String newText = dragContentController.getTextFromItemAppropriateToType(item);
 
-		presenter.setText(newText);
-		updateResponse(true);
-	}
+        presenter.setText(newText);
+        updateResponse(true);
+    }
 
-	@Override
-	public void lockDropZone() {
-		getTextEntryPresenter().lockDragZone();
-	}
+    @Override
+    public void lockDropZone() {
+        getTextEntryPresenter().lockDragZone();
+    }
 
-	@Override
-	public void unlockDropZone() {
-		getTextEntryPresenter().unlockDragZone();
-	}
+    @Override
+    public void unlockDropZone() {
+        getTextEntryPresenter().unlockDragZone();
+    }
 
-	@Override
-	public void setSize(HasDimensions size) {
-		// intentionally empty - text gap does not fit its size
-	}
+    @Override
+    public void setSize(HasDimensions size) {
+        // intentionally empty - text gap does not fit its size
+    }
 
-	@Override
-	public void lock(boolean lock) {
-		super.lock(lock);
-		if (lock) {
-			sourcelistManager.lockGroup(getIdentifier());
-		} else {
-			sourcelistManager.unlockGroup(getIdentifier());
-			getTextEntryPresenter().unlockDragZone();
-		}
-	}
+    @Override
+    public void lock(boolean lock) {
+        super.lock(lock);
+        if (lock) {
+            sourcelistManager.lockGroup(getIdentifier());
+        } else {
+            sourcelistManager.unlockGroup(getIdentifier());
+            getTextEntryPresenter().unlockDragZone();
+        }
+    }
 
-	@Override
-	protected void setCorrectAnswer() {
-		String correctAnswer = getCorrectAnswer();
-		String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
-		presenter.setText(replaced);
-	}
+    @Override
+    protected void setCorrectAnswer() {
+        String correctAnswer = getCorrectAnswer();
+        String replaced = gapExpressionReplacer.ensureReplacement(correctAnswer);
+        presenter.setText(replaced);
+    }
 
-	@Override
-	protected void updateResponse(boolean userInteract, boolean isReset) {
-		if (showingAnswer) {
-			return;
-		}
+    @Override
+    protected void updateResponse(boolean userInteract, boolean isReset) {
+        if (showingAnswer) {
+            return;
+        }
 
-		if (getResponse() != null) {
-			if (lastValue != null) {
-				getResponse().remove(lastValue);
-			}
+        if (getResponse() != null) {
+            if (lastValue != null) {
+                getResponse().remove(lastValue);
+            }
 
-			lastValue = getTextEntryPresenter().getText();
-			getResponse().add(lastValue);
-			fireStateChanged(userInteract, isReset);
-		}
-	}
+            lastValue = getTextEntryPresenter().getText();
+            getResponse().add(lastValue);
+            fireStateChanged(userInteract, isReset);
+        }
+    }
 
-	protected void initReplacements(Map<String, String> styles) {
-		String charactersSet = getSubstitutionCharactersSetFromStyles(styles);
+    protected void initReplacements(Map<String, String> styles) {
+        String charactersSet = getSubstitutionCharactersSetFromStyles(styles);
 
-		if (charactersSet != null) {
-			gapExpressionReplacer.useCharacters(charactersSet);
-			getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
-		}
-	}
+        if (charactersSet != null) {
+            gapExpressionReplacer.useCharacters(charactersSet);
+            getTextEntryPresenter().makeExpressionReplacements(gapExpressionReplacer.getReplacer());
+        }
+    }
 
-	private String getSubstitutionCharactersSetFromStyles(Map<String, String> styles) {
-		if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)) {
-			return styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS);
-		} else if (styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS)) {
-			return styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
-		} else {
-			return null;
-		}
-	}
+    private String getSubstitutionCharactersSetFromStyles(Map<String, String> styles) {
+        if (styles.containsKey(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS)) {
+            return styles.get(EMPIRIA_TEXTENTRY_GAP_EXPRESSION_REPLACEMENTS);
+        } else if (styles.containsKey(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS)) {
+            return styles.get(EMPIRIA_MATH_GAP_EXPRESSION_REPLACEMENTS);
+        } else {
+            return null;
+        }
+    }
 
-	protected void updateResponse(boolean userInteract) {
-		updateResponse(userInteract, false);
-	}
+    protected void updateResponse(boolean userInteract) {
+        updateResponse(userInteract, false);
+    }
 
-	@Override
-	public String getSourcelistId() {
-		String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
-		return sourceListId;
-	}
+    @Override
+    public String getSourcelistId() {
+        String sourceListId = getElementAttributeValue(SOURCE_LIST_ID);
+        return sourceListId;
+    }
 
-	private TextEntryGapModulePresenterBase getTextEntryPresenter() {
-		return (TextEntryGapModulePresenterBase) presenter;
-	}
+    private TextEntryGapModulePresenterBase getTextEntryPresenter() {
+        return (TextEntryGapModulePresenterBase) presenter;
+    }
 
-	private final class TextEntryDomHandler implements GapDropHandler {
-		@Override
-		public void onDrop(DragDataObject dragDataObject) {
-			String itemID = dragDataObject.getItemId();
-			String sourceModuleId = dragDataObject.getSourceId();
-			String targetModuleId = getIdentifier();
+    private final class TextEntryDomHandler implements GapDropHandler {
+        @Override
+        public void onDrop(DragDataObject dragDataObject) {
+            String itemID = dragDataObject.getItemId();
+            String sourceModuleId = dragDataObject.getSourceId();
+            String targetModuleId = getIdentifier();
 
-			sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
-		}
-	}
+            sourcelistManager.dragEnd(itemID, sourceModuleId, targetModuleId);
+        }
+    }
 
-	private final class TextEntryPresenterHandler implements PresenterHandler {
+    private final class TextEntryPresenterHandler implements PresenterHandler {
 
-		@Override
-		public void onBlur(BlurEvent event) {
-			sourcelistManager.onUserValueChanged();
-			updateResponse(true);
-		}
-	}
+        @Override
+        public void onBlur(BlurEvent event) {
+            sourcelistManager.onUserValueChanged();
+            updateResponse(true);
+        }
+    }
 
-	@Override
-	public void markAnswers(boolean mark) {
-		if (isIgnored()) {
-			return;
-		}
-		super.markAnswers(mark);
-	}
+    @Override
+    public void markAnswers(boolean mark) {
+        if (isIgnored()) {
+            return;
+        }
+        super.markAnswers(mark);
+    }
 }

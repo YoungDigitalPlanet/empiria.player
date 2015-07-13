@@ -5,42 +5,42 @@ import java.util.List;
 
 public class ResponseBeanConverter {
 
-	public Response convert(ResponseBean responseBean) {
-		ResponseBuilder builder = new ResponseBuilder();
-		builder.withCardinality(responseBean.getCardinality());
-		builder.withCheckMode(responseBean.getCheckMode());
-		builder.withEvaluate(responseBean.getEvaluate());
-		builder.withIdentifier(responseBean.getIdentifier());
-		builder.withCompilerCountMode(responseBean.getCountMode());
+    public Response convert(ResponseBean responseBean) {
+        ResponseBuilder builder = new ResponseBuilder();
+        builder.withCardinality(responseBean.getCardinality());
+        builder.withCheckMode(responseBean.getCheckMode());
+        builder.withEvaluate(responseBean.getEvaluate());
+        builder.withIdentifier(responseBean.getIdentifier());
+        builder.withCompilerCountMode(responseBean.getCountMode());
 
-		CorrectAnswers correctAnswers = getCorrectAnswers(responseBean);
-		List<String> groups = getGroups(responseBean);
+        CorrectAnswers correctAnswers = getCorrectAnswers(responseBean);
+        List<String> groups = getGroups(responseBean);
 
-		builder.withCorrectAnswers(correctAnswers);
+        builder.withCorrectAnswers(correctAnswers);
 
-		builder.withGroups(groups);
+        builder.withGroups(groups);
 
-		return builder.build();
-	}
+        return builder.build();
+    }
 
-	private List<String> getGroups(ResponseBean responseBean) {
-		List<String> groups = new ArrayList<String>();
-		for (ValueBean valueBean : responseBean.getCorrectResponse().getValues()) {
+    private List<String> getGroups(ResponseBean responseBean) {
+        List<String> groups = new ArrayList<String>();
+        for (ValueBean valueBean : responseBean.getCorrectResponse().getValues()) {
 
-			if (valueBean.getGroup() != null) {
-				groups.add(valueBean.getGroup());
-			}
-		}
-		return groups;
-	}
+            if (valueBean.getGroup() != null) {
+                groups.add(valueBean.getGroup());
+            }
+        }
+        return groups;
+    }
 
-	private CorrectAnswers getCorrectAnswers(ResponseBean responseBean) {
-		CorrectAnswers correctAnswers = new CorrectAnswers();
+    private CorrectAnswers getCorrectAnswers(ResponseBean responseBean) {
+        CorrectAnswers correctAnswers = new CorrectAnswers();
 
-		for (ValueBean valueBean : responseBean.getCorrectResponse().getValues()) {
+        for (ValueBean valueBean : responseBean.getCorrectResponse().getValues()) {
 
-			correctAnswers.add(new ResponseValue(valueBean.getValue()));
-		}
-		return correctAnswers;
-	}
+            correctAnswers.add(new ResponseValue(valueBean.getValue()));
+        }
+        return correctAnswers;
+    }
 }

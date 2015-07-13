@@ -6,56 +6,56 @@ import com.google.gwt.xml.client.XMLParser;
 
 public class ItemIndexToInfoTagsAppenderGWTTestCase extends GWTTestCase {
 
-	private ItemIndexAppender testObj;
+    private ItemIndexAppender testObj;
 
-	//@formatter:off
-	private final String INPUT = "" +
-			"<rd>" +
-				"<div class=\"emp_content_icon\">" +
-					"<link>" +
-						"<info itemIndex=\"1\" class=\"info_content_title\"/>" +
-					"</link>" +
-					"<link>" +
-						"<info class=\"info_content_title\"/>" +
-					"</link>" +
-				"</div>" +
-			"</rd>";
-	
-	private final String OUTPUT = "" +
-			"<rd>" +
-				"<div class=\"emp_content_icon\">" +
-					"<link>" +
-						"<info itemIndex=\"1\" class=\"info_content_title\"/>" +
-					"</link>" +
-					"<link>" +
-						"<info class=\"info_content_title\" itemIndex=\"2\"/>" +
-					"</link>" +
-				"</div>" +
-			"</rd>";
+    //@formatter:off
+    private final String INPUT = "" +
+            "<rd>" +
+            "<div class=\"emp_content_icon\">" +
+            "<link>" +
+            "<info itemIndex=\"1\" class=\"info_content_title\"/>" +
+            "</link>" +
+            "<link>" +
+            "<info class=\"info_content_title\"/>" +
+            "</link>" +
+            "</div>" +
+            "</rd>";
 
-	private Element cellElement;
-	
-	//@formatter:on
+    private final String OUTPUT = "" +
+            "<rd>" +
+            "<div class=\"emp_content_icon\">" +
+            "<link>" +
+            "<info itemIndex=\"1\" class=\"info_content_title\"/>" +
+            "</link>" +
+            "<link>" +
+            "<info class=\"info_content_title\" itemIndex=\"2\"/>" +
+            "</link>" +
+            "</div>" +
+            "</rd>";
 
-	@Override
-	protected void gwtSetUp() {
-		testObj = new ItemIndexAppender();
-	}
+    private Element cellElement;
 
-	public void testAppendToInfoTags() {
-		// given
-		int ITEM_INDEX = 2;
-		cellElement = XMLParser.parse(INPUT).getDocumentElement();
+    //@formatter:on
 
-		// when
-		testObj.appendToInfoTags(ITEM_INDEX, cellElement);
+    @Override
+    protected void gwtSetUp() {
+        testObj = new ItemIndexAppender();
+    }
 
-		// then
-		assertEquals(cellElement.toString(), OUTPUT);
-	}
+    public void testAppendToInfoTags() {
+        // given
+        int ITEM_INDEX = 2;
+        cellElement = XMLParser.parse(INPUT).getDocumentElement();
 
-	@Override
-	public String getModuleName() {
-		return "eu.ydp.empiria.player.Player";
-	}
+        // when
+        testObj.appendToInfoTags(ITEM_INDEX, cellElement);
+
+        // then
+        assertEquals(cellElement.toString(), OUTPUT);
+    }
+
+    @Override
+    public String getModuleName() {
+        return "eu.ydp.empiria.player.Player";
+    }
 }

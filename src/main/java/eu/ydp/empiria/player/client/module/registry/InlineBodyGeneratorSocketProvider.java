@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 
 public interface InlineBodyGeneratorSocketProvider {
 
-	public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket();
+    public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket();
 }

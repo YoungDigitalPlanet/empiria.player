@@ -2,5 +2,5 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.extern
 
 public interface FullscreenVideoConnectorListener {
 
-	void onFullscreenClosed(String id, double currentTimeMillipercent);
+    void onFullscreenClosed(String id, double currentTimeMillipercent);
 }

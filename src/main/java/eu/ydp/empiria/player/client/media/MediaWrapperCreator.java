@@ -13,26 +13,26 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes
 import java.util.Map;
 
 public class MediaWrapperCreator {
-	@Inject
-	private EventsBus eventsBus;
-	@Inject
-	private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
-	@Inject
-	private MimeSourceProvider mimeSourceProvider;
+    @Inject
+    private EventsBus eventsBus;
+    @Inject
+    private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
+    @Inject
+    private MimeSourceProvider mimeSourceProvider;
 
-	public void createMediaWrapper(String src, CallbackReceiver callbackReceiver) {
-		Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackReceiver));
-	}
+    public void createMediaWrapper(String src, CallbackReceiver callbackReceiver) {
+        Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
+        eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackReceiver));
+    }
 
-	public void createMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
-	}
+    public void createMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
+        eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
+    }
 
-	public void createSimulationMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
-		BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, simulationMediaEventControllerProvider.get());
-		eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
-	}
+    public void createSimulationMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, simulationMediaEventControllerProvider.get());
+        eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
+    }
 }

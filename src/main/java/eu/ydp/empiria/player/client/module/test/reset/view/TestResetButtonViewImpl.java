@@ -14,42 +14,42 @@ import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class TestResetButtonViewImpl extends Composite implements TestResetButtonView {
 
-	private static TestResetButtonViewIUiBinder uiBinder = GWT.create(TestResetButtonViewIUiBinder.class);
+    private static TestResetButtonViewIUiBinder uiBinder = GWT.create(TestResetButtonViewIUiBinder.class);
 
-	@UiTemplate("TestResetButtonView.ui.xml")
-	interface TestResetButtonViewIUiBinder extends UiBinder<Widget, TestResetButtonViewImpl> {
-	}
+    @UiTemplate("TestResetButtonView.ui.xml")
+    interface TestResetButtonViewIUiBinder extends UiBinder<Widget, TestResetButtonViewImpl> {
+    }
 
-	public TestResetButtonViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public TestResetButtonViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@UiField
-	CustomPushButton testResetButton;
+    @UiField
+    CustomPushButton testResetButton;
 
-	@Inject
-	private UserInteractionHandlerFactory userInteractionHandlerFactory;
-	@Inject
-	private StyleNameConstants styleNameConstants;
+    @Inject
+    private UserInteractionHandlerFactory userInteractionHandlerFactory;
+    @Inject
+    private StyleNameConstants styleNameConstants;
 
-	@Override
-	public void addHandler(Command command) {
-		userInteractionHandlerFactory.createUserClickHandler(command)
-									 .apply(this);
-	}
+    @Override
+    public void addHandler(Command command) {
+        userInteractionHandlerFactory.createUserClickHandler(command)
+                .apply(this);
+    }
 
-	@Override
-	public void lock() {
-		addStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
-	}
+    @Override
+    public void lock() {
+        addStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
+    }
 
-	@Override
-	public void unlock() {
-		removeStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
-	}
+    @Override
+    public void unlock() {
+        removeStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
+    }
 
-	@Override
-	public void enablePreviewMode() {
-		addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
-	}
+    @Override
+    public void enablePreviewMode() {
+        addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+    }
 }

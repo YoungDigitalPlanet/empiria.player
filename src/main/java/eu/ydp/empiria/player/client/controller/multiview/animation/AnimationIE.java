@@ -4,9 +4,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class AnimationIE extends AbstractAnimation {
 
-	@Override
-	public void goTo(FlowPanel toAnimate, int xPosition, double duration) {
-		setPositionX(xPosition);
-	}
+    @Override
+    public void goTo(FlowPanel toAnimate, int xPosition, double duration) {
+        setPositionX(xPosition);
+    }
 
 }

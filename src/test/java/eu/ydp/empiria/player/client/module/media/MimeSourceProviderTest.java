@@ -1,39 +1,38 @@
 package eu.ydp.empiria.player.client.module.media;
 
-import static org.fest.assertions.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Map;
-
+import eu.ydp.empiria.player.client.util.MimeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import eu.ydp.empiria.player.client.util.MimeUtil;
+import java.util.Map;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MimeSourceProviderTest {
 
-	@InjectMocks
-	private MimeSourceProvider testObj;
+    @InjectMocks
+    private MimeSourceProvider testObj;
 
-	@Mock
-	private MimeUtil mimeUtil;
+    @Mock
+    private MimeUtil mimeUtil;
 
-	@Test
-	public void shouldGetSourceByExtension() {
-		// given
-		String fileName = "file.mp3";
-		String mimeType = "audio/mp4";
-		when(mimeUtil.getMimeTypeFromExtension(fileName)).thenReturn(mimeType);
+    @Test
+    public void shouldGetSourceByExtension() {
+        // given
+        String fileName = "file.mp3";
+        String mimeType = "audio/mp4";
+        when(mimeUtil.getMimeTypeFromExtension(fileName)).thenReturn(mimeType);
 
-		// when
-		Map<String, String> result = testObj.getSourcesWithTypeByExtension(fileName);
+        // when
+        Map<String, String> result = testObj.getSourcesWithTypeByExtension(fileName);
 
-		// then
-		assertThat(result.keySet()).hasSize(1);
-		assertThat(result.get(fileName)).isEqualTo(mimeType);
-	}
+        // then
+        assertThat(result.keySet()).hasSize(1);
+        assertThat(result.get(fileName)).isEqualTo(mimeType);
+    }
 }

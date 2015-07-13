@@ -3,5 +3,5 @@ package eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touch
 import com.google.gwt.dom.client.NativeEvent;
 
 public interface TouchOnMoveHandler {
-	void onMove(NativeEvent event);
+    void onMove(NativeEvent event);
 }

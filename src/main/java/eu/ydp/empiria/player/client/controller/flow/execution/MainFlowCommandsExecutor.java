@@ -5,15 +5,15 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCom
 
 public class MainFlowCommandsExecutor implements FlowCommandsExecutor {
 
-	protected FlowCommandsListener flowCommandsListener;
+    protected FlowCommandsListener flowCommandsListener;
 
-	public MainFlowCommandsExecutor(FlowCommandsListener fcl) {
-		flowCommandsListener = fcl;
-	}
+    public MainFlowCommandsExecutor(FlowCommandsListener fcl) {
+        flowCommandsListener = fcl;
+    }
 
-	@Override
-	public void executeCommand(IFlowCommand command) {
-		if (command != null)
-			command.execute(flowCommandsListener);
-	}
+    @Override
+    public void executeCommand(IFlowCommand command) {
+        if (command != null)
+            command.execute(flowCommandsListener);
+    }
 }

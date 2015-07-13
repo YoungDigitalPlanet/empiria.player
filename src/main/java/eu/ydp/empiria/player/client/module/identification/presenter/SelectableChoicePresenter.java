@@ -9,85 +9,85 @@ import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceV
 
 public class SelectableChoicePresenter {
 
-	private final String identifier;
-	private final SelectableChoiceView view;
-	private boolean selected;
+    private final String identifier;
+    private final SelectableChoiceView view;
+    private boolean selected;
 
-	@Inject
-	public SelectableChoicePresenter(@Assisted Widget contentWidget, @Assisted String identifier, @UniqueId String coverId,
-			IdentificationModuleFactory moduleFactory) {
-		this.identifier = identifier;
-		this.view = moduleFactory.createSelectableChoiceView(contentWidget);
-		init(coverId);
-	}
+    @Inject
+    public SelectableChoicePresenter(@Assisted Widget contentWidget, @Assisted String identifier, @UniqueId String coverId,
+                                     IdentificationModuleFactory moduleFactory) {
+        this.identifier = identifier;
+        this.view = moduleFactory.createSelectableChoiceView(contentWidget);
+        init(coverId);
+    }
 
-	public void init(String coverId) {
-		setSelected(false);
-		view.setCoverId(coverId);
-	}
-	
-	public boolean isSelected() {
-		return selected;
-	}
+    public void init(String coverId) {
+        setSelected(false);
+        view.setCoverId(coverId);
+    }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-		updatePanelStyleName();
-	}
+    public boolean isSelected() {
+        return selected;
+    }
 
-	public void markAnswers(boolean mark, boolean isChoiceCorrect) {
-		if (mark) {
-			markChoice(isChoiceCorrect);
-		} else {
-			updatePanelStyleName();
-		}
-	}
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        updatePanelStyleName();
+    }
 
-	private void markChoice(boolean isChoiceCorrect) {
-		if (isChoiceCorrect) {
-			markCorrectChoice();
-		} else {
-			markWrongChoice();
-		}
-	}
+    public void markAnswers(boolean mark, boolean isChoiceCorrect) {
+        if (mark) {
+            markChoice(isChoiceCorrect);
+        } else {
+            updatePanelStyleName();
+        }
+    }
 
-	private void markCorrectChoice() {
-		if (selected) {
-			view.markSelectedAnswerCorrect();
-		} else {
-			view.markNotSelectedAnswerWrong();
-		}
-	}
+    private void markChoice(boolean isChoiceCorrect) {
+        if (isChoiceCorrect) {
+            markCorrectChoice();
+        } else {
+            markWrongChoice();
+        }
+    }
 
-	private void markWrongChoice() {
-		if (selected) {
-			view.markSelectedAnswerWrong();
-		} else {
-			view.markNotSelectedAnswerCorrect();
-		}
-	}
+    private void markCorrectChoice() {
+        if (selected) {
+            view.markSelectedAnswerCorrect();
+        } else {
+            view.markNotSelectedAnswerWrong();
+        }
+    }
 
-	private void updatePanelStyleName() {
-		if (selected) {
-			view.markSelectedOption();
-		} else {
-			view.unmarkSelectedOption();
-		}
-	}
+    private void markWrongChoice() {
+        if (selected) {
+            view.markSelectedAnswerWrong();
+        } else {
+            view.markNotSelectedAnswerCorrect();
+        }
+    }
 
-	public String getIdentifier() {
-		return identifier;
-	}
+    private void updatePanelStyleName() {
+        if (selected) {
+            view.markSelectedOption();
+        } else {
+            view.unmarkSelectedOption();
+        }
+    }
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	public void lock() {
-		view.lock();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 
-	public void unlock() {
-		view.unlock();
-	}
+    public void lock() {
+        view.lock();
+    }
+
+    public void unlock() {
+        view.unlock();
+    }
 }

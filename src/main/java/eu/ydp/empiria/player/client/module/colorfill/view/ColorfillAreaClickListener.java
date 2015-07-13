@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
 
 public interface ColorfillAreaClickListener {
 
-	public void onAreaClick(Area area);
+    public void onAreaClick(Area area);
 }

@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.IFlowCom
 
 public interface FlowCommandsExecutor {
 
-	void executeCommand(IFlowCommand command);
+    void executeCommand(IFlowCommand command);
 }

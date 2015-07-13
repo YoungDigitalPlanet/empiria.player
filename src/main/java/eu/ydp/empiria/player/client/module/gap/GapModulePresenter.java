@@ -5,35 +5,35 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 public interface GapModulePresenter {
 
-	public static final String WRONG = "wrong";
+    public static final String WRONG = "wrong";
 
-	public static final String CORRECT = "correct";
+    public static final String CORRECT = "correct";
 
-	public static final String NONE = "none";
+    public static final String NONE = "none";
 
-	void setWidth(double value, Unit unit);
+    void setWidth(double value, Unit unit);
 
-	void setHeight(double value, Unit unit);
+    void setHeight(double value, Unit unit);
 
-	int getOffsetWidth();
+    int getOffsetWidth();
 
-	int getOffsetHeight();
+    int getOffsetHeight();
 
-	void setMaxLength(int length);
+    void setMaxLength(int length);
 
-	void setFontSize(double value, Unit unit);
+    void setFontSize(double value, Unit unit);
 
-	int getFontSize();
+    int getFontSize();
 
-	void setText(String text);
+    void setText(String text);
 
-	HasWidgets getContainer();
+    HasWidgets getContainer();
 
-	void installViewInContainer(HasWidgets container);
+    void installViewInContainer(HasWidgets container);
 
-	void setViewEnabled(boolean enabled);
+    void setViewEnabled(boolean enabled);
 
-	void setMarkMode(String mode);
+    void setMarkMode(String mode);
 
-	void removeMarking();
+    void removeMarking();
 }

@@ -5,9 +5,9 @@ import eu.ydp.empiria.player.client.module.IUniqueModule;
 
 public interface InlineChoiceController extends IInteractionModule {
 
-	public void setShowEmptyOption(boolean seo);
+    public void setShowEmptyOption(boolean seo);
 
-	public void setParentInlineModule(IUniqueModule module);
+    public void setParentInlineModule(IUniqueModule module);
 
-	public IUniqueModule getParentInlineModule();
+    public IUniqueModule getParentInlineModule();
 }

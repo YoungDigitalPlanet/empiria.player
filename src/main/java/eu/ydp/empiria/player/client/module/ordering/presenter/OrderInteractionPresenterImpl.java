@@ -20,116 +20,116 @@ import java.util.List;
 
 public class OrderInteractionPresenterImpl implements OrderInteractionPresenter {
 
-	private final OrderInteractionView interactionView;
-	private final ItemsMarkingController itemsMarkingController;
-	private final OrderingItemsDao orderingItemsDao;
-	private final ItemsResponseOrderController itemsResponseOrderController;
-	private final OrderingResetController orderingResetController;
-	private final OrderingShowingAnswersController showingAnswersController;
-	private final OrderingViewBuilder viewBuilder;
-	private final OrderInteractionModuleModel model;
-	private final DragController dragController;
+    private final OrderInteractionView interactionView;
+    private final ItemsMarkingController itemsMarkingController;
+    private final OrderingItemsDao orderingItemsDao;
+    private final ItemsResponseOrderController itemsResponseOrderController;
+    private final OrderingResetController orderingResetController;
+    private final OrderingShowingAnswersController showingAnswersController;
+    private final OrderingViewBuilder viewBuilder;
+    private final OrderInteractionModuleModel model;
+    private final DragController dragController;
 
-	private ModuleSocket socket;
-	private OrderInteractionBean bean;
+    private ModuleSocket socket;
+    private OrderInteractionBean bean;
 
-	@Inject
-	public OrderInteractionPresenterImpl(ItemsMarkingController itemsMarkingController,
-			@ModuleScoped ItemsResponseOrderController itemsResponseOrderController, OrderingResetController orderingResetController,
-			OrderingShowingAnswersController showingAnswersController, OrderingViewBuilder viewBuilder, @ModuleScoped OrderInteractionView interactionView,
-			@ModuleScoped OrderingItemsDao orderingItemsDao, @ModuleScoped OrderInteractionModuleModel model, @ModuleScoped DragController dragController) {
-		this.viewBuilder = viewBuilder;
-		this.interactionView = interactionView;
-		this.itemsMarkingController = itemsMarkingController;
-		this.orderingItemsDao = orderingItemsDao;
-		this.itemsResponseOrderController = itemsResponseOrderController;
-		this.orderingResetController = orderingResetController;
-		this.showingAnswersController = showingAnswersController;
-		this.dragController = dragController;
-		this.model = model;
-	}
+    @Inject
+    public OrderInteractionPresenterImpl(ItemsMarkingController itemsMarkingController,
+                                         @ModuleScoped ItemsResponseOrderController itemsResponseOrderController, OrderingResetController orderingResetController,
+                                         OrderingShowingAnswersController showingAnswersController, OrderingViewBuilder viewBuilder, @ModuleScoped OrderInteractionView interactionView,
+                                         @ModuleScoped OrderingItemsDao orderingItemsDao, @ModuleScoped OrderInteractionModuleModel model, @ModuleScoped DragController dragController) {
+        this.viewBuilder = viewBuilder;
+        this.interactionView = interactionView;
+        this.itemsMarkingController = itemsMarkingController;
+        this.orderingItemsDao = orderingItemsDao;
+        this.itemsResponseOrderController = itemsResponseOrderController;
+        this.orderingResetController = orderingResetController;
+        this.showingAnswersController = showingAnswersController;
+        this.dragController = dragController;
+        this.model = model;
+    }
 
-	@Override
-	public Widget asWidget() {
-		return interactionView.asWidget();
-	}
+    @Override
+    public Widget asWidget() {
+        return interactionView.asWidget();
+    }
 
-	@Override
-	public void bindView() {
-		InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
-		viewBuilder.buildView(bean, bodyGeneratorSocket);
+    @Override
+    public void bindView() {
+        InlineBodyGeneratorSocket bodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
+        viewBuilder.buildView(bean, bodyGeneratorSocket);
 
-		itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
-		reset();
-	}
+        itemsResponseOrderController.updateResponseWithNewOrder(orderingItemsDao.getItemsOrder());
+        reset();
+    }
 
-	@Override
-	public void reset() {
-		orderingResetController.reset();
-		interactionView.setChildrenOrder(orderingItemsDao.getItemsOrder());
-	}
+    @Override
+    public void reset() {
+        orderingResetController.reset();
+        interactionView.setChildrenOrder(orderingItemsDao.getItemsOrder());
+    }
 
-	@Override
-	public void setModel(OrderInteractionModuleModel model) {
-		// unused method - will be removed in the future
-	}
+    @Override
+    public void setModel(OrderInteractionModuleModel model) {
+        // unused method - will be removed in the future
+    }
 
-	@Override
-	public void setModuleSocket(ModuleSocket socket) {
-		this.socket = socket;
-	}
+    @Override
+    public void setModuleSocket(ModuleSocket socket) {
+        this.socket = socket;
+    }
 
-	@Override
-	public void setBean(OrderInteractionBean bean) {
-		this.bean = bean;
-	}
+    @Override
+    public void setBean(OrderInteractionBean bean) {
+        this.bean = bean;
+    }
 
-	@Override
-	public void setLocked(boolean locked) {
-		disableOrEnableDrag(locked);
-		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
-			orderingItem.setLocked(locked);
-		}
-		updateAllItemsStyles();
-	}
+    @Override
+    public void setLocked(boolean locked) {
+        disableOrEnableDrag(locked);
+        for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
+            orderingItem.setLocked(locked);
+        }
+        updateAllItemsStyles();
+    }
 
-	private void disableOrEnableDrag(boolean disable) {
-		if (disable) {
-			dragController.disableDrag();
-		} else {
-			dragController.enableDrag();
-		}
-	}
+    private void disableOrEnableDrag(boolean disable) {
+        if (disable) {
+            dragController.disableDrag();
+        } else {
+            dragController.enableDrag();
+        }
+    }
 
-	private void updateAllItemsStyles() {
-		for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
-			interactionView.setChildStyles(orderingItem);
-		}
-	}
+    private void updateAllItemsStyles() {
+        for (OrderingItem orderingItem : orderingItemsDao.getItems()) {
+            interactionView.setChildStyles(orderingItem);
+        }
+    }
 
-	@Override
-	public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
-		itemsMarkingController.markOrUnmarkItemsByType(type, mode);
-		updateAllItemsStyles();
-	}
+    @Override
+    public void markAnswers(MarkAnswersType type, MarkAnswersMode mode) {
+        itemsMarkingController.markOrUnmarkItemsByType(type, mode);
+        updateAllItemsStyles();
+    }
 
-	@Override
-	public void showAnswers(ShowAnswersType mode) {
-		List<String> answerOrder = showingAnswersController.findNewAnswersOrderToShow(mode);
-		interactionView.setChildrenOrder(answerOrder);
-	}
+    @Override
+    public void showAnswers(ShowAnswersType mode) {
+        List<String> answerOrder = showingAnswersController.findNewAnswersOrderToShow(mode);
+        interactionView.setChildrenOrder(answerOrder);
+    }
 
-	@Override
-	public void updateItemsOrder(List<String> newItemsOrder) {
-		orderingItemsDao.setItemsOrder(newItemsOrder);
-		updateAllItemsStyles();
-		interactionView.setChildrenOrder(newItemsOrder);
-		itemsResponseOrderController.updateResponseWithNewOrder(newItemsOrder);
-		model.onModelChange();
-	}
+    @Override
+    public void updateItemsOrder(List<String> newItemsOrder) {
+        orderingItemsDao.setItemsOrder(newItemsOrder);
+        updateAllItemsStyles();
+        interactionView.setChildrenOrder(newItemsOrder);
+        itemsResponseOrderController.updateResponseWithNewOrder(newItemsOrder);
+        model.onModelChange();
+    }
 
-	@Override
-	public OrderInteractionOrientation getOrientation() {
-		return bean.getOrientation();
-	}
+    @Override
+    public OrderInteractionOrientation getOrientation() {
+        return bean.getOrientation();
+    }
 }

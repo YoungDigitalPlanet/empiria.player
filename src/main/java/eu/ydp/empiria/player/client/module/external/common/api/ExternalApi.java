@@ -6,13 +6,13 @@ import com.google.gwt.core.client.js.JsType;
 @JsType
 public interface ExternalApi {
 
-	void setStateOnExternal(JavaScriptObject state);
+    void setStateOnExternal(JavaScriptObject state);
 
-	JavaScriptObject getStateFromExternal();
+    JavaScriptObject getStateFromExternal();
 
-	void reset();
+    void reset();
 
-	void lock();
+    void lock();
 
-	void unlock();
+    void unlock();
 }

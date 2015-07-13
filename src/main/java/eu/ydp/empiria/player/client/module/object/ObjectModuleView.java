@@ -10,41 +10,41 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class ObjectModuleView extends Composite {
 
-	private static ObjectModuleViewUiBinder uiBinder = GWT.create(ObjectModuleViewUiBinder.class);
+    private static ObjectModuleViewUiBinder uiBinder = GWT.create(ObjectModuleViewUiBinder.class);
 
-	interface ObjectModuleViewUiBinder extends UiBinder<Widget, ObjectModuleView> {
-	}
+    interface ObjectModuleViewUiBinder extends UiBinder<Widget, ObjectModuleView> {
+    }
 
-	@UiField
-	protected FlowPanel containerPanel;
+    @UiField
+    protected FlowPanel containerPanel;
 
-	@UiField
-	protected FlowPanel contentPanel;
+    @UiField
+    protected FlowPanel contentPanel;
 
-	@UiField
-	protected FlowPanel titlePanel;
+    @UiField
+    protected FlowPanel titlePanel;
 
-	@UiField
-	protected FlowPanel descriptionPanel;
+    @UiField
+    protected FlowPanel descriptionPanel;
 
-	public ObjectModuleView() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public ObjectModuleView() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	public FlowPanel getContainerPanel() {
-		return containerPanel;
-	}
+    public FlowPanel getContainerPanel() {
+        return containerPanel;
+    }
 
-	public FlowPanel getContentPanel() {
-		return contentPanel;
-	}
+    public FlowPanel getContentPanel() {
+        return contentPanel;
+    }
 
-	public FlowPanel getDescriptionPanel() {
-		return descriptionPanel;
-	}
+    public FlowPanel getDescriptionPanel() {
+        return descriptionPanel;
+    }
 
-	public void setTitleWidget(IsWidget w) {
-		titlePanel.clear();
-		titlePanel.add(w);
-	}
+    public void setTitleWidget(IsWidget w) {
+        titlePanel.clear();
+        titlePanel.add(w);
+    }
 }

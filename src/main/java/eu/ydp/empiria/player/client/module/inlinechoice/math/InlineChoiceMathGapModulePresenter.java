@@ -18,69 +18,69 @@ import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 
 public class InlineChoiceMathGapModulePresenter extends GapModulePesenterBase {
 
-	@UiTemplate("InlineChoiceMathGap.ui.xml")
-	interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceMathGapModulePresenter> {
-	}
+    @UiTemplate("InlineChoiceMathGap.ui.xml")
+    interface InlineChoiceGapModuleUiBinder extends UiBinder<Widget, InlineChoiceMathGapModulePresenter> {
+    }
 
-	;
+    ;
 
-	private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
+    private final InlineChoiceGapModuleUiBinder uiBinder = GWT.create(InlineChoiceGapModuleUiBinder.class);
 
-	@UiField
-	protected FlowPanel mainPanel;
-	@UiField(provided = true)
-	protected ExListBox listBox;
+    @UiField
+    protected FlowPanel mainPanel;
+    @UiField(provided = true)
+    protected ExListBox listBox;
 
-	@Inject
-	public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker, Provider<ExListBox> exListBoxProvider) {
-		listBox = exListBoxProvider.get();
-		uiBinder.createAndBindUi(this);
-		swypeBlocker.addBlockOnOpenCloseHandler(listBox);
-	}
+    @Inject
+    public InlineChoiceMathGapModulePresenter(SwypeBlocker swypeBlocker, Provider<ExListBox> exListBoxProvider) {
+        listBox = exListBoxProvider.get();
+        uiBinder.createAndBindUi(this);
+        swypeBlocker.addBlockOnOpenCloseHandler(listBox);
+    }
 
-	@Override
-	public HasWidgets getContainer() {
-		return mainPanel;
-	}
+    @Override
+    public HasWidgets getContainer() {
+        return mainPanel;
+    }
 
-	@Override
-	public void installViewInContainer(HasWidgets container) {
-		container.add(mainPanel);
-	}
+    @Override
+    public void installViewInContainer(HasWidgets container) {
+        container.add(mainPanel);
+    }
 
-	@Override
-	public void setViewEnabled(boolean enabled) {
-		listBox.setEnabled(enabled);
-	}
+    @Override
+    public void setViewEnabled(boolean enabled) {
+        listBox.setEnabled(enabled);
+    }
 
-	@Override
-	public void setMarkMode(String mode) {
-		mainPanel.addStyleDependentName(mode);
-	}
+    @Override
+    public void setMarkMode(String mode) {
+        mainPanel.addStyleDependentName(mode);
+    }
 
-	@Override
-	public void removeMarking() {
-		mainPanel.removeStyleDependentName(GapModulePresenter.NONE);
-		mainPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
-		mainPanel.removeStyleDependentName(GapModulePresenter.WRONG);
-	}
+    @Override
+    public void removeMarking() {
+        mainPanel.removeStyleDependentName(GapModulePresenter.NONE);
+        mainPanel.removeStyleDependentName(GapModulePresenter.CORRECT);
+        mainPanel.removeStyleDependentName(GapModulePresenter.WRONG);
+    }
 
-	public IsExListBox getListBox() {
-		return listBox;
-	}
+    public IsExListBox getListBox() {
+        return listBox;
+    }
 
-	@Override
-	public UIObject getComponent() {
-		return listBox;
-	}
+    @Override
+    public UIObject getComponent() {
+        return listBox;
+    }
 
-	@Override
-	public void setText(String text) {
-	}
+    @Override
+    public void setText(String text) {
+    }
 
-	@Override
-	// czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to
-	// można to wywalić -> GapBase.setMaxlengthBinding()
-	public void setMaxLength(int length) {
-	}
+    @Override
+    // czy inlinechoice moze miec ustawione maxlength w stylach? jeśli nie to
+    // można to wywalić -> GapBase.setMaxlengthBinding()
+    public void setMaxLength(int length) {
+    }
 }

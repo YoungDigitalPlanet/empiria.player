@@ -5,5 +5,5 @@ import com.google.gwt.core.client.js.JsType;
 
 @JsType
 public interface ExternalCallback {
-	void callback(JavaScriptObject jso);
+    void callback(JavaScriptObject jso);
 }

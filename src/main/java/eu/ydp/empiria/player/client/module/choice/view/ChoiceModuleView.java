@@ -6,10 +6,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface ChoiceModuleView extends IsWidget {
 
-	void clear();
+    void clear();
 
-	void addChoice(Widget widget);
+    void addChoice(Widget widget);
 
-	Element getPrompt();
+    Element getPrompt();
 
 }

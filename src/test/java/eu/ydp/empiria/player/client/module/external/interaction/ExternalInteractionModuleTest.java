@@ -12,28 +12,28 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalInteractionModuleTest {
 
-	@InjectMocks
-	private ExternalInteractionModule testObj;
-	@Mock
-	private ExternalInteractionResponseModel externalInteractionResponseModel;
-	@Mock
-	private ExternalPaths externalPaths;
+    @InjectMocks
+    private ExternalInteractionModule testObj;
+    @Mock
+    private ExternalInteractionResponseModel externalInteractionResponseModel;
+    @Mock
+    private ExternalPaths externalPaths;
 
-	@Test
-	public void shouldRegisterAsExternalFolderNameProvider() {
-		// when
-		testObj.initalizeModule();
+    @Test
+    public void shouldRegisterAsExternalFolderNameProvider() {
+        // when
+        testObj.initalizeModule();
 
-		// then
-		verify(externalPaths).setExternalFolderNameProvider(testObj);
-	}
+        // then
+        verify(externalPaths).setExternalFolderNameProvider(testObj);
+    }
 
-	@Test
-	public void shouldRegisterAsResponseModelChange() {
-		// when
-		testObj.initalizeModule();
+    @Test
+    public void shouldRegisterAsResponseModelChange() {
+        // when
+        testObj.initalizeModule();
 
-		// then
-		verify(externalInteractionResponseModel).setResponseModelChange(testObj);
-	}
+        // then
+        verify(externalInteractionResponseModel).setResponseModelChange(testObj);
+    }
 }

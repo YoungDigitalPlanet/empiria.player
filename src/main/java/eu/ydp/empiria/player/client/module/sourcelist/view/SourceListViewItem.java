@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -25,115 +24,122 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class SourceListViewItem extends Composite implements LockUnlockDragDrop {
 
-	private static SourceListViewItemUiBinder uiBinder = GWT.create(SourceListViewItemUiBinder.class);
+    private static SourceListViewItemUiBinder uiBinder = GWT.create(SourceListViewItemUiBinder.class);
 
-	interface SourceListViewItemUiBinder extends UiBinder<Widget, SourceListViewItem> {
-	}
+    interface SourceListViewItemUiBinder extends UiBinder<Widget, SourceListViewItem> {
+    }
 
-	protected @UiField
-	FlowPanel item;
-	private @Inject
-	StyleNameConstants styleNames;
-	private @Inject
-	DragDropHelper dragDropHelper;
-	private @Inject
-	TouchController touchController;
-	private @Inject
-	Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
-	private @Inject
-	UserInteractionHandlerFactory interactionHandlerFactory;
-	private @Inject
-	ScormScrollPanel scormScrollPanel;
-	private SourceListViewImpl sourceListView;
-	private DraggableObject<SourceListViewItemWidget> draggable;
-	private SourceListViewItemWidget container;
+    protected
+    @UiField
+    FlowPanel item;
+    private
+    @Inject
+    StyleNameConstants styleNames;
+    private
+    @Inject
+    DragDropHelper dragDropHelper;
+    private
+    @Inject
+    TouchController touchController;
+    private
+    @Inject
+    Provider<SourceListViewItemWidget> sourceListViewItemWidgetProvider;
+    private
+    @Inject
+    UserInteractionHandlerFactory interactionHandlerFactory;
+    private
+    @Inject
+    ScormScrollPanel scormScrollPanel;
+    private SourceListViewImpl sourceListView;
+    private DraggableObject<SourceListViewItemWidget> draggable;
+    private SourceListViewItemWidget container;
 
-	private SourcelistItemValue itemContent;
+    private SourcelistItemValue itemContent;
 
-	private final Command disableTextMark = new DisableDefaultBehaviorCommand();
+    private final Command disableTextMark = new DisableDefaultBehaviorCommand();
 
-	public void setSourceListView(SourceListViewImpl sourceListView) {
-		this.sourceListView = sourceListView;
-	}
+    public void setSourceListView(SourceListViewImpl sourceListView) {
+        this.sourceListView = sourceListView;
+    }
 
-	public void setDisableDrag(boolean disableDrag) {
-		draggable.setDisableDrag(disableDrag);
-	}
+    public void setDisableDrag(boolean disableDrag) {
+        draggable.setDisableDrag(disableDrag);
+    }
 
-	public void show() {
-		container.show();
-	}
+    public void show() {
+        container.show();
+    }
 
-	public void hide() {
-		container.hide();
-	}
+    public void hide() {
+        container.hide();
+    }
 
-	public void createAndBindUi(SourcelistItemValue itemValue) {
-		this.itemContent = itemValue;
-		initWidget(uiBinder.createAndBindUi(this));
-		container = getDraggableWidget(itemValue);
-		draggable = dragDropHelper.enableDragForWidget(container);
-		item.add(draggable.getDraggableWidget());
-		addDragHandlers();
-	}
+    public void createAndBindUi(SourcelistItemValue itemValue) {
+        this.itemContent = itemValue;
+        initWidget(uiBinder.createAndBindUi(this));
+        container = getDraggableWidget(itemValue);
+        draggable = dragDropHelper.enableDragForWidget(container);
+        item.add(draggable.getDraggableWidget());
+        addDragHandlers();
+    }
 
-	private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
-		SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
-		itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
-		EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(disableTextMark);
-		userOverHandler.apply(itemWidget);
-		return itemWidget;
-	}
+    private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
+        SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
+        itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+        EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(disableTextMark);
+        userOverHandler.apply(itemWidget);
+        return itemWidget;
+    }
 
-	private void addDragHandlers() {
-		addDragStartHandler();
-		addDragEndHandler();
-	}
+    private void addDragHandlers() {
+        addDragStartHandler();
+        addDragEndHandler();
+    }
 
-	private void addDragStartHandler() {
-		draggable.addDragStartHandler(new DragStartHandler() {
-			@Override
-			public void onDragStart(DragStartEvent event) {
-				scormScrollPanel.lockScroll();
-				touchController.setTouchReservation(true);
-				getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
-				event.getDataTransfer().setDragImage(getElement(), 0, 0);
-				sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this, event);
-			}
-		});
-	}
+    private void addDragStartHandler() {
+        draggable.addDragStartHandler(new DragStartHandler() {
+            @Override
+            public void onDragStart(DragStartEvent event) {
+                scormScrollPanel.lockScroll();
+                touchController.setTouchReservation(true);
+                getElement().addClassName(styleNames.QP_DRAGGED_DRAG());
+                event.getDataTransfer().setDragImage(getElement(), 0, 0);
+                sourceListView.onDragEvent(DragDropEventTypes.DRAG_START, SourceListViewItem.this, event);
+            }
+        });
+    }
 
-	private void addDragEndHandler() {
-		draggable.addDragEndHandler(new DragEndHandler() {
-			@Override
-			public void onDragEnd(DragEndEvent event) {
-				scormScrollPanel.unlockScroll();
-				getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
-				sourceListView.onDragEvent(DragDropEventTypes.DRAG_END, SourceListViewItem.this, event);
-			}
-		});
-	}
+    private void addDragEndHandler() {
+        draggable.addDragEndHandler(new DragEndHandler() {
+            @Override
+            public void onDragEnd(DragEndEvent event) {
+                scormScrollPanel.unlockScroll();
+                getElement().removeClassName(styleNames.QP_DRAGGED_DRAG());
+                sourceListView.onDragEvent(DragDropEventTypes.DRAG_END, SourceListViewItem.this, event);
+            }
+        });
+    }
 
-	public SourcelistItemValue getItemContent() {
-		return itemContent;
-	}
+    public SourcelistItemValue getItemContent() {
+        return itemContent;
+    }
 
-	@Override
-	public void lockForDragDrop() {
-		draggable.setDisableDrag(true);
+    @Override
+    public void lockForDragDrop() {
+        draggable.setDisableDrag(true);
 
-	}
+    }
 
-	@Override
-	public void unlockForDragDrop() {
-		draggable.setDisableDrag(false);
-	}
+    @Override
+    public void unlockForDragDrop() {
+        draggable.setDisableDrag(false);
+    }
 
-	public int getWidth() {
-		return container.getWidth();
-	}
+    public int getWidth() {
+        return container.getWidth();
+    }
 
-	public int getHeight() {
-		return container.getHeight();
-	}
+    public int getHeight() {
+        return container.getHeight();
+    }
 }

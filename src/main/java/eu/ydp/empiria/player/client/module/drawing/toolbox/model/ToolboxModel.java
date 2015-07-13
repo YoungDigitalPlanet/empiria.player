@@ -5,10 +5,10 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public interface ToolboxModel {
 
-	int getLineThickness();
+    int getLineThickness();
 
-	ColorModel getColorModel();
+    ColorModel getColorModel();
 
-	ToolType getToolType();
+    ToolType getToolType();
 
 }

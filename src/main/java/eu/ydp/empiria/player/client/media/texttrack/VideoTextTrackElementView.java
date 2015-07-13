@@ -8,20 +8,20 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class VideoTextTrackElementView extends Composite implements VideoTextTrackElementPresenter {
-	private static VideoTextTrackElementViewUiBinder uiBinder = GWT.create(VideoTextTrackElementViewUiBinder.class);
+    private static VideoTextTrackElementViewUiBinder uiBinder = GWT.create(VideoTextTrackElementViewUiBinder.class);
 
-	interface VideoTextTrackElementViewUiBinder extends UiBinder<Widget, VideoTextTrackElementView> {
-	}
+    interface VideoTextTrackElementViewUiBinder extends UiBinder<Widget, VideoTextTrackElementView> {
+    }
 
-	@UiField
-	protected FlowPanel text;
+    @UiField
+    protected FlowPanel text;
 
-	public VideoTextTrackElementView() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public VideoTextTrackElementView() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public void setInnerText(String text) {
-		this.text.getElement().setInnerText(text);
-	}
+    @Override
+    public void setInnerText(String text) {
+        this.text.getElement().setInnerText(text);
+    }
 }

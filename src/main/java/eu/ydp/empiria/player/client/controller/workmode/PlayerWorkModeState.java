@@ -7,20 +7,20 @@ import eu.ydp.empiria.player.client.module.IStateful;
 
 public class PlayerWorkModeState implements IStateful {
 
-	@Inject
-	private PlayerWorkModeService playerWorkModeService;
-	@Inject
-	private JSONStateSerializer jsonStateSerializer;
+    @Inject
+    private PlayerWorkModeService playerWorkModeService;
+    @Inject
+    private JSONStateSerializer jsonStateSerializer;
 
-	@Override
-	public JSONArray getState() {
-		PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
-		return jsonStateSerializer.createWithString(currentWorkMode.toString());
-	}
+    @Override
+    public JSONArray getState() {
+        PlayerWorkMode currentWorkMode = playerWorkModeService.getCurrentWorkMode();
+        return jsonStateSerializer.createWithString(currentWorkMode.toString());
+    }
 
-	@Override
-	public void setState(JSONArray array) {
-		String state = jsonStateSerializer.extractString(array);
-		playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.valueOf(state));
-	}
+    @Override
+    public void setState(JSONArray array) {
+        String state = jsonStateSerializer.extractString(array);
+        playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.valueOf(state));
+    }
 }

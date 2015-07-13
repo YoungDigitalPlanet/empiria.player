@@ -7,45 +7,45 @@ import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayer
 
 public class PicturePlayerPresenter {
 
-	private PicturePlayerView view;
-	private PicturePlayerFullscreenController fullscreenController;
-	private PicturePlayerBean bean;
+    private PicturePlayerView view;
+    private PicturePlayerFullscreenController fullscreenController;
+    private PicturePlayerBean bean;
 
-	private boolean template = false;
+    private boolean template = false;
 
-	@Inject
-	public PicturePlayerPresenter(PicturePlayerView view, PicturePlayerFullscreenController fullscreenController) {
-		this.view = view;
-		this.fullscreenController = fullscreenController;
-	}
+    @Inject
+    public PicturePlayerPresenter(PicturePlayerView view, PicturePlayerFullscreenController fullscreenController) {
+        this.view = view;
+        this.fullscreenController = fullscreenController;
+    }
 
-	public void init(PicturePlayerBean bean) {
-		this.bean = bean;
+    public void init(PicturePlayerBean bean) {
+        this.bean = bean;
 
-		view.setPresenter(this);
-		view.setImage(bean.getTitle(), bean.getSrc());
-		initFullScreenMediaButton(bean);
-	}
+        view.setPresenter(this);
+        view.setImage(bean.getTitle(), bean.getSrc());
+        initFullScreenMediaButton(bean);
+    }
 
-	private void initFullScreenMediaButton(PicturePlayerBean bean) {
-		if (isFullscreenSupported(bean)) {
-			view.addFullscreenButton();
-		}
-	}
+    private void initFullScreenMediaButton(PicturePlayerBean bean) {
+        if (isFullscreenSupported(bean)) {
+            view.addFullscreenButton();
+        }
+    }
 
-	private boolean isFullscreenSupported(PicturePlayerBean bean) {
-		return bean.hasFullscreen() && !template;
-	}
+    private boolean isFullscreenSupported(PicturePlayerBean bean) {
+        return bean.hasFullscreen() && !template;
+    }
 
-	public void openFullscreen() {
-		fullscreenController.openFullscreen(bean);
-	}
+    public void openFullscreen() {
+        fullscreenController.openFullscreen(bean);
+    }
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 
-	public void setTemplate(boolean template) {
-		this.template = template;
-	}
+    public void setTemplate(boolean template) {
+        this.template = template;
+    }
 }

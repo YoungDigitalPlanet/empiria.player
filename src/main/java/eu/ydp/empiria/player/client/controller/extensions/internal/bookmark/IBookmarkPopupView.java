@@ -4,13 +4,13 @@ import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public interface IBookmarkPopupView {
 
-	void setPresenter(IBookmarkPopupPresenter presenter);
+    void setPresenter(IBookmarkPopupPresenter presenter);
 
-	void init();
+    void init();
 
-	void show(Rectangle area);
+    void show(Rectangle area);
 
-	void setBookmarkTitle(String title);
+    void setBookmarkTitle(String title);
 
-	String getBookmarkTitle();
+    String getBookmarkTitle();
 }

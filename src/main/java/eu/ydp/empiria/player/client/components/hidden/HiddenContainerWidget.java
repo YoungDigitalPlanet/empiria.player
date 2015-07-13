@@ -10,20 +10,20 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class HiddenContainerWidget extends Composite {
 
-	private static HiddenContainerWidgetUiBinder uiBinder = GWT.create(HiddenContainerWidgetUiBinder.class);
+    private static HiddenContainerWidgetUiBinder uiBinder = GWT.create(HiddenContainerWidgetUiBinder.class);
 
-	interface HiddenContainerWidgetUiBinder extends UiBinder<Widget, HiddenContainerWidget> {
-	}
+    interface HiddenContainerWidgetUiBinder extends UiBinder<Widget, HiddenContainerWidget> {
+    }
 
-	@UiField
-	FlowPanel container;
+    @UiField
+    FlowPanel container;
 
-	public HiddenContainerWidget() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public HiddenContainerWidget() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	public void addWidgetToContainer(IsWidget widget) {
-		container.add(widget);
-	}
+    public void addWidgetToContainer(IsWidget widget) {
+        container.add(widget);
+    }
 
 }

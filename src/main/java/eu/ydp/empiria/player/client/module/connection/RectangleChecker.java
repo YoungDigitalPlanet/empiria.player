@@ -4,24 +4,24 @@ import eu.ydp.empiria.player.client.util.position.Point;
 
 public class RectangleChecker {
 
-	private final static int ACCEPTABLE_ERROR_LEVEL = 15;
+    private final static int ACCEPTABLE_ERROR_LEVEL = 15;
 
-	public boolean isPointInLineSegmentRectangle(LineSegment lineSegment, Point point) {
+    public boolean isPointInLineSegmentRectangle(LineSegment lineSegment, Point point) {
 
-		Point pointStart = lineSegment.getPointStart();
-		Point pointEnd = lineSegment.getPointEnd();
-		if (isValueBetweenTwoNumbers(pointStart.getX(), pointEnd.getX(), point.getX())
-				&& isValueBetweenTwoNumbers(pointStart.getY(), pointEnd.getY(), point.getY())) {
-			return true;
-		}
+        Point pointStart = lineSegment.getPointStart();
+        Point pointEnd = lineSegment.getPointEnd();
+        if (isValueBetweenTwoNumbers(pointStart.getX(), pointEnd.getX(), point.getX())
+                && isValueBetweenTwoNumbers(pointStart.getY(), pointEnd.getY(), point.getY())) {
+            return true;
+        }
 
-		return false;
+        return false;
 
-	}
+    }
 
-	private boolean isValueBetweenTwoNumbers(int firstNumber, int secondNumber, int testedValue) {
-		return ((firstNumber - ACCEPTABLE_ERROR_LEVEL <= testedValue && testedValue <= secondNumber + ACCEPTABLE_ERROR_LEVEL) || (secondNumber
-				- ACCEPTABLE_ERROR_LEVEL <= testedValue && testedValue <= firstNumber + ACCEPTABLE_ERROR_LEVEL));
+    private boolean isValueBetweenTwoNumbers(int firstNumber, int secondNumber, int testedValue) {
+        return ((firstNumber - ACCEPTABLE_ERROR_LEVEL <= testedValue && testedValue <= secondNumber + ACCEPTABLE_ERROR_LEVEL) || (secondNumber
+                - ACCEPTABLE_ERROR_LEVEL <= testedValue && testedValue <= firstNumber + ACCEPTABLE_ERROR_LEVEL));
 
-	}
+    }
 }

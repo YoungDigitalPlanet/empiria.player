@@ -5,16 +5,16 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 public interface IPageSwitchWidget {
 
-	public HandlerRegistration addChangeHandler(ChangeHandler handler);
+    public HandlerRegistration addChangeHandler(ChangeHandler handler);
 
-	public void setItemsCount(Integer itemsCount);
+    public void setItemsCount(Integer itemsCount);
 
-	public Integer getCurrentIndex();
+    public Integer getCurrentIndex();
 
-	public void setCurrentIndex(Integer value);
+    public void setCurrentIndex(Integer value);
 
-	public void enable();
+    public void enable();
 
-	public void disable();
+    public void disable();
 
 }

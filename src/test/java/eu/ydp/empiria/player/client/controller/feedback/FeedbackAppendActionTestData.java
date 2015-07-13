@@ -1,103 +1,109 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
-import com.google.common.collect.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.IModule;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 class FeedbackAppendActionTestData {
 
-	private final Map<Integer, FeedbackActionData> actions = Maps.newHashMap();
+    private final Map<Integer, FeedbackActionData> actions = Maps.newHashMap();
 
-	void addShowUrlAction(int position, IModule module, String url, ActionType type) {
-		actions.put(position, new FeedbackActionData(createUrlAction(url, type), module, ShowUrlAction.class));
-	}
+    void addShowUrlAction(int position, IModule module, String url, ActionType type) {
+        actions.put(position, new FeedbackActionData(createUrlAction(url, type), module, ShowUrlAction.class));
+    }
 
-	void addShowTextAction(int position, IModule module, XMLContent text) {
-		actions.put(position, new FeedbackActionData(createTextAction(text), module, ShowTextAction.class));
-	}
+    void addShowTextAction(int position, IModule module, XMLContent text) {
+        actions.put(position, new FeedbackActionData(createTextAction(text), module, ShowTextAction.class));
+    }
 
-	List<FeedbackAction> getModuleActions(IModule module) {
-		List<FeedbackAction> moduleActions = Lists.newArrayList();
+    List<FeedbackAction> getModuleActions(IModule module) {
+        List<FeedbackAction> moduleActions = Lists.newArrayList();
 
-		for (FeedbackActionData actionData : actions.values()) {
-			if (actionData.getModule() == module) {
-				moduleActions.add(actionData.getAction());
-			}
-		}
+        for (FeedbackActionData actionData : actions.values()) {
+            if (actionData.getModule() == module) {
+                moduleActions.add(actionData.getAction());
+            }
+        }
 
-		return moduleActions;
-	}
+        return moduleActions;
+    }
 
-	int getActionsSize() {
-		return actions.values().size();
-	}
+    int getActionsSize() {
+        return actions.values().size();
+    }
 
-	FeedbackAction getActionAtIndex(int index) {
-		FeedbackAction action = null;
+    FeedbackAction getActionAtIndex(int index) {
+        FeedbackAction action = null;
 
-		try {
-			action = getActionDataAtIndex(index).getAction();
-		} catch (Exception exception) {
-			Logger.getAnonymousLogger().info(exception.getMessage());
-		}
+        try {
+            action = getActionDataAtIndex(index).getAction();
+        } catch (Exception exception) {
+            Logger.getAnonymousLogger().info(exception.getMessage());
+        }
 
-		return action;
-	}
+        return action;
+    }
 
-	FeedbackActionData getActionDataAtIndex(int index) {
-		FeedbackActionData actionData = null;
+    FeedbackActionData getActionDataAtIndex(int index) {
+        FeedbackActionData actionData = null;
 
-		try {
-			actionData = actions.get(index);
-		} catch (Exception exception) {
-			Logger.getAnonymousLogger().info(exception.getMessage());
-		}
+        try {
+            actionData = actions.get(index);
+        } catch (Exception exception) {
+            Logger.getAnonymousLogger().info(exception.getMessage());
+        }
 
-		return actionData;
-	}
+        return actionData;
+    }
 
-	private ShowUrlAction createUrlAction(String url, ActionType type) {
-		ShowUrlAction action = new ShowUrlAction();
+    private ShowUrlAction createUrlAction(String url, ActionType type) {
+        ShowUrlAction action = new ShowUrlAction();
 
-		action.setHref(url);
-		action.setType(type.getName());
-		return action;
-	}
+        action.setHref(url);
+        action.setType(type.getName());
+        return action;
+    }
 
-	private ShowTextAction createTextAction(XMLContent text) {
-		ShowTextAction action = new ShowTextAction();
+    private ShowTextAction createTextAction(XMLContent text) {
+        ShowTextAction action = new ShowTextAction();
 
-		action.setContent(text);
-		return action;
-	}
+        action.setContent(text);
+        return action;
+    }
 
-	static class FeedbackActionData {
+    static class FeedbackActionData {
 
-		private final IModule module;
+        private final IModule module;
 
-		private final FeedbackAction action;
+        private final FeedbackAction action;
 
-		private final Class<? extends FeedbackAction> clazz;
+        private final Class<? extends FeedbackAction> clazz;
 
-		public FeedbackActionData(FeedbackAction action, IModule module, Class<? extends FeedbackAction> clazz) {
-			this.action = action;
-			this.module = module;
-			this.clazz = clazz;
-		}
+        public FeedbackActionData(FeedbackAction action, IModule module, Class<? extends FeedbackAction> clazz) {
+            this.action = action;
+            this.module = module;
+            this.clazz = clazz;
+        }
 
-		public IModule getModule() {
-			return module;
-		}
+        public IModule getModule() {
+            return module;
+        }
 
-		public FeedbackAction getAction() {
-			return action;
-		}
+        public FeedbackAction getAction() {
+            return action;
+        }
 
-		public Class<? extends FeedbackAction> getActionClass() {
-			return clazz;
-		}
-	}
+        public Class<? extends FeedbackAction> getActionClass() {
+            return clazz;
+        }
+    }
 }

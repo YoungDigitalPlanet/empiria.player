@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 
 public interface FlowDataSocketUserExtension {
 
-	void setFlowDataSupplier(FlowDataSupplier supplier);
+    void setFlowDataSupplier(FlowDataSupplier supplier);
 }

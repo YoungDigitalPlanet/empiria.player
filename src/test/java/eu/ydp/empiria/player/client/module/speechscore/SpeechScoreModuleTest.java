@@ -14,21 +14,21 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class SpeechScoreModuleTest {
 
-	@InjectMocks
-	private SpeechScoreModule testObj;
+    @InjectMocks
+    private SpeechScoreModule testObj;
 
-	@Mock
-	private SpeechScorePresenter presenter;
+    @Mock
+    private SpeechScorePresenter presenter;
 
-	@Test
-	public void shouldBindPresenterOnInit() {
-		// given
-		Element element = mock(Element.class);
+    @Test
+    public void shouldBindPresenterOnInit() {
+        // given
+        Element element = mock(Element.class);
 
-		// when
-		testObj.initModule(element);
+        // when
+        testObj.initModule(element);
 
-		// then
-		verify(presenter).init(element);
-	}
+        // then
+        verify(presenter).init(element);
+    }
 }

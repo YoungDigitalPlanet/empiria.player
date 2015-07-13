@@ -5,14 +5,14 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 
 public class DragContentController {
 
-	public String getTextFromItemAppropriateToType(SourcelistItemValue item) {
-		SourcelistItemType itemType = item.getType();
+    public String getTextFromItemAppropriateToType(SourcelistItemValue item) {
+        SourcelistItemType itemType = item.getType();
 
-		if (itemType == SourcelistItemType.IMAGE) {
-			return item.getItemId();
-		} else {
-			return item.getContent();
-		}
-	}
+        if (itemType == SourcelistItemType.IMAGE) {
+            return item.getItemId();
+        } else {
+            return item.getContent();
+        }
+    }
 
 }

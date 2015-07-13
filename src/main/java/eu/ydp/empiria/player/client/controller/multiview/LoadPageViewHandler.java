@@ -4,18 +4,18 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 
 class LoadPageViewHandler implements PlayerEventHandler {
-	private IMultiPageController multiPageController;
+    private IMultiPageController multiPageController;
 
-	public LoadPageViewHandler(IMultiPageController multiPageController) {
-		this.multiPageController = multiPageController;
-	}
+    public LoadPageViewHandler(IMultiPageController multiPageController) {
+        this.multiPageController = multiPageController;
+    }
 
-	@Override
-	public void onPlayerEvent(PlayerEvent event) {
-		int pageNumber = 0;
-		if (event.getValue() != null) {
-			pageNumber = (Integer) event.getValue();
-		}
-		multiPageController.setVisiblePage(pageNumber);
-	}
+    @Override
+    public void onPlayerEvent(PlayerEvent event) {
+        int pageNumber = 0;
+        if (event.getValue() != null) {
+            pageNumber = (Integer) event.getValue();
+        }
+        multiPageController.setVisiblePage(pageNumber);
+    }
 }
