@@ -39,6 +39,8 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
     private Provider<ExplorableImgContent> explorableImgContentProvider;
     @Inject
     private StyleSocket styleSocket;
+    @Inject
+    private Provider<LabelledImgContent> labelledImgContentProvider;
 
     protected ImgModuleView view;
     private String imageSource;
@@ -58,7 +60,7 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
         ImgContent content;
         imageSource = element.getAttribute("src");
         if (element.getElementsByTagName("label").getLength() > 0) {
-            content = new LabelledImgContent();
+            content = labelledImgContentProvider.get();
         } else {
             Map<String, String> styles = styleSocket.getStyles(element);
             if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {

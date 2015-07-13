@@ -37,6 +37,8 @@ public class ImgTemplateParser extends AbstractTemplateParser {
     private Provider<ExplorableImgContent> explorableImgContentProvider;
     @Inject
     private StyleSocket styleSocket;
+    @Inject
+    private Provider<LabelledImgContent> labelledImgContentProvider;
 
     @Inject
     public ImgTemplateParser(@Assisted Element baseElement, @Assisted ModuleSocket moduleSocket) {
@@ -144,7 +146,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
     }
 
     protected ImgContent createLabelledImgContent() {
-        return new LabelledImgContent();
+        return labelledImgContentProvider.get();
     }
 
     protected ImgContent createDefaultImgContent() {
