@@ -42,6 +42,7 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
+import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
@@ -91,8 +92,6 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
-import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView;
-import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenViewImpl;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -216,6 +215,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
         bind(SessionDataManager.class).in(Singleton.class);
         bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
+        bind(FlowCommandsListener.class).to(MainFlowProcessor.class);
         bind(MainFlowProcessor.class).in(Singleton.class);
         bind(SessionTimeUpdater.class).in(Singleton.class);
         bind(YJsJsonConverter.class).in(Singleton.class);
