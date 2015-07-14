@@ -27,6 +27,7 @@ import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.gin.factory.PlayerFactory;
 import eu.ydp.empiria.player.client.util.events.external.ExternalCallback;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
@@ -137,7 +138,8 @@ public class PlayerEntryPoint implements EntryPoint {
 
     private static void doLoad(final String url) {
         if (player == null) {
-            player = new Player(node_id, jsObject);
+            PlayerFactory playerFactory = PlayerGinjectorFactory.getPlayerGinjector().getPlayerFactory();
+            player = playerFactory.createPlayer(node_id, jsObject);
         }
         for (Alternative<String, JavaScriptObject> extAlt : extensionsToLoad) {
             if (extAlt.hasMain()) {
@@ -164,7 +166,8 @@ public class PlayerEntryPoint implements EntryPoint {
                     Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
                     itemXmlDatas[i] = new XmlData(itemDoc, decodeXmlDataBaseURL(itemDatasArray.get(i)));
                 }
-                player = new Player(node_id, jsObject);
+                PlayerFactory playerFactory = PlayerGinjectorFactory.getPlayerGinjector().getPlayerFactory();
+                player = playerFactory.createPlayer(node_id, jsObject);
                 player.load(assessmentXmlData, itemXmlDatas);
             }
 

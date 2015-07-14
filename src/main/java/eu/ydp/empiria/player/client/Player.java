@@ -25,11 +25,11 @@ package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
-import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.version.Version;
 import eu.ydp.empiria.player.client.view.ViewEngine;
@@ -46,29 +46,17 @@ public class Player {
      */
     public DeliveryEngine deliveryEngine;
 
-    /**
-     * View engine maintains the view tasks
-     */
-    private final ViewEngine viewEngine;
-
-    private IPlayerContainersAccessor accessor;
-
-    private final JavaScriptObject jsObject;
+    private final IPlayerContainersAccessor accessor;
 
     {
         logVersion();
     }
 
-    /**
-     * constructor
-     *
-     * @param id
-     * @param jsObject
-     */
-    public Player(String id, JavaScriptObject jsObject) {
-        this.jsObject = jsObject;
-        PlayerGinjector injector = PlayerGinjectorFactory.getPlayerGinjector();
-        viewEngine = injector.getViewEngine();
+    @Inject
+    public Player(@Assisted String id, @Assisted JavaScriptObject jsObject, ViewEngine viewEngine, DeliveryEngine deliveryEngine,
+                  IPlayerContainersAccessor accessor) {
+        this.accessor = accessor;
+        this.deliveryEngine = deliveryEngine;
         try {
             RootPanel.get(id);
         } catch (Exception e) {
@@ -76,7 +64,7 @@ public class Player {
         RootPanel root = RootPanel.get(id);
         viewEngine.mountView(root);
         getAccessor().setPlayerContainer(root);
-        deliveryEngine = injector.getDeliveryEngine();
+
         deliveryEngine.init(jsObject);
     }
 
@@ -96,23 +84,8 @@ public class Player {
         deliveryEngine.load(assessmentData, itemsData);
     }
 
-    /**
-     * @return js object representing this player
-     */
-    public JavaScriptObject getJavaScriptObject() {
-        return jsObject;
-    }
-
     public void setFlowOptions(FlowOptions o) {
         deliveryEngine.setFlowOptions(o);
-    }
-
-    public void setDisplayOptions(DisplayOptions o) {
-        deliveryEngine.setDisplayOptions(o);
-    }
-
-    public String getEngineMode() {
-        return deliveryEngine.getEngineMode();
     }
 
     private void logVersion() {
@@ -128,9 +101,6 @@ public class Player {
     }-*/;
 
     private IPlayerContainersAccessor getAccessor() {
-        if (accessor == null) {
-            accessor = PlayerGinjectorFactory.getPlayerGinjector().getPlayerContainersAccessor();
-        }
         return accessor;
     }
 }
