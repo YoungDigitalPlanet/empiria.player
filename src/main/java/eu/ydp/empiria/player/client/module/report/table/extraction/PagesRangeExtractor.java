@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.module.report.table.extraction;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
@@ -17,7 +19,8 @@ public class PagesRangeExtractor {
     private final DataSourceDataSupplier dataSourceDataSupplier;
     private final StyleSocket styleSocket;
 
-    public PagesRangeExtractor(StyleSocket styleSocket, DataSourceDataSupplier dataSourceDataSupplier) {
+    @Inject
+    public PagesRangeExtractor(@Assisted DataSourceDataSupplier dataSourceDataSupplier, StyleSocket styleSocket) {
         this.styleSocket = styleSocket;
         this.dataSourceDataSupplier = dataSourceDataSupplier;
     }

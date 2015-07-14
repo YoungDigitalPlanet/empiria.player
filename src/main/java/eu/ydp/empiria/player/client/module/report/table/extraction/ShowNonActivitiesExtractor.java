@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.report.table.extraction;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ public class ShowNonActivitiesExtractor {
 
     private final StyleSocket styleSocket;
 
+    @Inject
     public ShowNonActivitiesExtractor(StyleSocket styleSocket) {
         this.styleSocket = styleSocket;
     }
