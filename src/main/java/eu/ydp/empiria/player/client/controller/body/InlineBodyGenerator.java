@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -28,13 +27,13 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
     @Inject
     public InlineBodyGenerator(@Assisted ModulesRegistrySocket mrs, @Assisted ModuleSocket moduleSocket, @Assisted DisplayContentOptions options,
-                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood) {
+                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood, StyleNameConstants styleNames) {
         this.modulesRegistrySocket = mrs;
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.interactionEventsListener = interactionEventsListener;
         this.parenthood = parenthood;
-        this.styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+        this.styleNames = styleNames;
     }
 
     @Override
