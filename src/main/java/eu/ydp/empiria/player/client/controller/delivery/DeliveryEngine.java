@@ -4,7 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.*;
@@ -59,16 +59,16 @@ import java.util.List;
 public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEventsListener, DeliveryEngineSocket, PageEventHandler, PlayerEventHandler {
 
     Integer initialItemIndex;
-
     private final DataSourceManager dataManager;
+
     private final PlayerViewSocket playerViewSocket;
     private final StyleSocket styleSocket;
     private final ModuleHandlerManager moduleHandlerManager;
     private final SessionDataManager sessionDataManager;
     private final EventsBus eventsBus;
     private final ModulesRegistry modulesRegistry;
-
     private final StyleLinkManager styleManager;
+
     private ExtensionsManager extensionsManager;
     private final FlowManager flowManager;
     private final DeliveryEventsHub deliveryEventsHub;
@@ -80,6 +80,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
     private final UserAgentUtil userAgentUtil;
     private final PlayerWorkModeState playerWorkModeState;
     private final FlowRequestFactory flowRequestFactory;
+    private final Provider<ExtensionsManager> extensionsManagerProvider;
     private ExtensionsProvider extensionsProvider;
 
     private JavaScriptObject playerJsObject;
@@ -93,7 +94,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
                           ModulesRegistry modulesRegistry, TutorService tutorService, BonusService bonusService, FlowManager flowManager,
                           ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
                           AssessmentFactory assessmentFactory, PlayerWorkModeState playerWorkModeState,
-                          FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider) {
+                          FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider,
+                          Provider<ExtensionsManager> extensionsManagerProvider) {
         this.playerViewSocket = playerViewSocket;
         this.dataManager = dataManager;
         this.sessionDataManager = sessionDataManager;
@@ -114,6 +116,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         this.extensionsProvider = extensionsProvider;
         dataManager.setDataLoaderEventListener(this);
         this.styleSocket = styleSocket;
+        this.extensionsManagerProvider = extensionsManagerProvider;
 
         eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
         eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
@@ -122,7 +125,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
     public void init(JavaScriptObject playerJsObject) {
         this.playerJsObject = playerJsObject;
-        extensionsManager = PlayerGinjectorFactory.getPlayerGinjector().getExtensionsManager();
+        extensionsManager = extensionsManagerProvider.get();
         flowManager.addCommandProcessor(new DefaultFlowRequestProcessor(flowManager.getFlowCommandsExecutor()));
 
         assessmentController = assessmentFactory.createAssessmentController(
