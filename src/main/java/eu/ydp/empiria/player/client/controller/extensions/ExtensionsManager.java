@@ -17,15 +17,19 @@ import java.util.List;
 
 public class ExtensionsManager implements IStateful {
 
-    public List<Extension> extensions;
+    private List<Extension> extensions;
+
+    private final Provider<ExternalMediaProcessor> externalMediaProcessor;
+    private final Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
+    private final Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider;
 
     @Inject
-    private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
-    @Inject
-    private Provider<ExternalMediaProcessor> externalMediaProcessor;
-
-    public ExtensionsManager() {
-        extensions = new ArrayList<Extension>();
+    public ExtensionsManager(Provider<ExternalMediaProcessor> externalMediaProcessor, Provider<DefaultMediaProcessorExtension> defaultMediaProcessor,
+                             Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider) {
+        this.externalMediaProcessor = externalMediaProcessor;
+        this.defaultMediaProcessor = defaultMediaProcessor;
+        this.jsStyleSocketUserExtensionProvider = jsStyleSocketUserExtensionProvider;
+        extensions = new ArrayList<>();
     }
 
     public void init() {
@@ -49,7 +53,7 @@ public class ExtensionsManager implements IStateful {
                     currExt = new JsDeliveryEventsListenerExtension();
                     break;
                 case EXTENSION_SOCKET_USER_STYLE_CLIENT:
-                    currExt = new JsStyleSocketUserExtension();
+                    currExt = jsStyleSocketUserExtensionProvider.get();
                     break;
                 case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
                     currExt = new JsSessionDataSocketUserExtension();
@@ -102,7 +106,7 @@ public class ExtensionsManager implements IStateful {
 
     public List<Extension> addExtension(JavaScriptObject extensionJsObject) {
         String extType = getFieldType(extensionJsObject);
-        List<Extension> currExtensions = new ArrayList<Extension>();
+        List<Extension> currExtensions = new ArrayList<>();
         if (extType != null) {
             String[] extTypes = extType.split(",");
 
