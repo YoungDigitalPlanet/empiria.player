@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.gin.factory.ModulesInstalatorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -32,11 +33,13 @@ public class AssessmentBody implements WidgetWorkflowListener {
     private List<IModule> modules;
     private final PlayerWorkModeService playerWorkModeService;
     private final Provider<AssessmentBodyModule> assessmentBodyModuleProvider;
+    private final ModulesInstalatorFactory modulesInstalatorFactory;
 
     @Inject
     public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
                           @Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-                          PlayerWorkModeService playerWorkModeService, ParenthoodManager parenthood, Provider<AssessmentBodyModule> assessmentBodyModuleProvider) {
+                          PlayerWorkModeService playerWorkModeService, ParenthoodManager parenthood, Provider<AssessmentBodyModule> assessmentBodyModuleProvider,
+                          ModulesInstalatorFactory modulesInstalatorFactory) {
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.modulesRegistrySocket = modulesRegistrySocket;
@@ -45,11 +48,12 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
         this.parenthood = parenthood;
         this.assessmentBodyModuleProvider = assessmentBodyModuleProvider;
+        this.modulesInstalatorFactory = modulesInstalatorFactory;
     }
 
     public Widget init(Element assessmentBodyElement) {
 
-        ModulesInstalator instalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator instalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
         BodyGenerator generator = new BodyGenerator(instalator, options);
 
         AssessmentBodyModule bodyModule = assessmentBodyModuleProvider.get();
