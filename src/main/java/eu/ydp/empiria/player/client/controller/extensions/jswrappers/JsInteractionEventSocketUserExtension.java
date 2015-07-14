@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEvent;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -14,9 +14,14 @@ import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 
 public class JsInteractionEventSocketUserExtension extends AbstractJsExtension implements InteractionEventSocketUserExtension {
-    private final EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+    private final EventsBus eventsBus;
     protected JavaScriptObject interactionSocketJs;
     protected InteractionEventsListener interactionEventsListener;
+
+    @Inject
+    public JsInteractionEventSocketUserExtension(EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
+    }
 
     @Override
     public ExtensionType getType() {

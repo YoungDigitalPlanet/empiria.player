@@ -22,13 +22,17 @@ public class ExtensionsManager implements IStateful {
     private final Provider<ExternalMediaProcessor> externalMediaProcessor;
     private final Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
     private final Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider;
+    private final Provider<JsMediaProcessorExtension> jsMediaProcessorExtensionProvider;
+    private final Provider<JsInteractionEventSocketUserExtension> jsInteractionEventSocketUserExtensionProvider;
 
     @Inject
     public ExtensionsManager(Provider<ExternalMediaProcessor> externalMediaProcessor, Provider<DefaultMediaProcessorExtension> defaultMediaProcessor,
-                             Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider) {
+                             Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider, Provider<JsMediaProcessorExtension> jsMediaProcessorExtensionProvider, Provider<JsInteractionEventSocketUserExtension> jsInteractionEventSocketUserExtensionProvider) {
         this.externalMediaProcessor = externalMediaProcessor;
         this.defaultMediaProcessor = defaultMediaProcessor;
         this.jsStyleSocketUserExtensionProvider = jsStyleSocketUserExtensionProvider;
+        this.jsMediaProcessorExtensionProvider = jsMediaProcessorExtensionProvider;
+        this.jsInteractionEventSocketUserExtensionProvider = jsInteractionEventSocketUserExtensionProvider;
         extensions = new ArrayList<>();
     }
 
@@ -47,7 +51,7 @@ public class ExtensionsManager implements IStateful {
                     currExt = new JsFlowRequestProcessorExtension();
                     break;
                 case EXTENSION_PROCESSOR_MEDIA:
-                    currExt = new JsMediaProcessorExtension();
+                    currExt = jsMediaProcessorExtensionProvider.get();
                     break;
                 case EXTENSION_LISTENER_DELIVERY_EVENTS:
                     currExt = new JsDeliveryEventsListenerExtension();
@@ -74,7 +78,7 @@ public class ExtensionsManager implements IStateful {
                     currExt = new JsPageInterferenceSocketUserExtension();
                     break;
                 case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
-                    currExt = new JsInteractionEventSocketUserExtension();
+                    currExt = jsInteractionEventSocketUserExtensionProvider.get();
                     break;
                 case EXTENSION_VIEW_ASSESSMENT_HEADER:
                     currExt = new JsAssessmentHeaderViewExtension();
