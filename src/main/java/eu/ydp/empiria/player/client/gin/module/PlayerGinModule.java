@@ -281,6 +281,7 @@ public class PlayerGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(FeedbackModuleFactory.class));
+        install(new GinFactoryModuleBuilder().build(InlineBodyGeneratorFactory.class));
     }
 
     @Provides
