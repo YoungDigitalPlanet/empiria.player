@@ -37,6 +37,7 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
+import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
@@ -80,6 +81,7 @@ public class Assessment {
      */
     private InteractionEventsListener interactionEventsListener;
     private final AssessmentFactory assessmentFactory;
+    private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
     /**
      * C'tor
@@ -88,9 +90,10 @@ public class Assessment {
      */
     @Inject
     public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-                      @Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory) {
+                      @Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
 
         this.assessmentFactory = assessmentFactory;
+        this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
         this.xmlData = data.getData();
 
         this.modulesRegistrySocket = modulesRegistrySocket;
@@ -171,7 +174,7 @@ public class Assessment {
         @Override
         public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
             if (inlineBodyGenerator == null) {
-                inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
+                inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
             }
             return inlineBodyGenerator;
         }
