@@ -7,10 +7,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 public interface HasDragHandlers {
 
-	public HandlerRegistration addDragEndHandler(DragEndHandler handler);
+    public HandlerRegistration addDragEndHandler(DragEndHandler handler);
 
-	public HandlerRegistration addDragStartHandler(DragStartHandler handler);
+    public HandlerRegistration addDragStartHandler(DragStartHandler handler);
 
-	public HandlerRegistration addDropHandler(DropHandler handler);
+    public HandlerRegistration addDropHandler(DropHandler handler);
 
 }

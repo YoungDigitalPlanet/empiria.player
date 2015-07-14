@@ -15,22 +15,23 @@ import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInte
 
 public class ExternalInteractionViewImpl extends Composite implements ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> {
 
-	private static ExternalInteractionViewUiBinder uiBinder = GWT.create(ExternalInteractionViewUiBinder.class);
+    private static ExternalInteractionViewUiBinder uiBinder = GWT.create(ExternalInteractionViewUiBinder.class);
 
-	@UiTemplate("ExternalInteractionView.ui.xml") interface ExternalInteractionViewUiBinder extends UiBinder<Widget, ExternalInteractionViewImpl> {
-	}
+    @UiTemplate("ExternalInteractionView.ui.xml")
+    interface ExternalInteractionViewUiBinder extends UiBinder<Widget, ExternalInteractionViewImpl> {
+    }
 
-	@UiField
-	ExternalFrame<ExternalInteractionApi> frame;
+    @UiField
+    ExternalFrame<ExternalInteractionApi> frame;
 
-	@Inject
-	public ExternalInteractionViewImpl() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    @Inject
+    public ExternalInteractionViewImpl() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public void init(ExternalInteractionEmpiriaApi api, ExternalFrameLoadHandler<ExternalInteractionApi> onLoadHandler, String url) {
-		frame.init(api, onLoadHandler);
-		frame.setUrl(url);
-	}
+    @Override
+    public void init(ExternalInteractionEmpiriaApi api, ExternalFrameLoadHandler<ExternalInteractionApi> onLoadHandler, String url) {
+        frame.init(api, onLoadHandler);
+        frame.setUrl(url);
+    }
 }

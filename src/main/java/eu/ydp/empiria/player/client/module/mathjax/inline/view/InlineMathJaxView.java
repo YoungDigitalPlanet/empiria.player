@@ -9,20 +9,20 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
 
 public class InlineMathJaxView extends Composite implements MathJaxView {
-	private static MathJaxUiBinder uiBinder = GWT.create(MathJaxUiBinder.class);
+    private static MathJaxUiBinder uiBinder = GWT.create(MathJaxUiBinder.class);
 
-	interface MathJaxUiBinder extends UiBinder<Widget, InlineMathJaxView> {
-	}
+    interface MathJaxUiBinder extends UiBinder<Widget, InlineMathJaxView> {
+    }
 
-	@UiField
-	InlineHTML mathContainer;
+    @UiField
+    InlineHTML mathContainer;
 
-	public InlineMathJaxView() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public InlineMathJaxView() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public void setMmlScript(String script) {
-		mathContainer.setHTML(script);
-	}
+    @Override
+    public void setMmlScript(String script) {
+        mathContainer.setHTML(script);
+    }
 }

@@ -8,13 +8,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class MouseEventPanel extends FlowPanel implements HasMouseUpHandlers {
 
-	public MouseEventPanel() {
-		super();
-	}
+    public MouseEventPanel() {
+        super();
+    }
 
-	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return addDomHandler(handler, MouseUpEvent.getType());
-	}
+    @Override
+    public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+        return addDomHandler(handler, MouseUpEvent.getType());
+    }
 
 }

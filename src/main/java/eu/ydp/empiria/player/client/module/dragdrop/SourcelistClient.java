@@ -5,17 +5,17 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 public interface SourcelistClient extends IUniqueModule {
 
-	String getDragItemId();
+    String getDragItemId();
 
-	void setDragItem(String itemId);
+    void setDragItem(String itemId);
 
-	void removeDragItem();
+    void removeDragItem();
 
-	void lockDropZone();
+    void lockDropZone();
 
-	void unlockDropZone();
+    void unlockDropZone();
 
-	void setSize(HasDimensions size);
+    void setSize(HasDimensions size);
 
-	String getSourcelistId();
+    String getSourcelistId();
 }

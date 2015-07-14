@@ -16,43 +16,43 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalPathsTest {
 
-	@InjectMocks
-	private ExternalPaths testObj;
-	@Mock
-	private EmpiriaPaths empiriaPaths;
-	@Mock
-	private ExternalFolderNameProvider externalFolderNameProvider;
+    @InjectMocks
+    private ExternalPaths testObj;
+    @Mock
+    private EmpiriaPaths empiriaPaths;
+    @Mock
+    private ExternalFolderNameProvider externalFolderNameProvider;
 
-	@Before
-	public void init() {
-		when(externalFolderNameProvider.getExternalFolderName()).thenReturn("src");
-		testObj.setExternalFolderNameProvider(externalFolderNameProvider);
-	}
+    @Before
+    public void init() {
+        when(externalFolderNameProvider.getExternalFolderName()).thenReturn("src");
+        testObj.setExternalFolderNameProvider(externalFolderNameProvider);
+    }
 
-	@Test
-	public void shouldReturnPathToFileInExternalModuleFolder() {
-		// given
-		String fileName = "file";
-		String expectedPath = "media/src/file";
-		when(empiriaPaths.getMediaFilePath("src/file")).thenReturn(expectedPath);
+    @Test
+    public void shouldReturnPathToFileInExternalModuleFolder() {
+        // given
+        String fileName = "file";
+        String expectedPath = "media/src/file";
+        when(empiriaPaths.getMediaFilePath("src/file")).thenReturn(expectedPath);
 
-		// when
-		String pathToFile = testObj.getExternalFilePath(fileName);
+        // when
+        String pathToFile = testObj.getExternalFilePath(fileName);
 
-		// then
-		assertThat(pathToFile).isEqualTo(expectedPath);
-	}
+        // then
+        assertThat(pathToFile).isEqualTo(expectedPath);
+    }
 
-	@Test
-	public void shouldReturnPathToEntryPoint() {
-		// given
-		String expectedPath = "media/src/index.html";
-		when(empiriaPaths.getMediaFilePath("src/index.html")).thenReturn(expectedPath);
+    @Test
+    public void shouldReturnPathToEntryPoint() {
+        // given
+        String expectedPath = "media/src/index.html";
+        when(empiriaPaths.getMediaFilePath("src/index.html")).thenReturn(expectedPath);
 
-		// when
-		String pathToEntryPoint = testObj.getExternalEntryPointPath();
+        // when
+        String pathToEntryPoint = testObj.getExternalEntryPointPath();
 
-		// then
-		assertThat(pathToEntryPoint).isEqualTo(expectedPath);
-	}
+        // then
+        assertThat(pathToEntryPoint).isEqualTo(expectedPath);
+    }
 }

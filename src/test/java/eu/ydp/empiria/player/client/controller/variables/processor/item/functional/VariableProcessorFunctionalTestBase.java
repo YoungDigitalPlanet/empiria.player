@@ -1,159 +1,167 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import com.google.gwt.dev.util.collect.HashMap;
-import com.google.gwt.thirdparty.guava.common.collect.*;
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.inject.*;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.controller.variables.processor.*;
+import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
+import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.*;
-import eu.ydp.empiria.player.client.controller.variables.processor.results.model.*;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFactory;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
+import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import java.util.*;
-import java.util.logging.Logger;
 import org.junit.Before;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class VariableProcessorFunctionalTestBase {
 
-	private static final Logger LOGGER = Logger.getLogger(VariableProcessorFunctionalTestBase.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(VariableProcessorFunctionalTestBase.class.getName());
 
-	protected VariablesProcessingInitializingWrapper defaultVariableProcessor;
-	protected AnswerEvaluationSupplier answerEvaluationProvider;
-	protected ProcessingMode processingMode;
+    protected VariablesProcessingInitializingWrapper defaultVariableProcessor;
+    protected AnswerEvaluationSupplier answerEvaluationProvider;
+    protected ProcessingMode processingMode;
 
-	protected Injector injector;
+    protected Injector injector;
 
-	@Before
-	public void setUp() {
-		this.injector = Guice.createInjector(new AbstractModule() {
-			@Override
-			protected void configure() {
-				bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
-				bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).to(AnswerEvaluationSupplier.class).in(Singleton.class);
-				bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
-				bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).to(ModulesProcessingResults.class).in(Singleton.class);
-				bind(StyleSocket.class).toInstance(mock(StyleSocket.class));
-				install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
-			}
-		});
+    @Before
+    public void setUp() {
+        this.injector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).to(ModulesVariablesProcessor.class).in(Singleton.class);
+                bind(AnswerEvaluationSupplier.class).annotatedWith(PageScoped.class).to(AnswerEvaluationSupplier.class).in(Singleton.class);
+                bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).to(GroupedAnswersManager.class).in(Singleton.class);
+                bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).to(ModulesProcessingResults.class).in(Singleton.class);
+                bind(StyleSocket.class).toInstance(mock(StyleSocket.class));
+                install(new FactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
+            }
+        });
 
-		defaultVariableProcessor = injector.getInstance(VariablesProcessingInitializingWrapper.class);
+        defaultVariableProcessor = injector.getInstance(VariablesProcessingInitializingWrapper.class);
 
-		answerEvaluationProvider = injector.getInstance(Key.get(AnswerEvaluationSupplier.class, PageScoped.class));
+        answerEvaluationProvider = injector.getInstance(Key.get(AnswerEvaluationSupplier.class, PageScoped.class));
 
-		processingMode = ProcessingMode.USER_INTERACT;
-	}
+        processingMode = ProcessingMode.USER_INTERACT;
+    }
 
-	protected void resetLastChangeRelatedVariables(Map<String, Outcome> outcomes) {
-		for (String outcomeId : outcomes.keySet()) {
-			Outcome outcome = outcomes.get(outcomeId);
-			if (outcomeId.contains(VariableName.LASTMISTAKEN.toString())) {
-				outcome.values = Lists.newArrayList(LastMistaken.NONE.toString());
-			} else if (outcomeId.contains(VariableName.LASTCHANGE.toString())) {
-				outcome.values = Lists.newArrayList();
-			}
-		}
-	}
+    protected void resetLastChangeRelatedVariables(Map<String, Outcome> outcomes) {
+        for (String outcomeId : outcomes.keySet()) {
+            Outcome outcome = outcomes.get(outcomeId);
+            if (outcomeId.contains(VariableName.LASTMISTAKEN.toString())) {
+                outcome.values = Lists.newArrayList(LastMistaken.NONE.toString());
+            } else if (outcomeId.contains(VariableName.LASTCHANGE.toString())) {
+                outcome.values = Lists.newArrayList();
+            }
+        }
+    }
 
-	protected void assertOutcomesMapsAreEqual(Map<String, Outcome> expectedOutcomes, Map<String, Outcome> actualOutcomes) {
-		assertEquals(expectedOutcomes.size(), actualOutcomes.size());
+    protected void assertOutcomesMapsAreEqual(Map<String, Outcome> expectedOutcomes, Map<String, Outcome> actualOutcomes) {
+        assertEquals(expectedOutcomes.size(), actualOutcomes.size());
 
-		for (String key : expectedOutcomes.keySet()) {
-			Outcome expectedOutcome = expectedOutcomes.get(key);
-			Outcome actualOutcome = actualOutcomes.get(key);
-			assertOuctomesAreEquals(expectedOutcome, actualOutcome);
-		}
-	}
+        for (String key : expectedOutcomes.keySet()) {
+            Outcome expectedOutcome = expectedOutcomes.get(key);
+            Outcome actualOutcome = actualOutcomes.get(key);
+            assertOuctomesAreEquals(expectedOutcome, actualOutcome);
+        }
+    }
 
-	protected Map<String, Outcome> copyOutcomesMap(Map<String, Outcome> outcomes) {
-		Map<String, Outcome> copyOfMap = new HashMap<String, Outcome>();
+    protected Map<String, Outcome> copyOutcomesMap(Map<String, Outcome> outcomes) {
+        Map<String, Outcome> copyOfMap = new HashMap<String, Outcome>();
 
-		for (String key : outcomes.keySet()) {
-			Outcome currentOutcome = outcomes.get(key);
-			Outcome copyOfOutcome = copyOutcome(currentOutcome);
-			copyOfMap.put(key, copyOfOutcome);
-		}
+        for (String key : outcomes.keySet()) {
+            Outcome currentOutcome = outcomes.get(key);
+            Outcome copyOfOutcome = copyOutcome(currentOutcome);
+            copyOfMap.put(key, copyOfOutcome);
+        }
 
-		return copyOfMap;
-	}
+        return copyOfMap;
+    }
 
-	protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<VariableName> responseIdentifiers,
-			Map<String, Outcome> outcomes) {
-		assertOutcomesHaveValue(expectedValues, buildIdenfitiers(response.getID(), responseIdentifiers), outcomes);
-	}
+    protected void assertResponseRelatedOutcomesHaveValue(Response response, List<String> expectedValues, List<VariableName> responseIdentifiers,
+                                                          Map<String, Outcome> outcomes) {
+        assertOutcomesHaveValue(expectedValues, buildIdenfitiers(response.getID(), responseIdentifiers), outcomes);
+    }
 
-	protected void assertGlobalOutcomesHaveValue(List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
+    protected void assertGlobalOutcomesHaveValue(List<String> expectedValues, List<VariableName> responseIdentifiers, Map<String, Outcome> outcomes) {
 
-		assertOutcomesHaveValue(expectedValues, convertToString(responseIdentifiers), outcomes);
-	}
+        assertOutcomesHaveValue(expectedValues, convertToString(responseIdentifiers), outcomes);
+    }
 
-	private List<String> convertToString(List<VariableName> responseIdentifiers) {
-		List<String> converted = Lists.newArrayList();
-		for (VariableName variablesNames : responseIdentifiers) {
-			converted.add(variablesNames.toString());
-		}
-		return converted;
-	}
+    private List<String> convertToString(List<VariableName> responseIdentifiers) {
+        List<String> converted = Lists.newArrayList();
+        for (VariableName variablesNames : responseIdentifiers) {
+            converted.add(variablesNames.toString());
+        }
+        return converted;
+    }
 
-	protected Map<String, Outcome> prepareInitialOutcomes(Map<String, Response> responsesMap) {
-		Map<String, Outcome> outcomes = Maps.newHashMap();
-		return outcomes;
-	}
+    protected Map<String, Outcome> prepareInitialOutcomes(Map<String, Response> responsesMap) {
+        Map<String, Outcome> outcomes = Maps.newHashMap();
+        return outcomes;
+    }
 
-	protected Map<String, Response> convertToMap(Response... responses) {
-		Map<String, Response> responsesMap = Maps.newHashMap();
-		for (Response response : responses) {
-			if (responsesMap.containsKey(response.getID())) {
-				throw new IllegalArgumentException("Response with id: " + response.getID() + " already exists in map!");
-			}
-			responsesMap.put(response.getID(), response);
-		}
-		return responsesMap;
-	}
+    protected Map<String, Response> convertToMap(Response... responses) {
+        Map<String, Response> responsesMap = Maps.newHashMap();
+        for (Response response : responses) {
+            if (responsesMap.containsKey(response.getID())) {
+                throw new IllegalArgumentException("Response with id: " + response.getID() + " already exists in map!");
+            }
+            responsesMap.put(response.getID(), response);
+        }
+        return responsesMap;
+    }
 
-	protected void setUpCurrentUserAnswers(Response response, String... currentAnswers) {
-		response.values = Arrays.asList(currentAnswers);
-	}
+    protected void setUpCurrentUserAnswers(Response response, String... currentAnswers) {
+        response.values = Arrays.asList(currentAnswers);
+    }
 
-	private void assertOuctomesAreEquals(Outcome expectedOutcome, Outcome actualOutcome) {
-		assertEquals(expectedOutcome.identifier, actualOutcome.identifier);
-		assertEquals(expectedOutcome.values, actualOutcome.values);
-	}
+    private void assertOuctomesAreEquals(Outcome expectedOutcome, Outcome actualOutcome) {
+        assertEquals(expectedOutcome.identifier, actualOutcome.identifier);
+        assertEquals(expectedOutcome.values, actualOutcome.values);
+    }
 
-	private Outcome copyOutcome(Outcome currentOutcome) {
-		Outcome copyOfOutcome = new Outcome();
-		copyOfOutcome.values = new ArrayList<String>(currentOutcome.values);
-		copyOfOutcome.identifier = currentOutcome.identifier;
-		return copyOfOutcome;
-	}
+    private Outcome copyOutcome(Outcome currentOutcome) {
+        Outcome copyOfOutcome = new Outcome();
+        copyOfOutcome.values = new ArrayList<String>(currentOutcome.values);
+        copyOfOutcome.identifier = currentOutcome.identifier;
+        return copyOfOutcome;
+    }
 
-	private List<String> buildIdenfitiers(String prefix, Iterable<VariableName> variables) {
-		List<String> identifiers = Lists.newArrayList();
-		for (VariableName variable : variables) {
-			String currentIdentifier = prefix + "-" + variable;
-			identifiers.add(currentIdentifier);
-		}
-		return identifiers;
-	}
+    private List<String> buildIdenfitiers(String prefix, Iterable<VariableName> variables) {
+        List<String> identifiers = Lists.newArrayList();
+        for (VariableName variable : variables) {
+            String currentIdentifier = prefix + "-" + variable;
+            identifiers.add(currentIdentifier);
+        }
+        return identifiers;
+    }
 
-	private void assertOutcomesHaveValue(List<String> expectedValues, List<String> responseIdentifiers, Map<String, Outcome> outcomes) {
-		for (String responseIdentifier : responseIdentifiers) {
-			Outcome outcome = outcomes.get(responseIdentifier);
-			LOGGER.info("Asserting variable with identifier: " + responseIdentifier);
-			assertOutcomeValue(outcome, expectedValues);
-		}
-	}
+    private void assertOutcomesHaveValue(List<String> expectedValues, List<String> responseIdentifiers, Map<String, Outcome> outcomes) {
+        for (String responseIdentifier : responseIdentifiers) {
+            Outcome outcome = outcomes.get(responseIdentifier);
+            LOGGER.info("Asserting variable with identifier: " + responseIdentifier);
+            assertOutcomeValue(outcome, expectedValues);
+        }
+    }
 
-	private void assertOutcomeValue(Outcome outcome, List<String> expectedValues) {
-		List<String> currentOutcomeValues = outcome.values;
-		assertEquals(expectedValues, currentOutcomeValues);
-	}
+    private void assertOutcomeValue(Outcome outcome, List<String> expectedValues) {
+        List<String> currentOutcomeValues = outcome.values;
+        assertEquals(expectedValues, currentOutcomeValues);
+    }
 
 }

@@ -9,22 +9,22 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 @JsType
 public class ExternalInteractionEmpiriaApi extends ExternalEmpiriaApi {
 
-	@Inject
-	@ModuleScoped
-	private ExternalInteractionResponseModel responseModel;
+    @Inject
+    @ModuleScoped
+    private ExternalInteractionResponseModel responseModel;
 
-	public void onResultChange(ExternalInteractionStatus status) {
-		int done = status.getDone();
-		int errors = status.getErrors();
-		responseModel.clearAnswers();
+    public void onResultChange(ExternalInteractionStatus status) {
+        int done = status.getDone();
+        int errors = status.getErrors();
+        responseModel.clearAnswers();
 
-		for (int i = 1; i <= done; i++) {
-			responseModel.addAnswer(String.valueOf(i));
-		}
-		for (int i = 1; i <= errors; i++) {
-			responseModel.addAnswer(String.valueOf(-i));
-		}
-	}
+        for (int i = 1; i <= done; i++) {
+            responseModel.addAnswer(String.valueOf(i));
+        }
+        for (int i = 1; i <= errors; i++) {
+            responseModel.addAnswer(String.valueOf(-i));
+        }
+    }
 
 
 }

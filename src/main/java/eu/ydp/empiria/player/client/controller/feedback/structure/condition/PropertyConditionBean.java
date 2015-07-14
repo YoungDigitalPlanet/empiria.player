@@ -9,36 +9,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "propertyCondition")
 public class PropertyConditionBean implements FeedbackCondition {
 
-	@XmlAttribute(name = "property")
-	private String property;
+    @XmlAttribute(name = "property")
+    private String property;
 
-	@XmlAttribute(name = "operator")
-	private String operator = "==";
+    @XmlAttribute(name = "operator")
+    private String operator = "==";
 
-	@XmlAttribute(name = "value")
-	private String value = "true";
+    @XmlAttribute(name = "value")
+    private String value = "true";
 
-	public String getProperty() {
-		return property;
-	}
+    public String getProperty() {
+        return property;
+    }
 
-	public void setProperty(String property) {
-		this.property = property;
-	}
+    public void setProperty(String property) {
+        this.property = property;
+    }
 
-	public String getOperator() {
-		return operator;
-	}
+    public String getOperator() {
+        return operator;
+    }
 
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

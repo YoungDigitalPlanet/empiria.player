@@ -2,29 +2,28 @@ package eu.ydp.empiria.player.client.module.choice.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 
 public interface SimpleChoiceView extends IsWidget {
-	void markCorrect();
+    void markCorrect();
 
-	void markWrong();
+    void markWrong();
 
-	void unmarkCorrect();
+    void unmarkCorrect();
 
-	void unmarkWrong();
+    void unmarkWrong();
 
-	Widget getFeedbackPlaceHolder();
+    Widget getFeedbackPlaceHolder();
 
-	void reset();
+    void reset();
 
-	void setLocked(boolean locked);
+    void setLocked(boolean locked);
 
-	void setButton(ChoiceButtonBase button);
+    void setButton(ChoiceButtonBase button);
 
-	void setContent(Widget contentWidget);
+    void setContent(Widget contentWidget);
 
-	void setSelected(boolean select);
+    void setSelected(boolean select);
 
-	boolean isSelected();
+    boolean isSelected();
 }

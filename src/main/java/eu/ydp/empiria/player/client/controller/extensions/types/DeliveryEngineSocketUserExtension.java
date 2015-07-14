@@ -4,5 +4,5 @@ import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 
 public interface DeliveryEngineSocketUserExtension {
 
-	public void setDeliveryEngineSocket(DeliveryEngineSocket des);
+    public void setDeliveryEngineSocket(DeliveryEngineSocket des);
 }

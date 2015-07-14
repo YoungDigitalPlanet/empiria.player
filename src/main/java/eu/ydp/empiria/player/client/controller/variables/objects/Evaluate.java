@@ -5,21 +5,21 @@ package eu.ydp.empiria.player.client.controller.variables.objects;
  */
 public enum Evaluate {
 
-	CORRECT, USER, DEFAULT;
+    CORRECT, USER, DEFAULT;
 
-	public static Evaluate fromString(String key) {
+    public static Evaluate fromString(String key) {
 
-		Evaluate evaluate = DEFAULT;
+        Evaluate evaluate = DEFAULT;
 
-		if (key != null) {
-			if (key.equalsIgnoreCase(USER.toString())) {
-				evaluate = USER;
-			} else if (key.equalsIgnoreCase(CORRECT.toString())) {
-				evaluate = CORRECT;
-			}
-		}
+        if (key != null) {
+            if (key.equalsIgnoreCase(USER.toString())) {
+                evaluate = USER;
+            } else if (key.equalsIgnoreCase(CORRECT.toString())) {
+                evaluate = CORRECT;
+            }
+        }
 
-		return evaluate;
-	}
+        return evaluate;
+    }
 
 }

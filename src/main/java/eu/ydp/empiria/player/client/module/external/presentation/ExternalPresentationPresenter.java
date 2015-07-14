@@ -17,68 +17,68 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalPresentationPresenter implements ExternalFrameLoadHandler<ExternalApi> {
 
-	private final ExternalStateEncoder stateEncoder;
-	private final ExternalView<ExternalApi, ExternalEmpiriaApi> view;
-	private final ExternalStateSaver stateSaver;
-	private final ExternalPaths externalPaths;
-	private final ExternalEmpiriaApi empiriaApi;
+    private final ExternalStateEncoder stateEncoder;
+    private final ExternalView<ExternalApi, ExternalEmpiriaApi> view;
+    private final ExternalStateSaver stateSaver;
+    private final ExternalPaths externalPaths;
+    private final ExternalEmpiriaApi empiriaApi;
 
-	private ExternalApi externalApi;
+    private ExternalApi externalApi;
 
-	@Inject
-	public ExternalPresentationPresenter(ExternalStateEncoder stateEncoder, ExternalView<ExternalApi, ExternalEmpiriaApi> view,
-			@ModuleScoped ExternalStateSaver stateSaver,
-			@ModuleScoped ExternalPaths externalPaths,
-			ExternalEmpiriaApi empiriaApi) {
-		this.stateEncoder = stateEncoder;
-		this.view = view;
-		this.stateSaver = stateSaver;
-		this.externalPaths = externalPaths;
-		this.empiriaApi = empiriaApi;
+    @Inject
+    public ExternalPresentationPresenter(ExternalStateEncoder stateEncoder, ExternalView<ExternalApi, ExternalEmpiriaApi> view,
+                                         @ModuleScoped ExternalStateSaver stateSaver,
+                                         @ModuleScoped ExternalPaths externalPaths,
+                                         ExternalEmpiriaApi empiriaApi) {
+        this.stateEncoder = stateEncoder;
+        this.view = view;
+        this.stateSaver = stateSaver;
+        this.externalPaths = externalPaths;
+        this.empiriaApi = empiriaApi;
 
-		externalApi = new ExternalApiNullObject();
-	}
+        externalApi = new ExternalApiNullObject();
+    }
 
-	public void init() {
-		String url = externalPaths.getExternalEntryPointPath();
-		view.init(empiriaApi, this, url);
-	}
+    public void init() {
+        String url = externalPaths.getExternalEntryPointPath();
+        view.init(empiriaApi, this, url);
+    }
 
-	@Override
-	public void onExternalModuleLoaded(ExternalApi externalObject) {
-		this.externalApi = externalObject;
+    @Override
+    public void onExternalModuleLoaded(ExternalApi externalObject) {
+        this.externalApi = externalObject;
 
-		Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
-		if (externalState.isPresent()) {
-			externalObject.setStateOnExternal(externalState.get());
-		}
-	}
+        Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
+        if (externalState.isPresent()) {
+            externalObject.setStateOnExternal(externalState.get());
+        }
+    }
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 
-	public JSONArray getState() {
-		JavaScriptObject state = externalApi.getStateFromExternal();
-		stateSaver.setExternalState(state);
-		return stateEncoder.encodeState(state);
-	}
+    public JSONArray getState() {
+        JavaScriptObject state = externalApi.getStateFromExternal();
+        stateSaver.setExternalState(state);
+        return stateEncoder.encodeState(state);
+    }
 
-	public void setState(JSONArray newState) {
-		JavaScriptObject state = stateEncoder.decodeState(newState);
-		stateSaver.setExternalState(state);
-	}
+    public void setState(JSONArray newState) {
+        JavaScriptObject state = stateEncoder.decodeState(newState);
+        stateSaver.setExternalState(state);
+    }
 
-	public void lock() {
-		externalApi.lock();
-	}
+    public void lock() {
+        externalApi.lock();
+    }
 
-	public void unlock() {
-		externalApi.unlock();
-	}
+    public void unlock() {
+        externalApi.unlock();
+    }
 
-	public void reset() {
-		externalApi.reset();
-	}
+    public void reset() {
+        externalApi.reset();
+    }
 
 }

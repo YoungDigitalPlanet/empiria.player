@@ -27,18 +27,17 @@ import com.google.gwt.json.client.JSONArray;
 
 public interface IStateful {
 
-	/**
-	 * Get state
-	 * 
-	 * @return state object
-	 */
-	public JSONArray getState();
+    /**
+     * Get state
+     *
+     * @return state object
+     */
+    public JSONArray getState();
 
-	/**
-	 * set new state
-	 * 
-	 * @param newState
-	 *            state object created with getState() function
-	 */
-	public void setState(JSONArray newState);
+    /**
+     * set new state
+     *
+     * @param newState state object created with getState() function
+     */
+    public void setState(JSONArray newState);
 }

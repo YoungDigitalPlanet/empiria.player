@@ -1,9 +1,8 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
+import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -12,47 +11,47 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import java.util.List;
 
-import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
-import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderingResetControllerJUnitTest {
 
-	@InjectMocks
-	private OrderingResetController controller;
-	@Mock
-	private OrderingAnswersShuffler orderingAnswersShuffler;
-	@Mock
-	private OrderingItemsDao orderingItemsDao;
-	@Mock
-	private ItemsResponseOrderController itemsResponseOrderController;
-	@Mock
-	private OrderInteractionModuleModel model;
-	@Test
-	public void shouldResetAnswersToNewRandomOnes() throws Exception {
-		List<String> currentAnswers = Lists.newArrayList("currAnswers");
-		when(model.getCurrentAnswers()).thenReturn(currentAnswers);
+    @InjectMocks
+    private OrderingResetController controller;
+    @Mock
+    private OrderingAnswersShuffler orderingAnswersShuffler;
+    @Mock
+    private OrderingItemsDao orderingItemsDao;
+    @Mock
+    private ItemsResponseOrderController itemsResponseOrderController;
+    @Mock
+    private OrderInteractionModuleModel model;
 
-		List<String> correctAnswers = Lists.newArrayList("correctAnswers");
-		when(model.getCorrectAnswers()).thenReturn(correctAnswers);
+    @Test
+    public void shouldResetAnswersToNewRandomOnes() throws Exception {
+        List<String> currentAnswers = Lists.newArrayList("currAnswers");
+        when(model.getCurrentAnswers()).thenReturn(currentAnswers);
 
-		List<String> newAnswersOrder = Lists.newArrayList("new Answers Order");
-		when(orderingAnswersShuffler.shuffleAnswers(currentAnswers, correctAnswers)).thenReturn(newAnswersOrder);
+        List<String> correctAnswers = Lists.newArrayList("correctAnswers");
+        when(model.getCorrectAnswers()).thenReturn(correctAnswers);
 
-		List<String> newItemsOrder = Lists.newArrayList("newItemsOrder");
-		when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(newAnswersOrder)).thenReturn(newItemsOrder);
+        List<String> newAnswersOrder = Lists.newArrayList("new Answers Order");
+        when(orderingAnswersShuffler.shuffleAnswers(currentAnswers, correctAnswers)).thenReturn(newAnswersOrder);
 
-		controller.reset();
+        List<String> newItemsOrder = Lists.newArrayList("newItemsOrder");
+        when(itemsResponseOrderController.getCorrectItemsOrderByAnswers(newAnswersOrder)).thenReturn(newItemsOrder);
 
-		InOrder inOrder = Mockito.inOrder(orderingItemsDao, itemsResponseOrderController, orderingAnswersShuffler);
-		inOrder.verify(orderingAnswersShuffler).shuffleAnswers(currentAnswers, correctAnswers);
-		inOrder.verify(itemsResponseOrderController).getCorrectItemsOrderByAnswers(newAnswersOrder);
-		inOrder.verify(orderingItemsDao).setItemsOrder(newItemsOrder);
-		inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(newItemsOrder);
+        controller.reset();
 
-		Mockito.verifyNoMoreInteractions(orderingAnswersShuffler, orderingItemsDao, itemsResponseOrderController);
-	}
+        InOrder inOrder = Mockito.inOrder(orderingItemsDao, itemsResponseOrderController, orderingAnswersShuffler);
+        inOrder.verify(orderingAnswersShuffler).shuffleAnswers(currentAnswers, correctAnswers);
+        inOrder.verify(itemsResponseOrderController).getCorrectItemsOrderByAnswers(newAnswersOrder);
+        inOrder.verify(orderingItemsDao).setItemsOrder(newItemsOrder);
+        inOrder.verify(itemsResponseOrderController).updateResponseWithNewOrder(newItemsOrder);
+
+        Mockito.verifyNoMoreInteractions(orderingAnswersShuffler, orderingItemsDao, itemsResponseOrderController);
+    }
 
 }

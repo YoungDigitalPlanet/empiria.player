@@ -19,49 +19,49 @@ import static org.mockito.Mockito.when;
 @RunWith(GwtMockitoTestRunner.class)
 public class SourceListConnectedDragHandlerTest {
 
-	private SourceListConnectedDragHandler dragHandler;
-	private final String moduleIdentifier = "moduleId";
-	private final Wrapper<String> itemIdWrapper = Wrapper.of("itemId");
-	private SourceListManagerAdapter sourcelistManagerAdapter;
-	private OverlayTypesParser overlayTypesParser;
+    private SourceListConnectedDragHandler dragHandler;
+    private final String moduleIdentifier = "moduleId";
+    private final Wrapper<String> itemIdWrapper = Wrapper.of("itemId");
+    private SourceListManagerAdapter sourcelistManagerAdapter;
+    private OverlayTypesParser overlayTypesParser;
 
-	@Before
-	public void setUp() throws Exception {
-		sourcelistManagerAdapter = Mockito.mock(SourceListManagerAdapter.class);
-		overlayTypesParser = Mockito.mock(OverlayTypesParser.class);
-		dragHandler = new SourceListConnectedDragHandler(sourcelistManagerAdapter, overlayTypesParser);
-		dragHandler.initialize(moduleIdentifier, itemIdWrapper);
-	}
+    @Before
+    public void setUp() throws Exception {
+        sourcelistManagerAdapter = Mockito.mock(SourceListManagerAdapter.class);
+        overlayTypesParser = Mockito.mock(OverlayTypesParser.class);
+        dragHandler = new SourceListConnectedDragHandler(sourcelistManagerAdapter, overlayTypesParser);
+        dragHandler.initialize(moduleIdentifier, itemIdWrapper);
+    }
 
-	@Test
-	public void shouldInformSourcelistManagerOnDragEnd() throws Exception {
-		DragEndEvent event = Mockito.mock(DragEndEvent.class);
+    @Test
+    public void shouldInformSourcelistManagerOnDragEnd() throws Exception {
+        DragEndEvent event = Mockito.mock(DragEndEvent.class);
 
-		dragHandler.onDragEnd(event);
+        dragHandler.onDragEnd(event);
 
-		verify(sourcelistManagerAdapter).dragFinished();
-	}
+        verify(sourcelistManagerAdapter).dragFinished();
+    }
 
-	@Test
-	public void shouldInformSourcelistManagerAndExtendEventDataOnDragStart() throws Exception {
-		DragStartEvent event = Mockito.mock(DragStartEvent.class);
+    @Test
+    public void shouldInformSourcelistManagerAndExtendEventDataOnDragStart() throws Exception {
+        DragStartEvent event = Mockito.mock(DragStartEvent.class);
 
-		NativeDragDataObject dragDataObject = Mockito.mock(NativeDragDataObject.class);
-		when(overlayTypesParser.get()).thenReturn(dragDataObject);
+        NativeDragDataObject dragDataObject = Mockito.mock(NativeDragDataObject.class);
+        when(overlayTypesParser.get()).thenReturn(dragDataObject);
 
-		String jsonString = "jsonString";
-		when(dragDataObject.toJSON()).thenReturn(jsonString);
+        String jsonString = "jsonString";
+        when(dragDataObject.toJSON()).thenReturn(jsonString);
 
-		dragHandler.onDragStart(event);
+        dragHandler.onDragStart(event);
 
-		verify(sourcelistManagerAdapter).dragStart();
+        verify(sourcelistManagerAdapter).dragStart();
 
-		InOrder inOrder = Mockito.inOrder(overlayTypesParser, dragDataObject);
-		inOrder.verify(overlayTypesParser)
-			   .get();
-		inOrder.verify(dragDataObject)
-			   .setItemId(itemIdWrapper.getInstance());
-		inOrder.verify(dragDataObject)
-			   .setSourceId(moduleIdentifier);
-	}
+        InOrder inOrder = Mockito.inOrder(overlayTypesParser, dragDataObject);
+        inOrder.verify(overlayTypesParser)
+                .get();
+        inOrder.verify(dragDataObject)
+                .setItemId(itemIdWrapper.getInstance());
+        inOrder.verify(dragDataObject)
+                .setSourceId(moduleIdentifier);
+    }
 }

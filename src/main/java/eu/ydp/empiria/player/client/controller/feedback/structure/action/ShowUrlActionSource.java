@@ -9,30 +9,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "source")
 public class ShowUrlActionSource {
 
-	@XmlAttribute(name = "src")
-	private String src;
+    @XmlAttribute(name = "src")
+    private String src;
 
-	@XmlAttribute(name = "type")
-	private String type;
+    @XmlAttribute(name = "type")
+    private String type;
 
-	public String getSrc() {
-		return src;
-	}
+    public String getSrc() {
+        return src;
+    }
 
-	public void setSrc(String src) {
-		this.src = src;
-	}
+    public void setSrc(String src) {
+        this.src = src;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	@Override
-	public String toString() {
-		return "ShowUrlActionSource [src=" + src + ", type=" + type + "]";
-	}
+    @Override
+    public String toString() {
+        return "ShowUrlActionSource [src=" + src + ", type=" + type + "]";
+    }
 }

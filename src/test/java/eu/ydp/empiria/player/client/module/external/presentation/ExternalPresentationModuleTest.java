@@ -18,55 +18,55 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class ExternalPresentationModuleTest {
 
-	@InjectMocks
-	private ExternalPresentationModule testObj;
-	@Mock
-	private ExternalPresentationPresenter presenter;
-	@Mock
-	private ExternalPaths externalPaths;
-	@Mock
-	private Element element;
-	private static final String source = "SOURCE";
-	private static final String ID = "ID";
+    @InjectMocks
+    private ExternalPresentationModule testObj;
+    @Mock
+    private ExternalPresentationPresenter presenter;
+    @Mock
+    private ExternalPaths externalPaths;
+    @Mock
+    private Element element;
+    private static final String source = "SOURCE";
+    private static final String ID = "ID";
 
-	@Before
-	public void setUp() throws Exception {
-		when(element.getAttribute("src")).thenReturn(source);
-		when(element.getAttribute("id")).thenReturn(ID);
-	}
+    @Before
+    public void setUp() throws Exception {
+        when(element.getAttribute("src")).thenReturn(source);
+        when(element.getAttribute("id")).thenReturn(ID);
+    }
 
-	@Test
-	public void shouldRegisterAsFolderNameProviderAndThenInitializePresenter() {
-		// when
-		testObj.initModule(element);
+    @Test
+    public void shouldRegisterAsFolderNameProviderAndThenInitializePresenter() {
+        // when
+        testObj.initModule(element);
 
-		// then
-		InOrder inOrder = inOrder(externalPaths, presenter);
-		inOrder.verify(externalPaths).setExternalFolderNameProvider(testObj);
-		inOrder.verify(presenter).init();
-	}
+        // then
+        InOrder inOrder = inOrder(externalPaths, presenter);
+        inOrder.verify(externalPaths).setExternalFolderNameProvider(testObj);
+        inOrder.verify(presenter).init();
+    }
 
-	@Test
-	public void shouldReturnPresentationNameAsModuleIdentifier() {
-		// given
-		testObj.initModule(element, mock(ModuleSocket.class), mock(InteractionEventsListener.class));
+    @Test
+    public void shouldReturnPresentationNameAsModuleIdentifier() {
+        // given
+        testObj.initModule(element, mock(ModuleSocket.class), mock(InteractionEventsListener.class));
 
-		// when
-		String actual = testObj.getIdentifier();
+        // when
+        String actual = testObj.getIdentifier();
 
-		// then
-		assertThat(actual).isEqualTo(ID);
-	}
+        // then
+        assertThat(actual).isEqualTo(ID);
+    }
 
-	@Test
-	public void shouldReturnPresentationNameAsExsternalFolderName() {
-		// given
-		testObj.initModule(element);
+    @Test
+    public void shouldReturnPresentationNameAsExsternalFolderName() {
+        // given
+        testObj.initModule(element);
 
-		// when
-		String actual = testObj.getExternalFolderName();
+        // when
+        String actual = testObj.getExternalFolderName();
 
-		// then
-		assertThat(actual).isEqualTo(source);
-	}
+        // then
+        assertThat(actual).isEqualTo(source);
+    }
 }

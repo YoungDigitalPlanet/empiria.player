@@ -1,51 +1,50 @@
 package eu.ydp.empiria.player.client.module.expression;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.common.base.Function;
-
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.exception.CannotDivideExpressionToPartsException;
 import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ExpressionToPartsDivider {
 
-	public static final String EQUAL_SIGN = "=";
-	private static final Logger LOGGER = new Logger();
+    public static final String EQUAL_SIGN = "=";
+    private static final Logger LOGGER = new Logger();
 
-	public List<String> divideExpressionOnEquality(String template, List<Response> responses, Function<Response, String> answerFetcher) {
-		String templateWithEquality = prepareTemplate(template, responses, answerFetcher);
-		String[] leftRightExpressionParts = templateWithEquality.split(EQUAL_SIGN);
-		LOGGER.severeIf(leftRightExpressionParts.length != 2, "Expression divided on EQUAL sign contains different amount of parts than 2!");
-		return Arrays.asList(leftRightExpressionParts);
-	}
+    public List<String> divideExpressionOnEquality(String template, List<Response> responses, Function<Response, String> answerFetcher) {
+        String templateWithEquality = prepareTemplate(template, responses, answerFetcher);
+        String[] leftRightExpressionParts = templateWithEquality.split(EQUAL_SIGN);
+        LOGGER.severeIf(leftRightExpressionParts.length != 2, "Expression divided on EQUAL sign contains different amount of parts than 2!");
+        return Arrays.asList(leftRightExpressionParts);
+    }
 
-	private String prepareTemplate(String template, List<Response> responses, Function<Response, String> answerFetcher) {
-		String templateWithEquality = template;
-		if (!template.contains(EQUAL_SIGN)) {
-			templateWithEquality = replaceResponseIdWithEqualitySign(template, responses, answerFetcher);
-		}
-		return templateWithEquality;
-	}
+    private String prepareTemplate(String template, List<Response> responses, Function<Response, String> answerFetcher) {
+        String templateWithEquality = template;
+        if (!template.contains(EQUAL_SIGN)) {
+            templateWithEquality = replaceResponseIdWithEqualitySign(template, responses, answerFetcher);
+        }
+        return templateWithEquality;
+    }
 
-	private String replaceResponseIdWithEqualitySign(String template, List<Response> responses, Function<Response, String> answerFetcher) {
-		Response response = findResponseWithAnswerAsEqualSign(responses, answerFetcher);
+    private String replaceResponseIdWithEqualitySign(String template, List<Response> responses, Function<Response, String> answerFetcher) {
+        Response response = findResponseWithAnswerAsEqualSign(responses, answerFetcher);
 
-		String responseId = response.getID();
-		String updatedTemplate = template.replace("'" + responseId + "'", EQUAL_SIGN);
+        String responseId = response.getID();
+        String updatedTemplate = template.replace("'" + responseId + "'", EQUAL_SIGN);
 
-		return updatedTemplate;
-	}
+        return updatedTemplate;
+    }
 
-	private Response findResponseWithAnswerAsEqualSign(List<Response> responses, Function<Response, String> answerFetcher) {
-		for (Response response : responses) {
-			if (answerFetcher.apply(response).equals(EQUAL_SIGN)) {
-				return response;
-			}
-		}
+    private Response findResponseWithAnswerAsEqualSign(List<Response> responses, Function<Response, String> answerFetcher) {
+        for (Response response : responses) {
+            if (answerFetcher.apply(response).equals(EQUAL_SIGN)) {
+                return response;
+            }
+        }
 
-		throw new CannotDivideExpressionToPartsException("Cannot divide expression on equal sign, template or any response dont contain equal sign!");
-	}
+        throw new CannotDivideExpressionToPartsException("Cannot divide expression on equal sign, template or any response dont contain equal sign!");
+    }
 
 }

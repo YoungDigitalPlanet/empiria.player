@@ -22,122 +22,122 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
 public class DeliveryEngineGWTTestCase extends GWTTestCase {
 
-	@Override
-	public String getModuleName() {
-		return "eu.ydp.empiria.player.Player";
-	}
+    @Override
+    public String getModuleName() {
+        return "eu.ydp.empiria.player.Player";
+    }
 
-	public void testEngineMode() {
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		DeliveryEngine de = injector.getDeliveryEngine();
-		de.init(JavaScriptObject.createObject());
+    public void testEngineMode() {
+        PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
+        DeliveryEngine de = injector.getDeliveryEngine();
+        de.init(JavaScriptObject.createObject());
 
-		assertEquals(EngineMode.NONE.toString(), de.getEngineMode().toString());
+        assertEquals(EngineMode.NONE.toString(), de.getEngineMode().toString());
 
-		de.load(getAssessmentXMLData(), getItemXMLDatas());
+        de.load(getAssessmentXMLData(), getItemXMLDatas());
 
-		assertEquals(EngineMode.RUNNING.toString(), de.getEngineMode().toString());
-	}
+        assertEquals(EngineMode.RUNNING.toString(), de.getEngineMode().toString());
+    }
 
-	protected DeliveryEngine de;
-	protected FlowRequestInvoker flowInvoker;
+    protected DeliveryEngine de;
+    protected FlowRequestInvoker flowInvoker;
 
-	DeliveryEventType[] typesWithToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
-	DeliveryEventType[] typesNoToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TEST_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
-	DeliveryEventType[] typesPageSwitch = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
-			DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
-			DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
-	DeliveryEventType[] types;
-	private int counter = 0;
+    DeliveryEventType[] typesWithToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+            DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
+            DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
+    DeliveryEventType[] typesNoToc = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+            DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TEST_PAGE_LOADED,
+            DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
+    DeliveryEventType[] typesPageSwitch = {DeliveryEventType.ASSESSMENT_LOADING, DeliveryEventType.ASSESSMENT_LOADED, DeliveryEventType.ASSESSMENT_STARTING,
+            DeliveryEventType.PAGE_UNLOADING, DeliveryEventType.PAGE_UNLOADED, DeliveryEventType.PAGE_LOADING, DeliveryEventType.TOC_PAGE_LOADED,
+            DeliveryEventType.ASSESSMENT_STARTED, DeliveryEventType.ASSESSMENT_LOADED};
+    DeliveryEventType[] types;
+    private int counter = 0;
 
-	public void testDeliveryEventsWithToc() {
-		types = typesWithToc;
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-		de.init(JavaScriptObject.createObject());
-		Extension ext = new MockDeliveryEventsListenerExtension();
-		de.setFlowOptions(new FlowOptions(true, true, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		de.loadExtension(ext);
-		de.load(getAssessmentXMLData(), getItemXMLDatas());
+    public void testDeliveryEventsWithToc() {
+        types = typesWithToc;
+        PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
+        de = injector.getDeliveryEngine();
+        de.init(JavaScriptObject.createObject());
+        Extension ext = new MockDeliveryEventsListenerExtension();
+        de.setFlowOptions(new FlowOptions(true, true, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
+        de.loadExtension(ext);
+        de.load(getAssessmentXMLData(), getItemXMLDatas());
 
-	}
+    }
 
-	public void testDeliveryEventsNoToc() {
-		types = typesNoToc;
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-		de.init(JavaScriptObject.createObject());
-		Extension ext = new MockDeliveryEventsListenerExtension();
-		de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		de.loadExtension(ext);
-		de.load(getAssessmentXMLData(), getItemXMLDatas());
+    public void testDeliveryEventsNoToc() {
+        types = typesNoToc;
+        PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
+        de = injector.getDeliveryEngine();
+        de.init(JavaScriptObject.createObject());
+        Extension ext = new MockDeliveryEventsListenerExtension();
+        de.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
+        de.loadExtension(ext);
+        de.load(getAssessmentXMLData(), getItemXMLDatas());
 
-	}
+    }
 
-	public void testDeliveryEventsPageSwitch() {
-		types = typesPageSwitch;
-		PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
-		de = injector.getDeliveryEngine();
-		de.init(JavaScriptObject.createObject());
-		Extension ext = new MockDeliveryEventsListenerExtension();
-		de.setFlowOptions(new FlowOptions(true, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
-		de.loadExtension(ext);
-		de.load(getAssessmentXMLData(), getItemXMLDatas());
-	}
+    public void testDeliveryEventsPageSwitch() {
+        types = typesPageSwitch;
+        PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
+        de = injector.getDeliveryEngine();
+        de.init(JavaScriptObject.createObject());
+        Extension ext = new MockDeliveryEventsListenerExtension();
+        de.setFlowOptions(new FlowOptions(true, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
+        de.loadExtension(ext);
+        de.load(getAssessmentXMLData(), getItemXMLDatas());
+    }
 
-	protected void checkEvents(DeliveryEvent flowEvent) {
-		if (counter < types.length) {
-			assertEquals(types[counter].toString(), flowEvent.getType().toString());
-			if (flowEvent.getType() == DeliveryEventType.ASSESSMENT_STARTED) {
-				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+    protected void checkEvents(DeliveryEvent flowEvent) {
+        if (counter < types.length) {
+            assertEquals(types[counter].toString(), flowEvent.getType().toString());
+            if (flowEvent.getType() == DeliveryEventType.ASSESSMENT_STARTED) {
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
-					@Override
-					public void execute() {
-						flowInvoker.invokeRequest(new FlowRequest.NavigateFirstItem());
-					}
-				});
-			}
-			counter++;
-		}
-	}
+                    @Override
+                    public void execute() {
+                        flowInvoker.invokeRequest(new FlowRequest.NavigateFirstItem());
+                    }
+                });
+            }
+            counter++;
+        }
+    }
 
-	protected XmlData getAssessmentXMLData() {
+    protected XmlData getAssessmentXMLData() {
 
-		String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
-		Document assessmentDoc = XMLParser.parse(assessmentXml);
-		return new XmlData(assessmentDoc, "");
-	}
+        String assessmentXml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><assessmentTest xmlns=\"http://www.ydp.eu/empiria\" identifier=\"RTEST-13\" title=\"Show player supported functionality\"><testPart><assessmentSection identifier=\"sectionA\" title=\"Section A\" visible=\"true\"><assessmentItemRef identifier=\"inline_choice\" href=\"demo/inline_choice.xml\"/></assessmentSection></testPart></assessmentTest>";
+        Document assessmentDoc = XMLParser.parse(assessmentXml);
+        return new XmlData(assessmentDoc, "");
+    }
 
-	protected XmlData[] getItemXMLDatas() {
+    protected XmlData[] getItemXMLDatas() {
 
-		Document itemDoc = XMLParser
-				.parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
-		XmlData itemData = new XmlData(itemDoc, "");
-		XmlData[] itemDatas = new XmlData[1];
-		itemDatas[0] = itemData;
+        Document itemDoc = XMLParser
+                .parse("<assessmentItem identifier=\"inlineChoice\" title=\"Interactive text\"><itemBody></itemBody><variableProcessing template=\"default\"/></assessmentItem>");
+        XmlData itemData = new XmlData(itemDoc, "");
+        XmlData[] itemDatas = new XmlData[1];
+        itemDatas[0] = itemData;
 
-		return itemDatas;
-	}
+        return itemDatas;
+    }
 
-	protected class MockDeliveryEventsListenerExtension extends InternalExtension implements DeliveryEventsListenerExtension, FlowRequestSocketUserExtension {
+    protected class MockDeliveryEventsListenerExtension extends InternalExtension implements DeliveryEventsListenerExtension, FlowRequestSocketUserExtension {
 
-		@Override
-		public void init() {
-		}
+        @Override
+        public void init() {
+        }
 
-		@Override
-		public void onDeliveryEvent(DeliveryEvent flowEvent) {
-			checkEvents(flowEvent);
-		}
+        @Override
+        public void onDeliveryEvent(DeliveryEvent flowEvent) {
+            checkEvents(flowEvent);
+        }
 
-		@Override
-		public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
-			flowInvoker = fri;
-		}
+        @Override
+        public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
+            flowInvoker = fri;
+        }
 
-	}
+    }
 }

@@ -5,10 +5,10 @@ import com.google.inject.Provider;
 
 public class ProviderInject {
 
-	@Inject
-	Provider<InjectObj> inject;
+    @Inject
+    Provider<InjectObj> inject;
 
-	public InjectObj getInject() {
-		return inject.get();
-	}
+    public InjectObj getInject() {
+        return inject.get();
+    }
 }

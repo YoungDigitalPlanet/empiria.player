@@ -1,10 +1,5 @@
 package eu.ydp.empiria.player.client.module.tutor.actions.popup;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -12,48 +7,52 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TutorPopupViewWidgetImpl extends Composite implements TutorPopupViewWidget {
 
-	private static TutorPopupViewWidgetUiBinder uiBinder = GWT.create(TutorPopupViewWidgetUiBinder.class);
+    private static TutorPopupViewWidgetUiBinder uiBinder = GWT.create(TutorPopupViewWidgetUiBinder.class);
 
-	interface TutorPopupViewWidgetUiBinder extends UiBinder<Widget, TutorPopupViewWidgetImpl> {
-	}
+    interface TutorPopupViewWidgetUiBinder extends UiBinder<Widget, TutorPopupViewWidgetImpl> {
+    }
 
-	@UiField
-	protected FlowPanel itemsContainer;
+    @UiField
+    protected FlowPanel itemsContainer;
 
-	@UiField
-	protected FlowPanel closeButton;
+    @UiField
+    protected FlowPanel closeButton;
 
-	@PostConstruct
-	public void postConstruct() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    @PostConstruct
+    public void postConstruct() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	@Override
-	public Widget getWidget(int personaIndex) {
-		return itemsContainer.getWidget(personaIndex);
-	}
+    @Override
+    public Widget getWidget(int personaIndex) {
+        return itemsContainer.getWidget(personaIndex);
+    }
 
-	@Override
-	public void addWidget(TutorPopupViewPersonaView personaView) {
-		itemsContainer.add(personaView);
-	}
+    @Override
+    public void addWidget(TutorPopupViewPersonaView personaView) {
+        itemsContainer.add(personaView);
+    }
 
-	@Override
-	public List<Widget> getAllWidgets() {
-		int widgetCount = itemsContainer.getWidgetCount();
-		List<Widget> widgets = new ArrayList<Widget>();
+    @Override
+    public List<Widget> getAllWidgets() {
+        int widgetCount = itemsContainer.getWidgetCount();
+        List<Widget> widgets = new ArrayList<Widget>();
 
-		for (int i = 0; i < widgetCount; i++) {
-			widgets.add(itemsContainer.getWidget(i));
-		}
-		return widgets;
-	}
+        for (int i = 0; i < widgetCount; i++) {
+            widgets.add(itemsContainer.getWidget(i));
+        }
+        return widgets;
+    }
 
-	@Override
-	public Widget getCloseButton() {
-		return closeButton;
-	}
+    @Override
+    public Widget getCloseButton() {
+        return closeButton;
+    }
 
 }

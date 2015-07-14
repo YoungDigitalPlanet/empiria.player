@@ -5,29 +5,29 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class PasteAwareTextBox extends TextBox {
 
-	private PasteListener pasteListener;
+    private PasteListener pasteListener;
 
-	public PasteAwareTextBox() {
-		super();
-		registerNativePasteEvent(this.getElement());
-	}
+    public PasteAwareTextBox() {
+        super();
+        registerNativePasteEvent(this.getElement());
+    }
 
-	private void onPaste() {
-		pasteListener.onPaste();
-	}
+    private void onPaste() {
+        pasteListener.onPaste();
+    }
 
-	public void addPasteListener(PasteListener pasteListener) {
-		this.pasteListener = pasteListener;
-	}
+    public void addPasteListener(PasteListener pasteListener) {
+        this.pasteListener = pasteListener;
+    }
 
-	public interface PasteListener {
-		void onPaste();
-	}
+    public interface PasteListener {
+        void onPaste();
+    }
 
-	private native void registerNativePasteEvent(Element element)/*-{
-																	var instance = this;
-																	element.addEventListener ("input", function(){
-																	instance.@eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox::onPaste()();
-																	}, false);
-																	}-*/;
+    private native void registerNativePasteEvent(Element element)/*-{
+        var instance = this;
+        element.addEventListener("input", function () {
+            instance.@eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox::onPaste()();
+        }, false);
+    }-*/;
 }

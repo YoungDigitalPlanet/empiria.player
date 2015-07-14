@@ -11,15 +11,15 @@ import eu.ydp.empiria.player.client.module.pageswitch.PageSwitchModule;
 import eu.ydp.empiria.player.client.module.report.ReportModule;
 
 public interface ModuleFactory {
-	AssessmentJsonReportExtension getAssessmentJsonReportExtension();
+    AssessmentJsonReportExtension getAssessmentJsonReportExtension();
 
-	ScormSupportExtension getScormSupportExtension();
+    ScormSupportExtension getScormSupportExtension();
 
-	PlayerCoreApiExtension getPlayerCoreApiExtension();
+    PlayerCoreApiExtension getPlayerCoreApiExtension();
 
-	NavigationButtonModule createNavigationButtonModule(NavigationButtonDirection direction);
+    NavigationButtonModule createNavigationButtonModule(NavigationButtonDirection direction);
 
-	ReportModule createReportModule(DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier);
+    ReportModule createReportModule(DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier);
 
-	PageSwitchModule createPageSwitchModule();
+    PageSwitchModule createPageSwitchModule();
 }

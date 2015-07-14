@@ -4,6 +4,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface TutorPopupViewPersonaView extends IsWidget {
 
-	public abstract void setAvatarUrl(String avatarUrl);
+    public abstract void setAvatarUrl(String avatarUrl);
 
 }

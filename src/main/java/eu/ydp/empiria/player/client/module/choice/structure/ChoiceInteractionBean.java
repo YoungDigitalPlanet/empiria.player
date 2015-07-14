@@ -12,60 +12,60 @@ import java.util.List;
 @XmlRootElement(name = "choiceInteraction")
 public class ChoiceInteractionBean extends InteractionModuleBean implements HasShuffle {
 
-	@XmlAttribute
-	private int maxChoices;
-	@XmlAttribute
-	private boolean shuffle;
-	@XmlAttribute
-	private boolean ignored;
-	@XmlElement(name = "simpleChoice")
-	private List<SimpleChoiceBean> simpleChoices;
-	@XmlElement
-	private String prompt;
+    @XmlAttribute
+    private int maxChoices;
+    @XmlAttribute
+    private boolean shuffle;
+    @XmlAttribute
+    private boolean ignored;
+    @XmlElement(name = "simpleChoice")
+    private List<SimpleChoiceBean> simpleChoices;
+    @XmlElement
+    private String prompt;
 
-	public ChoiceInteractionBean() {
-		simpleChoices = new ArrayList<SimpleChoiceBean>();
-		prompt = StringUtils.EMPTY_STRING;
-	}
+    public ChoiceInteractionBean() {
+        simpleChoices = new ArrayList<SimpleChoiceBean>();
+        prompt = StringUtils.EMPTY_STRING;
+    }
 
-	public List<SimpleChoiceBean> getSimpleChoices() {
-		return simpleChoices;
-	}
+    public List<SimpleChoiceBean> getSimpleChoices() {
+        return simpleChoices;
+    }
 
-	public void setSimpleChoices(List<SimpleChoiceBean> simpleChoices) {
-		this.simpleChoices = simpleChoices;
-	}
+    public void setSimpleChoices(List<SimpleChoiceBean> simpleChoices) {
+        this.simpleChoices = simpleChoices;
+    }
 
-	public int getMaxChoices() {
-		return maxChoices;
-	}
+    public int getMaxChoices() {
+        return maxChoices;
+    }
 
-	public void setMaxChoices(int maxChoices) {
-		this.maxChoices = maxChoices;
-	}
+    public void setMaxChoices(int maxChoices) {
+        this.maxChoices = maxChoices;
+    }
 
-	@Override
-	public boolean isShuffle() {
-		return shuffle;
-	}
+    @Override
+    public boolean isShuffle() {
+        return shuffle;
+    }
 
-	public void setShuffle(boolean shuffle) {
-		this.shuffle = shuffle;
-	}
+    public void setShuffle(boolean shuffle) {
+        this.shuffle = shuffle;
+    }
 
-	public String getPrompt() {
-		return prompt;
-	}
+    public String getPrompt() {
+        return prompt;
+    }
 
-	public void setPrompt(String prompt) {
-		this.prompt = prompt;
-	}
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
 
-	public boolean isIgnored() {
-		return ignored;
-	}
+    public boolean isIgnored() {
+        return ignored;
+    }
 
-	public void setIgnored(boolean ignored) {
-		this.ignored = ignored;
-	}
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
+    }
 }

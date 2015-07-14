@@ -1,8 +1,12 @@
 package eu.ydp.empiria.player.client.module.slideshow.view.player;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.*;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.slideshow.view.buttons.SlideshowButtonsView;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
@@ -10,44 +14,46 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SlideshowPlayerViewImpl implements SlideshowPlayerView {
 
-	@UiTemplate("SlideshowPlayerView.ui.xml")
-	interface SlideshowModuleUiBinder extends UiBinder<Widget, SlideshowPlayerViewImpl> {
-	};
+    @UiTemplate("SlideshowPlayerView.ui.xml")
+    interface SlideshowModuleUiBinder extends UiBinder<Widget, SlideshowPlayerViewImpl> {
+    }
 
-	private final SlideshowModuleUiBinder uiBinder = GWT.create(SlideshowModuleUiBinder.class);
+    ;
 
-	@UiField
-	protected FlowPanel titlePanel;
+    private final SlideshowModuleUiBinder uiBinder = GWT.create(SlideshowModuleUiBinder.class);
 
-	@UiField
-	protected Panel mainPanel;
+    @UiField
+    protected FlowPanel titlePanel;
 
-	@UiField
-	protected Panel slidesPanel;
+    @UiField
+    protected Panel mainPanel;
 
-	@UiField
-	protected Panel pagerPanel;
+    @UiField
+    protected Panel slidesPanel;
 
-	@Inject
-	public SlideshowPlayerViewImpl(@ModuleScoped SlideView slideView, @ModuleScoped SlideshowButtonsView buttonsView) {
-		uiBinder.createAndBindUi(this);
-		slidesPanel.add(slideView);
-		mainPanel.add(buttonsView.asWidget());
-	}
+    @UiField
+    protected Panel pagerPanel;
 
-	@Override
-	public void setTitle(Widget title) {
-		titlePanel.clear();
-		titlePanel.add(title);
-	}
+    @Inject
+    public SlideshowPlayerViewImpl(@ModuleScoped SlideView slideView, @ModuleScoped SlideshowButtonsView buttonsView) {
+        uiBinder.createAndBindUi(this);
+        slidesPanel.add(slideView);
+        mainPanel.add(buttonsView.asWidget());
+    }
 
-	@Override
-	public Widget asWidget() {
-		return mainPanel;
-	}
+    @Override
+    public void setTitle(Widget title) {
+        titlePanel.clear();
+        titlePanel.add(title);
+    }
 
-	@Override
-	public void addPager(Widget pager) {
-		pagerPanel.add(pager);
-	}
+    @Override
+    public Widget asWidget() {
+        return mainPanel;
+    }
+
+    @Override
+    public void addPager(Widget pager) {
+        pagerPanel.add(pager);
+    }
 }

@@ -17,112 +17,112 @@ import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsP
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SlideshowButtonsViewImpl extends Composite implements SlideshowButtonsView {
-	@UiTemplate("SlideshowButtonsView.ui.xml")
-	interface SlideshowButtonsUiBinder extends UiBinder<Widget, SlideshowButtonsViewImpl> {
-	}
+    @UiTemplate("SlideshowButtonsView.ui.xml")
+    interface SlideshowButtonsUiBinder extends UiBinder<Widget, SlideshowButtonsViewImpl> {
+    }
 
-	private final SlideshowButtonsUiBinder uiBinder = GWT.create(SlideshowButtonsUiBinder.class);
+    private final SlideshowButtonsUiBinder uiBinder = GWT.create(SlideshowButtonsUiBinder.class);
 
-	@UiField
-	protected FlowPanel buttonsPanel;
-	@UiField
-	protected TwoStateButton playPauseButton;
-	@UiField
-	protected PushButton stopButton;
-	@UiField
-	protected PushButton nextButton;
-	@UiField
-	protected PushButton previousButton;
+    @UiField
+    protected FlowPanel buttonsPanel;
+    @UiField
+    protected TwoStateButton playPauseButton;
+    @UiField
+    protected PushButton stopButton;
+    @UiField
+    protected PushButton nextButton;
+    @UiField
+    protected PushButton previousButton;
 
-	private StyleNameConstants styleNameConstants;
-	private SlideshowButtonsPresenter presenter;
+    private StyleNameConstants styleNameConstants;
+    private SlideshowButtonsPresenter presenter;
 
-	@Inject
-	public SlideshowButtonsViewImpl(StyleNameConstants styleNameConstants) {
-		this.styleNameConstants = styleNameConstants;
-		uiBinder.createAndBindUi(this);
-		addEventsHandlers();
-	}
+    @Inject
+    public SlideshowButtonsViewImpl(StyleNameConstants styleNameConstants) {
+        this.styleNameConstants = styleNameConstants;
+        uiBinder.createAndBindUi(this);
+        addEventsHandlers();
+    }
 
-	@UiFactory
-	protected TwoStateButton init() {
-		return new TwoStateButton(styleNameConstants.QP_SLIDESHOW_BUTTON_PLAY(), styleNameConstants.QP_SLIDESHOW_BUTTON_PAUSE());
-	}
+    @UiFactory
+    protected TwoStateButton init() {
+        return new TwoStateButton(styleNameConstants.QP_SLIDESHOW_BUTTON_PLAY(), styleNameConstants.QP_SLIDESHOW_BUTTON_PAUSE());
+    }
 
-	@Override
-	public void setEnabledNextButton(boolean enabled) {
-		nextButton.setEnabled(enabled);
-	}
+    @Override
+    public void setEnabledNextButton(boolean enabled) {
+        nextButton.setEnabled(enabled);
+    }
 
-	@Override
-	public void setEnabledPreviousButton(boolean enabled) {
-		previousButton.setEnabled(enabled);
-	}
+    @Override
+    public void setEnabledPreviousButton(boolean enabled) {
+        previousButton.setEnabled(enabled);
+    }
 
-	@Override
-	public void setPlayButtonDown(boolean down) {
-		playPauseButton.setStateDown(down);
-	}
+    @Override
+    public void setPlayButtonDown(boolean down) {
+        playPauseButton.setStateDown(down);
+    }
 
-	@Override
-	public boolean isPlayButtonDown() {
-		return playPauseButton.isStateDown();
-	}
+    @Override
+    public boolean isPlayButtonDown() {
+        return playPauseButton.isStateDown();
+    }
 
-	@Override
-	public Widget asWidget() {
-		return buttonsPanel.asWidget();
-	}
+    @Override
+    public Widget asWidget() {
+        return buttonsPanel.asWidget();
+    }
 
-	@Override
-	public void setPresenter(SlideshowButtonsPresenter presenter) {
-		this.presenter = presenter;
-	}
+    @Override
+    public void setPresenter(SlideshowButtonsPresenter presenter) {
+        this.presenter = presenter;
+    }
 
-	private void addEventsHandlers() {
-		playPauseButton.addClickHandler(createOnPlayClickCommand());
-		stopButton.addClickHandler(createOnStopClickCommand());
-		previousButton.addClickHandler(createOnPreviousClickCommand());
-		nextButton.addClickHandler(createOnNextClickCommand());
-	}
+    private void addEventsHandlers() {
+        playPauseButton.addClickHandler(createOnPlayClickCommand());
+        stopButton.addClickHandler(createOnStopClickCommand());
+        previousButton.addClickHandler(createOnPreviousClickCommand());
+        nextButton.addClickHandler(createOnNextClickCommand());
+    }
 
-	private ClickHandler createOnStopClickCommand() {
-		return new ClickHandler() {
+    private ClickHandler createOnStopClickCommand() {
+        return new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				presenter.onStopClick();
-			}
-		};
-	}
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.onStopClick();
+            }
+        };
+    }
 
-	private ClickHandler createOnNextClickCommand() {
-		return new ClickHandler() {
+    private ClickHandler createOnNextClickCommand() {
+        return new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				presenter.onNextClick();
-			}
-		};
-	}
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.onNextClick();
+            }
+        };
+    }
 
-	private ClickHandler createOnPreviousClickCommand() {
-		return new ClickHandler() {
+    private ClickHandler createOnPreviousClickCommand() {
+        return new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				presenter.onPreviousClick();
-			}
-		};
-	}
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.onPreviousClick();
+            }
+        };
+    }
 
-	private ClickHandler createOnPlayClickCommand() {
-		return new ClickHandler() {
+    private ClickHandler createOnPlayClickCommand() {
+        return new ClickHandler() {
 
-			@Override
-			public void onClick(ClickEvent event) {
-				presenter.onPlayPauseClick();
-			}
-		};
-	}
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.onPlayPauseClick();
+            }
+        };
+    }
 }

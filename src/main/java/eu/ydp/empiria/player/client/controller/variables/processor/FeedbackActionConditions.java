@@ -4,18 +4,18 @@ import com.google.inject.Inject;
 
 public class FeedbackActionConditions {
 
-	@Inject
-	private OutcomeAccessor outcomeAccessor;
+    @Inject
+    private OutcomeAccessor outcomeAccessor;
 
-	public boolean isPageAllOk() {
-		int todo = outcomeAccessor.getCurrentPageTodo();
-		int done = outcomeAccessor.getCurrentPageDone();
-		return todo > 0 && todo == done;
-	}
+    public boolean isPageAllOk() {
+        int todo = outcomeAccessor.getCurrentPageTodo();
+        int done = outcomeAccessor.getCurrentPageDone();
+        return todo > 0 && todo == done;
+    }
 
-	public boolean isPageAllOkWithoutPreviousErrors() {
-		boolean hasCurrentPageErrors = outcomeAccessor.getCurrentPageErrors() > 0;
-		return !hasCurrentPageErrors && isPageAllOk();
-	}
+    public boolean isPageAllOkWithoutPreviousErrors() {
+        boolean hasCurrentPageErrors = outcomeAccessor.getCurrentPageErrors() > 0;
+        return !hasCurrentPageErrors && isPageAllOk();
+    }
 
 }

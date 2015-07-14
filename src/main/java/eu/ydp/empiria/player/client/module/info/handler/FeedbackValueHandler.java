@@ -8,21 +8,21 @@ import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 
 public class FeedbackValueHandler implements FieldValueHandler {
 
-	private final DataSourceDataSupplier dataSourceDataSupplier;
-	private final ResultForPageIndexProvider resultForPageIndexProvider;
+    private final DataSourceDataSupplier dataSourceDataSupplier;
+    private final ResultForPageIndexProvider resultForPageIndexProvider;
 
-	@Inject
-	public FeedbackValueHandler(@Assisted ResultForPageIndexProvider resultForPageIndexProvider,
-	                            @Assisted DataSourceDataSupplier dataSourceDataSupplier) {
+    @Inject
+    public FeedbackValueHandler(@Assisted ResultForPageIndexProvider resultForPageIndexProvider,
+                                @Assisted DataSourceDataSupplier dataSourceDataSupplier) {
 
-		this.dataSourceDataSupplier = dataSourceDataSupplier;
-		this.resultForPageIndexProvider = resultForPageIndexProvider;
-	}
+        this.dataSourceDataSupplier = dataSourceDataSupplier;
+        this.resultForPageIndexProvider = resultForPageIndexProvider;
+    }
 
-	@Override
-	public String getValue(ContentFieldInfo info, int refItemIndex) {
-		int result = resultForPageIndexProvider.get(refItemIndex);
-		ProgressToStringRangeMap pageFeedbacks = dataSourceDataSupplier.getItemFeedbacks(refItemIndex);
-		return pageFeedbacks.getValueForProgress(result);
-	}
+    @Override
+    public String getValue(ContentFieldInfo info, int refItemIndex) {
+        int result = resultForPageIndexProvider.get(refItemIndex);
+        ProgressToStringRangeMap pageFeedbacks = dataSourceDataSupplier.getItemFeedbacks(refItemIndex);
+        return pageFeedbacks.getValueForProgress(result);
+    }
 }

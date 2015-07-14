@@ -5,5 +5,5 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.assistedinject.Assisted;
 
 public interface TouchReservationFactory {
-	HandlerRegistration addTouchReservationHandler(@Assisted IsWidget widget);
+    HandlerRegistration addTouchReservationHandler(@Assisted IsWidget widget);
 }

@@ -8,16 +8,16 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class TextEditorBeanProvider implements Provider<TextEditorBean> {
 
-	@Inject
-	private TextEditorJAXBParserFactory jaxbFactory;
-	@Inject
-	@ModuleScoped
-	private Provider<Element> elementProvider;
+    @Inject
+    private TextEditorJAXBParserFactory jaxbFactory;
+    @Inject
+    @ModuleScoped
+    private Provider<Element> elementProvider;
 
-	@Override
-	public TextEditorBean get() {
-		Element element = elementProvider.get();
-		JAXBParser<TextEditorBean> parser = jaxbFactory.create();
-		return parser.parse(element.toString());
-	}
+    @Override
+    public TextEditorBean get() {
+        Element element = elementProvider.get();
+        JAXBParser<TextEditorBean> parser = jaxbFactory.create();
+        return parser.parse(element.toString());
+    }
 }

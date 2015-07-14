@@ -9,17 +9,17 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SpeechScoreModule extends SimpleModuleBase {
 
-	@Inject
-	@ModuleScoped
-	private SpeechScorePresenter presenter;
+    @Inject
+    @ModuleScoped
+    private SpeechScorePresenter presenter;
 
-	@Override
-	public Widget getView() {
-		return presenter.getView();
-	}
+    @Override
+    public Widget getView() {
+        return presenter.getView();
+    }
 
-	@Override
-	protected void initModule(Element element) {
-		presenter.init(element);
-	}
+    @Override
+    protected void initModule(Element element) {
+        presenter.init(element);
+    }
 }

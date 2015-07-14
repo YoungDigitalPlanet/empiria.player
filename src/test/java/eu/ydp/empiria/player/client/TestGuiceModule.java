@@ -78,196 +78,196 @@ import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
-	private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
-	private final GuiceModuleConfiguration moduleConfiguration;
+    private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
+    private final GuiceModuleConfiguration moduleConfiguration;
 
-	public TestGuiceModule() {
-		moduleConfiguration = new GuiceModuleConfiguration();
-	}
+    public TestGuiceModule() {
+        moduleConfiguration = new GuiceModuleConfiguration();
+    }
 
-	public TestGuiceModule(Class<?>[] classToOmit, Class<?>[] classToMock, Class<?>[] classToSpy) {
-		super(classToOmit);
-		moduleConfiguration = new GuiceModuleConfiguration();
-		moduleConfiguration.addAllClassToOmit(classToOmit);
-		moduleConfiguration.addAllClassToMock(classToMock);
-		moduleConfiguration.addAllClassToSpy(classToSpy);
-	}
+    public TestGuiceModule(Class<?>[] classToOmit, Class<?>[] classToMock, Class<?>[] classToSpy) {
+        super(classToOmit);
+        moduleConfiguration = new GuiceModuleConfiguration();
+        moduleConfiguration.addAllClassToOmit(classToOmit);
+        moduleConfiguration.addAllClassToMock(classToMock);
+        moduleConfiguration.addAllClassToSpy(classToSpy);
+    }
 
-	public TestGuiceModule(GuiceModuleConfiguration moduleConfiguration) {
-		super(moduleConfiguration.getClassToOmmit());
-		this.moduleConfiguration = moduleConfiguration;
-	}
+    public TestGuiceModule(GuiceModuleConfiguration moduleConfiguration) {
+        super(moduleConfiguration.getClassToOmmit());
+        this.moduleConfiguration = moduleConfiguration;
+    }
 
-	private void init() {
-		bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class)
-														   .to(SchedulerMockImpl.class)
-														   .in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class)
-														   .to(PlayerEventsBus.class)
-														   .in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
-																		 .to(ConnectionModuleFactoryMock.class)
-																		 .in(Singleton.class));
-		// bindDescriptors.add(new
-		// BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
-		bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
-		bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class)
-																	   .to(FeedbackParserFactoryMock.class));
-	}
+    private void init() {
+        bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class)
+                .to(SchedulerMockImpl.class)
+                .in(Singleton.class));
+        bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class)
+                .to(PlayerEventsBus.class)
+                .in(Singleton.class));
+        bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
+                .to(ConnectionModuleFactoryMock.class)
+                .in(Singleton.class));
+        // bindDescriptors.add(new
+        // BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
+        bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
+        bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class)
+                .to(FeedbackParserFactoryMock.class));
+    }
 
-	@Override
-	public void configure() {
-		addPostConstructInterceptor(moduleConfiguration);
-		init();
-		List<Class<?>> classToMock = moduleConfiguration.getClassToMock();
-		List<Class<?>> classToSpy = moduleConfiguration.getClassToSpy();
-		for (BindDescriptor<?> bindDescriptor : bindDescriptors) {
-			if (classToMock.contains(bindDescriptor.getBind())) {
-				bind(bindDescriptor, BindType.MOCK);
-			} else if (classToSpy.contains(bindDescriptor.getBind())) {
-				bind(bindDescriptor, BindType.SPY);
-			} else {
-				bind(bindDescriptor, BindType.SIMPLE);
-			}
-		}
+    @Override
+    public void configure() {
+        addPostConstructInterceptor(moduleConfiguration);
+        init();
+        List<Class<?>> classToMock = moduleConfiguration.getClassToMock();
+        List<Class<?>> classToSpy = moduleConfiguration.getClassToSpy();
+        for (BindDescriptor<?> bindDescriptor : bindDescriptors) {
+            if (classToMock.contains(bindDescriptor.getBind())) {
+                bind(bindDescriptor, BindType.MOCK);
+            } else if (classToSpy.contains(bindDescriptor.getBind())) {
+                bind(bindDescriptor, BindType.SPY);
+            } else {
+                bind(bindDescriptor, BindType.SIMPLE);
+            }
+        }
 
-		bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
-		bind(MatcherRegistry.class).in(Singleton.class);
-		bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
-		bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
-		bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
-		bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
-		bind(XMLProxy.class).to(XMLProxyWrapper.class);
-		bind(BrowserNativeInterface.class).toInstance(
-				UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
-		bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
-		bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
-		bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
-		bind(FlowDataSupplier.class).toInstance(mock(FlowDataSupplier.class));
-		bind(SessionDataSupplier.class).toInstance(mock(SessionDataSupplier.class));
-		binder.bind(IJSONService.class)
-			  .to(NativeJSONService.class);
-		binder.requestStaticInjection(XMLProxyFactory.class);
-		bind(ResponseSocket.class).annotatedWith(PageScoped.class)
-								  .toInstance(mock(ResponseSocket.class));
-		bind(String.class).annotatedWith(UniqueId.class)
-						  .toInstance("id");
-		bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
-		bind(LogAppender.class).to(ConsoleAppender.class);
-		bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
-		install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
-		install(new FactoryModuleBuilder().build(PageScopeFactory.class));
-		install(new FactoryModuleBuilder().build(TextTrackFactory.class));
-		install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
-		install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
-		install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
-		install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
-		install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
-		install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
-	}
+        bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
+        bind(MatcherRegistry.class).in(Singleton.class);
+        bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
+        bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
+        bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
+        bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
+        bind(XMLProxy.class).to(XMLProxyWrapper.class);
+        bind(BrowserNativeInterface.class).toInstance(
+                UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
+        bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
+        bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
+        bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
+        bind(FlowDataSupplier.class).toInstance(mock(FlowDataSupplier.class));
+        bind(SessionDataSupplier.class).toInstance(mock(SessionDataSupplier.class));
+        binder.bind(IJSONService.class)
+                .to(NativeJSONService.class);
+        binder.requestStaticInjection(XMLProxyFactory.class);
+        bind(ResponseSocket.class).annotatedWith(PageScoped.class)
+                .toInstance(mock(ResponseSocket.class));
+        bind(String.class).annotatedWith(UniqueId.class)
+                .toInstance("id");
+        bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+        bind(LogAppender.class).to(ConsoleAppender.class);
+        bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
+        install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
+        install(new FactoryModuleBuilder().build(PageScopeFactory.class));
+        install(new FactoryModuleBuilder().build(TextTrackFactory.class));
+        install(new FactoryModuleBuilder().build(MatcherRegistryFactory.class));
+        install(new FactoryModuleBuilder().build(FieldValueHandlerFactory.class));
+        install(new FactoryModuleBuilder().build(AssessmentReportFactory.class));
+        install(new FactoryModuleBuilder().build(SingleFeedbackSoundPlayerFactory.class));
+        install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
+        install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
+    }
 
-	private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
-		HasPostConstructMethod hasPostConstruct = new HasPostConstructMethod(guiceModuleConfiguration.getClassWithDisabledPostConstruct());
-		final PostConstructInvoker postConstructInvoker = new PostConstructInvoker();
-		bindListener(hasPostConstruct, new TypeListener() {
-			@Override
-			public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-				encounter.register(postConstructInvoker);
-			}
-		});
-	}
+    private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
+        HasPostConstructMethod hasPostConstruct = new HasPostConstructMethod(guiceModuleConfiguration.getClassWithDisabledPostConstruct());
+        final PostConstructInvoker postConstructInvoker = new PostConstructInvoker();
+        bindListener(hasPostConstruct, new TypeListener() {
+            @Override
+            public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
+                encounter.register(postConstructInvoker);
+            }
+        });
+    }
 
-	@Provides
-	@Singleton
-	public StyleNameConstants getNameConstants() {
-		return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
-	}
+    @Provides
+    @Singleton
+    public StyleNameConstants getNameConstants() {
+        return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+    }
 
-	@Provides
-	public MediaControllerFactory getMediaControllerFactory() {
-		MediaControllerFactory factory = mock(MediaControllerFactory.class);
-		return factory;
-	}
+    @Provides
+    public MediaControllerFactory getMediaControllerFactory() {
+        MediaControllerFactory factory = mock(MediaControllerFactory.class);
+        return factory;
+    }
 
-	@Provides
-	@Singleton
-	public VideoTextTrackElementPresenter getVideoTextTrackElementPresenter() {
-		return mock(VideoTextTrackElementPresenter.class);
-	}
+    @Provides
+    @Singleton
+    public VideoTextTrackElementPresenter getVideoTextTrackElementPresenter() {
+        return mock(VideoTextTrackElementPresenter.class);
+    }
 
-	@Provides
-	public GWTPanelFactory gwtPanelFactory() {
-		return mock(GWTPanelFactory.class);
-	}
+    @Provides
+    public GWTPanelFactory gwtPanelFactory() {
+        return mock(GWTPanelFactory.class);
+    }
 
-	@Provides
-	public ConnectionView getConnectionView() {
-		return mock(ConnectionView.class);
-	}
+    @Provides
+    public ConnectionView getConnectionView() {
+        return mock(ConnectionView.class);
+    }
 
-	@Provides
-	@Singleton
-	public NativeStyleHelper getNativeStyleHelper() {
-		return mock(NativeStyleHelper.class);
-	}
+    @Provides
+    @Singleton
+    public NativeStyleHelper getNativeStyleHelper() {
+        return mock(NativeStyleHelper.class);
+    }
 
-	@Provides
-	@Singleton
-	public StyleSocket getStyleSocket() {
-		return mock(StyleSocket.class);
-	}
+    @Provides
+    @Singleton
+    public StyleSocket getStyleSocket() {
+        return mock(StyleSocket.class);
+    }
 
-	@Provides
-	@Singleton
-	public XMLParser getXmlParser() {
-		XMLParser parser = mock(XMLParser.class);
-		when(parser.parse(Matchers.anyString())).then(new Answer<Document>() {
-			@Override
-			public Document answer(InvocationOnMock invocation) throws Throwable {
-				return eu.ydp.gwtutil.xml.XMLParser.parse((String) invocation.getArguments()[0]);
-			}
-		});
+    @Provides
+    @Singleton
+    public XMLParser getXmlParser() {
+        XMLParser parser = mock(XMLParser.class);
+        when(parser.parse(Matchers.anyString())).then(new Answer<Document>() {
+            @Override
+            public Document answer(InvocationOnMock invocation) throws Throwable {
+                return eu.ydp.gwtutil.xml.XMLParser.parse((String) invocation.getArguments()[0]);
+            }
+        });
 
-		when(parser.createDocument()).then(new Answer<Document>() {
-			@Override
-			public Document answer(InvocationOnMock invocation) throws Throwable {
-				return eu.ydp.gwtutil.xml.XMLParser.createDocument();
-			}
-		});
-		return parser;
-	}
+        when(parser.createDocument()).then(new Answer<Document>() {
+            @Override
+            public Document answer(InvocationOnMock invocation) throws Throwable {
+                return eu.ydp.gwtutil.xml.XMLParser.createDocument();
+            }
+        });
+        return parser;
+    }
 
-	@Provides
-	@Singleton
-	public TouchRecognitionFactory getTouchRecognitionFactory() {
-		TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
-		when(factory.getTouchRecognition(Matchers.any(Widget.class), Matchers.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
-		return factory;
-	}
+    @Provides
+    @Singleton
+    public TouchRecognitionFactory getTouchRecognitionFactory() {
+        TouchRecognitionFactory factory = mock(TouchRecognitionFactory.class);
+        when(factory.getTouchRecognition(Matchers.any(Widget.class), Matchers.anyBoolean())).thenReturn(spy(new HasTouchHandlersMock()));
+        return factory;
+    }
 
-	@Provides
-	@Singleton
-	public PositionHelper getPositionHelper() {
-		PositionHelper helper = mock(PositionHelper.class);
-		when(helper.getXPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
-		when(helper.getYPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
-		return helper;
-	}
+    @Provides
+    @Singleton
+    public PositionHelper getPositionHelper() {
+        PositionHelper helper = mock(PositionHelper.class);
+        when(helper.getXPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
+        when(helper.getYPositionRelativeToTarget(Matchers.any(NativeEvent.class), Matchers.any(Element.class))).thenReturn(20);
+        return helper;
+    }
 
-	@Provides
-	DragDropHelper getDragDropHelper() {
-		return mock(DragDropHelper.class);
-	}
+    @Provides
+    DragDropHelper getDragDropHelper() {
+        return mock(DragDropHelper.class);
+    }
 
-	@Provides
-	ConnectionSurface getConnectionSurface() {
-		return mock(ConnectionSurface.class);
-	}
+    @Provides
+    ConnectionSurface getConnectionSurface() {
+        return mock(ConnectionSurface.class);
+    }
 
-	@Provides
-	@Singleton
-	NativeMethodInvocator getMethodInvocator() {
-		NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
-		return invocator;
-	}
+    @Provides
+    @Singleton
+    NativeMethodInvocator getMethodInvocator() {
+        NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
+        return invocator;
+    }
 }

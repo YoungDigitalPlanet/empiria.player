@@ -16,30 +16,30 @@ import static eu.ydp.empiria.player.client.module.ModuleTagName.PREV_ITEM_NAVIGA
 
 public abstract class NavigationButtonModuleConnectorExtension extends ControlModuleConnectorExtension {
 
-	private static final Map<String, NavigationButtonDirection> NODE2DIRECTION = ImmutableMap
-			.<String, NavigationButtonDirection>builder()
-			.put(NEXT_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.NEXT)
-			.put(PREV_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.PREVIOUS)
-			.build();
+    private static final Map<String, NavigationButtonDirection> NODE2DIRECTION = ImmutableMap
+            .<String, NavigationButtonDirection>builder()
+            .put(NEXT_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.NEXT)
+            .put(PREV_ITEM_NAVIGATION.tagName(), NavigationButtonDirection.PREVIOUS)
+            .build();
 
-	@Inject
-	private ModuleFactory moduleFactory;
+    @Inject
+    private ModuleFactory moduleFactory;
 
-	@Override
-	public ModuleCreator getModuleCreator() {
-		return new AbstractModuleCreator() {
-			@Override
-			public IModule createModule() {
-				NavigationButtonDirection direction = getDirection(getModuleNodeName());
-				NavigationButtonModule button = moduleFactory.createNavigationButtonModule(direction);
-				initializeModule(button);
-				return button;
-			}
-		};
-	}
+    @Override
+    public ModuleCreator getModuleCreator() {
+        return new AbstractModuleCreator() {
+            @Override
+            public IModule createModule() {
+                NavigationButtonDirection direction = getDirection(getModuleNodeName());
+                NavigationButtonModule button = moduleFactory.createNavigationButtonModule(direction);
+                initializeModule(button);
+                return button;
+            }
+        };
+    }
 
-	private NavigationButtonDirection getDirection(String name) {
-		return NODE2DIRECTION.get(name);
-	}
+    private NavigationButtonDirection getDirection(String name) {
+        return NODE2DIRECTION.get(name);
+    }
 
 }

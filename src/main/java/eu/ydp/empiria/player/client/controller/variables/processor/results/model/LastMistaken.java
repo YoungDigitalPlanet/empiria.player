@@ -2,6 +2,6 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 public enum LastMistaken {
 
-	CORRECT, WRONG, NONE
+    CORRECT, WRONG, NONE
 
 }

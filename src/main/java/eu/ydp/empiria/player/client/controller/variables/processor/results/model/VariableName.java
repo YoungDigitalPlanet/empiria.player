@@ -2,16 +2,16 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results.mode
 
 public enum VariableName {
 
-	TODO("TODO"), ERRORS("ERRORS"), DONE("DONE"), MISTAKES("MISTAKES"), LASTMISTAKEN("LASTMISTAKEN"), LASTCHANGE("LASTCHANGE");
+    TODO("TODO"), ERRORS("ERRORS"), DONE("DONE"), MISTAKES("MISTAKES"), LASTMISTAKEN("LASTMISTAKEN"), LASTCHANGE("LASTCHANGE");
 
-	private String name;
+    private String name;
 
-	VariableName(String name) {
-		this.name = name;
-	}
+    VariableName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 }

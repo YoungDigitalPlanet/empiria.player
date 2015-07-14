@@ -4,13 +4,13 @@ import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
 
 public class TouchOnImageEndHandler {
 
-	private final CanvasMoveEvents canvasMoveEvents;
+    private final CanvasMoveEvents canvasMoveEvents;
 
-	public TouchOnImageEndHandler(CanvasMoveEvents canvasMoveEvents) {
-		this.canvasMoveEvents = canvasMoveEvents;
-	}
+    public TouchOnImageEndHandler(CanvasMoveEvents canvasMoveEvents) {
+        this.canvasMoveEvents = canvasMoveEvents;
+    }
 
-	public void onEnd(TouchOnImageEvent touchOnImageEvent) {
-		canvasMoveEvents.onMoveEnd();
-	}
+    public void onEnd(TouchOnImageEvent touchOnImageEvent) {
+        canvasMoveEvents.onMoveEnd();
+    }
 }

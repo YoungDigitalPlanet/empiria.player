@@ -1,44 +1,46 @@
 package eu.ydp.empiria.player.client.controller.window;
 
-import static org.mockito.Mockito.*;
-
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class WindowResizeControllerTest {
 
-	@InjectMocks
-	private WindowResizeController testObj;
-	@Mock
-	private WindowResizeTimer commandTimer;
-	@Mock
-	private WindowDelegate windowDelegate;
+    @InjectMocks
+    private WindowResizeController testObj;
+    @Mock
+    private WindowResizeTimer commandTimer;
+    @Mock
+    private WindowDelegate windowDelegate;
 
-	@Test
-	public void shouldAddResizeHandler() {
-		// given
+    @Test
+    public void shouldAddResizeHandler() {
+        // given
 
-		// when
+        // when
 
-		// then
-		verify(windowDelegate).addResizeHandler(testObj);
-	}
-		
-	@Test
-	public void shouldScheduleTimer() {
-		// given
-		ResizeEvent event = mock(ResizeEvent.class);
-		int delayMillis = 250;
+        // then
+        verify(windowDelegate).addResizeHandler(testObj);
+    }
 
-		// when
-		testObj.onResize(event);
+    @Test
+    public void shouldScheduleTimer() {
+        // given
+        ResizeEvent event = mock(ResizeEvent.class);
+        int delayMillis = 250;
 
-		// then
-		verify(commandTimer).schedule(delayMillis);
-	}
+        // when
+        testObj.onResize(event);
+
+        // then
+        verify(commandTimer).schedule(delayMillis);
+    }
 }

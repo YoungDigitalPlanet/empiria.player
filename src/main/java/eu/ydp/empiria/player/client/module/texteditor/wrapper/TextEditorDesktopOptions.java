@@ -4,12 +4,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 class TextEditorDesktopOptions implements TextEditorOptions {
 
-	@Override
-	public JavaScriptObject getOptions() {
-		return getDesktopOptions();
-	}
+    @Override
+    public JavaScriptObject getOptions() {
+        return getDesktopOptions();
+    }
 
-	private native final JavaScriptObject getDesktopOptions() /*-{
+    private native final JavaScriptObject getDesktopOptions() /*-{
         var options = {
             link: false,
             indent: false,

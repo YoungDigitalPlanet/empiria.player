@@ -15,33 +15,33 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TextEditorBeanProviderTest {
 
-	@InjectMocks
-	private TextEditorBeanProvider testObj;
+    @InjectMocks
+    private TextEditorBeanProvider testObj;
 
-	@Mock
-	private TextEditorJAXBParserFactory jaxbFactory;
-	@Mock
-	private Provider<Element> elementProvider;
-	@Mock
-	private JAXBParser<TextEditorBean> parser;
-	@Mock
-	private Element element;
+    @Mock
+    private TextEditorJAXBParserFactory jaxbFactory;
+    @Mock
+    private Provider<Element> elementProvider;
+    @Mock
+    private JAXBParser<TextEditorBean> parser;
+    @Mock
+    private Element element;
 
-	@Test
-	public void shouldParseElementContent() {
-		// given
-		final String CONTENT = "CONTENT";
-		TextEditorBean expected = new TextEditorBean();
+    @Test
+    public void shouldParseElementContent() {
+        // given
+        final String CONTENT = "CONTENT";
+        TextEditorBean expected = new TextEditorBean();
 
-		when(elementProvider.get()).thenReturn(element);
-		when(element.toString()).thenReturn(CONTENT);
-		when(jaxbFactory.create()).thenReturn(parser);
-		when(parser.parse(CONTENT)).thenReturn(expected);
+        when(elementProvider.get()).thenReturn(element);
+        when(element.toString()).thenReturn(CONTENT);
+        when(jaxbFactory.create()).thenReturn(parser);
+        when(parser.parse(CONTENT)).thenReturn(expected);
 
-		// when
-		TextEditorBean actual = testObj.get();
+        // when
+        TextEditorBean actual = testObj.get();
 
-		// then
-		assertThat(actual).isEqualTo(expected);
-	}
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
 }

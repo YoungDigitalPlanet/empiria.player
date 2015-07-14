@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.extern
 
 public class ExternalFullscreenVideoAvailability {
 
-	public boolean isAvailable() {
-		return isAvailableJs();
-	}
+    public boolean isAvailable() {
+        return isAvailableJs();
+    }
 
-	private native boolean isAvailableJs()/*-{
-											return typeof $wnd.empiriaMediaFullscreenVideoSupported == 'function'  &&  $wnd.empiriaMediaFullscreenVideoSupported();  
-											}-*/;
+    private native boolean isAvailableJs()/*-{
+        return typeof $wnd.empiriaMediaFullscreenVideoSupported == 'function' && $wnd.empiriaMediaFullscreenVideoSupported();
+    }-*/;
 }

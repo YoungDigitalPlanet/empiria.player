@@ -4,14 +4,14 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 
 class PageViewLoadedHandler implements PlayerEventHandler {
-	private IMultiPageController multiPageController;
+    private IMultiPageController multiPageController;
 
-	public PageViewLoadedHandler(IMultiPageController multiPageController) {
-		this.multiPageController = multiPageController;
-	}
+    public PageViewLoadedHandler(IMultiPageController multiPageController) {
+        this.multiPageController = multiPageController;
+    }
 
-	@Override
-	public void onPlayerEvent(PlayerEvent event) {
-		multiPageController.detachAttachPanels();
-	}
+    @Override
+    public void onPlayerEvent(PlayerEvent event) {
+        multiPageController.detachAttachPanels();
+    }
 }

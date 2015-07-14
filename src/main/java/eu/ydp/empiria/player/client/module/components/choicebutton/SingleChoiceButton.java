@@ -5,16 +5,16 @@ import com.google.inject.assistedinject.Assisted;
 
 public class SingleChoiceButton extends ChoiceButtonBase {
 
-	@Inject
-	public SingleChoiceButton(@Assisted String moduleStyleNamePart) {
-		super(moduleStyleNamePart);
-		this.moduleStyleNamePart = moduleStyleNamePart;
-		updateStyle();
-	}
+    @Inject
+    public SingleChoiceButton(@Assisted String moduleStyleNamePart) {
+        super(moduleStyleNamePart);
+        this.moduleStyleNamePart = moduleStyleNamePart;
+        updateStyle();
+    }
 
-	@Override
-	public void setSelected(boolean value) {
-		super.setSelected(value);
-	}
+    @Override
+    public void setSelected(boolean value) {
+        super.setSelected(value);
+    }
 
 }

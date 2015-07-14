@@ -1,5 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"  xmlns:d="urn:import:eu.ydp.empiria.player.client.ui.drop">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<d:FlowPanelWithDropZone ui:field="container"/>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:d="urn:import:eu.ydp.empiria.player.client.ui.drop">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <d:FlowPanelWithDropZone ui:field="container"/>
 </ui:UiBinder>

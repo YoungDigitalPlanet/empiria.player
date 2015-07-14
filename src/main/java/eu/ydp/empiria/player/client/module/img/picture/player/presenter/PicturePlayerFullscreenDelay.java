@@ -6,16 +6,17 @@ import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureP
 
 public class PicturePlayerFullscreenDelay {
 
-	public void openImageWithDelay(final LightBox lightBox, final PicturePlayerBean bean) {
-		Timer timer = createFullscreenDelay(lightBox, bean);
-		timer.schedule(300);
-	}
+    public void openImageWithDelay(final LightBox lightBox, final PicturePlayerBean bean) {
+        Timer timer = createFullscreenDelay(lightBox, bean);
+        timer.schedule(300);
+    }
 
-	private Timer createFullscreenDelay(final LightBox lightBox, final PicturePlayerBean bean) {
-		return new Timer() {
-			@Override public void run() {
-				lightBox.openImage(bean.getSrcFullScreen(), bean.getTitle());
-			}
-		};
-	}
+    private Timer createFullscreenDelay(final LightBox lightBox, final PicturePlayerBean bean) {
+        return new Timer() {
+            @Override
+            public void run() {
+                lightBox.openImage(bean.getSrcFullScreen(), bean.getTitle());
+            }
+        };
+    }
 }

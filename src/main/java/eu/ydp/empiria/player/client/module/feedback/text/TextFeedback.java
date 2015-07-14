@@ -4,11 +4,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface TextFeedback {
 
-	void show();
+    void show();
 
-	void hide();
+    void hide();
 
-	void setTextElement(Widget widget);
+    void setTextElement(Widget widget);
 
-	void clearTextElement();
+    void clearTextElement();
 }

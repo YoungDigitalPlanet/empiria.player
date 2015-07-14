@@ -4,20 +4,19 @@ import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 
 public interface DataSourceDataSupplier {
-	int getItemsCount();
+    int getItemsCount();
 
-	String getItemTitle(int itemIndex);
+    String getItemTitle(int itemIndex);
 
-	String getAssessmentTitle();
+    String getAssessmentTitle();
 
-	/**
-	 * Zwraca wezel assessmentItemRef o wskazanym id
-	 * 
-	 * @param index
-	 *            index wezla
-	 * @return Element lub null gdy element o podanym indeksie nie istnieje
-	 */
-	Element getItem(int itemIndex);
+    /**
+     * Zwraca wezel assessmentItemRef o wskazanym id
+     *
+     * @param index index wezla
+     * @return Element lub null gdy element o podanym indeksie nie istnieje
+     */
+    Element getItem(int itemIndex);
 
-	ProgressToStringRangeMap getItemFeedbacks(int itemIndex);
+    ProgressToStringRangeMap getItemFeedbacks(int itemIndex);
 }

@@ -8,12 +8,12 @@ import eu.ydp.empiria.player.client.view.page.PageViewSocketImpl;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 public class PageViewCache extends AbstractElementCache<KeyValue<PageViewSocket, PageContentView>> {
-	@Inject
-	private MultiPageController multiPageView;
+    @Inject
+    private MultiPageController multiPageView;
 
-	@Override
-	protected KeyValue<PageViewSocket, PageContentView> getElement(Integer index) {
-		PageContentView view = new PageContentView(multiPageView.getViewForPage(index));
-		return new KeyValue<PageViewSocket, PageContentView>(new PageViewSocketImpl(view), view);
-	}
+    @Override
+    protected KeyValue<PageViewSocket, PageContentView> getElement(Integer index) {
+        PageContentView view = new PageContentView(multiPageView.getViewForPage(index));
+        return new KeyValue<PageViewSocket, PageContentView>(new PageViewSocketImpl(view), view);
+    }
 }

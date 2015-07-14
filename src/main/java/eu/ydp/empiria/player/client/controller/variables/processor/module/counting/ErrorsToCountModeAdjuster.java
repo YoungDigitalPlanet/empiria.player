@@ -4,22 +4,22 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.CountM
 
 public class ErrorsToCountModeAdjuster {
 
-	public int adjustValueToCountMode(int value, CountMode countMode) {
-		int adjustedValue;
-		if (countMode == CountMode.CORRECT_ANSWERS) {
-			adjustedValue = value;
-		} else {
-			adjustedValue = getOneIfBiggerThenZero(value);
-		}
+    public int adjustValueToCountMode(int value, CountMode countMode) {
+        int adjustedValue;
+        if (countMode == CountMode.CORRECT_ANSWERS) {
+            adjustedValue = value;
+        } else {
+            adjustedValue = getOneIfBiggerThenZero(value);
+        }
 
-		return adjustedValue;
-	}
+        return adjustedValue;
+    }
 
-	private int getOneIfBiggerThenZero(int value) {
-		if (value > 0) {
-			return 1;
-		} else {
-			return value;
-		}
-	}
+    private int getOneIfBiggerThenZero(int value) {
+        if (value > 0) {
+            return 1;
+        } else {
+            return value;
+        }
+    }
 }

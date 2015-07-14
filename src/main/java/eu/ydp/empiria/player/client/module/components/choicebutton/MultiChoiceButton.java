@@ -5,13 +5,13 @@ import com.google.inject.assistedinject.Assisted;
 
 public class MultiChoiceButton extends ChoiceButtonBase {
 
-	@Inject
-	public MultiChoiceButton(@Assisted String moduleStyleNamePart) {
+    @Inject
+    public MultiChoiceButton(@Assisted String moduleStyleNamePart) {
 
-		super(moduleStyleNamePart);
-		this.moduleStyleNamePart = moduleStyleNamePart;
-		selected = false;
-		updateStyle();
-	}
+        super(moduleStyleNamePart);
+        this.moduleStyleNamePart = moduleStyleNamePart;
+        selected = false;
+        updateStyle();
+    }
 
 }

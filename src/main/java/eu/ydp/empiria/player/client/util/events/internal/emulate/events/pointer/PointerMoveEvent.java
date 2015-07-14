@@ -4,23 +4,23 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.pointe
 
 public class PointerMoveEvent extends PointerEvent<PointerMoveHandler> {
 
-	private static final Type<PointerMoveHandler> TYPE = new Type<PointerMoveHandler>(PointerEventsConstants.POINTER_MOVE, new PointerMoveEvent());
+    private static final Type<PointerMoveHandler> TYPE = new Type<PointerMoveHandler>(PointerEventsConstants.POINTER_MOVE, new PointerMoveEvent());
 
-	protected PointerMoveEvent() {
-	}
+    protected PointerMoveEvent() {
+    }
 
-	public static Type<PointerMoveHandler> getType() {
-		return TYPE;
-	}
+    public static Type<PointerMoveHandler> getType() {
+        return TYPE;
+    }
 
-	@Override
-	public com.google.gwt.event.dom.client.DomEvent.Type<PointerMoveHandler> getAssociatedType() {
-		return TYPE;
-	}
+    @Override
+    public com.google.gwt.event.dom.client.DomEvent.Type<PointerMoveHandler> getAssociatedType() {
+        return TYPE;
+    }
 
-	@Override
-	protected void dispatch(PointerMoveHandler handler) {
-		handler.onPointerMove(this);
-	}
+    @Override
+    protected void dispatch(PointerMoveHandler handler) {
+        handler.onPointerMove(this);
+    }
 
 }

@@ -28,11 +28,11 @@ import eu.ydp.gwtutil.client.json.YJsonArray;
 
 /**
  * Socket interface for modules
- * 
+ *
  * @author Rafal Rybacki
  */
 public interface ModuleSocket extends InlineBodyGeneratorSocketProvider, ParenthoodSocket {
 
-	YJsonArray getStateById(String identifier);
+    YJsonArray getStateById(String identifier);
 
 }

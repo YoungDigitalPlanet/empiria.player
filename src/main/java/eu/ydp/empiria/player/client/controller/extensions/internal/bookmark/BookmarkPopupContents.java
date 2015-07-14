@@ -21,91 +21,91 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class BookmarkPopupContents extends Composite implements IBookmarkPopupContentsView {
 
-	private static BookmarkPopupPanelUiBinder uiBinder = GWT.create(BookmarkPopupPanelUiBinder.class);
+    private static BookmarkPopupPanelUiBinder uiBinder = GWT.create(BookmarkPopupPanelUiBinder.class);
 
-	interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> {
-	}
+    interface BookmarkPopupPanelUiBinder extends UiBinder<Widget, BookmarkPopupContents> {
+    }
 
-	IBookmarkPopupContentsPresenter presenter;
-	private HandlerRegistration previewHandlerRegistration;
+    IBookmarkPopupContentsPresenter presenter;
+    private HandlerRegistration previewHandlerRegistration;
 
-	@UiField
-	TextBox titleTextBox;
+    @UiField
+    TextBox titleTextBox;
 
-	@UiField
-	FlowPanel innerInnerPanel;
+    @UiField
+    FlowPanel innerInnerPanel;
 
-	public BookmarkPopupContents() {
-		initWidget(uiBinder.createAndBindUi(this));
-	}
+    public BookmarkPopupContents() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
-	public void setFocus() {
-		titleTextBox.setFocus(true);
-		titleTextBox.setSelectionRange(0, titleTextBox.getText().length());
-	}
+    public void setFocus() {
+        titleTextBox.setFocus(true);
+        titleTextBox.setSelectionRange(0, titleTextBox.getText().length());
+    }
 
-	@Override
-	public void setPresenter(IBookmarkPopupContentsPresenter presenter) {
-		this.presenter = presenter;
-	}
+    @Override
+    public void setPresenter(IBookmarkPopupContentsPresenter presenter) {
+        this.presenter = presenter;
+    }
 
-	@UiHandler("okButton")
-	public void okClickHandler(ClickEvent event) {
-		presenter.applyBookmark();
-	}
+    @UiHandler("okButton")
+    public void okClickHandler(ClickEvent event) {
+        presenter.applyBookmark();
+    }
 
-	@UiHandler("deleteButton")
-	public void deleteClickHandler(ClickEvent event) {
-		presenter.deleteBookmark();
-	}
+    @UiHandler("deleteButton")
+    public void deleteClickHandler(ClickEvent event) {
+        presenter.deleteBookmark();
+    }
 
-	@UiHandler("closeButton")
-	public void closeClickHandler(ClickEvent event) {
-		presenter.discardChanges();
-	}
+    @UiHandler("closeButton")
+    public void closeClickHandler(ClickEvent event) {
+        presenter.discardChanges();
+    }
 
-	@UiHandler("titleTextBox")
-	public void titleKeyDownHandler(KeyDownEvent event) {
-		if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-			presenter.applyBookmark();
-		} else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
-			presenter.discardChanges();
-		}
-	}
+    @UiHandler("titleTextBox")
+    public void titleKeyDownHandler(KeyDownEvent event) {
+        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+            presenter.applyBookmark();
+        } else if (event.getNativeKeyCode() == KeyCodes.KEY_ESCAPE) {
+            presenter.discardChanges();
+        }
+    }
 
-	@UiHandler("titleTextBox")
-	public void focusHandler(FocusEvent event) {
-		previewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
-			@Override
-			public void onPreviewNativeEvent(NativePreviewEvent preview) {
-				NativeEvent event = preview.getNativeEvent();
-				Element elt = event.getEventTarget().cast();
-				String eventType = event.getType();
-				boolean touched = eventType.equals("mousedown") || eventType.equals("touchstart");
-				if (touched && !innerInnerPanel.getElement().isOrHasChild(elt)) {
-					presenter.applyBookmark();
-				}
-			}
-		});
+    @UiHandler("titleTextBox")
+    public void focusHandler(FocusEvent event) {
+        previewHandlerRegistration = Event.addNativePreviewHandler(new NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(NativePreviewEvent preview) {
+                NativeEvent event = preview.getNativeEvent();
+                Element elt = event.getEventTarget().cast();
+                String eventType = event.getType();
+                boolean touched = eventType.equals("mousedown") || eventType.equals("touchstart");
+                if (touched && !innerInnerPanel.getElement().isOrHasChild(elt)) {
+                    presenter.applyBookmark();
+                }
+            }
+        });
 
-	}
+    }
 
-	@Override
-	public void setBookmarkTitle(String title) {
-		titleTextBox.setText(title);
-	}
+    @Override
+    public void setBookmarkTitle(String title) {
+        titleTextBox.setText(title);
+    }
 
-	@Override
-	public String getBookmarkTitle() {
-		return titleTextBox.getText();
-	}
+    @Override
+    public String getBookmarkTitle() {
+        return titleTextBox.getText();
+    }
 
-	@Override
-	protected void onUnload() {
-		super.onUnload();
-		if (previewHandlerRegistration != null) {
-			previewHandlerRegistration.removeHandler();
-		}
-	}
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        if (previewHandlerRegistration != null) {
+            previewHandlerRegistration.removeHandler();
+        }
+    }
 
 }

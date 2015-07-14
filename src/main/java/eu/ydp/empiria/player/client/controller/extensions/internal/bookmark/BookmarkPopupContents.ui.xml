@@ -1,21 +1,21 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res" />
-    <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTENTS}" >
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTENTS}">
         <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_OUTER}">
             <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_INNER}">
                 <g:FlowPanel ui:field="innerInnerPanel" styleName="{res.QP_BOOKMARK_POPUP_CONTAINER_INNER_INNER}">
-             	   <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_TITLE_PANEL}">
-             	       <g:TextBox ui:field="titleTextBox" styleName="{res.QP_BOOKMARK_POPUP_TITLE}" maxLength="30" />
-             	   </g:FlowPanel>
-             	   <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_BUTTONS_PANEL}">
-					    <g:PushButton ui:field="okButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_OK}"/>
-					    <g:PushButton ui:field="deleteButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_DELETE}"/>
-					    <g:PushButton ui:field="closeButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_CLOSE}"/>
-             	   </g:FlowPanel>     
-	    		</g:FlowPanel>
-	    	</g:FlowPanel>
-	    </g:FlowPanel>
+                    <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_TITLE_PANEL}">
+                        <g:TextBox ui:field="titleTextBox" styleName="{res.QP_BOOKMARK_POPUP_TITLE}" maxLength="30"/>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName="{res.QP_BOOKMARK_POPUP_BUTTONS_PANEL}">
+                        <g:PushButton ui:field="okButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_OK}"/>
+                        <g:PushButton ui:field="deleteButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_DELETE}"/>
+                        <g:PushButton ui:field="closeButton" styleName="{res.QP_BOOKMARK_POPUP_BUTTON_CLOSE}"/>
+                    </g:FlowPanel>
+                </g:FlowPanel>
+            </g:FlowPanel>
+        </g:FlowPanel>
     </g:FlowPanel>
 </ui:UiBinder> 

@@ -16,136 +16,136 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class TextEditorModuleTest {
 
-	@InjectMocks
-	private TextEditorModule testObj;
+    @InjectMocks
+    private TextEditorModule testObj;
 
-	@Mock
-	private TextEditorPresenter presenter;
-	@Mock
-	private TextEditorModelEncoder textEditorModelEncoder;
+    @Mock
+    private TextEditorPresenter presenter;
+    @Mock
+    private TextEditorModelEncoder textEditorModelEncoder;
 
-	@Test
-	public void shouldConvertEditorOnBodyLoad() {
-		// when
-		testObj.onBodyLoad();
+    @Test
+    public void shouldConvertEditorOnBodyLoad() {
+        // when
+        testObj.onBodyLoad();
 
-		// then
-		verify(presenter).convertEditor();
-	}
+        // then
+        verify(presenter).convertEditor();
+    }
 
-	@Test
-	public void shouldConvertEditorOnBodyUnload() {
-		// when
-		testObj.onBodyUnload();
+    @Test
+    public void shouldConvertEditorOnBodyUnload() {
+        // when
+        testObj.onBodyUnload();
 
-		// then
-		verify(presenter).convertEditor();
-	}
+        // then
+        verify(presenter).convertEditor();
+    }
 
-	@Test
-	public void shouldLockPresenter_onLock() {
-		// when
-		testObj.lock(true);
+    @Test
+    public void shouldLockPresenter_onLock() {
+        // when
+        testObj.lock(true);
 
-		// then
-		verify(presenter).lock();
-	}
+        // then
+        verify(presenter).lock();
+    }
 
-	@Test
-	public void shouldLockPresenter_onShowAnswer() {
-		// when
-		testObj.showCorrectAnswers(true);
+    @Test
+    public void shouldLockPresenter_onShowAnswer() {
+        // when
+        testObj.showCorrectAnswers(true);
 
-		// then
-		verify(presenter).lock();
-	}
+        // then
+        verify(presenter).lock();
+    }
 
-	@Test
-	public void shouldLockPresenter_onmarkAnswers() {
-		// when
-		testObj.markAnswers(true);
+    @Test
+    public void shouldLockPresenter_onmarkAnswers() {
+        // when
+        testObj.markAnswers(true);
 
-		// then
-		verify(presenter).lock();
-	}
+        // then
+        verify(presenter).lock();
+    }
 
-	@Test
-	public void shouldUnlockPresenter_onLock() {
-		// when
-		testObj.lock(false);
+    @Test
+    public void shouldUnlockPresenter_onLock() {
+        // when
+        testObj.lock(false);
 
-		// then
-		verify(presenter).unlock();
-	}
+        // then
+        verify(presenter).unlock();
+    }
 
-	@Test
-	public void shouldUnlockPresenter_onShowAnswer() {
-		// when
-		testObj.showCorrectAnswers(false);
+    @Test
+    public void shouldUnlockPresenter_onShowAnswer() {
+        // when
+        testObj.showCorrectAnswers(false);
 
-		// then
-		verify(presenter).unlock();
-	}
+        // then
+        verify(presenter).unlock();
+    }
 
-	@Test
-	public void shouldUnlockPresenter_onmarkAnswers() {
-		// when
-		testObj.markAnswers(false);
+    @Test
+    public void shouldUnlockPresenter_onmarkAnswers() {
+        // when
+        testObj.markAnswers(false);
 
-		// then
-		verify(presenter).unlock();
-	}
+        // then
+        verify(presenter).unlock();
+    }
 
-	@Test
-	public void shouldSetStateOnPresenter() {
-		// given
-		String content = "any string";
-		TextEditorModel expectedTextEditorModel = new TextEditorModel(content);
-		JSONArray state = mock(JSONArray.class);
+    @Test
+    public void shouldSetStateOnPresenter() {
+        // given
+        String content = "any string";
+        TextEditorModel expectedTextEditorModel = new TextEditorModel(content);
+        JSONArray state = mock(JSONArray.class);
 
-		when(textEditorModelEncoder.decodeModel(state)).thenReturn(expectedTextEditorModel);
+        when(textEditorModelEncoder.decodeModel(state)).thenReturn(expectedTextEditorModel);
 
-		// when
-		testObj.setState(state);
+        // when
+        testObj.setState(state);
 
-		// then
-		verify(presenter).setTextEditorModel(expectedTextEditorModel);
-	}
+        // then
+        verify(presenter).setTextEditorModel(expectedTextEditorModel);
+    }
 
-	@Test
-	public void shouldGetStateFromPresenter() {
-		// given
-		String content = "any string";
-		TextEditorModel textEditorModel = new TextEditorModel(content);
-		when(presenter.getTextEditorModel()).thenReturn(textEditorModel);
-		JSONArray expectedState = mock(JSONArray.class);
-		when(textEditorModelEncoder.encodeModel(textEditorModel)).thenReturn(expectedState);
+    @Test
+    public void shouldGetStateFromPresenter() {
+        // given
+        String content = "any string";
+        TextEditorModel textEditorModel = new TextEditorModel(content);
+        when(presenter.getTextEditorModel()).thenReturn(textEditorModel);
+        JSONArray expectedState = mock(JSONArray.class);
+        when(textEditorModelEncoder.encodeModel(textEditorModel)).thenReturn(expectedState);
 
-		// when
-		JSONArray actual = testObj.getState();
+        // when
+        JSONArray actual = testObj.getState();
 
-		// then
-		assertThat(actual).isEqualTo(expectedState);
-	}
+        // then
+        assertThat(actual).isEqualTo(expectedState);
+    }
 
-	@Test
-	public void shouldSetEmptyModelOnReset() {
-		// given
-		TextEditorModel emptyTextEditorModel = TextEditorModel.createEmpty();
+    @Test
+    public void shouldSetEmptyModelOnReset() {
+        // given
+        TextEditorModel emptyTextEditorModel = TextEditorModel.createEmpty();
 
-		// when
-		testObj.reset();
+        // when
+        testObj.reset();
 
-		// then
-		verify(presenter).setTextEditorModel(emptyTextEditorModel);
-	}
+        // then
+        verify(presenter).setTextEditorModel(emptyTextEditorModel);
+    }
 
-	@Test
-	public void shouldEnablePreviewMode() {
-		// when
-		testObj.enablePreviewMode();
+    @Test
+    public void shouldEnablePreviewMode() {
+        // when
+        testObj.enablePreviewMode();
 
-		// then
-		verify(presenter).enablePreviewMode();
-	}
+        // then
+        verify(presenter).enablePreviewMode();
+    }
 }

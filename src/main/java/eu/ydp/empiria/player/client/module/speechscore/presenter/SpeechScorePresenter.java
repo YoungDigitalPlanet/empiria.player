@@ -8,19 +8,19 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class SpeechScorePresenter {
 
-	@Inject
-	@ModuleScoped
-	private SpeechScoreLinkView view;
+    @Inject
+    @ModuleScoped
+    private SpeechScoreLinkView view;
 
-	private static final String URL_ATTR_NAME = "url";
+    private static final String URL_ATTR_NAME = "url";
 
-	public Widget getView() {
-		return view.asWidget();
-	}
+    public Widget getView() {
+        return view.asWidget();
+    }
 
-	public void init(Element element) {
-		String linkText = element.getFirstChild().getNodeValue();
-		String href = "http://" + element.getAttribute(URL_ATTR_NAME);
-		view.buildLink(linkText, href);
-	}
+    public void init(Element element) {
+        String linkText = element.getFirstChild().getNodeValue();
+        String href = "http://" + element.getAttribute(URL_ATTR_NAME);
+        view.buildLink(linkText, href);
+    }
 }

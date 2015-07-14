@@ -5,11 +5,11 @@ import com.google.gwt.inject.client.Ginjector;
 
 @GinModules(TestGinModule.class)
 public interface TestGinjector extends Ginjector {
-	SimpleInject getSimpleInject();
+    SimpleInject getSimpleInject();
 
-	ProviderInject getProviderInject();
+    ProviderInject getProviderInject();
 
-	SimpleFactory getSimpleFactory();
+    SimpleFactory getSimpleFactory();
 
-	InterfaceFactory getInterfaceFactory();
+    InterfaceFactory getInterfaceFactory();
 }

@@ -13,54 +13,54 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class TestResetButtonModuleTest {
 
-	private TestResetButtonModule testObj;
+    private TestResetButtonModule testObj;
 
-	@Mock
-	private TestResetButtonPresenter presenter;
+    @Mock
+    private TestResetButtonPresenter presenter;
 
-	@Before
-	public void setUp() {
-		testObj = new TestResetButtonModule(presenter);
-	}
+    @Before
+    public void setUp() {
+        testObj = new TestResetButtonModule(presenter);
+    }
 
-	@Test
-	public void shouldGetView() {
-		// given
-		Widget view = mock(Widget.class);
+    @Test
+    public void shouldGetView() {
+        // given
+        Widget view = mock(Widget.class);
 
-		when(presenter.getView()).thenReturn(view);
+        when(presenter.getView()).thenReturn(view);
 
-		// when
-		Widget result = testObj.getView();
+        // when
+        Widget result = testObj.getView();
 
-		// then
-		assertThat(result).isEqualTo(view);
-	}
+        // then
+        assertThat(result).isEqualTo(view);
+    }
 
-	@Test
-	public void shouldLock() {
-		// when
-		testObj.lock(true);
+    @Test
+    public void shouldLock() {
+        // when
+        testObj.lock(true);
 
-		// then
-		verify(presenter).lock();
-	}
+        // then
+        verify(presenter).lock();
+    }
 
-	@Test
-	public void shouldUnlock() {
-		// when
-		testObj.lock(false);
+    @Test
+    public void shouldUnlock() {
+        // when
+        testObj.lock(false);
 
-		// then
-		verify(presenter).unlock();
-	}
+        // then
+        verify(presenter).unlock();
+    }
 
-	@Test
-	public void shouldEnablePreviewMode() {
-		// when
-		testObj.enablePreviewMode();
+    @Test
+    public void shouldEnablePreviewMode() {
+        // when
+        testObj.enablePreviewMode();
 
-		// then
-		verify(presenter).enablePreviewMode();
-	}
+        // then
+        verify(presenter).enablePreviewMode();
+    }
 }

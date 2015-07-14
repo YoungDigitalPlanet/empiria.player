@@ -1,23 +1,22 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.IsWidget;
-
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
+import java.util.List;
+
 public interface ToolboxView extends IsWidget {
-	void showPalette();
+    void showPalette();
 
-	void hidePalette();
+    void hidePalette();
 
-	void selectPencil();
+    void selectPencil();
 
-	void selectEraser();
+    void selectEraser();
 
-	void setPaletteColor(ColorModel colorModel);
+    void setPaletteColor(ColorModel colorModel);
 
-	void setPalette(List<ColorModel> colorModel);
+    void setPalette(List<ColorModel> colorModel);
 
-	void setPresenterAndBind(ToolboxPresenter toolboxPresenter);
+    void setPresenterAndBind(ToolboxPresenter toolboxPresenter);
 }

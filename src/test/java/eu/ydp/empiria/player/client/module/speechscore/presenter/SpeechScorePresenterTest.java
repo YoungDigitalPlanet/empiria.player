@@ -14,28 +14,28 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SpeechScorePresenterTest {
 
-	@InjectMocks
-	private SpeechScorePresenter testObj;
+    @InjectMocks
+    private SpeechScorePresenter testObj;
 
-	@Mock
-	private SpeechScoreLinkView view;
+    @Mock
+    private SpeechScoreLinkView view;
 
-	@Test
-	public void shouldBuildLinkOnView() {
-		// given
-		final String LINK_TEXT = "Link text";
+    @Test
+    public void shouldBuildLinkOnView() {
+        // given
+        final String LINK_TEXT = "Link text";
 
-		Node node = mock(Node.class);
-		when(node.getNodeValue()).thenReturn(LINK_TEXT);
+        Node node = mock(Node.class);
+        when(node.getNodeValue()).thenReturn(LINK_TEXT);
 
-		Element element = mock(Element.class);
-		when(element.getFirstChild()).thenReturn(node);
-		when(element.getAttribute("url")).thenReturn("url");
+        Element element = mock(Element.class);
+        when(element.getFirstChild()).thenReturn(node);
+        when(element.getAttribute("url")).thenReturn("url");
 
-		// when
-		testObj.init(element);
+        // when
+        testObj.init(element);
 
-		// then
-		verify(view).buildLink(LINK_TEXT, "http://url");
-	}
+        // then
+        verify(view).buildLink(LINK_TEXT, "http://url");
+    }
 }

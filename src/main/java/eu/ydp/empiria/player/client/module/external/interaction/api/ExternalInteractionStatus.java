@@ -5,9 +5,9 @@ import com.google.gwt.core.client.js.JsType;
 
 @JsType
 public interface ExternalInteractionStatus {
-	@JsProperty
-	int getErrors();
+    @JsProperty
+    int getErrors();
 
-	@JsProperty
-	int getDone();
+    @JsProperty
+    int getDone();
 }

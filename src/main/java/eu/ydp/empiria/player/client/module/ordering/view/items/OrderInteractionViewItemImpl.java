@@ -12,26 +12,26 @@ import com.google.inject.assistedinject.Assisted;
 
 public class OrderInteractionViewItemImpl extends Composite implements OrderInteractionViewItem {
 
-	private static OrderInrteractionViewItemUiBinder uiBinder = GWT.create(OrderInrteractionViewItemUiBinder.class);
+    private static OrderInrteractionViewItemUiBinder uiBinder = GWT.create(OrderInrteractionViewItemUiBinder.class);
 
-	interface OrderInrteractionViewItemUiBinder extends UiBinder<Widget, OrderInteractionViewItemImpl> {
-	}
+    interface OrderInrteractionViewItemUiBinder extends UiBinder<Widget, OrderInteractionViewItemImpl> {
+    }
 
-	@UiField
-	protected FlowPanel mainPanel;
+    @UiField
+    protected FlowPanel mainPanel;
 
-	private final String itemId;
+    private final String itemId;
 
-	@Inject
-	public OrderInteractionViewItemImpl(@Assisted IsWidget body, @Assisted String itemId) {
-		this.itemId = itemId;
-		initWidget(uiBinder.createAndBindUi(this));
-		mainPanel.add(body);
-	}
+    @Inject
+    public OrderInteractionViewItemImpl(@Assisted IsWidget body, @Assisted String itemId) {
+        this.itemId = itemId;
+        initWidget(uiBinder.createAndBindUi(this));
+        mainPanel.add(body);
+    }
 
-	@Override
-	public String getItemId() {
-		return itemId;
-	}
+    @Override
+    public String getItemId() {
+        return itemId;
+    }
 
 }

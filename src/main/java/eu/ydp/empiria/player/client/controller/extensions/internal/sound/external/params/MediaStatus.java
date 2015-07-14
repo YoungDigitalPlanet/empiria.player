@@ -2,5 +2,5 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound.extern
 
 public interface MediaStatus {
 
-	int getCurrentTimeMillis();
+    int getCurrentTimeMillis();
 }

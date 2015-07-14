@@ -4,12 +4,12 @@ import com.google.gwt.xml.client.Element;
 
 public abstract class SingleViewModuleBase extends ModuleBase implements ISingleViewModule {
 
-	protected final void initModuleInternal(Element element, ModuleSocket ms) {
-		initModule(ms);
-		readAttributes(element);
-		initModule(element);
-		applyIdAndClassToView(getView());
-	}
+    protected final void initModuleInternal(Element element, ModuleSocket ms) {
+        initModule(ms);
+        readAttributes(element);
+        initModule(element);
+        applyIdAndClassToView(getView());
+    }
 
-	protected abstract void initModule(Element element);
+    protected abstract void initModule(Element element);
 }

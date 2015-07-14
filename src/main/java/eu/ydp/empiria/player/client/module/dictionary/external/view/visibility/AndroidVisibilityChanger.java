@@ -6,20 +6,20 @@ import com.google.gwt.dom.client.Style.Unit;
 
 public class AndroidVisibilityChanger implements VisibilityChanger {
 
-	private static final int TOP_HIDDEN = -10000;
+    private static final int TOP_HIDDEN = -10000;
 
-	@Override
-	public void show(VisibilityClient client) {
-		Style style = client.getElementStyle();
-		style.setPosition(Position.STATIC);
-		style.clearTop();
-	}
+    @Override
+    public void show(VisibilityClient client) {
+        Style style = client.getElementStyle();
+        style.setPosition(Position.STATIC);
+        style.clearTop();
+    }
 
-	@Override
-	public void hide(VisibilityClient client) {
-		final Style style = client.getElementStyle();
-		style.setPosition(Position.FIXED);
-		style.setTop(TOP_HIDDEN, Unit.PX);
-	}
+    @Override
+    public void hide(VisibilityClient client) {
+        final Style style = client.getElementStyle();
+        style.setPosition(Position.FIXED);
+        style.setTop(TOP_HIDDEN, Unit.PX);
+    }
 
 }

@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "not")
 public class NotConditionBean extends FeedbackConditionBase implements FeedbackCondition {
 
-	public FeedbackCondition getCondition() {
-		return getAllConditions().get(0);
-	}
+    public FeedbackCondition getCondition() {
+        return getAllConditions().get(0);
+    }
 
 }

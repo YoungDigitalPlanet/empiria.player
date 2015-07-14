@@ -5,23 +5,25 @@ import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 
 public class TextFeedbackPresenterMock implements TextFeedback {
 
-	public TextFeedbackPresenterMock() {
-	}
+    public TextFeedbackPresenterMock() {
+    }
 
-	@Override
-	public void show() {
+    @Override
+    public void show() {
 
-	}
+    }
 
-	@Override
-	public void hide() {
-	}
+    @Override
+    public void hide() {
+    }
 
-	@Override public void setTextElement(Widget widget) {
-	}
+    @Override
+    public void setTextElement(Widget widget) {
+    }
 
-	@Override public void clearTextElement() {
+    @Override
+    public void clearTextElement() {
 
-	}
+    }
 
 }

@@ -12,34 +12,34 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalEventDispatcherTest {
 
-	@InjectMocks
-	private ExternalEventDispatcher testObj;
-	@Mock
-	private ExternalEvent externalEvent;
-	@Mock
-	private ExternalCallback callback;
-	@Mock
-	private JavaScriptObject jsEvent;
+    @InjectMocks
+    private ExternalEventDispatcher testObj;
+    @Mock
+    private ExternalEvent externalEvent;
+    @Mock
+    private ExternalCallback callback;
+    @Mock
+    private JavaScriptObject jsEvent;
 
-	@Test
-	public void shouldDispatchEvent() {
-		// given
-		when(externalEvent.getJSONObject()).thenReturn(jsEvent);
-		testObj.setCallbackFunction(callback);
+    @Test
+    public void shouldDispatchEvent() {
+        // given
+        when(externalEvent.getJSONObject()).thenReturn(jsEvent);
+        testObj.setCallbackFunction(callback);
 
-		// when
-		testObj.dispatch(externalEvent);
+        // when
+        testObj.dispatch(externalEvent);
 
-		// then
-		verify(callback).callback(jsEvent);
-	}
+        // then
+        verify(callback).callback(jsEvent);
+    }
 
-	@Test
-	public void shouldNotDispatchEvent_ifTheCallbackIsNotSet() {
-		// when
-		testObj.dispatch(externalEvent);
+    @Test
+    public void shouldNotDispatchEvent_ifTheCallbackIsNotSet() {
+        // when
+        testObj.dispatch(externalEvent);
 
-		// then
-		verifyZeroInteractions(callback);
-	}
+        // then
+        verifyZeroInteractions(callback);
+    }
 }

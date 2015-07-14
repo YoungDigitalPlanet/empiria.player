@@ -4,27 +4,26 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
 
 public class ChoiceButtonClickHandler implements ClickHandler {
 
-	private final GroupAnswersController groupAnswerController;
-	private final String buttonId;
-	private final SelectionModulePresenter selectionModulePresenter;
+    private final GroupAnswersController groupAnswerController;
+    private final String buttonId;
+    private final SelectionModulePresenter selectionModulePresenter;
 
-	@Inject
-	public ChoiceButtonClickHandler(@Assisted GroupAnswersController groupAnswerController, @Assisted String buttonId,
-			@Assisted SelectionModulePresenter selectionModulePresenter) {
-		this.groupAnswerController = groupAnswerController;
-		this.buttonId = buttonId;
-		this.selectionModulePresenter = selectionModulePresenter;
-	}
+    @Inject
+    public ChoiceButtonClickHandler(@Assisted GroupAnswersController groupAnswerController, @Assisted String buttonId,
+                                    @Assisted SelectionModulePresenter selectionModulePresenter) {
+        this.groupAnswerController = groupAnswerController;
+        this.buttonId = buttonId;
+        this.selectionModulePresenter = selectionModulePresenter;
+    }
 
-	@Override
-	public void onClick(ClickEvent event) {
-		groupAnswerController.selectToggleAnswer(buttonId);
-		selectionModulePresenter.updateGroupAnswerView(groupAnswerController);
-	}
+    @Override
+    public void onClick(ClickEvent event) {
+        groupAnswerController.selectToggleAnswer(buttonId);
+        selectionModulePresenter.updateGroupAnswerView(groupAnswerController);
+    }
 }

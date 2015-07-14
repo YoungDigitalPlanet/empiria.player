@@ -25,7 +25,7 @@ package eu.ydp.empiria.player.client.module.listener;
 
 /**
  * child state changed listener
- * 
+ *
  * @author Rafal Rybacki
  */
 public interface ModuleInteractionListener extends StateChangedModuleInteractionListener, FeedbackModuleInteractionListener, MediaModuleInteractionListener {

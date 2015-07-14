@@ -1,63 +1,61 @@
 package eu.ydp.empiria.player.client.gin.scopes.module;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.util.EmptyStackException;
-
+import com.google.gwt.xml.client.Element;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
+import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.gwt.xml.client.Element;
+import java.util.EmptyStackException;
 
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleCreationContext;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ModuleScopeStackJUnitTest {
 
-	private ModuleScopeStack scopeStack;
+    private ModuleScopeStack scopeStack;
 
-	@Before
-	public void setUp() throws Exception {
-		scopeStack = new ModuleScopeStack();
-	}
+    @Before
+    public void setUp() throws Exception {
+        scopeStack = new ModuleScopeStack();
+    }
 
-	@Test(expected = EmptyStackException.class)
-	public void shouldThrowExceptionWhenPopOnEmpty() throws Exception {
-		scopeStack.pop();
-	}
+    @Test(expected = EmptyStackException.class)
+    public void shouldThrowExceptionWhenPopOnEmpty() throws Exception {
+        scopeStack.pop();
+    }
 
-	@Test
-	public void shouldReturnPushedContextWhenPop() throws Exception {
-		ModuleCreationContext pushedContext = getContext();
-		scopeStack.pushContext(pushedContext);
+    @Test
+    public void shouldReturnPushedContextWhenPop() throws Exception {
+        ModuleCreationContext pushedContext = getContext();
+        scopeStack.pushContext(pushedContext);
 
-		ModuleCreationContext returnedContext = scopeStack.pop();
-		assertThat(returnedContext).isEqualTo(pushedContext);
-	}
+        ModuleCreationContext returnedContext = scopeStack.pop();
+        assertThat(returnedContext).isEqualTo(pushedContext);
+    }
 
-	@Test
-	public void shouldAlwaysReturnTopElement() throws Exception {
-		ModuleCreationContext firstContext = getContext();
-		scopeStack.pushContext(firstContext);
+    @Test
+    public void shouldAlwaysReturnTopElement() throws Exception {
+        ModuleCreationContext firstContext = getContext();
+        scopeStack.pushContext(firstContext);
 
-		assertThat(scopeStack.getCurrentTopContext()).isEqualTo(firstContext);
+        assertThat(scopeStack.getCurrentTopContext()).isEqualTo(firstContext);
 
-		ModuleCreationContext secondContext = getContext();
-		scopeStack.pushContext(secondContext);
+        ModuleCreationContext secondContext = getContext();
+        scopeStack.pushContext(secondContext);
 
-		assertThat(scopeStack.getCurrentTopContext()).isEqualTo(secondContext);
+        assertThat(scopeStack.getCurrentTopContext()).isEqualTo(secondContext);
 
-		scopeStack.pop();
-		assertThat(scopeStack.getCurrentTopContext()).isEqualTo(firstContext);
-	}
+        scopeStack.pop();
+        assertThat(scopeStack.getCurrentTopContext()).isEqualTo(firstContext);
+    }
 
-	@Test(expected = EmptyStackException.class)
-	public void shouldThrowExceptionWhenAskedForTopWithEmptyStack() throws Exception {
-		scopeStack.getCurrentTopContext();
-	}
+    @Test(expected = EmptyStackException.class)
+    public void shouldThrowExceptionWhenAskedForTopWithEmptyStack() throws Exception {
+        scopeStack.getCurrentTopContext();
+    }
 
-	private ModuleCreationContext getContext() {
-		return new ModuleCreationContext(Mockito.mock(Element.class));
-	}
+    private ModuleCreationContext getContext() {
+        return new ModuleCreationContext(Mockito.mock(Element.class));
+    }
 }

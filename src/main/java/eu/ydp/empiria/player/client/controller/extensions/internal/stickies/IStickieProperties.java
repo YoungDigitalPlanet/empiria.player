@@ -4,34 +4,34 @@ import eu.ydp.gwtutil.client.geom.Point;
 
 public interface IStickieProperties {
 
-	int getColorIndex();
+    int getColorIndex();
 
-	void setColorIndex(int colorIndex);
+    void setColorIndex(int colorIndex);
 
-	String getStickieTitle();
+    String getStickieTitle();
 
-	void setStickieTitle(String stickieTitle);
+    void setStickieTitle(String stickieTitle);
 
-	String getStickieContent();
+    String getStickieContent();
 
-	void setStickieContent(String bookmarkContent);
+    void setStickieContent(String bookmarkContent);
 
-	int getX();
+    int getX();
 
-	void setX(int x);
+    void setX(int x);
 
-	int getY();
+    int getY();
 
-	void setY(int y);
+    void setY(int y);
 
-	Point<Integer> getPosition();
+    Point<Integer> getPosition();
 
-	void setPosition(Point<Integer> newPosition);
+    void setPosition(Point<Integer> newPosition);
 
-	boolean isMinimized();
+    boolean isMinimized();
 
-	void setMinimized(boolean minimized);
+    void setMinimized(boolean minimized);
 
-	void updateTimestamp();
+    void updateTimestamp();
 
 }

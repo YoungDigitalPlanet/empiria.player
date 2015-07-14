@@ -1,20 +1,24 @@
 package eu.ydp.empiria.player.client.module;
 
+import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
-
 public interface ParenthoodSocket {
 
-	HasChildren getParent(IModule module);
+    HasChildren getParent(IModule module);
 
-	GroupIdentifier getParentGroupIdentifier(IModule module);
+    GroupIdentifier getParentGroupIdentifier(IModule module);
 
-	List<IModule> getChildren(IModule parent);
+    List<IModule> getChildren(IModule parent);
 
-	Stack<HasChildren> getParentsHierarchy(IModule module);
+    List<HasParent> getNestedChildren(HasChildren parent);
 
-	public Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module);
+    List<HasChildren> getNestedParents(HasParent child);
+
+    Stack<HasChildren> getParentsHierarchy(IModule module);
+
+    Set<InlineFormattingContainerType> getInlineFormattingTags(IModule module);
 }

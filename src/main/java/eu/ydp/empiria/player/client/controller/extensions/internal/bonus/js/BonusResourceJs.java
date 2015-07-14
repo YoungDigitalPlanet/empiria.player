@@ -4,22 +4,24 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class BonusResourceJs extends JavaScriptObject {
 
-	protected BonusResourceJs() {
-	};
+    protected BonusResourceJs() {
+    }
 
-	public final native String getAsset()/*-{
-											return this.asset;
-											}-*/;
+    ;
 
-	public final native String getType()/*-{
-										return this.type;
-										}-*/;
+    public final native String getAsset()/*-{
+        return this.asset;
+    }-*/;
 
-	public final native int getWidth()/*-{
-										return this.width;
-										}-*/;
+    public final native String getType()/*-{
+        return this.type;
+    }-*/;
 
-	public final native int getHeight()/*-{
-										return this.height;
-										}-*/;
+    public final native int getWidth()/*-{
+        return this.width;
+    }-*/;
+
+    public final native int getHeight()/*-{
+        return this.height;
+    }-*/;
 }

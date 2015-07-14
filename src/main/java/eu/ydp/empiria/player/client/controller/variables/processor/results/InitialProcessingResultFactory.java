@@ -5,11 +5,11 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 public class InitialProcessingResultFactory {
 
-	public DtoModuleProcessingResult createProcessingResultWithInitialValues() {
-		return DtoModuleProcessingResult.fromDefaultVariables();
-	}
+    public DtoModuleProcessingResult createProcessingResultWithInitialValues() {
+        return DtoModuleProcessingResult.fromDefaultVariables();
+    }
 
-	public UserInteractionVariables createInitialUserInteractionVariables() {
-		return new UserInteractionVariables();
-	}
+    public UserInteractionVariables createInitialUserInteractionVariables() {
+        return new UserInteractionVariables();
+    }
 }

@@ -5,31 +5,31 @@ import java.util.Set;
 
 public class InlineContainerStylesExtractor {
 
-	public Set<InlineFormattingContainerType> getInlineStyles(IModule module) {
-		Set<InlineFormattingContainerType> inlineStyles = null;
+    public Set<InlineFormattingContainerType> getInlineStyles(IModule module) {
+        Set<InlineFormattingContainerType> inlineStyles = null;
 
-		if (module != null) {
-			inlineStyles = extractInlineStylesFromParentHierarchy(module);
-		} else {
-			inlineStyles = new HashSet<InlineFormattingContainerType>();
-		}
+        if (module != null) {
+            inlineStyles = extractInlineStylesFromParentHierarchy(module);
+        } else {
+            inlineStyles = new HashSet<InlineFormattingContainerType>();
+        }
 
-		return inlineStyles;
-	}
+        return inlineStyles;
+    }
 
-	private Set<InlineFormattingContainerType> extractInlineStylesFromParentHierarchy(IModule module) {
-		Set<InlineFormattingContainerType> inlineStyles = new HashSet<InlineFormattingContainerType>();
+    private Set<InlineFormattingContainerType> extractInlineStylesFromParentHierarchy(IModule module) {
+        Set<InlineFormattingContainerType> inlineStyles = new HashSet<InlineFormattingContainerType>();
 
-		HasChildren currParent = module.getParentModule();
-		while (currParent != null) {
-			if (currParent instanceof IInlineContainerModule) {
-				IInlineContainerModule inlineContainerModule = (IInlineContainerModule) currParent;
-				inlineStyles.add(inlineContainerModule.getType());
-			}
-			currParent = currParent.getParentModule();
-		}
+        HasChildren currParent = module.getParentModule();
+        while (currParent != null) {
+            if (currParent instanceof IInlineContainerModule) {
+                IInlineContainerModule inlineContainerModule = (IInlineContainerModule) currParent;
+                inlineStyles.add(inlineContainerModule.getType());
+            }
+            currParent = currParent.getParentModule();
+        }
 
-		return inlineStyles;
-	}
+        return inlineStyles;
+    }
 
 }

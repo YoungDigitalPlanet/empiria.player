@@ -11,86 +11,86 @@ import java.util.List;
 
 public class ItemDataSourceCollectionManager {
 
-	public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l) {
-		listener = l;
-	}
+    public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l) {
+        listener = l;
+    }
 
-	private ItemDataSource[] items;
-	private final ItemDataCollectionLoaderEventListener listener;
-	private int itemsLoadCounter;
+    private ItemDataSource[] items;
+    private final ItemDataCollectionLoaderEventListener listener;
+    private int itemsLoadCounter;
 
-	public void initItemDataCollection(int itemsCount) {
-		items = new ItemDataSource[itemsCount];
-		itemsLoadCounter = 0;
-	}
+    public void initItemDataCollection(int itemsCount) {
+        items = new ItemDataSource[itemsCount];
+        itemsLoadCounter = 0;
+    }
 
-	public void setItemData(int index, XmlData d) {
-		items[index] = new ItemDataSource(d);
-		itemsLoadCounter++;
-		if (itemsLoadCounter == items.length) {
-			listener.onItemCollectionLoaded();
-		}
-	}
+    public void setItemData(int index, XmlData d) {
+        items[index] = new ItemDataSource(d);
+        itemsLoadCounter++;
+        if (itemsLoadCounter == items.length) {
+            listener.onItemCollectionLoaded();
+        }
+    }
 
-	public void setItemData(int index, String error) {
-		items[index] = new ItemDataSource(error);
-		itemsLoadCounter++;
-		if (itemsLoadCounter == items.length) {
-			listener.onItemCollectionLoaded();
-		}
-	}
+    public void setItemData(int index, String error) {
+        items[index] = new ItemDataSource(error);
+        itemsLoadCounter++;
+        if (itemsLoadCounter == items.length) {
+            listener.onItemCollectionLoaded();
+        }
+    }
 
-	public void setItemDataCollection(XmlData[] ds) {
-		items = new ItemDataSource[ds.length];
-		for (int i = 0; i < items.length; i++) {
-			items[i] = new ItemDataSource(ds[i]);
-		}
-		listener.onItemCollectionLoaded();
-	}
+    public void setItemDataCollection(XmlData[] ds) {
+        items = new ItemDataSource[ds.length];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new ItemDataSource(ds[i]);
+        }
+        listener.onItemCollectionLoaded();
+    }
 
-	public ItemData getItemData(int index) {
-		if (index >= items.length) {
-			return new ItemData(0, "There's no item of index " + String.valueOf(index));
-		}
-		if (!items[index].isError()) {
-			return new ItemData(index, items[index].getItemData());
-		} else {
-			return new ItemData(index, items[index].getErrorMessage());
-		}
-	}
+    public ItemData getItemData(int index) {
+        if (index >= items.length) {
+            return new ItemData(0, "There's no item of index " + String.valueOf(index));
+        }
+        if (!items[index].isError()) {
+            return new ItemData(index, items[index].getItemData());
+        } else {
+            return new ItemData(index, items[index].getErrorMessage());
+        }
+    }
 
-	public InitialItemData getItemInitialData(int index) {
-		if (index < items.length && !items[index].isError()) {
-			return new InitialItemData(items[index].getItemData());
-		}
+    public InitialItemData getItemInitialData(int index) {
+        if (index < items.length && !items[index].isError()) {
+            return new InitialItemData(items[index].getItemData());
+        }
 
-		return new InitialItemData(null);
-	}
+        return new InitialItemData(null);
+    }
 
-	public String[] getTitlesList() {
-		String[] titles = new String[items.length];
-		for (int i = 0; i < items.length; i++) {
-			titles[i] = items[i].getTitle();
-		}
-		return titles;
-	}
+    public String[] getTitlesList() {
+        String[] titles = new String[items.length];
+        for (int i = 0; i < items.length; i++) {
+            titles[i] = items[i].getTitle();
+        }
+        return titles;
+    }
 
-	public int getItemsCount() {
-		if (items != null) {
-			return items.length;
-		} else {
-			return 0;
-		}
-	}
+    public int getItemsCount() {
+        if (items != null) {
+            return items.length;
+        } else {
+            return 0;
+        }
+    }
 
-	public List<String> getStyleLinksForUserAgent(int itemIndex, String userAgent) {
-		if (items != null && itemIndex <= items.length) {
-			return items[itemIndex].getStyleLinksForUserAgent(userAgent);
-		}
-		return new ArrayList<String>();
-	}
+    public List<String> getStyleLinksForUserAgent(int itemIndex, String userAgent) {
+        if (items != null && itemIndex <= items.length) {
+            return items[itemIndex].getStyleLinksForUserAgent(userAgent);
+        }
+        return new ArrayList<String>();
+    }
 
-	public ProgressToStringRangeMap getFeedbacks(int index) {
-		return items[index].getFeedbacks();
-	}
+    public ProgressToStringRangeMap getFeedbacks(int index) {
+        return items[index].getFeedbacks();
+    }
 }

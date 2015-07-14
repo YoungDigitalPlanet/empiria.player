@@ -4,13 +4,13 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Feed
 
 public class ConditionMatcherBase {
 
-	MatcherRegistry registry;
+    MatcherRegistry registry;
 
-	public ConditionMatcherBase(MatcherRegistry registry) {
-		this.registry = registry;
-	}
+    public ConditionMatcherBase(MatcherRegistry registry) {
+        this.registry = registry;
+    }
 
-	FeedbackMatcher getMatcher(FeedbackCondition condition) {
-		return registry.getMatcher(condition);
-	}
+    FeedbackMatcher getMatcher(FeedbackCondition condition) {
+        return registry.getMatcher(condition);
+    }
 }

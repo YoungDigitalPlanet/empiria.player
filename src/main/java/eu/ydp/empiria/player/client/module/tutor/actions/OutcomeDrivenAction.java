@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.module.tutor.ActionType;
 
 public interface OutcomeDrivenAction {
 
-	boolean actionOccured();
+    boolean actionOccured();
 
-	ActionType getActionType();
+    ActionType getActionType();
 }

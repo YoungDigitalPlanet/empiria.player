@@ -1,10 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<g:FlowPanel ui:field="parent">
-		<g:FlowPanel ui:field="headerPanel" styleName="{res.QP_HEADER}" />
-		<g:FlowPanel ui:field="pagePanel" styleName="{res.QP_BODY} pp" />
-		<g:FlowPanel ui:field="navigationPanel" styleName="{res.QP_FOOTER}" />
-	</g:FlowPanel>
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel ui:field="parent">
+        <g:FlowPanel ui:field="headerPanel" styleName="{res.QP_HEADER}"/>
+        <g:FlowPanel ui:field="pagePanel" styleName="{res.QP_BODY} pp"/>
+        <g:FlowPanel ui:field="navigationPanel" styleName="{res.QP_FOOTER}"/>
+    </g:FlowPanel>
 </ui:UiBinder>

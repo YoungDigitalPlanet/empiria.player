@@ -13,36 +13,36 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TextEditorOptionsProviderTest {
 
-	@InjectMocks
-	private TextEditorOptionsProvider testObj;
-	@Mock
-	private UserAgentUtil userAgentUtil;
-	@Mock
-	private TextEditorDesktopOptions desktopOptions;
-	@Mock
-	private TextEditorMobileOptions mobileOptions;
+    @InjectMocks
+    private TextEditorOptionsProvider testObj;
+    @Mock
+    private UserAgentUtil userAgentUtil;
+    @Mock
+    private TextEditorDesktopOptions desktopOptions;
+    @Mock
+    private TextEditorMobileOptions mobileOptions;
 
-	@Test
-	public void shouldReturnMobileOptions() {
-		// given
-		when(userAgentUtil.isMobileUserAgent()).thenReturn(true);
+    @Test
+    public void shouldReturnMobileOptions() {
+        // given
+        when(userAgentUtil.isMobileUserAgent()).thenReturn(true);
 
-		// when
-		TextEditorOptions actual = testObj.get();
+        // when
+        TextEditorOptions actual = testObj.get();
 
-		// then
-		assertThat(actual).isInstanceOf(TextEditorMobileOptions.class);
-	}
+        // then
+        assertThat(actual).isInstanceOf(TextEditorMobileOptions.class);
+    }
 
-	@Test
-	public void shouldReturnDesktopOptions() {
-		// given
-		when(userAgentUtil.isMobileUserAgent()).thenReturn(false);
+    @Test
+    public void shouldReturnDesktopOptions() {
+        // given
+        when(userAgentUtil.isMobileUserAgent()).thenReturn(false);
 
-		// when
-		TextEditorOptions actual = testObj.get();
+        // when
+        TextEditorOptions actual = testObj.get();
 
-		// then
-		assertThat(actual).isInstanceOf(TextEditorDesktopOptions.class);
-	}
+        // then
+        assertThat(actual).isInstanceOf(TextEditorDesktopOptions.class);
+    }
 }

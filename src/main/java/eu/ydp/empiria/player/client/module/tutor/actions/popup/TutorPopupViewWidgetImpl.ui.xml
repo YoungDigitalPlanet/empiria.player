@@ -1,8 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
-	<g:FlowPanel styleName="{res.QP_TUTOR_POPUP}" ui:field="mainPanel">
-		<g:FlowPanel ui:field="closeButton" styleName="{res.QP_TUTOR_POPUP_CLOSE_BUTTON}" />
-		<g:FlowPanel ui:field="itemsContainer" styleName="{res.QP_TUTOR_POPUP_ITEMS}" />
-	</g:FlowPanel>
+    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <g:FlowPanel styleName="{res.QP_TUTOR_POPUP}" ui:field="mainPanel">
+        <g:FlowPanel ui:field="closeButton" styleName="{res.QP_TUTOR_POPUP_CLOSE_BUTTON}"/>
+        <g:FlowPanel ui:field="itemsContainer" styleName="{res.QP_TUTOR_POPUP_ITEMS}"/>
+    </g:FlowPanel>
 </ui:UiBinder>

@@ -5,11 +5,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 
 public class Audio extends com.google.gwt.media.client.Audio {
 
-	public Audio() {
-		super(Document.get().createAudioElement());
-	}
+    public Audio() {
+        super(Document.get().createAudioElement());
+    }
 
-	public void addToParent(FlowPanel panel) {
-		panel.add(this);
-	}
+    public void addToParent(FlowPanel panel) {
+        panel.add(this);
+    }
 }

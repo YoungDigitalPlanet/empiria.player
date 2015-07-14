@@ -19,100 +19,100 @@ import java.util.Map;
 
 public class SelectionModuleViewImpl implements SelectionModuleView {
 
-	public SelectionModuleViewImpl() {
-	}
+    public SelectionModuleViewImpl() {
+    }
 
-	;
+    ;
 
-	private SelectionElementGenerator gridElementGenerator;
+    private SelectionElementGenerator gridElementGenerator;
 
-	private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
+    private final Map<SelectionGridElementPosition, SelectionButtonGridElement> buttonsGridMap = new HashMap<SelectionGridElementPosition, SelectionButtonGridElement>();
 
-	@UiField
-	Panel mainPanel;
+    @UiField
+    Panel mainPanel;
 
-	@UiField
-	Widget promptWidget;
+    @UiField
+    Widget promptWidget;
 
-	@UiField
-	Grid selectionGrid;
+    @UiField
+    Grid selectionGrid;
 
-	@Inject
-	public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
-		this.gridElementGenerator = gridElementGenerator;
-	}
+    @Inject
+    public SelectionModuleViewImpl(SelectionElementGenerator gridElementGenerator) {
+        this.gridElementGenerator = gridElementGenerator;
+    }
 
-	@UiTemplate("SelectionModuleView.ui.xml")
-	interface SelectionModuleUiBinder extends UiBinder<Widget, SelectionModuleViewImpl> {
-	}
+    @UiTemplate("SelectionModuleView.ui.xml")
+    interface SelectionModuleUiBinder extends UiBinder<Widget, SelectionModuleViewImpl> {
+    }
 
-	@Override
-	public void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
-		SelectionModuleUiBinder uiBinder = GWT.create(SelectionModuleUiBinder.class);
-		uiBinder.createAndBindUi(this);
-		gridElementGenerator.setInlineBodyGenerator(inlineBodyGeneratorSocket);
-	}
+    @Override
+    public void initialize(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+        SelectionModuleUiBinder uiBinder = GWT.create(SelectionModuleUiBinder.class);
+        uiBinder.createAndBindUi(this);
+        gridElementGenerator.setInlineBodyGenerator(inlineBodyGeneratorSocket);
+    }
 
-	@Override
-	public void setGridSize(int amountOfItems, int amountOfChoices) {
-		selectionGrid.resize(amountOfItems + 1, amountOfChoices + 1);
-	}
+    @Override
+    public void setGridSize(int amountOfItems, int amountOfChoices) {
+        selectionGrid.resize(amountOfItems + 1, amountOfChoices + 1);
+    }
 
-	@Override
-	public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position) {
-		SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
-		addToGrid(itemTextGridElement, position);
-	}
+    @Override
+    public void setItemDisplayedName(XMLContent itemName, SelectionGridElementPosition position) {
+        SelectionItemGridElement itemTextGridElement = gridElementGenerator.createItemDisplayElement(itemName.getValue());
+        addToGrid(itemTextGridElement, position);
+    }
 
-	@Override
-	public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position) {
-		SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
-		addToGrid(choiseTextGridElement, position);
-	}
+    @Override
+    public void setChoiceOptionDisplayedName(XMLContent choiceName, SelectionGridElementPosition position) {
+        SelectionChoiceGridElement choiseTextGridElement = gridElementGenerator.createChoiceDisplayElement(choiceName.getValue());
+        addToGrid(choiseTextGridElement, position);
+    }
 
-	@Override
-	public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName) {
-		SelectionButtonGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
-		addToGrid(choiceButtonGridElement, position);
-		buttonsGridMap.put(position, choiceButtonGridElement);
-	}
+    @Override
+    public void createButtonForItemChoicePair(SelectionGridElementPosition position, String moduleStyleName) {
+        SelectionButtonGridElement choiceButtonGridElement = gridElementGenerator.createChoiceButtonElement(moduleStyleName);
+        addToGrid(choiceButtonGridElement, position);
+        buttonsGridMap.put(position, choiceButtonGridElement);
+    }
 
-	@Override
-	public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler) {
-		final SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
-		gridElement.addClickHandler(clickHandler);
-	}
+    @Override
+    public void addClickHandlerToButton(SelectionGridElementPosition position, ClickHandler clickHandler) {
+        final SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+        gridElement.addClickHandler(clickHandler);
+    }
 
-	@Override
-	public void selectButton(SelectionGridElementPosition position) {
-		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
-		gridElement.select();
-	}
+    @Override
+    public void selectButton(SelectionGridElementPosition position) {
+        SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+        gridElement.select();
+    }
 
-	@Override
-	public void unselectButton(SelectionGridElementPosition position) {
-		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
-		gridElement.unselect();
-	}
+    @Override
+    public void unselectButton(SelectionGridElementPosition position) {
+        SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+        gridElement.unselect();
+    }
 
-	@Override
-	public void lockButton(SelectionGridElementPosition position, boolean lock) {
-		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
-		gridElement.setButtonEnabled(!lock);
-	}
+    @Override
+    public void lockButton(SelectionGridElementPosition position, boolean lock) {
+        SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+        gridElement.setButtonEnabled(!lock);
+    }
 
-	@Override
-	public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState) {
-		SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
-		gridElement.updateStyle(styleState);
-	}
+    @Override
+    public void updateButtonStyle(SelectionGridElementPosition position, UserAnswerType styleState) {
+        SelectionButtonGridElement gridElement = buttonsGridMap.get(position);
+        gridElement.updateStyle(styleState);
+    }
 
-	@Override
-	public Widget asWidget() {
-		return mainPanel;
-	}
+    @Override
+    public Widget asWidget() {
+        return mainPanel;
+    }
 
-	private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
-		selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
-	}
+    private <V extends SelectionGridElement> void addToGrid(V gridElement, SelectionGridElementPosition position) {
+        selectionGrid.setWidget(position.getRowNumber(), position.getColumnNumber(), gridElement.asWidget());
+    }
 }

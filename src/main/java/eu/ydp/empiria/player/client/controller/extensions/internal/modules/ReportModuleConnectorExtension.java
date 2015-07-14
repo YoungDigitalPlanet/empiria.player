@@ -15,43 +15,43 @@ import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 
 public class ReportModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, DataSourceDataSocketUserExtension,
-		FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
+        FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
 
-	@Inject
-	private ModuleFactory moduleFactory;
+    @Inject
+    private ModuleFactory moduleFactory;
 
-	protected FlowRequestInvoker flowRequestInvoker;
-	protected DataSourceDataSupplier dataSourceDataSupplier;
-	protected SessionDataSupplier sessionDataSupplier;
+    protected FlowRequestInvoker flowRequestInvoker;
+    protected DataSourceDataSupplier dataSourceDataSupplier;
+    protected SessionDataSupplier sessionDataSupplier;
 
-	@Override
-	public ModuleCreator getModuleCreator() {
-		return new AbstractModuleCreator() {
-			@Override
-			public IModule createModule() {
-				return moduleFactory.createReportModule(dataSourceDataSupplier, sessionDataSupplier);
-			}
-		};
-	}
+    @Override
+    public ModuleCreator getModuleCreator() {
+        return new AbstractModuleCreator() {
+            @Override
+            public IModule createModule() {
+                return moduleFactory.createReportModule(dataSourceDataSupplier, sessionDataSupplier);
+            }
+        };
+    }
 
-	@Override
-	public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
-		flowRequestInvoker = fri;
-	}
+    @Override
+    public void setFlowRequestsInvoker(FlowRequestInvoker fri) {
+        flowRequestInvoker = fri;
+    }
 
-	@Override
-	public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
-		dataSourceDataSupplier = supplier;
-	}
+    @Override
+    public void setDataSourceDataSupplier(DataSourceDataSupplier supplier) {
+        dataSourceDataSupplier = supplier;
+    }
 
-	@Override
-	public void setSessionDataSupplier(SessionDataSupplier sessionDataSupplier) {
-		this.sessionDataSupplier = sessionDataSupplier;
-	}
+    @Override
+    public void setSessionDataSupplier(SessionDataSupplier sessionDataSupplier) {
+        this.sessionDataSupplier = sessionDataSupplier;
+    }
 
-	@Override
-	public String getModuleNodeName() {
-		return ModuleTagName.REPORT.tagName();
-	}
+    @Override
+    public String getModuleNodeName() {
+        return ModuleTagName.REPORT.tagName();
+    }
 
 }

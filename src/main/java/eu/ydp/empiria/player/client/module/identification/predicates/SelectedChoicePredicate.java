@@ -5,8 +5,8 @@ import eu.ydp.empiria.player.client.module.identification.presenter.SelectableCh
 
 public class SelectedChoicePredicate implements Predicate<SelectableChoicePresenter> {
 
-	@Override
-	public boolean apply(SelectableChoicePresenter choice) {
-		return choice.isSelected();
-	}
+    @Override
+    public boolean apply(SelectableChoicePresenter choice) {
+        return choice.isSelected();
+    }
 }

@@ -8,31 +8,31 @@ import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManag
 
 public abstract class BindingContainerModule<T> extends SimpleContainerModuleBase<T> implements BindingProxy {
 
-	private GapWidthBindingManager gapWidthBindingManager;
-	private GapMaxlengthBindingManager gapMaxlengthBindingManager;
+    private GapWidthBindingManager gapWidthBindingManager;
+    private GapMaxlengthBindingManager gapMaxlengthBindingManager;
 
-	@Override
-	public BindingManager getBindingManager(BindingType bindingType) {
-		if (bindingType == BindingType.GAP_WIDTHS) {
-			if (gapWidthBindingManager == null)
-				gapWidthBindingManager = createGapWidthBindingManager();
-			return gapWidthBindingManager;
-		}
+    @Override
+    public BindingManager getBindingManager(BindingType bindingType) {
+        if (bindingType == BindingType.GAP_WIDTHS) {
+            if (gapWidthBindingManager == null)
+                gapWidthBindingManager = createGapWidthBindingManager();
+            return gapWidthBindingManager;
+        }
 
-		if (bindingType == BindingType.GAP_MAXLENGHTS) {
-			if (gapMaxlengthBindingManager == null)
-				gapMaxlengthBindingManager = createGapMaxlengthBindingManager();
-			return gapMaxlengthBindingManager;
-		}
+        if (bindingType == BindingType.GAP_MAXLENGHTS) {
+            if (gapMaxlengthBindingManager == null)
+                gapMaxlengthBindingManager = createGapMaxlengthBindingManager();
+            return gapMaxlengthBindingManager;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected GapWidthBindingManager createGapWidthBindingManager() {
-		return new GapWidthBindingManager(true);
-	}
+    protected GapWidthBindingManager createGapWidthBindingManager() {
+        return new GapWidthBindingManager(true);
+    }
 
-	protected GapMaxlengthBindingManager createGapMaxlengthBindingManager() {
-		return new GapMaxlengthBindingManager(true);
-	}
+    protected GapMaxlengthBindingManager createGapMaxlengthBindingManager() {
+        return new GapMaxlengthBindingManager(true);
+    }
 }

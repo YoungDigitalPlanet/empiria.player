@@ -4,6 +4,6 @@ import eu.ydp.gwtutil.client.event.EventHandler;
 
 public interface FeedbackEventHandler extends EventHandler {
 
-	void onFeedbackEvent(FeedbackEvent event);
+    void onFeedbackEvent(FeedbackEvent event);
 
 }

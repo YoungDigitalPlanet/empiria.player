@@ -8,42 +8,41 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentContentView;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
 
 public class PlayerContentView extends Composite implements PlayerViewSocket {
-	private static PlayerContentViewUiBinder uiBinder = GWT.create(PlayerContentViewUiBinder.class);
+    private static PlayerContentViewUiBinder uiBinder = GWT.create(PlayerContentViewUiBinder.class);
 
-	interface PlayerContentViewUiBinder extends UiBinder<Widget, PlayerContentView> {
-	}
+    interface PlayerContentViewUiBinder extends UiBinder<Widget, PlayerContentView> {
+    }
 
-	private final AssessmentContentView assessmentContentView; // NOPMD
+    private final AssessmentContentView assessmentContentView; // NOPMD
 
-	@UiField
-	protected Panel headerPanel;
-	@UiField
-	protected FlowPanel assessmentPanel = null;
-	@UiField
-	protected Panel footerPanel;
+    @UiField
+    protected Panel headerPanel;
+    @UiField
+    protected FlowPanel assessmentPanel = null;
+    @UiField
+    protected Panel footerPanel;
 
-	@Inject
-	public PlayerContentView(AssessmentFactory assessmentFactory) {
-		initWidget(uiBinder.createAndBindUi(this));
-		assessmentContentView = assessmentFactory.geAssessmentContentView(assessmentPanel);
-	}
+    @Inject
+    public PlayerContentView(AssessmentFactory assessmentFactory) {
+        initWidget(uiBinder.createAndBindUi(this));
+        assessmentContentView = assessmentFactory.geAssessmentContentView(assessmentPanel);
+    }
 
-	@Override
-	public void setPlayerViewCarrier(PlayerViewCarrier pvd) {
-		headerPanel.clear();
-		headerPanel.add(pvd.getHeaderView());
-		footerPanel.clear();
-		footerPanel.add(pvd.getFooterView());
-	}
+    @Override
+    public void setPlayerViewCarrier(PlayerViewCarrier pvd) {
+        headerPanel.clear();
+        headerPanel.add(pvd.getHeaderView());
+        footerPanel.clear();
+        footerPanel.add(pvd.getFooterView());
+    }
 
-	@Override
-	public AssessmentViewSocket getAssessmentViewSocket() {
-		return assessmentContentView;
-	}
+    @Override
+    public AssessmentViewSocket getAssessmentViewSocket() {
+        return assessmentContentView;
+    }
 }

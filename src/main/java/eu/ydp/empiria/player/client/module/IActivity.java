@@ -5,9 +5,13 @@ package eu.ydp.empiria.player.client.module;
  */
 public interface IActivity extends ILockable, IResetable {
 
-	/** Mark wrong and mark correct answers */
-	public void markAnswers(boolean mark);
+    /**
+     * Mark wrong and mark correct answers
+     */
+    public void markAnswers(boolean mark);
 
-	/** Show correct answers */
-	public void showCorrectAnswers(boolean show);
+    /**
+     * Show correct answers
+     */
+    public void showCorrectAnswers(boolean show);
 }

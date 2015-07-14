@@ -5,11 +5,11 @@ import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 
 public interface DeliveryEngineSocket extends IStatefulString {
 
-	public void setFlowOptions(FlowOptions o);
+    public void setFlowOptions(FlowOptions o);
 
-	public void setDisplayOptions(DisplayOptions o);
+    public void setDisplayOptions(DisplayOptions o);
 
-	public String getEngineMode();
+    public String getEngineMode();
 
-	public void setInitialItemIndex(Integer num);
+    public void setInitialItemIndex(Integer num);
 }

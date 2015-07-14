@@ -26,66 +26,66 @@ import static org.mockito.Mockito.when;
 @SuppressWarnings("PMD")
 public class ConnectionStyleCheckerJUnitTest {
 
-	@Mock
-	private CssHelper cssHelper;
-	@Mock
-	private StyleNameConstants styleNames;
-	@Mock
-	private XMLParser xmlParser;
-	@Mock
-	private StyleSocket styleSocket;
+    @Mock
+    private CssHelper cssHelper;
+    @Mock
+    private StyleNameConstants styleNames;
+    @Mock
+    private XMLParser xmlParser;
+    @Mock
+    private StyleSocket styleSocket;
 
-	private ConnectionStyleChecker instance;
-	private Map<String, String> styles = new HashMap<String, String>();
+    private ConnectionStyleChecker instance;
+    private Map<String, String> styles = new HashMap<String, String>();
 
-	@Before
-	public void before() {
-		MockitoAnnotations.initMocks(this);
+    @Before
+    public void before() {
+        MockitoAnnotations.initMocks(this);
 
-		instance = new ConnectionStyleChecker(styleSocket, xmlParser, styleNames, cssHelper);
+        instance = new ConnectionStyleChecker(styleSocket, xmlParser, styleNames, cssHelper);
 
-	}
+    }
 
-	@BeforeClass
-	public static void disarm() {
-		GWTMockUtilities.disarm();
-	}
+    @BeforeClass
+    public static void disarm() {
+        GWTMockUtilities.disarm();
+    }
 
-	@AfterClass
-	public static void rearm() {
-		GWTMockUtilities.restore();
-	}
+    @AfterClass
+    public static void rearm() {
+        GWTMockUtilities.restore();
+    }
 
-	@Test
-	public void testIsStylesAreCorrect() {
-		styles = new HashMap<String, String>();
-		styles.put("display", "inline");
-		styles.put("width", "20px");
+    @Test
+    public void testIsStylesAreCorrect() {
+        styles = new HashMap<String, String>();
+        styles.put("display", "inline");
+        styles.put("width", "20px");
 
-		Document document = mock(Document.class);
-		Element element = mock(Element.class);
-		when(document.getDocumentElement()).thenReturn(element);
-		when(xmlParser.parse("<root><styleTest class=\"styleTest\"/></root>")).thenReturn(document);
+        Document document = mock(Document.class);
+        Element element = mock(Element.class);
+        when(document.getDocumentElement()).thenReturn(element);
+        when(xmlParser.parse("<root><styleTest class=\"styleTest\"/></root>")).thenReturn(document);
 
-		instance.cssClassNames.add("styleTest");
+        instance.cssClassNames.add("styleTest");
 
-		instance.areStylesCorrectThrowsExceptionWhenNot(null);
-	}
+        instance.areStylesCorrectThrowsExceptionWhenNot(null);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Test(expected = CssStyleException.class)
-	public void testIsStylesAreNotCorrect() {
-		styles.put("display", "table-cell");
-		styles.put("width", "20px");
+    @SuppressWarnings("unchecked")
+    @Test(expected = CssStyleException.class)
+    public void testIsStylesAreNotCorrect() {
+        styles.put("display", "table-cell");
+        styles.put("width", "20px");
 
-		Document document = mock(Document.class);
-		Element element = mock(Element.class);
-		when(document.getDocumentElement()).thenReturn(element);
-		when(xmlParser.parse("<root><styleTest class=\"styleTest\"/></root>")).thenReturn(document);
+        Document document = mock(Document.class);
+        Element element = mock(Element.class);
+        when(document.getDocumentElement()).thenReturn(element);
+        when(xmlParser.parse("<root><styleTest class=\"styleTest\"/></root>")).thenReturn(document);
 
-		instance.cssClassNames.add("styleTest");
-		when(cssHelper.checkIfEquals(any(Map.class), eq("display"), eq("table-cell"))).thenReturn(true);
+        instance.cssClassNames.add("styleTest");
+        when(cssHelper.checkIfEquals(any(Map.class), eq("display"), eq("table-cell"))).thenReturn(true);
 
-		instance.areStylesCorrectThrowsExceptionWhenNot(null);
-	}
+        instance.areStylesCorrectThrowsExceptionWhenNot(null);
+    }
 }

@@ -6,15 +6,15 @@ import eu.ydp.empiria.player.client.module.model.color.ColorModel;
 
 public class ColorButtonClickListener implements ColorfillButtonClickListener {
 
-	private final ColorfillInteractionPresenter interactionPresenter;
+    private final ColorfillInteractionPresenter interactionPresenter;
 
-	public ColorButtonClickListener(ColorfillInteractionPresenter interactionPresenter) {
-		this.interactionPresenter = interactionPresenter;
-	}
+    public ColorButtonClickListener(ColorfillInteractionPresenter interactionPresenter) {
+        this.interactionPresenter = interactionPresenter;
+    }
 
-	@Override
-	public void onButtonClick(ColorModel color) {
-		interactionPresenter.buttonClicked(color);
-	}
+    @Override
+    public void onButtonClick(ColorModel color) {
+        interactionPresenter.buttonClicked(color);
+    }
 
 }

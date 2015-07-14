@@ -22,66 +22,66 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnIma
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
 
-@GinModules(value = { PlayerGinModule.class, UtilGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class,
-		SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
-		OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
-		AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
-		TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorGinModule.class, IdentificationGinModule.class,
-		ExternalGinModule.class, PicturePlayerModule.class, MathJaxGinModule.class })
+@GinModules(value = {PlayerGinModule.class, UtilGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class,
+        SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
+        OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
+        AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
+        TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorGinModule.class, IdentificationGinModule.class,
+        ExternalGinModule.class, PicturePlayerModule.class, MathJaxGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 
-	ViewEngine getViewEngine();
+    ViewEngine getViewEngine();
 
-	DeliveryEngine getDeliveryEngine();
+    DeliveryEngine getDeliveryEngine();
 
-	EventsBus getEventsBus();
+    EventsBus getEventsBus();
 
-	MultiPageController getMultiPage();
+    MultiPageController getMultiPage();
 
-	StyleNameConstants getStyleNameConstants();
+    StyleNameConstants getStyleNameConstants();
 
-	MainFlowProcessor getMainFlowProcessor();
+    MainFlowProcessor getMainFlowProcessor();
 
-	Page getPage();
+    Page getPage();
 
-	PanelCache getPanelCache();
+    PanelCache getPanelCache();
 
-	PageScopeFactory getPageScopeFactory();
+    PageScopeFactory getPageScopeFactory();
 
-	PositionHelper getPositionHelper();
+    PositionHelper getPositionHelper();
 
-	TextTrackFactory getTextTrackFactory();
+    TextTrackFactory getTextTrackFactory();
 
-	FeedbackRegistry getFeedbackRegistry();
+    FeedbackRegistry getFeedbackRegistry();
 
-	AssessmentReportFactory getAssessmentReportFactory();
+    AssessmentReportFactory getAssessmentReportFactory();
 
-	ExtensionsManager getExtensionsManager();
+    ExtensionsManager getExtensionsManager();
 
-	BookmarkProcessorExtension getBookmarkProcessorExtension();
+    BookmarkProcessorExtension getBookmarkProcessorExtension();
 
-	StickiesProcessorExtension getStickiesProcessorExtension();
+    StickiesProcessorExtension getStickiesProcessorExtension();
 
-	IPlayerContainersAccessor getPlayerContainersAccessor();
+    IPlayerContainersAccessor getPlayerContainersAccessor();
 
-	TouchController getTouchController();
+    TouchController getTouchController();
 
-	StyleSocket getStyleSocket();
+    StyleSocket getStyleSocket();
 
-	Logger getLogger();
+    Logger getLogger();
 
-	TouchHandlerOnImageProvider getTouchHandlerOnImageProvider();
+    TouchHandlerOnImageProvider getTouchHandlerOnImageProvider();
 
-	ScriptsLoader getScriptsLoader();
+    ScriptsLoader getScriptsLoader();
 
-	ExternalEventDispatcher getEventDispatcher();
+    ExternalEventDispatcher getEventDispatcher();
 
 }

@@ -18,102 +18,93 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 import java.util.List;
 
-public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
+public class TextActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
 
-	private ActionProcessorHelper helper;
+    private ActionProcessorHelper helper;
 
-	@Inject
-	private TextFeedback feedbackPresenter;
-	@Inject
-	private MathJaxNative mathJaxNative;
+    @Inject
+    private TextFeedback feedbackPresenter;
+    @Inject
+    private MathJaxNative mathJaxNative;
 
-	@Inject
-	private Provider<TextActionProcessor> provider;
-	private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    @Inject
+    private Provider<TextActionProcessor> provider;
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
-	@Override
-	public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
-		this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
-		return getHelper().processActions(actions, inlineBodyGeneratorSocket);
-	}
+    @Override
+    public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+        this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
+        return getHelper().processActions(actions, inlineBodyGeneratorSocket);
+    }
 
-	private ActionProcessorHelper getHelper() {
-		if (helper == null) {
-			helper = new ActionProcessorHelper(this);
-		}
-		return helper;
-	}
+    private ActionProcessorHelper getHelper() {
+        if (helper == null) {
+            helper = new ActionProcessorHelper(this);
+        }
+        return helper;
+    }
 
-	@Override
-	public boolean canProcessAction(FeedbackAction action) {
-		boolean canProcess = false;
+    @Override
+    public boolean canProcessAction(FeedbackAction action) {
+        boolean canProcess = false;
 
-		if (action instanceof ShowTextAction) {
-			ShowTextAction textAction = (ShowTextAction) action;
-			String nodeValue = textAction.getContent().getValue().getChildNodes().toString();
-			canProcess = !StringUtils.EMPTY_STRING.equals(nodeValue);
-		}
+        if (action instanceof ShowTextAction) {
+            ShowTextAction textAction = (ShowTextAction) action;
+            String nodeValue = textAction.getContent().getValue().getChildNodes().toString();
+            canProcess = !StringUtils.EMPTY_STRING.equals(nodeValue);
+        }
 
-		return canProcess;
-	}
+        return canProcess;
+    }
 
-	@Override
-	public void processSingleAction(FeedbackAction action) {
-		if (action instanceof ShowTextAction) {
-			ShowTextAction textAction = (ShowTextAction) action;
-			Element element = textAction.getContent().getValue();
-			Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
-			JavaScriptObject mathJaxCallback = createCallback(widget);
-			mathJaxNative.renderMath(mathJaxCallback);
-		}
-	}
+    @Override
+    public void processSingleAction(FeedbackAction action) {
+        if (action instanceof ShowTextAction) {
+            ShowTextAction textAction = (ShowTextAction) action;
+            Element element = textAction.getContent().getValue();
+            Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
+            JavaScriptObject mathJaxCallback = createCallback(widget);
+            mathJaxNative.renderMath(mathJaxCallback);
+        }
+    }
 
-	private native JavaScriptObject createCallback(Widget widget)/*-{
-		var that = this;
-		return function(){
-			that.@TextActionProcessor::showFeedback(*)(widget);
-		};
-	}-*/;
+    private native JavaScriptObject createCallback(Widget widget)/*-{
+        var that = this;
+        return function () {
+            that.@TextActionProcessor::showFeedback(*)(widget);
+        };
+    }-*/;
 
-	private void showFeedback(Widget widget){
-		feedbackPresenter.setTextElement(widget);
-		feedbackPresenter.show();
-	}
+    private void showFeedback(Widget widget) {
+        feedbackPresenter.setTextElement(widget);
+        feedbackPresenter.show();
+    }
 
-	@Override
-	public void clearFeedback() {
-		feedbackPresenter.clearTextElement();
-		feedbackPresenter.hide();
-	}
+    @Override
+    public void clearFeedback() {
+        feedbackPresenter.clearTextElement();
+        feedbackPresenter.hide();
+    }
 
-	@Override
-	public TextActionProcessor getNewInstance() {
-		return provider.get();
-	}
+    @Override
+    public TextActionProcessor getNewInstance() {
+        return provider.get();
+    }
 
-	@Override
-	public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-		feedbackPresenter.hide();
-	}
+    @Override
+    public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
+        initModule(ms);
+        feedbackPresenter.hide();
+    }
 
-	@Override
-	public Widget getView() {
-		return (Widget) feedbackPresenter;
-	}
+    @Override
+    public Widget getView() {
+        return (Widget) feedbackPresenter;
+    }
 
-	@Override
-	public List<IModule> getChildren() {
-		return null;
-	}
-
-	@Override
-	public HasChildren getParentModule() {
-		return null;
-	}
-
-	@Override
-	public void reset() {
-		clearFeedback();
-	}
+    @Override
+    public void reset() {
+        clearFeedback();
+    }
 
 }

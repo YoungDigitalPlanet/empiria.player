@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound.external;
 
 import com.google.common.collect.ObjectArrays;
-
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SingleMediaPlayback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
@@ -19,38 +18,38 @@ import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 
 public abstract class ExternalMediaProcessorTestBase extends AbstractTestWithMocksBase {
 
-	protected ExternalMediaProcessorTestContainer container = new ExternalMediaProcessorTestContainer();
-	protected MediaConnector connector;
-	protected MediaConnectorListener listener;
-	protected EventsBus eventsBus;
+    protected ExternalMediaProcessorTestContainer container = new ExternalMediaProcessorTestContainer();
+    protected MediaConnector connector;
+    protected MediaConnectorListener listener;
+    protected EventsBus eventsBus;
 
-	private Class<?>[] ignoredClasses = { ExternalMediaProcessor.class, EventsBus.class, ExternalMediaWrapper.class, ExternalMediaExecutor.class,
-			ExternalMediaEngine.class, UniqueIdGenerator.class, MediaConnectorListener.class, ExternalMediaProxy.class, SingleMediaPlayback.class,
-			ExternalMediaUpdateTimerEmulator.class, ExternalMediaUpdateTimerEmulatorState.class };
+    private Class<?>[] ignoredClasses = {ExternalMediaProcessor.class, EventsBus.class, ExternalMediaWrapper.class, ExternalMediaExecutor.class,
+            ExternalMediaEngine.class, UniqueIdGenerator.class, MediaConnectorListener.class, ExternalMediaProxy.class, SingleMediaPlayback.class,
+            ExternalMediaUpdateTimerEmulator.class, ExternalMediaUpdateTimerEmulatorState.class};
 
-	@Override
-	public void setUp() {
-		doSetUp(ignoredClasses);
-	}
+    @Override
+    public void setUp() {
+        doSetUp(ignoredClasses);
+    }
 
-	protected void setUpWithAccessibleTimer() {
-		doSetUp(ObjectArrays.concat(Timer.class, ignoredClasses));
+    protected void setUpWithAccessibleTimer() {
+        doSetUp(ObjectArrays.concat(Timer.class, ignoredClasses));
 
-		TimerAccessibleMock.reset();
-	}
+        TimerAccessibleMock.reset();
+    }
 
-	private void doSetUp(Class<?>... classes) {
-		super.setUp(classes);
+    private void doSetUp(Class<?>... classes) {
+        super.setUp(classes);
 
-		BrowserNativeInterface nativeInterfaceMock = UserAgentCheckerNativeInterfaceMock
-				.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
-		UserAgentChecker.setNativeInterface(nativeInterfaceMock);
+        BrowserNativeInterface nativeInterfaceMock = UserAgentCheckerNativeInterfaceMock
+                .getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS);
+        UserAgentChecker.setNativeInterface(nativeInterfaceMock);
 
-		container.init(injector);
+        container.init(injector);
 
-		connector = container.getConnector();
-		listener = container.getMediaConnectorListener();
-		eventsBus = container.getEventsBus();
-	}
+        connector = container.getConnector();
+        listener = container.getMediaConnectorListener();
+        eventsBus = container.getEventsBus();
+    }
 
 }

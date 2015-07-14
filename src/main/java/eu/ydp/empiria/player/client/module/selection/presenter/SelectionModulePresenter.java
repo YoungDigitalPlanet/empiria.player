@@ -7,6 +7,6 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteract
 
 public interface SelectionModulePresenter extends ActivityPresenter<SelectionModuleModel, SelectionInteractionBean> {
 
-	void updateGroupAnswerView(GroupAnswersController groupChoicesController);
+    void updateGroupAnswerView(GroupAnswersController groupChoicesController);
 
 }

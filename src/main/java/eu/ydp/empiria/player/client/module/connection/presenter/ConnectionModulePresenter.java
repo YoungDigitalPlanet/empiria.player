@@ -8,6 +8,6 @@ import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociable
 
 public interface ConnectionModulePresenter extends ActivityPresenter<ConnectionModuleModel, MatchInteractionBean> {
 
-	void setModuleView(MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView);
+    void setModuleView(MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView);
 
 }
