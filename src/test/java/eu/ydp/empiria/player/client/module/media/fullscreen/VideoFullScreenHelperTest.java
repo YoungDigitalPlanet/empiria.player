@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.util.NativeHTML5FullScreenHelper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.fullscreen.VideoFullScreenEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import org.junit.Test;
@@ -96,7 +96,7 @@ public class VideoFullScreenHelperTest extends AbstractTestBaseWithoutAutoInject
         instance.closeFullScreen();
         verify(fullScreenHelper).exitFullScreen();
         verify(instance).closeFullScreen();
-        verify(eventsBus).fireEventFromSource(Matchers.any(MediaEvent.class), Matchers.any(MediaWrapper.class), Matchers.any(PageScope.class));
+        verify(eventsBus).fireEventFromSource(Matchers.any(MediaEvent.class), Matchers.any(MediaWrapper.class), Matchers.any(CurrentPageScope.class));
     }
 
 }
