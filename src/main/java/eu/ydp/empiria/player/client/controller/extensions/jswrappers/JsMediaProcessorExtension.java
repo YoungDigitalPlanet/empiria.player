@@ -30,8 +30,8 @@ import java.util.Map;
  * @deprecated Use {@link ExternalMediaProcessor} instead.
  */
 @Deprecated
-public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler,
-        DeliveryEventsListenerExtension {
+public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler,
+        DeliveryEventsListenerExtension, MediaEventHandler {
 
     private final EventsBus eventsBus;
     private boolean playing;

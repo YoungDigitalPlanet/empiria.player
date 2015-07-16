@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.media.button;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
@@ -31,7 +31,7 @@ public class MuteMediaButton extends AbstractMediaButton {
     @Override
     public void init() {
         super.init();
-        AbstractMediaEventHandler eventHandler = new AbstractMediaEventHandler() {
+        MediaEventHandler eventHandler = new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 if (event.getMediaWrapper().isMuted()) {

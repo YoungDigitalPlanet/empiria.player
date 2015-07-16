@@ -8,8 +8,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -78,7 +78,7 @@ public abstract class AbstractMediaScroll extends AbstractMediaController {
             }
             // PlayerEventsBus.
             // czekamy na informacje na temat dlugosci utworu
-            AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+            MediaEventHandler handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     mediaReady = true;

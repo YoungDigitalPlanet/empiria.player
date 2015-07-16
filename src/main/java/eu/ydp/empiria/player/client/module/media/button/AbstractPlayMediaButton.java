@@ -1,10 +1,9 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
@@ -35,7 +34,7 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
     }
 
     protected void initButtonStyleChangeHandlers() {
-        AbstractMediaEventHandler handler = createButtonActivationHandler();
+        MediaEventHandler handler = createButtonActivationHandler();
         CurrentPageScope scope = createCurrentPageScope();
         addMediaEventHandlers(handler, scope);
     }
@@ -50,15 +49,15 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
         eventsBus.fireEventFromSource(mediaEvent, getMediaWrapper());
     }
 
-    private void addMediaEventHandlers(AbstractMediaEventHandler handler, CurrentPageScope scope) {
+    private void addMediaEventHandlers(MediaEventHandler handler, CurrentPageScope scope) {
         eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), getMediaWrapper(), handler, scope);
         eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), getMediaWrapper(), handler, scope);
         eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), getMediaWrapper(), handler, scope);
         eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), getMediaWrapper(), handler, scope);
     }
 
-    private AbstractMediaEventHandler createButtonActivationHandler() {
-        return new AbstractMediaEventHandler() {
+    private MediaEventHandler createButtonActivationHandler() {
+        return new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 if (event.getType() == MediaEventTypes.ON_PLAY) {

@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -45,14 +44,14 @@ public class DescriptionSoundController {
         return playing;
     }
 
-    public void playFromMediaWrapper(AbstractMediaEventHandler mediaEventHandler, MediaWrapper<Widget> mediaWrapper) {
+    public void playFromMediaWrapper(MediaEventHandler mediaEventHandler, MediaWrapper<Widget> mediaWrapper) {
         this.mediaWrapper = mediaWrapper;
         addMediaHandlers(mediaEventHandler);
         playing = true;
         mediaWrapperController.stopAndPlay(mediaWrapper);
     }
 
-    private void addMediaHandlers(AbstractMediaEventHandler handler) {
+    private void addMediaHandlers(MediaEventHandler handler) {
         MediaEventTypes[] eventTypes = {ON_PAUSE, ON_END, ON_STOP};
         addMediaHandlers(eventTypes, handler);
     }

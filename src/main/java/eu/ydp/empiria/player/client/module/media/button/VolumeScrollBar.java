@@ -12,8 +12,8 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
@@ -83,7 +83,7 @@ public class VolumeScrollBar extends AbstractMediaScroll {
     public void init() {
         super.init();
         if (isSupported()) {
-            AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+            MediaEventHandler handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     if (getMediaWrapper().isMuted()) {
@@ -92,7 +92,7 @@ public class VolumeScrollBar extends AbstractMediaScroll {
                 }
             };
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
-            handler = new AbstractMediaEventHandler() {
+            handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     double volume = getMediaWrapper().getVolume();

@@ -2,9 +2,8 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
@@ -20,7 +19,7 @@ public class MediaTotalTime extends AbstractMediaTime {
 
     @Override
     public void init() {
-        AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+        MediaEventHandler handler = new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 double duration = getMediaWrapper().getDuration();
