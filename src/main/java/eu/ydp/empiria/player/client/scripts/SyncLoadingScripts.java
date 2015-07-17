@@ -8,7 +8,13 @@ public enum SyncLoadingScripts implements ScriptUrl {
     CSS_PARSER("jscss/cssparser.js"),
     JQUERY_UI("jquery/jquery-ui.min.js"),
     JQUERY_UI_TOUCH("jquery/jquery.ui.touch-punch.min.js"),
-    MATH_JAX("mathjax/MathJax.js?config=yJax&locale=en");
+    VIDEO_AC("video/AC_RunActiveContent.js"),
+    FA_VIDEO("video/FAVideo.js"),
+    VIDEO_JS("video-js/video.js"),
+    JQUERY_TE("jqueryte/jquery-te-1.4.0.min.js"),
+    JQUERY_SCROLL("jquery/jquery.smooth-scroll.min.js"),
+    LIGHTBOX("lightbox2/js/lightbox-min.js"),
+    MAGNIFIC_POPUP("magnific-popup/magnific-popup.min.js");
 
     private final String url;
 

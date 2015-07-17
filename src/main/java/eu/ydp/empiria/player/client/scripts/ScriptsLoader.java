@@ -1,35 +1,27 @@
 package eu.ydp.empiria.player.client.scripts;
 
-import com.google.gwt.core.client.Callback;
 import com.google.inject.Inject;
-import eu.ydp.gwtutil.client.scripts.AsynchronousScriptsLoader;
-import eu.ydp.gwtutil.client.scripts.SynchronousScriptsLoader;
+import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
+import eu.ydp.gwtutil.client.util.paths.UrlConverter;
 
 public class ScriptsLoader {
+
+    private static final String MATH_JAX_URL = "mathjax/MathJax.js?config=yJax&locale=en";
 
     @Inject
     private SynchronousScriptsLoader synchronousScriptsLoader;
     @Inject
-    private AsynchronousScriptsLoader asynchronousScriptsLoader;
+    private ScriptInjectorWrapper scriptInjectorWrapper;
+    @Inject
+    private UrlConverter urlConverter;
 
-    private final Callback<Void, Exception> callback = new Callback<Void, Exception>() {
-        @Override
-        public void onFailure(Exception reason) {
-        }
-
-        @Override
-        public void onSuccess(Void result) {
-            asyncScriptLoading();
-        }
-    };
-
-    public void inject() {
+    public void inject(SynchronousScriptsCallback callback) {
+        injectMathJax();
         synchronousScriptsLoader.injectScripts(SyncLoadingScripts.values(), callback);
     }
 
-    private void asyncScriptLoading() {
-        asynchronousScriptsLoader.inject(AsyncLoadingScripts.values());
+    private void injectMathJax() {
+        String correctMathJaxUrl = urlConverter.getModuleRelativeUrl(MATH_JAX_URL);
+        scriptInjectorWrapper.fromUrl(correctMathJaxUrl);
     }
-
-
 }
