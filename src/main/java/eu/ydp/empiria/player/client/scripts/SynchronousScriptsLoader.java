@@ -25,12 +25,12 @@ public class SynchronousScriptsLoader {
         Collections.addAll(scriptsStack, scripts);
         Collections.reverse(scriptsStack);
 
-        RequestCallback requestCallback = createRequestCallback(scriptsStack, callback);
+        RequestCallback nextScriptLoaderCallback = createNextScriptLoaderCallback(scriptsStack, callback);
 
-        injectScript(scriptsStack, requestCallback);
+        injectScript(scriptsStack, nextScriptLoaderCallback);
     }
 
-    private RequestCallback createRequestCallback(final Stack<ScriptUrl> scriptsStack, final SynchronousScriptsCallback finalCallback) {
+    private RequestCallback createNextScriptLoaderCallback(final Stack<ScriptUrl> scriptsStack, final SynchronousScriptsCallback finalCallback) {
         return new RequestCallback() {
             @Override
             public void onResponseReceived(Request request, Response response) {

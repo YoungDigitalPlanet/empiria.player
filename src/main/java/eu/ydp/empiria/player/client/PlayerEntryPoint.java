@@ -58,13 +58,13 @@ public class PlayerEntryPoint implements EntryPoint {
     @Override
     public void onModuleLoad() {
         final Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
-        SynchronousScriptsCallback onScriptsLoadCallback = createSynchronousScriptsCallback(logger);
+        SynchronousScriptsCallback onScriptsLoadCallback = createPlayerInitializationCallback(logger);
 
         ScriptsLoader scriptsLoader = PlayerGinjectorFactory.getPlayerGinjector().getScriptsLoader();
         scriptsLoader.inject(onScriptsLoadCallback);
     }
 
-    private SynchronousScriptsCallback createSynchronousScriptsCallback(final Logger logger) {
+    private SynchronousScriptsCallback createPlayerInitializationCallback(final Logger logger) {
         return new SynchronousScriptsCallback() {
             @Override
             public void onLoad() {

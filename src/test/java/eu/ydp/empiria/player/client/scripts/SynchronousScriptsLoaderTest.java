@@ -21,6 +21,10 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SynchronousScriptsLoaderTest {
 
+    public static final String FIRST_SCRIPT_URL = "firstScript";
+    public static final String SECOND_SCRIPT_URL = "secondScript";
+    public static final String RESPONSE_TEXT = "response text";
+
     @InjectMocks
     private SynchronousScriptsLoader testObj;
     @Mock
@@ -40,8 +44,8 @@ public class SynchronousScriptsLoaderTest {
 
     @Before
     public void init() {
-        when(urlConverter.getModuleRelativeUrl(firstScript)).thenReturn("firstScript");
-        when(urlConverter.getModuleRelativeUrl(secondScript)).thenReturn("secondScript");
+        when(urlConverter.getModuleRelativeUrl(firstScript)).thenReturn(FIRST_SCRIPT_URL);
+        when(urlConverter.getModuleRelativeUrl(secondScript)).thenReturn(SECOND_SCRIPT_URL);
     }
 
     @Test
@@ -50,18 +54,18 @@ public class SynchronousScriptsLoaderTest {
         ScriptUrl[] scripts = new ScriptUrl[]{firstScript, secondScript};
         Request request = mock(Request.class);
         Response response = mock(Response.class);
-        when(response.getText()).thenReturn("response text");
+        when(response.getText()).thenReturn(RESPONSE_TEXT);
 
         // when
         testObj.injectScripts(scripts, synchronousScriptsCallback);
-        verify(requestWrapper).get(eq("firstScript"), requestCallbackCaptor.capture());
+        verify(requestWrapper).get(eq(FIRST_SCRIPT_URL), requestCallbackCaptor.capture());
         RequestCallback requestCallback = requestCallbackCaptor.getValue();
         requestCallback.onResponseReceived(request, response);
 
         // then
-        verify(scriptInjectorWrapper).fromString("response text");
+        verify(scriptInjectorWrapper).fromString(RESPONSE_TEXT);
 
-        verify(requestWrapper).get("secondScript", requestCallback);
+        verify(requestWrapper).get(SECOND_SCRIPT_URL, requestCallback);
         requestCallback.onResponseReceived(request, response);
         verify(synchronousScriptsCallback).onLoad();
     }
