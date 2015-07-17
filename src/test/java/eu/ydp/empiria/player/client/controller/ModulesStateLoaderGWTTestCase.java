@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.controller;
 
 import com.google.common.collect.Lists;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.StatefulModule;
@@ -27,9 +29,16 @@ public class ModulesStateLoaderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private List<IModule> modules;
 
+
+    interface TestGinjector extends PlayerGinjector {
+        ModulesStateLoader getModulesStateLoader();
+    }
+
     @Override
     protected void gwtSetUp() throws Exception {
-        loader = new ModulesStateLoader();
+
+        TestGinjector injector = GWT.create(TestGinjector.class);
+        loader = injector.getModulesStateLoader();
 
         firstModule = new ModuleMock(FIRST_IDENTIFIER);
         secondModule = new ModuleMock(SECOND_IDENTIFIER);
