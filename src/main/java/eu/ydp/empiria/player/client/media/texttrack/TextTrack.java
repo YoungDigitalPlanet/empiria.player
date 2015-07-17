@@ -2,12 +2,12 @@ package eu.ydp.empiria.player.client.media.texttrack;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.media.Audio;
 import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -23,16 +23,14 @@ public class TextTrack {
     private TextTrackCue activeCue = null;
     protected EventsBus eventsBus;
     private final Object eventBusSource;
+    private final PageScopeFactory pageScopeFactory;
 
-    /**
-     * @param kind           typ sciezki
-     * @param eventBusSource
-     */
     @Inject
-    public TextTrack(EventsBus eventsBus, @Assisted TextTrackKind kind, @Assisted Object eventBusSource) {
+    public TextTrack(@Assisted TextTrackKind kind, @Assisted Object eventBusSource, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         this.kind = kind;
         this.eventBusSource = eventBusSource;
         this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     public TextTrackKind getKind() {
@@ -51,7 +49,7 @@ public class TextTrack {
                 if (cue.getStartTime() <= time && cue.getEndTime() > time) {
                     MediaEvent event = new MediaEvent(MediaEventTypes.TEXT_TRACK_UPDATE, eventBusSource);
                     event.setTextTrackCue(cue);
-                    eventsBus.fireAsyncEventFromSource(event, eventBusSource, new CurrentPageScope());
+                    eventsBus.fireAsyncEventFromSource(event, eventBusSource, pageScopeFactory.getCurrentPageScope());
                     activeCue = cue;
                 }
             }

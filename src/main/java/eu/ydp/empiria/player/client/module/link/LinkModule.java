@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -35,16 +36,20 @@ public class LinkModule extends SimpleContainerModuleBase implements WorkModeTes
     protected String url;
     private boolean locked;
 
-    @Inject
-    private StyleNameConstants styleNames;
-    @Inject
-    private UserInteractionHandlerFactory userInteractionHandlerFactory;
-    @Inject
-    private EventsBus eventsBus;
+    private final StyleNameConstants styleNames;
+    private final UserInteractionHandlerFactory userInteractionHandlerFactory;
+    private final EventsBus eventsBus;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker) {
+    public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker, StyleNameConstants styleNames,
+                      UserInteractionHandlerFactory userInteractionHandlerFactory, EventsBus eventsBus,
+                      PageScopeFactory pageScopeFactory) {
         this.flowRequestInvoker = flowRequestInvoker;
+        this.styleNames = styleNames;
+        this.userInteractionHandlerFactory = userInteractionHandlerFactory;
+        this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @PostConstruct
@@ -58,12 +63,13 @@ public class LinkModule extends SimpleContainerModuleBase implements WorkModeTes
     }
 
     private void addLinkResetStyleNameOnPageChangeHandler() {
-        final CurrentPageScope modulePage = new CurrentPageScope();
+        final CurrentPageScope startPage = pageScopeFactory.getCurrentPageScope();
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), new PlayerEventHandler() {
 
             @Override
             public void onPlayerEvent(PlayerEvent event) {
-                if (modulePage.equals(new CurrentPageScope())) {
+                final CurrentPageScope currentPage = pageScopeFactory.getCurrentPageScope();
+                if (startPage.equals(currentPage)) {
                     setPrimaryStyleName();
                 }
             }

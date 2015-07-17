@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
@@ -14,12 +14,14 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
  */
 public class MediaCurrentTime extends AbstractMediaTime {
 
-    private ProgressUpdateLogic progressUpdateLogic;
+    private final ProgressUpdateLogic progressUpdateLogic;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public MediaCurrentTime(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic) {
+    public MediaCurrentTime(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_CURRENTTIME());
         this.progressUpdateLogic = progressUpdateLogic;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class MediaCurrentTime extends AbstractMediaTime {
             }
         };
         if (isSupported()) {
-            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler, new CurrentPageScope());
+            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler, pageScopeFactory.getCurrentPageScope());
         }
     }
 }

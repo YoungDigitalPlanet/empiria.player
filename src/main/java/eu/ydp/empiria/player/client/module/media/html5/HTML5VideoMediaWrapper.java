@@ -20,6 +20,8 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
 
     @Inject
     private UserAgentUtil userAgentUtil;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     private final EventsBus eventsBus;
 
@@ -33,10 +35,11 @@ public class HTML5VideoMediaWrapper extends AbstractHTML5MediaWrapper {
     public void registerEvents() {
         if (isHTML5VideoForcePosterNeeded()) {
             HTML5VideoForcePosterHack html5VideoForcePosterHack = new HTML5VideoForcePosterHack(getMediaBase(), html5MediaExecutorDelegator);
+            CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
             addHandlerRegistration(MediaEventTypes.SUSPEND,
-                    eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.SUSPEND), this, html5VideoForcePosterHack, new CurrentPageScope()));
+                    eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.SUSPEND), this, html5VideoForcePosterHack, currentPageScope));
             addHandlerRegistration(MediaEventTypes.ON_PLAY,
-                    eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), this, html5VideoForcePosterHack, new CurrentPageScope()));
+                    eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PLAY), this, html5VideoForcePosterHack, currentPageScope));
         }
     }
 

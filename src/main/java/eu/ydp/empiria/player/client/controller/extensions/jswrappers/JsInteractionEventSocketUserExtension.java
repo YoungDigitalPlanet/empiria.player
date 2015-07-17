@@ -8,6 +8,7 @@ import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEve
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.InteractionEventSocketUserExtension;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
@@ -17,10 +18,12 @@ public class JsInteractionEventSocketUserExtension extends AbstractJsExtension i
     private final EventsBus eventsBus;
     protected JavaScriptObject interactionSocketJs;
     protected InteractionEventsListener interactionEventsListener;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public JsInteractionEventSocketUserExtension(EventsBus eventsBus) {
+    public JsInteractionEventSocketUserExtension(EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @Override
@@ -44,7 +47,8 @@ public class JsInteractionEventSocketUserExtension extends AbstractJsExtension i
         InteractionEvent event = InteractionEvent.fromJsObject(requestJs);
         if (event instanceof StateChangedInteractionEvent) {
             StateChangedInteractionEvent scie = (StateChangedInteractionEvent) event;
-            eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, scie), new CurrentPageScope());
+            CurrentPageScope eventScope = pageScopeFactory.getCurrentPageScope();
+            eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, scie), eventScope);
         }
         if (event instanceof FeedbackInteractionEvent) {
             interactionEventsListener.onFeedbackSound((FeedbackInteractionEvent) event);

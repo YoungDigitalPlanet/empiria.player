@@ -39,6 +39,7 @@ import eu.ydp.empiria.player.client.controller.session.times.SessionTimeUpdater;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkManager;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeState;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistry;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -82,6 +83,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
     private final FlowRequestFactory flowRequestFactory;
     private final Provider<ExtensionsManager> extensionsManagerProvider;
     private ExtensionsProvider extensionsProvider;
+    private final PageScopeFactory pageScopeFactory;
 
     private JavaScriptObject playerJsObject;
     private String stateAsync;
@@ -95,7 +97,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
                           ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
                           AssessmentFactory assessmentFactory, PlayerWorkModeState playerWorkModeState,
                           FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider,
-                          Provider<ExtensionsManager> extensionsManagerProvider) {
+                          Provider<ExtensionsManager> extensionsManagerProvider, PageScopeFactory pageScopeFactory) {
         this.playerViewSocket = playerViewSocket;
         this.dataManager = dataManager;
         this.sessionDataManager = sessionDataManager;
@@ -114,6 +116,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         this.flowRequestFactory = flowRequestFactory;
         this.soundProcessorManager = soundProcessorManager;
         this.extensionsProvider = extensionsProvider;
+        this.pageScopeFactory = pageScopeFactory;
         dataManager.setDataLoaderEventListener(this);
         this.styleSocket = styleSocket;
         this.extensionsManagerProvider = extensionsManagerProvider;
@@ -348,7 +351,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
             }
             if (pageData.type == PageType.TEST) {
                 getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.TEST_PAGE_LOADED));
-                eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TEST_PAGE_LOADED), new CurrentPageScope());
+                CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
+                eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TEST_PAGE_LOADED), currentPageScope);
             }
             updatePageStyle();
         }

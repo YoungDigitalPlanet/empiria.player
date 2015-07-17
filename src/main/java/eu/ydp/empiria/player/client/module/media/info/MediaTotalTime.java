@@ -1,20 +1,23 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * Widget prezentujacy dlugosc pliku audio lub video
  */
 public class MediaTotalTime extends AbstractMediaTime {
 
+    private final PageScopeFactory pageScopeFactory;
+
     @Inject
-    public MediaTotalTime(StyleNameConstants styleNames) {
+    public MediaTotalTime(StyleNameConstants styleNames, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_TOTALTIME());
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class MediaTotalTime extends AbstractMediaTime {
             }
         };
         if (isSupported()) {
-            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
+            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler, pageScopeFactory.getCurrentPageScope());
         }
     }
 }

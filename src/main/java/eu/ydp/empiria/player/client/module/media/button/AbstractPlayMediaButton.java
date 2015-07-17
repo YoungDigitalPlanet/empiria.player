@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
@@ -11,6 +12,8 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
 
     @Inject
     protected EventsBus eventsBus;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     public AbstractPlayMediaButton(String baseStyleName) {
         super(baseStyleName);
@@ -40,7 +43,7 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
     }
 
     protected CurrentPageScope createCurrentPageScope() {
-        return new CurrentPageScope();
+        return pageScopeFactory.getCurrentPageScope();
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -37,6 +38,8 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     private StyleNameConstants styleNameConstants;
     @Inject
     private CustomPushButton button;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
     private boolean playing;
     private boolean enabled = true;
     private MediaWrapper<?> mediaWrapper;
@@ -103,7 +106,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     }
 
     private void addMediaHandler(MediaEventTypes type, MediaEventHandler handler) {
-        CurrentPageScope scope = new CurrentPageScope();
+        CurrentPageScope scope = pageScopeFactory.getCurrentPageScope();
         eventsBus.addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler, scope);
     }
 

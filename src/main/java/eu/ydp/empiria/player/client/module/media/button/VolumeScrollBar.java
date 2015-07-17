@@ -10,12 +10,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 import java.util.Iterator;
@@ -46,12 +46,14 @@ public class VolumeScrollBar extends AbstractMediaScroll {
     protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
     private final EventsBus eventsBus;
     private final PositionHelper positionHelper;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public VolumeScrollBar(StyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper) {
+    public VolumeScrollBar(StyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper, PageScopeFactory pageScopeFactory) {
         this.styleNames = styleNames;
         this.eventsBus = eventsBus;
         this.positionHelper = positionHelper;
+        this.pageScopeFactory = pageScopeFactory;
         button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -91,7 +93,7 @@ public class VolumeScrollBar extends AbstractMediaScroll {
                     }
                 }
             };
-            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
+            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, pageScopeFactory.getCurrentPageScope());
             handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {

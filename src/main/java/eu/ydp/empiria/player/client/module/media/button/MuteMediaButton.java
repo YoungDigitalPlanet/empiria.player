@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * Przycisk mute
@@ -16,11 +16,13 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 public class MuteMediaButton extends AbstractMediaButton {
 
     private final EventsBus eventsBus;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public MuteMediaButton(StyleNameConstants styleNames, EventsBus eventsBus) {
+    public MuteMediaButton(StyleNameConstants styleNames, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_MUTE());
         this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class MuteMediaButton extends AbstractMediaButton {
                 changeStyleForClick();
             }
         };
-        eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, new CurrentPageScope());
+        eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
