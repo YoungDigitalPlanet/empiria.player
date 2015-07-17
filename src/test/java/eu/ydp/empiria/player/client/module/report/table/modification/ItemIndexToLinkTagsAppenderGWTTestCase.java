@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.module.report.table.modification;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
-public class ItemIndexToLinkTagsAppenderGWTTestCase extends GWTTestCase {
+public class ItemIndexToLinkTagsAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private ItemIndexAppender testObj;
 
@@ -60,10 +60,5 @@ public class ItemIndexToLinkTagsAppenderGWTTestCase extends GWTTestCase {
 
         // then
         assertEquals(cellElement.toString(), OUTPUT);
-    }
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
     }
 }
