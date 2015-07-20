@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
@@ -29,6 +31,8 @@ public class DragGapPresenterImpl implements DragGapPresenter {
     private final DragGapModuleModel model;
     private final DragGapView view;
     private final SourceListManagerAdapter sourceListManagerAdapter;
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+
     @Inject
     private UserInteractionHandlerFactory interactionHandlerFactory;
 
@@ -70,6 +74,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
     @Override
     public void setModuleSocket(ModuleSocket socket) {
+        inlineBodyGeneratorSocket = socket.getInlineBodyGeneratorSocket();
     }
 
     @Override
@@ -137,7 +142,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
 
     private void setContentOfItemOnView(String itemId) {
         SourcelistItemValue item = sourceListManagerAdapter.getItemById(itemId);
-        view.setItemContent(item);
+        view.setItemContent(item, inlineBodyGeneratorSocket);
     }
 
     @Override

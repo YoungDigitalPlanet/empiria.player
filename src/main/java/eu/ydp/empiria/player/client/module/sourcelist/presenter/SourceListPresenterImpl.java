@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -48,12 +49,12 @@ public class SourceListPresenterImpl implements SourceListPresenter {
     }
 
     @Override
-    public void createAndBindUi() {
+    public void createAndBindUi(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         view.setSourceListPresenter(this);
         view.createAndBindUi();
         List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
         for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-            view.createItem(simpleSourceListItemBean.getItemValue()); // TODO YPUB-5441
+            view.createItem(simpleSourceListItemBean.getItemValue(), inlineBodyGeneratorSocket);
         }
     }
 

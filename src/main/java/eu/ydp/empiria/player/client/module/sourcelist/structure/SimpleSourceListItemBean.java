@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.sourcelist.structure;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.HasFixed;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
@@ -17,6 +18,7 @@ public class SimpleSourceListItemBean implements HasFixed {
 
     private static final String SRC_ATTR = "src";
     private static final String IMG_NODE = "img";
+    private static final String MATH_NODE = ModuleTagName.INLINE_MATH_JAX.toString();
 
     @XmlAttribute
     private String alt;
@@ -40,9 +42,14 @@ public class SimpleSourceListItemBean implements HasFixed {
         NodeList imgNodes = content.getValue().getElementsByTagName(IMG_NODE);
         if (imgNodes.getLength() > 0) {
             return createImageItemValue();
-        } else {
-            return createTextItemValue();
         }
+
+        NodeList mathNodes = content.getValue().getElementsByTagName(MATH_NODE);
+        if (mathNodes.getLength() > 0) {
+            return createMathItemValue();
+        }
+
+        return createTextItemValue();
     }
 
     private SourcelistItemValue createImageItemValue() {
@@ -53,9 +60,17 @@ public class SimpleSourceListItemBean implements HasFixed {
     }
 
     private SourcelistItemValue createTextItemValue() {
+        return createTypedItemValue(SourcelistItemType.TEXT);
+    }
+
+    private SourcelistItemValue createMathItemValue() {
+        return createTypedItemValue(SourcelistItemType.MATH);
+    }
+
+    private SourcelistItemValue createTypedItemValue(SourcelistItemType type){
         NodeList textNode = content.getValue().getChildNodes();
         String text = textNode.toString();
-        return new SourcelistItemValue(SourcelistItemType.TEXT, text, alt);
+        return new SourcelistItemValue(type, text, alt);
     }
 
     public void setContent(XMLContent content) {

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.sourcelist.SourceListLocking;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface SourceListPresenter extends IsWidget, SourceListLocking {
     void setBean(SourceListBean bean);
 
-    void createAndBindUi();
+    void createAndBindUi(InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 
     void onDragEvent(DragDropEventTypes eventType, String itemId);
 

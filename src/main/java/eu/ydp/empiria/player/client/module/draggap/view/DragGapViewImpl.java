@@ -10,11 +10,15 @@ import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
+import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewItemContentFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
@@ -35,21 +39,22 @@ public class DragGapViewImpl implements DragGapView {
     private final DragDropHelper dragDropHelper;
     private final StyleNameConstants styleNameConstants;
     private final DragGapStylesProvider dragGapStylesProvider;
-    private final ContentWidgetFactory contentWidgetFactory;
 
-    private Widget contentWidget;
+    private SourceListViewItemContentFactory contentFactory;
+    private MathJaxNative mathJaxNative;
+
     private FlowPanel itemWrapper;
     private Optional<DraggableObject<FlowPanel>> optionalDraggable = Optional.absent();
     private Optional<DragStartHandler> dragStartHandlerOptional = Optional.absent();
     private DragEndHandler dragEndHandler;
 
     @Inject
-    public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider,
-                           ContentWidgetFactory contentWidgetFactory) {
+    public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider, MathJaxNative mathJaxNative, SourceListViewItemContentFactory contentFactory) {
         this.dragDropHelper = dragDropHelper;
         this.styleNameConstants = styleNameConstants;
         this.dragGapStylesProvider = dragGapStylesProvider;
-        this.contentWidgetFactory = contentWidgetFactory;
+        this.mathJaxNative = mathJaxNative;
+        this.contentFactory = contentFactory;
 
         uiBinder.createAndBindUi(this);
         container.setStyleName(styleNameConstants.QP_DRAG_GAP_DEFAULT());
@@ -61,15 +66,16 @@ public class DragGapViewImpl implements DragGapView {
     }
 
     @Override
-    public void setItemContent(SourcelistItemValue item) {
+    public void setItemContent(SourcelistItemValue item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         removeContent();
-        fullFillItemWrapperWithContent(item);
+        fullFillItemWrapperWithContent(item, inlineBodyGeneratorSocket);
         DraggableObject<FlowPanel> draggableObject = createDragableObjectOnItemWrapper();
         addDragHandlersToItem(draggableObject);
+        mathJaxNative.renderMath();
     }
 
-    private void fullFillItemWrapperWithContent(SourcelistItemValue item) {
-        contentWidget = contentWidgetFactory.createContentWidgetById(item);
+    private void fullFillItemWrapperWithContent(SourcelistItemValue item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+        IsWidget contentWidget = contentFactory.getSourceListViewItemContent(item.getType(), item.getContent(), inlineBodyGeneratorSocket);
         itemWrapper = new FlowPanel();
         itemWrapper.add(contentWidget);
     }
