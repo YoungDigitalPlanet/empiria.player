@@ -34,4 +34,15 @@ public class MathJaxNative {
             mathJax.Hub.yProcessElements(callback);
         }
     }-*/;
+
+	public void rerenderMathElement(String divId) {
+		rerenderMathElementNative(divId);
+	}
+
+	private native void rerenderMathElementNative(String divId) /*-{
+		var mathJax = $wnd.MathJax;
+		if (mathJax && typeof(mathJax.Hub.yRerenderElement) === 'function') {
+			mathJax.Hub.yRerenderElement(divId);
+		}
+	}-*/;
 }
