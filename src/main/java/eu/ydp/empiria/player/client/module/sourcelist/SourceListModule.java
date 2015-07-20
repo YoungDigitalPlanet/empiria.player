@@ -43,7 +43,6 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
         presenter.setModuleId(sourcelistId);
         presenter.createAndBindUi();
         sourcelistManager.registerSourcelist(this);
-
     }
 
     @Override
