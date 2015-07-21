@@ -8,12 +8,12 @@ import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 public class SourceListViewItemContentFactory {
 
     public IsWidget getSourceListViewItemContent(SourcelistItemType type, String content) {
-        IsWidget widget;
         if (type == SourcelistItemType.IMAGE) {
-            widget = new Image(content);
+            return new Image(content);
         } else {
-            widget = new InlineHTML(content);
+            InlineHTML inlineHTML = new InlineHTML(content);
+            inlineHTML.addStyleName("gwt-Label");
+            return inlineHTML;
         }
-        return widget;
     }
 }
