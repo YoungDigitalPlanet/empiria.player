@@ -25,7 +25,6 @@
     <set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/>
 
     <!-- Specify the app entry point class. -->
-    <entry-point class='eu.ydp.empiria.player.client.ScriptsEntryPoint'/>
     <entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint'/>
 
     <define-property name="run.local" values="false,true"/>
