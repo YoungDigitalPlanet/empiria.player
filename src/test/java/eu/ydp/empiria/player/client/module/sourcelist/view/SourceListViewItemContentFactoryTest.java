@@ -26,7 +26,7 @@ public class SourceListViewItemContentFactoryTest {
         String content = "content";
 
         // when
-        testObj.getSourceListViewItemContent(SourcelistItemType.MATH, content, inlineBodyGeneratorSocket);
+        testObj.getSourceListViewItemContent(SourcelistItemType.COMPLEX_TEXT, content, inlineBodyGeneratorSocket);
 
         // then
         verify(inlineBodyGeneratorSocket).generateInlineBody(isA(Node.class));

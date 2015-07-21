@@ -17,8 +17,8 @@ public class SourceListViewItemContentFactory {
             case IMAGE:
                 return new Image(content);
             case TEXT:
-                return new InlineHTML(content);
-            case MATH:
+                return new Label(content);
+            case COMPLEX_TEXT:
                 Node node = getNode(content);
                 return inlineBodyGeneratorSocket.generateInlineBody(node);
         }

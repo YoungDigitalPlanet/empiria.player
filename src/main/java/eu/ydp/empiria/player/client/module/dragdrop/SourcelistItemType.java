@@ -1,5 +1,5 @@
 package eu.ydp.empiria.player.client.module.dragdrop;
 
 public enum SourcelistItemType {
-    TEXT, IMAGE, MATH
+    TEXT, COMPLEX_TEXT, IMAGE
 }
