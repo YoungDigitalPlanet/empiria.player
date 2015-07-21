@@ -3,16 +3,18 @@ package eu.ydp.empiria.player.client.view.page;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class PageContentView extends Composite {
     private Panel pagePanel;
-    protected Panel itemsPanel = new FlowPanel();
-    protected Panel titlePanel = new FlowPanel();
-    protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+    private Panel itemsPanel = new FlowPanel();
+    private Panel titlePanel = new FlowPanel();
 
-    public PageContentView(Panel parentPanel) {
+    @Inject
+    public PageContentView(@Assisted Panel parentPanel, StyleNameConstants styleNames) {
         setParent(parentPanel);
         itemsPanel.setStyleName(styleNames.QP_PAGE_CONTENT());
         titlePanel.setStyleName(styleNames.QP_PAGE_TITLE());

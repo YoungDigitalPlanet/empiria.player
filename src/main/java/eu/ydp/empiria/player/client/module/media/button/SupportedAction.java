@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-public interface SupportedAction<T> {
+public interface SupportedAction {
     /**
      * Czy funkcjonalnosc oferowana przez dany button jest obslugiwana w przegladarce
      *
      * @return
      */
-    public boolean isSupported();
+    boolean isSupported();
 }

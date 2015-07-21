@@ -156,6 +156,7 @@ task testGWTUnit(type: Test) {
     jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
 
 }
+testGWTUnit.shouldRunAfter testJUnit
 
 task test(overwrite: true, dependsOn: [testJUnit, testGWTUnit]) {
     ext {

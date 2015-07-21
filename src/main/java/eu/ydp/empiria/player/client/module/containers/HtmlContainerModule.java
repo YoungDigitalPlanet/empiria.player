@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 
-public class HtmlContainerModule extends SimpleContainerModuleBase<HtmlContainerModule> {
+public class HtmlContainerModule extends SimpleContainerModuleBase {
 
     protected String tag;
 
@@ -11,10 +11,4 @@ public class HtmlContainerModule extends SimpleContainerModuleBase<HtmlContainer
         this.tag = tag;
         setContainerStyleName("qp-" + tag);
     }
-
-    @Override
-    public HtmlContainerModule getNewInstance() {
-        return new HtmlContainerModule(tag);
-    }
-
 }

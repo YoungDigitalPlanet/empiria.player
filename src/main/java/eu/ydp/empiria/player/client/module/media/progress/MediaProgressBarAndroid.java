@@ -13,11 +13,6 @@ public class MediaProgressBarAndroid extends MediaProgressBarImpl {
     }
 
     @Override
-    public MediaProgressBarImpl getNewInstance() {
-        return new MediaProgressBarAndroid();
-    }
-
-    @Override
     protected void setPosition(NativeEvent event) {
         if (isAttached()) {
             event.preventDefault();

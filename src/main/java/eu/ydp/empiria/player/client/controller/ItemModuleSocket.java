@@ -7,6 +7,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
+import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
@@ -25,6 +26,7 @@ public class ItemModuleSocket implements ModuleSocket {
     private final YJsJsonConverter yJsJsonConverter;
     private final ModulesRegistrySocket modulesRegistrySocket;
     private final InteractionEventsListener interactionEventsListener;
+    private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
     private JSONArray state;
     private ItemBody itemBody;
@@ -32,11 +34,12 @@ public class ItemModuleSocket implements ModuleSocket {
 
     @Inject
     public ItemModuleSocket(@Assisted Item item, YJsJsonConverter yJsJsonConverter, ModulesRegistrySocket modulesRegistrySocket,
-                            @SuppressWarnings("deprecation") InteractionEventsListener interactionEventsListener) {
+                            InteractionEventsListener interactionEventsListener, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
         this.item = item;
         this.yJsJsonConverter = yJsJsonConverter;
         this.modulesRegistrySocket = modulesRegistrySocket;
         this.interactionEventsListener = interactionEventsListener;
+        this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
     }
 
     public void init(ItemBody itemBody, JSONArray state) {
@@ -47,7 +50,7 @@ public class ItemModuleSocket implements ModuleSocket {
     @Override
     public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
         if (inlineBodyGenerator == null) {
-            inlineBodyGenerator = new InlineBodyGenerator(modulesRegistrySocket, this, this.item.options, interactionEventsListener, itemBody.getParenthood());
+            inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, this.item.options, interactionEventsListener, itemBody.getParenthood());
         }
         return inlineBodyGenerator;
     }
@@ -76,6 +79,16 @@ public class ItemModuleSocket implements ModuleSocket {
     @Override
     public List<IModule> getChildren(IModule parent) {
         return itemBody.getModuleChildren(parent);
+    }
+
+    @Override
+    public List<HasParent> getNestedChildren(HasChildren parent) {
+        return itemBody.getNestedChildren(parent);
+    }
+
+    @Override
+    public List<HasChildren> getNestedParents(HasParent child) {
+        return itemBody.getNestedParents(child);
     }
 
     @Override

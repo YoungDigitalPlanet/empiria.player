@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -27,11 +28,10 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 import java.io.Serializable;
 import java.util.List;
 
-public class InlineChoiceDefaultController implements InlineChoiceController {
+public class InlineChoiceDefaultController extends ParentedModuleBase implements InlineChoiceController {
 
     private Response response;
     private String responseIdentifier;
-    private ModuleSocket moduleSocket;
     private AccessibleListBox listBox;
     private boolean shuffle = false;
     private String lastValue = null;
@@ -43,6 +43,8 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
     @Inject
     @PageScoped
     private ResponseSocket responseSocket;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     protected Panel container;
 
@@ -50,7 +52,7 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
 
     @Override
     public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
-        this.moduleSocket = moduleSocket;
+        initModule(moduleSocket);
     }
 
     @Override
@@ -322,8 +324,9 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
             lastValue = "";
         }
         response.add(lastValue);
+        CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
         eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, false, parentModule)),
-                new CurrentPageScope());
+                currentPageScope);
     }
 
     @Override
@@ -338,15 +341,5 @@ public class InlineChoiceDefaultController implements InlineChoiceController {
     @Override
     public void setShowEmptyOption(boolean seo) {
         showEmptyOption = seo;
-    }
-
-    @Override
-    public HasChildren getParentModule() {
-        return moduleSocket.getParent(this);
-    }
-
-    @Override
-    public List<IModule> getChildren() {
-        return moduleSocket.getChildren(this);
     }
 }

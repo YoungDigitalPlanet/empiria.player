@@ -10,7 +10,7 @@ public class MainFlowRequestInvoker implements FlowRequestInvoker {
     protected List<IFlowRequestProcessor> processors;
 
     public MainFlowRequestInvoker() {
-        processors = new ArrayList<IFlowRequestProcessor>();
+        processors = new ArrayList<>();
     }
 
     public void addRequestProcessor(IFlowRequestProcessor processor) {

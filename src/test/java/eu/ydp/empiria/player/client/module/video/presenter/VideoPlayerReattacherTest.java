@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -32,7 +32,7 @@ public class VideoPlayerReattacherTest {
     @Mock
     private VideoPlayerBuilder videoPlayerBuilder;
     @Mock
-    private Provider<CurrentPageScope> pageScopeProvider;
+    private PageScopeFactory pageScopeProvider;
     @Mock
     private VideoView view;
 
@@ -61,7 +61,7 @@ public class VideoPlayerReattacherTest {
 
     private void preparePageScope() {
         currentPageScope = mock(CurrentPageScope.class);
-        when(pageScopeProvider.get()).thenReturn(currentPageScope);
+        when(pageScopeProvider.getCurrentPageScope()).thenReturn(currentPageScope);
     }
 
     private void prepareHandler() {

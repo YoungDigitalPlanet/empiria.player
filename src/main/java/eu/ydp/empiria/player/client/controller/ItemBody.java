@@ -11,13 +11,14 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
-import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
+import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.gin.factory.ModulesInstalatorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
@@ -50,11 +51,13 @@ public class ItemBody implements WidgetWorkflowListener {
     private MathJaxNative mathJaxNative;
     private final IgnoredModules ignoredModules;
     private final PlayerWorkModeService playerWorkModeService;
+    private final ModulesInstalatorFactory modulesInstalatorFactory;
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
                     InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-                    IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative) {
+                    IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
+                    ModulesInstalatorFactory modulesInstalatorFactory) {
 
         this.moduleSocket = moduleSocket;
         this.options = options;
@@ -63,16 +66,17 @@ public class ItemBody implements WidgetWorkflowListener {
         this.modulesStateLoader = modulesStateLoader;
         this.mathJaxNative = mathJaxNative;
 
-        parenthood = new ParenthoodManager();
+        this.parenthood = parenthood;
 
         this.interactionEventsListener = interactionEventsListener;
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
+        this.modulesInstalatorFactory = modulesInstalatorFactory;
     }
 
     public Widget init(Element itemBodyElement) {
 
-        ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
         BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 
         itemBodyModule = new ItemBodyModule();
@@ -320,5 +324,13 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public ParenthoodManager getParenthood() {
         return parenthood;
+    }
+
+    public List<HasParent> getNestedChildren(HasChildren parent) {
+        return parenthood.getNestedChildren(parent);
+    }
+
+    public List<HasChildren> getNestedParents(HasParent child) {
+        return parenthood.getNestedParents(child);
     }
 }

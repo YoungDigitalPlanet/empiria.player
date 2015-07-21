@@ -1,11 +1,12 @@
 package eu.ydp.empiria.player.client.controller.style.test;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.inject.client.*;
+import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
-import eu.ydp.empiria.player.client.*;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
@@ -14,11 +15,11 @@ import eu.ydp.empiria.player.client.controller.data.CssParser;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.gin.module.ScriptInjectorGinModule;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
+import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 
 import java.util.Map;
 import java.util.Set;
-import junit.framework.Test;
 
 public class StyleDataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
@@ -36,7 +37,12 @@ public class StyleDataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase 
 	protected void gwtSetUp() throws Exception {
 		TestGinjector ginjector = GWT.create(TestGinjector.class);
 		ScriptsLoader scriptsLoader = ginjector.getScriptsLoader();
-		scriptsLoader.inject();
+		scriptsLoader.inject(new SynchronousScriptsCallback() {
+            @Override
+            public void onLoad() {
+
+            }
+        });
 	}
 
     public void testStyleDataSourceManager() {

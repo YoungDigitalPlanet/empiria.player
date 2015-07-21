@@ -1,21 +1,23 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
+import com.google.gwt.core.client.GWT;
 import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageItemsDisplayMode;
-import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
 @RunOutsideTestSuite
 public class MainFlowProcessorGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
+    interface TestGinjector extends PlayerGinjector {
+        MainFlowProcessor getMainFlowProcessor();
+    }
+
     private MainFlowProcessor getMainFlowProcessor5TestPages() {
-        EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-        ExternalEventDispatcher externalEventDispatcher = new ExternalEventDispatcher();
-        MainFlowProcessor mfp = new MainFlowProcessor(eventsBus, externalEventDispatcher);
+        TestGinjector ginjector = GWT.create(TestGinjector.class);
+        MainFlowProcessor mfp = ginjector.getMainFlowProcessor();
         mfp.setFlowOptions(new FlowOptions(false, false, PageItemsDisplayMode.ONE, ActivityMode.NORMAL));
         mfp.init(5);
         mfp.initFlow();

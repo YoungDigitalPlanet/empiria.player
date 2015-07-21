@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSocketUserExtension;
@@ -28,14 +28,13 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class BookmarkProcessorExtension extends InternalExtension implements ModuleHandlerExtension, DataSourceDataSocketUserExtension,
         PlayerJsObjectModifierExtension, StatefulExtension, IBookmarkPopupPresenter {
 
-    static enum Mode {
+    enum Mode {
         IDLE, BOOKMARKING, CLEARING, EDITING
     }
 
@@ -50,8 +49,8 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
     int currItemIndex = 0;
     IBookmarkable currEditingModule;
     boolean currBookmarkNewlyCreated;
-    List<List<IBookmarkable>> modules = new LinkedList<List<IBookmarkable>>();
-    List<StackMap<Integer, BookmarkProperties>> bookmarks = new LinkedList<StackMap<Integer, BookmarkProperties>>();
+    List<List<IBookmarkable>> modules = new LinkedList<>();
+    List<StackMap<Integer, BookmarkProperties>> bookmarks = new LinkedList<>();
     Mode mode = Mode.IDLE;
     Integer bookmarkIndex;
     private JavaScriptObject playerJsObject;
@@ -99,12 +98,12 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.ASSESSMENT_STARTING), new PlayerEventHandler() {
             @Override
             public void onPlayerEvent(PlayerEvent event) {
-                parseExternalBookarks();
+                parseExternalBookmarks();
             }
         });
     }
 
-    void parseExternalBookarks() {
+    void parseExternalBookmarks() {
         JavaScriptObject externalBookmarks = getExternalBookmarks();
         if (externalBookmarks != null) {
             JSONArray externalState = (JSONArray) JSONParser.parseLenient(externalBookmarks.toString());
@@ -114,11 +113,6 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
         }
     }
 
-    void initInjection() {
-        styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-        eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    }
-
     boolean accepts(IModule module) {
         return module instanceof IBookmarkable && !parentRegistered(module) && !containsInteraction(module)
                 && ((IBookmarkable) module).getBookmarkHtmlBody() != null && ((IBookmarkable) module).getBookmarkHtmlBody().length() > 0;
@@ -126,14 +120,12 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
 
     boolean containsInteraction(IModule module) {
         if (module instanceof HasChildren) {
-            List<IModule> children = ((HasChildren) module).getChildrenModules();
-            for (IModule childModule : children) {
-                if (containsInteraction(childModule)) {
+            HasChildren parent = (HasChildren) module;
+            for (HasParent m : parent.getNestedChildren()) {
+                if (m instanceof IInteractionModule) {
                     return true;
                 }
             }
-        } else if (module instanceof IInteractionModule) {
-            return true;
         }
         return false;
     }
@@ -142,12 +134,12 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
      * Checks whether any parent of the given module is already registered.
      */
     boolean parentRegistered(IModule module) {
-        HasParent currParent = ((HasParent) module).getParentModule();
-        while (currParent != null) {
-            if (getModulesForCurrentItem().contains(currParent)) {
+        List<HasChildren> parents = module.getNestedParents();
+        List<IBookmarkable> modulesForCurrentItem = getModulesForCurrentItem();
+        for (IBookmarkable bookmarkable : modulesForCurrentItem) {
+            if (bookmarkable instanceof HasChildren && parents.contains(bookmarkable)) {
                 return true;
             }
-            currParent = currParent.getParentModule();
         }
         return false;
     }
@@ -155,30 +147,34 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
     @Override
     public void register(IModule module) {
         if (accepts(module)) {
-            removeChildren(module);
+            removeBookmarkableChildren(module);
             final IBookmarkable accModule = (IBookmarkable) module;
             registerModuleInList(accModule);
-            accModule.setClickCommand(new Command() {
-                @Override
-                public void execute() {
-                    if (mode == Mode.BOOKMARKING) {
-                        bookmarkModule(accModule);
+            accModule.setClickCommand(createClickCommand(accModule));
+        }
+    }
+
+    private Command createClickCommand(final IBookmarkable accModule) {
+        return new Command() {
+            @Override
+            public void execute() {
+                if (mode == Mode.BOOKMARKING) {
+                    bookmarkModule(accModule);
+                    resetMode();
+                }
+                if (mode == Mode.CLEARING) {
+                    if (isModuleBookmarked(accModule, currItemIndex)) {
+                        bookmarkModule(accModule, false);
                         resetMode();
                     }
-                    if (mode == Mode.CLEARING) {
-                        if (isModuleBookmarked(accModule, currItemIndex)) {
-                            bookmarkModule(accModule, false);
-                            resetMode();
-                        }
-                    } else if (mode == Mode.EDITING) {
-                        if (isModuleBookmarked(accModule, currItemIndex)) {
-                            editBookmark(accModule);
-                            resetMode();
-                        }
+                } else if (mode == Mode.EDITING) {
+                    if (isModuleBookmarked(accModule, currItemIndex)) {
+                        editBookmark(accModule);
+                        resetMode();
                     }
                 }
-            });
-        }
+            }
+        };
     }
 
     void resetMode() {
@@ -193,24 +189,20 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
         }
     }-*/;
 
-    void removeChildren(IModule parentModule) {
-        Iterator<IBookmarkable> iter = getModulesForCurrentItem().iterator();
-        while (iter.hasNext()) {
-            if (isChildOf(iter.next(), parentModule)) {
-                iter.remove();
-            }
-        }
-    }
+    void removeBookmarkableChildren(IModule parentModule) {
+        List<IBookmarkable> modulesForCurrentItem = getModulesForCurrentItem();
+        List<IBookmarkable> bookmarksToRemove = Lists.newArrayList();
 
-    boolean isChildOf(IModule module, IModule parentModule) {
-        HasChildren currParent = module.getParentModule();
-        while (currParent != null) {
-            if (currParent == parentModule) {
-                return true;
+        if (parentModule instanceof HasChildren) {
+            List<HasParent> allChildren = ((HasChildren) parentModule).getNestedChildren();
+            for (IBookmarkable b : modulesForCurrentItem) {
+                if (allChildren.contains(b)) {
+                    bookmarksToRemove.add(b);
+                }
             }
-            currParent = currParent.getParentModule();
+
+            modulesForCurrentItem.removeAll(bookmarksToRemove);
         }
-        return false;
     }
 
     private void bookmarkModule(IBookmarkable module) {
