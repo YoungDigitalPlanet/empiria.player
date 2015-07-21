@@ -5,11 +5,6 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 
-/**
- * przycisk zmiany glosnosci dzwieku
- *
- * @author plelakowski
- */
 public class VolumeMediaButton extends AbstractMediaButton {
     public VolumeMediaButton() {
         super("qp-media-volume");

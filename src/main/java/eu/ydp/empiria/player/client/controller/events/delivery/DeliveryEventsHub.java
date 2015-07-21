@@ -10,11 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Translates FlowExecutionEvents into
- *
- * @author Rafal Rybacki
- */
 public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsSocket {
 
     private List<DeliveryEventsListener> deliveryEventsListeners;

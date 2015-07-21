@@ -1,26 +1,3 @@
-/*
-  The MIT License
-
-  Copyright (c) 2009 Krzysztof Langner
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
- */
 package eu.ydp.empiria.player.client;
 
 import com.google.gwt.core.client.*;
@@ -43,17 +20,11 @@ import java.util.List;
  */
 public class PlayerEntryPoint implements EntryPoint {
 
-    /**
-     * Player object
-     */
     private static Player player;
     private static JavaScriptObject jsObject;
     private static String node_id;
     private static List<Alternative<String, JavaScriptObject>> extensionsToLoad = new ArrayList<>();
 
-    /**
-     * This is the entry point method.
-     */
     @Override
     public void onModuleLoad() {
         Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
@@ -68,9 +39,6 @@ public class PlayerEntryPoint implements EntryPoint {
         });
     }
 
-    /**
-     * Init Javascript API
-     */
     private native void initJavaScriptAPI() /*-{
         // CreatePlayer
         $wnd.empiriaCreatePlayer = function (id) {
@@ -106,22 +74,12 @@ public class PlayerEntryPoint implements EntryPoint {
         }
     }-*/;
 
-    /**
-     * createPlayer js interface
-     *
-     * @param node_id
-     */
     public static JavaScriptObject createPlayer(String node_id) {
         PlayerEntryPoint.node_id = node_id;
         jsObject = JavaScriptObject.createFunction();
         return jsObject;
     }
 
-    /**
-     * Load assessment from this url
-     *
-     * @param url
-     */
     public static void load(final String url) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override

@@ -8,11 +8,6 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
-/**
- * Przycisk mute
- *
- * @author plelakowski
- */
 public class MuteMediaButton extends AbstractMediaButton {
 
     private final EventsBus eventsBus;

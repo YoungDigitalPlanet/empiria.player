@@ -8,8 +8,6 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 /**
  * przycisk stop
- *
- * @author plelakowski
  */
 public class StopMediaButton extends AbstractMediaButton {
     @Inject

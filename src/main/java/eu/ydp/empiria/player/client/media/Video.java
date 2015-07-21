@@ -38,11 +38,6 @@ public class Video extends com.google.gwt.media.client.Video implements MediaEve
         pause();
     }
 
-    @Override
-    public void setPreload(String preload) {
-        super.setPreload(preload);
-    }
-
     public TextTrack addTrack(TextTrackKind textTrackKind) {
         initHandler();
         TextTrack track = textTrackFactory.getTextTrack(textTrackKind, eventBusSource);

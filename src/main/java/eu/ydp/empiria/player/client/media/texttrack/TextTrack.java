@@ -14,8 +14,6 @@ import java.util.TreeSet;
 
 /**
  * Objekt reprezentujacy sciezke tekstowa powiazana z {@link Video} lub {@link Audio}
- *
- * @author plelakowski
  */
 public class TextTrack {
     private final TextTrackKind kind;

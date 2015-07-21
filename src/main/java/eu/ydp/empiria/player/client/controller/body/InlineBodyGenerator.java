@@ -54,19 +54,18 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
     }
 
     private Widget generateInlineBody(Node mainNode, boolean allAsWidget, boolean nodeChildrens) {
-        Widget widget;
         if (allAsWidget) {
-            widget = new FlowPanel();
+            Widget widget = new FlowPanel();
             widget.setStyleName(styleNames.QP_TEXT_INLINE());
             if (nodeChildrens) {
                 parseXML(mainNode.getChildNodes(), widget);
             } else {
                 parseNode(mainNode, widget);
             }
+            return widget;
         } else {
-            widget = generateBody(mainNode, nodeChildrens);
+            return generateBody(mainNode, nodeChildrens);
         }
-        return widget;
     }
 
     @Override
