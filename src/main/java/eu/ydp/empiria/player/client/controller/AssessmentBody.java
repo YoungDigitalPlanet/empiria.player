@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
-import eu.ydp.empiria.player.client.controller.body.ParenthoodManager;
+import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
@@ -34,14 +34,14 @@ public class AssessmentBody implements WidgetWorkflowListener {
     @Inject
     public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
                           @Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
-                          PlayerWorkModeService playerWorkModeService) {
+                          PlayerWorkModeService playerWorkModeService, ParenthoodManager parenthood) {
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.modulesRegistrySocket = modulesRegistrySocket;
         this.interactionEventsListener = interactionEventsListener;
         this.playerWorkModeService = playerWorkModeService;
 
-        parenthood = new ParenthoodManager();
+        this.parenthood = parenthood;
     }
 
     public Widget init(Element assessmentBodyElement) {
@@ -140,5 +140,13 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
     public ParenthoodManager getParenthood() {
         return parenthood;
+    }
+
+    public List<HasParent> getNestedChildren(HasChildren parent) {
+        return parenthood.getNestedChildren(parent);
+    }
+
+    public List<HasChildren> getNestedParents(HasParent child) {
+        return parenthood.getNestedParents(child);
     }
 }

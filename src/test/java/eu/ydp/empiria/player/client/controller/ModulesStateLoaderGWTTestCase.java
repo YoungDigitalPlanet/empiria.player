@@ -144,6 +144,11 @@ public class ModulesStateLoaderGWTTestCase extends EmpiriaPlayerGWTTestCase {
         }
 
         @Override
+        public List<HasChildren> getNestedParents() {
+            return null;
+        }
+
+        @Override
         public JSONArray getState() {
             return newState;
         }

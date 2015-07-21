@@ -79,6 +79,16 @@ public class ItemModuleSocket implements ModuleSocket {
     }
 
     @Override
+    public List<HasParent> getNestedChildren(HasChildren parent) {
+        return itemBody.getNestedChildren(parent);
+    }
+
+    @Override
+    public List<HasChildren> getNestedParents(HasParent child) {
+        return itemBody.getNestedParents(child);
+    }
+
+    @Override
     public Stack<HasChildren> getParentsHierarchy(IModule module) {
         Stack<HasChildren> hierarchy = new Stack<HasChildren>();
         HasChildren currParent = getParent(module);

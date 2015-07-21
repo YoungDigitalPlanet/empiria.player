@@ -18,7 +18,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 import java.util.List;
 
-public class TextActionProcessor implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
+public class TextActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
 
     private ActionProcessorHelper helper;
 
@@ -93,22 +93,13 @@ public class TextActionProcessor implements FeedbackActionProcessor, ActionProce
 
     @Override
     public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
+        initModule(ms);
         feedbackPresenter.hide();
     }
 
     @Override
     public Widget getView() {
         return (Widget) feedbackPresenter;
-    }
-
-    @Override
-    public List<IModule> getChildren() {
-        return null;
-    }
-
-    @Override
-    public HasChildren getParentModule() {
-        return null;
     }
 
     @Override

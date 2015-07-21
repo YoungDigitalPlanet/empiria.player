@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface HasChildren extends IModule {
     public List<IModule> getChildrenModules();
+
+    List<HasParent> getNestedChildren();
 }

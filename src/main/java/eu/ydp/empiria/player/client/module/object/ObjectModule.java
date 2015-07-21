@@ -48,6 +48,8 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
     @Inject
     private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
     @Inject
+    private Provider<FlashAudioPlayerModule> flashAudioPlayerModuleProvider;
+    @Inject
     private StyleSocket styleSocket;
     @Inject
     private MediaChecker mediaChecker;
@@ -88,7 +90,7 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
             AudioPlayerModule player;
 
             if (((!mediaChecker.isHtml5Mp3Supported() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
-                player = new FlashAudioPlayerModule();
+                player = flashAudioPlayerModuleProvider.get();
             } else {
                 player = defaultAudioPlayerModuleProvider.get();
             }

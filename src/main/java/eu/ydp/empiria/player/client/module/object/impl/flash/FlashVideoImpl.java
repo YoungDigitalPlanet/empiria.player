@@ -1,10 +1,11 @@
-package eu.ydp.empiria.player.client.module.object.impl;
+package eu.ydp.empiria.player.client.module.object.impl.flash;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.module.object.impl.Video;
 
 public class FlashVideoImpl extends Composite implements Video {
 

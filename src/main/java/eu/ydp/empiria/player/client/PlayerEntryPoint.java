@@ -27,6 +27,8 @@ import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
+import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
 import eu.ydp.empiria.player.client.util.events.external.ExternalCallback;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
@@ -55,16 +57,26 @@ public class PlayerEntryPoint implements EntryPoint {
      */
     @Override
     public void onModuleLoad() {
-        Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
-        GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
-        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-            @Override
-            public void execute() {
+        final Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
+        SynchronousScriptsCallback onScriptsLoadCallback = createPlayerInitializationCallback(logger);
 
-                // Define js API
-                initJavaScriptAPI();
+        ScriptsLoader scriptsLoader = PlayerGinjectorFactory.getPlayerGinjector().getScriptsLoader();
+        scriptsLoader.inject(onScriptsLoadCallback);
+    }
+
+    private SynchronousScriptsCallback createPlayerInitializationCallback(final Logger logger) {
+        return new SynchronousScriptsCallback() {
+            @Override
+            public void onLoad() {
+                GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler(logger));
+                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                    @Override
+                    public void execute() {
+                        initJavaScriptAPI();
+                    }
+                });
             }
-        });
+        };
     }
 
     /**
