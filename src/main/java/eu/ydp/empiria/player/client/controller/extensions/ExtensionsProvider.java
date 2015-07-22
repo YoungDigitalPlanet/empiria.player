@@ -54,6 +54,7 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getTextEntryMathGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getDragGapModule(), ModuleTagName.DRAG_GAP, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceMathGapModule(), ModuleTagName.MATH_GAP_INLINE_CHOICE_TYPE, true),
+                new SimpleConnectorExtension(moduleProviderFactory.getMathDragGapModule(), ModuleTagName.MATH_DRAG_GAP_TYPE, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getSimpleTextModule(), ModuleTagName.SIMPLE_TEXT),
                 new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true),

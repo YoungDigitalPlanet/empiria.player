@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.draggap.DragGapModuleModel;
 import eu.ydp.empiria.player.client.module.draggap.SourceListManagerAdapter;
-import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
+import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBaseBean;
 import eu.ydp.empiria.player.client.module.draggap.view.DragGapView;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.sourcelist.view.DisableDefaultBehaviorCommand;
@@ -23,7 +23,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-public class DragGapPresenterImpl implements DragGapPresenter {
+public class DragGapBasePresenter<T extends DragGapBaseBean> implements DragGapPresenter<T> {
 
     private final AnswerEvaluationSupplier answerEvaluationSupplier;
     private final DragGapModuleModel model;
@@ -33,7 +33,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
     private UserInteractionHandlerFactory interactionHandlerFactory;
 
     @Inject
-    public DragGapPresenterImpl(@ModuleScoped DragGapView view, @ModuleScoped DragGapModuleModel model,
+    public DragGapBasePresenter(@ModuleScoped DragGapView view, @ModuleScoped DragGapModuleModel model,
                                 @PageScoped AnswerEvaluationSupplier answerEvaluationSupplier, @ModuleScoped SourceListManagerAdapter sourceListManagerAdapter) {
         this.view = view;
         this.model = model;
@@ -73,7 +73,7 @@ public class DragGapPresenterImpl implements DragGapPresenter {
     }
 
     @Override
-    public void setBean(DragGapBean bean) {
+    public void setBean(T bean) {
     }
 
     @Override

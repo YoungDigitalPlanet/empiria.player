@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
 import eu.ydp.empiria.player.client.AbstractJAXBTestBase;
-import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
+import eu.ydp.empiria.player.client.module.draggap.standard.structure.DragGapBean;
 import eu.ydp.gwtutil.client.StringUtils;
 import org.junit.Test;
 
