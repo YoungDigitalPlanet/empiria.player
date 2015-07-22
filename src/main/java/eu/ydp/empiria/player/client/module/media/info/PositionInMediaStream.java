@@ -1,30 +1,32 @@
 package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 /**
  * Widget wyswietlajacy pozycje w strumieniu oraz dlugosc calego strumienia
  */
-public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStream> {
+public class PositionInMediaStream extends AbstractMediaTime {
 
-    @Inject
-    private EventsBus eventsBus;
-    @Inject
     private ProgressUpdateLogic progressUpdateLogic;
+    private final PageScopeFactory pageScopeFactory;
 
-    public PositionInMediaStream() {
+    @Inject
+    public PositionInMediaStream(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_POSITIONINSTREAM());
+        this.progressUpdateLogic = progressUpdateLogic;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     @Override
     public void init() {
-        AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+        MediaEventHandler handler = new MediaEventHandler() {
             // -1 aby przy pierwszym zdarzeniu pokazal sie timer
             int lastTime = -1;
 
@@ -44,14 +46,9 @@ public class PositionInMediaStream extends AbstractMediaTime<PositionInMediaStre
             }
         };
         if (isSupported()) {
-            CurrentPageScope scope = new CurrentPageScope();
+            CurrentPageScope scope = pageScopeFactory.getCurrentPageScope();
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_TIME_UPDATE), getMediaWrapper(), handler, scope);
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(), handler, scope);
         }
-    }
-
-    @Override
-    public PositionInMediaStream getNewInstance() {
-        return new PositionInMediaStream();
     }
 }

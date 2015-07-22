@@ -4,21 +4,21 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
-public class SimpleTextModule extends SimpleModuleBase implements Factory<SimpleTextModule>, IBookmarkable {
+public class SimpleTextModule extends SimpleModuleBase implements IBookmarkable {
 
     protected Widget contents;
-    private final StyleNameConstants styleNames = eu.ydp.empiria.player.client.PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
     private final BookmarkingHelper bookmarkingHelper;
 
-    public SimpleTextModule() {
+    @Inject
+    public SimpleTextModule(StyleNameConstants styleNames) {
         contents = new ElementWrapperWidget(Document.get().createPElement());
         contents.setStyleName(styleNames.QP_SIMPLETEXT());
         bookmarkingHelper = new BookmarkingHelper(contents);
@@ -32,11 +32,6 @@ public class SimpleTextModule extends SimpleModuleBase implements Factory<Simple
     @Override
     public Widget getView() {
         return contents;
-    }
-
-    @Override
-    public SimpleTextModule getNewInstance() {
-        return new SimpleTextModule();
     }
 
     @Override

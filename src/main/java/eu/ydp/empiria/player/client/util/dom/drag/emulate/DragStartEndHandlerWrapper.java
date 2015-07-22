@@ -11,11 +11,6 @@ import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
-/**
- * Wrapper dla com.google.gwt.event.dom.client.DragStartEvent oraz com.google.gwt.event.dom.client.DragEndEvent
- *
- * @author plelakowski
- */
 public class DragStartEndHandlerWrapper extends AbstractHTML5DragDropWrapper {
     protected static class DragStartEventWrapper extends com.google.gwt.event.dom.client.DragStartEvent {
         private final DragDropSetGetData wrapper;

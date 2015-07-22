@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.object.impl.EmbedAudioImpl;
-import eu.ydp.empiria.player.client.module.object.impl.FlashVideoImpl;
+import eu.ydp.empiria.player.client.module.object.impl.flash.FlashVideoImpl;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 
 public class OldSwfMediaExecutor extends AbstractNoControlExecutor {

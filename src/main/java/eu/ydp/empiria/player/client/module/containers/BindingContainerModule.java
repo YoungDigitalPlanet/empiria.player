@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapmaxlength.GapMaxlengthBindingManager;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 
-public abstract class BindingContainerModule<T> extends SimpleContainerModuleBase<T> implements BindingProxy {
+public abstract class BindingContainerModule extends SimpleContainerModuleBase implements BindingProxy {
 
     private GapWidthBindingManager gapWidthBindingManager;
     private GapMaxlengthBindingManager gapMaxlengthBindingManager;

@@ -23,4 +23,9 @@ public abstract class ParentedModuleBase implements IModule {
     public List<IModule> getChildren() {
         return moduleSocket.getChildren(this);
     }
+
+    @Override
+    public List<HasChildren> getNestedParents() {
+        return moduleSocket.getNestedParents(this);
+    }
 }

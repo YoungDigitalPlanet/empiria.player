@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityPr
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -37,15 +38,12 @@ import static eu.ydp.empiria.player.client.util.events.internal.state.StateChang
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
-    @Inject
-    private StyleNameConstants styleNames;
-    @Inject
-    private EventsBus eventsBus;
-    @Inject
-    @PageScoped
-    private ItemData data;
-    @Inject
-    private IPlayerContainersAccessor accessor;
+    private final StyleNameConstants styleNames;
+    private final EventsBus eventsBus;
+
+    private final ItemData data;
+    private final IPlayerContainersAccessor accessor;
+    private final PageScopeFactory pageScopeFactory;
 
     private final AssessmentControllerFactory controllerFactory;
     private final ItemViewSocket itemViewSocket;
@@ -54,17 +52,26 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
     private int itemIndex;
 
     @Inject
-    public ItemController(@Assisted ItemViewSocket ivs, @Assisted ItemSessionSocket iss, AssessmentControllerFactory controllerFactory) {
-        itemViewSocket = ivs;
-        itemSessionSocket = iss;
+    public ItemController(@Assisted ItemViewSocket itemViewSocket, @Assisted ItemSessionSocket itemSessionSocket,
+                          @PageScoped ItemData data, IPlayerContainersAccessor accessor,
+                          StyleNameConstants styleNames, EventsBus eventsBus,
+                          PageScopeFactory pageScopeFactory, AssessmentControllerFactory controllerFactory) {
+        this.itemViewSocket = itemViewSocket;
+        this.itemSessionSocket = itemSessionSocket;
+        this.data = data;
+        this.accessor = accessor;
+        this.styleNames = styleNames;
+        this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
         this.controllerFactory = controllerFactory;
     }
 
     public void init(DisplayContentOptions options) {
         try {
             // Rejestrowanie na wszystkie eventy Page dawniej FLOW
-            eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, new CurrentPageScope());
-            eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, new CurrentPageScope());
+            CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
+            eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this, currentPageScope);
+            eventsBus.addHandler(StateChangeEvent.getType(StateChangeEventTypes.STATE_CHANGED), this, currentPageScope);
 
             if (data.getData() == null) {
                 throw new Exception("Item data is null");// NOPMD
@@ -76,7 +83,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
             itemViewSocket.setItemView(getItemViewCarrier(item, data, options.useSkin()));
             item.setUp();
             item.start();
-            eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CREATED_AND_STARTED), new CurrentPageScope());
+            eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_CREATED_AND_STARTED), currentPageScope);
         } catch (Exception e) {
             item = null;
 
@@ -107,7 +114,8 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
         if (event.getType() == StateChangeEventTypes.STATE_CHANGED && event.getValue() instanceof StateChangedInteractionEvent) {
             StateChangedInteractionEvent scie = event.getValue();
             item.process(scie.isUserInteract(), scie.isReset(), scie.getSender());
-            eventsBus.fireEvent(new StateChangeEvent(OUTCOME_STATE_CHANGED, scie), new CurrentPageScope());
+            CurrentPageScope eventScope = pageScopeFactory.getCurrentPageScope();
+            eventsBus.fireEvent(new StateChangeEvent(OUTCOME_STATE_CHANGED, scie), eventScope);
         }
     }
 

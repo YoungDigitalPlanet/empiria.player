@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowComm
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEventType;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.config.OptionsReader;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
@@ -16,14 +17,14 @@ import eu.ydp.empiria.player.client.util.events.internal.page.PageEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier, PlayerEventHandler {
 
     @Inject
-    public MainFlowProcessor(EventsBus eventsBus, ExternalEventDispatcher externalEventDispatcher) {
+    public MainFlowProcessor(EventsBus eventsBus, ExternalEventDispatcher externalEventDispatcher, PageScopeFactory pageScopeFactory) {
         this.eventsBus = eventsBus;
         this.externalEventDispatcher = externalEventDispatcher;
+        this.pageScopeFactory = pageScopeFactory;
         // flowExecutionEventsListener = feel;
         flowOptions = OptionsReader.getFlowOptions();
         displayOptions = new DisplayOptions();
@@ -37,6 +38,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
     private ItemParametersSocket itemParametersSocket; // NOPMD
     private final EventsBus eventsBus;
     private final ExternalEventDispatcher externalEventDispatcher;
+    private final PageScopeFactory pageScopeFactory;
     private int currentPageIndex;
     private PageType currentPageType;
     private int itemsCount;
@@ -226,7 +228,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
                 continuePage();
             }
             isCheck = true;
-            eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new FlowProcessingEvent(FlowProcessingEventType.CHECK), this), new CurrentPageScope());
+            eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new FlowProcessingEvent(FlowProcessingEventType.CHECK), this), pageScopeFactory.getCurrentPageScope());
         }
     }
 
@@ -238,7 +240,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
             }
             isShowAnswers = true;
             eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new FlowProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS), this),
-                    new CurrentPageScope());
+                    pageScopeFactory.getCurrentPageScope());
         }
 
     }
@@ -249,7 +251,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
             isCheck = false;
             isShowAnswers = false;
             eventsBus
-                    .fireEvent(new PageEvent(PageEventTypes.CONTINUE, new FlowProcessingEvent(FlowProcessingEventType.CONTINUE), this), new CurrentPageScope());
+                    .fireEvent(new PageEvent(PageEventTypes.CONTINUE, new FlowProcessingEvent(FlowProcessingEventType.CONTINUE), this), pageScopeFactory.getCurrentPageScope());
         }
 
     }
@@ -258,7 +260,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
     public void lockPage() {
         if (!isLock) {
             isLock = true;
-            eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new FlowProcessingEvent(FlowProcessingEventType.LOCK), this), new CurrentPageScope());
+            eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new FlowProcessingEvent(FlowProcessingEventType.LOCK), this), pageScopeFactory.getCurrentPageScope());
         }
     }
 
@@ -266,7 +268,7 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
     public void unlockPage() {
         if (isLock) {
             isLock = false;
-            eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new FlowProcessingEvent(FlowProcessingEventType.UNLOCK), this), new CurrentPageScope());
+            eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new FlowProcessingEvent(FlowProcessingEventType.UNLOCK), this), pageScopeFactory.getCurrentPageScope());
         }
     }
 
@@ -274,43 +276,43 @@ public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier
     public void resetPage() {
         isCheck = false;
         isShowAnswers = false;
-        eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new FlowProcessingEvent(FlowProcessingEventType.RESET), this), new CurrentPageScope());
+        eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new FlowProcessingEvent(FlowProcessingEventType.RESET), this), pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void checkGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.CHECK, new ActivityProcessingEvent(FlowProcessingEventType.CHECK, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void showAnswersGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.SHOW_ANSWERS, new ActivityProcessingEvent(FlowProcessingEventType.SHOW_ANSWERS, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void continueGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.CONTINUE, new ActivityProcessingEvent(FlowProcessingEventType.CONTINUE, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void resetGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.RESET, new ActivityProcessingEvent(FlowProcessingEventType.RESET, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void lockGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.LOCK, new ActivityProcessingEvent(FlowProcessingEventType.LOCK, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
     public void unlockGroup(GroupIdentifier groupId) {
         eventsBus.fireEvent(new PageEvent(PageEventTypes.UNLOCK, new ActivityProcessingEvent(FlowProcessingEventType.UNLOCK, groupId), this),
-                new CurrentPageScope());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override

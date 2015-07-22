@@ -42,6 +42,7 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.FlowManager;
 import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
+import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
@@ -214,6 +215,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
         bind(SessionDataManager.class).in(Singleton.class);
         bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
+        bind(FlowCommandsListener.class).to(MainFlowProcessor.class);
         bind(MainFlowProcessor.class).in(Singleton.class);
         bind(SessionTimeUpdater.class).in(Singleton.class);
         bind(YJsJsonConverter.class).in(Singleton.class);
@@ -279,6 +281,10 @@ public class PlayerGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(FeedbackModuleFactory.class));
+        install(new GinFactoryModuleBuilder().build(InlineBodyGeneratorFactory.class));
+        install(new GinFactoryModuleBuilder().build(RaportModuleFactory.class));
+        install(new GinFactoryModuleBuilder().build(ModulesInstalatorFactory.class));
+        install(new GinFactoryModuleBuilder().build(PlayerFactory.class));
     }
 
     @Provides

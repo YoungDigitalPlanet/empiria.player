@@ -25,7 +25,6 @@
     <set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/>
 
     <!-- Specify the app entry point class. -->
-    <entry-point class='eu.ydp.empiria.player.client.ScriptsEntryPoint'/>
     <entry-point class='eu.ydp.empiria.player.client.PlayerEntryPoint'/>
 
     <define-property name="run.local" values="false,true"/>
@@ -93,7 +92,7 @@
         <when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio"/>
     </replace-with>
 
-    <replace-with class="eu.ydp.empiria.player.client.module.object.impl.FlashLocalAudioImpl">
+    <replace-with class="eu.ydp.empiria.player.client.module.object.impl.flash.FlashLocalAudioImpl">
         <when-type-is class="eu.ydp.empiria.player.client.module.object.impl.Audio"/>
         <any>
             <when-property-is name="run.local" value="true"/>
@@ -121,18 +120,6 @@
         </any>
     </replace-with>
     <!-- END AUDIO -->
-
-    <replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowCanvas">
-        <when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow"/>
-    </replace-with>
-
-    <replace-with class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindowImg">
-        <when-type-is class="eu.ydp.empiria.player.client.module.img.ExplorableImgWindow"/>
-        <any>
-            <when-property-is name="user.agent" value="ie6"/>
-            <when-property-is name="user.agent" value="ie8"/>
-        </any>
-    </replace-with>
 
     <add-linker name="xsiframe"/>
 </module>
