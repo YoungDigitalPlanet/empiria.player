@@ -1,10 +1,9 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 
 public class SourceListViewItemContentFactoryGWTTestCase extends AbstractEmpiriaPlayerGWTTestCase {
@@ -12,15 +11,15 @@ public class SourceListViewItemContentFactoryGWTTestCase extends AbstractEmpiria
 
     public void testWidgetShouldBeImageType() throws Exception {
         String imageUrl = "http://j/j.jpg";
-        IsWidget widget = instance.getSourceListViewItemContent(SourcelistItemType.IMAGE, imageUrl, null);
+        IsWidget widget = instance.createSourceListContentWidget(SourcelistItemType.IMAGE, imageUrl, null);
         assertTrue(widget instanceof Image);
         assertEquals(imageUrl, ((Image) widget).getUrl());
     }
 
-    public void testWidgetShouldBeInlineHtmlType() {
+    public void testWidgetShouldBeLabelType() {
         String text = "text";
-        IsWidget widget = instance.getSourceListViewItemContent(SourcelistItemType.TEXT, text, null);
-        assertTrue(widget instanceof InlineHTML);
-        assertEquals(text, ((InlineHTML) widget).getText());
+        IsWidget widget = instance.createSourceListContentWidget(SourcelistItemType.TEXT, text, null);
+        assertTrue(widget instanceof Label);
+        assertEquals(text, ((Label) widget).getText());
     }
 }

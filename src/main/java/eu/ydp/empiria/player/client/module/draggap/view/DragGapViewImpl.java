@@ -75,7 +75,7 @@ public class DragGapViewImpl implements DragGapView {
     }
 
     private void fullFillItemWrapperWithContent(SourcelistItemValue item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
-        IsWidget contentWidget = contentFactory.getSourceListViewItemContent(item.getType(), item.getContent(), inlineBodyGeneratorSocket);
+        IsWidget contentWidget = contentFactory.createSourceListContentWidget(item, inlineBodyGeneratorSocket);
         itemWrapper = new FlowPanel();
         itemWrapper.add(contentWidget);
     }

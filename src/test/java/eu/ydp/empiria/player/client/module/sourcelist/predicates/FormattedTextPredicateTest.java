@@ -1,16 +1,17 @@
-package eu.ydp.empiria.player.client.module.sourcelist.structure;
+package eu.ydp.empiria.player.client.module.sourcelist.predicates;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.FormattedTextPredicate;
 import eu.ydp.gwtutil.xml.XMLParser;
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
 
-public class ComplexTextCheckerTest {
+public class FormattedTextPredicateTest {
 
-    private ComplexTextChecker testObj = new ComplexTextChecker();
+    private FormattedTextPredicate testObj = new FormattedTextPredicate();
 
     @Test
     public void shouldReturnFalse_whenIsSimpleText() {
@@ -19,7 +20,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(simpleText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isFalse();
@@ -32,7 +33,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(boldText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();
@@ -45,7 +46,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(italicText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();
@@ -58,7 +59,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(underlineText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();
@@ -71,7 +72,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(supText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();
@@ -84,7 +85,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(subText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();
@@ -97,7 +98,7 @@ public class ComplexTextCheckerTest {
         Element element = parseXml(inlineMathJax);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertThat(result).isTrue();

@@ -1,12 +1,14 @@
-package eu.ydp.empiria.player.client.module.sourcelist.structure;
+package eu.ydp.empiria.player.client.module.sourcelist.predicates;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.ComplexTextPredicate;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.SpecialCharacterPredicate;
 
-public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestCase {
-    private ComplexTextChecker testObj = new ComplexTextChecker();
+public class SpecialCharacterPredicateGWTTestCase extends AbstractEmpiriaPlayerGWTTestCase {
+    private SpecialCharacterPredicate testObj = new SpecialCharacterPredicate();
 
     public void testShouldReturnTrue_whenContainsEscapedLtCharacters() {
         // given
@@ -14,7 +16,7 @@ public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestC
         Element element = parseXml(escapedText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertTrue(result);
@@ -26,7 +28,7 @@ public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestC
         Element element = parseXml(escapedText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertTrue(result);
@@ -38,7 +40,7 @@ public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestC
         Element element = parseXml(escapedText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertTrue(result);
@@ -50,7 +52,7 @@ public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestC
         Element element = parseXml(escapedText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertTrue(result);
@@ -62,7 +64,7 @@ public class ComplexTextCheckerGWTTestCase extends AbstractEmpiriaPlayerGWTTestC
         Element element = parseXml(escapedText);
 
         // when
-        boolean result = testObj.hasComplexText(element);
+        boolean result = testObj.apply(element);
 
         // then
         assertTrue(result);

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
+import com.google.common.base.Predicate;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
@@ -36,15 +37,14 @@ public class SimpleSourceListItemBean implements HasFixed {
         this.alt = alt;
     }
 
-    public SourcelistItemValue getItemValue() {
-        ComplexTextChecker checker = new ComplexTextChecker();
+    public SourcelistItemValue getItemValue(Predicate<Element> hasComplexTextPredicate) {
         Element value = content.getValue();
         NodeList imgNodes = value.getElementsByTagName(IMG_NODE);
         if (imgNodes.getLength() > 0) {
             return createImageItemValue();
         }
 
-        boolean hasComplexText = checker.hasComplexText(value);
+        boolean hasComplexText = hasComplexTextPredicate.apply(value);
         if (hasComplexText) {
             return createComplexTexItemValue();
         }

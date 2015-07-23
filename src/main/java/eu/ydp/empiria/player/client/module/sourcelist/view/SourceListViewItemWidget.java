@@ -24,7 +24,7 @@ public class SourceListViewItemWidget extends FlowPanel {
 
     public void initView(SourcelistItemType sourcelistItemType, String itemContent, String styleName, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         setStyleName(styleName);
-        IsWidget content = contentFactory.getSourceListViewItemContent(sourcelistItemType, itemContent, inlineBodyGeneratorSocket);
+        IsWidget content = contentFactory.createSourceListContentWidget(sourcelistItemType, itemContent, inlineBodyGeneratorSocket);
         add(content);
         disableDefaultBehaviorOnSelect(content);
 

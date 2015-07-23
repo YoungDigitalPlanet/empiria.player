@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.ComplexTextPredicate;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
@@ -41,6 +42,9 @@ public class SourceListPresenterImplTest {
     private DragDataObject dragDataObject;
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    @Mock
+    private ComplexTextPredicate complexTextChecker;
+
     private final int imagesWidth = 400;
     private final int imagesHeight = 300;
 
@@ -143,7 +147,7 @@ public class SourceListPresenterImplTest {
             public SimpleSourceListItemBean apply(String id) {
                 SimpleSourceListItemBean bean = mock(SimpleSourceListItemBean.class);
                 doReturn(id).when(bean).getAlt();
-                doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)).when(bean).getItemValue();
+                doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)).when(bean).getItemValue(complexTextChecker);
                 return bean;
             }
         });
