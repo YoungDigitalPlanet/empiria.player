@@ -1,25 +1,50 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
-import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
+import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
+import eu.ydp.gwtutil.client.xml.XMLParser;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-public class SourceListViewItemContentFactoryTest extends AbstractEmpiriaPlayerGWTTestCase {
+import static eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType.*;
+import static org.mockito.Mockito.*;
 
-    public void testSourceListViewItemContent() throws Exception {
-        SourceListViewItemContentFactory instance = new SourceListViewItemContentFactory();
-        String imageUrl = "http://j/j.jpg";
-        IsWidget widget = instance.getSourceListViewItemContent(SourcelistItemType.IMAGE, imageUrl);
-        assertTrue(widget instanceof Image);
-        assertEquals(imageUrl, ((Image) widget).getUrl());
+@RunWith(GwtMockitoTestRunner.class)
+public class SourceListViewItemContentFactoryTest {
 
-        String text = "text";
-        widget = instance.getSourceListViewItemContent(SourcelistItemType.TEXT, text);
-        assertTrue(widget instanceof Label);
-        assertEquals(text, ((Label) widget).getText());
+    @InjectMocks
+    private SourceListViewItemContentFactory testObj;
+    @Mock
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    @Mock
+    private XMLParser xmlParser;
+    @Mock
+    private Element element;
 
+    @Before
+    public void init() {
+        Document document = mock(Document.class);
+        when(xmlParser.parse(anyString())).thenReturn(document);
+        when(document.getDocumentElement()).thenReturn(element);
     }
 
+    @Test
+    public void shouldGenerateInlineBody_whenTypeIsMath() {
+        // given
+        String content = "content";
+        SourcelistItemValue sourcelistItemValue = new SourcelistItemValue(COMPLEX_TEXT, content, "some id");
+
+        // when
+        testObj.createSourceListContentWidget(sourcelistItemValue, inlineBodyGeneratorSocket);
+
+        // then
+        verify(inlineBodyGeneratorSocket).generateInlineBody(element);
+    }
 }
