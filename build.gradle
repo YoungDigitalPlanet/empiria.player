@@ -136,10 +136,10 @@ task testJUnit(type: Test) {
         enabled = true
     }
     useJUnit()
-    include "**/JUnitTestSuite.*"
-    include "**/SpockTestSuite.*"
+    include "**/*Spec.class"
+    include "**/*Test.class"
 
-    forkEvery = 1
+
     maxHeapSize = '512M'
     jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
     reports.html.destination = file("$buildDir/reports/junit")
