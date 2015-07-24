@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowPlayerBe
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowTemplate
 import spock.lang.Specification
 
-class SlideshowTemplateInterpreterTest extends Specification {
+class SlideshowTemplateInterpreterSpec extends Specification {
 
     def testObj = new SlideshowTemplateInterpreter();
 

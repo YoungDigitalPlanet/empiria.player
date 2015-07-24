@@ -36,11 +36,11 @@ public class GWTTestCaseSuite extends GWTTestSuite {
         return suite;
     }
 
-    public static Set<Class<? extends GWTTestCase>> getTestClasses() {
+    private static Set<Class<? extends GWTTestCase>> getTestClasses() {
         return Sets.filter(getAllTestClasses(), unsupportedClazzFilter);
     }
 
-    public static Set<Class<? extends GWTTestCase>> getAllTestClasses() {
+    private static Set<Class<? extends GWTTestCase>> getAllTestClasses() {
         Reflections reflections = createReflectionsForGwtTestCase();
         Collection<String> classNames = getGwtTestCaseClassNames(reflections);
         return convertClassNamesToClass(classNames);

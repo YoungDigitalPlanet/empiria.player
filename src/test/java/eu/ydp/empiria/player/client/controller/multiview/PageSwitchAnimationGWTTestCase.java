@@ -3,9 +3,11 @@ package eu.ydp.empiria.player.client.controller.multiview;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.FlowPanel;
+import eu.ydp.empiria.player.RunOutsideTestSuite;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.multiview.animation.PageSwitchAnimation;
 
+@RunOutsideTestSuite
 public class PageSwitchAnimationGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testAnimation() {
