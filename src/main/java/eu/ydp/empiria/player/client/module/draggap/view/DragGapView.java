@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.draggap.view;
 import com.google.gwt.event.dom.client.DragEndHandler;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
@@ -28,5 +29,5 @@ public interface DragGapView extends IsWidget {
 
     void setWidth(int width);
 
-    void setItemContent(SourcelistItemValue item);
+    void setItemContent(SourcelistItemValue item, InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 }
