@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -74,18 +76,18 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
         container.hide();
     }
 
-    public void createAndBindUi(SourcelistItemValue itemValue) {
+    public void createAndBindUi(SourcelistItemValue itemValue, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         this.itemContent = itemValue;
         initWidget(uiBinder.createAndBindUi(this));
-        container = getDraggableWidget(itemValue);
+        container = getDraggableWidget(itemValue, inlineBodyGeneratorSocket);
         draggable = dragDropHelper.enableDragForWidget(container);
         item.add(draggable.getDraggableWidget());
         addDragHandlers();
     }
 
-    private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue) {
+    private SourceListViewItemWidget getDraggableWidget(SourcelistItemValue itemValue, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         SourceListViewItemWidget itemWidget = sourceListViewItemWidgetProvider.get();
-        itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM());
+        itemWidget.initView(itemValue.getType(), itemValue.getContent(), styleNames.QP_DRAG_ITEM(), inlineBodyGeneratorSocket);
         EventHandlerProxy userOverHandler = interactionHandlerFactory.createUserOverHandler(disableTextMark);
         userOverHandler.apply(itemWidget);
         return itemWidget;

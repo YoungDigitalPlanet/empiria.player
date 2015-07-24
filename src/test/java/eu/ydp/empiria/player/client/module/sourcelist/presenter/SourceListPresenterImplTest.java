@@ -2,9 +2,11 @@ package eu.ydp.empiria.player.client.module.sourcelist.presenter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.ComplexTextPredicate;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
@@ -38,6 +40,11 @@ public class SourceListPresenterImplTest {
     private OverlayTypesParser overlayTypesParser;
     @Mock
     private DragDataObject dragDataObject;
+    @Mock
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    @Mock
+    private ComplexTextPredicate complexTextChecker;
+
     private final int imagesWidth = 400;
     private final int imagesHeight = 300;
 
@@ -51,7 +58,7 @@ public class SourceListPresenterImplTest {
 
     @Test(expected = NullPointerException.class)
     public void testNotSetBean() throws Exception {
-        sourceListPresenterImpl.createAndBindUi();
+        sourceListPresenterImpl.createAndBindUi(inlineBodyGeneratorSocket);
     }
 
     @Test
@@ -66,10 +73,10 @@ public class SourceListPresenterImplTest {
         SourceListBean bean = mock(SourceListBean.class);
         doReturn(getBeanItems(allItems)).when(bean).getSimpleSourceListItemBeans();
         sourceListPresenterImpl.setBean(bean);
-        sourceListPresenterImpl.createAndBindUi();
+        sourceListPresenterImpl.createAndBindUi(inlineBodyGeneratorSocket);
 
         for (String id : allItems) {
-            verify(view).createItem(eq(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)));
+            verify(view).createItem(eq(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)), eq(inlineBodyGeneratorSocket));
         }
 
         verify(view).createAndBindUi();
@@ -140,7 +147,7 @@ public class SourceListPresenterImplTest {
             public SimpleSourceListItemBean apply(String id) {
                 SimpleSourceListItemBean bean = mock(SimpleSourceListItemBean.class);
                 doReturn(id).when(bean).getAlt();
-                doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)).when(bean).getItemValue();
+                doReturn(new SourcelistItemValue(SourcelistItemType.TEXT, id, id + id)).when(bean).getItemValue(complexTextChecker);
                 return bean;
             }
         });
