@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
@@ -31,6 +33,8 @@ public class SourcelistManagerImplTest {
     private SourcelistClient client2;
     @Mock( extraInterfaces = {Resizable.class})
     private SourcelistClient client3;
+    @Mock
+    private MathDragGapModule client4;
     @Mock
     private Sourcelist sourcelist1;
     @Mock
@@ -307,6 +311,37 @@ public class SourcelistManagerImplTest {
         // then
         verify(sourcelistLockingController).unlockAll();
     }
+
+    @Test
+         public void rerenderMathJaxModuleAfterGapResize(){
+        //given
+        PlayerEvent event = mock(PlayerEvent.class);
+        HasDimensions dim1 = mock(HasDimensions.class);
+        HasDimensions dim2 = mock(HasDimensions.class);
+        when(model.getClients(sourcelist1)).thenReturn(Lists.newArrayList(client4));
+        when(sourcelist1.getItemSize()).thenReturn(dim1);
+        InteractionMathJaxModule parentModule = mock(InteractionMathJaxModule.class);
+        when(client4.getParentModule()).thenReturn(parentModule);
+
+        //when
+        manager.onPlayerEvent(event);
+
+        //given
+        when(client4.getSize()).thenReturn(dim1);
+
+        //when
+        manager.onPlayerEvent(event);
+
+        //given
+        when(client4.getSize()).thenReturn(dim2);
+
+        //when
+        manager.onPlayerEvent(event);
+
+        //then
+        verify(parentModule, times(2)).rerender();
+    }
+
 
     private void prepareModel() {
         when(sourcelist1.getIdentifier()).thenReturn(SOURCELIST_1_ID);
