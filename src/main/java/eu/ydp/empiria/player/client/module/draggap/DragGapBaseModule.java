@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.query.client.impl.ConsoleBrowser;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
+import eu.ydp.empiria.player.client.module.dragdrop.Resizable;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
@@ -16,7 +18,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 import java.util.List;
 
-public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAXBParserFactory<T>> extends AbstractInteractionModule<DragGapModuleModel, T> implements SourcelistClient {
+public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAXBParserFactory<T>> extends AbstractInteractionModule<DragGapModuleModel, T> implements SourcelistClient, Resizable {
 
     @Inject
     @ModuleScoped
@@ -32,6 +34,8 @@ public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAX
     private DragGapBaseStructure<T, U> structure;
 
     private final Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
+
+    private HasDimensions size;
 
     @Override
     protected void initalizeModule() {
@@ -93,7 +97,14 @@ public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAX
 
     @Override
     public void setSize(HasDimensions size) {
+        this.size = size;
         getPresenter().setGapDimensions(size);
+
+    }
+
+    @Override
+    public HasDimensions getSize() {
+        return size;
     }
 
     @Override

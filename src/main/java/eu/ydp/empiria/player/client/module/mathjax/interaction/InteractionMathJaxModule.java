@@ -56,4 +56,9 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
         String mmlScript = element.getChildNodes().toString();
         presenter.setMmlScript(mmlScript);
     }
+
+    public void rerender(){
+        presenter.rerenderMathElement(getModuleId());
+    }
 }
+

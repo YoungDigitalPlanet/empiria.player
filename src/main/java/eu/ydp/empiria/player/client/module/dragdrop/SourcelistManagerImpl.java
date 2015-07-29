@@ -5,6 +5,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
+import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -15,7 +17,9 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHandler {
 
@@ -171,8 +175,23 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
     }
 
     private void resizeClients(Sourcelist sourcelist, HasDimensions size) {
+
+        Set<InteractionMathJaxModule> mathElementsToRerender = new HashSet<>();
+
         for (SourcelistClient client : model.getClients(sourcelist)) {
-            client.setSize(size);
+
+            if(client instanceof Resizable && size !=null && !size.equals(((Resizable) client).getSize())) {
+                ((Resizable)client).setSize(size);
+                if (client instanceof MathDragGapModule) {
+                    if(client.getParentModule() instanceof InteractionMathJaxModule){
+                        mathElementsToRerender.add(((InteractionMathJaxModule) client.getParentModule()));
+                    }
+                }
+            }
+        }
+
+        for (InteractionMathJaxModule mathModule : mathElementsToRerender) {
+            mathModule.rerender();
         }
     }
 

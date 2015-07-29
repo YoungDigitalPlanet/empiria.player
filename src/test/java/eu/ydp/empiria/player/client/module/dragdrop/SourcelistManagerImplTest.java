@@ -25,11 +25,11 @@ public class SourcelistManagerImplTest {
     private SourcelistManagerImpl manager;
     @Mock
     private SourcelistManagerModel model;
-    @Mock
+    @Mock( extraInterfaces = {Resizable.class})
     private SourcelistClient client1;
-    @Mock
+    @Mock( extraInterfaces = {Resizable.class})
     private SourcelistClient client2;
-    @Mock
+    @Mock( extraInterfaces = {Resizable.class})
     private SourcelistClient client3;
     @Mock
     private Sourcelist sourcelist1;
@@ -55,9 +55,9 @@ public class SourcelistManagerImplTest {
 
     @Before
     public void setUp() {
-        client1 = mockClient(CLIENT_1_ID);
-        client2 = mockClient(CLIENT_2_ID);
-        client3 = mockClient(CLIENT_3_ID);
+        when(client1.getIdentifier()).thenReturn(CLIENT_1_ID);
+        when(client2.getIdentifier()).thenReturn(CLIENT_2_ID);
+        when(client3.getIdentifier()).thenReturn(CLIENT_3_ID);
 
         prepareModel();
     }
@@ -231,9 +231,9 @@ public class SourcelistManagerImplTest {
         manager.onPlayerEvent(event);
 
         // then
-        verify(client1).setSize(dim1);
-        verify(client2).setSize(dim2);
-        verify(client3).setSize(dim2);
+        verify((Resizable) client1).setSize(dim1);
+        verify((Resizable) client2).setSize(dim2);
+        verify((Resizable) client3).setSize(dim2);
     }
 
     @Test
@@ -306,12 +306,6 @@ public class SourcelistManagerImplTest {
 
         // then
         verify(sourcelistLockingController).unlockAll();
-    }
-
-    private SourcelistClient mockClient(String string) {
-        SourcelistClient client = mock(SourcelistClient.class);
-        when(client.getIdentifier()).thenReturn(string);
-        return client;
     }
 
     private void prepareModel() {
