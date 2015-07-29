@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.accordion.view.section;
+package eu.ydp.empiria.player.client.module.accordion.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -7,20 +7,20 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.accordion.AccordionContentGenerator;
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionSectionBean;
 
-public class AccordionSectionViewFactory {
+public class AccordionSectionFactory {
     @Inject
-    private Provider<AccordionSectionView> provider;
+    private Provider<AccordionSectionPresenter> sectionProvider;
 
-    public AccordionSectionView createView(AccordionSectionBean bean, AccordionContentGenerator generator) {
-        AccordionSectionView view = provider.get();
+    public AccordionSectionPresenter createSection(AccordionSectionBean bean, AccordionContentGenerator generator) {
+        AccordionSectionPresenter presenter = sectionProvider.get();
 
         Element title = bean.getTitle().getValue();
         Widget widget = generator.generateInlineBody(title);
-        view.setTitle(widget);
+        presenter.setTitle(widget);
 
         Element content = bean.getContent().getValue();
-        generator.generateBody(content, view.getContentContainer());
+        generator.generateBody(content, presenter.getContentContainer());
 
-        return view;
+        return presenter;
     }
 }

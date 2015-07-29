@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.accordion.presenter.AccordionPresenter;
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionBean;
-import eu.ydp.empiria.player.client.module.accordion.structure.AccordionModuleJAXBParser;
+import eu.ydp.empiria.player.client.module.accordion.structure.AccordionJAXBParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class AccordionModuleTest {
     @InjectMocks
     private AccordionModule testObj;
     @Mock
-    private AccordionModuleJAXBParser parser;
+    private AccordionJAXBParser parser;
     @Mock
     private JAXBParser<AccordionBean> jaxbParser;
     @Mock

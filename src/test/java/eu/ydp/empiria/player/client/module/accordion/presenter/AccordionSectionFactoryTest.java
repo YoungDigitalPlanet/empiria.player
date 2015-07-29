@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.accordion.view.section;
+package eu.ydp.empiria.player.client.module.accordion.presenter;
 
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,14 +17,14 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
-public class AccordionSectionViewFactoryTest {
+public class AccordionSectionFactoryTest {
 
     @InjectMocks
-    private AccordionSectionViewFactory testObj;
+    private AccordionSectionFactory testObj;
     @Mock
-    private Provider<AccordionSectionView> provider;
+    private Provider<AccordionSectionPresenter> sectionProvider;
     @Mock
-    private AccordionSectionView view;
+    private AccordionSectionPresenter section;
     @Mock
     private HasWidgets hasWidgets;
     @Mock
@@ -34,8 +34,8 @@ public class AccordionSectionViewFactoryTest {
 
     @Before
     public void init() {
-        when(provider.get()).thenReturn(view);
-        when(view.getContentContainer()).thenReturn(hasWidgets);
+        when(sectionProvider.get()).thenReturn(section);
+        when(section.getContentContainer()).thenReturn(hasWidgets);
     }
 
     @Test
@@ -55,12 +55,12 @@ public class AccordionSectionViewFactoryTest {
         when(generator.generateInlineBody(title)).thenReturn(widget);
 
         // when
-        testObj.createView(bean, generator);
+        testObj.createSection(bean, generator);
 
         // then
         verify(generator).generateInlineBody(title);
         verify(generator).generateBody(content, hasWidgets);
-        verify(view).setTitle(widget);
+        verify(section).setTitle(widget);
     }
 
 }

@@ -7,13 +7,13 @@ import eu.ydp.empiria.player.client.module.accordion.Transition;
 public class AccordionSectionsControllerProvider {
 
     @Inject
-    private Provider<AccordionSectionsBothDirectionsController> bothDirectionsController;
+    private Provider<AccordionController<AccordionBothDirectionsController>> bothDirectionsController;
     @Inject
-    private Provider<AccordionSectionsHorizontalController> horizontalController;
+    private Provider<AccordionController<AccordionHorizontalController>> horizontalController;
     @Inject
-    private Provider<AccordionSectionsVerticalController> verticalController;
+    private Provider<AccordionController<AccordionVerticalController>> verticalController;
 
-    public AccordionSectionsController getController(Transition transition) {
+    public AccordionController getController(Transition transition) {
         switch (transition) {
             case ALL:
                 return bothDirectionsController.get();

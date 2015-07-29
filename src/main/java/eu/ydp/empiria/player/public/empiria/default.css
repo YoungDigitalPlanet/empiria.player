@@ -54,3 +54,7 @@ button.mfp-close, button.mfp-arrow {
 .qp-accordion-section-content {
     overflow: hidden;
 }
+
+.qp-accordion-section-content-element {
+    display: inline-block;
+}

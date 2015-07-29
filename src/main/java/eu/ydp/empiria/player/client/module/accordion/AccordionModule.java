@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.accordion.presenter.AccordionPresenter;
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionBean;
-import eu.ydp.empiria.player.client.module.accordion.structure.AccordionModuleJAXBParser;
+import eu.ydp.empiria.player.client.module.accordion.structure.AccordionJAXBParser;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 
 
@@ -16,7 +16,7 @@ public class AccordionModule extends AbstractActivityContainerModuleBase {
     @Inject
     private AccordionPresenter presenter;
     @Inject
-    private AccordionModuleJAXBParser parser;
+    private AccordionJAXBParser parser;
 
     @Override
     public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {

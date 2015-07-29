@@ -7,11 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccordionSectionsControllerProviderTest {
@@ -19,20 +18,20 @@ public class AccordionSectionsControllerProviderTest {
     @InjectMocks
     private AccordionSectionsControllerProvider testObj;
     @Mock
-    private Provider<AccordionSectionsBothDirectionsController> bothDirectionsController;
+    private Provider<AccordionController<AccordionBothDirectionsController>> bothDirectionsController;
     @Mock
-    private AccordionSectionsBothDirectionsController bothDirections;
+    private Provider<AccordionController<AccordionHorizontalController>> horizontalController;
     @Mock
-    private Provider<AccordionSectionsHorizontalController> horizontalController;
+    private Provider<AccordionController<AccordionVerticalController>> verticalController;
     @Mock
-    private AccordionSectionsHorizontalController horizontal;
+    private AccordionController<AccordionBothDirectionsController> bothDirections;
     @Mock
-    private Provider<AccordionSectionsVerticalController> verticalController;
+    private AccordionController<AccordionHorizontalController> horizontal;
     @Mock
-    private AccordionSectionsVerticalController vertical;
+    private AccordionController<AccordionVerticalController> vertical;
 
     @Before
-    public void init(){
+    public void init() {
         when(bothDirectionsController.get()).thenReturn(bothDirections);
         when(horizontalController.get()).thenReturn(horizontal);
         when(verticalController.get()).thenReturn(vertical);
@@ -44,7 +43,7 @@ public class AccordionSectionsControllerProviderTest {
         Transition transition = Transition.ALL;
 
         // when
-        AccordionSectionsController controller = testObj.getController(transition);
+        AccordionController controller = testObj.getController(transition);
 
         // then
         assertThat(controller).isEqualTo(bothDirections);
@@ -56,7 +55,7 @@ public class AccordionSectionsControllerProviderTest {
         Transition transition = Transition.WIDTH;
 
         // when
-        AccordionSectionsController controller = testObj.getController(transition);
+        AccordionController controller = testObj.getController(transition);
 
         // then
         assertThat(controller).isEqualTo(horizontal);
@@ -68,7 +67,7 @@ public class AccordionSectionsControllerProviderTest {
         Transition transition = Transition.HEIGHT;
 
         // when
-        AccordionSectionsController controller = testObj.getController(transition);
+        AccordionController controller = testObj.getController(transition);
 
         // then
         assertThat(controller).isEqualTo(vertical);

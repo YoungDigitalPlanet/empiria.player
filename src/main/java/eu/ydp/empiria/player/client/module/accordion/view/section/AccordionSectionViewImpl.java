@@ -13,10 +13,8 @@ import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class AccordionSectionViewImpl extends Composite implements AccordionSectionView {
-    private static final String PX = Style.Unit.PX.toString();
     private static AccordionSectionUiBinder uiBinder = GWT.create(AccordionSectionUiBinder.class);
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
-    private StyleNameConstants styleNameConstants;
 
 
     @UiTemplate("AccordionSectionView.ui.xml")
@@ -26,14 +24,15 @@ public class AccordionSectionViewImpl extends Composite implements AccordionSect
     @UiField
     SimplePanel title;
     @UiField
-    SimplePanel content;
+    FlowPanel content;
     @UiField
-    FlowPanel wrapper;
+    SimplePanel contentWrapper;
+    @UiField
+    FlowPanel section;
 
     @Inject
-    public AccordionSectionViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory, StyleNameConstants styleNameConstants) {
+    public AccordionSectionViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory) {
         this.userInteractionHandlerFactory = userInteractionHandlerFactory;
-        this.styleNameConstants = styleNameConstants;
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -48,57 +47,43 @@ public class AccordionSectionViewImpl extends Composite implements AccordionSect
     }
 
     @Override
-    public void addClickEvent(Command clickCommand) {
+    public void addClickCommand(Command clickCommand) {
         userInteractionHandlerFactory.applyUserClickHandler(clickCommand, title);
     }
 
     @Override
-    public void hideVertically() {
-        wrapper.addStyleName(styleNameConstants.QP_ACCORDION_HIDDEN());
-        content.addStyleName(styleNameConstants.QP_ZERO_HEIGHT());
+    public void addSectionStyleName(String style) {
+        section.addStyleName(style);
     }
 
     @Override
-    public void hideHorizontally() {
-        wrapper.addStyleName(styleNameConstants.QP_ACCORDION_HIDDEN());
-        content.addStyleName(styleNameConstants.QP_ZERO_WIDTH());
+    public void addContentWrapperStyleName(String style) {
+        contentWrapper.addStyleName(style);
     }
 
     @Override
-    public void showVertically() {
-        updateSize();
-        wrapper.removeStyleName(styleNameConstants.QP_ACCORDION_HIDDEN());
-        content.removeStyleName(styleNameConstants.QP_ZERO_HEIGHT());
+    public void removeSectionStyleName(String style) {
+        section.removeStyleName(style);
     }
 
     @Override
-    public void showHorizontally() {
-        updateSize();
-        wrapper.removeStyleName(styleNameConstants.QP_ACCORDION_HIDDEN());
-        content.removeStyleName(styleNameConstants.QP_ZERO_WIDTH());
+    public void removeContentWrapperStyleName(String style) {
+        contentWrapper.removeStyleName(style);
     }
 
     @Override
-    public void init(Transition transition) {
-        switch (transition) {
-            case ALL:
-                content.addStyleName(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_ALL());
-                break;
-            case WIDTH:
-                content.addStyleName(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_WIDTH());
-                break;
-            case HEIGHT:
-                content.addStyleName(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_HEIGHT());
-                break;
-        }
+    public int getContentHeight() {
+        return content.getOffsetHeight();
     }
 
-    private void updateSize() {
-        Widget bodyContent = title.getWidget();
-        int h = bodyContent.getElement().getOffsetHeight();
-        int w = bodyContent.getElement().getOffsetWidth();
+    @Override
+    public int getContentWidth() {
+        return content.getOffsetWidth();
+    }
 
-        content.setHeight(h + PX);
-        content.setWidth(w + PX);
+    @Override
+    public void setSectionDimensions(String width, String height) {
+        contentWrapper.setWidth(width);
+        contentWrapper.setHeight(height);
     }
 }

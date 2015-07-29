@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.accordion.view.section;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import eu.ydp.empiria.player.client.module.accordion.Transition;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public interface AccordionSectionView extends IsWidget {
@@ -11,15 +10,19 @@ public interface AccordionSectionView extends IsWidget {
 
     HasWidgets getContentContainer();
 
-    void addClickEvent(Command clickCommand);
+    void addClickCommand(Command clickCommand);
 
-    void hideVertically();
+    void addSectionStyleName(String style);
 
-    void hideHorizontally();
+    void addContentWrapperStyleName(String style);
 
-    void showVertically();
+    void removeSectionStyleName(String style);
 
-    void showHorizontally();
+    void removeContentWrapperStyleName(String style);
 
-    void init(Transition transition);
+    int getContentHeight();
+
+    int getContentWidth();
+
+    void setSectionDimensions(String width, String height);
 }
