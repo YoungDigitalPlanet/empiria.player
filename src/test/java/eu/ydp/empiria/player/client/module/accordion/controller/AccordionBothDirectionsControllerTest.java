@@ -10,7 +10,6 @@ public class AccordionBothDirectionsControllerTest {
 
     private AccordionBothDirectionsController testObj = new AccordionBothDirectionsController();
 
-
     @Test
     public void shouldHideSectionHorizontally() {
         // given

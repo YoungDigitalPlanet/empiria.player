@@ -9,7 +9,6 @@ public class AccordionHorizontalControllerTest {
 
     private AccordionHorizontalController testObj = new AccordionHorizontalController();
 
-
     @Test
     public void shouldHideSectionHorizontally() {
         // given

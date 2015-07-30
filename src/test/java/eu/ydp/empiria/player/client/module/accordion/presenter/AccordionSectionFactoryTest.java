@@ -39,7 +39,7 @@ public class AccordionSectionFactoryTest {
     }
 
     @Test
-    public void shouldCreateTitle() {
+    public void shouldCreateTitle_andContent() {
         // given
         XMLContent titleXml = mock(XMLContent.class);
         Element title = mock(Element.class);
@@ -58,9 +58,7 @@ public class AccordionSectionFactoryTest {
         testObj.createSection(bean, generator);
 
         // then
-        verify(generator).generateInlineBody(title);
         verify(generator).generateBody(content, hasWidgets);
         verify(section).setTitle(widget);
     }
-
 }

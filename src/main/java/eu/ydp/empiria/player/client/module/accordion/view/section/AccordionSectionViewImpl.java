@@ -14,8 +14,6 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class AccordionSectionViewImpl extends Composite implements AccordionSectionView {
     private static AccordionSectionUiBinder uiBinder = GWT.create(AccordionSectionUiBinder.class);
-    private UserInteractionHandlerFactory userInteractionHandlerFactory;
-
 
     @UiTemplate("AccordionSectionView.ui.xml")
     interface AccordionSectionUiBinder extends UiBinder<Widget, AccordionSectionViewImpl> {
@@ -29,6 +27,8 @@ public class AccordionSectionViewImpl extends Composite implements AccordionSect
     SimplePanel contentWrapper;
     @UiField
     FlowPanel section;
+
+    private UserInteractionHandlerFactory userInteractionHandlerFactory;
 
     @Inject
     public AccordionSectionViewImpl(UserInteractionHandlerFactory userInteractionHandlerFactory) {

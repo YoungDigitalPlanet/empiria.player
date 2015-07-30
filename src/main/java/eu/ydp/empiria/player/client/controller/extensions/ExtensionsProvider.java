@@ -59,7 +59,7 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineContainerModule(), ModuleTagName.INLINE_CONTAINER_STYLE_STRONG, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getMathTextModule(), ModuleTagName.MATH_TEXT, false, true),
-                new SimpleConnectorExtension(moduleProviderFactory.getAccordionModule(), ModuleTagName.ACCORDION, false, true),
+                new SimpleConnectorExtension(moduleProviderFactory.getAccordionModule(), ModuleTagName.ACCORDION),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineMathJaxModule(), ModuleTagName.INLINE_MATH_JAX, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getMathModule(), ModuleTagName.MATH_INTERACTION),
                 new SimpleConnectorExtension(moduleProviderFactory.getInteractionMathJaxModule(), ModuleTagName.INTERACTION_MATH_JAX),

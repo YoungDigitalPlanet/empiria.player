@@ -94,6 +94,4 @@ public class AccordionPresenterTest {
         clickCommand.execute(nativeEvent);
         verify(accordionController).onClick(section);
     }
-
-
 }
