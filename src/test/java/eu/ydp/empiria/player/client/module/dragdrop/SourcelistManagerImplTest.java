@@ -313,12 +313,12 @@ public class SourcelistManagerImplTest {
     }
 
     @Test
-         public void rerenderMathJaxModuleAfterGapResize(){
+    public void rerenderMathJaxModuleAfterGapResize(){
         //given
         PlayerEvent event = mock(PlayerEvent.class);
         HasDimensions dim1 = mock(HasDimensions.class);
         HasDimensions dim2 = mock(HasDimensions.class);
-        when(model.getClients(sourcelist1)).thenReturn(Lists.newArrayList(client4));
+        when(model.getClients(sourcelist1)).thenReturn(Lists.<SourcelistClient>newArrayList(client4));
         when(sourcelist1.getItemSize()).thenReturn(dim1);
         InteractionMathJaxModule parentModule = mock(InteractionMathJaxModule.class);
         when(client4.getParentModule()).thenReturn(parentModule);
