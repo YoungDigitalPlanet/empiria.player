@@ -3,7 +3,8 @@ package eu.ydp.empiria.player.client.controller.body;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -17,24 +18,27 @@ import java.util.List;
 
 public class ModulesInstalator implements ModulesInstalatorSocket {
 
-    protected ModulesRegistrySocket registry;
-    protected ModuleSocket moduleSocket;
-    protected InteractionEventsListener interactionListener;
-    protected ParenthoodGeneratorSocket parenthood;
-    protected List<IModule> singleViewModules;
+    private ModulesRegistrySocket registry;
+    private ModuleSocket moduleSocket;
+    private InteractionEventsListener interactionListener;
+    private ParenthoodGeneratorSocket parenthood;
+    private List<IModule> singleViewModules;
 
-    protected StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<String, StackMap<Element, HasWidgets>>();
-    protected StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<Element, StackMap<IModule, HasWidgets>>();
-    protected StackMap<String, IModule> multiViewModulesMap = new StackMap<String, IModule>();
+    private StackMap<String, StackMap<Element, HasWidgets>> uniqueModulesMap = new StackMap<>();
+    private StackMap<Element, StackMap<IModule, HasWidgets>> nonuniqueModulesMap = new StackMap<>();
+    private StackMap<String, IModule> multiViewModulesMap = new StackMap<>();
 
-    protected FeedbackRegistry feedbackRegistry = PlayerGinjectorFactory.getPlayerGinjector().getFeedbackRegistry();
+    private FeedbackRegistry feedbackRegistry;
 
-    public ModulesInstalator(ParenthoodGeneratorSocket pts, ModulesRegistrySocket reg, ModuleSocket ms, InteractionEventsListener mil) {
+    @Inject
+    public ModulesInstalator(@Assisted ParenthoodGeneratorSocket pts, @Assisted ModulesRegistrySocket reg,
+                             @Assisted ModuleSocket ms, @Assisted InteractionEventsListener mil, FeedbackRegistry feedbackRegistry) {
         this.registry = reg;
         this.moduleSocket = ms;
         this.interactionListener = mil;
         this.parenthood = pts;
-        singleViewModules = new ArrayList<IModule>();
+        this.feedbackRegistry = feedbackRegistry;
+        singleViewModules = new ArrayList<>();
     }
 
     @Override

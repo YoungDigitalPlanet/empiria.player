@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
+import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OnModuleShowHandler;
@@ -27,15 +28,18 @@ public class ReportModule extends ContainerModuleBase implements OnModuleShowHan
     private FlexTable table;
     private final StyleNameConstants styleNames;
     private final PlayerWorkModeService playerWorkModeService;
+    private final RaportModuleFactory raportModuleFactory;
 
     @Inject
     public ReportModule(@Assisted DataSourceDataSupplier dataSourceDataSupplier,
                         @Assisted SessionDataSupplier sessionDataSupplier,
-                        StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService) {
+                        StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService,
+                        RaportModuleFactory raportModuleFactory) {
         this.dataSourceDataSupplier = dataSourceDataSupplier;
         this.sessionDataSupplier = sessionDataSupplier;
         this.styleNames = styleNames;
         this.playerWorkModeService = playerWorkModeService;
+        this.raportModuleFactory = raportModuleFactory;
 
         mainPanel = new FlowPanel();
         mainPanel.setStyleName(this.styleNames.QP_REPORT());
@@ -45,7 +49,7 @@ public class ReportModule extends ContainerModuleBase implements OnModuleShowHan
     public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
         super.initModule(element, moduleSocket, bgs);
 
-        ReportTableGenerator reportTableGenerator = new ReportTableGenerator(bgs, dataSourceDataSupplier, sessionDataSupplier);
+        ReportTableGenerator reportTableGenerator = raportModuleFactory.createReportTableGenerator(bgs, dataSourceDataSupplier, sessionDataSupplier);
         table = reportTableGenerator.generate(element);
 
         mainPanel.add(table);

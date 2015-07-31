@@ -11,8 +11,8 @@ import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import org.junit.AfterClass;
@@ -52,9 +52,9 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
         setUp(new Class[0], new Class[0], new Class[]{EventsBus.class}, new CustomGuiceModule());
         eventsBus = injector.getInstance(EventsBus.class);
         doReturn(handlerRegistration).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_OPEN)), eq(fullScreenWrapper), any(MediaEventHandler.class),
-                any(PageScope.class));
+                any(CurrentPageScope.class));
         doReturn(handlerRegistration2).when(eventsBus).addHandlerToSource(eq(getType(ON_FULL_SCREEN_EXIT)), eq(fullScreenWrapper),
-                any(MediaEventHandler.class), any(PageScope.class));
+                any(MediaEventHandler.class), any(CurrentPageScope.class));
 
         MediaWrappersPair instance = new MediaWrappersPair(defaultWrapper, fullScreenWrapper);
         injector.injectMembers(instance);
@@ -134,7 +134,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
         verify(instance).setCurrentTimeForMedia(eq(fullScreenWrapper), eq(defaultWrapper));
         verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(defaultWrapper));
         verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(fullScreenWrapper));
-        verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(fullScreenWrapper), any(MediaEventHandler.class), Matchers.any(PageScope.class));
+        verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(fullScreenWrapper), any(MediaEventHandler.class), Matchers.any(CurrentPageScope.class));
         verify(instance).firePlay(fullScreenWrapper);
     }
 
@@ -146,7 +146,7 @@ public class MediaWrappersPairTest extends AbstractTestBaseWithoutAutoInjectorIn
         verify(instance).setCurrentTimeForMedia(eq(defaultWrapper), eq(fullScreenWrapper));
         verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(defaultWrapper));
         verify(eventsBus).fireEventFromSource(any(MediaEvent.class), eq(fullScreenWrapper));
-        verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(defaultWrapper), any(MediaEventHandler.class), Matchers.any(PageScope.class));
+        verify(eventsBus).addHandlerToSource(eq(getType(ON_PLAY)), eq(defaultWrapper), any(MediaEventHandler.class), Matchers.any(CurrentPageScope.class));
         verify(instance).firePlay(defaultWrapper);
     }
 

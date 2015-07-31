@@ -2,18 +2,22 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.inject.Inject;
 import eu.ydp.empiria.gwtflashmedia.client.FlashVideo;
 import eu.ydp.empiria.gwtflashmedia.client.FlashVideoFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
 public class VideoExecutorSwf extends ExecutorSwf {
+
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     @Override
     public void init() {
@@ -36,7 +40,7 @@ public class VideoExecutorSwf extends ExecutorSwf {
                 public void onMediaEvent(MediaEvent event) {
                     textTrack.setCurrentTime(mediaWrapper.getCurrentTime());
                 }
-            }, new CurrentPageScope());
+            }, pageScopeFactory.getCurrentPageScope());
 
         }
         super.init();

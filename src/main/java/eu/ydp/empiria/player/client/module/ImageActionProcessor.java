@@ -16,15 +16,12 @@ import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 
 import java.util.List;
 
-public class ImageActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<ImageActionProcessor> {
+public class ImageActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable {
 
     private ActionProcessorHelper helper;
 
     @Inject
     private ImageFeedback feedbackPresenter;
-
-    @Inject
-    Provider<ImageActionProcessor> provider;
 
     @Override
     public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
@@ -64,11 +61,6 @@ public class ImageActionProcessor extends ParentedModuleBase implements Feedback
     public void clearFeedback() {
         feedbackPresenter.setUrl("");
         feedbackPresenter.hide();
-    }
-
-    @Override
-    public ImageActionProcessor getNewInstance() {
-        return provider.get();
     }
 
     @Override

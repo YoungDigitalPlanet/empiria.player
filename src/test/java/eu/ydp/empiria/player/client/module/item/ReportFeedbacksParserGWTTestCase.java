@@ -1,10 +1,10 @@
 package eu.ydp.empiria.player.client.module.item;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
-public class ReportFeedbacksParserGWTTestCase extends GWTTestCase {
+public class ReportFeedbacksParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private ReportFeedbacksParser testObj;
 
@@ -40,10 +40,5 @@ public class ReportFeedbacksParserGWTTestCase extends GWTTestCase {
         assertEquals(reportFeedbacks.getValueForProgress(10), FEEDBACK_FOR_10_19);
         assertEquals(reportFeedbacks.getValueForProgress(99), FEEDBACK_FOR_20_99);
         assertEquals(reportFeedbacks.getValueForProgress(100), "");
-    }
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
     }
 }

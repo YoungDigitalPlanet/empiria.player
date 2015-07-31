@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.ProgressBarFactory;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaScroll;
 import eu.ydp.empiria.player.client.module.media.button.SimpleMediaButton;
@@ -23,7 +24,7 @@ import javax.annotation.PostConstruct;
 
 import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 
-public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarImpl> implements MediaProgressBar {
+public class MediaProgressBarImpl extends AbstractMediaScroll implements MediaProgressBar {
 
     interface MediaProgressBarUiBinder extends UiBinder<Widget, MediaProgressBarImpl> {
     }
@@ -52,6 +53,8 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
     private ComputedStyle computedStyle;
     @Inject
     private ProgressBarFactory progressBarFactory;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
     private ProgressBarUpdateEventHandler progressBarEventHandler;
     private MediaProgressBarPositionCalculator positionCalculator;
     private int lastScrollElementWidth;
@@ -78,11 +81,6 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
     }
 
     @Override
-    public MediaProgressBarImpl getNewInstance() {
-        return new MediaProgressBarImpl();
-    }
-
-    @Override
     public boolean isSupported() {
         return getMediaAvailableOptions().isSeekSupported();
     }
@@ -106,7 +104,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
         super.init();
         if (isSupported()) {
             progressBarEventHandler = progressBarFactory.createProgressBarUpdateEventHandler(this);
-            CurrentPageScope scope = new CurrentPageScope();
+            CurrentPageScope scope = pageScopeFactory.getCurrentPageScope();
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_TIME_UPDATE), getMediaWrapper(), progressBarEventHandler, scope);
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_DURATION_CHANGE), getMediaWrapper(), progressBarEventHandler, scope);
             eventsBus.addAsyncHandlerToSource(MediaEvent.getType(ON_STOP), getMediaWrapper(), progressBarEventHandler, scope);
@@ -116,7 +114,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll<MediaProgressBarIm
             // ograniczenie
             // na 1s postepu wiec robimy to tu
             ProgressBarEndEventHandler handlerForEnd = progressBarFactory.createProgressBarEndEventHandler(this);
-            eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handlerForEnd, new CurrentPageScope());
+            eventsBus.addHandlerToSource(MediaEvent.getType(ON_END), getMediaWrapper(), handlerForEnd, pageScopeFactory.getCurrentPageScope());
 
         } else {
             progressBar.setStyleName(styleNames.QP_MEDIA_PROGRESSBAR() + UNSUPPORTED_SUFFIX);

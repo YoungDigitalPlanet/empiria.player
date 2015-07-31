@@ -5,10 +5,9 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 
-public abstract class SimpleContainerModuleBase<T> extends AbstractActivityContainerModuleBase implements Factory<T> {
+public abstract class SimpleContainerModuleBase extends AbstractActivityContainerModuleBase {
 
     private Panel panel;
 

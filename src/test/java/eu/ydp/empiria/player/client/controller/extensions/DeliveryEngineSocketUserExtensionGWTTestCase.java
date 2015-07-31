@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExten
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 
-public class DeliveryEngineSocketUserExtensionGWTTestCase extends ExtensionTestGWTTestCase {
+public class DeliveryEngineSocketUserExtensionGWTTestCase extends ExtensionGWTTestCase {
 
     protected DeliveryEngine de;
     protected DeliveryEngineSocket des;

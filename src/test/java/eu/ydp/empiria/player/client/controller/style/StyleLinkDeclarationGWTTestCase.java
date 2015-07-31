@@ -1,17 +1,12 @@
 package eu.ydp.empiria.player.client.controller.style;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
 import java.util.List;
 
-public class StyleLinkDeclarationGWTTestCase extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class StyleLinkDeclarationGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testUserAgent() {
         String xml = "<styleDeclaration><link href=\"common/default.css\" userAgent=\"^((?!(iPad|iPhone)).)*\"/><link href=\"common/ipad.css\" userAgent=\".*iPad.*\"/><link href=\"common/iphone.css\" userAgent=\".*iPhone.*\"/></styleDeclaration>";

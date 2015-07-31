@@ -7,8 +7,6 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class SoundExecutorSwf extends ExecutorSwf {
 
-    protected String playerPathDir = null;
-
     @Override
     public void stop() {
         pause = false;

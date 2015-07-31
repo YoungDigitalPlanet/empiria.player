@@ -7,9 +7,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.binding.BindingManager;
 import eu.ydp.empiria.player.client.module.binding.BindingProxy;
@@ -25,16 +24,20 @@ import java.util.Map;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLPADDING;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_TABLE_CELLSPACING;
 
-public class TableModule extends AbstractActivityContainerModuleBase implements Factory<TableModule>, BindingProxy {
+public class TableModule extends AbstractActivityContainerModuleBase implements BindingProxy {
 
     protected Panel tablePanel;
     private GapWidthBindingManager gapWidthBindingManager;
-    protected StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-    private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
+    private final StyleNameConstants styleNames;
+    private final StyleSocket styleSocket;
 
-    public TableModule() {
+    @Inject
+    public TableModule(StyleNameConstants styleNames, StyleSocket styleSocket) {
+        this.styleNames = styleNames;
+        this.styleSocket = styleSocket;
+
         tablePanel = new FlowPanel();
-        tablePanel.setStyleName(styleNames.QP_TABLE());
+        tablePanel.setStyleName(this.styleNames.QP_TABLE());
     }
 
     @Override
@@ -92,11 +95,6 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
     @Override
     public Widget getView() {
         return tablePanel;
-    }
-
-    @Override
-    public TableModule getNewInstance() {
-        return new TableModule();
     }
 
     @Override

@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.MediaInteractionSoundEventCallback;
@@ -30,14 +30,19 @@ import java.util.Map;
  * @deprecated Use {@link ExternalMediaProcessor} instead.
  */
 @Deprecated
-public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler, MediaEventHandler,
-        DeliveryEventsListenerExtension {
+public class JsMediaProcessorExtension extends AbstractJsExtension implements MediaProcessorExtension, PlayerEventHandler,
+        DeliveryEventsListenerExtension, MediaEventHandler {
 
-    protected boolean playing;
-    protected JavaScriptObject socketJs;
-    protected MediaInteractionSoundEventCallback currCallback;
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    protected Map<MediaWrapper<Widget>, String> sources = new HashMap<MediaWrapper<Widget>, String>();
+    private final EventsBus eventsBus;
+    private boolean playing;
+    private JavaScriptObject socketJs;
+    private MediaInteractionSoundEventCallback currCallback;
+    private Map<MediaWrapper<Widget>, String> sources = new HashMap<>();
+
+    @Inject
+    public JsMediaProcessorExtension(EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
+    }
 
     @Override
     public void onDeliveryEvent(DeliveryEvent deliveryEvent) {

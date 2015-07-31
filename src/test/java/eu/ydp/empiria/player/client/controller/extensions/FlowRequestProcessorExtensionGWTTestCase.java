@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.flow.request.IFlowRequest;
 
-public class FlowRequestProcessorExtensionGWTTestCase extends ExtensionTestGWTTestCase {
+public class FlowRequestProcessorExtensionGWTTestCase extends ExtensionGWTTestCase {
 
     protected IFlowCommand[] cmdsNavigation = {new FlowCommand.NavigateFirstItem(), new FlowCommand.NavigateNextItem(), new FlowCommand.NavigateSummary(),
             new FlowCommand.NavigateToc()};
