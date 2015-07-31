@@ -20,7 +20,7 @@ public class AccordionModule extends AbstractActivityContainerModuleBase {
 
     @Override
     public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
-        super.initModule(moduleSocket);
+        super.initModule(element, moduleSocket, bodyGenerator);
         AccordionBean accordionBean = parser.create().parse(element.toString());
         AccordionContentGenerator generator = new AccordionContentGenerator(moduleSocket.getInlineBodyGeneratorSocket(), bodyGenerator);
         presenter.initialize(accordionBean, generator);

@@ -27,18 +27,15 @@ public class AccordionControllerTest {
 
     @Test
     public void shouldShowSection_onFirstClick() {
-        //given
         // when
         testObj.onClick(firstSection);
 
         // then
-        verify(firstSection).showHorizontally();
-        verify(firstSection).showVertically();
+        verify(firstSection).show();
     }
 
     @Test
     public void shouldHideSection_onSecondClick() {
-        // given
         // when
         testObj.onClick(firstSection);
         testObj.onClick(firstSection);
@@ -49,15 +46,13 @@ public class AccordionControllerTest {
 
     @Test
     public void shouldShowSection_andHidePrevious() {
-        // given
         // when
         testObj.onClick(firstSection);
         testObj.onClick(secondSection);
 
         // then
         verify(hideController).hide(firstSection);
-        verify(secondSection).showHorizontally();
-        verify(secondSection).showVertically();
+        verify(secondSection).show();
     }
 
     @Test
@@ -70,7 +65,6 @@ public class AccordionControllerTest {
         testObj.onPlayerEvent(playerEvent);
 
         // then
-        verify(firstSection, times(2)).showHorizontally();
-        verify(firstSection, times(2)).showVertically();
+        verify(firstSection, times(2)).show();
     }
 }

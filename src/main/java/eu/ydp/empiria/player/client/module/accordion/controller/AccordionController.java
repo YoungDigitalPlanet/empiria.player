@@ -26,13 +26,12 @@ public class AccordionController<T extends AccordionHideController> implements P
             hideController.hide(currentSection.get());
         }
 
-        section.showHorizontally();
-        section.showVertically();
+        section.show();
         currentSection = Optional.of(section);
     }
 
     public void onClick(AccordionSectionPresenter section) {
-        if (currentSection.isPresent() && currentSection.get() == section) {
+        if (isCurrentSection(section)) {
             hideController.hide(currentSection.get());
             currentSection = Optional.absent();
         } else {
@@ -40,11 +39,14 @@ public class AccordionController<T extends AccordionHideController> implements P
         }
     }
 
+    private boolean isCurrentSection(AccordionSectionPresenter section) {
+        return currentSection.isPresent() && currentSection.get() == section;
+    }
+
     @Override
     public void onPlayerEvent(PlayerEvent event) {
         if (currentSection.isPresent()) {
-            currentSection.get().showHorizontally();
-            currentSection.get().showVertically();
+            currentSection.get().show();
         }
     }
 }

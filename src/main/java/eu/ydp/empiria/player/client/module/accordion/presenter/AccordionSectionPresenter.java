@@ -44,15 +44,10 @@ public class AccordionSectionPresenter implements IsWidget {
         view.addContentWrapperStyleName(styleNameConstants.QP_ZERO_WIDTH());
     }
 
-    public void showVertically() {
+    public void show() {
         updateSize();
         view.removeSectionStyleName(styleNameConstants.QP_ACCORDION_SECTION_HIDDEN());
         view.removeContentWrapperStyleName(styleNameConstants.QP_ZERO_HEIGHT());
-    }
-
-    public void showHorizontally() {
-        updateSize();
-        view.removeSectionStyleName(styleNameConstants.QP_ACCORDION_SECTION_HIDDEN());
         view.removeContentWrapperStyleName(styleNameConstants.QP_ZERO_WIDTH());
     }
 

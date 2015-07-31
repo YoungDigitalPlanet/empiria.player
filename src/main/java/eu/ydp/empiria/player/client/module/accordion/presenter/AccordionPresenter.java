@@ -29,8 +29,6 @@ public class AccordionPresenter implements IsWidget {
     }
 
     public void initialize(AccordionBean bean, AccordionContentGenerator generator) {
-        addClassToView(bean);
-
         Transition transition = bean.getTransition();
         AccordionController controller = controllerProvider.getController(transition);
 
@@ -49,13 +47,6 @@ public class AccordionPresenter implements IsWidget {
                 controller.onClick(section);
             }
         };
-    }
-
-    private void addClassToView(ModuleBean moduleBean) {
-        String type = moduleBean.getType();
-        if (!Strings.isNullOrEmpty(type)) {
-            asWidget().addStyleName(type);
-        }
     }
 
     @Override

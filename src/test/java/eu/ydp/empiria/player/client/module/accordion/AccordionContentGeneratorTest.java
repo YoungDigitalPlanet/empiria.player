@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -16,16 +17,12 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class AccordionContentGeneratorTest {
 
+    @InjectMocks
     private AccordionContentGenerator testObj;
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
     @Mock
     private BodyGeneratorSocket bodyGeneratorSocket;
-
-    @Before
-    public void init() {
-        testObj = new AccordionContentGenerator(inlineBodyGeneratorSocket, bodyGeneratorSocket);
-    }
 
     @Test
     public void shouldGenerateBody() {

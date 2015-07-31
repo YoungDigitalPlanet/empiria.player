@@ -19,6 +19,13 @@ import static org.mockito.Mockito.*;
 @RunWith(GwtMockitoTestRunner.class)
 public class AccordionSectionPresenterTest {
 
+    private static final String SECTION_HIDDEN = "sectionHidden";
+    private static final String ZERO_HEIGHT = "zeroHeight";
+    private static final String ZERO_WIDTH = "zeroWidth";
+    private static final String TRANSITION_ALL = "transitionAll";
+    private static final String TRANSITION_WIDTH = "transitionWidth";
+    private static final String TRANSITION_HEIGHT = "transitionHeight";
+
     @InjectMocks
     private AccordionSectionPresenter testObj;
     @Mock
@@ -26,21 +33,14 @@ public class AccordionSectionPresenterTest {
     @Mock
     private StyleNameConstants styleNameConstants;
 
-    private String sectionHidden = "sectionHidden";
-    private String zeroHeight = "zeroHeight";
-    private String zeroWidth = "zeroWidth";
-    private String transitionAll = "transitionAll";
-    private String transitionWidth = "transitionWidth";
-    private String transitionHeight = "transitionHeight";
-
     @Before
     public void init() {
-        when(styleNameConstants.QP_ACCORDION_SECTION_HIDDEN()).thenReturn(sectionHidden);
-        when(styleNameConstants.QP_ZERO_HEIGHT()).thenReturn(zeroHeight);
-        when(styleNameConstants.QP_ZERO_WIDTH()).thenReturn(zeroWidth);
-        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_ALL()).thenReturn(transitionAll);
-        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_WIDTH()).thenReturn(transitionWidth);
-        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_HEIGHT()).thenReturn(transitionHeight);
+        when(styleNameConstants.QP_ACCORDION_SECTION_HIDDEN()).thenReturn(SECTION_HIDDEN);
+        when(styleNameConstants.QP_ZERO_HEIGHT()).thenReturn(ZERO_HEIGHT);
+        when(styleNameConstants.QP_ZERO_WIDTH()).thenReturn(ZERO_WIDTH);
+        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_ALL()).thenReturn(TRANSITION_ALL);
+        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_WIDTH()).thenReturn(TRANSITION_WIDTH);
+        when(styleNameConstants.QP_ACCORDION_SECTION_CONTENT_TRANSITION_HEIGHT()).thenReturn(TRANSITION_HEIGHT);
     }
 
     @Test
@@ -82,24 +82,21 @@ public class AccordionSectionPresenterTest {
 
     @Test
     public void shouldAddStyleHidden_onHide() {
-        // given
         // when
         testObj.hideVertically();
         testObj.hideHorizontally();
 
         // then
-        verify(view, times(2)).addSectionStyleName(sectionHidden);
+        verify(view, times(2)).addSectionStyleName(SECTION_HIDDEN);
     }
 
     @Test
     public void shouldRemoveStyleHidden_onShow() {
-        // given
         // when
-        testObj.showVertically();
-        testObj.showHorizontally();
+        testObj.show();
 
         // then
-        verify(view, times(2)).removeSectionStyleName(sectionHidden);
+        verify(view).removeSectionStyleName(SECTION_HIDDEN);
     }
 
     @Test
@@ -111,52 +108,39 @@ public class AccordionSectionPresenterTest {
         when(view.getContentWidth()).thenReturn(w);
 
         // when
-        testObj.showVertically();
-        testObj.showHorizontally();
+        testObj.show();
 
         // then
-        verify(view, times(2)).setSectionDimensions("20PX", "10PX");
+        verify(view).setSectionDimensions("20PX", "10PX");
 
     }
 
     @Test
     public void shouldAddStyleZeroHeight_whenHideVertically() {
-        // given
         // when
         testObj.hideVertically();
 
         // then
-        verify(view).addContentWrapperStyleName(zeroHeight);
+        verify(view).addContentWrapperStyleName(ZERO_HEIGHT);
     }
 
     @Test
     public void shouldAddStyleZeroWidth_whenHideHorizontally() {
-        // given
         // when
         testObj.hideHorizontally();
 
         // then
-        verify(view).addContentWrapperStyleName(zeroWidth);
+        verify(view).addContentWrapperStyleName(ZERO_WIDTH);
     }
 
     @Test
-    public void shouldRemoveStyleZeroHeight_whenShowVertically() {
-        // given
+    public void shouldRemoveStyleZeroHeightAndHeight_whenShow() {
         // when
-        testObj.showVertically();
+        testObj.show();
 
         // then
-        verify(view).removeContentWrapperStyleName(zeroHeight);
-    }
-
-    @Test
-    public void shouldRemoveStyleZeroWidth_whenShowingHorizontally() {
-        // given
-        // when
-        testObj.showHorizontally();
-
-        // then
-        verify(view).removeContentWrapperStyleName(zeroWidth);
+        verify(view).removeContentWrapperStyleName(ZERO_HEIGHT);
+        verify(view).removeContentWrapperStyleName(ZERO_WIDTH);
     }
 
     @Test
@@ -168,7 +152,7 @@ public class AccordionSectionPresenterTest {
         testObj.init(transition);
 
         // then
-        verify(view).addContentWrapperStyleName(transitionAll);
+        verify(view).addContentWrapperStyleName(TRANSITION_ALL);
     }
 
     @Test
@@ -180,7 +164,7 @@ public class AccordionSectionPresenterTest {
         testObj.init(transition);
 
         // then
-        verify(view).addContentWrapperStyleName(transitionWidth);
+        verify(view).addContentWrapperStyleName(TRANSITION_WIDTH);
     }
 
     @Test
@@ -192,6 +176,6 @@ public class AccordionSectionPresenterTest {
         testObj.init(transition);
 
         // then
-        verify(view).addContentWrapperStyleName(transitionHeight);
+        verify(view).addContentWrapperStyleName(TRANSITION_HEIGHT);
     }
 }
