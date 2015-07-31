@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.accordion.Transition;
 
 import static eu.ydp.empiria.player.client.module.accordion.structure.AccordionJAXBXmlMock.*;
 
-public class AccordionJAXBParserTest extends EmpiriaPlayerGWTTestCase {
+public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testAccordionShouldContainTwoSections() {
         // given
