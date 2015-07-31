@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 
 public class PicturePlayerJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCase {
 
@@ -10,7 +11,7 @@ public class PicturePlayerJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCas
     private PicturePlayerTitleBean titleExpected = new PicturePlayerTitleBean();
 
     public PicturePlayerJAXBParserTest() {
-        titleExpected.setTitleName("title");
+        titleExpected.setTitleName(new XmlContentMock("title"));
 
         picturePlayerExpected.setFullscreenMode("mode");
         picturePlayerExpected.setSrcFullScreen("src_f.jpg");
@@ -71,8 +72,8 @@ public class PicturePlayerJAXBParserTest extends AbstractEmpiriaPlayerGWTTestCas
         }
     }
 
-    private void assertTitleEquals(PicturePlayerTitleBean result, PicturePlayerTitleBean expected) {
-        assertEquals(expected.getTitle(), result.getTitle());
+    private void assertTitleEquals(PicturePlayerTitleBean expected, PicturePlayerTitleBean result) {
+        assertEquals(expected.getTitleName().toString(), result.getTitleName().getValue().getChildNodes().toString());
     }
 
     private PicturePlayerBean parse(String xml) {

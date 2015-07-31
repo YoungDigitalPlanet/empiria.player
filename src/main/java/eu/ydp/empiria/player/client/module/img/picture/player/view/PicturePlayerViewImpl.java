@@ -51,8 +51,7 @@ public class PicturePlayerViewImpl extends Composite implements PicturePlayerVie
     }
 
     @Override
-    public void setImage(String title, String url) {
-        image.setAltText(title);
+    public void setImage(String url) {
         image.setUrl(url);
     }
 

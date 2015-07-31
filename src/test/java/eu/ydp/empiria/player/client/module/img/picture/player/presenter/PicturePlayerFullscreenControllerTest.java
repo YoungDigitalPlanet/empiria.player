@@ -1,21 +1,25 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Node;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBoxProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
-import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerTitleBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(GwtMockitoTestRunner.class)
 public class PicturePlayerFullscreenControllerTest {
 
     @InjectMocks
@@ -28,21 +32,17 @@ public class PicturePlayerFullscreenControllerTest {
     private PicturePlayerFullscreenDelay fullscreenDelay;
     @Mock
     private UserAgentCheckerWrapper userAgentCheckerWrapper;
-
-    private PicturePlayerBean bean = new PicturePlayerBean();
-    private PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
-
-    private String mode = "mode";
-    private String srcFullscreen = "src_f";
-    private String title = "title";
+    @Mock
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private PicturePlayerBean bean;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Widget titleElement;
 
     @Before
     public void setUp() throws Exception {
-        titleBean.setTitleName(title);
-        bean.setSrcFullScreen(srcFullscreen);
-        bean.setTitleBean(titleBean);
-        bean.setFullscreenMode(mode);
-        when(modeProvider.getFullscreen(mode)).thenReturn(lightBox);
+        when(modeProvider.getFullscreen(Mockito.<String>any())).thenReturn(lightBox);
+        when(inlineBodyGeneratorSocket.generateInlineBody(Mockito.<Node>any())).thenReturn(titleElement);
     }
 
     @Test
@@ -51,11 +51,11 @@ public class PicturePlayerFullscreenControllerTest {
         when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
 
         // when
-        testObj.openFullscreen(bean);
+        testObj.openFullscreen(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(modeProvider).getFullscreen(mode);
-        verify(lightBox).openImage(srcFullscreen, title);
+        verify(modeProvider).getFullscreen(Mockito.<String>any());
+        verify(lightBox).openImage(bean.getSrcFullScreen(), titleElement.getElement());
     }
 
     @Test
@@ -64,10 +64,10 @@ public class PicturePlayerFullscreenControllerTest {
         when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
 
         // when
-        testObj.openFullscreen(bean);
+        testObj.openFullscreen(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(modeProvider).getFullscreen(mode);
-        verify(fullscreenDelay).openImageWithDelay(lightBox, bean);
+        verify(modeProvider).getFullscreen(Mockito.<String>any());
+        verify(fullscreenDelay).openImageWithDelay(lightBox, bean.getSrcFullScreen(), titleElement.getElement());
     }
 }

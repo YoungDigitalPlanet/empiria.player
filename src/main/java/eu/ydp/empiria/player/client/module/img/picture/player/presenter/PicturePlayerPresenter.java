@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 
@@ -10,6 +11,7 @@ public class PicturePlayerPresenter {
     private PicturePlayerView view;
     private PicturePlayerFullscreenController fullscreenController;
     private PicturePlayerBean bean;
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
     private boolean template = false;
 
@@ -19,11 +21,11 @@ public class PicturePlayerPresenter {
         this.fullscreenController = fullscreenController;
     }
 
-    public void init(PicturePlayerBean bean) {
+    public void init(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         this.bean = bean;
-
+        this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         view.setPresenter(this);
-        view.setImage(bean.getTitle(), bean.getSrc());
+        view.setImage(bean.getSrc());
         initFullScreenMediaButton(bean);
     }
 
@@ -38,7 +40,7 @@ public class PicturePlayerPresenter {
     }
 
     public void openFullscreen() {
-        fullscreenController.openFullscreen(bean);
+        fullscreenController.openFullscreen(bean, inlineBodyGeneratorSocket);
     }
 
     public Widget getView() {
