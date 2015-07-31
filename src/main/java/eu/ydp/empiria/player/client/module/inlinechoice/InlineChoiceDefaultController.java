@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -42,6 +43,8 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
     @Inject
     @PageScoped
     private ResponseSocket responseSocket;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     protected Panel container;
 
@@ -321,8 +324,9 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
             lastValue = "";
         }
         response.add(lastValue);
+        CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
         eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, false, parentModule)),
-                new CurrentPageScope());
+                currentPageScope);
     }
 
     @Override

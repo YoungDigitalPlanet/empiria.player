@@ -12,7 +12,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import eu.ydp.empiria.player.client.gin.factory.MediaFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.HTML5VideoMediaWrapper;
@@ -25,7 +27,6 @@ import eu.ydp.empiria.player.client.util.events.internal.fullscreen.VideoFullScr
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent;
 
@@ -39,24 +40,20 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
 
     @Inject
     protected EventsBus eventsBus;
-
     @Inject
     protected ObjectTemplateParser parser;
-
-    @Inject
-    protected GWTPanelFactory panelFactory;
-
     @Inject
     protected StyleNameConstants styleNames;
-
     @Inject
     protected PageScopeFactory pageScopeFactory;
-
     @Inject
     private NativeHTML5FullScreenHelper html5FullScreenHelper;
+    @Inject
+    private Provider<VideoFullScreenView> fullScreenViewProvider;
+    @Inject
+    private MediaFactory mediaFactory;
 
-    protected FlowPanel fullScreenView = null;
-    protected VideoFullScreenViewImpl view;
+    protected VideoFullScreenView view;
     protected VideoControlHideTimer controlsHideTimer;
     protected MediaWrapper<?> lastMediaWrapper = null;
     protected MediaWrapper<?> synchronizeWithMediaWrapper = null;
@@ -102,10 +99,10 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
         style.setHeight(100, Unit.PCT);
     }
 
-    private VideoFullScreenViewImpl getFullScreenView() {
+    private VideoFullScreenView getFullScreenView() {
         if (view == null) {
-            view = new VideoFullScreenViewImpl();
-            controlsHideTimer = new VideoControlHideTimer(view);
+            view = fullScreenViewProvider.get();
+            controlsHideTimer = mediaFactory.getVideoControlHideTimer(view);
             RootPanel.get().addDomHandler(this, KeyUpEvent.getType());
         }
         return view;
@@ -114,14 +111,13 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
     protected void clearFullScreenView() {
         if (view != null && view.isAttached()) {
             view.removeFromParent();
-            // 0 to kontrolki 1 widget wideo
             view.getContainer().clear();
             view.getControls().clear();
             view.getContainer().add(view.getControls());
         }
     }
 
-    protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper, MediaWrapper<?> fullScreenMediaWrapper) {
+    protected void openFullScreenMobile(MediaWrapper<?> mediaWrapper) {
         if (isHTML5VideoMediaWrapper(mediaWrapper) && !isHTML5MediaDataAvaliable(mediaWrapper)) {
             playHTML5MediaAfterDataLoad(mediaWrapper);
         } else {
@@ -142,7 +138,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
     }
 
     private boolean isHTML5MediaDataAvaliable(MediaWrapper<?> mediaWrapper) {
-        return isHTML5VideoMediaWrapper(mediaWrapper) && ((HTML5VideoMediaWrapper) mediaWrapper).canPlay();
+        return isHTML5VideoMediaWrapper(mediaWrapper) && (mediaWrapper).canPlay();
     }
 
     private boolean isHTML5VideoMediaWrapper(MediaWrapper<?> mediaWrapper) {
@@ -150,7 +146,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
     }
 
     private void openFullScreenMobileWhenDataReady(MediaWrapper<?> mediaWrapper) {
-        html5FullScreenHelper.requestFullScreen(((Widget) mediaWrapper.getMediaObject()).getElement());
+        html5FullScreenHelper.requestFullScreen((mediaWrapper.getMediaObject()).getElement());
         lastMediaWrapper = mediaWrapper;
         fireEvent(true, mediaWrapper);
         eventsBus.fireEvent(new MediaEvent(MediaEventTypes.ON_MOBILE_FULL_SCREEN_OPEN));
@@ -160,7 +156,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
         if (mediaWrapper != null && template != null) {
             clearFullScreenView();
             lastMediaWrapper = mediaWrapper;
-            VideoFullScreenViewImpl parent = getFullScreenView();
+            VideoFullScreenView parent = getFullScreenView();
             parseTemplate(mediaWrapper, template, parent.getControls());
             fireEvent(true, mediaWrapper);
             RootPanel.get().add(parent);
@@ -173,16 +169,16 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
         if (mediaWrapper != null && template != null) {
             clearFullScreenView();
             lastMediaWrapper = mediaWrapper;
-            VideoFullScreenViewImpl parent = getFullScreenView();
+            VideoFullScreenView parent = getFullScreenView();
             Widget widget = mediaWrapper.getMediaObject();
             parent.getContainer().add(widget);
-            resizeToFullScreen(parent, Position.FIXED);
+            resizeToFullScreen(parent.asWidget(), Position.FIXED);
             resizeToFullScreen(widget, Position.ABSOLUTE);
             parseTemplate(mediaWrapper, template, parent.getControls());
             fireEvent(true, mediaWrapper);
             RootPanel.get().add(parent);
             resizeToFullScreen(lastMediaWrapper.getMediaObject(), Position.FIXED);
-            resizeToFullScreen(view, Position.FIXED);
+            resizeToFullScreen(view.asWidget(), Position.FIXED);
             resizeToFullScreen(widget, Position.ABSOLUTE);
         }
     }
@@ -196,7 +192,7 @@ public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEvent
         boolean isMobileFirefox = UserAgentChecker.isMobileUserAgent(FIREFOX);
 
         if ((isMobileUserAgent || isSafari) && !isMobileFirefox) {
-            openFullScreenMobile(defaultMediaWrapper, fullScreenMediaWrapper);
+            openFullScreenMobile(defaultMediaWrapper);
         } else if (UserAgentChecker.isUserAgent(IE8, IE9, FIREFOX)) {
             openFullscreenIE(fullScreenMediaWrapper, template);
         } else {

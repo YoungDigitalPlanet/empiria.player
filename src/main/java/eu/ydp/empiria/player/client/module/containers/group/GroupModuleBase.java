@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.module.IGroup;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.BindingContainerModule;
 
-public abstract class GroupModuleBase<T> extends BindingContainerModule<T> implements IGroup {
+public abstract class GroupModuleBase extends BindingContainerModule implements IGroup {
 
     protected GroupIdentifier groupIdentifier;
     private String moduleId;

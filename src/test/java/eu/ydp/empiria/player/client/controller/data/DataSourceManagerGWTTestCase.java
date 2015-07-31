@@ -1,19 +1,14 @@
 package eu.ydp.empiria.player.client.controller.data;
 
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public class DataSourceManagerGWTTestCase extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class DataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testDataLoadItemsCount() {
         final DataSourceManager dsm = createDataSourceManager();

@@ -4,10 +4,9 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class FlashModule extends SimpleModuleBase implements Factory<FlashModule> {
+public class FlashModule extends SimpleModuleBase {
 
     public HTMLPanel panel;
 
@@ -39,10 +38,4 @@ public class FlashModule extends SimpleModuleBase implements Factory<FlashModule
     public Widget getView() {
         return panel;
     }
-
-    @Override
-    public FlashModule getNewInstance() {
-        return new FlashModule();
-    }
-
 }

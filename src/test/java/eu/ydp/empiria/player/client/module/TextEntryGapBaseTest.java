@@ -1,11 +1,10 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.textentry.DragContentController;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryGapBase;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryGapModule;
 import eu.ydp.empiria.player.client.module.textentry.TextEntryModulePresenter;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -25,11 +24,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TextEntryGapBaseTest {
 
-    public static class TestClass extends TextEntryGapBase {
-    }
-
-    ;
-
     @InjectMocks
     private TextEntryGapModule testObj;
 
@@ -46,7 +40,7 @@ public class TextEntryGapBaseTest {
     @Mock
     private Element element;
     @Mock
-    private Provider<CurrentPageScope> providerCurrentPageScope;
+    private PageScopeFactory pageScopeFactory;
 
     @Test
     public void shouldUpdateStateAfterDragTest() {

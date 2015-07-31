@@ -1,15 +1,15 @@
 package eu.ydp.empiria.player.client.module.selection.structure;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
 import java.util.List;
 
-public class SelectionModuleJAXBParserGWTTestCase extends GWTTestCase {
+public class SelectionModuleJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private final String testXml = "<selectionInteraction id=\"dummy1\" matchMax=\"1\" responseIdentifier=\"SELECTION_RESPONSE_1\" multi=\"false\" shuffle=\"true\">"
             + "		<item identifier=\"SELECTION_RESPONSE_1_0\" matchMax=\"1\" fixed=\"true\"><math>a1</math></item>"
@@ -64,10 +64,4 @@ public class SelectionModuleJAXBParserGWTTestCase extends GWTTestCase {
         Node value = element.getFirstChild();
         assertEquals(content, value.toString());
     }
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
-
 }

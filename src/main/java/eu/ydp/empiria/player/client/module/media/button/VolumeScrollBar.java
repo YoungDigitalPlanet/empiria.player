@@ -8,20 +8,21 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 
 import java.util.Iterator;
 
-public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
-    protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
+public class VolumeScrollBar extends AbstractMediaScroll {
+
+    private final StyleNameConstants styleNames; // NOPMD
 
     private static VolumeScrollBarUiBinder uiBinder = GWT.create(VolumeScrollBarUiBinder.class);
 
@@ -29,7 +30,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
     }
 
     @UiField(provided = true)
-    protected SimpleMediaButton button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
+    protected SimpleMediaButton button;
     @UiField
     protected FlowPanel progressBar;
 
@@ -43,16 +44,18 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
     protected FlowPanel afterButton;
 
     protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    protected PositionHelper positionHelper = PlayerGinjectorFactory.getPlayerGinjector().getPositionHelper();
+    private final EventsBus eventsBus;
+    private final PositionHelper positionHelper;
+    private final PageScopeFactory pageScopeFactory;
 
-    public VolumeScrollBar() {
+    @Inject
+    public VolumeScrollBar(StyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper, PageScopeFactory pageScopeFactory) {
+        this.styleNames = styleNames;
+        this.eventsBus = eventsBus;
+        this.positionHelper = positionHelper;
+        this.pageScopeFactory = pageScopeFactory;
+        button = new SimpleMediaButton(styleNames.QP_MEDIA_VOLUME_SCROLLBAR_BUTTON(), false);
         initWidget(uiBinder.createAndBindUi(this));
-    }
-
-    @Override
-    public VolumeScrollBar getNewInstance() {
-        return new VolumeScrollBar();
     }
 
     @Override
@@ -82,7 +85,7 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
     public void init() {
         super.init();
         if (isSupported()) {
-            AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+            MediaEventHandler handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     if (getMediaWrapper().isMuted()) {
@@ -90,8 +93,8 @@ public class VolumeScrollBar extends AbstractMediaScroll<VolumeScrollBar> {
                     }
                 }
             };
-            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, new CurrentPageScope());
-            handler = new AbstractMediaEventHandler() {
+            eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), handler, pageScopeFactory.getCurrentPageScope());
+            handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     double volume = getMediaWrapper().getVolume();

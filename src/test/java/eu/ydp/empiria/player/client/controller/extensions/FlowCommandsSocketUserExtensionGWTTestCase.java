@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.execution.FlowCommandsExecutor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommand;
 
-public class FlowCommandsSocketUserExtensionGWTTestCase extends ExtensionTestGWTTestCase {
+public class FlowCommandsSocketUserExtensionGWTTestCase extends ExtensionGWTTestCase {
 
     protected DeliveryEngine de;
     protected FlowCommandsExecutor fce;

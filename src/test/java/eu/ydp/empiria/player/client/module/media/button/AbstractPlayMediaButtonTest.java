@@ -95,7 +95,7 @@ public class AbstractPlayMediaButtonTest extends AbstractTestBase {
         GWTMockUtilities.restore();
     }
 
-    private static class MockButton extends AbstractPlayMediaButton<MockButton> {
+    private static class MockButton extends AbstractPlayMediaButton {
 
         public MockButton(String baseStyleName) {
             super(baseStyleName);

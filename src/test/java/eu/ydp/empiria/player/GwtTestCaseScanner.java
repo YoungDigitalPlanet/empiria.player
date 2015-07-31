@@ -3,21 +3,18 @@ package eu.ydp.empiria.player;
 import com.google.gwt.junit.client.GWTTestCase;
 import org.reflections.scanners.AbstractScanner;
 
+import java.lang.reflect.Modifier;
+
 public class GwtTestCaseScanner extends AbstractScanner {
 
     @Override
-    public boolean acceptsInput(String file) {
-        return file.endsWith("Test.class");
-    }
+    public void scan(Object classMetadata) {
+        String className = getMetadataAdapter().getClassName(classMetadata);
+        String superclassName = getMetadataAdapter().getSuperclassName(classMetadata);
 
-    @Override
-    public void scan(Object clazz) {
-        String className = getMetadataAdapter().getClassName(clazz);
-        String superclassName = getMetadataAdapter().getSuperclassName(clazz);
-        Class<?> loadClass;
         try {
-            loadClass = this.getClass().getClassLoader().loadClass(className);
-            if (GWTTestCase.class.isAssignableFrom(loadClass)) {
+            Class<?> clazz = loadClass(className);
+            if (isGwtTestCase(clazz) && !isAbstract(clazz)) {
                 if (acceptResult(superclassName)) {
                     getStore().put(superclassName, className);
                 }
@@ -25,5 +22,18 @@ public class GwtTestCaseScanner extends AbstractScanner {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private Class<?> loadClass(String className) throws ClassNotFoundException {
+        return this.getClass().getClassLoader().loadClass(className);
+    }
+
+    private boolean isAbstract(Class<?> clazz) {
+        int modifiers = clazz.getModifiers();
+        return Modifier.isAbstract(modifiers);
+    }
+
+    private boolean isGwtTestCase(Class<?> clazz) {
+        return GWTTestCase.class.isAssignableFrom(clazz);
     }
 }

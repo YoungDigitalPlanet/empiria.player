@@ -9,6 +9,8 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView;
+import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenViewImpl;
 import eu.ydp.empiria.player.client.module.media.progress.MediaProgressBarAndroid;
 import eu.ydp.empiria.player.client.module.media.progress.MediaProgressBarImpl;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
@@ -37,7 +39,7 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
             binder.bind(MediaProgressBarImpl.class).toProvider(progressBarProvider);
             binder.bind(MediaProgressBarAndroid.class).toProvider(progressBarAndroidProvider);
             binder.bind(UserAgentUtil.class).toInstance(userAgentUtil);
-
+            binder.bind(VideoFullScreenView.class).toInstance(mock(VideoFullScreenViewImpl.class));
         }
     }
 
@@ -86,7 +88,7 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
             }
         });
 
-        AbstractMediaController<?> abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
+        AbstractMediaController abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
         assertThat(abstractMediaController).isNotNull();
         assertThat(abstractMediaController).isInstanceOf(MediaProgressBarAndroid.class);
 
@@ -95,7 +97,7 @@ public class MediaControllerFactoryImplTest extends AbstractTestBaseWithoutAutoI
     @Test
     public void testProgressBarGetDesktop() {
         when(userAgentUtil.isMobileUserAgent((MobileUserAgent[]) Matchers.anyVararg())).thenReturn(false);
-        AbstractMediaController<?> abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
+        AbstractMediaController abstractMediaController = instance.get(ModuleTagName.MEDIA_PROGRESS_BAR);
         assertThat(abstractMediaController).isNotNull();
         assertThat(abstractMediaController).isInstanceOf(MediaProgressBarImpl.class);
 

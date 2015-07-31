@@ -3,11 +3,9 @@ package eu.ydp.empiria.player.client.module.sourcelist.predicates;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
-import eu.ydp.empiria.player.client.AbstractEmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.module.sourcelist.predicates.ComplexTextPredicate;
-import eu.ydp.empiria.player.client.module.sourcelist.predicates.SpecialCharacterPredicate;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
-public class SpecialCharacterPredicateGWTTestCase extends AbstractEmpiriaPlayerGWTTestCase {
+public class SpecialCharacterPredicateGWTTestCase extends EmpiriaPlayerGWTTestCase {
     private SpecialCharacterPredicate testObj = new SpecialCharacterPredicate();
 
     public void testShouldReturnTrue_whenContainsEscapedLtCharacters() {

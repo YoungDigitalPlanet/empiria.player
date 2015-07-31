@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowList
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
+import eu.ydp.empiria.player.client.gin.factory.ModulesInstalatorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
@@ -50,11 +51,13 @@ public class ItemBody implements WidgetWorkflowListener {
     private MathJaxNative mathJaxNative;
     private final IgnoredModules ignoredModules;
     private final PlayerWorkModeService playerWorkModeService;
+    private final ModulesInstalatorFactory modulesInstalatorFactory;
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
                     InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
-                    IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood) {
+                    IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
+                    ModulesInstalatorFactory modulesInstalatorFactory) {
 
         this.moduleSocket = moduleSocket;
         this.options = options;
@@ -68,11 +71,12 @@ public class ItemBody implements WidgetWorkflowListener {
         this.interactionEventsListener = interactionEventsListener;
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
+        this.modulesInstalatorFactory = modulesInstalatorFactory;
     }
 
     public Widget init(Element itemBodyElement) {
 
-        ModulesInstalator modulesInstalator = new ModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
         BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 
         itemBodyModule = new ItemBodyModule();

@@ -70,7 +70,4 @@ public class WordsPermutationUtil {
     private enum Ending {
         HEAD, TAIL, BOTH
     }
-
-    ;
-
 }

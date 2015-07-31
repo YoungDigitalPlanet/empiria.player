@@ -5,12 +5,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
-/**
- * przycisk playPause
- *
- * @author plelakowski
- */
-public class PlayPauseMediaButton extends AbstractPlayMediaButton<PlayPauseMediaButton> {
+public class PlayPauseMediaButton extends AbstractPlayMediaButton {
 
     @Inject
     public PlayPauseMediaButton(StyleNameConstants styleNames) {

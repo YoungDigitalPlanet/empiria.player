@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.controller.delivery;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.communication.ActivityMode;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
@@ -20,12 +20,7 @@ import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 
-public class DeliveryEngineGWTTestCase extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return "eu.ydp.empiria.player.Player";
-    }
+public class DeliveryEngineGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testEngineMode() {
         PlayerGinjector injector = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase();
