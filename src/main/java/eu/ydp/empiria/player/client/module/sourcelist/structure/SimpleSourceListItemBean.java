@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.sourcelist.structure;
 
+import com.google.common.base.Predicate;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
@@ -36,13 +37,19 @@ public class SimpleSourceListItemBean implements HasFixed {
         this.alt = alt;
     }
 
-    public SourcelistItemValue getItemValue() {
-        NodeList imgNodes = content.getValue().getElementsByTagName(IMG_NODE);
+    public SourcelistItemValue getItemValue(Predicate<Element> hasComplexTextPredicate) {
+        Element value = content.getValue();
+        NodeList imgNodes = value.getElementsByTagName(IMG_NODE);
         if (imgNodes.getLength() > 0) {
             return createImageItemValue();
-        } else {
-            return createTextItemValue();
         }
+
+        boolean hasComplexText = hasComplexTextPredicate.apply(value);
+        if (hasComplexText) {
+            return createComplexTexItemValue();
+        }
+
+        return createTextItemValue();
     }
 
     private SourcelistItemValue createImageItemValue() {
@@ -53,9 +60,17 @@ public class SimpleSourceListItemBean implements HasFixed {
     }
 
     private SourcelistItemValue createTextItemValue() {
+        return createTypedItemValue(SourcelistItemType.TEXT);
+    }
+
+    private SourcelistItemValue createComplexTexItemValue() {
+        return createTypedItemValue(SourcelistItemType.COMPLEX_TEXT);
+    }
+
+    private SourcelistItemValue createTypedItemValue(SourcelistItemType type) {
         NodeList textNode = content.getValue().getChildNodes();
         String text = textNode.toString();
-        return new SourcelistItemValue(SourcelistItemType.TEXT, text, alt);
+        return new SourcelistItemValue(type, text, alt);
     }
 
     public void setContent(XMLContent content) {

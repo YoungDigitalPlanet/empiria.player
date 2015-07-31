@@ -6,6 +6,8 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
@@ -47,6 +49,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
     private SourceListModuleStructure sourceListModuleStructure;
     private final static String sourcelistId = "id1";
     private SourceListBean bean;
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
     private static class CustomGuiceModule implements Module {
         @Override
@@ -81,11 +84,19 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         when(bean.getSourcelistId()).thenReturn(sourcelistId);
         when(sourceListModuleStructure.getBean()).thenReturn(bean);
         reflectionsUtils = new ReflectionsUtils();
+
+        ModuleSocket moduleSocket = mock(ModuleSocket.class);
+        inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
+        when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
+
+        Element element = mock(Element.class);
+        InteractionEventsListener interactionEventsListener = mock(InteractionEventsListener.class);
+        instance.initModule(element, moduleSocket, interactionEventsListener);
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void initModuleTest() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+    public void initModuleTest() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
         // given
         reflectionsUtils.setValueInObjectOnField("moduleSocket", instance, moduleSocket);
         String idModule = "moduleId";
@@ -104,7 +115,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(YJsonArray.class));
         inOrder.verify(sourceListModuleStructure).getBean();
         inOrder.verify(presenter).setBean(Matchers.any(SourceListBean.class));
-        inOrder.verify(presenter).createAndBindUi();
+        inOrder.verify(presenter).createAndBindUi(inlineBodyGeneratorSocket);
 
         assertEquals(presenter.asWidget(), instance.getView());
     }
@@ -112,7 +123,6 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
     @Test
     public void testGetItemValue() throws Exception {
         String itemId = "id";
-        SourcelistItemValue itemValue = new SourcelistItemValue(SourcelistItemType.IMAGE, "value", itemId);
         instance.getItemValue(itemId);
         verify(presenter).getItemValue(eq(itemId));
     }
@@ -141,12 +151,6 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
     }
 
     @Test
-    public void testGetView() throws Exception {
-        instance.getView();
-        verify(presenter).asWidget();
-    }
-
-    @Test
     public void testGetIdentifier() throws Exception {
         // given
         Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
@@ -161,14 +165,12 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
     public void testLockSourceList() throws Exception {
         instance.lockSourceList();
         verify(presenter).lockSourceList();
-        verifyNoMoreInteractions(presenter);
     }
 
     @Test
     public void testUnlockSourceList() throws Exception {
         instance.unlockSourceList();
         verify(presenter).unlockSourceList();
-        verifyNoMoreInteractions(presenter);
     }
 
     @Test

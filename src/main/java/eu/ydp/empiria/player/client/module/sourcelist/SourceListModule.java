@@ -41,7 +41,7 @@ public class SourceListModule extends SimpleModuleBase implements Sourcelist {
         sourcelistId = bean.getSourcelistId();
         presenter.setBean(bean);
         presenter.setModuleId(sourcelistId);
-        presenter.createAndBindUi();
+        presenter.createAndBindUi(getModuleSocket().getInlineBodyGeneratorSocket());
         sourcelistManager.registerSourcelist(this);
     }
 
