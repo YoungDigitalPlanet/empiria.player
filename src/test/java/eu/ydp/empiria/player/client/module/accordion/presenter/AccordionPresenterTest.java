@@ -65,19 +65,6 @@ public class AccordionPresenterTest {
     }
 
     @Test
-    public void shouldSetCssClass_whenInit() {
-        // given
-        String cssClass = "cssClass";
-        bean.setType(cssClass);
-
-        // when
-        testObj.initialize(bean, generator);
-
-        // then
-        verify(viewWidget).addStyleName(cssClass);
-    }
-
-    @Test
     public void shouldInitializeSection() {
         // given
         NativeEvent nativeEvent = mock(NativeEvent.class);
