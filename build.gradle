@@ -126,6 +126,7 @@ sonarRunner {
 }
 
 sourceSets {
+    test.java.srcDirs = ['src/test/gwt', 'src/test/java']
     test.runtimeClasspath += files(main.java.srcDirs)
     test.runtimeClasspath += files(test.java.srcDirs)
     test.runtimeClasspath += files(test.groovy.srcDirs)
