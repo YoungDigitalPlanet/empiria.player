@@ -10,7 +10,6 @@ import static eu.ydp.empiria.player.client.module.accordion.structure.AccordionJ
 public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testAccordionShouldContainTwoSections() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TWO_SECTIONS);
 
@@ -23,7 +22,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionShouldContainsGivenTitle_onFirstSection() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TWO_SECTIONS);
 
@@ -34,7 +32,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionShouldContainsGivenTitle_onSecondSection() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TWO_SECTIONS);
 
@@ -45,7 +42,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionShouldContainsGivenContent_onFirstSection() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TWO_SECTIONS);
 
@@ -56,7 +52,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionShouldContainsGivenContent_onSecondSection() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TWO_SECTIONS);
 
@@ -67,7 +62,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionTransitionShouldBeSetToWidth() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TRANSITION_WIDTH);
 
@@ -77,7 +71,6 @@ public class AccordionJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     public void testAccordionTransitionShouldBeSetToHeight() {
-        // given
         // when
         AccordionBean bean = parse(ACCORDION_WITH_TRANSITION_HEIGHT);
 
