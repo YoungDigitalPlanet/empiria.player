@@ -3,10 +3,9 @@ package eu.ydp.empiria.player.client.module.shape;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 
-public class ShapeModule extends SimpleModuleBase implements Factory<ShapeModule> {
+public class ShapeModule extends SimpleModuleBase {
 
     protected PushButton button;
 
@@ -23,10 +22,4 @@ public class ShapeModule extends SimpleModuleBase implements Factory<ShapeModule
     public Widget getView() {
         return button;
     }
-
-    @Override
-    public ShapeModule getNewInstance() {
-        return new ShapeModule();
-    }
-
 }

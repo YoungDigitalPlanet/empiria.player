@@ -6,8 +6,6 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
 /**
  * Stary player swf
- *
- * @author plelakowski
  */
 public class OldSwfMediaWrapper implements MediaWrapper<Widget> {
     Widget mediaWidget = null;

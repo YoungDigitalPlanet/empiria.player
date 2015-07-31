@@ -21,7 +21,7 @@ import eu.ydp.gwtutil.client.debug.log.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractMediaProcessor extends InternalExtension implements MediaEventHandler, PlayerEventHandler, MediaProcessorExtension {
+public abstract class AbstractMediaProcessor extends InternalExtension implements PlayerEventHandler, MediaProcessorExtension, MediaEventHandler {
     private final Map<MediaWrapper<?>, MediaExecutor<?>> executors = new HashMap<MediaWrapper<?>, MediaExecutor<?>>();
 
     @Inject

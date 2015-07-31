@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Gives possibility to use inline formatting for modules implementing IInlineModule
  */
-public class InlineContainerModule extends InlineModuleBase implements IInlineContainerModule, Factory<InlineContainerModule> {
+public class InlineContainerModule extends InlineModuleBase implements IInlineContainerModule {
 
     private ElementWrapperWidget widget;
     private InlineFormattingContainerType type;
@@ -55,11 +55,6 @@ public class InlineContainerModule extends InlineModuleBase implements IInlineCo
     @Override
     public List<HasParent> getNestedChildren() {
         return getModuleSocket().getNestedChildren(this);
-    }
-
-    @Override
-    public InlineContainerModule getNewInstance() {
-        return new InlineContainerModule();
     }
 
 }

@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 /**
  * Przycisk przelaczania pomiedzy trybem pelnoekranowym a zwyklym
  */
-public class VideoFullScreenMediaButton extends AbstractMediaButton<VideoFullScreenMediaButton> implements MediaEventHandler {
+public class VideoFullScreenMediaButton extends AbstractMediaButton implements MediaEventHandler {
 
     private VideoFullScreenHelper fullScreenHelper;
     private EventsBus eventsBus;
@@ -73,11 +73,6 @@ public class VideoFullScreenMediaButton extends AbstractMediaButton<VideoFullScr
 
     public void setFullScreenMediaWrapper(MediaWrapper<?> fullScreenMediaWrapper) {
         this.fullScreenMediaWrapper = fullScreenMediaWrapper;
-    }
-
-    @Override
-    public VideoFullScreenMediaButton getNewInstance() {
-        return buttonProvider.get();
     }
 
     @Override
