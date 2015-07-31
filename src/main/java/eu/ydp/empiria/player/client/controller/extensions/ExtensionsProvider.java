@@ -58,6 +58,7 @@ public class ExtensionsProvider {
                 moduleFactory.getScormSupportExtension(),
                 moduleFactory.getAssessmentJsonReportExtension(),
                 soundProcessorManagerExtension,
+                new SimpleConnectorExtension(moduleProviderFactory.getAccordionModule(), ModuleTagName.ACCORDION),
                 new SimpleConnectorExtension(moduleProviderFactory.getDivModule(), ModuleTagName.DIV),
                 new SimpleConnectorExtension(moduleProviderFactory.getGroupModule(), ModuleTagName.GROUP),
                 new SimpleConnectorExtension(moduleProviderFactory.getSpanModule(), ModuleTagName.SPAN),
