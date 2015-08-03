@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerTitleBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -30,12 +34,14 @@ public class PicturePlayerPresenterTest {
 
     private String src = "src";
     private String srcFullscreen = "src_f";
-    private String title = "title";
 
     @Before
     public void setUp() throws Exception {
         bean.setSrc(src);
         bean.setSrcFullScreen(srcFullscreen);
+        PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
+        bean.setTitleBean(titleBean);
+        titleBean.setTitleName(new XmlContentMock());
     }
 
     @Test
@@ -44,7 +50,7 @@ public class PicturePlayerPresenterTest {
         testObj.init(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(view).setImage(bean.getSrc());
+        verify(view).setImage(anyString(), eq(src));
         verify(view).addFullscreenButton();
     }
 
@@ -57,7 +63,7 @@ public class PicturePlayerPresenterTest {
         testObj.init(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(view).setImage(bean.getSrc());
+        verify(view).setImage(anyString(), eq(src));
         verify(view, never()).addFullscreenButton();
     }
 
@@ -70,7 +76,7 @@ public class PicturePlayerPresenterTest {
         testObj.init(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(view).setImage(bean.getSrc());
+        verify(view).setImage(anyString(), eq(src));
         verify(view, never()).addFullscreenButton();
     }
 
@@ -83,7 +89,7 @@ public class PicturePlayerPresenterTest {
         testObj.init(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(view).setImage(bean.getSrc());
+        verify(view).setImage(anyString(), eq(src));
         verify(view, never()).addFullscreenButton();
     }
 

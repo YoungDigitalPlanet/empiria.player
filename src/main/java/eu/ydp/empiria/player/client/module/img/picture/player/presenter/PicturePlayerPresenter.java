@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
@@ -25,7 +26,11 @@ public class PicturePlayerPresenter {
         this.bean = bean;
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         view.setPresenter(this);
-        view.setImage(bean.getSrc());
+
+        Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
+        String titleXmlString = titleXmlElement.getChildNodes().toString();
+
+        view.setImage(titleXmlString, bean.getSrc());
         initFullScreenMediaButton(bean);
     }
 

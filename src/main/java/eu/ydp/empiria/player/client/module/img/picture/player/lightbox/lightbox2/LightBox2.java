@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 
 public class LightBox2 implements LightBox {
@@ -21,8 +22,8 @@ public class LightBox2 implements LightBox {
     }-*/;
 
     @Override
-    public void openImage(String url, Element title) {
-        openImageNative(url, title, lightbox);
+    public void openImage(String url, Widget title) {
+        openImageNative(url, title.getElement(), lightbox);
     }
 
     private native void openImageNative(String url, Element title, JavaScriptObject lightbox) /*-{

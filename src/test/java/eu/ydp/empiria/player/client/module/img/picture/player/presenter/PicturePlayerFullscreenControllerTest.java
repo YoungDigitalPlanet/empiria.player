@@ -55,7 +55,7 @@ public class PicturePlayerFullscreenControllerTest {
 
         // then
         verify(modeProvider).getFullscreen(Mockito.<String>any());
-        verify(lightBox).openImage(bean.getSrcFullScreen(), titleElement.getElement());
+        verify(lightBox).openImage(bean.getSrcFullScreen(), titleElement);
     }
 
     @Test
@@ -68,6 +68,6 @@ public class PicturePlayerFullscreenControllerTest {
 
         // then
         verify(modeProvider).getFullscreen(Mockito.<String>any());
-        verify(fullscreenDelay).openImageWithDelay(lightBox, bean.getSrcFullScreen(), titleElement.getElement());
+        verify(fullscreenDelay).openImageWithDelay(lightBox, bean.getSrcFullScreen(), titleElement);
     }
 }
