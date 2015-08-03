@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
-public interface Resizable {
+public interface ResizableSourcelistClient extends SourcelistClient {
 
     void setSize(HasDimensions size);
 

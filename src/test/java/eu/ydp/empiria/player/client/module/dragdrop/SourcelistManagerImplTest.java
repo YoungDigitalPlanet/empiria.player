@@ -27,11 +27,11 @@ public class SourcelistManagerImplTest {
     private SourcelistManagerImpl manager;
     @Mock
     private SourcelistManagerModel model;
-    @Mock( extraInterfaces = {Resizable.class})
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client1;
-    @Mock( extraInterfaces = {Resizable.class})
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client2;
-    @Mock( extraInterfaces = {Resizable.class})
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client3;
     @Mock
     private MathDragGapModule client4;
@@ -235,9 +235,9 @@ public class SourcelistManagerImplTest {
         manager.onPlayerEvent(event);
 
         // then
-        verify((Resizable) client1).setSize(dim1);
-        verify((Resizable) client2).setSize(dim2);
-        verify((Resizable) client3).setSize(dim2);
+        verify((ResizableSourcelistClient) client1).setSize(dim1);
+        verify((ResizableSourcelistClient) client2).setSize(dim2);
+        verify((ResizableSourcelistClient) client3).setSize(dim2);
     }
 
     @Test

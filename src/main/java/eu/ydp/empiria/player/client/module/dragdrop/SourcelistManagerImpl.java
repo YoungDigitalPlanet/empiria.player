@@ -180,8 +180,8 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
         for (SourcelistClient client : model.getClients(sourcelist)) {
 
-            if(client instanceof Resizable && size !=null && !size.equals(((Resizable) client).getSize())) {
-                ((Resizable)client).setSize(size);
+            if (client instanceof ResizableSourcelistClient && size != null && !size.equals(((ResizableSourcelistClient) client).getSize())) {
+                ((ResizableSourcelistClient) client).setSize(size);
                 if (client instanceof MathDragGapModule) {
                     if(client.getParentModule() instanceof InteractionMathJaxModule){
                         mathElementsToRerender.add(((InteractionMathJaxModule) client.getParentModule()));

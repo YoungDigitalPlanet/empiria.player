@@ -1,12 +1,10 @@
 package eu.ydp.empiria.player.client.module.draggap;
 
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.query.client.impl.ConsoleBrowser;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
-import eu.ydp.empiria.player.client.module.dragdrop.Resizable;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.ResizableSourcelistClient;
 import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
 import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBaseBean;
@@ -18,7 +16,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 import java.util.List;
 
-public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAXBParserFactory<T>> extends AbstractInteractionModule<DragGapModuleModel, T> implements SourcelistClient, Resizable {
+public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAXBParserFactory<T>> extends AbstractInteractionModule<DragGapModuleModel, T> implements ResizableSourcelistClient {
 
     @Inject
     @ModuleScoped
