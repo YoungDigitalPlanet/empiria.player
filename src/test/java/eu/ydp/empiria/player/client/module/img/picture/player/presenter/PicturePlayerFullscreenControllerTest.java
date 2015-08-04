@@ -14,8 +14,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,8 +42,8 @@ public class PicturePlayerFullscreenControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        when(modeProvider.getFullscreen(Mockito.<String>any())).thenReturn(lightBox);
-        when(inlineBodyGeneratorSocket.generateInlineBody(Mockito.<Node>any())).thenReturn(titleElement);
+        when(modeProvider.getFullscreen(anyString())).thenReturn(lightBox);
+        when(inlineBodyGeneratorSocket.generateInlineBody(isA(Node.class))).thenReturn(titleElement);
     }
 
     @Test
@@ -54,7 +55,6 @@ public class PicturePlayerFullscreenControllerTest {
         testObj.openFullscreen(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(modeProvider).getFullscreen(Mockito.<String>any());
         verify(lightBox).openImage(bean.getSrcFullScreen(), titleElement);
     }
 
@@ -67,7 +67,6 @@ public class PicturePlayerFullscreenControllerTest {
         testObj.openFullscreen(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(modeProvider).getFullscreen(Mockito.<String>any());
         verify(fullscreenDelay).openImageWithDelay(lightBox, bean.getSrcFullScreen(), titleElement);
     }
 }
