@@ -45,6 +45,7 @@ import eu.ydp.empiria.player.client.controller.flow.MainFlowProcessor;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
+import eu.ydp.empiria.player.client.controller.multiview.ResizeTimer;
 import eu.ydp.empiria.player.client.controller.multiview.animation.Animation;
 import eu.ydp.empiria.player.client.controller.multiview.animation.SwipeAnimationProvider;
 import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
@@ -251,6 +252,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(SoundProcessorManagerExtension.class).in(Singleton.class);
         bind(ExtensionsProvider.class).in(Singleton.class);
         bind(ExternalEventDispatcher.class).in(Singleton.class);
+        bind(ResizeTimer.class).in(Singleton.class);
 
         install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));
