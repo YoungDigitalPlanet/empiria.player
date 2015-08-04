@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.empiria.player.client.module.img.picture.player.presenter.PicturePlayerPresenter;
 
 public interface PicturePlayerView extends IsWidget {
-    void setImage(String title, String url);
+    void setImage(String altText, String url);
 
     void addFullscreenButton();
 
