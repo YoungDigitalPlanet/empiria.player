@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.connection;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.ConnectionModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
@@ -40,6 +41,8 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
     private EventsBus eventsBus;
     @Inject
     private StateController stateController;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     @Inject
     @PageScoped
@@ -89,7 +92,8 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
                 fireStateChanged(false, false);
             }
         };
-        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, new CurrentPageScope());
+        CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
+        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, currentPageScope);
         LOGGER.info("Added page content resized event handler");
     }
 }

@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.module.accordion.AccordionModule;
 import eu.ydp.empiria.player.client.module.bonus.BonusModule;
 import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
@@ -173,6 +174,8 @@ public class ModuleProviderFactory {
     private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
     @Inject
     private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
+    @Inject
+    private Provider<AccordionModule> accordionModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -396,5 +399,9 @@ public class ModuleProviderFactory {
 
     public Provider<InteractionMathJaxModule> getInteractionMathJaxModule() {
         return interactionMathJaxModule;
+    }
+
+    public Provider<AccordionModule> getAccordionModule() {
+        return accordionModule;
     }
 }

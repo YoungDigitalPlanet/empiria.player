@@ -7,10 +7,10 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
+import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImgContent;
 import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -24,10 +24,7 @@ import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.E
 /**
  * Klasa odpowiedzialna za renderwoanie elementu img.
  */
-public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, IBookmarkable {
-
-    @Inject
-    protected Provider<ImgModule> moduleProvider;
+public class ImgModule extends InlineModuleBase implements IBookmarkable {
 
     @Inject
     protected TemplateParserFactory parserFactory;
@@ -35,7 +32,11 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
     @Inject
     protected Provider<PicturePlayerModule> picturePlayerModuleProvider;
     @Inject
+    private Provider<ExplorableImgContent> explorableImgContentProvider;
+    @Inject
     private StyleSocket styleSocket;
+    @Inject
+    private Provider<LabelledImgContent> labelledImgContentProvider;
 
     protected ImgModuleView view;
     private String imageSource;
@@ -55,11 +56,11 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
         ImgContent content;
         imageSource = element.getAttribute("src");
         if (element.getElementsByTagName("label").getLength() > 0) {
-            content = new LabelledImgContent();
+            content = labelledImgContentProvider.get();
         } else {
             Map<String, String> styles = styleSocket.getStyles(element);
             if (styles.containsKey(EMPIRIA_IMG_MODE) && styles.get(EMPIRIA_IMG_MODE).equalsIgnoreCase("explorable")) {
-                content = new ExplorableImgContent();
+                content = explorableImgContentProvider.get();
             } else {
                 content = picturePlayerModuleProvider.get();
             }
@@ -107,11 +108,6 @@ public class ImgModule extends InlineModuleBase implements Factory<ImgModule>, I
     @Override
     public Widget getView() {
         return view;
-    }
-
-    @Override
-    public ImgModule getNewInstance() {
-        return moduleProvider.get();
     }
 
     @Override

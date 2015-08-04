@@ -25,7 +25,6 @@ import static eu.ydp.empiria.player.client.controller.variables.objects.response
 /**
  * @param <H> typ modelu
  * @param <U> typ beana
- * @author MKaldonek
  */
 public abstract class AbstractInteractionModule< H extends AbstractResponseModel<?>, U extends ModuleBean> extends
         OneViewInteractionModuleBase implements ResponseModelChangeListener {

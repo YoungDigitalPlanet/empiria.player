@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
@@ -11,7 +12,6 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
@@ -34,6 +34,8 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
     @Inject
     @PageScoped
     private SourcelistLockingController sourcelistLockingController;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     @Inject
     private TemporaryFlag dragEndLocked;
@@ -48,8 +50,7 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
     @PostConstruct
     public void init() {
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, new CurrentPageScope());
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, new CurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
@@ -190,8 +191,6 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
                 }
             }
         }
-
-
     }
 
     private void restoreSourcelistsState() {

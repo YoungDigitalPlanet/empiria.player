@@ -2,15 +2,19 @@ package eu.ydp.empiria.player.client.controller.extensions;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.SimpleConnectorExtension;
+import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickiesProcessorExtension;
+import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.gin.factory.ModuleConnectorExtensionProvider;
 import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.ModuleProviderFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleModuleInstanceProvider;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 
+import javax.inject.Provider;
 import java.util.List;
 
 public class ExtensionsProvider {
@@ -21,27 +25,40 @@ public class ExtensionsProvider {
     private SingleModuleInstanceProvider singleModuleInstanceProvider;
     private ModuleConnectorExtensionProvider moduleConnectorExtensionProvider;
 
+    private final Provider<MultiPageController> multiPageProvider;
+    private final Provider<Page> pageProvider;
+    private final Provider<BookmarkProcessorExtension> bookmarkProcessorExtensionProvider;
+    private final Provider<StickiesProcessorExtension> stickiesProcessorExtensionProvider;
+
     private List<? extends Extension> extensions;
 
     @Inject
     public ExtensionsProvider(ModuleProviderFactory moduleProviderFactory, ModuleFactory moduleFactory,
                               SoundProcessorManagerExtension soundProcessorManagerExtension, SingleModuleInstanceProvider singleModuleInstanceProvider,
-                              ModuleConnectorExtensionProvider moduleConnectorExtensionProvider) {
+                              ModuleConnectorExtensionProvider moduleConnectorExtensionProvider, Provider<MultiPageController> multiPageProvider,
+                              Provider<Page> pageProvider, Provider<BookmarkProcessorExtension> bookmarkProcessorExtensionProvider,
+                              Provider<StickiesProcessorExtension> stickiesProcessorExtensionProvider) {
         this.moduleProviderFactory = moduleProviderFactory;
         this.moduleFactory = moduleFactory;
         this.soundProcessorManagerExtension = soundProcessorManagerExtension;
         this.singleModuleInstanceProvider = singleModuleInstanceProvider;
         this.moduleConnectorExtensionProvider = moduleConnectorExtensionProvider;
+        this.multiPageProvider = multiPageProvider;
+        this.pageProvider = pageProvider;
+        this.bookmarkProcessorExtensionProvider = bookmarkProcessorExtensionProvider;
+        this.stickiesProcessorExtensionProvider = stickiesProcessorExtensionProvider;
 
         initExtensions();
     }
 
     private void initExtensions() {
+
         extensions = Lists.newArrayList(
                 moduleFactory.getPlayerCoreApiExtension(),
                 moduleFactory.getScormSupportExtension(),
                 moduleFactory.getAssessmentJsonReportExtension(),
                 soundProcessorManagerExtension,
+                new SimpleConnectorExtension(moduleProviderFactory.getAccordionModule(), ModuleTagName.ACCORDION),
                 new SimpleConnectorExtension(moduleProviderFactory.getDivModule(), ModuleTagName.DIV),
                 new SimpleConnectorExtension(moduleProviderFactory.getGroupModule(), ModuleTagName.GROUP),
                 new SimpleConnectorExtension(moduleProviderFactory.getSpanModule(), ModuleTagName.SPAN),
@@ -104,10 +121,10 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getExternalInteractionModule(), ModuleTagName.EXTERNAL_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getExternalPresentationModule(), ModuleTagName.EXTERNAL_PRESENTATION),
                 moduleProviderFactory.getMediaProcessor().get(),
-                PlayerGinjectorFactory.getPlayerGinjector().getMultiPage(),
-                PlayerGinjectorFactory.getPlayerGinjector().getPage(),
-                PlayerGinjectorFactory.getPlayerGinjector().getBookmarkProcessorExtension(),
-                PlayerGinjectorFactory.getPlayerGinjector().getStickiesProcessorExtension(),
+                multiPageProvider.get(),
+                pageProvider.get(),
+                bookmarkProcessorExtensionProvider.get(),
+                stickiesProcessorExtensionProvider.get(),
                 moduleProviderFactory.getTutorApiExtension().get()
         );
     }

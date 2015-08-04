@@ -7,8 +7,8 @@ import eu.ydp.empiria.player.client.util.events.internal.command.FireCommand;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
 import eu.ydp.gwtutil.client.event.Event;
 import eu.ydp.gwtutil.client.event.EventHandler;
 import eu.ydp.gwtutil.client.event.EventImpl;
@@ -297,7 +297,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     public void onPlayerEvent(PlayerEvent event) {
         if (event.getType() == PlayerEventTypes.PAGE_REMOVED) {
             int pageNumber = (Integer) event.getValue();
-            EventScope<?> eventScope = new PageScope(pageNumber);
+            EventScope<?> eventScope = new CurrentPageScope(pageNumber);
             doRemoveAllWithScope(eventScope);
         }
     }

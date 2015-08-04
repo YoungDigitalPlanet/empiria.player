@@ -1,14 +1,14 @@
 package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import org.junit.Before;
@@ -37,7 +37,7 @@ public class DescriptionSoundControllerTest {
     @Mock
     private CallbackReceiver<MediaWrapper<Widget>> callbackReceiver;
     @Mock
-    private AbstractMediaEventHandler abstractMediaHandler;
+    private MediaEventHandler abstractMediaHandler;
     @Mock
     private EventsBus eventsBus;
     @Mock
@@ -45,7 +45,7 @@ public class DescriptionSoundControllerTest {
     @Mock
     private CurrentPageScope currentPageScope;
     @Mock
-    private Provider<CurrentPageScope> currentPageScopeProvider;
+    private PageScopeFactory pageScopeFactory;
     @Mock
     private MediaWrapperController mediaWrapperController;
     @Captor
@@ -92,15 +92,15 @@ public class DescriptionSoundControllerTest {
     @Test
     public void shouldAddAllMediaHandlersAndPlay_whenPlayFromMediaWrapperIsCalled() {
         // given
-        when(currentPageScopeProvider.get()).thenReturn(currentPageScope);
+        when(pageScopeFactory.getCurrentPageScope()).thenReturn(currentPageScope);
 
         // when
         testObject.playFromMediaWrapper(abstractMediaHandler, mediaWrapper);
 
         // then
-        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
-        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
-        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), mediaWrapper, abstractMediaHandler, currentPageScopeProvider.get());
+        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_PAUSE), mediaWrapper, abstractMediaHandler, pageScopeFactory.getCurrentPageScope());
+        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_END), mediaWrapper, abstractMediaHandler, pageScopeFactory.getCurrentPageScope());
+        verify(eventsBus).addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_STOP), mediaWrapper, abstractMediaHandler, pageScopeFactory.getCurrentPageScope());
         verify(mediaWrapperController).stopAndPlay(mediaWrapper);
     }
 

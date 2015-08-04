@@ -6,10 +6,12 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
 import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
 import eu.ydp.empiria.player.client.module.report.table.extraction.ColspanExtractor;
 import eu.ydp.empiria.player.client.module.report.table.extraction.PageTodoExtractor;
@@ -31,8 +33,7 @@ public class ReportTableGenerator {
     private final static String PRR = "prr";
     private final static String RD = "rd";
 
-    private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
-    private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
+    private final StyleNameConstants styleNames;
 
     private final BodyGeneratorSocket bodyGeneratorSocket;
     private final DataSourceDataSupplier dataSourceDataSupplier;
@@ -49,16 +50,21 @@ public class ReportTableGenerator {
 
     private FlexTable table;
 
-    public ReportTableGenerator(BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, SessionDataSupplier sessionDataSupplier) {
+    @Inject
+    public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, @Assisted DataSourceDataSupplier dataSourceDataSupplier,
+                                @Assisted SessionDataSupplier sessionDataSupplier, StyleNameConstants styleNames, StyleSocket styleSocket,
+                                RowStylesAppender rowStylesAppender, ShowNonActivitiesExtractor showNonActivitiesExtractor,
+                                ItemIndexAppender itemIndexAppender, ColspanExtractor colspanExtractor, RaportModuleFactory raportModuleFactory) {
         this.bodyGeneratorSocket = bgs;
         this.dataSourceDataSupplier = dataSourceDataSupplier;
+        this.styleNames = styleNames;
 
-        this.rowStylesAppender = new RowStylesAppender(styleNames);
-        this.pageTodoExtractor = new PageTodoExtractor(sessionDataSupplier);
-        this.pagesRangeExtractor = new PagesRangeExtractor(styleSocket, dataSourceDataSupplier);
-        this.showNonActivitiesExtractor = new ShowNonActivitiesExtractor(styleSocket);
-        this.itemIndexAppender = new ItemIndexAppender();
-        this.colspanExtractor = new ColspanExtractor();
+        this.rowStylesAppender = rowStylesAppender;
+        this.pageTodoExtractor = raportModuleFactory.createPageTodoExtractor(sessionDataSupplier);
+        this.pagesRangeExtractor = raportModuleFactory.createPagesRangeExtractor(dataSourceDataSupplier);
+        this.showNonActivitiesExtractor = showNonActivitiesExtractor;
+        this.itemIndexAppender = itemIndexAppender;
+        this.colspanExtractor = colspanExtractor;
     }
 
     public FlexTable generate(Element element) {
@@ -155,9 +161,9 @@ public class ReportTableGenerator {
     private int generatePageRows(int currRow, NodeList cellNodes) {
         int pageRow = 0;
 
-        for (int i = 0; i < pagesIndexes.size(); i++) {
+        for (Integer pagesIndexe : pagesIndexes) {
 
-            int pageRowIndex = pagesIndexes.get(i).intValue();
+            int pageRowIndex = pagesIndexe;
             int todo = pageTodoExtractor.extract(pageRowIndex);
 
             boolean shouldRenderPageRow = (todo != 0 || showNonActivites);

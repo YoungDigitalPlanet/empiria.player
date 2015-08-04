@@ -15,7 +15,6 @@ import eu.ydp.gwtutil.client.util.events.animation.TransitionEndHandler;
  * -moz-transition-duration: 2s;<br/>
  * </code>
  *
- * @author plelakowski
  */
 public class AnimationFF extends AbstractAnimation implements TransitionEndHandler {
     private final static String SUFFIX = "moz";

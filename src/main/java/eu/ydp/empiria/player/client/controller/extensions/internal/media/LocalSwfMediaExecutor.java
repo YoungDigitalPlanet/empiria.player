@@ -8,8 +8,6 @@ import eu.ydp.empiria.player.client.util.SourceUtil;
 
 /**
  * Executor dla trybu offline
- *
- * @author plelakowski
  */
 public class LocalSwfMediaExecutor extends AbstractNoControlExecutor {
 

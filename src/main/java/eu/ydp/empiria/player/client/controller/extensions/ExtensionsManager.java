@@ -17,15 +17,23 @@ import java.util.List;
 
 public class ExtensionsManager implements IStateful {
 
-    public List<Extension> extensions;
+    private List<Extension> extensions;
+
+    private final Provider<ExternalMediaProcessor> externalMediaProcessor;
+    private final Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
+    private final Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider;
+    private final Provider<JsMediaProcessorExtension> jsMediaProcessorExtensionProvider;
+    private final Provider<JsInteractionEventSocketUserExtension> jsInteractionEventSocketUserExtensionProvider;
 
     @Inject
-    private Provider<DefaultMediaProcessorExtension> defaultMediaProcessor;
-    @Inject
-    private Provider<ExternalMediaProcessor> externalMediaProcessor;
-
-    public ExtensionsManager() {
-        extensions = new ArrayList<Extension>();
+    public ExtensionsManager(Provider<ExternalMediaProcessor> externalMediaProcessor, Provider<DefaultMediaProcessorExtension> defaultMediaProcessor,
+                             Provider<JsStyleSocketUserExtension> jsStyleSocketUserExtensionProvider, Provider<JsMediaProcessorExtension> jsMediaProcessorExtensionProvider, Provider<JsInteractionEventSocketUserExtension> jsInteractionEventSocketUserExtensionProvider) {
+        this.externalMediaProcessor = externalMediaProcessor;
+        this.defaultMediaProcessor = defaultMediaProcessor;
+        this.jsStyleSocketUserExtensionProvider = jsStyleSocketUserExtensionProvider;
+        this.jsMediaProcessorExtensionProvider = jsMediaProcessorExtensionProvider;
+        this.jsInteractionEventSocketUserExtensionProvider = jsInteractionEventSocketUserExtensionProvider;
+        extensions = new ArrayList<>();
     }
 
     public void init() {
@@ -43,13 +51,13 @@ public class ExtensionsManager implements IStateful {
                     currExt = new JsFlowRequestProcessorExtension();
                     break;
                 case EXTENSION_PROCESSOR_MEDIA:
-                    currExt = new JsMediaProcessorExtension();
+                    currExt = jsMediaProcessorExtensionProvider.get();
                     break;
                 case EXTENSION_LISTENER_DELIVERY_EVENTS:
                     currExt = new JsDeliveryEventsListenerExtension();
                     break;
                 case EXTENSION_SOCKET_USER_STYLE_CLIENT:
-                    currExt = new JsStyleSocketUserExtension();
+                    currExt = jsStyleSocketUserExtensionProvider.get();
                     break;
                 case EXTENSION_SOCKET_USER_SESSION_DATA_CLIENT:
                     currExt = new JsSessionDataSocketUserExtension();
@@ -70,7 +78,7 @@ public class ExtensionsManager implements IStateful {
                     currExt = new JsPageInterferenceSocketUserExtension();
                     break;
                 case EXTENSION_SOCKET_USER_INTERACTION_EVENT:
-                    currExt = new JsInteractionEventSocketUserExtension();
+                    currExt = jsInteractionEventSocketUserExtensionProvider.get();
                     break;
                 case EXTENSION_VIEW_ASSESSMENT_HEADER:
                     currExt = new JsAssessmentHeaderViewExtension();
@@ -102,7 +110,7 @@ public class ExtensionsManager implements IStateful {
 
     public List<Extension> addExtension(JavaScriptObject extensionJsObject) {
         String extType = getFieldType(extensionJsObject);
-        List<Extension> currExtensions = new ArrayList<Extension>();
+        List<Extension> currExtensions = new ArrayList<>();
         if (extType != null) {
             String[] extTypes = extType.split(",");
 

@@ -12,8 +12,6 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.SessionDataSo
 
 /**
  * Contains all data that is required to create Page View
- *
- * @author Rafal Rybacki
  */
 public class PageViewCarrier {
 

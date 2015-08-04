@@ -52,15 +52,15 @@ public class AbstractEventHandlersTest {
         }
     }
 
-    class AbstractMediaEventHandlerImpl extends AbstractEventHandlerImpl<MediaEventHandler, MediaEventTypes, MediaEvent> {
+    class MediaEventHandlerImpl extends AbstractEventHandlerImpl<MediaEventHandler, MediaEventTypes, MediaEvent> {
         @Override
         protected void dispatchEvent(MediaEventHandler handler, MediaEvent event) {
             handler.onMediaEvent(event);
         }
     }
 
-    private AbstractMediaEventHandlerImpl getMediaEventHandler() {
-        return new AbstractMediaEventHandlerImpl();
+    private MediaEventHandlerImpl getMediaEventHandler() {
+        return new MediaEventHandlerImpl();
     }
 
     private AbstractPlayerEventHandlerImpl getPlayerEventHandler() {
@@ -69,7 +69,7 @@ public class AbstractEventHandlersTest {
 
     @Test
     public void getHandlersTest() {
-        AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
+        MediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
         MediaEventHandler handler = mock(MediaEventHandler.class);
         MediaEventHandler handler2 = mock(MediaEventHandler.class);
 
@@ -89,7 +89,7 @@ public class AbstractEventHandlersTest {
 
     @Test
     public void removeHandlerTest() {
-        AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
+        MediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
         MediaEventHandler handler = mock(MediaEventHandler.class);
         MediaEventHandler handler2 = mock(MediaEventHandler.class);
 
@@ -111,7 +111,7 @@ public class AbstractEventHandlersTest {
 
     @Test
     public void fireEventTest() {
-        AbstractMediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
+        MediaEventHandlerImpl abstractEventHandlers = getMediaEventHandler();
         MediaEventHandler handler = mock(MediaEventHandler.class);
         MediaEventHandler handler2 = mock(MediaEventHandler.class);
 

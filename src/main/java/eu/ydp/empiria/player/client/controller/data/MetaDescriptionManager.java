@@ -8,8 +8,6 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 /**
  * Responsible for putting meta nodes into HTML Document.
- *
- * @author Rafal Rybacki
  */
 public class MetaDescriptionManager {
 

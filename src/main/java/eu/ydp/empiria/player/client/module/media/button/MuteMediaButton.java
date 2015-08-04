@@ -1,26 +1,24 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
-/**
- * Przycisk mute
- *
- * @author plelakowski
- */
-public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
-    protected final static StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants(); // NOPMD
+public class MuteMediaButton extends AbstractMediaButton {
 
-    public MuteMediaButton() {
+    private final EventsBus eventsBus;
+    private final PageScopeFactory pageScopeFactory;
+
+    @Inject
+    public MuteMediaButton(StyleNameConstants styleNames, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_MUTE());
+        this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
-
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
     @Override
     protected void onClick() {
@@ -30,7 +28,7 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
     @Override
     public void init() {
         super.init();
-        AbstractMediaEventHandler eventHandler = new AbstractMediaEventHandler() {
+        MediaEventHandler eventHandler = new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 if (event.getMediaWrapper().isMuted()) {
@@ -41,12 +39,7 @@ public class MuteMediaButton extends AbstractMediaButton<MuteMediaButton> {
                 changeStyleForClick();
             }
         };
-        eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, new CurrentPageScope());
-    }
-
-    @Override
-    public MuteMediaButton getNewInstance() {
-        return new MuteMediaButton();
+        eventsBus.addHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_VOLUME_CHANGE), getMediaWrapper(), eventHandler, pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
