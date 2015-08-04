@@ -9,22 +9,29 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.MathJaxModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxPresenter;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.view.InteractionMathJax;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 
-public class InteractionMathJaxModule extends AbstractActivityContainerModuleBase {
+public class InteractionMathJaxModule extends AbstractActivityContainerModuleBase implements PlayerEventHandler {
 
     private MathJaxPresenter presenter;
     private RootPanelDelegate rootPanel;
+    private boolean dirty;
 
     @Inject
-    public InteractionMathJaxModule(MathJaxModuleFactory factory, @InteractionMathJax MathJaxView view, RootPanelDelegate rootPanel) {
+    public InteractionMathJaxModule(MathJaxModuleFactory factory, @InteractionMathJax MathJaxView view, RootPanelDelegate rootPanel, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         this.rootPanel = rootPanel;
         this.presenter = factory.getMathJaxPresenter(view);
+        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED), this, pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
@@ -57,8 +64,23 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
         presenter.setMmlScript(mmlScript);
     }
 
-    public void rerender(){
-        presenter.rerenderMathElement(getModuleId());
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public void setDirty(boolean dirty) {
+        this.dirty = dirty;
+    }
+
+
+    @Override
+    public void onPlayerEvent(PlayerEvent event) {
+        if (event.getType() == PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED) {
+            if (isDirty()) {
+                presenter.rerenderMathElement(getModuleId());
+                setDirty(false);
+            }
+        }
     }
 }
 

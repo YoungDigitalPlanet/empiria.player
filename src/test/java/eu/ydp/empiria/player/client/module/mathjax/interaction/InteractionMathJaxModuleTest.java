@@ -8,9 +8,11 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.MathJaxModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxPresenter;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,10 @@ public class InteractionMathJaxModuleTest {
     private ModuleSocket moduleSocket;
     @Mock
     private RootPanel rootPanel;
+    @Mock
+    private PageScopeFactory pageScopeFactory;
+    @Mock
+    private EventsBus eventsBus;
 
     @Before
     public void init() {
@@ -41,7 +47,7 @@ public class InteractionMathJaxModuleTest {
         RootPanelDelegate rootPanelDelegate = mock(RootPanelDelegate.class);
         when(rootPanelDelegate.getRootPanel()).thenReturn(rootPanel);
 
-        testObj = new InteractionMathJaxModule(factory, view, rootPanelDelegate);
+        testObj = new InteractionMathJaxModule(factory, view, rootPanelDelegate, eventsBus, pageScopeFactory);
     }
 
     @Test
