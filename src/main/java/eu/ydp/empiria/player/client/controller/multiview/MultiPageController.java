@@ -53,8 +53,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
     @Inject
     private TouchRecognitionFactory touchRecognitionFactory;
     @Inject
-    private PageScopeFactory pageScopeFactory;
-    @Inject
     private MultiPageTouchHandler multiPageTouchHandler;
     @Inject
     private VisiblePagesManager visiblePagesManager;

@@ -42,53 +42,69 @@ public class ResizeContinuousUpdaterTest {
     }
 
     @Test
-    public void shouldResizePageContainerOnce() {
+    public void shouldResizePageContainer() {
         // given
         when(pageView.getCurrentPageHeight()).thenReturn(100);
 
         //when
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        int result = testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
 
         // then
 
         verify(pageView).setHeight(100);
         verify(pageView).hideCurrentPageProgressBar();
+        verify(eventsBus, never()).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
     }
 
     @Test
-    public void shouldFirePageGrownEvent_onThirdExecute_withSameHeight() {
+    public void shouldWaitWithFirePageGrownEvent_untilThirdExecute_withSameHeight() {
         // given
         when(pageView.getCurrentPageHeight()).thenReturn(100);
 
         // when
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        int result = runResizeUpdateNTimes(2);
+
+        // then
+        verify(eventsBus, never()).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
+    }
+
+    @Test
+    public void shouldFirePageGrownEvent_afterThirdExecute_withSameHeight() {
+        // given
+        when(pageView.getCurrentPageHeight()).thenReturn(100);
+
+        // when
+        int result = runResizeUpdateNTimes(3);
 
         // then
         verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(currentPageScope));
         PlayerEvent playerEvent = playerEventCaptor.getValue();
         PlayerEventTypes type = playerEvent.getType();
         assertThat(type).isEqualTo(PlayerEventTypes.PAGE_CONTENT_GROWN);
+
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
     }
 
     @Test
-    public void shouldFirePageDecreasedEvent_onThirdExecute_afterDecreasingHeight() {
+    public void shouldFirePageDecreasedEvent_afterThirdExecute_afterDecreasingHeight() {
         // given
         when(pageView.getCurrentPageHeight()).thenReturn(100);
         testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
         when(pageView.getCurrentPageHeight()).thenReturn(50);
 
         // when
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        int result = runResizeUpdateNTimes(3);
 
         // then
         verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(currentPageScope));
         PlayerEvent playerEvent = playerEventCaptor.getValue();
         PlayerEventTypes type = playerEvent.getType();
         assertThat(type).isEqualTo(PlayerEventTypes.PAGE_CONTENT_DECREASED);
+
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
     }
 
     @Test
@@ -97,14 +113,30 @@ public class ResizeContinuousUpdaterTest {
         when(pageView.getCurrentPageHeight()).thenReturn(100);
 
         // when
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        int result = runResizeUpdateNTimes(10);
 
         // then
         verify(eventsBus, times(1)).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
+    }
+
+    @Test
+    public void shouldEnterIdleMode_afterTwentyFourExecutions_withTheSameHeight() {
+        // given
+        when(pageView.getCurrentPageHeight()).thenReturn(100);
+
+        // when
+        int result = runResizeUpdateNTimes(24);
+
+        // then
+        verify(eventsBus, times(1)).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+        assertThat(result).isEqualTo(ResizeContinuousUpdater.IDLE_DELAY_MILLIS);
+    }
+
+    private int runResizeUpdateNTimes(int times) {
+        for (int i = 0; i < times - 1; i++) {
+            testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        }
+        return testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
     }
 }
