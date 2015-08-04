@@ -21,8 +21,10 @@ public class MathDragGapModule extends DragGapBaseModule<MathDragGapBean, MathDr
 
     @Override
     public void setSize(HasDimensions size) {
-        super.setSize(size);
-        InteractionMathJaxModule parentModule = (InteractionMathJaxModule) getParentModule();
-        parentModule.setDirty(true);
+        if (!size.equals(getSize())) {
+            super.setSize(size);
+            InteractionMathJaxModule parentModule = (InteractionMathJaxModule) getParentModule();
+            parentModule.setDirty(true);
+        }
     }
 }
