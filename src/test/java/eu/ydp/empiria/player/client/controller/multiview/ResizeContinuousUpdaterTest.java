@@ -36,22 +36,23 @@ public class ResizeContinuousUpdaterTest {
     @Captor
     private ArgumentCaptor<PlayerEvent> playerEventCaptor;
 
+    private final int INIT_HEIGHT = 100;
+    private final int TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT = 3;
+
     @Before
     public void init() {
+        when(pageView.getCurrentPageHeight()).thenReturn(INIT_HEIGHT);
         when(pageScopeFactory.getCurrentPageScope()).thenReturn(currentPageScope);
     }
 
     @Test
     public void shouldResizePageContainer() {
-        // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
-
         //when
         int result = testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
 
         // then
 
-        verify(pageView).setHeight(100);
+        verify(pageView).setHeight(INIT_HEIGHT);
         verify(pageView).hideCurrentPageProgressBar();
         verify(eventsBus, never()).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
         assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
@@ -60,10 +61,11 @@ public class ResizeContinuousUpdaterTest {
     @Test
     public void shouldWaitWithFirePageGrownEvent_untilThirdExecute_withSameHeight() {
         // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
+        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        when(pageView.getCurrentPageHeight()).thenReturn(INIT_HEIGHT * 2);
 
         // when
-        int result = runResizeUpdateNTimes(2);
+        int result = runResizeUpdateNTimes(TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT - 1);
 
         // then
         verify(eventsBus, never()).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
@@ -74,10 +76,12 @@ public class ResizeContinuousUpdaterTest {
     @Test
     public void shouldFirePageGrownEvent_afterThirdExecute_withSameHeight() {
         // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
+        testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
+        int higherHeight = INIT_HEIGHT * 2;
+        when(pageView.getCurrentPageHeight()).thenReturn(higherHeight);
 
         // when
-        int result = runResizeUpdateNTimes(3);
+        int result = runResizeUpdateNTimes(TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT);
 
         // then
         verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(currentPageScope));
@@ -89,14 +93,25 @@ public class ResizeContinuousUpdaterTest {
     }
 
     @Test
+    public void shouldNotFireEvent_whenResetHasBeenExecuted() {
+        // when
+        runResizeUpdateNTimes(2);
+        testObj.reset();
+        runResizeUpdateNTimes(2);
+
+        // then
+        verify(eventsBus, never()).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+    }
+
+    @Test
     public void shouldFirePageDecreasedEvent_afterThirdExecute_afterDecreasingHeight() {
         // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
         testObj.runContinuousResizeUpdateAndReturnRescheduleTime();
-        when(pageView.getCurrentPageHeight()).thenReturn(50);
+        int smallerHeight = INIT_HEIGHT / 2;
+        when(pageView.getCurrentPageHeight()).thenReturn(smallerHeight);
 
         // when
-        int result = runResizeUpdateNTimes(3);
+        int result = runResizeUpdateNTimes(TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT);
 
         // then
         verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(currentPageScope));
@@ -110,23 +125,38 @@ public class ResizeContinuousUpdaterTest {
     @Test
     public void shouldFireEventOnce_whenHeightIsNotChanging() {
         // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
+        int manyTimesAfterEventFired = TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT + 7;
 
         // when
-        int result = runResizeUpdateNTimes(10);
+        runResizeUpdateNTimes(manyTimesAfterEventFired);
 
         // then
         verify(eventsBus, times(1)).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
-        assertThat(result).isEqualTo(ResizeContinuousUpdater.DELAY_MILLIS);
     }
 
     @Test
-    public void shouldEnterIdleMode_afterTwentyFourExecutions_withTheSameHeight() {
+    public void shouldFireEventTwice_whenHeightIsChangingAgain() {
         // given
-        when(pageView.getCurrentPageHeight()).thenReturn(100);
+        int manyTimesAfterEventFired = TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT + 7;
+        runResizeUpdateNTimes(manyTimesAfterEventFired);
+
+        int higherHeight = INIT_HEIGHT * 2;
+        when(pageView.getCurrentPageHeight()).thenReturn(higherHeight);
 
         // when
-        int result = runResizeUpdateNTimes(24);
+        runResizeUpdateNTimes(TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT);
+
+        // then
+        verify(eventsBus, times(2)).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));
+    }
+
+    @Test
+    public void shouldEnterIdleMode_afterCountdown_withTheSameHeight() {
+        // given
+        int timesToEnterIdleMode = TIMES_TO_FIRE_EVENT_WITH_SAME_HEIGHT + ResizeContinuousUpdater.REPEAT_COUNT + 1;
+
+        // when
+        int result = runResizeUpdateNTimes(timesToEnterIdleMode);
 
         // then
         verify(eventsBus, times(1)).fireAsyncEvent(isA(PlayerEvent.class), eq(currentPageScope));

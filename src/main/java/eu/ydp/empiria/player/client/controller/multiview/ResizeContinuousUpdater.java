@@ -63,7 +63,7 @@ public class ResizeContinuousUpdater {
                 rescheduleTime = monitorPageResizing(height);
                 break;
             case PAGE_STOPPED_RESIZING:
-                rescheduleTime = monitorPageNotStartedGrowing(height);
+                rescheduleTime = monitorPageNotStartedResizing(height);
                 break;
             default:
                 LOGGER.info("Unknown timerState: " + timerState);
@@ -99,17 +99,14 @@ public class ResizeContinuousUpdater {
         return DELAY_MILLIS;
     }
 
-    private int monitorPageNotStartedGrowing(int height) {
-        int rescheduleTime = 0;
+    private int monitorPageNotStartedResizing(int height) {
+        int rescheduleTime = DELAY_MILLIS;
         if (isPageResizing(height)) {
             timerState = ResizeTimerState.PAGE_IS_RESIZING;
             pageStoppedResizingCounter = 0;
             resizeCounter = 0;
-            rescheduleTime = DELAY_MILLIS;
         } else {
-            if (resizeCounter < REPEAT_COUNT) {
-                rescheduleTime = DELAY_MILLIS;
-            } else {
+            if (resizeCounter >= REPEAT_COUNT) {
                 rescheduleTime = IDLE_DELAY_MILLIS;
             }
             resizeCounter++;
@@ -126,8 +123,7 @@ public class ResizeContinuousUpdater {
     private boolean isPageResizing(int height) {
         if (height > previousPageHeight) {
             currentResizeEvent = PAGE_CONTENT_GROWN_EVENT;
-        }
-        if (height < previousPageHeight) {
+        } else if (height < previousPageHeight) {
             currentResizeEvent = PAGE_CONTENT_DECREASED_EVENT;
         }
 
