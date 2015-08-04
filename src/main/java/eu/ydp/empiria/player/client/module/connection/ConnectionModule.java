@@ -93,7 +93,7 @@ public class ConnectionModule extends AbstractInteractionModule<ConnectionModule
             }
         };
         CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
-        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedEventHandler, currentPageScope);
+        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_GROWN), pageContentResizedEventHandler, currentPageScope);
         LOGGER.info("Added page content resized event handler");
     }
 }
