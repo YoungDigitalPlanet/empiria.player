@@ -24,6 +24,7 @@ public class FeedbackPropertiesCollector {
     private boolean isWrong;
 
     private boolean isOk;
+    private String lastChange;
 
     public FeedbackProperties collect(IModule module, IModule sender) {
         this.sender = sender;
@@ -66,6 +67,7 @@ public class FeedbackPropertiesCollector {
         properties.addBooleanProperty(FeedbackPropertyName.WRONG, isWrong);
         properties.addBooleanProperty(FeedbackPropertyName.OK, isOk);
         properties.addDoubleProperty(FeedbackPropertyName.RESULT, result);
+        properties.addStringProperty(FeedbackPropertyName.LAST_CHANGE, lastChange);
     }
 
     private void setProperties(FeedbackProperties properties, IModule module) {
@@ -76,6 +78,7 @@ public class FeedbackPropertiesCollector {
 
         todo += (double) properties.getIntegerProperty(FeedbackPropertyName.TODO);
         done += (double) properties.getIntegerProperty(FeedbackPropertyName.DONE);
+        lastChange = properties.getStringProperty(FeedbackPropertyName.LAST_CHANGE);
     }
 
     public void setVariables(Map<String, ? extends Variable> variables) {
