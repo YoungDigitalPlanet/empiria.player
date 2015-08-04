@@ -5,23 +5,26 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> {
+public abstract class AbstractMediaScroll extends AbstractMediaController {
     private boolean pressed = false;
     private boolean mediaReady = false;
     private boolean initialized;
-    protected HandlerRegistration durationchangeHandlerRegistration; // NOPMD
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+    private HandlerRegistration durationchangeHandlerRegistration;
+    @Inject
+    private EventsBus eventsBus;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
 
     /**
      * metoda wywolywana gdy pojawi sie jedno z obslugiwanych zdarzen
@@ -77,7 +80,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
             }
             // PlayerEventsBus.
             // czekamy na informacje na temat dlugosci utworu
-            AbstractMediaEventHandler handler = new AbstractMediaEventHandler() {
+            MediaEventHandler handler = new MediaEventHandler() {
                 @Override
                 public void onMediaEvent(MediaEvent event) {
                     mediaReady = true;
@@ -85,7 +88,7 @@ public abstract class AbstractMediaScroll<T> extends AbstractMediaController<T> 
                 }
             };
             durationchangeHandlerRegistration = eventsBus.addAsyncHandlerToSource(MediaEvent.getType(MediaEventTypes.ON_DURATION_CHANGE), getMediaWrapper(),
-                    handler, new CurrentPageScope());
+                    handler, pageScopeFactory.getCurrentPageScope());
         }
 
     }

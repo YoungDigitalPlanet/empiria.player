@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.jswrappers;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.types.StyleSocketUserExtension;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -15,10 +15,12 @@ public class JsStyleSocketUserExtension extends AbstractJsExtension implements S
 
     protected JavaScriptObject styleSocketJs;
 
-    private final StyleSocket styleSocket = PlayerGinjectorFactory.getPlayerGinjector().getStyleSocket();
+    private final StyleSocket styleSocket;
 
-    public JsStyleSocketUserExtension() {
+    @Inject
+    public JsStyleSocketUserExtension(StyleSocket styleSocket) {
         super();
+        this.styleSocket = styleSocket;
     }
 
     @Override

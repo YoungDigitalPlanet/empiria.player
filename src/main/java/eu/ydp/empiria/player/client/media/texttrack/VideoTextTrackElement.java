@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
-public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrackElement> implements MediaEventHandler {
+public class VideoTextTrackElement extends AbstractMediaController implements MediaEventHandler {
     private final EventsBus eventsBus;
     private final StyleNameConstants styleNames;
     protected final VideoTextTrackElementPresenter presenter;
@@ -36,11 +36,6 @@ public class VideoTextTrackElement extends AbstractMediaController<VideoTextTrac
         String toAdd = getSuffixToAdd();
         presenter.setStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd);
         presenter.addStyleName(styleNames.QP_MEDIA_TEXT_TRACK() + toAdd + "-" + kind.name().toLowerCase());
-    }
-
-    @Override
-    public VideoTextTrackElement getNewInstance() {
-        return null;
     }
 
     @Override

@@ -26,11 +26,7 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
-    protected Set<MediaWrapper<?>> mediaSet = new HashSet<MediaWrapper<?>>();
     protected boolean initialized;
 
     @Inject
@@ -51,6 +47,20 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
     private Provider<LocalSwfMediaWrapper> localSwfWrapperProvider;
     @Inject
     private MediaChecker mediaChecker;
+    @Inject
+    private Provider<VideoExecutorSwf> videoExecutorSwfProvider;
+    @Inject
+    private Provider<SoundExecutorSwf> soundExecutorSwfProvider;
+    @Inject
+    private Provider<SwfMediaWrapper> swfMediaWrapperProvider;
+    @Inject
+    private Provider<ExternalFullscreenVideoImpl> externalFullscreenVideoProvider;
+    @Inject
+    private Provider<HTML5AudioImpl> html5AudioProvider;
+    @Inject
+    private Provider<OldSwfMediaExecutor> oldSwfMediaExecutorProvider;
+    @Inject
+    private Provider<OldSwfMediaWrapper> oldSwfMediaWrapperProvider;
 
     @Override
     public void initMediaProcessor() {
@@ -88,14 +98,14 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
             boolean geckoSupport = isGeckoSupport(bmc);
 
             if (bmc.getMediaType() == MediaType.VIDEO && externalFullscreenVideoAvailability.isAvailable()) {
-                defaultMedia = new ExternalFullscreenVideoImpl();
+                defaultMedia = externalFullscreenVideoProvider.get();
             } else if (bmc.getMediaType() == MediaType.VIDEO && Video.isSupported() && geckoSupport) {
                 defaultMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
                 if (bmc.isFullScreenTemplate()) {
                     fullScreenMedia = GWT.create(eu.ydp.empiria.player.client.module.object.impl.Video.class);
                 }
             } else if (Audio.isSupported() && geckoSupport) {
-                defaultMedia = new HTML5AudioImpl();
+                defaultMedia = html5AudioProvider.get();
             }
 
             MediaExecutor<Widget> executor;
@@ -114,18 +124,10 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
                         executor = createSWFSoundMediaExecutor();
                     }
                 } else {
-                    OldSwfMediaExecutor exc = new OldSwfMediaExecutor();
-                    exc.setMediaWrapper(new OldSwfMediaWrapper());
-                    executor = exc;
+                    executor = createOldSwfMediaExecutor();
                 }
             } else if (defaultMedia == null && UserAgentChecker.isLocal()) {
-                if (bmc.isFeedback()) {
-                    executor = simpleSwfExecutorProvider.get();
-                } else {
-                    executor = localSwfExecutorProvider.get();
-                    MediaWrapper<Widget> mediaWrapper = localSwfWrapperProvider.get();
-                    executor.setMediaWrapper(mediaWrapper);
-                }
+                executor = createSwfExecutor(bmc);
             } else {
                 executor = createHTML5MediaExecutor(defaultMedia, bmc.getMediaType());
                 fullScreenExecutor = createHTML5MediaExecutor(fullScreenMedia, bmc.getMediaType());
@@ -135,6 +137,27 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
             initExecutor(fullScreenExecutor, bmc);
             fireCallback(event, executor, fullScreenExecutor);
         }
+    }
+
+    private MediaExecutor<Widget> createSwfExecutor(BaseMediaConfiguration bmc) {
+        if (bmc.isFeedback()) {
+            return simpleSwfExecutorProvider.get();
+        } else {
+            return createLocalSwfMediaExecutor();
+        }
+    }
+
+    private MediaExecutor<Widget> createLocalSwfMediaExecutor() {
+        LocalSwfMediaExecutor executor = localSwfExecutorProvider.get();
+        LocalSwfMediaWrapper mediaWrapper = localSwfWrapperProvider.get();
+        executor.setMediaWrapper(mediaWrapper);
+        return executor;
+    }
+
+    private OldSwfMediaExecutor createOldSwfMediaExecutor() {
+        OldSwfMediaExecutor exc = oldSwfMediaExecutorProvider.get();
+        exc.setMediaWrapper(oldSwfMediaWrapperProvider.get());
+        return exc;
     }
 
     private MediaExecutor<Widget> createHTML5MediaExecutor(Media defaultMedia, MediaType mediaType) {
@@ -159,14 +182,14 @@ public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
     }
 
     private MediaExecutor<Widget> createSWFVideoMediaExecutor() {
-        VideoExecutorSwf executor = new VideoExecutorSwf();
-        executor.setMediaWrapper(new SwfMediaWrapper());
+        VideoExecutorSwf executor = videoExecutorSwfProvider.get();
+        executor.setMediaWrapper(swfMediaWrapperProvider.get());
         return executor;
     }
 
     private MediaExecutor<Widget> createSWFSoundMediaExecutor() {
-        SoundExecutorSwf executor = new SoundExecutorSwf();
-        executor.setMediaWrapper(new SwfMediaWrapper());
+        SoundExecutorSwf executor = soundExecutorSwfProvider.get();
+        executor.setMediaWrapper(swfMediaWrapperProvider.get());
         return executor;
     }
 

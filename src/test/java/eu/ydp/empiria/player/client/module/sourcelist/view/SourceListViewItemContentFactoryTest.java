@@ -4,7 +4,6 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import org.junit.Before;
@@ -13,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType.*;
+import static eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType.COMPLEX_TEXT;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)

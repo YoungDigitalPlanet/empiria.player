@@ -5,8 +5,8 @@ import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +43,7 @@ public class ExplanationDescriptionSoundControllerTest {
     private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> callbackReceiverCaptor;
 
     @Captor
-    private ArgumentCaptor<AbstractMediaEventHandler> abstractMediaHandlerCaptor;
+    private ArgumentCaptor<MediaEventHandler> abstractMediaHandlerCaptor;
 
     @Before
     public void setUp() {

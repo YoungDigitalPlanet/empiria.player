@@ -9,8 +9,6 @@ import java.util.Map;
 
 /**
  * Provides access to jscsspStylesheet object from http://glazman.org/JSCSSP/
- *
- * @author MSamujlo
  */
 public class StyleSheet {
 

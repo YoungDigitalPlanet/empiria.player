@@ -11,7 +11,6 @@ import java.util.*;
 /**
  * Requires that jscssp.js script is added to module xml file
  *
- * @author Micha� Samuj�o msamujlo@ydp.com.pl
  * @see http://glazman.org/JSCSSP/
  */
 public class StyleDataSourceManager implements StyleSocket {

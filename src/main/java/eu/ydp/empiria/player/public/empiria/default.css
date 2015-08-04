@@ -42,3 +42,19 @@
 button.mfp-close, button.mfp-arrow {
     z-index: 21046 !important;
 }
+
+.qp-zero-height {
+    height: 0px !important;
+}
+
+.qp-zero-width {
+    width: 0px !important;
+}
+
+.qp-accordion-section-content {
+    overflow: hidden;
+}
+
+.qp-accordion-section-content-element {
+    display: inline-block;
+}

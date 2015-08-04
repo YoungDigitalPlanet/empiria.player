@@ -2,7 +2,8 @@ package eu.ydp.empiria.player.client.module.media.fullscreen;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.Timer;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -11,10 +12,13 @@ public class VideoControlHideTimer implements TouchEndHandler, ClickHandler, Mou
     private final Timer controlsHideTimer;
     private static final int CONTROLS_SHOW_TIME = 3000;
     private final VideoFullScreenView view;
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
 
-    public VideoControlHideTimer(VideoFullScreenView view) {
+    private final EventsBus eventsBus;
+
+    @Inject
+    public VideoControlHideTimer(@Assisted VideoFullScreenView view, EventsBus eventsBus) {
         this.view = view;
+        this.eventsBus = eventsBus;
         view.getContainer().addDomHandler(this, TouchEndEvent.getType());
         view.getContainer().addDomHandler(this, ClickEvent.getType());
         view.getContainer().addDomHandler(this, MouseMoveEvent.getType());

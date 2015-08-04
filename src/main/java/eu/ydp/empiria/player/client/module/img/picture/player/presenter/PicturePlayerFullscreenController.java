@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBoxProvider;
@@ -20,13 +23,19 @@ public class PicturePlayerFullscreenController {
         this.fullscreenDelay = fullscreenDelay;
     }
 
-    public void openFullscreen(PicturePlayerBean bean) {
+    public void openFullscreen(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         LightBox lightBox = lightBoxProvider.getFullscreen(bean.getFullscreenMode());
 
+        Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
+
+        Widget titleBody = inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
+
+        String srcFullScreen = bean.getSrcFullScreen();
+
         if (userAgentCheckerWrapper.isStackAndroidBrowser()) {
-            fullscreenDelay.openImageWithDelay(lightBox, bean);
+            fullscreenDelay.openImageWithDelay(lightBox, srcFullScreen, titleBody);
         } else {
-            lightBox.openImage(bean.getSrcFullScreen(), bean.getTitle());
+            lightBox.openImage(srcFullScreen, titleBody);
         }
     }
 }

@@ -16,9 +16,8 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
-import eu.ydp.empiria.player.client.gin.PlayerGinjector;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -37,7 +36,10 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
     interface LabelledImgContentUiBinder extends UiBinder<Widget, LabelledImgContent> {
     }
 
-    public LabelledImgContent() {
+    @Inject
+    public LabelledImgContent(StyleSocket styleSocket, StyleNameConstants styleNames) {
+        this.styleSocket = styleSocket;
+        this.styleNames = styleNames;
         canvas = Canvas.createIfSupported();
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.setWidgetPosition(image, 0, 0);
@@ -53,8 +55,8 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
     protected Image image;
     @UiField(provided = true)
     protected Canvas canvas;
-
-    private final StyleNameConstants styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+    private final StyleSocket styleSocket;
+    private final StyleNameConstants styleNames;
 
     private Map<String, String> styles;
 
@@ -71,8 +73,6 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
      */
     private void fillCanvas(final Element element, final ModuleSocket moduleSocket) {
 
-        PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
-        StyleSocket styleSocket = playerGinjector.getStyleSocket();
 
         styles = styleSocket.getStyles(element);
         Element titleNodes = XMLUtils.getFirstElementWithTagName(element, "title");

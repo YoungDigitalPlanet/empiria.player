@@ -78,7 +78,7 @@ public abstract class AbstractTemplateParser {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 String moduleName = node.getNodeName();
                 if (!moduleName.trim().isEmpty() && isModuleSupported(moduleName)) {
-                    MediaController<?> mediaController = getMediaControllerNewInstance(moduleName, node);
+                    MediaController mediaController = getMediaControllerNewInstance(moduleName, node);
                     mediaController.init();
                     parseXMLAttributes((Element) node, mediaController.asWidget().getElement());
                     if (parent instanceof HasWidgets) {
@@ -88,7 +88,7 @@ public abstract class AbstractTemplateParser {
                         }
                     }
                 } else if (parent instanceof ComplexPanel) {
-                    Panel panel = getPanel(((Element) node).getNodeName());
+                    Panel panel = getPanel(node.getNodeName());
                     ((Panel) parent).add(panel);
                     parseXMLAttributes((Element) node, panel.getElement());
                     parseNode(node, panel);
@@ -122,7 +122,7 @@ public abstract class AbstractTemplateParser {
      * @param moduleName
      * @return
      */
-    protected abstract MediaController<?> getMediaControllerNewInstance(String moduleName, Node node);
+    protected abstract MediaController getMediaControllerNewInstance(String moduleName, Node node);
 
     /**
      * Sprawdza czy dany modu jest obslugiwany

@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
@@ -46,6 +47,8 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
     private InfoModuleProgressStyleName infoModuleProgressStyleName;
     @Inject
     private InfoModuleContentTokenizer contentTokenizer;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
     private InfoModuleUnloadListener unloadListener;
     private Panel mainPanel;
     private Panel contentPanel;
@@ -59,7 +62,8 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
 
     @Override
     public void initModule(Element element) {
-        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), this, new CurrentPageScope());
+        CurrentPageScope currentPageScope = pageScopeFactory.getCurrentPageScope();
+        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), this, currentPageScope);
         createContentPanel();
         createMainPanel();
         String cls = element.getAttribute("class");

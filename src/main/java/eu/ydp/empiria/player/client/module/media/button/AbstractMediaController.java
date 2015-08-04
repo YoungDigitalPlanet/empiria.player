@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Composite;
 import eu.ydp.empiria.player.client.module.media.MediaAvailableOptions;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 
-public abstract class AbstractMediaController<T> extends Composite implements MediaController<T> {
+public abstract class AbstractMediaController extends Composite implements MediaController {
     protected static final String CLICK_SUFFIX = "-click";
     protected static final String HOVER_SUFFIX = "-hover";
     protected static final String FULL_SCREEN_SUFFIX = "-fullscreen";

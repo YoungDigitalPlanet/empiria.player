@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.*;
 
-public class InlineChoiceModule extends InteractionModuleBase implements Factory<InlineChoiceModule> {
+public class InlineChoiceModule extends InteractionModuleBase {
 
     protected InlineChoiceController controller;
 
@@ -33,9 +32,6 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
 
     @Inject
     protected eu.ydp.gwtutil.client.xml.XMLParser xmlParser;
-
-    @Inject
-    protected Provider<InlineChoiceModule> inlineChoiceModuleProvider;
 
     @Inject
     private StyleSocket styleSocket;
@@ -168,10 +164,5 @@ public class InlineChoiceModule extends InteractionModuleBase implements Factory
     public void setState(JSONArray newState) {
 
         controller.setState(newState);
-    }
-
-    @Override
-    public InlineChoiceModule getNewInstance() {
-        return inlineChoiceModuleProvider.get();
     }
 }
