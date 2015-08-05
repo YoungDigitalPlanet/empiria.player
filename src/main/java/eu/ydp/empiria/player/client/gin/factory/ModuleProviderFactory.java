@@ -23,7 +23,9 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
-import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
+import eu.ydp.empiria.player.client.module.draggap.DragGapBaseModule;
+import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.module.draggap.standard.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionModule;
 import eu.ydp.empiria.player.client.module.external.presentation.ExternalPresentationModule;
@@ -112,6 +114,8 @@ public class ModuleProviderFactory {
     private Provider<TextEntryMathGapModule> textEntryMathGapModule;
     @Inject
     private Provider<DragGapModule> dragGapModule;
+    @Inject
+    private Provider<MathDragGapModule> mathDragGapModule;
     @Inject
     private Provider<DivModule> divModule;
     @Inject
@@ -219,6 +223,10 @@ public class ModuleProviderFactory {
 
     public Provider<InlineChoiceModule> getInlineChoiceModule() {
         return inlineChoiceModule;
+    }
+
+    public Provider<MathDragGapModule> getMathDragGapModule() {
+        return mathDragGapModule;
     }
 
     public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {

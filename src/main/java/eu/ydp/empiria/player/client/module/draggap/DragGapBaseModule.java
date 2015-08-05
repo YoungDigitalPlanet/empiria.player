@@ -4,13 +4,11 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
 import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
-import eu.ydp.empiria.player.client.module.ActivityPresenter;
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
+import eu.ydp.empiria.player.client.module.dragdrop.ResizableSourcelistClient;
 import eu.ydp.empiria.player.client.module.draggap.dragging.DragDropController;
 import eu.ydp.empiria.player.client.module.draggap.presenter.DragGapPresenter;
-import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBean;
-import eu.ydp.empiria.player.client.module.draggap.structure.DragGapStructure;
+import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBaseBean;
+import eu.ydp.empiria.player.client.module.draggap.structure.DragGapBaseStructure;
 import eu.ydp.gwtutil.client.StringUtils;
 import eu.ydp.gwtutil.client.Wrapper;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -18,12 +16,8 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 import java.util.List;
 
-public class DragGapModule extends AbstractInteractionModule<DragGapModule, DragGapModuleModel, DragGapBean> implements SourcelistClient {
+public abstract class DragGapBaseModule<T extends DragGapBaseBean, U extends JAXBParserFactory<T>> extends AbstractInteractionModule<DragGapModuleModel, T> implements ResizableSourcelistClient {
 
-    @Inject
-    private DragGapPresenter dragGapPresenter;
-    @Inject
-    private DragGapStructure dragGapStructure;
     @Inject
     @ModuleScoped
     private DragGapModuleModel dragGapModuleModel;
@@ -32,13 +26,14 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
     private SourceListManagerAdapter sourceListManagerAdapter;
     @Inject
     private DragDropController dragDropController;
+    @Inject
+    private DragGapPresenter<T> presenter;
+    @Inject
+    private DragGapBaseStructure<T, U> structure;
 
     private final Wrapper<String> itemIdWrapper = Wrapper.of(StringUtils.EMPTY_STRING);
 
-    @Override
-    protected ActivityPresenter<DragGapModuleModel, DragGapBean> getPresenter() {
-        return dragGapPresenter;
-    }
+    private HasDimensions size;
 
     @Override
     protected void initalizeModule() {
@@ -62,24 +57,29 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
     }
 
     @Override
-    protected AbstractModuleStructure<DragGapBean, ? extends JAXBParserFactory<DragGapBean>> getStructure() {
-        return dragGapStructure;
-    }
-
-    @Override
     public String getDragItemId() {
         return itemIdWrapper.getInstance();
     }
 
     @Override
+    protected DragGapPresenter<T> getPresenter(){
+        return presenter;
+    }
+
+    @Override
+    protected DragGapBaseStructure<T, U> getStructure(){
+        return structure;
+    };
+
+    @Override
     public void setDragItem(String itemId) {
         itemIdWrapper.setInstance(itemId);
-        dragGapPresenter.setContent(itemId);
+        getPresenter().setContent(itemId);
     }
 
     @Override
     public void removeDragItem() {
-        dragGapPresenter.removeContent();
+        getPresenter().removeContent();
         itemIdWrapper.setInstance(StringUtils.EMPTY_STRING);
     }
 
@@ -95,7 +95,14 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
     @Override
     public void setSize(HasDimensions size) {
-        dragGapPresenter.setGapDimensions(size);
+        this.size = size;
+        getPresenter().setGapDimensions(size);
+
+    }
+
+    @Override
+    public HasDimensions getSize() {
+        return size;
     }
 
     @Override
@@ -111,7 +118,7 @@ public class DragGapModule extends AbstractInteractionModule<DragGapModule, Drag
 
     @Override
     public String getSourcelistId() {
-        DragGapBean dragGapBean = getStructure().getBean();
+        T dragGapBean = getStructure().getBean();
         return dragGapBean.getSourcelistId();
     }
 
