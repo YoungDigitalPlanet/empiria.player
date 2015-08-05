@@ -19,6 +19,7 @@ import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
@@ -39,6 +40,8 @@ public class InteractionMathJaxModuleTest {
     private PageScopeFactory pageScopeFactory;
     @Mock
     private EventsBus eventsBus;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Element element;
 
     @Before
     public void init() {
@@ -52,6 +55,7 @@ public class InteractionMathJaxModuleTest {
         testObj = new InteractionMathJaxModule(factory, view, rootPanelDelegate, eventsBus, pageScopeFactory);
     }
 
+
     @Test
     public void shouldInitPresenter_andGenerateGaps() {
         // given;
@@ -63,7 +67,6 @@ public class InteractionMathJaxModuleTest {
         Node gap = mock(Node.class);
         when(gaps.item(0)).thenReturn(gap);
 
-        Element element = mock(Element.class, RETURNS_DEEP_STUBS);
         when(element.getElementsByTagName("gap")).thenReturn(gaps);
         when(element.getChildNodes().toString()).thenReturn(script);
 
@@ -81,13 +84,16 @@ public class InteractionMathJaxModuleTest {
         //given
         PlayerEvent event = mock(PlayerEvent.class);
         when(event.getType()).thenReturn(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
-        testObj.markToRerender();
+        String elementId = "id";
+        when(element.getAttribute("id")).thenReturn(elementId);
 
         //when
+        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.markToRerender();
         testObj.onPlayerEvent(event);
 
         //then
-        verify(presenter).rerenderMathElement(anyString());
+        verify(presenter).rerenderMathElement(elementId);
 
     }
 }
