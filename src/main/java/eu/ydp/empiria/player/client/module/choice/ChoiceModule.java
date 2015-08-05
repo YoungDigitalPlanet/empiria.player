@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleJAXBPars
 import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ChoiceModule extends AbstractInteractionModule<ChoiceModule, ChoiceModuleModel, ChoiceInteractionBean> {
+public class ChoiceModule extends AbstractInteractionModule<ChoiceModuleModel, ChoiceInteractionBean> {
 
     private ChoiceModuleStructure choiceStructure;
 

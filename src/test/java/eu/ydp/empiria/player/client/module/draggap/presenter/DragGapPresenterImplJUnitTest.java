@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
-    private DragGapPresenterImpl presenter;
+    private DragGapBasePresenter presenter;
     @Mock
     private DragGapView view;
     @Mock
@@ -49,7 +49,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
     @Override
     @Before
     public void setUp() {
-        presenter = new DragGapPresenterImpl(view, model, answerEvaluationSupplier, sourceListManagerAdapter);
+        presenter = new DragGapBasePresenter(view, model, answerEvaluationSupplier, sourceListManagerAdapter);
 
         ModuleSocket moduleSocket = mock(ModuleSocket.class);
         when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);

@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module.draggap.structure;
 
 import com.google.gwt.core.client.GWT;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
+import eu.ydp.empiria.player.client.module.draggap.standard.structure.DragGapBean;
+import eu.ydp.empiria.player.client.module.draggap.standard.structure.DragGapModuleJAXBParserFactory;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
 public class DragGapModuleJAXBParserFactoryGWTTestCase extends EmpiriaPlayerGWTTestCase {

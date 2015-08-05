@@ -24,7 +24,7 @@ import eu.ydp.gwtutil.client.json.YJsonValue;
 
 import java.util.logging.Logger;
 
-public class ConnectionModule extends AbstractInteractionModule<ConnectionModule, ConnectionModuleModel, MatchInteractionBean> {
+public class ConnectionModule extends AbstractInteractionModule<ConnectionModuleModel, MatchInteractionBean> {
 
     private static final Logger LOGGER = Logger.getLogger(ConnectionModule.class.getName());
 

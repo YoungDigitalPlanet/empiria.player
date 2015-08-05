@@ -23,11 +23,10 @@ import static eu.ydp.empiria.player.client.controller.variables.objects.response
 import static eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode.SINGLE;
 
 /**
- * @param <T> typ modułu
  * @param <H> typ modelu
  * @param <U> typ beana
  */
-public abstract class AbstractInteractionModule<T extends AbstractInteractionModule<?, ?, ?>, H extends AbstractResponseModel<?>, U extends ModuleBean> extends
+public abstract class AbstractInteractionModule< H extends AbstractResponseModel<?>, U extends ModuleBean> extends
         OneViewInteractionModuleBase implements ResponseModelChangeListener {
 
     protected boolean locked = false;
