@@ -24,7 +24,7 @@ public class MathDragGapModule extends DragGapBaseModule<MathDragGapBean, MathDr
         if (!size.equals(getSize())) {
             super.setSize(size);
             InteractionMathJaxModule parentModule = (InteractionMathJaxModule) getParentModule();
-            parentModule.setDirty(true);
+            parentModule.markToRerender();
         }
     }
 }

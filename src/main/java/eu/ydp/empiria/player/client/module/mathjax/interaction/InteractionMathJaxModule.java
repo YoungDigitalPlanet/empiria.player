@@ -25,7 +25,7 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
 
     private MathJaxPresenter presenter;
     private RootPanelDelegate rootPanel;
-    private boolean dirty;
+    private boolean toRerender;
 
     @Inject
     public InteractionMathJaxModule(MathJaxModuleFactory factory, @InteractionMathJax MathJaxView view, RootPanelDelegate rootPanel, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
@@ -64,23 +64,27 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
         presenter.setMmlScript(mmlScript);
     }
 
-    public boolean isDirty() {
-        return dirty;
+    public boolean isToRerender() {
+        return toRerender;
     }
 
-    public void setDirty(boolean dirty) {
-        this.dirty = dirty;
+    public void markToRerender() {
+        this.toRerender = true;
     }
 
 
     @Override
     public void onPlayerEvent(PlayerEvent event) {
         if (event.getType() == PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED) {
-            if (isDirty()) {
-                presenter.rerenderMathElement(getModuleId());
-                setDirty(false);
+            if (isToRerender()) {
+                rerender();
+                toRerender = false;
             }
         }
+    }
+
+    private void rerender() {
+        presenter.rerenderMathElement(getModuleId());
     }
 }
 

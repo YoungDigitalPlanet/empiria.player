@@ -13,6 +13,8 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxPresenter;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,5 +74,20 @@ public class InteractionMathJaxModuleTest {
         verify(rootPanel).add(isA(FlowPanel.class));
         verify(bodyGenerator).processNode(eq(gap), isA(FlowPanel.class));
         verify(presenter).setMmlScript(script);
+    }
+
+    @Test
+    public void rerenderModule_onEvent() {
+        //given
+        PlayerEvent event = mock(PlayerEvent.class);
+        when(event.getType()).thenReturn(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
+        testObj.markToRerender();
+
+        //when
+        testObj.onPlayerEvent(event);
+
+        //then
+        verify(presenter).rerenderMathElement(anyString());
+
     }
 }

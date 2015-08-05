@@ -2,22 +2,23 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
-import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,6 +44,16 @@ public class SourcelistManagerImplTest {
     private SourcelistLockingController sourcelistLockingController;
     @Mock
     private TemporaryFlag dragEndLocked;
+    @Mock
+    private EventsBus eventsBus;
+    @Mock
+    private PageScopeFactory pageScopeFactory;
+    @Captor
+    private ArgumentCaptor<PlayerEvent> playerEventCaptor;
+    @Mock
+    private CurrentPageScope pageScope;
+
+
 
     private final String CLIENT_1_ID = "id1";
     private final String CLIENT_2_ID = "id2";
@@ -313,33 +324,20 @@ public class SourcelistManagerImplTest {
     }
 
     @Test
-    public void rerenderMathJaxModuleAfterGapResize(){
+    public void sendEventAfterGapResize() {
         //given
         PlayerEvent event = mock(PlayerEvent.class);
         HasDimensions dim1 = mock(HasDimensions.class);
-        HasDimensions dim2 = mock(HasDimensions.class);
-        when(model.getClients(sourcelist1)).thenReturn(Lists.<SourcelistClient>newArrayList(client4));
+        when(model.getClients(sourcelist1)).thenReturn(Lists.<SourcelistClient>newArrayList(client1, client4));
         when(sourcelist1.getItemSize()).thenReturn(dim1);
-        InteractionMathJaxModule parentModule = mock(InteractionMathJaxModule.class);
-        when(client4.getParentModule()).thenReturn(parentModule);
 
         //when
         manager.onPlayerEvent(event);
 
-        //given
-        when(client4.getSize()).thenReturn(dim1);
-
-        //when
-        manager.onPlayerEvent(event);
-
-        //given
-        when(client4.getSize()).thenReturn(dim2);
-
-        //when
-        manager.onPlayerEvent(event);
-
-/*        //then
-        verify(parentModule, times(2)).rerender();*/
+        //then
+        verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(pageScope));
+        PlayerEvent value = playerEventCaptor.getValue();
+        assertThat(value.getType()).isEqualTo(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
     }
 
 
@@ -363,5 +361,7 @@ public class SourcelistManagerImplTest {
         when(model.getSourcelistByClientId(CLIENT_3_ID)).thenReturn(sourcelist2);
         when(model.getClients(sourcelist1)).thenReturn(Lists.newArrayList(client1));
         when(model.getClients(sourcelist2)).thenReturn(Lists.newArrayList(client2, client3));
+        when(pageScopeFactory.getCurrentPageScope()).thenReturn(pageScope);
+
     }
 }
