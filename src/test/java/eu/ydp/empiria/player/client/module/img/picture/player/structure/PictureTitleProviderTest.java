@@ -21,18 +21,19 @@ public class PictureTitleProviderTest {
     private PictureTitleProvider testObj;
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
-    private PicturePlayerBean bean;
     @Mock
     private Widget titleWidget;
-    private String titleXml;
+
+    private PicturePlayerBean bean;
+    private String titleXml = "titleXml";
+    PicturePlayerTitleBean titleBean;
 
     @Before
     public void setUp() throws Exception {
         bean = new PicturePlayerBean();
-        PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
-        bean.setTitleBean(titleBean);
-        Element titleElement = mock(Element.class, RETURNS_DEEP_STUBS);
+        titleBean = new PicturePlayerTitleBean();
         XMLContent xmlContent = mock(XMLContent.class);
+        Element titleElement = mock(Element.class, RETURNS_DEEP_STUBS);
         when(xmlContent.getValue()).thenReturn(titleElement);
         titleBean.setTitleName(xmlContent);
         when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleWidget);
@@ -42,6 +43,8 @@ public class PictureTitleProviderTest {
 
     @Test
     public void shouldReturnTitleXmlString() {
+        // given
+        bean.setTitleBean(titleBean);
         // when
         String titleString = testObj.getPictutreTitleString(bean);
         // then
@@ -50,8 +53,6 @@ public class PictureTitleProviderTest {
 
     @Test
     public void shouldReturnEmptyXmlString() {
-        // given
-        bean.setTitleBean(null);
         // when
         String titleString = testObj.getPictutreTitleString(bean);
         // then
@@ -60,8 +61,6 @@ public class PictureTitleProviderTest {
 
     @Test
     public void shouldCreateEmptyTitleWidget() {
-        // given
-        bean.setTitleBean(null);
         // when
         Widget titleWidgetResult = testObj.getPictureTitleWidget(bean, inlineBodyGeneratorSocket);
         // then
@@ -70,6 +69,8 @@ public class PictureTitleProviderTest {
 
     @Test
     public void shoulCreateTitleWidget() {
+        // given
+        bean.setTitleBean(titleBean);
         // when
         Widget titleWidgetResult = testObj.getPictureTitleWidget(bean, inlineBodyGeneratorSocket);
         // then
