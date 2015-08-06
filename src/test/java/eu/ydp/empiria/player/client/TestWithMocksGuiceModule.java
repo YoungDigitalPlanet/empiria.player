@@ -46,23 +46,11 @@ import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
 import eu.ydp.gwtutil.client.timer.Timer;
 import eu.ydp.gwtutil.client.timer.TimerAccessibleMock;
 import eu.ydp.gwtutil.test.AbstractMockingTestModule;
-import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
+import org.mockito.internal.stubbing.defaultanswers.ReturnsMoreEmptyValues;
 
 import static org.mockito.Mockito.withSettings;
 
 public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
-
-    public TestWithMocksGuiceModule() {
-        super();
-    }
-
-    public TestWithMocksGuiceModule(Class<?>... ignoreClassList) {
-        super(ignoreClassList);
-    }
-
-    public TestWithMocksGuiceModule(Class<?>[] classToOmit, Class<?>[] classToSpy) {
-        super(classToOmit, classToSpy);
-    }
 
     @Override
     public void configure() {
@@ -95,7 +83,7 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
         bindToSingletonInModuleScoped(DrawCanvas.class);
         bindToSingletonInModuleScoped(CanvasView.class);
 
-        bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsJavaBeanAnswers()));
+        bindToClassOrMockProvider(IStickieProperties.class, withSettings().defaultAnswer(new ReturnsMoreEmptyValues()));
         bindToClassOrMockProvider(IStickieView.class);
         bindToClassOrMockProvider(StickiesProcessorExtension.class);
         bindToClassOrMockProvider(IPlayerContainersAccessor.class);

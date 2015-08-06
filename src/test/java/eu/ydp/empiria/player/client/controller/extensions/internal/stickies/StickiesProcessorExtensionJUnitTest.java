@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.stickies;
 
 import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
-import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -32,21 +31,11 @@ public class StickiesProcessorExtensionJUnitTest extends AbstractTestWithMocksBa
     }
 
     @Test
-    public void createStickie() {
-        // when
-        IStickieProperties sp = processorExtension.createStickie(COLOR_INDEX);
-
-        // then
-        assertThat(sp.getColorIndex(), is(COLOR_INDEX));
-        verify(sp).updateTimestamp();
-    }
-
-    @Test
     public void addStickie() {
         // given
         processorExtension.initStickiesList(ITEMS_COUNT);
         processorExtension.currItemIndex = ITEM_INDEX;
-        IStickieProperties stickiePropertiesMock = mock(IStickieProperties.class, new ReturnsJavaBeanAnswers());
+        IStickieProperties stickiePropertiesMock = mock(IStickieProperties.class);
         doReturn(stickiePropertiesMock).when(processorExtension).createStickie(anyInt());
         doNothing().when(processorExtension).addStickieView(any(IStickieProperties.class), anyBoolean());
 
@@ -60,34 +49,6 @@ public class StickiesProcessorExtensionJUnitTest extends AbstractTestWithMocksBa
     }
 
     @Test
-    public void checkStickieOverlay() {
-        // given
-        processorExtension.initStickiesList(ITEMS_COUNT);
-        processorExtension.currItemIndex = ITEM_INDEX;
-        final int coord1 = 500;
-        final int coord2 = 520;
-
-        IStickieProperties sp1 = mock(IStickieProperties.class, new ReturnsJavaBeanAnswers());
-        IStickieProperties sp2 = mock(IStickieProperties.class, new ReturnsJavaBeanAnswers());
-        IStickieProperties spTested = mock(IStickieProperties.class, new ReturnsJavaBeanAnswers());
-        sp1.setX(coord1);
-        sp1.setY(coord1);
-        sp2.setX(coord2);
-        sp2.setY(coord2);
-        spTested.setX(coord1);
-        spTested.setY(coord1);
-        processorExtension.stickies.get(ITEM_INDEX).add(sp1);
-        processorExtension.stickies.get(ITEM_INDEX).add(sp2);
-
-        // when
-        processorExtension.checkStickieOverlay(spTested);
-
-        // then
-        assertThat(spTested.getX() >= coord2 + StickiesProcessorExtension.DISTANCE_MIN_COMPONENT, is(true));
-        assertThat(spTested.getY() >= coord2 + StickiesProcessorExtension.DISTANCE_MIN_COMPONENT, is(true));
-    }
-
-    @Test
     public void deleteStickie() {
         // given
         processorExtension.initStickiesList(ITEMS_COUNT);
@@ -95,7 +56,7 @@ public class StickiesProcessorExtensionJUnitTest extends AbstractTestWithMocksBa
 
         doNothing().when(processorExtension).deleteStickieView(any(IStickieProperties.class));
 
-        IStickieProperties sp = mock(IStickieProperties.class, new ReturnsJavaBeanAnswers());
+        IStickieProperties sp = mock(IStickieProperties.class);
 
         processorExtension.stickies.get(ITEM_INDEX).add(sp);
 
