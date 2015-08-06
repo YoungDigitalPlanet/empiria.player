@@ -63,7 +63,6 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
-import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 import org.mockito.Matchers;
@@ -181,7 +180,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
     @Provides
     @Singleton
     public StyleNameConstants getNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+        return mock(StyleNameConstants.class);
     }
 
     @Provides
