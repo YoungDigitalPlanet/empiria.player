@@ -4,6 +4,7 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerTitleBean;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,8 @@ public class PicturePlayerPresenterTest {
     private PicturePlayerView view;
     @Mock
     private PicturePlayerFullscreenController fullscreenController;
+    @Mock
+    private PictureTitleProvider pictureTitleProvider;
 
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;

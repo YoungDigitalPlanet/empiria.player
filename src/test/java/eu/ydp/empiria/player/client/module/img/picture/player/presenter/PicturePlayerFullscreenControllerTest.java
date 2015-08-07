@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.xml.client.Node;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBoxProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,11 +38,13 @@ public class PicturePlayerFullscreenControllerTest {
     private PicturePlayerBean bean;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Widget titleElement;
+    @Mock
+    private PictureTitleProvider pictureTitleProvider;
 
     @Before
     public void setUp() throws Exception {
         when(modeProvider.getFullscreen(anyString())).thenReturn(lightBox);
-        when(inlineBodyGeneratorSocket.generateInlineBody(isA(Node.class))).thenReturn(titleElement);
+        when(pictureTitleProvider.getPictureTitleWidget(bean, inlineBodyGeneratorSocket)).thenReturn(titleElement);
     }
 
     @Test
