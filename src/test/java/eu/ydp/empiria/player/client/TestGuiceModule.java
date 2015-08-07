@@ -58,12 +58,10 @@ import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.service.json.NativeJSONService;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
-import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
-import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
@@ -137,8 +135,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
         bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
         bind(XMLProxy.class).to(XMLProxyWrapper.class);
-        bind(BrowserNativeInterface.class).toInstance(
-                UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
         bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
         bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
         bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
