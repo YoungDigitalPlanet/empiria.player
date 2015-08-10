@@ -99,7 +99,7 @@ dependencies {
     testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.3'
 
-    testCompile group: 'cglib', name: 'cglib-nodep', version: '2.2'
+    testCompile group: 'cglib', name: 'cglib-nodep', version: '3.1'
     testCompile group: 'org.objenesis', name: 'objenesis', version: '1.2'
 }
 
