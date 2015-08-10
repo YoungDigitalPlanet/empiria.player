@@ -8,7 +8,7 @@ public class SortableNative {
             .sortable(
             {
 
-                containment: "window",
+                containment: ".qp-player",
                 axis: dragAxis,
                 start: function (event, ui) {
                     this.from = ui.item.index();
