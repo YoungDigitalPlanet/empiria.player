@@ -4,9 +4,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
+import eu.ydp.empiria.player.client.module.sourcelist.predicates.ComplexTextPredicate;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SimpleSourceListItemBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
@@ -28,6 +30,8 @@ public class SourceListPresenterImpl implements SourceListPresenter {
     private SourcelistManager sourcelistManager;
     @Inject
     private OverlayTypesParser overlayTypesParser;
+    @Inject
+    private ComplexTextPredicate complexTextChecker;
 
     private SourceListBean bean;
     private String moduleId;
@@ -48,12 +52,13 @@ public class SourceListPresenterImpl implements SourceListPresenter {
     }
 
     @Override
-    public void createAndBindUi() {
+    public void createAndBindUi(InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         view.setSourceListPresenter(this);
         view.createAndBindUi();
         List<SimpleSourceListItemBean> simpleSourceListItemBeans = bean.getSimpleSourceListItemBeans();
         for (final SimpleSourceListItemBean simpleSourceListItemBean : simpleSourceListItemBeans) {
-            view.createItem(simpleSourceListItemBean.getItemValue()); // TODO YPUB-5441
+            SourcelistItemValue itemValue = simpleSourceListItemBean.getItemValue(complexTextChecker);
+            view.createItem(itemValue, inlineBodyGeneratorSocket);
         }
     }
 

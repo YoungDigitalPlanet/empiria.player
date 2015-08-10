@@ -109,11 +109,6 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
     }
 
     @Override
-    public void setSize(HasDimensions size) {
-        // intentionally empty - text gap does not fit its size
-    }
-
-    @Override
     public void lock(boolean lock) {
         super.lock(lock);
         if (lock) {

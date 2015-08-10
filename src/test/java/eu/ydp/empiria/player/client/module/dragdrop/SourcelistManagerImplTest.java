@@ -2,20 +2,23 @@ package eu.ydp.empiria.player.client.module.dragdrop;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.time.TemporaryFlag;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,12 +28,14 @@ public class SourcelistManagerImplTest {
     private SourcelistManagerImpl manager;
     @Mock
     private SourcelistManagerModel model;
-    @Mock
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client1;
-    @Mock
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client2;
-    @Mock
+    @Mock(extraInterfaces = {ResizableSourcelistClient.class})
     private SourcelistClient client3;
+    @Mock
+    private MathDragGapModule client4;
     @Mock
     private Sourcelist sourcelist1;
     @Mock
@@ -39,6 +44,16 @@ public class SourcelistManagerImplTest {
     private SourcelistLockingController sourcelistLockingController;
     @Mock
     private TemporaryFlag dragEndLocked;
+    @Mock
+    private EventsBus eventsBus;
+    @Mock
+    private PageScopeFactory pageScopeFactory;
+    @Captor
+    private ArgumentCaptor<PlayerEvent> playerEventCaptor;
+    @Mock
+    private CurrentPageScope pageScope;
+
+
 
     private final String CLIENT_1_ID = "id1";
     private final String CLIENT_2_ID = "id2";
@@ -55,9 +70,9 @@ public class SourcelistManagerImplTest {
 
     @Before
     public void setUp() {
-        client1 = mockClient(CLIENT_1_ID);
-        client2 = mockClient(CLIENT_2_ID);
-        client3 = mockClient(CLIENT_3_ID);
+        when(client1.getIdentifier()).thenReturn(CLIENT_1_ID);
+        when(client2.getIdentifier()).thenReturn(CLIENT_2_ID);
+        when(client3.getIdentifier()).thenReturn(CLIENT_3_ID);
 
         prepareModel();
     }
@@ -231,9 +246,9 @@ public class SourcelistManagerImplTest {
         manager.onPlayerEvent(event);
 
         // then
-        verify(client1).setSize(dim1);
-        verify(client2).setSize(dim2);
-        verify(client3).setSize(dim2);
+        verify((ResizableSourcelistClient) client1).setSize(dim1);
+        verify((ResizableSourcelistClient) client2).setSize(dim2);
+        verify((ResizableSourcelistClient) client3).setSize(dim2);
     }
 
     @Test
@@ -308,11 +323,23 @@ public class SourcelistManagerImplTest {
         verify(sourcelistLockingController).unlockAll();
     }
 
-    private SourcelistClient mockClient(String string) {
-        SourcelistClient client = mock(SourcelistClient.class);
-        when(client.getIdentifier()).thenReturn(string);
-        return client;
+    @Test
+    public void sendEventAfterGapResize() {
+        //given
+        PlayerEvent event = mock(PlayerEvent.class);
+        HasDimensions dim1 = mock(HasDimensions.class);
+        when(model.getClients(sourcelist1)).thenReturn(Lists.<SourcelistClient>newArrayList(client1, client4));
+        when(sourcelist1.getItemSize()).thenReturn(dim1);
+
+        //when
+        manager.onPlayerEvent(event);
+
+        //then
+        verify(eventsBus).fireAsyncEvent(playerEventCaptor.capture(), eq(pageScope));
+        PlayerEvent value = playerEventCaptor.getValue();
+        assertThat(value.getType()).isEqualTo(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
     }
+
 
     private void prepareModel() {
         when(sourcelist1.getIdentifier()).thenReturn(SOURCELIST_1_ID);
@@ -334,5 +361,7 @@ public class SourcelistManagerImplTest {
         when(model.getSourcelistByClientId(CLIENT_3_ID)).thenReturn(sourcelist2);
         when(model.getClients(sourcelist1)).thenReturn(Lists.newArrayList(client1));
         when(model.getClients(sourcelist2)).thenReturn(Lists.newArrayList(client2, client3));
+        when(pageScopeFactory.getCurrentPageScope()).thenReturn(pageScope);
+
     }
 }

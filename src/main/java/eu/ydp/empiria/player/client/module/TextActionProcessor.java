@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcessorHelper;
@@ -18,7 +17,7 @@ import eu.ydp.gwtutil.client.StringUtils;
 
 import java.util.List;
 
-public class TextActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable, Factory<TextActionProcessor> {
+public class TextActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable {
 
     private ActionProcessorHelper helper;
 
@@ -27,8 +26,6 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     @Inject
     private MathJaxNative mathJaxNative;
 
-    @Inject
-    private Provider<TextActionProcessor> provider;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
     @Override
@@ -84,11 +81,6 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     public void clearFeedback() {
         feedbackPresenter.clearTextElement();
         feedbackPresenter.hide();
-    }
-
-    @Override
-    public TextActionProcessor getNewInstance() {
-        return provider.get();
     }
 
     @Override

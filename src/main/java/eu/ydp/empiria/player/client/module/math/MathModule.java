@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Color;
 import com.mathplayer.player.geom.Font;
@@ -23,7 +22,6 @@ import com.mathplayer.player.interaction.GapIdentifier;
 import com.mathplayer.player.interaction.InteractionManager;
 import com.mathplayer.player.model.interaction.CustomFieldDescription;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -38,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MathModule extends AbstractActivityContainerModuleBase implements Factory<MathModule>, ILifecycleModule {
+public class MathModule extends AbstractActivityContainerModuleBase implements ILifecycleModule {
 
     private static final String MINUS = "-";
 
@@ -83,9 +81,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
     private InteractionManager mathInteractionManager;
 
     @Inject
-    private Provider<MathModule> mathModuleProvider;
-
-    @Inject
     private StyleSocket styleSocket;
 
     @Override
@@ -115,11 +110,6 @@ public class MathModule extends AbstractActivityContainerModuleBase implements F
     @Override
     public Widget getView() {
         return placeholder;
-    }
-
-    @Override
-    public MathModule getNewInstance() {
-        return mathModuleProvider.get();
     }
 
     public void initStyles(Map<String, String> styles) {

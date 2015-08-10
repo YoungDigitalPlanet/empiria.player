@@ -7,7 +7,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.Factory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
@@ -30,7 +29,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
-public class ObjectModule extends InlineModuleBase implements Factory<ObjectModule> {
+public class ObjectModule extends InlineModuleBase {
     private static final int DEFAULT_HEIGHT = 240;
     private static final int DEFAULT_WIDTH = 320;
 
@@ -43,8 +42,6 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
     private EventsBus eventsBus;
     @Inject
     private ObjectTemplateParser parser;
-    @Inject
-    private Provider<ObjectModule> moduleFactory;
     @Inject
     private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
     @Inject
@@ -146,10 +143,4 @@ public class ObjectModule extends InlineModuleBase implements Factory<ObjectModu
             this.moduleView = moduleView;
         }
     }
-
-    @Override
-    public ObjectModule getNewInstance() {
-        return moduleFactory.get();
-    }
-
 }

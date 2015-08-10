@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.module.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
 import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.module.accordion.AccordionModule;
 import eu.ydp.empiria.player.client.module.bonus.BonusModule;
 import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModule;
@@ -22,7 +23,9 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
-import eu.ydp.empiria.player.client.module.draggap.DragGapModule;
+import eu.ydp.empiria.player.client.module.draggap.DragGapBaseModule;
+import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.module.draggap.standard.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionModule;
 import eu.ydp.empiria.player.client.module.external.presentation.ExternalPresentationModule;
@@ -112,6 +115,8 @@ public class ModuleProviderFactory {
     @Inject
     private Provider<DragGapModule> dragGapModule;
     @Inject
+    private Provider<MathDragGapModule> mathDragGapModule;
+    @Inject
     private Provider<DivModule> divModule;
     @Inject
     private Provider<GroupModule> groupModule;
@@ -169,6 +174,8 @@ public class ModuleProviderFactory {
     private Provider<ExternalInteractionModule> externalInteractionModuleProvider;
     @Inject
     private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
+    @Inject
+    private Provider<AccordionModule> accordionModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -216,6 +223,10 @@ public class ModuleProviderFactory {
 
     public Provider<InlineChoiceModule> getInlineChoiceModule() {
         return inlineChoiceModule;
+    }
+
+    public Provider<MathDragGapModule> getMathDragGapModule() {
+        return mathDragGapModule;
     }
 
     public Provider<CheckButtonModuleConnectorExtension> getCheckButtonModuleConnectorExtension() {
@@ -388,5 +399,9 @@ public class ModuleProviderFactory {
 
     public Provider<InteractionMathJaxModule> getInteractionMathJaxModule() {
         return interactionMathJaxModule;
+    }
+
+    public Provider<AccordionModule> getAccordionModule() {
+        return accordionModule;
     }
 }

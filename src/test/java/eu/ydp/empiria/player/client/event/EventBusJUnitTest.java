@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.PageScope;
+import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -34,11 +34,11 @@ public class EventBusJUnitTest extends AbstractTestBase {
         prepare();
         playerEvent = new PlayerEvent(PlayerEventTypes.PAGE_REMOVED, 0, null);
         eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.PAGE_REMOVED, PlayerEventTypes.PAGE_CHANGING), eventHandler);
-        eventsBus.fireEvent(playerEvent, new PageScope(0));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.reset(eventHandler);
         playerEvent = new PlayerEvent(PlayerEventTypes.PAGE_CHANGING);
-        eventsBus.fireEvent(playerEvent, new PageScope(0));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
     }
 
@@ -47,7 +47,7 @@ public class EventBusJUnitTest extends AbstractTestBase {
         // handler globalny
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), eventHandler);
         // handler na scope
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new PageScope(0));
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new CurrentPageScope(0));
 
     }
 
@@ -56,7 +56,7 @@ public class EventBusJUnitTest extends AbstractTestBase {
         // handler globalny
         eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), eventHandler);
         // handler na scope
-        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new PageScope(0));
+        eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new CurrentPageScope(0));
     }
 
     @Test
@@ -80,11 +80,11 @@ public class EventBusJUnitTest extends AbstractTestBase {
     @Test
     public void eventWithScope() {
         prepareHandlers();
-        eventsBus.fireEvent(playerEvent, new PageScope(0));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         prepareHandlers();
-        eventsBus.fireEvent(playerEvent, new PageScope(1));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(1));
         Mockito.verify(eventHandler).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
     }
@@ -92,11 +92,11 @@ public class EventBusJUnitTest extends AbstractTestBase {
     @Test
     public void eventWithScopeWithSource() {
         prepareHandlers();
-        eventsBus.fireEventFromSource(playerEvent, "source", new PageScope(0));
+        eventsBus.fireEventFromSource(playerEvent, "source", new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         prepareHandlers();
-        eventsBus.fireEventFromSource(playerEvent, "source", new PageScope(1));
+        eventsBus.fireEventFromSource(playerEvent, "source", new CurrentPageScope(1));
         Mockito.verify(eventHandler).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
     }
@@ -108,7 +108,7 @@ public class EventBusJUnitTest extends AbstractTestBase {
         HandlerRegistration asyncRegistration = eventsBus.addAsyncHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), eventHandler);
         // handler na scope
         HandlerRegistration registration = eventsBus
-                .addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new PageScope(0));
+                .addHandler(PlayerEvent.getType(PlayerEventTypes.CREATE_MEDIA_WRAPPER), scopeEventHandler, new CurrentPageScope(0));
         eventsBus.fireEvent(playerEvent);
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
@@ -123,12 +123,12 @@ public class EventBusJUnitTest extends AbstractTestBase {
     public void clearEventsForScope() {
         prepareHandlers();
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_REMOVED, 0, null));
-        eventsBus.fireEvent(playerEvent, new PageScope(0));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
         prepareAsyncHandlers();
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.PAGE_REMOVED, 0, null));
-        eventsBus.fireEvent(playerEvent, new PageScope(0));
+        eventsBus.fireEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
     }
@@ -145,11 +145,11 @@ public class EventBusJUnitTest extends AbstractTestBase {
     @Test
     public void asyncEventWithScope() {
         prepareHandlers();
-        eventsBus.fireAsyncEvent(playerEvent, new PageScope(0));
+        eventsBus.fireAsyncEvent(playerEvent, new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         prepareHandlers();
-        eventsBus.fireAsyncEvent(playerEvent, new PageScope(1));
+        eventsBus.fireAsyncEvent(playerEvent, new CurrentPageScope(1));
         Mockito.verify(eventHandler).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
     }
@@ -166,11 +166,11 @@ public class EventBusJUnitTest extends AbstractTestBase {
     @Test
     public void asyncEventWithScopeWithSource() {
         prepareHandlers();
-        eventsBus.fireAsyncEventFromSource(playerEvent, "source", new PageScope(0));
+        eventsBus.fireAsyncEventFromSource(playerEvent, "source", new CurrentPageScope(0));
         Mockito.verify(eventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(1)).onPlayerEvent(playerEvent);
         prepareHandlers();
-        eventsBus.fireAsyncEventFromSource(playerEvent, "source", new PageScope(1));
+        eventsBus.fireAsyncEventFromSource(playerEvent, "source", new CurrentPageScope(1));
         Mockito.verify(eventHandler).onPlayerEvent(playerEvent);
         Mockito.verify(scopeEventHandler, Mockito.times(0)).onPlayerEvent(playerEvent);
     }

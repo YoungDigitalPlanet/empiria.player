@@ -7,8 +7,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -17,7 +16,6 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -26,7 +24,6 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
-import java.util.List;
 import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
@@ -41,6 +38,8 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     private StyleNameConstants styleNameConstants;
     @Inject
     private CustomPushButton button;
+    @Inject
+    private PageScopeFactory pageScopeFactory;
     private boolean playing;
     private boolean enabled = true;
     private MediaWrapper<?> mediaWrapper;
@@ -81,13 +80,13 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
 
     private void initMediaWrapperAndPlayAudio(MediaWrapper<?> mw) {
         this.mediaWrapper = mw;
-        AbstractMediaEventHandler handler = createMediaHandler();
+        MediaEventHandler handler = createMediaHandler();
         addMediaHandlers(handler);
         playAudio();
     }
 
-    private AbstractMediaEventHandler createMediaHandler() {
-        return new AbstractMediaEventHandler() {
+    private MediaEventHandler createMediaHandler() {
+        return new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 if (event.getType() == ON_PLAY) {
@@ -99,7 +98,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
         };
     }
 
-    private void addMediaHandlers(AbstractMediaEventHandler handler) {
+    private void addMediaHandlers(MediaEventHandler handler) {
         addMediaHandler(ON_PAUSE, handler);
         addMediaHandler(ON_END, handler);
         addMediaHandler(ON_STOP, handler);
@@ -107,7 +106,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     }
 
     private void addMediaHandler(MediaEventTypes type, MediaEventHandler handler) {
-        CurrentPageScope scope = new CurrentPageScope();
+        CurrentPageScope scope = pageScopeFactory.getCurrentPageScope();
         eventsBus.addHandlerToSource(MediaEvent.getType(type), mediaWrapper, handler, scope);
     }
 

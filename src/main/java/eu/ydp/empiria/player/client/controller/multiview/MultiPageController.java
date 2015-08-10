@@ -53,11 +53,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
     @Inject
     private TouchRecognitionFactory touchRecognitionFactory;
     @Inject
-    private PageScopeFactory pageScopeFactory;
-    @Inject
     private MultiPageTouchHandler multiPageTouchHandler;
-    @Inject
-    private ForceRedrawHack forceRedrawHack;
     @Inject
     private VisiblePagesManager visiblePagesManager;
     @Inject
@@ -77,6 +73,8 @@ public class MultiPageController extends InternalExtension implements FlowReques
     private PanelAttacher panelAttacher;
     @Inject
     private PanelDetacher panelDetacher;
+    @Inject
+    private Provider<ResizeTimer> resizeTimer;
 
     private int currentVisiblePage = -1;
     private final static int WIDTH = 100;
@@ -91,7 +89,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
     private final Set<Integer> loadedPages = new HashSet<>();
     private int pageProgressBar = -1;
 
-    private ResizeTimer resizeTimer;
 
     private final Set<HandlerRegistration> touchHandlers = new HashSet<>();
     private boolean focusDropped;
@@ -125,6 +122,7 @@ public class MultiPageController extends InternalExtension implements FlowReques
     @Override
     public void setVisiblePage(int pageNumber) {
         showProgressBarForPage(pageNumber);
+        ResizeTimer resizeTimer = this.resizeTimer.get();
         resizeTimer.cancelAndReset();
         resizeTimer.schedule(350);
         if (currentVisiblePage != pageNumber && pageNumber >= 0) {
@@ -227,7 +225,11 @@ public class MultiPageController extends InternalExtension implements FlowReques
         return pageProgressBar != pageIndex && page.isNotLastPage(pageIndex) && pageIndex >= 0;
     }
 
-    protected void hideProgressBarForPage(int pageIndex) {
+    public void hideCurrentPageProgressBar(){
+        hideProgressBarForPage(currentVisiblePage);
+    }
+
+    private void hideProgressBarForPage(int pageIndex) {
         if (page.isNotLastPage(pageIndex)) {
             FlowPanel panel = getViewForPage(pageIndex);
             for (int x = 0; x < panel.getWidgetCount(); ++x) {
@@ -299,8 +301,6 @@ public class MultiPageController extends InternalExtension implements FlowReques
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.TOUCH_EVENT_RESERVATION), touchReservationHandler);
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_VIEW_LOADED), pageViewLoadedHandler);
 
-        ResizeContinuousUpdater resizeContinuousUpdater = new ResizeContinuousUpdater(pageScopeFactory, eventsBus, this, forceRedrawHack);
-        resizeTimer = new ResizeTimer(resizeContinuousUpdater);
         view.add(mainPanel);
     }
 
@@ -370,6 +370,10 @@ public class MultiPageController extends InternalExtension implements FlowReques
     public void setCurrentPageHeight() {
         int height = getHeightForPage(currentVisiblePage);
         setHeight(height);
+    }
+
+    public int getCurrentPageHeight() {
+        return getHeightForPage(currentVisiblePage);
     }
 
     public boolean isCurrentPage(int pageNumber) {

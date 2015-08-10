@@ -8,6 +8,10 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,26 +23,24 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MathTextFontInitializerJUnitTest {
 
+    @InjectMocks
     private MathTextFontInitializer helper;
-
-    @Before
-    public void init() {
-        helper = new MathTextFontInitializer();
-    }
+    @Mock
+    private StyleSocket styleSocket;
 
     @Test
     public void updateFontPropertiesAccordingToInlineFormatters() {
         IInlineModule testModule = mock(IInlineModule.class);
         ModuleSocket socket = mock(ModuleSocket.class);
         Element element = mock(Element.class);
-        StyleSocket styleSocket = mock(StyleSocket.class);
         Set<InlineFormattingContainerType> inlineStyles = new HashSet<InlineFormattingContainerType>();
         inlineStyles.add(InlineFormattingContainerType.BOLD);
         when(socket.getInlineFormattingTags(testModule)).thenReturn(inlineStyles);
 
-        Font result = helper.initialize(testModule, socket, element, styleSocket);
+        Font result = helper.initialize(testModule, socket, element);
 
         assertThat(result.bold, is(equalTo(true)));
     }

@@ -4,7 +4,7 @@ import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
 import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
@@ -19,13 +19,14 @@ import eu.ydp.empiria.player.client.controller.flow.request.MainFlowRequestInvok
 public final class FlowManager {
 
     private final MainFlowProcessor flowProcessor;
-    private final MainFlowRequestInvoker flowRequestInvoker; // NOPMD
-    private final MainFlowCommandsExecutor flowCommandsExecutor; // NOPMD
+    private final MainFlowRequestInvoker mainFlowRequestInvoker;
+    private final MainFlowCommandsExecutor flowCommandsExecutor;
 
-    public FlowManager() {
-        flowRequestInvoker = new MainFlowRequestInvoker();
-        flowProcessor = PlayerGinjectorFactory.getPlayerGinjector().getMainFlowProcessor();
-        flowCommandsExecutor = new MainFlowCommandsExecutor(flowProcessor);
+    @Inject
+    public FlowManager(MainFlowProcessor flowProcessor, MainFlowRequestInvoker mainFlowRequestInvoker, MainFlowCommandsExecutor flowCommandsExecutor) {
+        this.flowProcessor = flowProcessor;
+        this.mainFlowRequestInvoker = mainFlowRequestInvoker;
+        this.flowCommandsExecutor = flowCommandsExecutor;
     }
 
     public void init(int itemsCount) {
@@ -45,7 +46,7 @@ public final class FlowManager {
     }
 
     public void addCommandProcessor(IFlowRequestProcessor processor) {
-        flowRequestInvoker.addRequestProcessor(processor);
+        mainFlowRequestInvoker.addRequestProcessor(processor);
     }
 
     public PageType getCurrentPageType() {
@@ -69,11 +70,11 @@ public final class FlowManager {
     }
 
     public FlowRequestInvoker getFlowRequestInvoker() {
-        return flowRequestInvoker;
+        return mainFlowRequestInvoker;
     }
 
     public void invokeFlowRequest(IFlowRequest request) {
-        flowRequestInvoker.invokeRequest(request);
+        mainFlowRequestInvoker.invokeRequest(request);
     }
 
     public void setDisplayOptions(DisplayOptions options) {
@@ -89,7 +90,7 @@ public final class FlowManager {
 
             @Override
             public void invokeRequest(IFlowRequest command) {
-                flowRequestInvoker.invokeRequest(command);
+                mainFlowRequestInvoker.invokeRequest(command);
             }
         };
     }

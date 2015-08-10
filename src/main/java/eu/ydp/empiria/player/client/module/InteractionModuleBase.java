@@ -2,15 +2,14 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestSubmittedClient;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
@@ -29,7 +28,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
     private EventsBus eventsBus;
 
     @Inject
-    private Provider<CurrentPageScope> providerCurrentPageScope;
+    private PageScopeFactory pageScopeFactory;
 
     @Inject
     @PageScoped
@@ -66,7 +65,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
     protected void fireStateChanged(boolean userInteract, boolean isReset) {
         eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, isReset, this)),
-                providerCurrentPageScope.get());
+                pageScopeFactory.getCurrentPageScope());
     }
 
     @Override

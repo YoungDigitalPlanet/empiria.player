@@ -126,6 +126,7 @@ sonarRunner {
 }
 
 sourceSets {
+    test.java.srcDirs += 'src/test/gwt'
     test.runtimeClasspath += files(main.java.srcDirs)
     test.runtimeClasspath += files(test.java.srcDirs)
     test.runtimeClasspath += files(test.groovy.srcDirs)
@@ -136,12 +137,13 @@ task testJUnit(type: Test) {
         enabled = true
     }
     useJUnit()
-    include "**/JUnitTestSuite.*"
-    include "**/SpockTestSuite.*"
+    include "**/*Spec.class"
+    include "**/*Test.class"
 
-    forkEvery = 1
+
     maxHeapSize = '512M'
     jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
+    reports.html.destination = file("$buildDir/reports/junit")
 }
 task testGWTUnit(type: Test) {
     jacoco {
@@ -149,18 +151,18 @@ task testGWTUnit(type: Test) {
     }
     useJUnit()
     include "**/GWTTestCaseSuite.*"
-    include "**/MainFlowProcessorTest.*"
+    include "**/MainFlowProcessorGWTTestCase.*"
+    include "**/PageSwitchAnimationGWTTestCase.*"
 
     forkEvery = 1
     maxHeapSize = '512M'
     jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
-
+    reports.html.destination = file("$buildDir/reports/gwt")
 }
+testGWTUnit.shouldRunAfter testJUnit
 
 task test(overwrite: true, dependsOn: [testJUnit, testGWTUnit]) {
     ext {
-        // this is needed for sonarRunner
-        reports = [junitXml: [destination: file("${buildDir}/test-results")]]
         jacoco = [destinationFile: file(jacocoReport)]
     }
 }

@@ -229,7 +229,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
                 stickiePresenter.correctStickiePosition();
             }
         };
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedHandler, pageScopeFactory.getCurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_GROWN), pageContentResizedHandler, pageScopeFactory.getCurrentPageScope());
     }
 
     private void updateStickiePosition(IStickieProperties sp) {

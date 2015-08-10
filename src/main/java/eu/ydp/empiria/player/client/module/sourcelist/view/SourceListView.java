@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
@@ -8,7 +9,7 @@ import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 public interface SourceListView extends IsWidget, LockUnlockDragDrop {
     void createAndBindUi();
 
-    void createItem(SourcelistItemValue sourcelistItemValue);
+    void createItem(SourcelistItemValue itemContent, InlineBodyGeneratorSocket inlineBodyGeneratorSocket);
 
     void hideItem(String itemId);
 

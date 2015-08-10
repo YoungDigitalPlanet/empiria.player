@@ -1,27 +1,26 @@
 package eu.ydp.empiria.player.client.module.video.presenter;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.view.VideoView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class VideoPlayerReattacher {
 
     private final EventsBus eventsBus;
     private final VideoPlayerBuilder videoPlayerAttacher;
-    private final Provider<CurrentPageScope> pageScopeProvider;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public VideoPlayerReattacher(EventsBus eventsBus, @ModuleScoped VideoPlayerBuilder videoPlayerBuilder, Provider<CurrentPageScope> pageScopeProvider) {
+    public VideoPlayerReattacher(EventsBus eventsBus, @ModuleScoped VideoPlayerBuilder videoPlayerBuilder, PageScopeFactory pageScopeFactory) {
         this.eventsBus = eventsBus;
         this.videoPlayerAttacher = videoPlayerBuilder;
-        this.pageScopeProvider = pageScopeProvider;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     public void registerReattachHandlerToView(final VideoView view) {
@@ -31,7 +30,7 @@ public class VideoPlayerReattacher {
                 VideoPlayer videoPlayer = videoPlayerAttacher.build();
                 view.attachVideoPlayer(videoPlayer);
             }
-        }, pageScopeProvider.get());
+        }, pageScopeFactory.getCurrentPageScope());
     }
 
 }
