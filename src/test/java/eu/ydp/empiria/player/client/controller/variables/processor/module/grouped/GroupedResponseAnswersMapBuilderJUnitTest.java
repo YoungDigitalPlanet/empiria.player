@@ -17,13 +17,13 @@ import static org.hamcrest.Matchers.hasItem;
 
 public class GroupedResponseAnswersMapBuilderJUnitTest {
 
-    private GroupedResponseAnswersMapBuilder responseAnswersMapBuilder;
+    private GroupedResponseAnswersMapBuilder testObj;
     private ResponsesMapBuilder responsesMapBuilder = new ResponsesMapBuilder();
     private ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
 
     @Before
     public void setUp() throws Exception {
-        responseAnswersMapBuilder = new GroupedResponseAnswersMapBuilder();
+        testObj = new GroupedResponseAnswersMapBuilder();
     }
 
     @Test
@@ -36,9 +36,9 @@ public class GroupedResponseAnswersMapBuilderJUnitTest {
 
         Map<String, Response> responses = responsesMapBuilder.buildResponsesMap(firstResponseWithGroup1, secondResponseWithGroup1, firstResponseWithGroup2,
                 secondResponseWithGroup2);
-        responseAnswersMapBuilder.initialize(responses);
+        testObj.initialize(responses);
 
-        Map<String, ResponseAnswerGrouper> groupToResponseGrouperMap = responseAnswersMapBuilder.createResponseAnswerGroupersMap();
+        Map<String, ResponseAnswerGrouper> groupToResponseGrouperMap = testObj.createResponseAnswerGroupersMap();
 
         assertResponsesGroupedTogether(groupToResponseGrouperMap, firstResponseWithGroup1, secondResponseWithGroup1);
         assertResponsesGroupedTogether(groupToResponseGrouperMap, firstResponseWithGroup2, secondResponseWithGroup2);

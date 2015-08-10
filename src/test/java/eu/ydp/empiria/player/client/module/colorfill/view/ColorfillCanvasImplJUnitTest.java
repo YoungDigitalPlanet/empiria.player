@@ -44,13 +44,15 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
                     .toInstance(userInteractionHandlerFactory);
             binder.bind(PositionHelper.class)
                     .toInstance(positionHelper);
+            binder.bind(CanvasImageDataProvider.class).toInstance(canvasImageDataProvider);
         }
     }
 
     private final CanvasImageView canvasStubView = mock(CanvasImageView.class);
     private final UserInteractionHandlerFactory userInteractionHandlerFactory = mock(UserInteractionHandlerFactory.class);
     private final PositionHelper positionHelper = mock(PositionHelper.class);
-    private ColorfillCanvasImpl instance;
+    private final CanvasImageDataProvider canvasImageDataProvider = mock(CanvasImageDataProvider.class);
+    private ColorfillCanvasImpl testObj;
     private Context2d context2d;
     private Canvas canvas;
     private ImageData imageData;
@@ -59,7 +61,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void before() {
         setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 
-        instance = injector.getInstance(ColorfillCanvasImpl.class);
+        testObj = injector.getInstance(ColorfillCanvasImpl.class);
         canvas = mock(Canvas.class);
         context2d = mock(Context2d.class);
         imageData = mock(ImageData.class);
@@ -89,7 +91,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void bindView() throws Exception {
         // before
         ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
-        instance.setAreaClickListener(colorfillAreaClickListener);
+        testObj.setAreaClickListener(colorfillAreaClickListener);
 
         ArgumentCaptor<LoadHandler> argumentCaptor = ArgumentCaptor.forClass(LoadHandler.class);
         verify(canvasStubView).setImageLoadHandler(argumentCaptor.capture());
@@ -102,7 +104,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void onAreaClick() throws Exception {
         // before
         ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
-        instance.setAreaClickListener(colorfillAreaClickListener);
+        testObj.setAreaClickListener(colorfillAreaClickListener);
 
         ArgumentCaptor<LoadHandler> loadHandlerCaptor = ArgumentCaptor.forClass(LoadHandler.class);
         verify(canvasStubView).setImageLoadHandler(loadHandlerCaptor.capture());
@@ -128,7 +130,7 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
     @Test
     public void onAreaClickWrongCoordinates() throws Exception {
         ColorfillAreaClickListener colorfillAreaClickListener = mock(ColorfillAreaClickListener.class);
-        instance.setAreaClickListener(colorfillAreaClickListener);
+        testObj.setAreaClickListener(colorfillAreaClickListener);
 
         doReturn(-10).when(positionHelper)
                 .getXPositionRelativeToTarget(any(NativeEvent.class), Matchers.any(Element.class));
@@ -153,37 +155,44 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
 
     @Test
     public void setImage() throws Exception {
+        // given
         Image image = new Image();
         image.setSrc("src");
         image.setHeight(20);
         image.setWidth(32);
 
-        instance.setImage(image);
+        // when
+        testObj.setImage(image);
+
+        // then
         verify(canvasStubView).setImageUrl(eq("src"), eq(32), eq(20));
     }
 
     @Test
     public void reset() throws Exception {
-        ReflectionsUtils util = new ReflectionsUtils();
-        CanvasImageData imageData = (CanvasImageData) util.getValueFromFiledInObject("imageData", instance);
-        instance.reset();
+        // when
+        testObj.reset();
+
+        // then
         verify(canvasStubView).reload();
-        CanvasImageData newImageData = (CanvasImageData) util.getValueFromFiledInObject("imageData", instance);
-        assertThat(imageData).isNotEqualTo(newImageData);
+        verify(canvasImageDataProvider).getCanvasImageData(canvasStubView);
     }
 
     @Test
     public void flushImageToCanvas() throws Exception {
         ReflectionsUtils util = new ReflectionsUtils();
         CanvasImageData imageData = mock(CanvasImageData.class);
-        util.setValueInObjectOnField("imageData", instance, imageData);
-        instance.flushImageToCanvas();
+        util.setValueInObjectOnField("imageData", testObj, imageData);
+        testObj.flushImageToCanvas();
         verify(imageData).flush();
     }
 
     @Test
     public void asWidget() throws Exception {
-        instance.asWidget();
+        // when
+        testObj.asWidget();
+
+        // then
         verify(canvasStubView).asWidget();
     }
 
