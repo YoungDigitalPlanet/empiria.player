@@ -5,8 +5,6 @@ import eu.ydp.empiria.player.client.media.Video;
 
 /**
  * Typy tekstowych sciezek powiazanych z {@link Video} lub {@link Audio}
- *
- * @author plelakowski
  */
 public enum TextTrackKind {
     SUBTITLES, CAPTIONS, DESCRIPTIONS, CHAPTERS, METADATA,

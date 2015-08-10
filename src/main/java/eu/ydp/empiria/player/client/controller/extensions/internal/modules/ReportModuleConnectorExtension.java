@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorE
 import eu.ydp.empiria.player.client.controller.extensions.types.SessionDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.gin.factory.ModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
 import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
@@ -18,7 +18,7 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
         FlowRequestSocketUserExtension, SessionDataSocketUserExtension {
 
     @Inject
-    private ModuleFactory moduleFactory;
+    private RaportModuleFactory raportModuleFactory;
 
     protected FlowRequestInvoker flowRequestInvoker;
     protected DataSourceDataSupplier dataSourceDataSupplier;
@@ -29,7 +29,7 @@ public class ReportModuleConnectorExtension extends ModuleExtension implements M
         return new AbstractModuleCreator() {
             @Override
             public IModule createModule() {
-                return moduleFactory.createReportModule(dataSourceDataSupplier, sessionDataSupplier);
+                return raportModuleFactory.createReportModule(dataSourceDataSupplier, sessionDataSupplier);
             }
         };
     }

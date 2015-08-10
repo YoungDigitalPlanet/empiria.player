@@ -32,7 +32,7 @@ public class PicturePlayerModule implements ImgContent {
     public void init(Element element, ModuleSocket moduleSocket) {
         structure.createFromXml(element.toString(), ijsonService.createArray());
         PicturePlayerBean bean = structure.getBean();
-        presenter.init(bean);
+        presenter.init(bean, moduleSocket.getInlineBodyGeneratorSocket());
     }
 
     public void setTemplate(boolean template) {

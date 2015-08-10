@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -15,7 +16,7 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes
 
 public class VideoFullScreenViewImpl extends Composite implements VideoFullScreenView {
 
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
+    private final EventsBus eventsBus;
 
     private static VideoFullScreenViewUiBinder uiBinder = GWT.create(VideoFullScreenViewUiBinder.class);
 
@@ -28,13 +29,15 @@ public class VideoFullScreenViewImpl extends Composite implements VideoFullScree
     @UiField
     protected FlowPanel controls;
 
-    public VideoFullScreenViewImpl() {
+    @Inject
+    public VideoFullScreenViewImpl(EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
         initWidget(uiBinder.createAndBindUi(this));
         container.addDomHandler(new TouchStartHandler() {
 
             @Override
             public void onTouchStart(TouchStartEvent event) {
-                eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
+                VideoFullScreenViewImpl.this.eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
             }
         }, TouchStartEvent.getType());
     }

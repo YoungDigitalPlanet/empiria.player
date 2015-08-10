@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBoxP
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox2.LightBox2;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific.popup.MagnificPopup;
 import eu.ydp.empiria.player.client.module.img.picture.player.presenter.PicturePlayerFullscreenController;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerViewImpl;
 
@@ -18,5 +19,6 @@ public class PicturePlayerModule extends AbstractGinModule {
         bind(LightBox2.class).in(Singleton.class);
         bind(MagnificPopup.class).in(Singleton.class);
         bind(PicturePlayerFullscreenController.class).in(Singleton.class);
+        bind(PictureTitleProvider.class).in(Singleton.class);
     }
 }

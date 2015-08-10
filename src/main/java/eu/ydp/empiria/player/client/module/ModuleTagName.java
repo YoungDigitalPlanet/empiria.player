@@ -17,7 +17,7 @@ public enum ModuleTagName {
             "colorfillInteraction"), DRAG_GAP("dragInteraction"), TUTOR("tutor"), BUTTON("button"), DRAWING("drawing"), BONUS("bonus"), PROGRESS_BONUS(
             "progressBonus"), VIDEO("video"), DICTIONARY("dictionaryButton"), OPEN_QUESTION("openQuestion"), TEST_PAGE_SUBMIT("testPageSubmitButton"), TEST_RESET(
             "testResetButton"), SPEECH_SCORE("speechScore"), EXTERNAL_INTERACTION("externalInteraction"), EXTERNAL_PRESENTATION("externalPresentation"), INLINE_MATH_JAX("inlineMathJax"),
-    INTERACTION_MATH_JAX("interactionMathJax");
+    INTERACTION_MATH_JAX("interactionMathJax"), MATH_DRAG_GAP_TYPE("dragInteractionMath"), ACCORDION("accordion");
     String name = null;
 
     private ModuleTagName(String name) {
@@ -46,6 +46,8 @@ public enum ModuleTagName {
                 tagNameWithType = MATH_GAP_TEXT_ENTRY_TYPE.toString();
             } else if ("inline-choice".equals(type)) {
                 tagNameWithType = MATH_GAP_INLINE_CHOICE_TYPE.toString();
+            } else if("drag".equals(type)){
+                tagNameWithType = MATH_DRAG_GAP_TYPE.toString();
             }
         }
         return tagNameWithType;

@@ -15,9 +15,9 @@ import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 
@@ -29,11 +29,13 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
     private ItemSessionData[] itemSessionDatas;
     private final AssessmentVariableStorageImpl variableProvider;
     private final EventsBus eventsBus;
+    private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public SessionDataManager(AssessmentVariableStorageImpl variableProvider, EventsBus eventsBus) {
+    public SessionDataManager(AssessmentVariableStorageImpl variableProvider, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         this.variableProvider = variableProvider;
         this.eventsBus = eventsBus;
+        this.pageScopeFactory = pageScopeFactory;
     }
 
     public void init(int itemsCount, InitialData data) {
@@ -102,7 +104,7 @@ public class SessionDataManager implements SessionSocket, IStateful, SessionData
                 }
             }
             eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(false, false, null)),
-                    new CurrentPageScope());
+                    pageScopeFactory.getCurrentPageScope());
         } catch (Exception e) {
         }
     }

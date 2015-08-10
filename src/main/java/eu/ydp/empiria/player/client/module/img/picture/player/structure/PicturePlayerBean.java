@@ -22,10 +22,6 @@ public class PicturePlayerBean extends ModuleBean {
         return titleBean;
     }
 
-    public String getTitle() {
-        return hasTitle() ? titleBean.getTitle() : "";
-    }
-
     public void setTitleBean(PicturePlayerTitleBean titleBean) {
         this.titleBean = titleBean;
     }
@@ -59,6 +55,6 @@ public class PicturePlayerBean extends ModuleBean {
     }
 
     public boolean hasFullscreen() {
-        return !Strings.isNullOrEmpty(srcFullScreen);
+        return !Strings.isNullOrEmpty(getSrcFullScreen());
     }
 }

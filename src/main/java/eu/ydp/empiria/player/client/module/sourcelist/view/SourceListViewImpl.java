@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.draggap.view.DragDataObjectFromEventExtractor;
@@ -48,10 +50,10 @@ public class SourceListViewImpl extends Composite implements SourceListView {
     private SourceListPresenter sourceListPresenter;
     private DroppableObject<FlowPanelWithDropZone> sourceListDropZone;
 
-    private SourceListViewItem getItem(SourcelistItemValue itemValue) {
+    private SourceListViewItem getItem(SourcelistItemValue itemValue, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         SourceListViewItem item = sourceListViewItemProvider.get();
         item.setSourceListView(this);
-        item.createAndBindUi(itemValue);
+        item.createAndBindUi(itemValue, inlineBodyGeneratorSocket);
         return item;
     }
 
@@ -99,8 +101,8 @@ public class SourceListViewImpl extends Composite implements SourceListView {
     }
 
     @Override
-    public void createItem(SourcelistItemValue itemContent) {
-        SourceListViewItem item = getItem(itemContent);
+    public void createItem(SourcelistItemValue itemContent, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
+        SourceListViewItem item = getItem(itemContent, inlineBodyGeneratorSocket);
         items.add(item);
         itemIdToItemCollection.put(itemContent.getItemId(), item);
     }

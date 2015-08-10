@@ -17,7 +17,7 @@ public class CurrentPageScope implements EventScope<CurrentPageScope> {
         pageIndex = page.getCurrentPageNumber();
     }
 
-    protected CurrentPageScope(int pageIndex) {
+    public CurrentPageScope(int pageIndex) {
         this.pageIndex = pageIndex;
     }
 
@@ -41,7 +41,6 @@ public class CurrentPageScope implements EventScope<CurrentPageScope> {
         return builder.toString();
     }
 
-    @SuppressWarnings("PMD")
     @Override
     public int compareTo(CurrentPageScope object) {
         if (pageIndex > object.pageIndex) {

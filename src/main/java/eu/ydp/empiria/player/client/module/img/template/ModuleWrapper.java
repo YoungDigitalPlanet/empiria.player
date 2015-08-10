@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
 
-public class ModuleWrapper extends AbstractMediaController<ModuleWrapper> {
+public class ModuleWrapper extends AbstractMediaController {
 
     private static ImgScreenModuleUiBinder uiBinder = GWT.create(ImgScreenModuleUiBinder.class);
 
@@ -21,11 +21,6 @@ public class ModuleWrapper extends AbstractMediaController<ModuleWrapper> {
     public ModuleWrapper(IsWidget widget) {
         initWidget(uiBinder.createAndBindUi(this));
         container.add(widget);
-    }
-
-    @Override
-    public ModuleWrapper getNewInstance() {
-        return null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.mathtext;
 
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
 import com.mathplayer.player.geom.Color;
 import com.mathplayer.player.geom.Font;
 import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
@@ -15,21 +16,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class MathTextFontInitializer {
+    @Inject
+    private StyleSocket styleSocket;
 
-    private DTOMathTextDefaultFontPropertiesProvider defaultFontPropertiesProvider; // TODO:
-    // use
-    // @Inject
-    // here
+    private DTOMathTextDefaultFontPropertiesProvider defaultFontPropertiesProvider;
 
     public Font initialize(IInlineModule module, ModuleSocket moduleSocket, Element element) {
-
-        PlayerGinjector playerGinjector = PlayerGinjectorFactory.getPlayerGinjector();
-        StyleSocket styleSocket = playerGinjector.getStyleSocket();
-
-        return initialize(module, moduleSocket, element, styleSocket);
-    }
-
-    public Font initialize(IInlineModule module, ModuleSocket moduleSocket, Element element, StyleSocket styleSocket) {
 
         defaultFontPropertiesProvider = new DTOMathTextDefaultFontPropertiesProvider();
         DTOMathTextFontProperties fontProperties = defaultFontPropertiesProvider.createDefaultProprerties();

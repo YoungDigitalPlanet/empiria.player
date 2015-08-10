@@ -4,7 +4,8 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.xml.client.*;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -24,19 +25,20 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
     private InteractionEventsListener interactionEventsListener;
     private ParenthoodManager parenthood;
 
-    public InlineBodyGenerator(ModulesRegistrySocket mrs, ModuleSocket moduleSocket, DisplayContentOptions options,
-                               InteractionEventsListener interactionEventsListener, ParenthoodManager parenthood) {
+    @Inject
+    public InlineBodyGenerator(@Assisted ModulesRegistrySocket mrs, @Assisted ModuleSocket moduleSocket, @Assisted DisplayContentOptions options,
+                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood, StyleNameConstants styleNames) {
         this.modulesRegistrySocket = mrs;
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.interactionEventsListener = interactionEventsListener;
         this.parenthood = parenthood;
-        this.styleNames = PlayerGinjectorFactory.getPlayerGinjector().getStyleNameConstants();
+        this.styleNames = styleNames;
     }
 
     @Override
     public void generateInlineBody(Node mainNode, com.google.gwt.dom.client.Element parentElement) {
-        if (mainNode != null && mainNode.hasChildNodes() && parentElement instanceof com.google.gwt.dom.client.Element) {
+        if (mainNode != null && mainNode.hasChildNodes() && parentElement != null) {
             parseXML(mainNode.getChildNodes(), parentElement);
         }
     }
@@ -52,19 +54,18 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
     }
 
     private Widget generateInlineBody(Node mainNode, boolean allAsWidget, boolean nodeChildrens) {
-        Widget widget = null;
         if (allAsWidget) {
-            widget = new FlowPanel();
+            Widget widget = new FlowPanel();
             widget.setStyleName(styleNames.QP_TEXT_INLINE());
             if (nodeChildrens) {
                 parseXML(mainNode.getChildNodes(), widget);
             } else {
                 parseNode(mainNode, widget);
             }
+            return widget;
         } else {
-            widget = generateBody(mainNode, nodeChildrens);
+            return generateBody(mainNode, nodeChildrens);
         }
-        return widget;
     }
 
     @Override
@@ -102,7 +103,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
     protected com.google.gwt.dom.client.Element parseNode(Node currNode, com.google.gwt.dom.client.Element parentElement) {
         if (currNode.getNodeType() == Node.ELEMENT_NODE) {
             if (options.getIgnoredInlineTags().contains(currNode.getNodeName())) {
-                return parentElement; // NOPMD
+                return parentElement;
             } else if (modulesRegistrySocket.isModuleSupported(currNode.getNodeName()) && modulesRegistrySocket.isInlineModule(currNode.getNodeName())) {
                 IModule module = modulesRegistrySocket.createModule((Element) currNode);
                 if (module instanceof IInlineModule) {
@@ -138,7 +139,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
         parseXML(currNode.getChildNodes(), newElement);
     }
 
-    protected void parseNode(Node node, Widget parent) {// NOPMD
+    protected void parseNode(Node node, Widget parent) {
         if (node == null) {
             return;
         }
@@ -161,7 +162,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
                 }
 
             } else {
-                HTMLPanel panel = new HTMLPanel(((Element) node).getNodeName(), "");// NOPMD
+                HTMLPanel panel = new HTMLPanel(node.getNodeName(), "");
                 if (parent instanceof ComplexPanel) {
                     ((Panel) parent).add(panel);
                     parseXMLAttributes((Element) node, panel.getElement());

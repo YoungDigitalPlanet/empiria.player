@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.external.interaction.structure.Extern
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalInteractionModule
-        extends AbstractInteractionModule<ExternalInteractionModule, ExternalInteractionResponseModel, ExternalInteractionModuleBean>
+        extends AbstractInteractionModule<ExternalInteractionResponseModel, ExternalInteractionModuleBean>
         implements ExternalFolderNameProvider {
 
     private final ExternalInteractionModulePresenter presenter;

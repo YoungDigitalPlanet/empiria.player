@@ -10,12 +10,12 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
+import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ControlModule;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.*;
@@ -26,18 +26,20 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
     private boolean enabled = true;
     private boolean testMode = false;
     private final NavigationButtonDirection direction;
+    private final PageScopeFactory pageScopeFactory;
 
     protected EventsBus eventsBus;
 
     @Inject
-    public NavigationButtonModule(@Assisted NavigationButtonDirection dir, EventsBus eventsBus) {
+    public NavigationButtonModule(@Assisted NavigationButtonDirection dir, PageScopeFactory pageScopeFactory, EventsBus eventsBus) {
         direction = dir;
+        this.pageScopeFactory = pageScopeFactory;
         this.eventsBus = eventsBus;
     }
 
     @Override
     public void initModule(Element element) {
-        eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW, PAGE_CHANGE), this, new CurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW, PAGE_CHANGE), this, pageScopeFactory.getCurrentPageScope());
     }
 
     private boolean isFirstPage() {

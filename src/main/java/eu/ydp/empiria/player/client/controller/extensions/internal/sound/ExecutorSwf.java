@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import eu.ydp.empiria.gwtflashmedia.client.FlashMedia;
 import eu.ydp.empiria.gwtflashmedia.client.event.*;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.SwfMediaWrapper;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
@@ -18,16 +18,19 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
     protected MediaWrapper<Widget> mediaWrapper = null;
     protected SoundExecutorListener soundExecutorListener;
     protected FlashMedia flashMedia;
-    protected EventsBus eventsBus = PlayerGinjectorFactory.getPlayerGinjector().getEventsBus();
-    protected TextTrackFactory textTrackFactory = PlayerGinjectorFactory.getPlayerGinjector().getTextTrackFactory();
     protected boolean pause;
     protected boolean playing = false;
     protected String source = null;
+    @Inject
+    protected EventsBus eventsBus;
+    @Inject
+    protected TextTrackFactory textTrackFactory;
 
     @Override
     public void init() {
         // Mapujemy wszystkie eventy flasha na mediaevent
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
+        HasFlashMediaHandlers hasFlashMediaHandlers = (HasFlashMediaHandlers) this.flashMedia;
+        hasFlashMediaHandlers.addFlashMediaPlayHandler(new FlashMediaPlayHandler() {
             @Override
             public void onFlashSoundPlay(FlashMediaPlayEvent event) {
                 if (soundExecutorListener != null) {
@@ -38,7 +41,7 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaCompleteHandler(new FlashMediaCompleteHandler() {
+        hasFlashMediaHandlers.addFlashMediaCompleteHandler(new FlashMediaCompleteHandler() {
             @Override
             public void onFlashSoundComplete(FlashMediaCompleteEvent event) {
                 if (soundExecutorListener != null) {
@@ -48,53 +51,53 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaLoadedHandler(new FlashMediaLoadedHandler() {
+        hasFlashMediaHandlers.addFlashMediaLoadedHandler(new FlashMediaLoadedHandler() {
             @Override
             public void onFlashSoundLoaded(FlashMediaLoadedEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, getMediaWrapper()), getMediaWrapper());
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaMuteChangeHandler(new FlashMediaMuteChangeHandler() {
+        hasFlashMediaHandlers.addFlashMediaMuteChangeHandler(new FlashMediaMuteChangeHandler() {
             @Override
             public void onFlashSoundMuteChange(FlashMediaMuteChangeEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_VOLUME_CHANGE, getMediaWrapper()), getMediaWrapper());
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaVolumeChangeHandler(new FlashMediaVolumeChangeHandler() {
+        hasFlashMediaHandlers.addFlashMediaVolumeChangeHandler(new FlashMediaVolumeChangeHandler() {
             @Override
             public void onFlashSoundVolumeChange(FlashMediaVolumeChangeEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_VOLUME_CHANGE, getMediaWrapper()), getMediaWrapper());
             }
         });
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaLoadErrorHandler(new FlashMediaLoadErrorHandler() {
+        hasFlashMediaHandlers.addFlashMediaLoadErrorHandler(new FlashMediaLoadErrorHandler() {
             @Override
             public void onFlashSoundLoadError(FlashMediaLoadErrorEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ERROR, getMediaWrapper()), getMediaWrapper());
             }
         });
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaMetadataHandler(new FlashMediaMetadataHandler() {
+        hasFlashMediaHandlers.addFlashMediaMetadataHandler(new FlashMediaMetadataHandler() {
             @Override
             public void onFlashMediaMetadataEvent(FlashMediaMetadataEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_DURATION_CHANGE, getMediaWrapper()), getMediaWrapper());
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaPauseHandler(new FlashMediaPauseHandler() {
+        hasFlashMediaHandlers.addFlashMediaPauseHandler(new FlashMediaPauseHandler() {
             @Override
             public void onFlashSoundPause(FlashMediaPauseEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_PAUSE, getMediaWrapper()), getMediaWrapper());
             }
         });
 
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler(new FlashMediaStopHandler() {
+        hasFlashMediaHandlers.addFlashMediaStopHandler(new FlashMediaStopHandler() {
             @Override
             public void onFlashSoundStop(FlashMediaStopEvent event) {
                 eventsBus.fireEventFromSource(new MediaEvent(MediaEventTypes.ON_STOP, getMediaWrapper()), getMediaWrapper());
             }
         });
-        ((HasFlashMediaHandlers) flashMedia).addFlashMediaPositionChangeHandler(new FlashMediaPlayheadUpdateHandler() {
+        hasFlashMediaHandlers.addFlashMediaPositionChangeHandler(new FlashMediaPlayheadUpdateHandler() {
 
             @Override
             public void onFlashSoundPositionChange(FlashMediaPlayheadUpdateEvent event) {
@@ -104,13 +107,13 @@ public abstract class ExecutorSwf implements MediaExecutor<Widget> {
             }
         });
         if (mediaWrapper != null) {
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaPositionChangeHandler((FlashMediaPlayheadUpdateHandler) mediaWrapper);
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaMetadataHandler((FlashMediaMetadataHandler) mediaWrapper);
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaMuteChangeHandler((FlashMediaMuteChangeHandler) mediaWrapper);
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaVolumeChangeHandler((FlashMediaVolumeChangeHandler) mediaWrapper);
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaStopHandler((FlashMediaStopHandler) mediaWrapper);
-            ((HasFlashMediaHandlers) flashMedia).addFlashMediaLoadedHandler((FlashMediaLoadedHandler) mediaWrapper);
-            ((SwfMediaWrapper) mediaWrapper).setFlashMedia(flashMedia);
+            hasFlashMediaHandlers.addFlashMediaPositionChangeHandler((FlashMediaPlayheadUpdateHandler) mediaWrapper);
+            hasFlashMediaHandlers.addFlashMediaMetadataHandler((FlashMediaMetadataHandler) mediaWrapper);
+            hasFlashMediaHandlers.addFlashMediaMuteChangeHandler((FlashMediaMuteChangeHandler) mediaWrapper);
+            hasFlashMediaHandlers.addFlashMediaVolumeChangeHandler((FlashMediaVolumeChangeHandler) mediaWrapper);
+            hasFlashMediaHandlers.addFlashMediaStopHandler((FlashMediaStopHandler) mediaWrapper);
+            hasFlashMediaHandlers.addFlashMediaLoadedHandler((FlashMediaLoadedHandler) mediaWrapper);
+            ((SwfMediaWrapper) mediaWrapper).setFlashMedia(this.flashMedia);
         }
 
     }

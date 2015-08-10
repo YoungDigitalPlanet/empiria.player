@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
@@ -46,6 +47,8 @@ public class SourceListViewImplTest {
     private Provider<SourceListViewItem> sourceListViewItemProvider;
     @Mock
     private SourceListViewItem viewItem;
+    @Mock
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
     @InjectMocks
     private SourceListViewImpl instance;
@@ -83,7 +86,7 @@ public class SourceListViewImplTest {
 
     private void addItems() {
         for (String id : allIds) {
-            instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, id, id));
+            instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, id, id), inlineBodyGeneratorSocket);
         }
     }
 
@@ -116,7 +119,7 @@ public class SourceListViewImplTest {
         when(sourceListPresenter.getDragDataObject(anyString())).thenReturn(dataObject);
         DragDropEventBase event = mock(DragDropEventBase.class);
 
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId));
+        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
         instance.setSourceListPresenter(sourceListPresenter);
         instance.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
 
@@ -169,12 +172,12 @@ public class SourceListViewImplTest {
         doReturn(viewItem).when(sourceListViewItemProvider).get();
 
         SourcelistItemValue sourcelistItemValue = new SourcelistItemValue(SourcelistItemType.TEXT, itemId, itemContent);
-        instance.createItem(sourcelistItemValue);
+        instance.createItem(sourcelistItemValue, inlineBodyGeneratorSocket);
 
         verify(sourceListViewItemProvider).get();
         verify(items).add(eq(sourceListViewItemProvider.get()));
         verify(sourceListViewItemProvider.get()).setSourceListView(eq(instance));
-        verify(sourceListViewItemProvider.get()).createAndBindUi(eq(sourcelistItemValue));
+        verify(sourceListViewItemProvider.get()).createAndBindUi(eq(sourcelistItemValue), eq(inlineBodyGeneratorSocket));
     }
 
     @Test

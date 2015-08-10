@@ -25,4 +25,8 @@ public class MathJaxPresenter {
         Element scriptElement = view.asWidget().getElement().getFirstChildElement();
         mathJaxNative.addElementToRender(scriptElement);
     }
+
+    public void rerenderMathElement(String moduleId){
+        mathJaxNative.rerenderMathElement(moduleId);
+    }
 }

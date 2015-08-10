@@ -6,8 +6,8 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.ExplanationView;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.AbstractMediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
+import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 
 public class EntryDescriptionSoundController {
 
@@ -43,12 +43,12 @@ public class EntryDescriptionSoundController {
 
     private void onEntryMediaWrapperCallback(MediaWrapper<Widget> mw) {
         explanationView.setEntryPlayButtonStyle();
-        AbstractMediaEventHandler handler = createEntrySoundMediaHandler();
+        MediaEventHandler handler = createEntrySoundMediaHandler();
         descriptionSoundController.playFromMediaWrapper(handler, mw);
     }
 
-    private AbstractMediaEventHandler createEntrySoundMediaHandler() {
-        return new AbstractMediaEventHandler() {
+    private MediaEventHandler createEntrySoundMediaHandler() {
+        return new MediaEventHandler() {
             @Override
             public void onMediaEvent(MediaEvent event) {
                 explanationView.setEntryStopButtonStyle();

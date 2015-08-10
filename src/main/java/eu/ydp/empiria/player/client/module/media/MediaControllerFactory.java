@@ -4,8 +4,8 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 
 public interface MediaControllerFactory {
-    public MediaController<?> get(ModuleTagName moduleType);
+    MediaController get(ModuleTagName moduleType);
 
-    public MediaController<?> get(ModuleTagName moduleType, Object... params);
+    MediaController get(ModuleTagName moduleType, Object... params);
 
 }

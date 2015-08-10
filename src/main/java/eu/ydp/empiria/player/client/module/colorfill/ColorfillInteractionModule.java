@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ColorfillInteractionModule extends
-        AbstractInteractionModule<ColorfillInteractionModule, ColorfillInteractionModuleModel, ColorfillInteractionBean> {
+        AbstractInteractionModule<ColorfillInteractionModuleModel, ColorfillInteractionBean> {
 
     @Inject
     private ColorfillInteractionPresenter presenter;

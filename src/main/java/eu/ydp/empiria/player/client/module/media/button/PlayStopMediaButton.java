@@ -5,7 +5,7 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
-public class PlayStopMediaButton extends AbstractPlayMediaButton<PlayStopMediaButton> {
+public class PlayStopMediaButton extends AbstractPlayMediaButton {
 
     @Inject
     public PlayStopMediaButton(StyleNameConstants styleNames) {

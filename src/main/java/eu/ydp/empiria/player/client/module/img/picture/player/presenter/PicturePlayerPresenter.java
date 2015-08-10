@@ -2,7 +2,9 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 
 public class PicturePlayerPresenter {
@@ -10,20 +12,26 @@ public class PicturePlayerPresenter {
     private PicturePlayerView view;
     private PicturePlayerFullscreenController fullscreenController;
     private PicturePlayerBean bean;
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    private PictureTitleProvider pictureTitleProvider;
 
     private boolean template = false;
 
     @Inject
-    public PicturePlayerPresenter(PicturePlayerView view, PicturePlayerFullscreenController fullscreenController) {
+    public PicturePlayerPresenter(PicturePlayerView view, PicturePlayerFullscreenController fullscreenController, PictureTitleProvider pictureTitleProvider) {
         this.view = view;
         this.fullscreenController = fullscreenController;
+        this.pictureTitleProvider = pictureTitleProvider;
     }
 
-    public void init(PicturePlayerBean bean) {
+    public void init(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         this.bean = bean;
-
+        this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         view.setPresenter(this);
-        view.setImage(bean.getTitle(), bean.getSrc());
+
+        String titleXmlString = pictureTitleProvider.getPictutreTitleString(bean);
+
+        view.setImage(titleXmlString, bean.getSrc());
         initFullScreenMediaButton(bean);
     }
 
@@ -38,7 +46,7 @@ public class PicturePlayerPresenter {
     }
 
     public void openFullscreen() {
-        fullscreenController.openFullscreen(bean);
+        fullscreenController.openFullscreen(bean, inlineBodyGeneratorSocket);
     }
 
     public Widget getView() {

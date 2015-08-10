@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.module.draggap.presenter;
 
 import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.AbstractTestBase;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.AnswerEvaluationSupplier;
 import eu.ydp.empiria.player.client.module.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
@@ -30,7 +32,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
-    private DragGapPresenterImpl presenter;
+    private DragGapBasePresenter presenter;
     @Mock
     private DragGapView view;
     @Mock
@@ -39,13 +41,19 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
     private AnswerEvaluationSupplier answerEvaluationSupplier;
     @Mock
     private SourceListManagerAdapter sourceListManagerAdapter;
+    @Mock
+    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
     List<Boolean> evaluatedAnswers;
 
     @Override
     @Before
     public void setUp() {
-        presenter = new DragGapPresenterImpl(view, model, answerEvaluationSupplier, sourceListManagerAdapter);
+        presenter = new DragGapBasePresenter(view, model, answerEvaluationSupplier, sourceListManagerAdapter);
+
+        ModuleSocket moduleSocket = mock(ModuleSocket.class);
+        when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
+        presenter.setModuleSocket(moduleSocket);
     }
 
     @Test
@@ -82,7 +90,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
 
         // then
         InOrder inOrder = Mockito.inOrder(view, model);
-        inOrder.verify(view).setItemContent(item);
+        inOrder.verify(view).setItemContent(item, inlineBodyGeneratorSocket);
         inOrder.verify(model).addAnswer(itemId);
     }
 
@@ -214,7 +222,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
         presenter.showAnswers(ShowAnswersType.CORRECT);
 
         // then
-        verify(view).setItemContent(item);
+        verify(view).setItemContent(item, inlineBodyGeneratorSocket);
     }
 
     @Test
@@ -244,7 +252,7 @@ public class DragGapPresenterImplJUnitTest extends AbstractTestBase {
         presenter.showAnswers(ShowAnswersType.USER);
 
         // then
-        verify(view).setItemContent(item);
+        verify(view).setItemContent(item, inlineBodyGeneratorSocket);
     }
 
     @Test
