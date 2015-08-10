@@ -4,7 +4,7 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.tutor.TutorStyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
@@ -33,7 +33,7 @@ public class TutorPopupViewImplTest {
     @Mock
     private RootPanelDelegate rootPanelDelegate;
     @Mock
-    private final StyleNameConstants styleNameConstants = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+    private final TutorStyleNameConstants styleNameConstants = GWTConstantsMock.mockAllStringMethods(mock(TutorStyleNameConstants.class), TutorStyleNameConstants.class);
     @Mock
     private RootPanel rootPanel;
     @Mock

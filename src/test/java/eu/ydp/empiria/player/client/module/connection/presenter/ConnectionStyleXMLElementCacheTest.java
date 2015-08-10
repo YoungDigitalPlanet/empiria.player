@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import org.junit.Before;
@@ -22,13 +22,13 @@ import static org.mockito.Mockito.when;
 public class ConnectionStyleXMLElementCacheTest {
 
     private ConnectionStyleXMLElementCache cache;
-    private StyleNameConstants styleNames;
+    private ConnectionStyleNameConstants styleNames;
     private final Map<MultiplePairModuleConnectType, String> styles = new HashMap<MultiplePairModuleConnectType, String>();
 
     @Before
     public void before() {
         XMLParser parser = mock(XMLParser.class);
-        styleNames = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+        styleNames = GWTConstantsMock.mockAllStringMethods(mock(ConnectionStyleNameConstants.class), ConnectionStyleNameConstants.class);
         styles.put(MultiplePairModuleConnectType.WRONG, styleNames.QP_CONNECTION_WRONG());
         styles.put(MultiplePairModuleConnectType.CORRECT, styleNames.QP_CONNECTION_CORRECT());
         styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_DISABLED());

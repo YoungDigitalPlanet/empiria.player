@@ -19,6 +19,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.pres
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.module.ModuleScopedLazyProvider;
 import eu.ydp.empiria.player.client.module.connection.presenter.translation.SurfaceRectangleFinder;
+import eu.ydp.empiria.player.client.module.drawing.DrawingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.drawing.command.ClearAllDrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
@@ -28,6 +29,8 @@ import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasView;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
+import eu.ydp.empiria.player.client.module.labelling.LabellingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
@@ -67,6 +70,10 @@ public class TestWithMocksGuiceModule extends AbstractMockingTestModule {
     @Override
     public void configure() {
         bindToSingletonOrMockInstance(StyleNameConstants.class);
+        bindToSingletonOrMockInstance(LabellingStyleNameConstants.class);
+        bindToSingletonOrMockInstance(StickieStyleNameConstants.class);
+        bindToSingletonOrMockInstance(DrawingStyleNameConstants.class);
+        bindToSingletonOrMockInstance(InlineChoiceStyleNameConstants.class);
         bindToSingletonOrMockInstance(ExternalFullscreenVideoConnector.class);
         bindToSingletonOrMockInstance(EventsBus.class, PlayerEventsBus.class);
         bindToSingletonOrMockInstance(MediaConnector.class);

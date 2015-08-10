@@ -7,7 +7,6 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class TextInteractionModule extends BindingContainerModule implements IBookmarkable {
@@ -15,7 +14,7 @@ public class TextInteractionModule extends BindingContainerModule implements IBo
     private final BookmarkingHelper bookmarkingHelper;
 
     @Inject
-    public TextInteractionModule(StyleNameConstants styleNames) {
+    public TextInteractionModule(ContaintersStyleNameConstants styleNames) {
         setContainerStyleName(styleNames.QP_TEXTINTERACTION());
         bookmarkingHelper = new BookmarkingHelper(getView());
     }

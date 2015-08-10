@@ -8,11 +8,11 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 
 public abstract class AbstractConnectionItemView extends Composite {
 
-    protected StyleNameConstants styleNames;
+    protected ConnectionStyleNameConstants styleNames;
 
     @UiField
     protected FlowPanel selection;
@@ -24,7 +24,7 @@ public abstract class AbstractConnectionItemView extends Composite {
     private final InlineBodyGeneratorSocket bodyGenerator;
 
     @Inject
-    public AbstractConnectionItemView(StyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
+    public AbstractConnectionItemView(ConnectionStyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
         this.bean = bean;
         this.styleNames = styleNames;
         this.bodyGenerator = bodyGenerator;

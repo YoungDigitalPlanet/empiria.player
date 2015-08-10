@@ -5,8 +5,8 @@ import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -32,7 +32,7 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
 
     protected VideoTextTrackElementFactory trackElementFactory;
     protected EventsBus eventsBus;
-    protected StyleNameConstants styleNameConstants;
+    protected MediaStyleNameConstants styleNameConstants;
     protected VideoTextTrackElementPresenter presenter;
     protected TextTrackFactory textTrackFactory;
     protected PageScopeFactory pageScopeFactory;
@@ -45,7 +45,7 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
         setUp(new Class<?>[0], new Class<?>[0], new Class<?>[]{EventsBus.class});
         trackElementFactory = injector.getInstance(VideoTextTrackElementFactory.class);
         eventsBus = injector.getInstance(EventsBus.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        styleNameConstants = injector.getInstance(MediaStyleNameConstants.class);
         presenter = injector.getInstance(VideoTextTrackElementPresenter.class);
         textTrackFactory = injector.getInstance(TextTrackFactory.class);
         pageScopeFactory = injector.getInstance(PageScopeFactory.class);

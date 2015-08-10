@@ -14,9 +14,9 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.module.dictionary.DictionaryStyleNameConstants;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ExplanationViewImpl extends Composite implements ExplanationView {
 
@@ -27,7 +27,7 @@ public class ExplanationViewImpl extends Composite implements ExplanationView {
     }
 
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private DictionaryStyleNameConstants styleNameConstants;
 
     @UiField
     Panel typePanel;

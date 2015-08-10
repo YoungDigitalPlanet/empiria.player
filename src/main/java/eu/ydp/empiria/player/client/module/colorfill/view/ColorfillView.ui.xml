@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:v="urn:import:eu.ydp.empiria.player.client.module.colorfill.view"
              xmlns:a="urn:import:eu.ydp.empiria.player.client.module.colorfill.view.mark">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
+    <ui:with type="eu.ydp.empiria.player.client.module.colorfill.ColorfillStyleNameConstants" field="res"></ui:with>
     <g:FlowPanel ui:field="container" styleName="{res.QP_COLORFILL}">
         <v:ColorfillPalette ui:field="palette"/>
 

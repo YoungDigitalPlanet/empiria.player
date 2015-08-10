@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
         >
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
+    <ui:with type="eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants"
              field="res"></ui:with>
     <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_CHOICE_OPTION_BOX}">
         <g:FlowPanel ui:field="optionPanel"

@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.dictionary.DictionaryStyleNameConstants" field="res"/>
     <g:AbsolutePanel styleName="{res.QP_DICTIONARY_SCROLL_CONTAINER}" ui:field="scrollPanelContainer">
         <g:FlowPanel styleName="{res.QP_DICTIONARY_SCROLL_PANEL_HIDDEN}" ui:field="scrollPanel">
             <g:FlowPanel styleName="{res.QP_DICTIONARY_TOOLS_SCROLL_HEADER}" ui:field="scrollHeader"></g:FlowPanel>

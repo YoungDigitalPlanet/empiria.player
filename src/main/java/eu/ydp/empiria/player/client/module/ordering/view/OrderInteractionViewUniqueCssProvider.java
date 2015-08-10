@@ -1,12 +1,12 @@
 package eu.ydp.empiria.player.client.module.ordering.view;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.ordering.OrderingStyleNameConstants;
 
 public class OrderInteractionViewUniqueCssProvider {
 
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private OrderingStyleNameConstants styleNameConstants;
     private int counter;
 
     public String getNext() {

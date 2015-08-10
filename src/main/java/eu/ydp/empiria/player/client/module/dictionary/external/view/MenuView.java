@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.module.dictionary.DictionaryStyleNameConstants;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PushButtonWithIndex;
@@ -19,7 +20,6 @@ import eu.ydp.empiria.player.client.module.dictionary.external.components.Scroll
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.*;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityChanger;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.visibility.VisibilityClient;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class MenuView extends Composite implements VisibilityClient {
     private PushButton showMoreButton;
 
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private DictionaryStyleNameConstants styleNameConstants;
     @Inject
     private Provider<WordsSocket> passwordsSocket;
     @Inject

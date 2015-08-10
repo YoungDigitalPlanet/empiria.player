@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:eu.ydp.empiria.player.client.module.media.button">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants" field="res"/>
     <g:FlowPanel ui:field="progressBar" styleName="{res.QP_MEDIA_PROGRESSBAR}">
         <g:FlowPanel styleName="{res.QP_MEDIA_PROGRESSBAR_LEFT}"/>
         <g:FlowPanel ui:field="mainProgressDiv" styleName="{res.QP_MEDIA_PROGRESSBAR_CENTER}">

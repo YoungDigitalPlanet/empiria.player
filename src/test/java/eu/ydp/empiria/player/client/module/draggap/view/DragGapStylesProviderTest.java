@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.draggap.view;
 
+import eu.ydp.empiria.player.client.module.draggap.DragGapStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -12,11 +12,11 @@ import static org.mockito.Mockito.when;
 public class DragGapStylesProviderTest {
 
     private DragGapStylesProvider dragGapStylesProvider;
-    private StyleNameConstants styleNameConstants;
+    private DragGapStyleNameConstants styleNameConstants;
 
     @Before
     public void setUp() throws Exception {
-        styleNameConstants = Mockito.mock(StyleNameConstants.class);
+        styleNameConstants = Mockito.mock(DragGapStyleNameConstants.class);
         dragGapStylesProvider = new DragGapStylesProvider(styleNameConstants);
     }
 

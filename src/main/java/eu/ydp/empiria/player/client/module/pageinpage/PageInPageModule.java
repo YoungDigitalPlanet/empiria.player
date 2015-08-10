@@ -6,14 +6,14 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.view.ViewStyleNameConstants;
 
 public class PageInPageModule extends SimpleModuleBase {
 
     private Panel pagePanel;
 
     @Inject
-    private StyleNameConstants styleNames;
+    private ViewStyleNameConstants styleNames;
     @Inject
     private MultiPageController controller;
 

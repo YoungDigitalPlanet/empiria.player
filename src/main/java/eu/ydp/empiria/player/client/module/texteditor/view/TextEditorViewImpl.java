@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class TextEditorViewImpl extends Composite implements TextEditorView {
@@ -28,6 +29,9 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
     @Inject
     private StyleNameConstants styleNameConstants;
 
+    @Inject
+    private InlineChoiceStyleNameConstants inlineChoiceStyleNameConstants;
+
     @Override
     public void init() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -35,12 +39,12 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 
     @Override
     public void lock() {
-        mainPanel.addStyleName(styleNameConstants.QP_TEXT_EDITOR_LOCKED());
+        mainPanel.addStyleName(inlineChoiceStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
     }
 
     @Override
     public void unlock() {
-        mainPanel.removeStyleName(styleNameConstants.QP_TEXT_EDITOR_LOCKED());
+        mainPanel.removeStyleName(inlineChoiceStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
     }
 
     @Override

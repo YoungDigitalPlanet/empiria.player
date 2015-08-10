@@ -9,10 +9,10 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants;
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenter;
 import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SimpleChoiceViewImpl implements SimpleChoiceView {
     @UiField
@@ -45,7 +45,7 @@ public class SimpleChoiceViewImpl implements SimpleChoiceView {
     private ChoiceButtonBase button;
 
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private ChoiceStyleNameConstants styleNameConstants;
 
     private static SimpleChoiceViewUiBinder uiBinder = GWT.create(SimpleChoiceViewUiBinder.class);
 

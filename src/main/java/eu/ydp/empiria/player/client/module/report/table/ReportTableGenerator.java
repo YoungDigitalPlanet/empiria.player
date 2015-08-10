@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
+import eu.ydp.empiria.player.client.module.report.ReportStyleNameConstants;
 import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
 import eu.ydp.empiria.player.client.module.report.table.extraction.ColspanExtractor;
 import eu.ydp.empiria.player.client.module.report.table.extraction.PageTodoExtractor;
@@ -19,7 +20,6 @@ import eu.ydp.empiria.player.client.module.report.table.extraction.PagesRangeExt
 import eu.ydp.empiria.player.client.module.report.table.extraction.ShowNonActivitiesExtractor;
 import eu.ydp.empiria.player.client.module.report.table.modification.ItemIndexAppender;
 import eu.ydp.empiria.player.client.module.report.table.modification.RowStylesAppender;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -33,7 +33,7 @@ public class ReportTableGenerator {
     private final static String PRR = "prr";
     private final static String RD = "rd";
 
-    private final StyleNameConstants styleNames;
+    private final ReportStyleNameConstants styleNames;
 
     private final BodyGeneratorSocket bodyGeneratorSocket;
     private final DataSourceDataSupplier dataSourceDataSupplier;
@@ -52,7 +52,7 @@ public class ReportTableGenerator {
 
     @Inject
     public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, @Assisted DataSourceDataSupplier dataSourceDataSupplier,
-                                @Assisted SessionDataSupplier sessionDataSupplier, StyleNameConstants styleNames, StyleSocket styleSocket,
+                                @Assisted SessionDataSupplier sessionDataSupplier, ReportStyleNameConstants styleNames, StyleSocket styleSocket,
                                 RowStylesAppender rowStylesAppender, ShowNonActivitiesExtractor showNonActivitiesExtractor,
                                 ItemIndexAppender itemIndexAppender, ColspanExtractor colspanExtractor, RaportModuleFactory raportModuleFactory) {
         this.bodyGeneratorSocket = bgs;

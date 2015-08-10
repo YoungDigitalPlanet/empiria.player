@@ -7,6 +7,7 @@ public class SortableNative {
             .jQuery(selector)
             .sortable(
             {
+                containment: "window",
                 axis: dragAxis,
                 start: function (event, ui) {
                     this.from = ui.item.index();

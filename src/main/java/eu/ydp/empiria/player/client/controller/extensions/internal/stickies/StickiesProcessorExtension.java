@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSo
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -37,8 +36,6 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
     static final int DISTANCE_MIN = (int) (DISTANCE_MIN_COMPONENT * Math.pow(2, 0.5));
     @Inject
     IPlayerContainersAccessor itemBodyAccessor;
-    @Inject
-    StyleNameConstants styleNames;
     @Inject
     EventsBus eventsBus;
     @Inject
