@@ -10,8 +10,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
 import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
 import eu.ydp.empiria.player.client.module.report.table.extraction.ColspanExtractor;
 import eu.ydp.empiria.player.client.module.report.table.extraction.PageTodoExtractor;
@@ -20,7 +18,6 @@ import eu.ydp.empiria.player.client.module.report.table.extraction.ShowNonActivi
 import eu.ydp.empiria.player.client.module.report.table.modification.ItemIndexAppender;
 import eu.ydp.empiria.player.client.module.report.table.modification.RowStylesAppender;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
@@ -51,17 +48,16 @@ public class ReportTableGenerator {
     private FlexTable table;
 
     @Inject
-    public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, @Assisted DataSourceDataSupplier dataSourceDataSupplier,
-                                @Assisted SessionDataSupplier sessionDataSupplier, StyleNameConstants styleNames, StyleSocket styleSocket,
+    public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, StyleNameConstants styleNames,
                                 RowStylesAppender rowStylesAppender, ShowNonActivitiesExtractor showNonActivitiesExtractor,
-                                ItemIndexAppender itemIndexAppender, ColspanExtractor colspanExtractor, RaportModuleFactory raportModuleFactory) {
+                                ItemIndexAppender itemIndexAppender, ColspanExtractor colspanExtractor, PagesRangeExtractor pagesRangeExtractor, PageTodoExtractor pageTodoExtractor) {
         this.bodyGeneratorSocket = bgs;
         this.dataSourceDataSupplier = dataSourceDataSupplier;
         this.styleNames = styleNames;
 
         this.rowStylesAppender = rowStylesAppender;
-        this.pageTodoExtractor = raportModuleFactory.createPageTodoExtractor(sessionDataSupplier);
-        this.pagesRangeExtractor = raportModuleFactory.createPagesRangeExtractor(dataSourceDataSupplier);
+        this.pageTodoExtractor = pageTodoExtractor;
+        this.pagesRangeExtractor = pagesRangeExtractor;
         this.showNonActivitiesExtractor = showNonActivitiesExtractor;
         this.itemIndexAppender = itemIndexAppender;
         this.colspanExtractor = colspanExtractor;

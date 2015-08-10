@@ -9,17 +9,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Repor
 public class ModuleConnectorExtensionProvider {
 
     @Inject
-    private ReportModuleConnectorExtension reportModuleConnectorExtension;
-    @Inject
     private PrevPageButtonModuleConnectorExtension prevPageButtonModuleConnectorExtension;
     @Inject
     private NextPageButtonModuleConnectorExtension nextPageButtonModuleConnectorExtension;
     @Inject
     private PageSwitchModuleConnectorExtension pageSwitchModuleConnectorExtension;
-
-    public ReportModuleConnectorExtension getReportModuleConnectorExtension() {
-        return reportModuleConnectorExtension;
-    }
 
     public PrevPageButtonModuleConnectorExtension getPrevPageButtonModuleConnectorExtension() {
         return prevPageButtonModuleConnectorExtension;
