@@ -2,7 +2,15 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
     var HTMLCSS = MathJax.OutputJax["HTML-CSS"];
     var MML = MathJax.ElementJax.mml;
     var SVG = MathJax.OutputJax.SVG;
-    var getMathGap = document.getElementById("empiria.player").contentWindow.getMathGap;
+    var getMathGap;
+
+    function getGap(id) {
+        if(typeof getMathGap === 'undefined'){
+            getMathGap = document.getElementById("empiria.player").contentWindow.getMathGap;
+        }
+
+        return getMathGap(id);
+    }
 
     MML.gap = MML.mbase.Subclass({
         type: "gap", isToken: true,
@@ -13,7 +21,7 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
             this.HTMLhandleSize(mathWrapper);
 
             var id = this.attr['responseIdentifier'];
-            var gap = getMathGap(id);
+            var gap = getGap(id);
             mathWrapper.appendChild(gap);
 
             var HD = HTMLCSS.getHD(mathWrapper, true);
@@ -34,7 +42,7 @@ MathJax.Hub.Register.StartupHook("MathML Jax Ready", function () {
 
             var span = SVG.textSVG.parentNode;
             var id = this.attr['responseIdentifier'];
-            var gap = getMathGap(id);
+            var gap = getGap(id);
 
             span.insertBefore(gap, SVG.textSVG);
             var w = gap.offsetWidth, h = gap.offsetHeight;
