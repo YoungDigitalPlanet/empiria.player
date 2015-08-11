@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
-import eu.ydp.empiria.player.client.module.selection.controller.answers.AnswerQueueFactory;
+import eu.ydp.empiria.player.client.module.selection.controller.answers.SelectionAnswerQueueFactory;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import java.util.*;
 import org.junit.*;
@@ -16,31 +16,23 @@ public class GroupAnswersControllerJUnitTest {
     private GroupAnswersController testObj;
     private boolean isMulti = true;
     private int maxSelected = 1;
-    private SelectionModuleModel responseModel;
-    private AnswerQueueFactory answerQueueFactory = mock(AnswerQueueFactory.class);
+    private SelectionModuleModel responseModel = mock(SelectionModuleModel.class);
+    private SelectionAnswerQueueFactory answerQueueFactory = mock(SelectionAnswerQueueFactory.class);
     private NoAnswerPriorityComparator noAnswerPriorityComparator = mock(NoAnswerPriorityComparator.class);
 
     @Before
     public void setUp() throws Exception {
-        responseModel = mock(SelectionModuleModel.class);
         when(answerQueueFactory.createAnswerQueue(isMulti, maxSelected)).thenReturn(new PriorityQueue<>(maxSelected, noAnswerPriorityComparator));
-        testObj = createGroupChoicesController(isMulti, maxSelected, responseModel);
-    }
-
-    private GroupAnswersController createGroupChoicesController(boolean isMulti, int maxSelected, SelectionModuleModel responseModel) {
-        return new GroupAnswersController(isMulti, maxSelected, responseModel, answerQueueFactory);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testCorrectQueueSetUp() throws Exception {
-        testObj = createGroupChoicesController(true, 10, responseModel);
-
-        verify(answerQueueFactory).createAnswerQueue(true, 10);
+        testObj = new GroupAnswersController(isMulti, maxSelected, responseModel, answerQueueFactory);
     }
 
     @Test
-    public void testAddSelectionAnswer() {
+    public void shouldCreateAnswerQueue_whenInit() throws Exception {
+        verify(answerQueueFactory).createAnswerQueue(isMulti, maxSelected);
+    }
+
+    @Test
+    public void shouldAddAnswersToSelect() {
         SelectionAnswerDto answer = new SelectionAnswerDto();
         SelectionAnswerDto answer2 = new SelectionAnswerDto();
 
@@ -57,13 +49,14 @@ public class GroupAnswersControllerJUnitTest {
     }
 
     @Test
-    public void testSelectAnswer_selectedLimitNotReached() {
+    public void shouldSelectNextAnswer_whenLimitReached() {
+        // given
         String answerId = "answerId";
         SelectionAnswerDto answer = new SelectionAnswerDto(answerId);
         testObj.addSelectionAnswer(answer);
 
         // when
-        testObj.selectAnswer(answer);
+        testObj.selectToggleAnswer(answerId);
 
         // then
         verify(responseModel).addAnswer(answerId);
@@ -74,20 +67,20 @@ public class GroupAnswersControllerJUnitTest {
     }
 
     @Test
-    public void testSelectAnswer_selectedLimitReached() throws Exception {
+    public void shouldDeselectAnswer_whenLimitReached() throws Exception {
+        // given
         String answerId = "answerId";
-        SelectionAnswerDto answer = new SelectionAnswerDto(answerId);
-
         String answerId2 = "answerId2";
+
+        SelectionAnswerDto answer = new SelectionAnswerDto(answerId);
         SelectionAnswerDto answer2 = new SelectionAnswerDto(answerId2);
 
         testObj.addSelectionAnswer(answer);
         testObj.addSelectionAnswer(answer2);
-
-        testObj.selectAnswer(answer);
+        testObj.selectToggleAnswer(answerId);
 
         // when
-        testObj.selectAnswer(answer2);
+        testObj.selectToggleAnswer(answerId2);
 
         // then
         verify(responseModel).removeAnswer(answerId);
@@ -100,45 +93,19 @@ public class GroupAnswersControllerJUnitTest {
     }
 
     @Test
-    public void testSelectAnswer_selectedNotRelatedButton() {
+    public void shouldUnselectAnswer() throws Exception {
+        // given
         String answerId = "answerId";
-        SelectionAnswerDto answer = new SelectionAnswerDto(answerId);
-
-        // when
-        testObj.selectAnswer(answer);
-    }
-
-    @Test
-    public void testUnselectAnswer() throws Exception {
-        String answerId = "answerId";
-        SelectionAnswerDto selectionAnswer = new SelectionAnswerDto(answerId);
-        selectionAnswer.setSelected(true);
-
-        testObj.addSelectionAnswer(selectionAnswer);
-        testObj.selectAnswer(selectionAnswer);
-        assertEquals(1, testObj.getSelectedAnswers().size());
-
-        testObj.unselectAnswer(selectionAnswer);
-
-        assertEquals(false, selectionAnswer.isSelected());
-        assertEquals(0, testObj.getSelectedAnswers().size());
-        verify(responseModel).removeAnswer(answerId);
-    }
-
-    @Test
-    public void testSelectToggleAnswer_unselect() throws Exception {
-        String answerId = "answerId";
-        SelectionAnswerDto selectionAnswerDto = new SelectionAnswerDto(answerId);
-        selectionAnswerDto.setSelected(true);
-
-        SelectionAnswerDto otherAnswer = new SelectionAnswerDto("otherId");
-        otherAnswer.setSelected(true);
+        SelectionAnswerDto selectionAnswerDto = createAnswer(answerId, true);
+        SelectionAnswerDto otherAnswer = createAnswer("otherId", true);
 
         testObj.addSelectionAnswer(otherAnswer);
         testObj.addSelectionAnswer(selectionAnswerDto);
 
+        // when
         testObj.selectToggleAnswer(answerId);
 
+        // then
         assertEquals(false, selectionAnswerDto.isSelected());
         assertEquals(true, otherAnswer.isSelected());
         verify(responseModel).removeAnswer(answerId);
@@ -146,19 +113,19 @@ public class GroupAnswersControllerJUnitTest {
     }
 
     @Test
-    public void testSelectToggleAnswer_select() throws Exception {
+    public void shouldSelectAnswer() throws Exception {
+        // given
         String answerId = "answerId";
-        SelectionAnswerDto selectionAnswerDto = new SelectionAnswerDto(answerId);
-        selectionAnswerDto.setSelected(false);
-
-        SelectionAnswerDto otherAnswer = new SelectionAnswerDto("otherId");
-        otherAnswer.setSelected(false);
+        SelectionAnswerDto selectionAnswerDto = createAnswer(answerId, false);
+        SelectionAnswerDto otherAnswer = createAnswer("otherId", false);
 
         testObj.addSelectionAnswer(otherAnswer);
         testObj.addSelectionAnswer(selectionAnswerDto);
 
+        // when
         testObj.selectToggleAnswer(answerId);
 
+        // then
         assertEquals(true, selectionAnswerDto.isSelected());
         assertEquals(false, otherAnswer.isSelected());
         verify(responseModel).addAnswer(answerId);
@@ -167,36 +134,42 @@ public class GroupAnswersControllerJUnitTest {
 
     @Test
     public void testSelectToggleAnswer_notRelatedButton() throws Exception {
+        // given
         String answerId = "answerId";
         SelectionAnswerDto otherAnswer = new SelectionAnswerDto("otherId");
         otherAnswer.setSelected(false);
         testObj.addSelectionAnswer(otherAnswer);
 
+        // when
         testObj.selectToggleAnswer(answerId);
+
+        // then
+        verifyZeroInteractions(responseModel);
     }
 
     @Test
-    public void testReset() throws Exception {
-        SelectionAnswerDto answer = new SelectionAnswerDto("id1");
-        answer.setSelected(true);
-
-        SelectionAnswerDto answer2 = new SelectionAnswerDto("id2");
-        answer2.setSelected(true);
+    public void shouldResetAnswers() throws Exception {
+        // given
+        SelectionAnswerDto answer = createAnswer("id1", true);
+        SelectionAnswerDto answer2 = createAnswer("id2", true);
 
         testObj.addSelectionAnswer(answer);
         testObj.addSelectionAnswer(answer2);
-        testObj.selectAnswer(answer);
-        testObj.selectAnswer(answer2);
+        testObj.selectToggleAnswer("id1");
+        testObj.selectToggleAnswer("id2");
 
+        // when
         testObj.reset();
 
+        // then
         assertEquals(false, answer.isSelected());
         assertEquals(false, answer2.isSelected());
         assertEquals(0, testObj.getSelectedAnswers().size());
     }
 
     @Test
-    public void testSelectOnlyAnswersMatchingIds() throws Exception {
+    public void shouldGetAnswers_withGivenIds() throws Exception {
+        // given
         String answerToSelectId = "answerToSelectId";
         String answerAlreadySelectedId = "answerSelectedId";
 
@@ -208,12 +181,15 @@ public class GroupAnswersControllerJUnitTest {
         testObj.addSelectionAnswer(answerAlreadySelected);
         testObj.addSelectionAnswer(answerToDeselect);
 
-        testObj.selectAnswer(answerToDeselect);
-        testObj.selectAnswer(answerToSelect);
+        testObj.selectToggleAnswer("answerToDeselectId");
+        testObj.selectToggleAnswer(answerToSelectId);
 
         List<String> idsOfAnswersToSelect = Lists.newArrayList(answerToSelectId, answerAlreadySelectedId);
+
+        // when
         testObj.selectOnlyAnswersMatchingIds(idsOfAnswersToSelect);
 
+        // then
         assertEquals(2, testObj.getSelectedAnswers().size());
         assertTrue(testObj.getSelectedAnswers().contains(answerToSelect));
         assertTrue(testObj.getSelectedAnswers().contains(answerAlreadySelected));
@@ -223,44 +199,47 @@ public class GroupAnswersControllerJUnitTest {
         assertEquals(false, answerToDeselect.isSelected());
     }
 
-    private SelectionAnswerDto createAnswer(String id, boolean selected) {
-        SelectionAnswerDto answer = new SelectionAnswerDto();
-        answer.setId(id);
-        answer.setSelected(selected);
-        return answer;
-    }
-
     @Test
-    public void testSetLockedAllAnswers() {
-        SelectionAnswerDto answer = new SelectionAnswerDto();
-        answer.setLocked(false);
-
-        SelectionAnswerDto answer2 = new SelectionAnswerDto();
-        answer2.setLocked(false);
+    public void shouldLockedAllAnswers() {
+        // given
+        SelectionAnswerDto answer = createAnswer("", false);
+        SelectionAnswerDto answer2 = createAnswer("", false);
 
         testObj.addSelectionAnswer(answer);
         testObj.addSelectionAnswer(answer2);
 
+        // when
         testObj.setLockedAllAnswers(true);
 
+        // then
         assertEquals(true, answer.isLocked());
         assertEquals(true, answer2.isLocked());
     }
 
     @Test
-    public void testGetNotSelectedAnswers() throws Exception {
-        SelectionAnswerDto selectedAnswer = new SelectionAnswerDto();
-        SelectionAnswerDto notSelectedAnswer = new SelectionAnswerDto();
+    public void shouldGetNotSelectedAnswers() throws Exception {
+        // given
+        SelectionAnswerDto selectedAnswer = new SelectionAnswerDto("id1");
+        SelectionAnswerDto notSelectedAnswer = new SelectionAnswerDto("id2");
 
         testObj.addSelectionAnswer(selectedAnswer);
         testObj.addSelectionAnswer(notSelectedAnswer);
 
-        testObj.selectAnswer(selectedAnswer);
+        // when
+        testObj.selectToggleAnswer("id1");
 
+        // then
         List<SelectionAnswerDto> notSelectedAnswers = testObj.getNotSelectedAnswers();
         assertEquals(1, notSelectedAnswers.size());
 
         assertTrue(notSelectedAnswers.contains(notSelectedAnswer));
+    }
+
+    private SelectionAnswerDto createAnswer(String id, boolean selected) {
+        SelectionAnswerDto answer = new SelectionAnswerDto();
+        answer.setId(id);
+        answer.setSelected(selected);
+        return answer;
     }
 }
 

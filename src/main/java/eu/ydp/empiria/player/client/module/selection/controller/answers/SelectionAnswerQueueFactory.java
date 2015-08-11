@@ -5,12 +5,12 @@ import eu.ydp.empiria.player.client.module.selection.controller.NoAnswerPriority
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import java.util.*;
 
-public class AnswerQueueFactory {
+public class SelectionAnswerQueueFactory {
 
     private NoAnswerPriorityComparator noPriorityComparator;
 
     @Inject
-    public AnswerQueueFactory(NoAnswerPriorityComparator noPriorityComparator) {
+    public SelectionAnswerQueueFactory(NoAnswerPriorityComparator noPriorityComparator) {
         this.noPriorityComparator = noPriorityComparator;
     }
 

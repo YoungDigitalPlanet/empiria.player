@@ -2,9 +2,10 @@ package eu.ydp.empiria.player.client.module.selection.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
-import eu.ydp.empiria.player.client.module.selection.controller.answers.AnswerQueueFactory;
+import eu.ydp.empiria.player.client.module.selection.controller.answers.SelectionAnswerQueueFactory;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.*;
@@ -20,8 +21,8 @@ public class GroupAnswersController {
     private AbstractResponseModel<?> responseModel;
 
     @Inject
-    public GroupAnswersController(@Assisted boolean isMulti, @Assisted int maxSelected, @ModuleScoped SelectionModuleModel responseModel,
-            AnswerQueueFactory answerQueueFactory) {
+    public GroupAnswersController(@Assisted boolean isMulti, @Assisted int maxSelected, @Assisted SelectionModuleModel responseModel,
+            SelectionAnswerQueueFactory answerQueueFactory) {
         this.maxSelected = maxSelected;
         this.responseModel = responseModel;
         this.selectedAnswers = answerQueueFactory.createAnswerQueue(isMulti, maxSelected);
@@ -31,7 +32,7 @@ public class GroupAnswersController {
         allSelectionAnswers.add(button);
     }
 
-    void selectAnswer(SelectionAnswerDto selectionAnswer) {
+    private void selectAnswer(SelectionAnswerDto selectionAnswer) {
         if (!allSelectionAnswers.contains(selectionAnswer)) {
             LOGGER.log(Level.SEVERE, "SelectButton method called from GroupChoicesController with button as argument, "
                     + "that is not connected with this controller!");
@@ -54,7 +55,7 @@ public class GroupAnswersController {
         responseModel.removeAnswer(selectionAnswer.getId());
     }
 
-    void unselectAnswer(SelectionAnswerDto selectionAnswer) {
+    private void unselectAnswer(SelectionAnswerDto selectionAnswer) {
         selectedAnswers.remove(selectionAnswer);
         selectionAnswer.setSelected(false);
         responseModel.removeAnswer(selectionAnswer.getId());

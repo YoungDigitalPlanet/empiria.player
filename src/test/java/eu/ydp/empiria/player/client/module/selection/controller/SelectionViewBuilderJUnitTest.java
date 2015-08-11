@@ -54,7 +54,7 @@ public class SelectionViewBuilderJUnitTest {
         bean = new SelectionInteractionBean();
         bean.setMulti(true);
 
-        viewBuilder = new SelectionViewBuilder(selectionModuleFactory, styleNameConstants, positionGenerator, selectionModuleView);
+        viewBuilder = new SelectionViewBuilder(selectionModuleFactory, styleNameConstants, positionGenerator, selectionModuleView, model);
         viewBuilder.bindView(selectionModulePresenter, bean);
     }
 
@@ -135,7 +135,7 @@ public class SelectionViewBuilderJUnitTest {
         List<SelectionSimpleChoiceBean> simpleChoices = Lists.newArrayList(choice1, choice2);
 
         GroupAnswersController groupController = mock(GroupAnswersController.class);
-        when(selectionModuleFactory.createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax())).thenReturn(groupController);
+        when(selectionModuleFactory.getGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model)).thenReturn(groupController);
 
         String multiStylePart = "selectionStylePart";
         if (bean.isMulti()) {
@@ -147,10 +147,10 @@ public class SelectionViewBuilderJUnitTest {
         // first choice
         ChoiceButtonClickHandler clickHandler1 = mock(ChoiceButtonClickHandler.class);
         String answer1Id = itemBean.getIdentifier() + " " + choice1.getIdentifier();
-        when(selectionModuleFactory.createChoiceButtonClickHandler(groupController, answer1Id, selectionModulePresenter)).thenReturn(clickHandler1);
+        when(selectionModuleFactory.getChoiceButtonClickHandler(groupController, answer1Id, selectionModulePresenter)).thenReturn(clickHandler1);
 
         SelectionAnswerDto answer1 = new SelectionAnswerDto(answer1Id);
-        when(selectionModuleFactory.createSelectionAnswerDto(answer1Id)).thenReturn(answer1);
+        when(selectionModuleFactory.getSelectionAnswerDto(answer1Id)).thenReturn(answer1);
 
         SelectionGridElementPosition firstUpdatedPositon = new SelectionGridElementPosition(0, 0);
         when(positionGenerator.getButtonElementPositionFor(0, 0)).thenReturn(firstUpdatedPositon);
@@ -160,10 +160,10 @@ public class SelectionViewBuilderJUnitTest {
         // second choice
         ChoiceButtonClickHandler clickHandler2 = mock(ChoiceButtonClickHandler.class);
         String answer2Id = itemBean.getIdentifier() + " " + choice2.getIdentifier();
-        when(selectionModuleFactory.createChoiceButtonClickHandler(groupController, answer2Id, selectionModulePresenter)).thenReturn(clickHandler2);
+        when(selectionModuleFactory.getChoiceButtonClickHandler(groupController, answer2Id, selectionModulePresenter)).thenReturn(clickHandler2);
 
         SelectionAnswerDto answer2 = new SelectionAnswerDto(answer2Id);
-        when(selectionModuleFactory.createSelectionAnswerDto(answer2Id)).thenReturn(answer2);
+        when(selectionModuleFactory.getSelectionAnswerDto(answer2Id)).thenReturn(answer2);
 
         SelectionGridElementPosition secondUpdatedPositon = new SelectionGridElementPosition(1, 0);
         when(positionGenerator.getButtonElementPositionFor(0, 1)).thenReturn(secondUpdatedPositon);
@@ -173,7 +173,7 @@ public class SelectionViewBuilderJUnitTest {
         // then
         List<GroupAnswersController> resultControllers = viewBuilder.fillGrid(items, simpleChoices);
 
-        verify(selectionModuleFactory).createGroupAnswerController(bean.isMulti(), itemBean.getMatchMax());
+        verify(selectionModuleFactory).getGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model);
         if (bean.isMulti()) {
             verify(styleNameConstants).SELECTION_MULTI();
         } else {
@@ -183,9 +183,9 @@ public class SelectionViewBuilderJUnitTest {
         // first choice
         SelectionGridElementPosition firstPosition = new SelectionGridElementPosition(0, 0);
         verify(selectionModuleView).createButtonForItemChoicePair(firstPosition, multiStylePart);
-        verify(selectionModuleFactory).createChoiceButtonClickHandler(groupController, answer1Id, selectionModulePresenter);
+        verify(selectionModuleFactory).getChoiceButtonClickHandler(groupController, answer1Id, selectionModulePresenter);
         verify(selectionModuleView).addClickHandlerToButton(firstPosition, clickHandler1);
-        verify(selectionModuleFactory).createSelectionAnswerDto(answer1Id);
+        verify(selectionModuleFactory).getSelectionAnswerDto(answer1Id);
         verify(selectionModuleView).setItemDisplayedName(null, firstPosition);
         verify(selectionModuleView).setChoiceOptionDisplayedName(null, firstPosition);
 
@@ -194,9 +194,9 @@ public class SelectionViewBuilderJUnitTest {
         // second choice
         SelectionGridElementPosition secondPosition = new SelectionGridElementPosition(1, 0);
         verify(selectionModuleView).createButtonForItemChoicePair(secondPosition, multiStylePart);
-        verify(selectionModuleFactory).createChoiceButtonClickHandler(groupController, answer2Id, selectionModulePresenter);
+        verify(selectionModuleFactory).getChoiceButtonClickHandler(groupController, answer2Id, selectionModulePresenter);
         verify(selectionModuleView).addClickHandlerToButton(secondPosition, clickHandler2);
-        verify(selectionModuleFactory).createSelectionAnswerDto(answer2Id);
+        verify(selectionModuleFactory).getSelectionAnswerDto(answer2Id);
         verify(selectionModuleView).setChoiceOptionDisplayedName(null, secondPosition);
 
         verify(groupController).addSelectionAnswer(answer2);
