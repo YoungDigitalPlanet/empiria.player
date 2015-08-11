@@ -67,7 +67,7 @@ public class EmulatedDragDrop<W extends Widget> extends AbstractDragDrop<W> impl
         options.setRevert(RevertOption.ON_INVALID_DROP);
         options.setCursor(Cursor.MOVE);
         options.setZIndex(DRAG_Z_INDEX);
-        options.setContainment("window");
+        options.setContainment(".qp-player");
         if (widget instanceof DraggableWidget) {
             dragWidget = (DraggableWidget<W>) widget;
         } else {

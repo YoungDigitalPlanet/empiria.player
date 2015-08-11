@@ -39,7 +39,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
 
     @Override
     public void initModule(Element element) {
-        eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW, PAGE_CHANGE), this, pageScopeFactory.getCurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW), this, pageScopeFactory.getCurrentPageScope());
     }
 
     private boolean isFirstPage() {
@@ -70,8 +70,8 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
             case CONTINUE:
             case CHECK:
             case SHOW_ANSWERS:
-                setEnabled(!isEnd() && !testMode);
             case TEST_PAGE_LOADED:
+                setEnabled(!isEnd() && !testMode);
                 setStyleName();
                 break;
             default:
@@ -136,7 +136,7 @@ public class NavigationButtonModule extends ControlModule implements ISimpleModu
             Timer timer = new Timer() {
                 @Override
                 public void run() {
-                    setEnabled(true && !isEnd());
+                    setEnabled(!isEnd());
                     setStyleName();
                 }
             };
