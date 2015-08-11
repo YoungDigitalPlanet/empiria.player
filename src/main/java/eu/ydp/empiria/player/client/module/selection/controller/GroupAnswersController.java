@@ -4,12 +4,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
+import eu.ydp.empiria.player.client.module.selection.controller.answers.AnswerQueueFactory;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class GroupAnswersController {
 
@@ -22,15 +21,10 @@ public class GroupAnswersController {
 
     @Inject
     public GroupAnswersController(@Assisted boolean isMulti, @Assisted int maxSelected, @ModuleScoped SelectionModuleModel responseModel,
-                                  NoAnswerPriorityComparator noPriorityComparator) {
+            AnswerQueueFactory answerQueueFactory) {
         this.maxSelected = maxSelected;
         this.responseModel = responseModel;
-
-        if (isMulti) {
-            selectedAnswers = new PriorityQueue<SelectionAnswerDto>(maxSelected, noPriorityComparator);
-        } else {
-            selectedAnswers = new PriorityQueue<SelectionAnswerDto>(1, noPriorityComparator);
-        }
+        this.selectedAnswers = answerQueueFactory.createAnswerQueue(isMulti, maxSelected);
     }
 
     public void addSelectionAnswer(SelectionAnswerDto button) {
@@ -134,7 +128,7 @@ public class GroupAnswersController {
     }
 
     public List<SelectionAnswerDto> getSelectedAnswers() {
-        return new ArrayList<SelectionAnswerDto>(selectedAnswers);
+        return new ArrayList<>(selectedAnswers);
     }
 
     public List<SelectionAnswerDto> getNotSelectedAnswers() {

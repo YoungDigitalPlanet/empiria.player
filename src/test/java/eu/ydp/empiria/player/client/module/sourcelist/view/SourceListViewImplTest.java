@@ -1,46 +1,35 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
-import com.google.common.collect.BiMap;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
 import com.google.common.collect.Lists;
 import com.google.gwt.event.dom.client.DragDropEventBase;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.gin.factory.TouchReservationFactory;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
+import eu.ydp.empiria.player.client.module.dragdrop.*;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
-import eu.ydp.empiria.player.client.util.dom.drag.DroppableObject;
 import eu.ydp.empiria.player.client.util.events.internal.dragdrop.DragDropEventTypes;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.util.List;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SourceListViewImplTest {
 
     @Mock
     private SourceListPresenter sourceListPresenter;
-
     @Mock
     private TouchReservationFactory touchReservationFactory;
     @Mock
@@ -74,37 +63,19 @@ public class SourceListViewImplTest {
         when(sourceListViewItemProvider.get()).then(new Answer<SourceListViewItem>() {
             @Override
             public SourceListViewItem answer(InvocationOnMock invocation) throws Throwable {
-                SourceListViewItem mock = mock(SourceListViewItem.class);
-                doReturn(sourceListViewItemHeight).when(mock).getHeight();
-                doReturn(sourceListViewItemWidth).when(mock).getWidth();
-                return mock;
+                doReturn(sourceListViewItemHeight).when(listViewItemMock).getHeight();
+                doReturn(sourceListViewItemWidth).when(listViewItemMock).getWidth();
+                return listViewItemMock;
             }
         });
         items = mock(FlowPanelWithDropZone.class);
         instance.items = items;
     }
 
+    SourceListViewItem listViewItemMock = mock(SourceListViewItem.class);
+
     private void addItems() {
-        for (String id : allIds) {
-            instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, id, id), inlineBodyGeneratorSocket);
-        }
-    }
-
-    @Test
-    public void testDisableItems() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
-        addItems();
-        instance.disableItems(true);
-        for (SourceListViewItem item : itemIdToItemCollection.values()) {
-            verify(item).setDisableDrag(eq(true));
-        }
-
-        instance.disableItems(false);
-        for (SourceListViewItem item : itemIdToItemCollection.values()) {
-            verify(item).setDisableDrag(eq(false));
-        }
+        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
     }
 
     @Test
@@ -129,44 +100,32 @@ public class SourceListViewImplTest {
     }
 
     @Test
-    public void testOnDragEvent() throws Exception {
-        addItems();
+    public void shouldNotSetData_whenNotDragStartEvent() throws Exception {
+        // given
+        String itemContent = "itemContent";
+        String itemId = "item";
         DragDropEventBase event = mock(DragDropEventBase.class);
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
 
+        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
         instance.setSourceListPresenter(sourceListPresenter);
+        instance.onDragEvent(DragDropEventTypes.DRAG_CANCEL, listViewItemMock, event);
 
-        for (Map.Entry<String, SourceListViewItem> item : itemIdToItemCollection.entrySet()) {
-            for (DragDropEventTypes type : DragDropEventTypes.values()) {
-                if (type != DragDropEventTypes.DRAG_START) {
-                    instance.onDragEvent(type, item.getValue(), event);
-                    verify(event, times(0)).setData(eq("json"), anyString());
-                    verify(sourceListPresenter).onDragEvent(eq(type), eq(item.getKey()));
-                }
-            }
-        }
+        verify(event, never()).setData(eq("json"), anyString());
+        verify(sourceListPresenter).onDragEvent(eq(DragDropEventTypes.DRAG_CANCEL), eq(itemId));
+
     }
 
     @Test
-    public void testGetItemValue() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldGetItemValue() {
         addItems();
 
-        for (String id : allIds) {
-            instance.getItemValue(id);
-        }
+        instance.getItemValue("a");
 
-        for (SourceListViewItem item : itemIdToItemCollection.values()) {
-            verify(item).getItemContent();
-        }
+        verify(listViewItemMock).getItemContent();
     }
 
     @Test
-    public void testCreateItem() throws Exception {
+    public void shouldCreateItem() {
         String itemContent = "itemContent";
         String itemId = "item";
         doReturn(viewItem).when(sourceListViewItemProvider).get();
@@ -181,132 +140,88 @@ public class SourceListViewImplTest {
     }
 
     @Test
-    public void testHideItem() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldHideItem() {
+        // given
         addItems();
+
+        // when
         instance.hideItem("a");
-        SourceListViewItem viewItem = itemIdToItemCollection.get("a");
-        verify(viewItem).hide();
-        allIds.remove("a");
-        for (String id : allIds) {
-            viewItem = itemIdToItemCollection.get(id);
-            verify(viewItem, times(0)).hide();
-        }
+
+        // then
+        verify(listViewItemMock).hide();
+
     }
 
     @Test
-    public void testHideItemIdNotPresent() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldNotHideItem_whenIdNotPresent() {
+        // given
         addItems();
+
+        // when
         instance.hideItem("aa");
 
-        for (String id : allIds) {
-            viewItem = itemIdToItemCollection.get(id);
-            verify(viewItem, times(0)).hide();
-        }
+        // then
+        verify(listViewItemMock, never()).show();
     }
 
     @Test
-    public void testShowItem() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldShowItem() {
+        // given
         addItems();
+
+        // when
         instance.showItem("a");
-        SourceListViewItem viewItem = itemIdToItemCollection.get("a");
-        verify(viewItem).show();
-        allIds.remove("a");
-        for (String id : allIds) {
-            viewItem = itemIdToItemCollection.get(id);
-            verify(viewItem, times(0)).show();
-        }
+
+        // then
+        verify(listViewItemMock).show();
     }
 
     @Test
-    public void testShowItemIdNotPresent() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldNotShowItem_whenIdNotPresent() {
+        // given
         addItems();
+
+        // when
         instance.showItem("aa");
-        for (String id : allIds) {
-            viewItem = itemIdToItemCollection.get(id);
-            verify(viewItem, times(0)).show();
-        }
+
+        // then
+        verify(listViewItemMock, never()).show();
     }
 
     @Test
-    public void testLockForDragDrop() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldLockItemForDrag() {
+        // given
         addItems();
+
+        // when
         instance.lockItemForDragDrop("a");
-        viewItem = itemIdToItemCollection.get("a");
-        verify(viewItem).lockForDragDrop();
-        for (String id : allIds) {
-            if (!id.equals("a")) {
-                viewItem = itemIdToItemCollection.get(id);
-                verify(viewItem, times(0)).lockForDragDrop();
-                verify(viewItem, times(0)).unlockForDragDrop();
-            }
-        }
+
+        // then
+        verify(listViewItemMock).lockForDragDrop();
     }
 
     @Test
-    public void testUnlockForDragDrop() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldUnlockItemForDrag() {
+        // given
         addItems();
+
+        // when
         instance.unlockItemForDragDrop("a");
-        viewItem = itemIdToItemCollection.get("a");
-        verify(viewItem).unlockForDragDrop();
-        for (String id : allIds) {
-            if (!id.equals("a")) {
-                viewItem = itemIdToItemCollection.get(id);
-                verify(viewItem, times(0)).unlockForDragDrop();
-                verify(viewItem, times(0)).lockForDragDrop();
-            }
-        }
+
+        // then
+        verify(listViewItemMock).unlockForDragDrop();
     }
 
     @Test
-    public void lockForDragDrop() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        DroppableObject sourceListDropZone = mock(DroppableObject.class);
-        reflectionsUtils.setValueInObjectOnField("sourceListDropZone", instance, sourceListDropZone);
-        instance.lockForDragDrop();
-        verify(sourceListDropZone).setDisableDrop(true);
-    }
-
-    @Test
-    public void unlockForDragDrop() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        DroppableObject sourceListDropZone = mock(DroppableObject.class);
-        reflectionsUtils.setValueInObjectOnField("sourceListDropZone", instance, sourceListDropZone);
-        instance.unlockForDragDrop();
-        verify(sourceListDropZone).setDisableDrop(false);
-    }
-
-    @Test
-    public void getMaxItemSize() throws Exception {
-        ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-        BiMap<String, SourceListViewItem> itemIdToItemCollection = (BiMap<String, SourceListViewItem>) reflectionsUtils.getValueFromFiledInObject(
-                "itemIdToItemCollection", instance);
+    public void shouldGetMaxItemSize() {
+        // given
         addItems();
+
+        // when
         HasDimensions maxItemSize = instance.getMaxItemSize();
-        for (String id : allIds) {
-            viewItem = itemIdToItemCollection.get(id);
-            verify(viewItem, times(1)).getWidth();
-            verify(viewItem, times(1)).getHeight();
-        }
+
+        // then
         assertThat(maxItemSize.getHeight()).isEqualTo(sourceListViewItemHeight);
         assertThat(maxItemSize.getWidth()).isEqualTo(sourceListViewItemWidth);
     }
-
 }
