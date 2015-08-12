@@ -11,13 +11,13 @@ import java.util.List;
 
 public class ItemDataSourceCollectionManager {
 
-    public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l) {
-        listener = l;
-    }
-
     private ItemDataSource[] items;
-    private final ItemDataCollectionLoaderEventListener listener;
+    private ItemDataCollectionLoaderEventListener listener;
     private int itemsLoadCounter;
+
+    public void setLoaderEventListener(ItemDataCollectionLoaderEventListener listener) {
+        this.listener = listener;
+    }
 
     public void initItemDataCollection(int itemsCount) {
         items = new ItemDataSource[itemsCount];
@@ -81,6 +81,10 @@ public class ItemDataSourceCollectionManager {
         } else {
             return 0;
         }
+    }
+
+    public String getItemIdentifier(int index) {
+        return items[index].getPageIdentifier();
     }
 
     public List<String> getStyleLinksForUserAgent(int itemIndex, String userAgent) {

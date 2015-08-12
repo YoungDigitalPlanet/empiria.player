@@ -49,11 +49,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
     private Image mainPreloader;
 
     @Inject
-    public DataSourceManager(AssessmentDataSourceManager assessmentDataManager) {
+    public DataSourceManager(AssessmentDataSourceManager assessmentDataManager, ItemDataSourceCollectionManager itemDataCollectionManager) {
         this.assessmentDataManager = assessmentDataManager;
         this.assessmentDataManager.setSkinListener(this);
         mode = DataSourceManagerMode.NONE;
-        itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
+        this.itemDataCollectionManager = itemDataCollectionManager;
+        itemDataCollectionManager.setLoaderEventListener(this);
         libraryLoader = new LibraryLoader(this);
         styleDataSourceLoader = new StyleDataSourceLoader();
     }

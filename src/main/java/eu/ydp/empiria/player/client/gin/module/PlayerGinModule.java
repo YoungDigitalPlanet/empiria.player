@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.PlayerContainersAccessor;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
+import eu.ydp.empiria.player.client.controller.data.ItemDataSourceCollectionManager;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
@@ -119,6 +120,9 @@ import eu.ydp.empiria.player.client.view.player.PageControllerCache;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
+import eu.ydp.empiria.player.client.view.player.styles.CurrentItemStyleProvider;
+import eu.ydp.empiria.player.client.view.player.styles.ItemStylesContainer;
+import eu.ydp.empiria.player.client.view.player.styles.PlayerStylesController;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
 import eu.ydp.gwtutil.client.dom.DOMTreeWalker;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
@@ -156,7 +160,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(InteractionEventsListener.class).to(DeliveryEventsHub.class);
         bind(InteractionEventsSocket.class).to(DeliveryEventsHub.class);
         bind(DeliveryEventsHub.class).in(Singleton.class);
-
+        bind(ItemDataSourceCollectionManager.class).in(Singleton.class);
         bind(UserAgentCheckerWrapper.class).in(Singleton.class);
         bind(NativeEventWrapper.class).in(Singleton.class);
 
@@ -249,10 +253,13 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(ProgressUpdateLogic.class).in(Singleton.class);
         bind(WindowResizeController.class).asEagerSingleton();
         bind(LessonStateReset.class).asEagerSingleton();
+        bind(PlayerStylesController.class).asEagerSingleton();
         bind(SoundProcessorManagerExtension.class).in(Singleton.class);
         bind(ExtensionsProvider.class).in(Singleton.class);
         bind(ExternalEventDispatcher.class).in(Singleton.class);
         bind(ResizeTimer.class).in(Singleton.class);
+        bind(ItemStylesContainer.class).in(Singleton.class);
+        bind(CurrentItemStyleProvider.class).in(Singleton.class);
 
         install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

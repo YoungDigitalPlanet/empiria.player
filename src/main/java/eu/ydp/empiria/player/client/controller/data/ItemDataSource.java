@@ -21,6 +21,11 @@ public class ItemDataSource {
     private ReportFeedbacksParser reportFeedbacksParser = new ReportFeedbacksParser();
     private ProgressToStringRangeMap reportFeedbacks;
     private final String errorMessage;
+    private String identifier;
+
+    public String getPageIdentifier() {
+        return identifier;
+    }
 
     public ItemDataSource(XmlData d) {
         data = d;
@@ -28,6 +33,7 @@ public class ItemDataSource {
         Node rootNode = data.getDocument().getElementsByTagName("assessmentItem").item(0);
         Element rootElement = (Element) rootNode;
         title = rootElement.getAttribute("title");
+        identifier = rootElement.getAttribute("identifier");
         NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedbackText");
         this.reportFeedbacks = reportFeedbacksParser.parse(feedbacksNodeList);
         errorMessage = "";
@@ -35,7 +41,7 @@ public class ItemDataSource {
 
     public ItemDataSource(String err) {
         String detail = "";
-        if (err.indexOf(":") != -1) {
+        if (err.contains(":")) {
             detail = err.substring(0, err.indexOf(":"));
         }
         errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ITEM_FAILED_TO_LOAD) + detail;

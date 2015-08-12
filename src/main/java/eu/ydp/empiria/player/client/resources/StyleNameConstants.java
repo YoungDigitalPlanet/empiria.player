@@ -848,6 +848,9 @@ public interface StyleNameConstants extends Constants {
     @DefaultStringValue("qp-page-selected")
     String QP_PAGE_SELECTED();
 
+    @DefaultStringValue("qp-page-template")
+    String QP_PAGE_TEMPLATE();
+
     @DefaultStringValue("qp-page-title")
     String QP_PAGE_TITLE();
 
