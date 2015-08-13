@@ -8,7 +8,7 @@ import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 import org.junit.AfterClass;
@@ -35,7 +35,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
     protected ClickHandler handler;
 
     private CustomPushButton button;
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
 
     private static class CustomGuiceModule implements Module {
         @Override
@@ -62,7 +62,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         requestInvoker = mock(FlowRequestInvoker.class);
         instance.setFlowRequestsInvoker(requestInvoker);
         button = injector.getInstance(CustomPushButton.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        styleNameConstants = injector.getInstance(ModeStyleNameConstants.class);
         doAnswer(new Answer<ClickHandler>() {
 
             @Override

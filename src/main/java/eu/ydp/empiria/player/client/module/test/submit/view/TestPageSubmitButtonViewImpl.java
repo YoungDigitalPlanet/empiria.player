@@ -7,8 +7,8 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.module.test.TestStyleNameConstants;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
@@ -22,7 +22,7 @@ public class TestPageSubmitButtonViewImpl extends Composite implements TestPageS
     @Inject
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
     @Inject
     private TestStyleNameConstants testStyleNameConstants;
 

@@ -4,14 +4,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.WidgetCollection;
-import eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants;
+import eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 
 public class SelectionButtonGridElementImpl extends FlowPanel implements SelectionButtonGridElement {
 
-    private ChoiceStyleNameConstants styleNameConstants;
+    private MarkAnswersStyleNameConstants styleNameConstants;
 
-    public SelectionButtonGridElementImpl(ChoiceStyleNameConstants styleNameConstants) {
+    public SelectionButtonGridElementImpl(MarkAnswersStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
     }
 

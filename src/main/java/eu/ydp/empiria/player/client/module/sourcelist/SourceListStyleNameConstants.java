@@ -9,11 +9,4 @@ public interface SourceListStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-sourcelist-item")
     String QP_SOURCELIST_ITEM();
-
-    @DefaultStringValue("qp-sourcelist-item-disabled")
-    String QP_SOURCELIST_ITEM_DISABLED();
-
-    @DefaultStringValue("qp-sourcelist-item-dragged")
-    String QP_SOURCELIST_ITEM_DRAGGED();
-
 }

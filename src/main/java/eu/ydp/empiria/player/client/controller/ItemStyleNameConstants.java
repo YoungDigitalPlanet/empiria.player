@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface ItemControllerStyleNameConstants extends Constants {
+public interface ItemStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-item-title")
     String QP_ITEM_TITLE();

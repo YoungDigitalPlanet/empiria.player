@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants;
+import eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
@@ -15,7 +15,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     public static final int ROWS_RESERVED_FOR_COLUMN_HEADER = 1;
     public static final int COLUMNS_RESERVED_FOR_ROW_HEADER = 1;
 
-    private ChoiceStyleNameConstants styleNameConstants;
+    private MarkAnswersStyleNameConstants styleNameConstants;
     private SelectionStyleNameConstants selectionStyleNameConstants;
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
@@ -26,7 +26,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     }
 
     @Inject
-    public SelectionGridElementGeneratorImpl(ChoiceStyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory) {
+    public SelectionGridElementGeneratorImpl(MarkAnswersStyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory) {
         this.styleNameConstants = styleNameConstants;
         this.userInteractionHandlerFactory = userInteractionHandlerFactory;
     }

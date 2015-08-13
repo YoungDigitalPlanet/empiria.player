@@ -16,8 +16,8 @@ public class ConnectionItemViewRight extends AbstractConnectionItemView {
     }
 
     @Inject
-    public ConnectionItemViewRight(ConnectionStyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
-        super(styleNames, bodyGenerator, bean);
+    public ConnectionItemViewRight(@Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean, ConnectionStyleNameConstants styleNames) {
+        super(bodyGenerator, bean, styleNames);
         initWidget(uiBinder.createAndBindUi(this));
         buildView();
     }

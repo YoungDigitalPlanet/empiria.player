@@ -6,17 +6,17 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
-import eu.ydp.empiria.player.client.view.ViewStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.view.item.ItemContentView;
 import eu.ydp.empiria.player.client.view.item.ItemViewSocket;
 
 public class PageViewSocketImpl implements PageViewSocket {
-    private final ViewStyleNameConstants styleNames;
+    private final PageStyleNameConstants styleNames;
     private final PageContentView view;
     private ItemContentView[] items;
 
     @Inject
-    public PageViewSocketImpl(@Assisted PageContentView view, ViewStyleNameConstants styleNames) {
+    public PageViewSocketImpl(@Assisted PageContentView view, PageStyleNameConstants styleNames) {
         this.view = view;
         this.styleNames = styleNames;
     }

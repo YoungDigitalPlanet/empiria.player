@@ -37,7 +37,7 @@ import static eu.ydp.empiria.player.client.util.events.internal.state.StateChang
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
-    private final ItemControllerStyleNameConstants styleNames;
+    private final ItemStyleNameConstants styleNames;
     private final EventsBus eventsBus;
 
     private final ItemData data;
@@ -53,7 +53,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
     @Inject
     public ItemController(@Assisted ItemViewSocket itemViewSocket, @Assisted ItemSessionSocket itemSessionSocket,
                           @PageScoped ItemData data, IPlayerContainersAccessor accessor,
-                          ItemControllerStyleNameConstants styleNames, EventsBus eventsBus,
+                          ItemStyleNameConstants styleNames, EventsBus eventsBus,
                           PageScopeFactory pageScopeFactory, AssessmentControllerFactory controllerFactory) {
         this.itemViewSocket = itemViewSocket;
         this.itemSessionSocket = itemSessionSocket;

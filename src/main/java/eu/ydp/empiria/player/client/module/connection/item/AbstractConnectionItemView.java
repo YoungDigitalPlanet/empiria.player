@@ -24,7 +24,7 @@ public abstract class AbstractConnectionItemView extends Composite {
     private final InlineBodyGeneratorSocket bodyGenerator;
 
     @Inject
-    public AbstractConnectionItemView(ConnectionStyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
+    public AbstractConnectionItemView(@Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean, ConnectionStyleNameConstants styleNames) {
         this.bean = bean;
         this.styleNames = styleNames;
         this.bodyGenerator = bodyGenerator;

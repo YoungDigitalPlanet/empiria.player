@@ -21,11 +21,4 @@ public interface TestStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-test-submit-disabled")
     String QP_TEST_SUBMIT_DISABLED();
-
-    @DefaultStringValue("qp-test-submit-submitted-mode")
-    String QP_TEST_SUBMIT_SUBMITTED_MODE();
-
-    @DefaultStringValue("qp-test-submit-preview-mode")
-    String QP_TEST_SUBMIT_PREVIEW_MODE();
-
 }

@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.view;
+package eu.ydp.empiria.player.client.resources;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface ViewStyleNameConstants extends Constants {
+public interface PageStyleNameConstants extends Constants {
 
     @Constants.DefaultStringValue("qp-page")
     String QP_PAGE();
@@ -39,18 +39,6 @@ public interface ViewStyleNameConstants extends Constants {
 
     @Constants.DefaultStringValue("qp-page-unselected")
     String QP_PAGE_UNSELECTED();
-
-    @DefaultStringValue("qp-player")
-    String QP_PLAYER();
-
-    @DefaultStringValue("qp-player-body")
-    String QP_PLAYER_BODY();
-
-    @DefaultStringValue("qp-player-footer")
-    String QP_PLAYER_FOOTER();
-
-    @DefaultStringValue("qp-player-header")
-    String QP_PLAYER_HEADER();
 
     @DefaultStringValue("qp-footer")
     String QP_FOOTER();

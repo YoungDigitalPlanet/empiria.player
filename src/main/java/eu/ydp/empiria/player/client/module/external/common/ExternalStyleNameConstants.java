@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.external;
+package eu.ydp.empiria.player.client.module.external.common;
 
 import com.google.gwt.i18n.client.Constants;
 

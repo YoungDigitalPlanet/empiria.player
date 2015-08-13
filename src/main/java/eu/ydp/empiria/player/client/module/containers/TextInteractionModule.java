@@ -14,7 +14,7 @@ public class TextInteractionModule extends BindingContainerModule implements IBo
     private final BookmarkingHelper bookmarkingHelper;
 
     @Inject
-    public TextInteractionModule(ContaintersStyleNameConstants styleNames) {
+    public TextInteractionModule(TextInteractionStyleNameConstants styleNames) {
         setContainerStyleName(styleNames.QP_TEXTINTERACTION());
         bookmarkingHelper = new BookmarkingHelper(getView());
     }

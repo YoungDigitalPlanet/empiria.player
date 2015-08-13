@@ -2,14 +2,14 @@ package eu.ydp.empiria.player.client.controller.multiview;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.view.ViewStyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 
 import java.util.Collection;
 
 public class MultiPageControllerStyleManager {
 
     @Inject
-    private ViewStyleNameConstants styleNames;
+    private PageStyleNameConstants styleNames;
 
     public void clearPagesStyles(Collection<FlowPanel> keyPanels) {
         for (FlowPanel flowPanel : keyPanels) {

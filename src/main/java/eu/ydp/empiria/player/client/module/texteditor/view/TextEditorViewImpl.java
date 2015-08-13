@@ -9,8 +9,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
+import eu.ydp.empiria.player.client.module.texteditor.TextEditorStyleNameConstants;
 
 public class TextEditorViewImpl extends Composite implements TextEditorView {
 
@@ -27,10 +27,10 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
     TextArea textEditor;
 
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
 
     @Inject
-    private InlineChoiceStyleNameConstants inlineChoiceStyleNameConstants;
+    private TextEditorStyleNameConstants textEditorStyleNameConstants;
 
     @Override
     public void init() {
@@ -39,12 +39,12 @@ public class TextEditorViewImpl extends Composite implements TextEditorView {
 
     @Override
     public void lock() {
-        mainPanel.addStyleName(inlineChoiceStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
+        mainPanel.addStyleName(textEditorStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
     }
 
     @Override
     public void unlock() {
-        mainPanel.removeStyleName(inlineChoiceStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
+        mainPanel.removeStyleName(textEditorStyleNameConstants.QP_TEXT_EDITOR_LOCKED());
     }
 
     @Override

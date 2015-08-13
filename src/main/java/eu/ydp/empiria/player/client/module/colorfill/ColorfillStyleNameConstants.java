@@ -9,17 +9,8 @@ public interface ColorfillStyleNameConstants extends Constants {
     @DefaultStringValue("qp-colorfill-answers-marking-correct")
     String QP_COLORFILL_ANSWERS_MARKING_CORRECT();
 
-    @DefaultStringValue("qp-colorfill-answers-marking-correct-panel")
-    String QP_COLORFILL_ANSWERS_MARKING_CORRECT_PANEL();
-
     @DefaultStringValue("qp-colorfill-answers-marking-wrong")
     String QP_COLORFILL_ANSWERS_MARKING_WRONG();
-
-    @DefaultStringValue("qp-colorfill-answers-marking-wrong-panel")
-    String QP_COLORFILL_ANSWERS_MARKING_WRONG_PANEL();
-
-    @DefaultStringValue("qp-colorfill-canvas")
-    String QP_COLORFILL_CANVAS();
 
     @DefaultStringValue("qp-colorfill-container")
     String QP_COLORFILL_CONTAINER();

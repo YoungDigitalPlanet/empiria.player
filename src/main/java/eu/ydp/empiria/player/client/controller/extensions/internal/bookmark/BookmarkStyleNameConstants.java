@@ -4,14 +4,8 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface BookmarkStyleNameConstants extends Constants {
 
-    @DefaultStringValue("qp-bookmark-clearable")
-    String QP_BOOKMARK_CLEARABLE();
-
     @DefaultStringValue("qp-bookmark-popup")
     String QP_BOOKMARK_POPUP();
-
-    @DefaultStringValue("qp-bookmark-popup-button-cancel")
-    String QP_BOOKMARK_POPUP_BUTTON_CANCEL();
 
     @DefaultStringValue("qp-bookmark-popup-button-close")
     String QP_BOOKMARK_POPUP_BUTTON_CLOSE();

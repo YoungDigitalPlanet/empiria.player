@@ -11,7 +11,6 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
-import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieStyleNameConstants;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -31,27 +30,17 @@ import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
-import eu.ydp.empiria.player.client.module.button.ButtonStyleNameConstants;
-import eu.ydp.empiria.player.client.module.colorfill.ColorfillStyleNameConstants;
-import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
-import eu.ydp.empiria.player.client.module.drawing.DrawingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
-import eu.ydp.empiria.player.client.module.img.ImgStyleNameConstants;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
-import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
-import eu.ydp.empiria.player.client.module.labelling.LabellingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
-import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParser;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
-import eu.ydp.empiria.player.client.module.textentry.TextEntryStyleNameConstants;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -59,7 +48,6 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.PlayerEventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.HasTouchHandlersMock;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
-import eu.ydp.empiria.player.client.view.ViewStyleNameConstants;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
 import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
 import eu.ydp.gwtutil.client.debug.log.LogAppender;
@@ -74,7 +62,6 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
-import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 import org.mockito.Matchers;
@@ -176,6 +163,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
         install(new FactoryModuleBuilder().build(MediaFactory.class));
+        install(new StyleNameConstantsProvider());
     }
 
     private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
@@ -189,78 +177,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         });
     }
 
-    @Provides
-    @Singleton
-    public StyleNameConstants getNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public ConnectionStyleNameConstants getConnectionStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(ConnectionStyleNameConstants.class), ConnectionStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public ColorfillStyleNameConstants getColorfillStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(ColorfillStyleNameConstants.class), ColorfillStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public ImgStyleNameConstants getImgStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(ImgStyleNameConstants.class), ImgStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public MediaStyleNameConstants getMediaStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(MediaStyleNameConstants.class), MediaStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public InlineChoiceStyleNameConstants getInlineChoiceStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(InlineChoiceStyleNameConstants.class), InlineChoiceStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public LabellingStyleNameConstants getLabellingNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(LabellingStyleNameConstants.class), LabellingStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public DrawingStyleNameConstants getDrawingStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(DrawingStyleNameConstants.class), DrawingStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public StickieStyleNameConstants getStickieStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(StickieStyleNameConstants.class), StickieStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public ButtonStyleNameConstants getButtonStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(ButtonStyleNameConstants.class), ButtonStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public ViewStyleNameConstants getViewStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(ViewStyleNameConstants.class), ViewStyleNameConstants.class);
-    }
-
-    @Provides
-    @Singleton
-    public TextEntryStyleNameConstants getTextEntryStyleNameConstants() {
-        return GWTConstantsMock.mockAllStringMethods(mock(TextEntryStyleNameConstants.class), TextEntryStyleNameConstants.class);
-    }
-
+    
     @Provides
     public MediaControllerFactory getMediaControllerFactory() {
         MediaControllerFactory factory = mock(MediaControllerFactory.class);
