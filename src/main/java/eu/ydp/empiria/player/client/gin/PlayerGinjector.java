@@ -25,7 +25,8 @@ import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
         TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorGinModule.class, IdentificationGinModule.class,
         ExternalGinModule.class, PicturePlayerModule.class, MathJaxGinModule.class, AccordionGinModule.class,
         PageContentGinModule.class,
-        MediaGinModule.class})
+        MediaGinModule.class,
+        ReportGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 
     DeliveryEngine getDeliveryEngine();
@@ -37,8 +38,6 @@ public interface PlayerGinjector extends Ginjector {
     PanelCache getPanelCache();
 
     TextTrackFactory getTextTrackFactory();
-
-    AssessmentReportFactory getAssessmentReportFactory();
 
     Logger getLogger();
 
