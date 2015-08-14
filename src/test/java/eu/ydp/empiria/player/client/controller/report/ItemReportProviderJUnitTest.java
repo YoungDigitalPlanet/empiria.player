@@ -30,7 +30,7 @@ public class ItemReportProviderJUnitTest extends AbstractTestBase {
         int[] todo = new int[]{4, 3};
 
         for (int i = 0; i < titles.length; i++) {
-            ItemReportProvider provider = factory.getItemReportProvider(dataSupplier, sessionSupplier, i);
+            ItemReportProvider provider = new ItemReportProvider(i, dataSupplier, sessionSupplier, factory);
             ResultInfo result = provider.getResult();
 
             assertThat(provider.getTitle(), is(equalTo(titles[i])));

@@ -11,6 +11,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
+import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -155,6 +157,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
         bind(LogAppender.class).to(ConsoleAppender.class);
         bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
+        bind(DataSourceDataSupplier.class).toInstance(mock(DataSourceManager.class));
         install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new FactoryModuleBuilder().build(PageScopeFactory.class));
         install(new FactoryModuleBuilder().build(TextTrackFactory.class));

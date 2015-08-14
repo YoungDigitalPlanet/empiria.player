@@ -39,8 +39,6 @@ public interface PlayerGinjector extends Ginjector {
 
     TextTrackFactory getTextTrackFactory();
 
-    AssessmentReportFactory getAssessmentReportFactory();
-
     Logger getLogger();
 
     ScriptsLoader getScriptsLoader();
