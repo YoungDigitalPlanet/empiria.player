@@ -6,6 +6,7 @@ import com.google.gwt.media.client.Video;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.ExtensionType;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.*;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.external.ExternalFullscreenVideoAvailability;
@@ -26,6 +27,7 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
+@Singleton
 public class DefaultMediaProcessorExtension extends AbstractMediaProcessor {
     protected boolean initialized;
 

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.data;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -13,6 +14,7 @@ import java.util.*;
  *
  * @see http://glazman.org/JSCSSP/
  */
+@Singleton
 public class StyleDataSourceManager implements StyleSocket {
 
     // style declarations for assessment

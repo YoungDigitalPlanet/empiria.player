@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
@@ -24,6 +25,7 @@ import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventT
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
 
     private ItemSessionData[] itemSessionDatas;

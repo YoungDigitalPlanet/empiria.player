@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.controller.body;
 
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class PlayerContainersAccessor implements IPlayerContainersAccessor {
 
     private Map<Integer, HasWidgets> itemContainers = new HashMap<Integer, HasWidgets>();

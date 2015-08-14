@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.flow;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.flow.processing.commands.FlowCommandsListener;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
@@ -18,6 +19,7 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
+@Singleton
 public class MainFlowProcessor implements FlowCommandsListener, FlowDataSupplier, PlayerEventHandler {
 
     @Inject

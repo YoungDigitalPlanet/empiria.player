@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
@@ -23,7 +24,6 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
-import eu.ydp.empiria.player.client.module.draggap.DragGapBaseModule;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
 import eu.ydp.empiria.player.client.module.draggap.standard.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
@@ -61,6 +61,7 @@ import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 import eu.ydp.empiria.player.client.module.video.VideoModule;
 
+@Singleton
 public class ModuleProviderFactory {
     @Inject
     private Provider<ConnectionModule> connectionModule;

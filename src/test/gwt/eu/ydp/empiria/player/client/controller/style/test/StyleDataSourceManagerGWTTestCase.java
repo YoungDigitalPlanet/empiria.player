@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.CssParser;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
-import eu.ydp.empiria.player.client.gin.module.ScriptInjectorGinModule;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
 import eu.ydp.empiria.player.client.style.StyleDocument;

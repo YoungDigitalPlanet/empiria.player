@@ -2,12 +2,14 @@ package eu.ydp.empiria.player.client.module.expression.adapters;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 
 import java.util.Map;
 
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 
+@Singleton
 public class ExpressionCharacterMappingProvider {
 
     public static final String SELECTOR = ".qp-expression-mapping";

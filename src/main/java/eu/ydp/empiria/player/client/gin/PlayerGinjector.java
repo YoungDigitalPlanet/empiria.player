@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.view.ViewEngine;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
@@ -22,7 +21,7 @@ import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
         SelectionGinModule.class, SimulationGinModule.class, PageScopedModule.class, SlideshowGinModule.class,
         OrderingGinModule.class, ModuleScopedModule.class, ColorfillGinModule.class, DragGapGinModule.class, TutorGinModule.class, ButtonGinModule.class,
         AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
-        TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class, ScriptInjectorGinModule.class, IdentificationGinModule.class,
+        TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class,
         ExternalGinModule.class, PicturePlayerModule.class, MathJaxGinModule.class, AccordionGinModule.class,
         PageContentGinModule.class,
         MediaGinModule.class})

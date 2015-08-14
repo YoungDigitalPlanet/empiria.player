@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.registry;
 
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
@@ -12,6 +13,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class ModulesRegistry implements ModulesRegistrySocket {
 
     protected final Map<String, ModuleCreator> moduleCreators;

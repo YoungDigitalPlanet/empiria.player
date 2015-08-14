@@ -14,10 +14,12 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.ExplanationListener;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
+@Singleton
 public class ExplanationViewImpl extends Composite implements ExplanationView {
 
     private static ExplanationViewUiBinder uiBinder = GWT.create(ExplanationViewUiBinder.class);

@@ -2,8 +2,10 @@ package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 
+@Singleton
 public class PictureTitleProvider {
 
     public Widget getPictureTitleWidget(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {

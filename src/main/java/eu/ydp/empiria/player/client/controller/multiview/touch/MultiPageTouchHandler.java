@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.module.button.NavigationButtonDirection;
@@ -10,6 +11,7 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchH
 import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
+@Singleton
 public class MultiPageTouchHandler implements TouchHandler {
 
     private IMultiPageController multiPageController;
