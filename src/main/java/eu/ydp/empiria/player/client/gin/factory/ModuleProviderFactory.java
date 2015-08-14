@@ -23,7 +23,6 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
-import eu.ydp.empiria.player.client.module.draggap.DragGapBaseModule;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
 import eu.ydp.empiria.player.client.module.draggap.standard.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
@@ -39,6 +38,7 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathjax.inline.InlineMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
+import eu.ydp.empiria.player.client.module.menu.MenuModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
@@ -177,9 +177,10 @@ public class ModuleProviderFactory {
     private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
     @Inject
     private Provider<AccordionModule> accordionModule;
-
     @Inject
     private Provider<ReportModule> reportModuleProvider;
+    @Inject
+    private Provider<MenuModule> menuModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -411,5 +412,9 @@ public class ModuleProviderFactory {
 
     public Provider<ReportModule> getReportModule() {
         return reportModuleProvider;
+    }
+
+    public Provider<MenuModule> getMenuModule() {
+        return menuModule;
     }
 }
