@@ -1,8 +1,8 @@
-package eu.ydp.empiria.player.client.module.report.table.modification;
+package eu.ydp.empiria.player.client.controller.report.table.modification;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
+import eu.ydp.empiria.player.client.controller.report.table.cell.CellCoords;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class RowStylesAppender {

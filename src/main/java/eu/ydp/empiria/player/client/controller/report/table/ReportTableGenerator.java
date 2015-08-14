@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table;
+package eu.ydp.empiria.player.client.controller.report.table;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -10,13 +10,13 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.module.report.table.cell.CellCoords;
-import eu.ydp.empiria.player.client.module.report.table.extraction.ColspanExtractor;
-import eu.ydp.empiria.player.client.module.report.table.extraction.PageTodoExtractor;
-import eu.ydp.empiria.player.client.module.report.table.extraction.PagesRangeExtractor;
-import eu.ydp.empiria.player.client.module.report.table.extraction.ShowNonActivitiesExtractor;
-import eu.ydp.empiria.player.client.module.report.table.modification.ItemIndexAppender;
-import eu.ydp.empiria.player.client.module.report.table.modification.RowStylesAppender;
+import eu.ydp.empiria.player.client.controller.report.table.cell.CellCoords;
+import eu.ydp.empiria.player.client.controller.report.table.extraction.ColspanExtractor;
+import eu.ydp.empiria.player.client.controller.report.table.extraction.PageTodoExtractor;
+import eu.ydp.empiria.player.client.controller.report.table.extraction.PagesRangeExtractor;
+import eu.ydp.empiria.player.client.controller.report.table.extraction.ShowNonActivitiesExtractor;
+import eu.ydp.empiria.player.client.controller.report.table.modification.ItemIndexAppender;
+import eu.ydp.empiria.player.client.controller.report.table.modification.RowStylesAppender;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 

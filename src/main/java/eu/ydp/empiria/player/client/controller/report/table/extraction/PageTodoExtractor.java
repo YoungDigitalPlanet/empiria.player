@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table.extraction;
+package eu.ydp.empiria.player.client.controller.report.table.extraction;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;

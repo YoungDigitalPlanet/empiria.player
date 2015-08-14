@@ -1,10 +1,10 @@
-package eu.ydp.empiria.player.client.module.report.table.modification;
+package eu.ydp.empiria.player.client.controller.report.table.modification;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 
-public class ItemIndexToInfoTagsAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
+public class ItemIndexToLinkTagsAppenderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private ItemIndexAppender testObj;
 
@@ -12,24 +12,32 @@ public class ItemIndexToInfoTagsAppenderGWTTestCase extends EmpiriaPlayerGWTTest
     private final String INPUT = "" +
             "<rd>" +
             "<div class=\"emp_content_icon\">" +
-            "<link>" +
-            "<info itemIndex=\"1\" class=\"info_content_title\"/>" +
+            "<link itemIndex=\"1\">" +
+            "<info class=\"info_content_title\"/>" +
             "</link>" +
             "<link>" +
             "<info class=\"info_content_title\"/>" +
             "</link>" +
+            "<link url=\"adres\">" +
+            "<info class=\"info_content_title\"/>" +
+            "</link>" +
+
             "</div>" +
             "</rd>";
 
     private final String OUTPUT = "" +
             "<rd>" +
             "<div class=\"emp_content_icon\">" +
-            "<link>" +
-            "<info itemIndex=\"1\" class=\"info_content_title\"/>" +
+            "<link itemIndex=\"1\">" +
+            "<info class=\"info_content_title\"/>" +
             "</link>" +
-            "<link>" +
-            "<info class=\"info_content_title\" itemIndex=\"2\"/>" +
+            "<link itemIndex=\"2\">" +
+            "<info class=\"info_content_title\"/>" +
             "</link>" +
+            "<link url=\"adres\">" +
+            "<info class=\"info_content_title\"/>" +
+            "</link>" +
+
             "</div>" +
             "</rd>";
 
@@ -42,13 +50,13 @@ public class ItemIndexToInfoTagsAppenderGWTTestCase extends EmpiriaPlayerGWTTest
         testObj = new ItemIndexAppender();
     }
 
-    public void testAppendToInfoTags() {
+    public void testAppendToLinkTags() {
         // given
         int ITEM_INDEX = 2;
         cellElement = XMLParser.parse(INPUT).getDocumentElement();
 
         // when
-        testObj.appendToInfoTags(ITEM_INDEX, cellElement);
+        testObj.appendToLinkTags(ITEM_INDEX, cellElement);
 
         // then
         assertEquals(cellElement.toString(), OUTPUT);

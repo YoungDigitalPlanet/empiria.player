@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table.modification;
+package eu.ydp.empiria.player.client.controller.report.table.modification;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;

@@ -11,7 +11,7 @@ import eu.ydp.empiria.player.client.gin.factory.ReportModuleFactory;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OnModuleShowHandler;
-import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.module.report.view.ReportView;
 
 public class ReportModule extends ContainerModuleBase implements OnModuleShowHandler {

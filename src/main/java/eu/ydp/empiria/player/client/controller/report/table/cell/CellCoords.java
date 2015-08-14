@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.report.table.cell;
+package eu.ydp.empiria.player.client.controller.report.table.cell;
 
 public class CellCoords {
     private final int row;
