@@ -13,10 +13,14 @@ import java.util.List;
 
 public class LabellingViewBuilder {
 
+    private final Provider<LabellingView> viewProvider;
+    private final Provider<LabellingChildView> childContainerProvider;
+
     @Inject
-    private Provider<LabellingView> viewProvider;
-    @Inject
-    private Provider<LabellingChildView> childContainerProvider;
+    public LabellingViewBuilder(Provider<LabellingView> viewProvider, Provider<LabellingChildView> childContainerProvider) {
+        this.viewProvider = viewProvider;
+        this.childContainerProvider = childContainerProvider;
+    }
 
     public LabellingView buildView(LabellingInteractionBean structure, BodyGeneratorSocket bgs) {
         LabellingView view = viewProvider.get();
