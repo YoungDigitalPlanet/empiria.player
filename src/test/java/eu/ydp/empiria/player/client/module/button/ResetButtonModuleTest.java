@@ -64,6 +64,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         instance.setFlowRequestsInvoker(requestInvoker);
         button = injector.getInstance(CustomPushButton.class);
         styleNameConstants = injector.getInstance(ModeStyleNameConstants.class);
+        buttonStyleNameConstants = injector.getInstance(ButtonStyleNameConstants.class);
         doAnswer(new Answer<ClickHandler>() {
 
             @Override
