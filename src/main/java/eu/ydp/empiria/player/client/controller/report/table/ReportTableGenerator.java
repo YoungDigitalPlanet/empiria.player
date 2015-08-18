@@ -20,7 +20,9 @@ import eu.ydp.empiria.player.client.controller.report.table.modification.RowStyl
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReportTableGenerator {
 
@@ -44,6 +46,7 @@ public class ReportTableGenerator {
 
     private boolean showNonActivites;
     private List<Integer> pagesIndexes;
+    private Map<Integer, Integer> pageToRow;
 
     private FlexTable table;
 
@@ -64,12 +67,17 @@ public class ReportTableGenerator {
     }
 
     public FlexTable generate(Element element) {
+        pageToRow = new HashMap<>();
         showNonActivites = showNonActivitiesExtractor.extract(element);
         pagesIndexes = pagesRangeExtractor.extract(element);
 
         table = createTableWithStyles(element);
         generateTableContent(element);
         return table;
+    }
+
+    public Map<Integer, Integer> getPageToRowMap() {
+        return pageToRow;
     }
 
     private FlexTable createTableWithStyles(Element element) {
@@ -164,7 +172,9 @@ public class ReportTableGenerator {
 
             boolean shouldRenderPageRow = (todo != 0 || showNonActivites);
             if (shouldRenderPageRow) {
-                generatePageRow(currRow + pageRow, cellNodes, pageRowIndex);
+                int row = currRow + pageRow;
+                generatePageRow(row, cellNodes, pageRowIndex);
+                pageToRow.put(pageRowIndex, row);
                 pageRow++;
             }
         }
