@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
-import eu.ydp.gwtutil.junit.mock.GWTConstantsMock;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -33,7 +32,7 @@ public class TutorPopupViewImplTest {
     @Mock
     private RootPanelDelegate rootPanelDelegate;
     @Mock
-    private final StyleNameConstants styleNameConstants = GWTConstantsMock.mockAllStringMethods(mock(StyleNameConstants.class), StyleNameConstants.class);
+    private StyleNameConstants styleNameConstants;
     @Mock
     private RootPanel rootPanel;
     @Mock

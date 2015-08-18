@@ -3,34 +3,50 @@ package eu.ydp.empiria.player.client.module.expression.evaluate;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.Evaluate;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
+import eu.ydp.empiria.player.client.module.expression.ExpressionToPartsDivider;
+import eu.ydp.empiria.player.client.module.expression.IdentifiersFromExpressionExtractor;
+import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
+import eu.ydp.empiria.player.client.module.expression.ResponseFinder;
+import eu.ydp.empiria.player.client.module.expression.adapters.DefaultExpressionCharactersAdapter;
+import eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider;
+import eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharactersMappingParser;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
+import eu.ydp.empiria.player.client.style.StyleSocket;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
+public class CommutationEvaluatorJUnitTest {
 
     private static int COUNTER;
 
-    private CommutationEvaluator eval;
 
-    @Override
-    public void setUp() {
-        super.setUp(CommutationEvaluator.class);
-        eval = injector.getInstance(CommutationEvaluator.class);
+    private CommutationEvaluator testObj;
+
+    @Before
+    public void setUp() throws Exception {
+        ResponseValuesFetcherFunctions fetcherFunctions = new ResponseValuesFetcherFunctions();
+        ResponseFinder responseFinder = new ResponseFinder(new ExpressionToPartsDivider(), new IdentifiersFromExpressionExtractor());
+        StyleSocket styleSocket = Mockito.mock(StyleSocket.class);
+        PipedReplacementsParser expressionReplacementsParser = new PipedReplacementsParser();
+        ExpressionCharactersMappingParser parser = new ExpressionCharactersMappingParser(expressionReplacementsParser);
+        ExpressionCharacterMappingProvider replacementsProvider = new ExpressionCharacterMappingProvider(styleSocket, parser);
+        DefaultExpressionCharactersAdapter defaultExpressionCharactersAdapter = new DefaultExpressionCharactersAdapter(replacementsProvider);
+
+        testObj = new CommutationEvaluator(fetcherFunctions, responseFinder, defaultExpressionCharactersAdapter);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateCorrect() {
         // given
@@ -41,20 +57,18 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
         bean.getResponses().addAll(responses);
 
         Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>>newArrayList(
-                HashMultiset.<String>create(Lists.newArrayList("answer_1", "answer_4")),
-                HashMultiset.<String>create(Lists.newArrayList("answer_0", "answer_2", "answer_3")),
-                HashMultiset.<String>create(Lists.newArrayList("answer_0", "answer_2", "answer_3", "answer_1", "answer_4"))));
-
+                HashMultiset.create(Lists.newArrayList("answer_1", "answer_4")),
+                HashMultiset.create(Lists.newArrayList("answer_0", "answer_2", "answer_3")),
+                HashMultiset.create(Lists.newArrayList("answer_0", "answer_2", "answer_3", "answer_1", "answer_4"))));
         bean.setCorectResponses(correctAnswerMultiSet);
 
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(true));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateCorrect_commutated() {
         // given
@@ -69,14 +83,14 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
                 HashMultiset.<String>create(Lists.newArrayList("answer_0", "answer_2", "answer_3")),
                 HashMultiset.<String>create(Lists.newArrayList("answer_0", "answer_2", "answer_3", "answer_1", "answer_4"))));
         bean.setCorectResponses(correctAnswerMultiSet);
+
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(true));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateCorrect_commutated_equalSignInGap() {
         // given
@@ -90,16 +104,15 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
         Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>>newArrayList(
                 HashMultiset.create(Lists.newArrayList("5")), HashMultiset.create(Lists.newArrayList("1", "2", "3")),
                 HashMultiset.create(Lists.newArrayList("1", "2", "3", "=", "5"))));
-
         bean.setCorectResponses(correctAnswerMultiSet);
+
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(true));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateCorrectWithCharsConversionAdapter_commutated_equalSignInGap() {
         // given
@@ -113,16 +126,15 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
         Multiset<Multiset<String>> correctAnswerMultiSet = HashMultiset.create(Lists.<Multiset<String>>newArrayList(
                 HashMultiset.create(Lists.newArrayList("12.5")), HashMultiset.create(Lists.newArrayList("15.1", "5,1", "/", "2")),
                 HashMultiset.create(Lists.newArrayList("15.1", "5,1", "/", "2", "=", "12.5"))));
-
         bean.setCorectResponses(correctAnswerMultiSet);
+
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(true));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateWrong_someWrongs() {
         // given
@@ -138,13 +150,12 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
         bean.setCorectResponses(correctAnswerMultiSet);
 
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(false));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void evaluateWrong_commutated() {
         // given
@@ -159,8 +170,9 @@ public class CommutationEvaluatorJUnitTest extends AbstractTestWithMocksBase {
                 HashMultiset.<String>create(Lists.newArrayList("answer_0", "answer_2", "answer_3", "answer_1", "answer_4"))));
         bean.setCorectResponses(correctAnswerMultiSet);
 
+
         // when
-        boolean result = eval.evaluate(bean);
+        boolean result = testObj.evaluate(bean);
 
         // then
         assertThat(result, equalTo(false));

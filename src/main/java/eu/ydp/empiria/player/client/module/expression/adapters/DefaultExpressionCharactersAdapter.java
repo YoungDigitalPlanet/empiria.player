@@ -6,8 +6,12 @@ import java.util.Map;
 
 public class DefaultExpressionCharactersAdapter {
 
+    private final ExpressionCharacterMappingProvider replacementsProvider;
+
     @Inject
-    private ExpressionCharacterMappingProvider replacementsProvider;
+    public DefaultExpressionCharactersAdapter(ExpressionCharacterMappingProvider replacementsProvider) {
+        this.replacementsProvider = replacementsProvider;
+    }
 
     public String process(String expression) {
         expression = fixDivide(expression);
