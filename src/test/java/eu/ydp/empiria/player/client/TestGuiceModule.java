@@ -41,6 +41,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBPa
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -57,12 +58,10 @@ import eu.ydp.gwtutil.client.scheduler.SchedulerMockImpl;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import eu.ydp.gwtutil.client.service.json.NativeJSONService;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
-import eu.ydp.gwtutil.client.util.BrowserNativeInterface;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxy;
 import eu.ydp.gwtutil.client.xml.proxy.XMLProxyFactory;
-import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import eu.ydp.gwtutil.xml.XMLProxyWrapper;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
@@ -74,9 +73,8 @@ import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
-    private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
+    private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<>();
     private final GuiceModuleConfiguration moduleConfiguration;
 
     public TestGuiceModule() {
@@ -106,8 +104,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
                 .to(ConnectionModuleFactoryMock.class)
                 .in(Singleton.class));
-        // bindDescriptors.add(new
-        // BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
         bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
         bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class)
                 .to(FeedbackParserFactoryMock.class));
@@ -136,8 +132,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
         bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
         bind(XMLProxy.class).to(XMLProxyWrapper.class);
-        bind(BrowserNativeInterface.class).toInstance(
-                UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS));
         bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));
         bind(SourcelistManager.class).toInstance(mock(SourcelistManager.class));
         bind(OutcomeAccessor.class).toInstance(mock(OutcomeAccessor.class));
@@ -163,7 +157,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
         install(new FactoryModuleBuilder().build(MediaFactory.class));
-        install(new StyleNameConstantsProvider());
     }
 
     private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
@@ -177,7 +170,12 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         });
     }
 
-    
+    @Provides
+    @Singleton
+    public StyleNameConstants getNameConstants() {
+        return mock(StyleNameConstants.class);
+    }
+
     @Provides
     public MediaControllerFactory getMediaControllerFactory() {
         MediaControllerFactory factory = mock(MediaControllerFactory.class);
@@ -265,6 +263,4 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         NativeMethodInvocator invocator = mock(NativeMethodInvocator.class);
         return invocator;
     }
-
-
 }

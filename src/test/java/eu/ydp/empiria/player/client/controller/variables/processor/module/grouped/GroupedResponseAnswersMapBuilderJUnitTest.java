@@ -5,26 +5,18 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponsesMapBuilder;
 import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class GroupedResponseAnswersMapBuilderJUnitTest {
 
-    private GroupedResponseAnswersMapBuilder responseAnswersMapBuilder;
+    private GroupedResponseAnswersMapBuilder responseAnswersMapBuilder = new GroupedResponseAnswersMapBuilder();
     private ResponsesMapBuilder responsesMapBuilder = new ResponsesMapBuilder();
     private ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-
-    @Before
-    public void setUp() throws Exception {
-        responseAnswersMapBuilder = new GroupedResponseAnswersMapBuilder();
-    }
 
     @Test
     public void shouldGroupResponsesWithSameGroup() throws Exception {
@@ -67,11 +59,11 @@ public class GroupedResponseAnswersMapBuilderJUnitTest {
     }
 
     private void verifyGroupedAnswersContainsValues(List<GroupedAnswer> groupedAnswers, List<String> answersCorrectInGroup) {
-        assertThat(groupedAnswers.size(), equalTo(answersCorrectInGroup.size()));
+        assertThat(groupedAnswers).hasSameClassAs(answersCorrectInGroup);
 
         for (GroupedAnswer groupedAnswer : groupedAnswers) {
             String groupedValue = groupedAnswer.getValue();
-            assertThat(answersCorrectInGroup, hasItem(groupedValue));
+            assertThat(answersCorrectInGroup).contains(groupedValue);
         }
     }
 

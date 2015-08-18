@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class VideoTextTrackElementTest extends AbstractTestBase {
 
@@ -49,7 +50,7 @@ public class VideoTextTrackElementTest extends AbstractTestBase {
         presenter = injector.getInstance(VideoTextTrackElementPresenter.class);
         textTrackFactory = injector.getInstance(TextTrackFactory.class);
         pageScopeFactory = injector.getInstance(PageScopeFactory.class);
-
+        when(styleNameConstants.QP_MEDIA_TEXT_TRACK()).thenReturn("qp-media-text-track");
     }
 
     @Test

@@ -10,15 +10,18 @@ import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 
 public class LabellingBuilder {
 
+    private final LabellingModuleJAXBParserFactory parserFactory;
+    private final LabellingViewBuilder labellingViewBuilder;
+
     @Inject
-    private LabellingModuleJAXBParserFactory parserFactory;
-    @Inject
-    private LabellingViewBuilder builder;
+    public LabellingBuilder(LabellingModuleJAXBParserFactory parserFactory, LabellingViewBuilder labellingViewBuilder) {
+        this.parserFactory = parserFactory;
+        this.labellingViewBuilder = labellingViewBuilder;
+    }
 
     public LabellingView build(Element element, BodyGeneratorSocket bgs) {
         LabellingInteractionBean structure = findStructure(element);
-        LabellingView view = builder.buildView(structure, bgs);
-        return view;
+        return labellingViewBuilder.buildView(structure, bgs);
     }
 
     private LabellingInteractionBean findStructure(Element element) {

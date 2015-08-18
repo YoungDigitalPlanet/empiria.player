@@ -1,100 +1,110 @@
 package eu.ydp.empiria.player.client.module.drawing.toolbox;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Key;
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
-import eu.ydp.empiria.player.client.module.drawing.model.ColorBean;
-import eu.ydp.empiria.player.client.module.drawing.model.DrawingBean;
-import eu.ydp.empiria.player.client.module.drawing.model.PaletteBean;
-import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModel;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.model.ToolboxModelImpl;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.Tool;
 import eu.ydp.empiria.player.client.module.drawing.toolbox.tool.ToolFactory;
 import eu.ydp.empiria.player.client.module.drawing.view.CanvasPresenter;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
+import org.junit.runner.RunWith;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
 import static eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType.CLEAR_ALL;
-import static eu.ydp.empiria.player.client.module.model.color.ColorModel.createFromRgbString;
+import static eu.ydp.empiria.player.client.module.drawing.toolbox.ToolType.PENCIL;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
-public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
+@RunWith(MockitoJUnitRunner.class)
+public class ToolboxPresenterTest {
 
-    private ToolboxPresenter presenter;
-    private DrawingBean bean;
+    @InjectMocks
+    private ToolboxPresenter testObj;
+    @Mock
     private ToolboxView view;
+    @Mock
+    private ToolboxButtonCreator buttonCreator;
+    @Mock
+    private ToolboxModelImpl model;
+    @Mock
     private ToolFactory toolFactory;
+    @Mock
     private CanvasPresenter canvasPresenter;
+    @Mock
     private DrawCommandFactory drawCommandFactory;
+    @Mock
+    private PaletteColorsProvider paletteColorsProvider;
+    @Mock
+    private Tool tool;
 
-    @Override
-    public void setUp() {
-        super.setUp(ToolboxModel.class, PaletteColorsProvider.class);
-        presenter = injector.getInstance(ToolboxPresenter.class);
-        bean = injector.getInstance(Key.get(DrawingBean.class, ModuleScoped.class));
-        when(bean.getPalette()).thenReturn(createPalette());
-        view = injector.getInstance(Key.get(ToolboxView.class, ModuleScoped.class));
-        toolFactory = injector.getInstance(ToolFactory.class);
-        canvasPresenter = injector.getInstance(Key.get(CanvasPresenter.class, ModuleScoped.class));
-        drawCommandFactory = injector.getInstance(DrawCommandFactory.class);
+    @Test
+    public void shouldInitializePaletteOnInit() {
+        // given
+
+        ColorModel primaryColor = ColorModel.createFromRgbString("000000");
+        ColorModel secondColor = ColorModel.createFromRgbString("0000FF");
+        ColorModel thirdColor = ColorModel.createFromRgbString("00FFFF");
+        List<ColorModel> colorModels = Lists.newArrayList(primaryColor, secondColor, thirdColor);
+        when(paletteColorsProvider.getColors()).thenReturn(colorModels);
+
+        // when
+        testObj.init();
+
+        // then
+        verify(view).setPalette(colorModels);
+        verify(view).setPaletteColor(primaryColor);
+        verify(model).setColorModel(primaryColor);
     }
 
     @Test
-    public void init() {
+    public void shouldInitializeToolOnInit() {
         // given
-        Tool tool = mock(Tool.class);
-        when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
+
+        ColorModel primaryColor = ColorModel.createFromRgbString("000000");
+        ColorModel secondColor = ColorModel.createFromRgbString("0000FF");
+        ColorModel thirdColor = ColorModel.createFromRgbString("00FFFF");
+        List<ColorModel> colorModels = Lists.newArrayList(primaryColor, secondColor, thirdColor);
+        when(paletteColorsProvider.getColors()).thenReturn(colorModels);
 
         // when
-        presenter.init();
+        testObj.init();
 
         // then
-        ArgumentCaptor<List<ColorModel>> ac = (ArgumentCaptor) ArgumentCaptor.forClass(List.class);
-        verify(view).setPalette(ac.capture());
-        assertThat(ac.getValue()).containsExactly(createFromRgbString("00FF00"), createFromRgbString("00FFFF"), createFromRgbString("000DAF"));
-        verify(view).setPresenterAndBind(presenter);
         verify(view).selectPencil();
-        verify(view).setPaletteColor(createFromRgbString("00FF00"));
-        verify(canvasPresenter, times(2)).setTool(tool);
+        verify(model).setToolType(PENCIL);
     }
 
     @Test
-    public void colorClicked() {
+    public void shouldHidePaletteAndSetColorOnColorClicked() {
         // given
-        Tool tool = mock(Tool.class);
-        when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
         ColorModel colorModel = ColorModel.createFromRgbString("FFAADD");
-        presenter.paletteClicked();
+        when(toolFactory.createTool(model)).thenReturn(tool);
+        testObj.paletteClicked();
 
         // when
-        presenter.colorClicked(colorModel);
+        testObj.colorClicked(colorModel);
 
         // then
-        verify(canvasPresenter).setTool(eq(tool));
-        ArgumentCaptor<ToolboxModelImpl> ac = ArgumentCaptor.forClass(ToolboxModelImpl.class);
-        verify(toolFactory).createTool(ac.capture());
-        assertThat(ac.getValue().getColorModel()).isEqualTo(colorModel);
         verify(view).hidePalette();
-        verify(view).setPaletteColor(eq(colorModel));
+        verify(view).setPaletteColor(colorModel);
+        verify(model).setColorModel(colorModel);
+
+        verify(canvasPresenter).setTool(tool);
     }
 
     @Test
-    public void showAndHideAndShowPalette() {
+    public void shouldTogglePaletteVisibilityState() {
         // when
-        presenter.paletteClicked();
-        presenter.paletteClicked();
-        presenter.paletteClicked();
+        testObj.paletteClicked();
+        testObj.paletteClicked();
+        testObj.paletteClicked();
 
         // then
         InOrder order = inOrder(view);
@@ -104,11 +114,11 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
     }
 
     @Test
-    public void showPaletteAndHideOnColorClicked() {
+    public void shouldHudePaletteOnColorSelection() {
         // when
         ColorModel colorModel = ColorModel.createFromRgbString("FFAADD");
-        presenter.paletteClicked();
-        presenter.colorClicked(colorModel);
+        testObj.paletteClicked();
+        testObj.colorClicked(colorModel);
 
         // then
         InOrder order = inOrder(view);
@@ -117,47 +127,43 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
     }
 
     @Test
-    public void pencilClicked() {
+    public void shouldSelectPencilOnClick() {
         // given
-        Tool tool = mock(Tool.class);
-        when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
+        when(toolFactory.createTool(model)).thenReturn(tool);
 
         // when
-        presenter.pencilClicked();
+        testObj.pencilClicked();
 
         // then
-        verify(canvasPresenter).setTool(eq(tool));
-        ArgumentCaptor<ToolboxModelImpl> ac = ArgumentCaptor.forClass(ToolboxModelImpl.class);
-        verify(toolFactory).createTool(ac.capture());
-        assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.PENCIL);
         verify(view).selectPencil();
+        verify(model).setToolType(ToolType.PENCIL);
+
+        verify(canvasPresenter).setTool(tool);
     }
 
     @Test
-    public void eraserClicked() {
+    public void shouldSelectEraserOnClicked() {
         // given
-        Tool tool = mock(Tool.class);
-        when(toolFactory.createTool(any(ToolboxModelImpl.class))).thenReturn(tool);
+        when(toolFactory.createTool(model)).thenReturn(tool);
 
         // when
-        presenter.eraserClicked();
+        testObj.eraserClicked();
 
         // then
-        verify(canvasPresenter).setTool(eq(tool));
-        ArgumentCaptor<ToolboxModelImpl> ac = ArgumentCaptor.forClass(ToolboxModelImpl.class);
-        verify(toolFactory).createTool(ac.capture());
-        assertThat(ac.getValue().getToolType()).isEqualTo(ToolType.ERASER);
         verify(view).selectEraser();
+        verify(model).setToolType(ToolType.ERASER);
+
+        verify(canvasPresenter).setTool(tool);
     }
 
     @Test
-    public void clearAllClicked() {
+    public void shouldCreateAndExecuteClearAllCommand() {
         // given
         DrawCommand command = mock(DrawCommand.class);
         when(drawCommandFactory.createCommand(CLEAR_ALL)).thenReturn(command);
 
         // when
-        presenter.clearAllClicked();
+        testObj.clearAllClicked();
 
         // then
         verify(command).execute();
@@ -166,22 +172,9 @@ public class ToolboxPresenterTest extends AbstractTestWithMocksBase {
     @Test
     public void getView() {
         // when
-        ToolboxView result = presenter.getView();
+        ToolboxView result = testObj.getView();
 
         // then
         assertThat(view).isSameAs(result);
-    }
-
-    private static PaletteBean createPalette() {
-        List<ColorBean> colors = Lists.newArrayList(createColorBean("00FF00"), createColorBean("00FFFF"), createColorBean("000DAF"));
-        PaletteBean palette = new PaletteBean();
-        palette.setColors(colors);
-        return palette;
-    }
-
-    private static ColorBean createColorBean(String rgb) {
-        ColorBean color2 = new ColorBean();
-        color2.setRgb(rgb);
-        return color2;
     }
 }
