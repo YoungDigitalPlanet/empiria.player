@@ -73,9 +73,8 @@ import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings("PMD")
 public class TestGuiceModule extends ExtendTestGuiceModule {
-    private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
+    private final Set<BindDescriptor<?>> bindDescriptors = new HashSet<>();
     private final GuiceModuleConfiguration moduleConfiguration;
 
     public TestGuiceModule() {
@@ -105,8 +104,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
                 .to(ConnectionModuleFactoryMock.class)
                 .in(Singleton.class));
-        // bindDescriptors.add(new
-        // BindDescriptor<VideoFullScreenHelper>().bind(VideoFullScreenHelper.class).in(Singleton.class));
         bindDescriptors.add(new BindDescriptor<PanelCache>().bind(PanelCache.class));
         bindDescriptors.add(new BindDescriptor<FeedbackParserFactory>().bind(FeedbackParserFactory.class)
                 .to(FeedbackParserFactoryMock.class));
