@@ -1,28 +1,16 @@
 package eu.ydp.empiria.player.client.module.connection.structure;
 
+import static org.mockito.Mockito.*;
+
 import com.google.gwt.xml.client.Document;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
 import eu.ydp.empiria.player.client.jaxb.JAXBParserImpl;
-import eu.ydp.empiria.player.client.module.abstractmodule.structure.ShuffleHelper;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.gwtutil.xml.XMLParser;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public class ConnectionModuleStructureMock extends ConnectionModuleStructure {
-
-    public ConnectionModuleStructureMock() {
-        try {
-            ReflectionsUtils reflectionsUtils = new ReflectionsUtils();
-            reflectionsUtils.setValueInObjectOnField("stateController", this, mock(StateController.class));
-            reflectionsUtils.setValueInObjectOnField("shuffleHelper", this, mock(ShuffleHelper.class));
-        } catch (Exception e) {
-        }
-    }
 
     public final static String CONNECTION_XML = "<matchInteraction id=\"dummy1\" responseIdentifier=\"CONNECTION_RESPONSE_1\" shuffle=\"true\">"
             + "<simpleMatchSet>" + "<simpleAssociableChoice fixed=\"false\" identifier=\"CONNECTION_RESPONSE_1_0\" matchMax=\"2\">"
