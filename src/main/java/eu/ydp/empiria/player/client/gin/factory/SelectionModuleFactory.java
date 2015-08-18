@@ -10,7 +10,8 @@ public interface SelectionModuleFactory {
 
     public SelectionAnswerDto getSelectionAnswerDto(String id);
 
-    public GroupAnswersController getGroupAnswerController(boolean isMulti, int maxSelected, SelectionModuleModel selectionModuleModel);
+    public GroupAnswersController getGroupAnswerController(int maxSelected, SelectionModuleModel selectionModuleModel);
 
-    public ChoiceButtonClickHandler getChoiceButtonClickHandler(GroupAnswersController groupAnswerController, String buttonId, SelectionModulePresenter selectionModulePresenter);
+    public ChoiceButtonClickHandler getChoiceButtonClickHandler(GroupAnswersController groupAnswerController, String buttonId,
+            SelectionModulePresenter selectionModulePresenter);
 }

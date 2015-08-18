@@ -135,7 +135,7 @@ public class SelectionViewBuilderJUnitTest {
         List<SelectionSimpleChoiceBean> simpleChoices = Lists.newArrayList(choice1, choice2);
 
         GroupAnswersController groupController = mock(GroupAnswersController.class);
-        when(selectionModuleFactory.getGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model)).thenReturn(groupController);
+        when(selectionModuleFactory.getGroupAnswerController(itemBean.getMatchMax(), model)).thenReturn(groupController);
 
         String multiStylePart = "selectionStylePart";
         if (bean.isMulti()) {
@@ -173,7 +173,7 @@ public class SelectionViewBuilderJUnitTest {
         // then
         List<GroupAnswersController> resultControllers = viewBuilder.fillGrid(items, simpleChoices);
 
-        verify(selectionModuleFactory).getGroupAnswerController(bean.isMulti(), itemBean.getMatchMax(), model);
+        verify(selectionModuleFactory).getGroupAnswerController(itemBean.getMatchMax(), model);
         if (bean.isMulti()) {
             verify(styleNameConstants).SELECTION_MULTI();
         } else {

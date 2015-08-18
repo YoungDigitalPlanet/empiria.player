@@ -5,34 +5,24 @@ import static org.mockito.Mockito.*;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
-import eu.ydp.empiria.player.client.module.selection.controller.answers.SelectionAnswerQueueFactory;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
-import java.util.*;
+import java.util.List;
 import org.junit.*;
 
 @SuppressWarnings("PMD")
 public class GroupAnswersControllerJUnitTest {
 
     private GroupAnswersController testObj;
-    private boolean isMulti = true;
     private int maxSelected = 1;
     private SelectionModuleModel responseModel = mock(SelectionModuleModel.class);
-    private SelectionAnswerQueueFactory answerQueueFactory = mock(SelectionAnswerQueueFactory.class);
     private NoAnswerPriorityComparator noAnswerPriorityComparator = mock(NoAnswerPriorityComparator.class);
 
     private final String ANSWER_ID1 = "id1";
     private final String ANSWER_ID2 = "id2";
 
-
     @Before
     public void setUp() throws Exception {
-        when(answerQueueFactory.createAnswerQueue(isMulti, maxSelected)).thenReturn(new PriorityQueue<>(maxSelected, noAnswerPriorityComparator));
-        testObj = new GroupAnswersController(isMulti, maxSelected, responseModel, answerQueueFactory);
-    }
-
-    @Test
-    public void shouldCreateAnswerQueue_whenInit() throws Exception {
-        verify(answerQueueFactory).createAnswerQueue(isMulti, maxSelected);
+        testObj = new GroupAnswersController(maxSelected, responseModel, noAnswerPriorityComparator);
     }
 
     @Test

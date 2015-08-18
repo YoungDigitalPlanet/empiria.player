@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
-import eu.ydp.empiria.player.client.module.selection.controller.answers.SelectionAnswerQueueFactory;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import java.util.*;
 import java.util.logging.*;
@@ -19,11 +18,11 @@ public class GroupAnswersController {
     private AbstractResponseModel<?> responseModel;
 
     @Inject
-    public GroupAnswersController(@Assisted boolean isMulti, @Assisted int maxSelected, @Assisted SelectionModuleModel responseModel,
-            SelectionAnswerQueueFactory answerQueueFactory) {
+    public GroupAnswersController(@Assisted int maxSelected, @Assisted SelectionModuleModel responseModel,
+            NoAnswerPriorityComparator comparator) {
         this.maxSelected = maxSelected;
         this.responseModel = responseModel;
-        this.selectedAnswers = answerQueueFactory.createAnswerQueue(isMulti, maxSelected);
+        this.selectedAnswers = new PriorityQueue<>(maxSelected, comparator);
     }
 
     public void addSelectionAnswer(SelectionAnswerDto button) {

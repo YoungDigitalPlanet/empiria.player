@@ -72,10 +72,9 @@ public class SelectionViewBuilder {
     }
 
     private GroupAnswersController fillRowWithGroupedItems(int rowNumber, SelectionItemBean itemBean, List<SelectionSimpleChoiceBean> simpleChoices) {
-        boolean multi = bean.isMulti();
         int matchMax = itemBean.getMatchMax();
 
-        GroupAnswersController groupAnswerController = selectionModuleFactory.getGroupAnswerController(multi, matchMax, selectionModuleModel);
+        GroupAnswersController groupAnswerController = selectionModuleFactory.getGroupAnswerController(matchMax, selectionModuleModel);
         String moduleStyleName = getModuleStyleName(bean.isMulti());
         String itemIdentifier = itemBean.getIdentifier();
 
