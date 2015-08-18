@@ -27,7 +27,7 @@ import org.mockito.stubbing.Answer;
 public class SourceListViewImplTest {
 
     @InjectMocks
-    private SourceListViewImpl instance;
+    private SourceListViewImpl testObj;
     @Mock
     private SourceListPresenter sourceListPresenter;
     @Mock
@@ -64,7 +64,7 @@ public class SourceListViewImplTest {
                 return viewItem;
             }
         });
-        instance.items = items;
+        testObj.items = items;
     }
 
     @Test
@@ -80,9 +80,9 @@ public class SourceListViewImplTest {
         DragDropEventBase event = mock(DragDropEventBase.class);
 
         // when
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
-        instance.setSourceListPresenter(sourceListPresenter);
-        instance.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
+        testObj.setSourceListPresenter(sourceListPresenter);
+        testObj.onDragEvent(DragDropEventTypes.DRAG_START, viewItem, event);
 
         // then
         verify(event).setData(eq("json"), eq(json));
@@ -98,9 +98,9 @@ public class SourceListViewImplTest {
         DragDropEventBase event = mock(DragDropEventBase.class);
 
         // when
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
-        instance.setSourceListPresenter(sourceListPresenter);
-        instance.onDragEvent(DragDropEventTypes.DRAG_CANCEL, viewItem, event);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, itemContent, itemId), inlineBodyGeneratorSocket);
+        testObj.setSourceListPresenter(sourceListPresenter);
+        testObj.onDragEvent(DragDropEventTypes.DRAG_CANCEL, viewItem, event);
 
         // then
         verify(event, never()).setData(eq("json"), anyString());
@@ -111,10 +111,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldGetItemValue() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.getItemValue("a");
+        testObj.getItemValue("a");
 
         // then
         verify(viewItem).getItemContent();
@@ -129,22 +129,22 @@ public class SourceListViewImplTest {
 
         // when
         SourcelistItemValue sourcelistItemValue = new SourcelistItemValue(SourcelistItemType.TEXT, itemId, itemContent);
-        instance.createItem(sourcelistItemValue, inlineBodyGeneratorSocket);
+        testObj.createItem(sourcelistItemValue, inlineBodyGeneratorSocket);
 
         // then
         verify(sourceListViewItemProvider).get();
         verify(items).add(eq(sourceListViewItemProvider.get()));
-        verify(sourceListViewItemProvider.get()).setSourceListView(eq(instance));
+        verify(sourceListViewItemProvider.get()).setSourceListView(eq(testObj));
         verify(sourceListViewItemProvider.get()).createAndBindUi(eq(sourcelistItemValue), eq(inlineBodyGeneratorSocket));
     }
 
     @Test
     public void shouldHideItem() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.hideItem("a");
+        testObj.hideItem("a");
 
         // then
         verify(viewItem).hide();
@@ -154,10 +154,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldNotHideItem_whenIdNotPresent() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.hideItem("aa");
+        testObj.hideItem("aa");
 
         // then
         verify(viewItem, never()).show();
@@ -166,10 +166,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldShowItem() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.showItem("a");
+        testObj.showItem("a");
 
         // then
         verify(viewItem).show();
@@ -178,10 +178,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldNotShowItem_whenIdNotPresent() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.showItem("aa");
+        testObj.showItem("aa");
 
         // then
         verify(viewItem, never()).show();
@@ -190,10 +190,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldLockItemForDrag() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.lockItemForDragDrop("a");
+        testObj.lockItemForDragDrop("a");
 
         // then
         verify(viewItem).lockForDragDrop();
@@ -202,10 +202,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldUnlockItemForDrag() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        instance.unlockItemForDragDrop("a");
+        testObj.unlockItemForDragDrop("a");
 
         // then
         verify(viewItem).unlockForDragDrop();
@@ -214,10 +214,10 @@ public class SourceListViewImplTest {
     @Test
     public void shouldGetMaxItemSize() {
         // given
-        instance.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
+        testObj.createItem(new SourcelistItemValue(SourcelistItemType.TEXT, "a", "a"), inlineBodyGeneratorSocket);
 
         // when
-        HasDimensions maxItemSize = instance.getMaxItemSize();
+        HasDimensions maxItemSize = testObj.getMaxItemSize();
 
         // then
         assertThat(maxItemSize.getHeight()).isEqualTo(sourceListViewItemHeight);

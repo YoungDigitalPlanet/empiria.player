@@ -17,7 +17,6 @@ public class SelectionGinModule extends AbstractGinModule {
         bind(SelectionModuleView.class).to(SelectionModuleViewImpl.class);
         bind(SelectionElementGenerator.class).to(SelectionGridElementGeneratorImpl.class);
         bind(SelectionElementPositionGenerator.class).to(SelectionGridElementGeneratorImpl.class);
-        bind(SelectionAnswerQueueFactory.class).in(Singleton.class);
         install(new GinFactoryModuleBuilder().build(SelectionModuleFactory.class));
     }
 }

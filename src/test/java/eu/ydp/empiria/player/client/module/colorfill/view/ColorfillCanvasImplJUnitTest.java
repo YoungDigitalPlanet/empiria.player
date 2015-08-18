@@ -14,15 +14,6 @@ import com.google.inject.*;
 import eu.ydp.empiria.player.client.*;
 import eu.ydp.empiria.player.client.module.colorfill.fill.ICanvasImageData;
 import eu.ydp.empiria.player.client.module.colorfill.structure.*;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
-import eu.ydp.empiria.player.client.module.colorfill.fill.CanvasImageData;
-import eu.ydp.empiria.player.client.module.colorfill.structure.Area;
-import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
 import eu.ydp.gwtutil.client.event.factory.*;
 import org.junit.*;
@@ -33,7 +24,6 @@ import org.mockito.*;
 public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
     private static final int POSITION_Y = 20;
     private static final int POSITION_X = 10;
-    private StyleNameConstants styleNameConstants;
 
     private class CustomGinModule implements Module {
         @Override
@@ -61,7 +51,6 @@ public class ColorfillCanvasImplJUnitTest extends AbstractTestBaseWithoutAutoInj
         setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
 
         instance = injector.getInstance(ColorfillCanvasImpl.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
         canvas = mock(Canvas.class);
         imageData = mock(ICanvasImageData.class);
         doReturn(canvas).when(canvasStubView)

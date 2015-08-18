@@ -39,6 +39,7 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
     private final int absoluteTop = 2;
     private final int width = 3;
     private final int height = 4;
+    private int expectedColorIndex = 0;
     private ContainerDimensions stickieDimensions;
 
     @Before
@@ -49,7 +50,7 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
     @Test
     public void shouldUpdateMaximizeStickieSizeWhenMinimizingStickie() throws Exception {
         // given
-        when(stickieProperties.getColorIndex()).thenReturn(0);
+        when(stickieProperties.getColorIndex()).thenReturn(expectedColorIndex);
 
         // when
         testObj.positionMinimizedStickie(stickieDimensions);
@@ -59,7 +60,7 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
         ArgumentCaptor<StickieSize> stickieSizeCaptor = ArgumentCaptor.forClass(StickieSize.class);
         verify(maximizedStickieSizeStorage).updateIfBiggerThanExisting(colorCaptor.capture(), stickieSizeCaptor.capture());
 
-        assertThat(colorCaptor.getValue(), equalTo(0));
+        assertThat(colorCaptor.getValue(), equalTo(expectedColorIndex));
 
         StickieSize stickieSize = stickieSizeCaptor.getValue();
         assertThat(stickieSize.getWidth(), equalTo(width));
@@ -69,36 +70,34 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
     @Test
     public void shouldUseCurrentPositionIfNoPreviousMinimizedPositionIsStored() throws Exception {
         // given
-        Point<Integer> expectedPosition = new Point<>(123123, 2234);
+        Point<Integer> expectedPosition = new Point<>(1, 1);
         when(stickieProperties.getPosition()).thenReturn(expectedPosition);
 
         // when
         Point<Integer> result = testObj.positionMinimizedStickie(stickieDimensions);
 
         // then
-        assertThat(result.getX(), equalTo(123123));
-        assertThat(result.getY(), equalTo(2234));
+        assertEquals(result, expectedPosition);
     }
 
     @Test
     public void shouldUsePreviousMinimizedPositionIfStored() throws Exception {
         // given
-        Point<Integer> previousMinimizedPosition = new Point<>(123, 456);
-        when(stickieProperties.getPosition()).thenReturn(previousMinimizedPosition);
+        Point<Integer> expectedPosition = new Point<>(1, 1);
+        when(stickieProperties.getPosition()).thenReturn(expectedPosition);
 
         // when
-        Point<Integer> stickiePosition = testObj.positionMinimizedStickie(stickieDimensions);
+        Point<Integer> result = testObj.positionMinimizedStickie(stickieDimensions);
 
         // then
-        assertThat(stickiePosition.getX(), equalTo(previousMinimizedPosition.getX()));
-        assertThat(stickiePosition.getY(), equalTo(previousMinimizedPosition.getY()));
-        verify(stickieProperties, times(1)).getPosition();
+        assertEquals(result, expectedPosition);
+        verify(stickieProperties).getPosition();
     }
 
     @Test
     public void shouldResetPreviousMinimizedPosition() throws Exception {
         // given
-        Point<Integer> previousMinimizedPosition = new Point<>(123, 456);
+        Point<Integer> previousMinimizedPosition = new Point<>(1, 1);
         when(stickieProperties.getPosition()).thenReturn(previousMinimizedPosition);
         testObj.positionMinimizedStickie(stickieDimensions);
 
@@ -113,23 +112,23 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
     @Test
     public void shouldSaveCurrentPositionAsPreviousMinimizedPositionWhenMaximizing() throws Exception {
         // given
+        Point<Integer> expectedPosition = new Point<>(1, 1);
         Optional<StickieSize> optionalStickieSize = Optional.absent();
         when(maximizedStickieSizeStorage.getSizeOfMaximizedStickie(stickieProperties.getColorIndex())).thenReturn(optionalStickieSize);
-        when(stickieProperties.getPosition()).thenReturn(new Point<>(0, 0));
+        when(stickieProperties.getPosition()).thenReturn(expectedPosition);
 
         // when
         testObj.positionMaximizedStickie(stickieDimensions, null);
         Point<Integer> previousMinimizedPosition = testObj.positionMinimizedStickie(stickieDimensions);
 
         // then
-        assertEquals(Integer.valueOf(0), previousMinimizedPosition.getX());
-        assertEquals(Integer.valueOf(0), previousMinimizedPosition.getY());
+        assertEquals(expectedPosition, previousMinimizedPosition);
     }
 
     @Test
     public void shouldNotOverridePreviousMinimizedPositionWhenMaximizing() throws Exception {
         // given
-        Point<Integer> expectedPreviousMinimizedPosition = new Point<Integer>(323123, 78675);
+        Point<Integer> expectedPreviousMinimizedPosition = new Point<Integer>(1, 1);
         when(stickieProperties.getPosition()).thenReturn(expectedPreviousMinimizedPosition);
 
         Optional<StickieSize> optionalStickieSize = Optional.absent();
@@ -138,11 +137,10 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
 
         // when
         testObj.positionMaximizedStickie(stickieDimensions, null);
+        Point<Integer> result = testObj.positionMinimizedStickie(stickieDimensions);
 
         //then
-        Point<Integer> position = testObj.positionMinimizedStickie(stickieDimensions);
-        assertEquals(expectedPreviousMinimizedPosition.getX(), position.getX());
-        assertEquals(expectedPreviousMinimizedPosition.getY(), position.getY());
+        assertEquals(expectedPreviousMinimizedPosition, result);
     }
 
     @Test
@@ -169,22 +167,22 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
     }
 
     @Test
-    public void shouldUseGivenStickieDimensionsWhenMaximizingAndNoOtherAreStored() throws Exception {
+    public void shouldUseGivenStickieDimensions_whenMaximizingAndNoOtherAreStored() throws Exception {
         // given
         ContainerDimensions parentDimensions = new ContainerDimensions.Builder().build();
 
         Optional<StickieSize> optionalStickieSize = Optional.absent();
         when(maximizedStickieSizeStorage.getSizeOfMaximizedStickie(stickieProperties.getColorIndex())).thenReturn(optionalStickieSize);
 
-        Point<Integer> newPosition = new Point<Integer>(123, 456);
-        when(positionFinder.refinePosition(stickieProperties.getPosition(), stickieDimensions, parentDimensions)).thenReturn(newPosition);
+        Point<Integer> expectedPosition = new Point<Integer>(1, 1);
+        when(positionFinder.refinePosition(stickieProperties.getPosition(), stickieDimensions, parentDimensions)).thenReturn(expectedPosition);
 
         // when
         Point<Integer> positionMaximizedStickie = testObj.positionMaximizedStickie(stickieDimensions, parentDimensions);
 
         // then
         verify(positionFinder).refinePosition(stickieProperties.getPosition(), stickieDimensions, parentDimensions);
-        assertEquals(newPosition, positionMaximizedStickie);
+        assertEquals(expectedPosition, positionMaximizedStickie);
     }
 
     @Test
@@ -196,7 +194,7 @@ public class StickieMinimizeMaximizeControllerJUnitTest {
         Optional<StickieSize> optionalStickieSize = Optional.fromNullable(maximizedStickieSize);
         when(maximizedStickieSizeStorage.getSizeOfMaximizedStickie(stickieProperties.getColorIndex())).thenReturn(optionalStickieSize);
 
-        Point<Integer> newPosition = new Point<Integer>(123, 456);
+        Point<Integer> newPosition = new Point<Integer>(1, 1);
         when(positionFinder.refinePosition(eq(stickieProperties.getPosition()), any(ContainerDimensions.class), eq(parentDimensions))).thenReturn(
                 newPosition);
 

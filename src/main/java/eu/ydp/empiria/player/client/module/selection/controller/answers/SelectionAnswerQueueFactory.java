@@ -4,7 +4,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.selection.controller.NoAnswerPriorityComparator;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import java.util.*;
+import javax.inject.Singleton;
 
+@Singleton
 public class SelectionAnswerQueueFactory {
 
     private NoAnswerPriorityComparator noPriorityComparator;
