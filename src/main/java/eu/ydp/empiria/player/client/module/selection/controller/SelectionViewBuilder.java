@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.selection.controller;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
+import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickHandler;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
@@ -26,14 +27,17 @@ public class SelectionViewBuilder {
     private SelectionInteractionBean bean;
     private SelectionStyleNameConstants styleNameConstants;
     private SelectionElementPositionGenerator elementPositionGenerator;
+    private SelectionModuleModel selectionModuleModel;
 
     @Inject
     public SelectionViewBuilder(SelectionModuleFactory selectionModuleFactory, SelectionStyleNameConstants styleNameConstants,
-                                SelectionElementPositionGenerator elementPositionGenerator, @ModuleScoped SelectionModuleView selectionModuleView) {
+            SelectionElementPositionGenerator elementPositionGenerator, @ModuleScoped SelectionModuleView selectionModuleView,
+            @ModuleScoped SelectionModuleModel selectionModuleModel) {
         this.styleNameConstants = styleNameConstants;
         this.selectionModuleView = selectionModuleView;
         this.elementPositionGenerator = elementPositionGenerator;
         this.selectionModuleFactory = selectionModuleFactory;
+        this.selectionModuleModel = selectionModuleModel;
     }
 
     public void bindView(SelectionModulePresenter selectionModulePresenter, SelectionInteractionBean bean) {
@@ -74,10 +78,9 @@ public class SelectionViewBuilder {
     }
 
     private GroupAnswersController fillRowWithGroupedItems(int rowNumber, SelectionItemBean itemBean, List<SelectionSimpleChoiceBean> simpleChoices) {
-        boolean multi = bean.isMulti();
         int matchMax = itemBean.getMatchMax();
 
-        GroupAnswersController groupAnswerController = selectionModuleFactory.createGroupAnswerController(multi, matchMax);
+        GroupAnswersController groupAnswerController = selectionModuleFactory.getGroupAnswerController(matchMax, selectionModuleModel);
         String moduleStyleName = getModuleStyleName(bean.isMulti());
         String itemIdentifier = itemBean.getIdentifier();
 
@@ -89,11 +92,11 @@ public class SelectionViewBuilder {
 
             selectionModuleView.createButtonForItemChoicePair(position, moduleStyleName);
 
-            ChoiceButtonClickHandler clickHandler = selectionModuleFactory.createChoiceButtonClickHandler(groupAnswerController, buttonIdentifier,
-                    selectionModulePresenter);
+            ChoiceButtonClickHandler clickHandler = selectionModuleFactory.getChoiceButtonClickHandler(groupAnswerController, buttonIdentifier,
+                                                                                                       selectionModulePresenter);
             selectionModuleView.addClickHandlerToButton(position, clickHandler);
 
-            SelectionAnswerDto selectionAnswerDto = selectionModuleFactory.createSelectionAnswerDto(buttonIdentifier);
+            SelectionAnswerDto selectionAnswerDto = selectionModuleFactory.getSelectionAnswerDto(buttonIdentifier);
             groupAnswerController.addSelectionAnswer(selectionAnswerDto);
         }
 

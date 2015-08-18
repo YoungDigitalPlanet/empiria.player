@@ -1,51 +1,35 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
+import com.google.inject.*;
+import eu.ydp.empiria.player.client.*;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemType;
-import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.*;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
-import eu.ydp.empiria.player.client.test.utils.ReflectionsUtils;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.xml.XMLParser;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.InOrder;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import java.util.List;
-
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import org.junit.*;
+import org.mockito.*;
 
 @SuppressWarnings("PMD")
 public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
 
-    private SourceListModule instance;
+    private SourceListModule testObj;
     private SourceListPresenter presenter;
-    private ModuleSocket moduleSocket;
-    private ReflectionsUtils reflectionsUtils;
     private SourceListModuleStructure sourceListModuleStructure;
     private final static String sourcelistId = "id1";
     private SourceListBean bean;
@@ -55,7 +39,6 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         @Override
         public void configure(Binder binder) {
             binder.bind(SourceListPresenter.class).toInstance(mock(SourceListPresenter.class));
-            binder.bind(ModuleSocket.class).toInstance(mock(ModuleSocket.class));
             binder.bind(SourceListModuleStructure.class).toInstance(mock(SourceListModuleStructure.class));
             binder.bind(SourcelistManager.class).annotatedWith(PageScoped.class).toInstance(mock(SourcelistManager.class));
         }
@@ -76,14 +59,12 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         GuiceModuleConfiguration moduleConfiguration = new GuiceModuleConfiguration();
         moduleConfiguration.addAllClassToOmit(SourceListPresenter.class, SourceListView.class);
         setUpAndOverrideMainModule(moduleConfiguration, new CustomGuiceModule());
-        instance = injector.getInstance(SourceListModule.class);
+        testObj = injector.getInstance(SourceListModule.class);
         presenter = injector.getInstance(SourceListPresenter.class);
-        moduleSocket = injector.getInstance(ModuleSocket.class);
         sourceListModuleStructure = injector.getInstance(SourceListModuleStructure.class);
         bean = mock(SourceListBean.class);
         when(bean.getSourcelistId()).thenReturn(sourcelistId);
         when(sourceListModuleStructure.getBean()).thenReturn(bean);
-        reflectionsUtils = new ReflectionsUtils();
 
         ModuleSocket moduleSocket = mock(ModuleSocket.class);
         inlineBodyGeneratorSocket = mock(InlineBodyGeneratorSocket.class);
@@ -91,95 +72,85 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
 
         Element element = mock(Element.class);
         InteractionEventsListener interactionEventsListener = mock(InteractionEventsListener.class);
-        instance.initModule(element, moduleSocket, interactionEventsListener);
+        testObj.initModule(element, moduleSocket, interactionEventsListener);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void initModuleTest() throws IllegalArgumentException, NoSuchFieldException, IllegalAccessException {
+    public void initModuleTest() {
         // given
-        reflectionsUtils.setValueInObjectOnField("moduleSocket", instance, moduleSocket);
-        String idModule = "moduleId";
-        reflectionsUtils.setValueInObjectOnField(idModule, instance, idModule);
-
-        YJsonArray state = Mockito.mock(YJsonArray.class);
-
-        when(moduleSocket.getStateById(anyString())).thenReturn(state);
-
         Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
+
         // when
-        instance.initModule(documentElement);
+        testObj.initModule(documentElement);
+
         // then
         InOrder inOrder = inOrder(sourceListModuleStructure, presenter);
-
         inOrder.verify(sourceListModuleStructure).createFromXml(anyString(), any(YJsonArray.class));
         inOrder.verify(sourceListModuleStructure).getBean();
         inOrder.verify(presenter).setBean(Matchers.any(SourceListBean.class));
         inOrder.verify(presenter).createAndBindUi(inlineBodyGeneratorSocket);
 
-        assertEquals(presenter.asWidget(), instance.getView());
+        assertEquals(presenter.asWidget(), testObj.getView());
     }
 
     @Test
-    public void testGetItemValue() throws Exception {
+    public void testGetItemValue() {
         String itemId = "id";
-        instance.getItemValue(itemId);
-        verify(presenter).getItemValue(eq(itemId));
+        testObj.getItemValue(itemId);
+        verify(presenter).getItemValue(itemId);
     }
 
     @Test
-    public void testUseItem() throws Exception {
+    public void testUseItem() {
         String itemId = "id";
-        instance.useItem(itemId);
-        verify(presenter).useItem(eq(itemId));
+        testObj.useItem(itemId);
+        verify(presenter).useItem(itemId);
     }
 
     @Test
-    public void testRestockItem() throws Exception {
+    public void testRestockItem() {
         String itemId = "id";
-        instance.restockItem(itemId);
-        verify(presenter).restockItem(eq(itemId));
+        testObj.restockItem(itemId);
+        verify(presenter).restockItem(itemId);
     }
 
     @Test
-    public void testUseAndRestockItems() throws Exception {
+    public void testUseAndRestockItems() {
         List<String> items = mock(List.class);
 
-        instance.useAndRestockItems(items);
-        verify(presenter).useAndRestockItems(eq(items));
+        testObj.useAndRestockItems(items);
+        verify(presenter).useAndRestockItems(items);
         verifyZeroInteractions(items);
     }
 
     @Test
-    public void testGetIdentifier() throws Exception {
+    public void testGetIdentifier() {
         // given
         Element documentElement = XMLParser.parse(SourceListJAXBParserMock.XML).getDocumentElement();
-        instance.initModule(documentElement);
+        testObj.initModule(documentElement);
         // when
-        String identifier = instance.getIdentifier();
+        String identifier = testObj.getIdentifier();
         // then
         assertThat(identifier).isEqualTo(sourcelistId);
     }
 
     @Test
-    public void testLockSourceList() throws Exception {
-        instance.lockSourceList();
+    public void testLockSourceList() {
+        testObj.lockSourceList();
         verify(presenter).lockSourceList();
     }
 
     @Test
-    public void testUnlockSourceList() throws Exception {
-        instance.unlockSourceList();
+    public void testUnlockSourceList() {
+        testObj.unlockSourceList();
         verify(presenter).unlockSourceList();
     }
 
     @Test
-    public void getItemSize() throws Exception {
+    public void getItemSize() {
         HasDimensions dimension = mock(HasDimensions.class);
         doReturn(dimension).when(presenter).getMaxItemSize();
-        HasDimensions itemSize = instance.getItemSize();
+        HasDimensions itemSize = testObj.getItemSize();
         assertThat(dimension).isSameAs(itemSize);
-
     }
-
 }
