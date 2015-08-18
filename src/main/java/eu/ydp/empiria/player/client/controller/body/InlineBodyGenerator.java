@@ -14,19 +14,20 @@ import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.resources.TextStyleNameConstants;
 
 public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
 
     private ModulesRegistrySocket modulesRegistrySocket;
     private ModuleSocket moduleSocket;
     private DisplayContentOptions options;
-    private BodyStyleNameConstants styleNames;
+    private TextStyleNameConstants styleNames;
     private InteractionEventsListener interactionEventsListener;
     private ParenthoodManager parenthood;
 
     @Inject
     public InlineBodyGenerator(@Assisted ModulesRegistrySocket mrs, @Assisted ModuleSocket moduleSocket, @Assisted DisplayContentOptions options,
-                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood, BodyStyleNameConstants styleNames) {
+                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood, TextStyleNameConstants styleNames) {
         this.modulesRegistrySocket = mrs;
         this.options = options;
         this.moduleSocket = moduleSocket;

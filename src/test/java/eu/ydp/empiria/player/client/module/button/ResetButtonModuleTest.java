@@ -36,6 +36,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
 
     private CustomPushButton button;
     private ModeStyleNameConstants styleNameConstants;
+    private ButtonStyleNameConstants buttonStyleNameConstants;
 
     private static class CustomGuiceModule implements Module {
         @Override
@@ -91,7 +92,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
     @Test
     public void testGetStyleName() {
         final String EXPECTED_STYLE = "qp-reset-button";
-        when(styleNameConstants.QP_RESET_BUTTON()).thenReturn(EXPECTED_STYLE);
+        when(buttonStyleNameConstants.QP_RESET_BUTTON()).thenReturn(EXPECTED_STYLE);
 
         assertEquals(EXPECTED_STYLE, instance.getStyleName());
     }
@@ -120,7 +121,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         doReturn(null).when(instance)
                 .getCurrentGroupIdentifier();
         when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
-        when(styleNameConstants.QP_RESET_BUTTON()).thenReturn("qp-reset-button");
+        when(buttonStyleNameConstants.QP_RESET_BUTTON()).thenReturn("qp-reset-button");
         instance.enablePreviewMode();
 
         // when
