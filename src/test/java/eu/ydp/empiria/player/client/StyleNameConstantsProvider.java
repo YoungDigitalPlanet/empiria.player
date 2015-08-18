@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.gin.factory;
+package eu.ydp.empiria.player.client;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
