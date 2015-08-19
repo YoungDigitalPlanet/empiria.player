@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.gin.module;
 
+import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.TypeLiteral;
+import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.SelectionViewBuilder;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
@@ -16,6 +18,7 @@ public class SelectionGinModule extends EmpiriaModule {
         bind(SelectionModuleView.class).to(SelectionModuleViewImpl.class);
         bind(SelectionElementGenerator.class).to(SelectionGridElementGeneratorImpl.class);
         bind(SelectionElementPositionGenerator.class).to(SelectionGridElementGeneratorImpl.class);
+        install(new GinFactoryModuleBuilder().build(SelectionModuleFactory.class));
 
         bindModuleScoped(SelectionModuleModel.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleModel>>() {
         });

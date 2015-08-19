@@ -5,14 +5,19 @@ import com.google.gwt.user.client.ui.HasWidgets.ForIsWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
+import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.labelling.structure.LabellingModuleJAXBParserFactory;
+import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
 import eu.ydp.gwtutil.xml.XMLParser;
 import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -28,25 +33,32 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class LabellingBuilderTest extends AbstractTestWithMocksBase {
+@RunWith(MockitoJUnitRunner.class)
+public class LabellingBuilderTest {
 
-    private LabellingBuilder builder;
-    private LabellingView view;
+    private LabellingBuilder testObj;
+
+    @Mock
     private LabellingModuleJAXBParserFactory parserFactory;
+    @Mock
+    private Provider<LabellingView> viewProvider;
+    @Mock
+    private Provider<LabellingChildView> childViewProvider;
+    @Mock
+    private LabellingView view;
+    @Mock
+    private LabellingChildView childView;
 
-    @Override
+    @Before
     public void setUp() {
-        super.setUp(LabellingBuilder.class, LabellingViewBuilder.class);
-
         XMLUnit.setIgnoreWhitespace(true);
 
-        builder = injector.getInstance(LabellingBuilder.class);
+        when(viewProvider.get()).thenReturn(view);
+        when(childViewProvider.get()).thenReturn(childView);
+        when(parserFactory.create()).thenReturn(new LabellingInteractionBeanMockParser(CHILDREN_FULL));
+        testObj = new LabellingBuilder(parserFactory, new LabellingViewBuilder(viewProvider, childViewProvider));
 
-        view = injector.getInstance(LabellingView.class);
         stub(view.getContainer()).toReturn(mock(ForIsWidget.class));
-
-        parserFactory = injector.getInstance(LabellingModuleJAXBParserFactory.class);
-        stub(parserFactory.create()).toReturn(new LabellingInteractionBeanMockParser(CHILDREN_FULL));
     }
 
     @Test
@@ -56,7 +68,7 @@ public class LabellingBuilderTest extends AbstractTestWithMocksBase {
         Element element = XMLParser.parse(XML_FULL).getDocumentElement();
 
         // when
-        LabellingView view = builder.build(element, bgs);
+        LabellingView view = testObj.build(element, bgs);
 
         // then
         verify(view).setBackground(eq(IMAGE_BEAN));
@@ -73,7 +85,7 @@ public class LabellingBuilderTest extends AbstractTestWithMocksBase {
         Element element = XMLParser.parse(XML_NO_CHILDREN).getDocumentElement();
 
         // when
-        LabellingView view = builder.build(element, bgs);
+        LabellingView view = testObj.build(element, bgs);
 
         // then
         verify(view).setBackground(eq(IMAGE_BEAN));
@@ -88,7 +100,7 @@ public class LabellingBuilderTest extends AbstractTestWithMocksBase {
         Element element = XMLParser.parse(XML_NO_CHILDREN_NODE).getDocumentElement();
 
         // when
-        LabellingView view = builder.build(element, bgs);
+        LabellingView view = testObj.build(element, bgs);
 
         // then
         verify(view).setBackground(eq(IMAGE_BEAN));

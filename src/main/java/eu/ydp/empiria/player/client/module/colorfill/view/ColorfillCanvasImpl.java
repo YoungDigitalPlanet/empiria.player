@@ -139,7 +139,7 @@ public class ColorfillCanvasImpl implements ColorfillCanvas {
         reloadImageData();
     }
 
-    public void flushImageToCanvas() {
+    private void flushImageToCanvas() {
         imageData.flush();
     }
 

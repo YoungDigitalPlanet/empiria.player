@@ -1,25 +1,30 @@
 package eu.ydp.empiria.player.client.module.expression.adapters;
 
 import com.google.common.collect.ImmutableMap;
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
+import eu.ydp.empiria.player.client.module.expression.PipedReplacementsParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import org.junit.Before;
 import org.junit.Test;
 
 import static eu.ydp.empiria.player.client.module.expression.adapters.ExpressionCharacterMappingProvider.SELECTOR;
 import static eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants.EMPIRIA_EXPRESSION_MAPPING;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SymjaExpressionCharactersAdapterJUnitTest extends AbstractTestWithMocksBase {
+public class SymjaExpressionCharactersAdapterJUnitTest {
 
     private SymjaExpressionCharactersAdapter symjaExpressionAdapter;
     private StyleSocket styleSocket;
 
-    @Override
+    @Before
     public void setUp() {
-        super.setUp();
-        symjaExpressionAdapter = injector.getInstance(SymjaExpressionCharactersAdapter.class);
-        styleSocket = injector.getInstance(StyleSocket.class);
+        styleSocket = mock(StyleSocket.class);
+        PipedReplacementsParser expressionReplacementsParser = new PipedReplacementsParser();
+        ExpressionCharactersMappingParser parser = new ExpressionCharactersMappingParser(expressionReplacementsParser);
+        ExpressionCharacterMappingProvider replacementsProvider = new ExpressionCharacterMappingProvider(styleSocket, parser);
+        DefaultExpressionCharactersAdapter defaultAdapter = new DefaultExpressionCharactersAdapter(replacementsProvider);
+        symjaExpressionAdapter = new SymjaExpressionCharactersAdapter(defaultAdapter);
     }
 
     @Test

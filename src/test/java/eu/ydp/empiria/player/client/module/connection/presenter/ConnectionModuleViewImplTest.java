@@ -31,10 +31,8 @@ import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnec
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.client.util.geom.Size;
-import eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static eu.ydp.gwtutil.junit.mock.UserAgentCheckerNativeInterfaceMock.FIREFOX_WINDOWS;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
@@ -109,7 +106,6 @@ public class ConnectionModuleViewImplTest extends AbstractTestBaseWithoutAutoInj
 
     @Before
     public void before() {
-        UserAgentChecker.setNativeInterface(UserAgentCheckerNativeInterfaceMock.getNativeInterfaceMock(FIREFOX_WINDOWS));
         setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
         prepareConnectionItems();
         prepareBean();

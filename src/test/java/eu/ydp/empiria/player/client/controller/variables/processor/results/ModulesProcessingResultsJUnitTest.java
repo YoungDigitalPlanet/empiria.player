@@ -8,9 +8,7 @@ import org.mockito.Mockito;
 import java.util.Map;
 import java.util.Set;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 public class ModulesProcessingResultsJUnitTest {
@@ -32,7 +30,7 @@ public class ModulesProcessingResultsJUnitTest {
 
         DtoModuleProcessingResult returnedProcessingResults = modulesProcessingResults.getProcessingResultsForResponseId("responseId");
 
-        assertEquals(processingResults, returnedProcessingResults);
+        assertThat(returnedProcessingResults).isEqualTo(processingResults);
     }
 
     @Test
@@ -41,7 +39,7 @@ public class ModulesProcessingResultsJUnitTest {
         DtoModuleProcessingResult firstProcessingResults = modulesProcessingResults.getProcessingResultsForResponseId(responseId);
         DtoModuleProcessingResult secondProcessingResults = modulesProcessingResults.getProcessingResultsForResponseId(responseId);
 
-        assertEquals(firstProcessingResults, secondProcessingResults);
+        assertThat(secondProcessingResults).isEqualTo(firstProcessingResults);
     }
 
     @Test
@@ -51,7 +49,7 @@ public class ModulesProcessingResultsJUnitTest {
 
         Set<String> ids = modulesProcessingResults.getIdsOfProcessedResponses();
 
-        assertThat(ids, hasItems("id1", "id2"));
+        assertThat(ids).contains("id1", "id2");
     }
 
     @Test
@@ -61,7 +59,8 @@ public class ModulesProcessingResultsJUnitTest {
 
         Map<String, DtoModuleProcessingResult> listOfProcessingResults = modulesProcessingResults.getMapOfProcessingResults();
 
-        assertThat(listOfProcessingResults.values(), hasItems(processingResult, otherProcessingResult));
+
+        assertThat(listOfProcessingResults.values()).contains(processingResult, otherProcessingResult);
     }
 
     private DtoModuleProcessingResult createProcessingResult(String responseId) {

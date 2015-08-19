@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client;
 
 import java.lang.annotation.Annotation;
 
-@SuppressWarnings("PMD")
 public class BindDescriptor<T> {
 
     public enum BindType {
@@ -12,12 +11,6 @@ public class BindDescriptor<T> {
     private Class<? extends Annotation> in;
     private Class<? extends T> to;
     private Class<T> bind;
-
-    public BindDescriptor(Class<T> bind, Class<? extends T> to, Class<? extends Annotation> in) {
-        this.bind = bind;
-        this.to = to;
-        this.in = in;
-    }
 
     public BindDescriptor() {
 
