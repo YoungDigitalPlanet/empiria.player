@@ -29,10 +29,10 @@ public class VideoGinModule extends EmpiriaModule {
         bind(VideoElementWrapper.class).toProvider(VideoElementWrapperProvider.class);
         bind(VideoPlayerNative.class).to(VideoPlayerNativeImpl.class);
         bind(DefaultPosterUriProvider.class).to(BundleDefaultPosterUriProvider.class);
+        bind(VideoBean.class).toProvider(VideoBeanProvider.class);
 
         bindModuleScoped(VideoBean.class, new TypeLiteral<ModuleScopedProvider<VideoBean>>() {
         });
-        bind(VideoBean.class).toProvider(VideoBeanProvider.class);
         bindModuleScoped(VideoPresenter.class, new TypeLiteral<ModuleScopedProvider<VideoPresenter>>() {
         });
         bindModuleScoped(VideoView.class, new TypeLiteral<ModuleScopedProvider<VideoView>>() {

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.gin.module;
 
-import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.CssStylesModuleScopedProvider;
@@ -17,13 +16,9 @@ public class StyleModule extends EmpiriaModule {
 
     @Override
     protected void configure() {
-        bind(CssStylesModuleScopedProvider.class).in(Singleton.class);
-        bind(WithCacheCssStylesModuleScopedProvider.class).in(Singleton.class);
-
         bind(ModuleStyle.class).annotatedWith(ModuleScoped.class).toProvider(CssStylesModuleScopedProvider.class);
         bind(ModuleStyle.class).annotatedWith(CachedModuleScoped.class).toProvider(WithCacheCssStylesModuleScopedProvider.class);
         bind(StyleSocket.class).to(StyleDataSourceManager.class);
-
         bind(ComputedStyle.class).to(ComputedStyleImpl.class);
         bind(NativeStyleHelper.class).to(NativeStyleHelperImpl.class);
     }

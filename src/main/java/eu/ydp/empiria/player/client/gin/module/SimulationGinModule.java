@@ -14,6 +14,7 @@ public class SimulationGinModule extends AbstractGinModule {
     protected void configure() {
         bind(SimulationModuleView.class).to(SimulationModuleViewImpl.class);
         bind(ProgressView.class).to(InfinityProgressWidget.class);
+
         install(new GinFactoryModuleBuilder().build(ProgressBarFactory.class));
     }
 

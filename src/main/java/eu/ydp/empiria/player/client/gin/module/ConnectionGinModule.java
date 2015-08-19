@@ -21,15 +21,15 @@ public class ConnectionGinModule extends AbstractGinModule {
 
     @Override
     protected void configure() {
+        bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);
+        bind(ConnectionView.class).to(ConnectionViewVertical.class);
+        bind(MultiplePairModuleView.class).to(ConnectionModuleViewImpl.class);
+
         install(new GinFactoryModuleBuilder().implement(ConnectionItem.class, ConnectionItemImpl.class)
                 .implement(ConnectionSurface.class, ConnectionSurfaceImpl.class).implement(MultiplePairModuleView.class, ConnectionModuleViewImpl.class)
                 .implement(ConnectionView.class, ConnectionViewVertical.class).implement(ConnectionSurfaceView.class, ConnectionSurfaceViewImpl.class)
                 .build(ConnectionModuleFactory.class));
-
         install(new GinFactoryModuleBuilder().build(ConnectionItemsFactory.class));
-        bind(ConnectionModulePresenter.class).to(ConnectionModulePresenterImpl.class);
-        bind(ConnectionView.class).to(ConnectionViewVertical.class);
-        bind(MultiplePairModuleView.class).to(ConnectionModuleViewImpl.class);
     }
 
 }

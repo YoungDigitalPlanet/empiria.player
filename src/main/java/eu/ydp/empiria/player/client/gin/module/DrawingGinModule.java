@@ -21,9 +21,9 @@ public class DrawingGinModule extends EmpiriaModule {
     protected void configure() {
         bind(DrawingView.class).to(DrawingViewImpl.class);
         bind(ToolboxView.class).to(ToolboxViewImpl.class);
+        bind(DrawingBean.class).toProvider(DrawingModelProvider.class);
         bindModuleScoped(DrawingBean.class, new TypeLiteral<ModuleScopedProvider<DrawingBean>>() {
         });
-        bind(DrawingBean.class).toProvider(DrawingModelProvider.class);
         bindModuleScoped(DrawingView.class, new TypeLiteral<ModuleScopedProvider<DrawingView>>() {
         });
         bindModuleScoped(CanvasView.class, new TypeLiteral<ModuleScopedProvider<CanvasViewImpl>>() {

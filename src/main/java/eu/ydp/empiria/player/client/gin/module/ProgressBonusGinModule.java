@@ -14,11 +14,10 @@ public class ProgressBonusGinModule extends EmpiriaModule {
     @Override
     protected void configure() {
         bind(ProgressBonusView.class).to(ProgressBonusViewImpl.class);
+        bind(ProgressBonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(ProgressBonusConfigModuleScopeProvider.class);
         bindModuleScoped(ProgressBonusPresenter.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusPresenter>>() {
         });
         bindModuleScoped(ProgressBonusView.class, new TypeLiteral<ModuleScopedProvider<ProgressBonusView>>() {
         });
-        bind(ProgressBonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(ProgressBonusConfigModuleScopeProvider.class);
-
     }
 }

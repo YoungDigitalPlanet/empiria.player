@@ -6,7 +6,6 @@ import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import eu.ydp.empiria.player.client.controller.AssessmentControllerFactory;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
@@ -54,8 +53,6 @@ import eu.ydp.empiria.player.client.gin.providers.*;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
-import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceView;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceViewImpl;
@@ -76,20 +73,7 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
-import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopeStack;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
-import eu.ydp.gwtutil.client.json.NativeMethodInvocatorImpl;
-import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
-import eu.ydp.gwtutil.client.scheduler.Scheduler;
-import eu.ydp.gwtutil.client.scheduler.SchedulerImpl;
-import eu.ydp.gwtutil.client.service.json.IJSONService;
-import eu.ydp.gwtutil.client.service.json.JSONService;
-import eu.ydp.gwtutil.client.timer.Timer;
-import eu.ydp.gwtutil.client.timer.TimerImpl;
-import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
-import eu.ydp.gwtutil.client.ui.GWTPanelFactoryImpl;
-import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.jsfilerequest.client.FileRequest;
 import eu.ydp.jsfilerequest.client.standard.StandardFileRequest;
 
@@ -97,35 +81,18 @@ public class PlayerGinModule extends AbstractGinModule {
 
     @Override
     protected void configure() {
-
-        //////////// TODO: ldomzalski utile
-        bind(Scheduler.class).to(SchedulerImpl.class)
-                .in(Singleton.class);
-        bind(GWTPanelFactory.class).to(GWTPanelFactoryImpl.class)
-                .in(Singleton.class);
-        bind(BooleanUtils.class).in(Singleton.class);
-        bind(YJsJsonConverter.class).in(Singleton.class);
-        bind(IJSONService.class).to(JSONService.class)
-                .in(Singleton.class);
-        bind(FileRequest.class).to(StandardFileRequest.class);
-        bind(Timer.class).to(TimerImpl.class);
-        bind(NativeMethodInvocator.class).to(NativeMethodInvocatorImpl.class);
-        bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
-        bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
-        bind(ModuleScopeStack.class).in(Singleton.class);
-        /////////
-
-//bookmark
+        //bookmark
         bind(IBookmarkPopupView.class).to(BookmarkPopup.class);
-//assesment
+        //assesment
         bind(AssessmentSessionSocket.class).to(SessionDataManager.class);
-//labeling
+        //labeling
         bind(LabellingView.class).to(LabellingViewImpl.class);
         bind(LabellingChildView.class).to(LabellingChildViewImpl.class);
-//session
+        //core
         bind(SessionDataSupplier.class).to(SessionDataManager.class);
         bind(LessonStateReset.class).asEagerSingleton();
-//core
+        bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
+        bind(FileRequest.class).to(StandardFileRequest.class);
         bind(Element.class).annotatedWith(ModuleScoped.class).toProvider(XmlElementModuleScopedProvider.class);
         bind(Response.class).annotatedWith(ModuleScoped.class).toProvider(ResponseModuleScopedProvider.class);
         bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class);

@@ -45,7 +45,6 @@ public class DragDropGinModule extends EmpiriaModule {
         });
 
         install(new GinFactoryModuleBuilder().build(DragGapModuleFactory.class));
-
         install(new GinFactoryModuleBuilder().build(DragDropObjectFactory.class));
     }
 }

@@ -22,14 +22,10 @@ public class DictionaryGinModule extends EmpiriaModule {
     protected void configure() {
         bind(DictionaryButtonView.class).to(DictionaryButtonViewImpl.class);
         bind(DictionaryPopupView.class).to(DictionaryPopupViewImpl.class);
-
         bind(WordsLoadingListener.class).to(MainController.class);
         bind(ExplanationListener.class).to(MainController.class);
-
         bind(WordsSocket.class).to(WordsController.class);
-
         bind(ExplanationView.class).to(ExplanationViewImpl.class);
-
         bind(VisibilityChanger.class).toProvider(VisibilityChangerProvider.class);
 
         bindModuleScoped(DictionaryPresenter.class, new TypeLiteral<ModuleScopedProvider<DictionaryPresenter>>() {

@@ -20,9 +20,10 @@ public class BonusGinModule extends EmpiriaModule {
         bind(BonusPopupView.class).to(BonusPopupViewImpl.class);
         bind(PowerFeedbackBonusClient.class).to(NullPowerFeedbackBonusClient.class);
         bind(PowerFeedbackTutorClient.class).to(NullPowerFeedbackTutorClient.class);
+        bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
         bindModuleScoped(BonusProvider.class, new TypeLiteral<ModuleScopedProvider<BonusProvider>>() {
         });
-        bind(BonusConfig.class).annotatedWith(ModuleScoped.class).toProvider(BonusConfigModuleScopeProvider.class);
+
     }
 
 }

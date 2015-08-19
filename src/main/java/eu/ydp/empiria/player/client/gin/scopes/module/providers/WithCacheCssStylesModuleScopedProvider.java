@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.ElementStyleSelectorBuilder;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
@@ -12,6 +13,7 @@ import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import java.util.List;
 import java.util.Map;
 
+@Singleton
 public class WithCacheCssStylesModuleScopedProvider implements Provider<ModuleStyle> {
 
     @Inject

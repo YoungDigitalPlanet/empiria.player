@@ -18,7 +18,6 @@ public class SelectionGinModule extends EmpiriaModule {
         bind(SelectionModuleView.class).to(SelectionModuleViewImpl.class);
         bind(SelectionElementGenerator.class).to(SelectionGridElementGeneratorImpl.class);
         bind(SelectionElementPositionGenerator.class).to(SelectionGridElementGeneratorImpl.class);
-        install(new GinFactoryModuleBuilder().build(SelectionModuleFactory.class));
 
         bindModuleScoped(SelectionModuleModel.class, new TypeLiteral<ModuleScopedProvider<SelectionModuleModel>>() {
         });
@@ -26,5 +25,7 @@ public class SelectionGinModule extends EmpiriaModule {
         });
         bindModuleScoped(SelectionViewBuilder.class, new TypeLiteral<ModuleScopedProvider<SelectionViewBuilder>>() {
         });
+
+        install(new GinFactoryModuleBuilder().build(SelectionModuleFactory.class));
     }
 }

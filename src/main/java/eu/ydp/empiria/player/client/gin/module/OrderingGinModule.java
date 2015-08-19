@@ -28,8 +28,6 @@ public class OrderingGinModule extends EmpiriaModule {
         bind(OrderInteractionViewItems.class).to(OrderInteractionViewItemsImpl.class);
         bind(OrderInteractionViewItemStyles.class).to(OrderInteractionViewItemStylesImpl.class);
         bind(SortCallback.class).to(SortCallbackImpl.class);
-        install(new GinFactoryModuleBuilder().implement(OrderInteractionViewItem.class, OrderInteractionViewItemImpl.class).build(
-                OrderInteractionModuleFactory.class));
 
         bindModuleScoped(OrderingItemsDao.class, new TypeLiteral<ModuleScopedProvider<OrderingItemsDao>>() {
         });
@@ -43,6 +41,9 @@ public class OrderingGinModule extends EmpiriaModule {
         });
         bindModuleScoped(OrderInteractionPresenter.class, new TypeLiteral<ModuleScopedProvider<OrderInteractionPresenter>>() {
         });
+
+        install(new GinFactoryModuleBuilder().implement(OrderInteractionViewItem.class, OrderInteractionViewItemImpl.class).build(
+                OrderInteractionModuleFactory.class));
     }
 
 }
