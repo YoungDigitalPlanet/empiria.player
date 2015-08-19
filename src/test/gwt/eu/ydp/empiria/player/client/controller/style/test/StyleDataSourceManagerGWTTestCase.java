@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.style.test;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -28,7 +27,6 @@ public class StyleDataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase 
     private final String css3 = "h1 { font-weight: bold; }";
     private ScriptsLoader scriptsLoader;
 
-    @GinModules(ScriptInjectorGinModule.class)
     interface TestGinjector extends Ginjector {
         ScriptsLoader getScriptsLoader();
     }
