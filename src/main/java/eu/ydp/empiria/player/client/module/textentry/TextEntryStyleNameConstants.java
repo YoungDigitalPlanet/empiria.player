@@ -4,12 +4,6 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface TextEntryStyleNameConstants extends Constants {
 
-    /**
-     * Poniewaz podstawowa clasa gapy 'qp-text-textentry' zmienia sie na
-     * *-corect, *-wrong Dodalem ten style aby w pewny sposob wyszukiwac gapy w
-     * testach E2E.
-     */
-
     @DefaultStringValue("qp-textentry")
     String QP_TEXTENTRY();
 
@@ -33,5 +27,4 @@ public interface TextEntryStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-text-textentry-wrong")
     String QP_TEXT_TEXTENTRY_WRONG();
-
 }
