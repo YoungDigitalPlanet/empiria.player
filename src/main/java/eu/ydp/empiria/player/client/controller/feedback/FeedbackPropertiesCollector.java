@@ -18,11 +18,8 @@ public class FeedbackPropertiesCollector {
     private IModule sender;
 
     private double todo;
-
     private double done;
-
     private boolean isWrong;
-
     private boolean isOk;
     private String lastChange;
 

@@ -34,19 +34,27 @@ public class FeedbackPropertiesCollectorJUnitTest extends AbstractTestBase {
 
     @Test
     public void shouldCollectPropertiesFromSingleModule() {
-        moduleInfos = new ModuleInfo[]{ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0),
-                ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0),
-                ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0)};
+        // given
+        String firstLastChange = "firstLastChange";
+        String secondLastChange = "secondLastChange";
+        String thirdLastChange = "thirdLastChange";
+        moduleInfos = new ModuleInfo[]{ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setTodo(2).setDone(1).setErrors(0).setLastChange(firstLastChange),
+                ModuleInfo.create(MODULE_2).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0).setLastChange(secondLastChange),
+                ModuleInfo.create(MODULE_3).setLastOk(WRONG).setTodo(1).setDone(2).setErrors(0).setLastChange(thirdLastChange)};
 
         initializeModules();
+
+        // when
         FeedbackProperties sourceProperties = propertiesCollector.collect(helper.getSender(), helper.getSender());
 
+        // then
         assertThat(sourceProperties.getBooleanProperty(FeedbackPropertyName.OK), is(equalTo(true)));
         assertThat(sourceProperties.getIntegerProperty(FeedbackPropertyName.DONE), is(equalTo(1)));
         assertThat(sourceProperties.getIntegerProperty(FeedbackPropertyName.TODO), is(equalTo(2)));
         assertThat(sourceProperties.getIntegerProperty(FeedbackPropertyName.ERRORS), is(equalTo(0)));
         assertThat(sourceProperties.getBooleanProperty(FeedbackPropertyName.ALL_OK), is(equalTo(false)));
         assertThat(sourceProperties.getDoubleProperty(FeedbackPropertyName.RESULT), is(equalTo(50.0)));
+        assertThat(sourceProperties.getStringProperty(FeedbackPropertyName.LAST_CHANGE), is(equalTo(firstLastChange)));
     }
 
     @Test
