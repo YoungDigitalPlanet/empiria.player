@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.controller.extensions.types.DataSourceDataSo
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -38,8 +37,6 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
     @Inject
     IPlayerContainersAccessor itemBodyAccessor;
     @Inject
-    StyleNameConstants styleNames;
-    @Inject
     EventsBus eventsBus;
     @Inject
     StickieFactory stickieFactory;
@@ -48,8 +45,8 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
     @Inject
     PageScopeFactory pageScopeFactory;
 
-    List<List<IStickieProperties>> stickies = new ArrayList<List<IStickieProperties>>();
-    Map<IStickieProperties, IStickieView> views = new HashMap<IStickieProperties, IStickieView>();
+    List<List<IStickieProperties>> stickies = new ArrayList<>();
+    Map<IStickieProperties, IStickieView> views = new HashMap<>();
     private DataSourceDataSupplier dataSourceSupplier;
     int currItemIndex = 0;
     JavaScriptObject playerJsObject;
@@ -83,7 +80,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
     }
 
-    void parseExternalStickies() {
+    private void parseExternalStickies() {
         JavaScriptObject externalStickies = getExternalStickies();
         if (externalStickies != null) {
             JSONArray externalState = (JSONArray) JSONParser.parseLenient(externalStickies.toString());
@@ -94,7 +91,7 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
     }
 
-    void initStickiesList(int itemsCount) {
+    private void initStickiesList(int itemsCount) {
         stickies.clear();
         for (int i = 0; i < itemsCount; i++) {
             stickies.add(new ArrayList<IStickieProperties>());
@@ -177,20 +174,20 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
         dataSourceSupplier = supplier;
     }
 
-    void addStickie(int colorIndex) {
+    private void addStickie(int colorIndex) {
         IStickieProperties sp = createStickie(colorIndex);
         getStickiesForCurrentItem().add(sp);
         addStickieView(sp, true);
     }
 
-    IStickieProperties createStickie(int colorIndex) {
+    private IStickieProperties createStickie(int colorIndex) {
         IStickieProperties sp = propertiesProvider.get();
         sp.setColorIndex(colorIndex);
         sp.updateTimestamp();
         return sp;
     }
 
-    void addStickieView(final IStickieProperties stickieProperties, boolean initialAddition) {
+    private void addStickieView(final IStickieProperties stickieProperties, boolean initialAddition) {
         StickieRegistration stickieRegistration = new StickieRegistration() {
 
             @Override
@@ -229,14 +226,14 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
                 stickiePresenter.correctStickiePosition();
             }
         };
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), pageContentResizedHandler, pageScopeFactory.getCurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_GROWN), pageContentResizedHandler, pageScopeFactory.getCurrentPageScope());
     }
 
     private void updateStickiePosition(IStickieProperties sp) {
         views.get(sp).setPosition(sp.getX(), sp.getY());
     }
 
-    void checkStickieOverlay(IStickieProperties sp) {
+    private void checkStickieOverlay(IStickieProperties sp) {
         for (int s = 0; s < getStickiesForCurrentItem().size(); s++) {
             IStickieProperties refSp = getStickiesForCurrentItem().get(s);
             if (refSp != sp) {
@@ -248,12 +245,12 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
         }
     }
 
-    void deleteStickie(IStickieProperties sp) {
+    private void deleteStickie(IStickieProperties sp) {
         deleteStickieView(sp);
         getStickiesForCurrentItem().remove(sp);
     }
 
-    void deleteStickieView(IStickieProperties sp) {
+    private void deleteStickieView(IStickieProperties sp) {
         views.get(sp).remove();
         views.remove(sp);
     }
@@ -267,14 +264,14 @@ public class StickiesProcessorExtension extends InternalExtension implements Dat
 
     }
 
-    void clearAll() {
+    private void clearAll() {
         List<IStickieProperties> currStickies = getStickiesForCurrentItem();
         while (!currStickies.isEmpty()) {
             deleteStickie(currStickies.get(0));
         }
     }
 
-    List<IStickieProperties> getStickiesForCurrentItem() {
+    private List<IStickieProperties> getStickiesForCurrentItem() {
         return stickies.get(currItemIndex);
     }
 

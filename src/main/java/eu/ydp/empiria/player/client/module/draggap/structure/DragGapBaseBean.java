@@ -6,15 +6,12 @@ import eu.ydp.gwtutil.client.StringUtils;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "dragInteraction")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DragGapBean extends ModuleBean {
+public class DragGapBaseBean extends ModuleBean {
 
     @XmlAttribute(name = "name")
     private String name = StringUtils.EMPTY_STRING;
-    ;
 
     @XmlAttribute(name = "expressionMode")
     private String expressionMode = StringUtils.EMPTY_STRING;

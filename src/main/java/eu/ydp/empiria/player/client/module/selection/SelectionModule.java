@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteract
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionModuleStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class SelectionModule extends AbstractInteractionModule<SelectionModule, SelectionModuleModel, SelectionInteractionBean> {
+public class SelectionModule extends AbstractInteractionModule<SelectionModuleModel, SelectionInteractionBean> {
 
     private final SelectionModulePresenter selectionModulePresenter;
     private final SelectionModuleStructure structure;

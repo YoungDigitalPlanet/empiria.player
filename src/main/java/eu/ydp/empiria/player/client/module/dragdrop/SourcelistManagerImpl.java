@@ -46,7 +46,7 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
 
     @PostConstruct
     public void init() {
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_RESIZED), this, pageScopeFactory.getCurrentPageScope());
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CONTENT_GROWN), this, pageScopeFactory.getCurrentPageScope());
     }
 
     @Override
@@ -173,9 +173,20 @@ public class SourcelistManagerImpl implements SourcelistManager, PlayerEventHand
     }
 
     private void resizeClients(Sourcelist sourcelist, HasDimensions size) {
+
         for (SourcelistClient client : model.getClients(sourcelist)) {
-            client.setSize(size);
+
+            if (client instanceof ResizableSourcelistClient) {
+                ((ResizableSourcelistClient) client).setSize(size);
+            }
+
         }
+
+        sendEventSourceListClientSetSizeComplete();
+    }
+
+    private void sendEventSourceListClientSetSizeComplete() {
+        eventsBus.fireAsyncEvent(new PlayerEvent(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED), pageScopeFactory.getCurrentPageScope());
     }
 
     private void restoreSourcelistsState() {

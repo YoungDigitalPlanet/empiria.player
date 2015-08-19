@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionBe
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionStructure;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class OrderInteractionModule extends AbstractInteractionModule<OrderInteractionModule, OrderInteractionModuleModel, OrderInteractionBean> {
+public class OrderInteractionModule extends AbstractInteractionModule<OrderInteractionModuleModel, OrderInteractionBean> {
 
     @Inject
     @ModuleScoped

@@ -36,6 +36,11 @@ MathJax.Hub.yProcessElements = function (callback) {
     MathJax.Hub.yElements = [];
 };
 
+MathJax.Hub.yRerenderElement = function(divId) {
+	var jaxElement = MathJax.Hub.getAllJax(divId)[0];
+	MathJax.Hub.Queue(["Rerender", jaxElement]);
+};
+
 MathJax.Hub.Config({
     extensions: ["Gap.js"],
     jax: ["input/MathML", "output/" + renderer],
@@ -48,10 +53,12 @@ MathJax.Hub.Config({
         preferredFont: "TeX",
         webFont: "TeX",
         imageFont: null,
-        matchFontHeight: true
+        matchFontHeight: true,
+        mtextFontInherit: true
     },
     SVG: {
-        font: "TeX"
+        font: "TeX",
+        mtextFontInherit: true
     }
 });
 
