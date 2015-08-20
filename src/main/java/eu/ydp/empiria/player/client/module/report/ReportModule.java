@@ -17,7 +17,6 @@ import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OnModuleShowHandler;
 import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class ReportModule extends ContainerModuleBase implements OnModuleShowHandler {
 
@@ -26,14 +25,14 @@ public class ReportModule extends ContainerModuleBase implements OnModuleShowHan
 
     private final Panel mainPanel;
     private FlexTable table;
-    private final StyleNameConstants styleNames;
+    private final ReportStyleNameConstants styleNames;
     private final PlayerWorkModeService playerWorkModeService;
     private final RaportModuleFactory raportModuleFactory;
 
     @Inject
     public ReportModule(@Assisted DataSourceDataSupplier dataSourceDataSupplier,
                         @Assisted SessionDataSupplier sessionDataSupplier,
-                        StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService,
+                        ReportStyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService,
                         RaportModuleFactory raportModuleFactory) {
         this.dataSourceDataSupplier = dataSourceDataSupplier;
         this.sessionDataSupplier = sessionDataSupplier;

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.ordering.view;
 
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.ordering.OrderingStyleNameConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ public class OrderInteractionViewUniqueCssProviderTest {
     private OrderInteractionViewUniqueCssProvider testObj;
 
     @Mock
-    private StyleNameConstants styleNameConstants;
+    private OrderingStyleNameConstants styleNameConstants;
 
     @Test
     public void getNextTest() {

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.multiview.swipe.SwipeType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.view.player.AbstractElementCache;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
@@ -15,7 +15,7 @@ import eu.ydp.gwtutil.client.ui.GWTPanelFactory;
 @Singleton
 public class PanelCache extends AbstractElementCache<KeyValue<FlowPanel, FlowPanel>> {
     @Inject
-    protected StyleNameConstants styleNames;
+    protected PageStyleNameConstants styleNames;
     @Inject
     protected GWTPanelFactory panelFactory;
 

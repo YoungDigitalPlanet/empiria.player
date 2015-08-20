@@ -4,6 +4,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
+import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickHandler;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
@@ -13,7 +14,6 @@ import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean
 import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
 import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class SelectionViewBuilderJUnitTest {
     private SelectionViewBuilder viewBuilder;
 
     @Mock
-    private StyleNameConstants styleNameConstants;
+    private SelectionStyleNameConstants styleNameConstants;
     @Mock
     private SelectionModuleFactory selectionModuleFactory;
     @Mock

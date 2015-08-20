@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 public class VolumeScrollBar extends AbstractMediaScroll {
 
-    private final StyleNameConstants styleNames; // NOPMD
+    private final MediaStyleNameConstants styleNames; // NOPMD
 
     private static VolumeScrollBarUiBinder uiBinder = GWT.create(VolumeScrollBarUiBinder.class);
 
@@ -49,7 +49,7 @@ public class VolumeScrollBar extends AbstractMediaScroll {
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public VolumeScrollBar(StyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper, PageScopeFactory pageScopeFactory) {
+    public VolumeScrollBar(MediaStyleNameConstants styleNames, EventsBus eventsBus, PositionHelper positionHelper, PageScopeFactory pageScopeFactory) {
         this.styleNames = styleNames;
         this.eventsBus = eventsBus;
         this.positionHelper = positionHelper;

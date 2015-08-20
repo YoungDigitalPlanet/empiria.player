@@ -13,12 +13,12 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
+import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
 import eu.ydp.empiria.player.client.module.math.MathGap;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -41,7 +41,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
     protected boolean hasEmptyOption = false;
 
     @Inject
-    protected StyleNameConstants styleNames;
+    protected InlineChoiceStyleNameConstants styleNames;
 
     @Inject
     protected EventsBus eventsBus;

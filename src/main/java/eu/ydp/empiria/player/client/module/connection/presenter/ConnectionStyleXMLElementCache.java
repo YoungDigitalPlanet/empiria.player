@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.empiria.player.client.view.player.AbstractCache;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
@@ -14,7 +14,7 @@ public class ConnectionStyleXMLElementCache extends AbstractCache<MultiplePairMo
     Map<MultiplePairModuleConnectType, String> styles = new HashMap<MultiplePairModuleConnectType, String>();
     private final XMLParser xmlParser;
 
-    public ConnectionStyleXMLElementCache(StyleNameConstants styleNames, XMLParser xmlParser) {
+    public ConnectionStyleXMLElementCache(ConnectionStyleNameConstants styleNames, XMLParser xmlParser) {
         styles.put(MultiplePairModuleConnectType.WRONG, styleNames.QP_CONNECTION_WRONG());
         styles.put(MultiplePairModuleConnectType.CORRECT, styleNames.QP_CONNECTION_CORRECT());
         styles.put(MultiplePairModuleConnectType.NONE, styleNames.QP_CONNECTION_DISABLED());

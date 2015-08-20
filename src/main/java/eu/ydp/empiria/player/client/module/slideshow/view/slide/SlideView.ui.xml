@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.slideshow.SlideshowStyleNameConstants" field="res"/>
     <g:FlowPanel ui:field="slidePanel" styleName="{res.QP_SLIDESHOW_SLIDE_PANEL}">
         <g:FlowPanel ui:field="imgPanel" styleName="{res.QP_SLIDESHOW_SLIDE_IMAGE_PANEL}">
             <g:Image ui:field="image" styleName="{res.QP_SLIDESHOW_SLIDE_IMAGE}">
