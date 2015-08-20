@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackT
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class BonusGinModule extends EmpiriaModule {
+public class BonusGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

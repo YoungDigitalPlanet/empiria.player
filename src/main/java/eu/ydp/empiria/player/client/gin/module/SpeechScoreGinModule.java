@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkView;
 import eu.ydp.empiria.player.client.module.speechscore.view.SpeechScoreLinkViewImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class SpeechScoreGinModule extends EmpiriaModule {
+public class SpeechScoreGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

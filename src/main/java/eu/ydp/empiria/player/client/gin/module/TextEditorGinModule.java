@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorOptions;
 import eu.ydp.empiria.player.client.module.texteditor.wrapper.TextEditorOptionsProvider;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class TextEditorGinModule extends EmpiriaModule {
+public class TextEditorGinModule extends BaseGinModule {
     @Override
     protected void configure() {
         bind(TextEditorView.class).to(TextEditorViewImpl.class);

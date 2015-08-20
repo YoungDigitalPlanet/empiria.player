@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedbackPresenter;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 
-public class FeedbackModule extends EmpiriaModule {
+public class FeedbackGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

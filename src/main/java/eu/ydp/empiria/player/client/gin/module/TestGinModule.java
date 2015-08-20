@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitButton
 import eu.ydp.empiria.player.client.module.test.submit.view.TestPageSubmitButtonViewImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class TestGinModule extends EmpiriaModule {
+public class TestGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

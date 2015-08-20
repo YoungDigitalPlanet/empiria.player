@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.module.dictionary.view.DictionaryPopupViewIm
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 import eu.ydp.jsfilerequest.client.FileRequestCallback;
 
-public class DictionaryGinModule extends EmpiriaModule {
+public class DictionaryGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

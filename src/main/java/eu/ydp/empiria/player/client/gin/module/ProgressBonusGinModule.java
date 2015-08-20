@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.progressbonus.view.ProgressBonusViewI
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class ProgressBonusGinModule extends EmpiriaModule {
+public class ProgressBonusGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

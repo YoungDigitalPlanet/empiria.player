@@ -20,7 +20,7 @@ import eu.ydp.empiria.player.client.module.video.wrappers.poster.BundleDefaultPo
 import eu.ydp.empiria.player.client.module.video.wrappers.poster.DefaultPosterUriProvider;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class VideoGinModule extends EmpiriaModule {
+public class VideoGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

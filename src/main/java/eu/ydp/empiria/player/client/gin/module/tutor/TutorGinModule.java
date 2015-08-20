@@ -6,7 +6,7 @@ import com.google.inject.name.Names;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.PersonaService;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorConfig;
 import eu.ydp.empiria.player.client.gin.factory.TutorCommandsModuleFactory;
-import eu.ydp.empiria.player.client.gin.module.EmpiriaModule;
+import eu.ydp.empiria.player.client.gin.module.BaseGinModule;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.PersonaServiceModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.TutorConfigModuleScopedProvider;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.module.tutor.view.TutorViewImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class TutorGinModule extends EmpiriaModule {
+public class TutorGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

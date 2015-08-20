@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePr
 import eu.ydp.empiria.player.client.module.selection.view.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class SelectionGinModule extends EmpiriaModule {
+public class SelectionGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

@@ -14,16 +14,15 @@ import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.debug.log.Logger;
-import eu.ydp.gwtutil.client.gin.module.AnimationGinModule;
 import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
 
 @GinModules(value = {PlayerGinModule.class, UtilGinModule.class, ChoiceGinModule.class, ConnectionGinModule.class, SourceListGinModule.class,
         SelectionGinModule.class, SimulationGinModule.class, SlideshowGinModule.class,
         OrderingGinModule.class, ColorfillGinModule.class, DragDropGinModule.class, TutorGinModule.class, ButtonGinModule.class,
-        AnimationGinModule.class, DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
+        DrawingGinModule.class, BonusGinModule.class, ProgressBonusGinModule.class, VideoGinModule.class, DictionaryGinModule.class,
         TextEditorGinModule.class, TestGinModule.class, SpeechScoreGinModule.class,
-        ExternalGinModule.class, PicturePlayerModule.class, MathJaxGinModule.class, AccordionGinModule.class,
-        PageContentGinModule.class, MathGinModule.class, FeedbackModule.class, StyleModule.class,
+        ExternalGinModule.class, PicturePlayerGinModule.class, MathJaxGinModule.class, AccordionGinModule.class,
+        PageContentGinModule.class, MathGinModule.class, FeedbackGinModule.class, StyleGinModule.class,
         MediaGinModule.class})
 public interface PlayerGinjector extends Ginjector {
 

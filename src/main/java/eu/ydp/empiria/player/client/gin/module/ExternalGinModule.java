@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.module.external.interaction.view.ExternalInt
 import eu.ydp.empiria.player.client.module.external.presentation.view.ExternalPresentationViewImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class ExternalGinModule extends EmpiriaModule {
+public class ExternalGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

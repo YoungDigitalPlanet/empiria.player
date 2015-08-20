@@ -12,7 +12,7 @@ import eu.ydp.empiria.player.client.util.style.NativeStyleHelper;
 import eu.ydp.empiria.player.client.util.style.NativeStyleHelperImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class StyleModule extends EmpiriaModule {
+public class StyleGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

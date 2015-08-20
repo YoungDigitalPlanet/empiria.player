@@ -22,7 +22,7 @@ import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelperImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class DragDropGinModule extends EmpiriaModule {
+public class DragDropGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

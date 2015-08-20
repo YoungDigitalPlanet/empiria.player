@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.module.drawing.view.CanvasViewImpl;
 import eu.ydp.empiria.player.client.module.drawing.view.DrawCanvas;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class DrawingGinModule extends EmpiriaModule {
+public class DrawingGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

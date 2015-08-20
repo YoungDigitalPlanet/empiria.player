@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScopedProvider;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public abstract class EmpiriaModule extends AbstractGinModule {
+public abstract class BaseGinModule extends AbstractGinModule {
 
     protected <F, T extends F> void bindPageScoped(Class<F> clazz, TypeLiteral<PageScopedProvider<T>> typeLiteral) {
         bind(typeLiteral).in(Singleton.class);

@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresente
 import eu.ydp.empiria.player.client.module.choice.providers.MultiChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.providers.SimpleChoiceStyleProvider;
 import eu.ydp.empiria.player.client.module.choice.providers.SingleChoiceStyleProvider;
-import eu.ydp.empiria.player.client.module.choice.structure.ChoiceModuleStructure;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleView;
 import eu.ydp.empiria.player.client.module.choice.view.ChoiceModuleViewImpl;
 import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceView;
@@ -21,17 +20,14 @@ import eu.ydp.empiria.player.client.module.choice.view.SimpleChoiceViewImpl;
 import eu.ydp.empiria.player.client.module.components.choicebutton.ChoiceButtonBase;
 import eu.ydp.empiria.player.client.module.components.choicebutton.MultiChoiceButton;
 import eu.ydp.empiria.player.client.module.components.choicebutton.SingleChoiceButton;
-import eu.ydp.empiria.player.client.module.inlinechoice.math.InlineChoiceMathGapModulePresenter;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class ChoiceGinModule extends EmpiriaModule {
+public class ChoiceGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {
         bind(ChoiceModulePresenter.class).to(ChoiceModulePresenterImpl.class);
         bind(ChoiceModuleView.class).to(ChoiceModuleViewImpl.class);
-        bind(ChoiceModuleStructure.class);
-        bind(InlineChoiceMathGapModulePresenter.class);
 
         bindModuleScoped(ChoiceModuleView.class, new TypeLiteral<ModuleScopedProvider<ChoiceModuleView>>() {
         });

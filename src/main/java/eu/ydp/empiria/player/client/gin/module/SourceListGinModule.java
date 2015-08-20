@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBPa
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewImpl;
 
-public class SourceListGinModule extends EmpiriaModule {
+public class SourceListGinModule extends BaseGinModule {
     public static class SourceListJAXBParserProvider implements Provider<SourceListJAXBParser> {
         @Override
         public SourceListJAXBParser get() {

@@ -18,7 +18,7 @@ import eu.ydp.empiria.player.client.module.ordering.view.OrderInteractionViewWid
 import eu.ydp.empiria.player.client.module.ordering.view.items.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class OrderingGinModule extends EmpiriaModule {
+public class OrderingGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

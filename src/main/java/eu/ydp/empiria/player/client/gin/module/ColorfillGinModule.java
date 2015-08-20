@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.colorfill.structure.ColorfillInteract
 import eu.ydp.empiria.player.client.module.colorfill.view.*;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class ColorfillGinModule extends EmpiriaModule {
+public class ColorfillGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {

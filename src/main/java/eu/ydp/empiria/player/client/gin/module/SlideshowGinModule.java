@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideView;
 import eu.ydp.empiria.player.client.module.slideshow.view.slide.SlideViewImpl;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScopedProvider;
 
-public class SlideshowGinModule extends EmpiriaModule {
+public class SlideshowGinModule extends BaseGinModule {
 
     @Override
     protected void configure() {
