@@ -99,7 +99,6 @@ import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.module.video.presenter.VideoPlayerFactory;
 import eu.ydp.empiria.player.client.preloader.view.InfinityProgressWidget;
 import eu.ydp.empiria.player.client.preloader.view.ProgressView;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ComputedStyle;
 import eu.ydp.empiria.player.client.style.ComputedStyleImpl;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -171,7 +170,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(PlayerWorkModeService.class).in(Singleton.class);
         bind(PageViewCache.class).in(Singleton.class);
         bind(PageControllerCache.class).in(Singleton.class);
-        bind(StyleNameConstants.class).in(Singleton.class);
+
         bind(MainFlowProcessor.class).in(Singleton.class);
         bind(Scheduler.class).to(SchedulerImpl.class)
                 .in(Singleton.class);

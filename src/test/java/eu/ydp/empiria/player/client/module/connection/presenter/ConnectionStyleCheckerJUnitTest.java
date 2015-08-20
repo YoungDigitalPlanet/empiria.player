@@ -3,8 +3,8 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.xml.XMLParser;
@@ -29,7 +29,7 @@ public class ConnectionStyleCheckerJUnitTest {
     @Mock
     private CssHelper cssHelper;
     @Mock
-    private StyleNameConstants styleNames;
+    private ConnectionStyleNameConstants styleNames;
     @Mock
     private XMLParser xmlParser;
     @Mock

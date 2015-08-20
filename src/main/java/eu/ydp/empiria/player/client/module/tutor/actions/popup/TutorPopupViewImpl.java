@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.tutor.TutorStyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
@@ -17,7 +17,7 @@ public class TutorPopupViewImpl implements TutorPopupView {
     @Inject
     private TutorPopupViewWidget popupViewWidget;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private TutorStyleNameConstants styleNameConstants;
     @Inject
     private Provider<TutorPopupViewPersonaView> personasViewProvider;
     @Inject

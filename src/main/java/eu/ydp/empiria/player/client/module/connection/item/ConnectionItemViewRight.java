@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 
 public class ConnectionItemViewRight extends AbstractConnectionItemView {
     private static ConnectionItemViewUiBinder uiBinder = GWT.create(ConnectionItemViewUiBinder.class);
@@ -16,8 +16,8 @@ public class ConnectionItemViewRight extends AbstractConnectionItemView {
     }
 
     @Inject
-    public ConnectionItemViewRight(StyleNameConstants styleNames, @Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean) {
-        super(styleNames, bodyGenerator, bean);
+    public ConnectionItemViewRight(@Assisted InlineBodyGeneratorSocket bodyGenerator, @Assisted PairChoiceBean bean, ConnectionStyleNameConstants styleNames) {
+        super(bodyGenerator, bean, styleNames);
         initWidget(uiBinder.createAndBindUi(this));
         buildView();
     }

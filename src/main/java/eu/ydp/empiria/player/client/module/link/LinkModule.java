@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.containers.SimpleContainerModuleBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -36,13 +35,13 @@ public class LinkModule extends SimpleContainerModuleBase implements WorkModeTes
     protected String url;
     private boolean locked;
 
-    private final StyleNameConstants styleNames;
+    private final LinkStyleNameConstants styleNames;
     private final UserInteractionHandlerFactory userInteractionHandlerFactory;
     private final EventsBus eventsBus;
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker, StyleNameConstants styleNames,
+    public LinkModule(@Assisted FlowRequestInvoker flowRequestInvoker, LinkStyleNameConstants styleNames,
                       UserInteractionHandlerFactory userInteractionHandlerFactory, EventsBus eventsBus,
                       PageScopeFactory pageScopeFactory) {
         this.flowRequestInvoker = flowRequestInvoker;

@@ -7,7 +7,8 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
+import eu.ydp.empiria.player.client.module.test.TestStyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
@@ -30,7 +31,9 @@ public class TestResetButtonViewImpl extends Composite implements TestResetButto
     @Inject
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
+    @Inject
+    private TestStyleNameConstants testStyleNameConstants;
 
     @Override
     public void addHandler(Command command) {
@@ -40,12 +43,12 @@ public class TestResetButtonViewImpl extends Composite implements TestResetButto
 
     @Override
     public void lock() {
-        addStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
+        addStyleName(testStyleNameConstants.QP_TEST_RESET_DISABLED());
     }
 
     @Override
     public void unlock() {
-        removeStyleName(styleNameConstants.QP_TEST_RESET_DISABLED());
+        removeStyleName(testStyleNameConstants.QP_TEST_RESET_DISABLED());
     }
 
     @Override

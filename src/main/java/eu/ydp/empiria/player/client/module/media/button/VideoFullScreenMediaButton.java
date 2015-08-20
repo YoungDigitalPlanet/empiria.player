@@ -4,9 +4,9 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenHelper;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
@@ -28,7 +28,7 @@ public class VideoFullScreenMediaButton extends AbstractMediaButton implements M
     protected boolean fullScreenOpen = false;
 
     @Inject
-    public VideoFullScreenMediaButton(StyleNameConstants styleNames, VideoFullScreenHelper fullScreenHelper, EventsBus eventsBus,
+    public VideoFullScreenMediaButton(MediaStyleNameConstants styleNames, VideoFullScreenHelper fullScreenHelper, EventsBus eventsBus,
                                       Provider<VideoFullScreenMediaButton> buttonProvider, PageScopeFactory scopeFactory) {
         super(styleNames.QP_MEDIA_FULLSCREEN_BUTTON());
 

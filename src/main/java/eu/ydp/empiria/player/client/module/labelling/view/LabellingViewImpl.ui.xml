@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="styles"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.labelling.LabellingStyleNameConstants" field="styles"/>
     <g:SimplePanel styleName="{styles.QP_LABELLING}">
         <g:AbsolutePanel ui:field="inner" styleName="{styles.QP_LABELLING_INNER}">
             <g:at left='0' top='0'>

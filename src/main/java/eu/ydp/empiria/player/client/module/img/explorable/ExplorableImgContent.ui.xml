@@ -4,7 +4,7 @@
              xmlns:i="urn:import:eu.ydp.empiria.player.client.module.img.explorable">
     <ui:style>
     </ui:style>
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.img.ImgStyleNameConstants" field="res"/>
     <g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE}" ui:field="mainPanel">
         <g:FlowPanel styleName="{res.QP_IMG_EXPLORABLE_WINDOW}" ui:field="windowPanel">
             <i:ExplorableImgWindow ui:field="window"/>

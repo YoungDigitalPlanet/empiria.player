@@ -3,7 +3,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:c="urn:import:eu.ydp.empiria.player.client.components"
              xmlns:b="urn:import:eu.ydp.gwtutil.client.ui.button">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.slideshow.SlideshowStyleNameConstants" field="res"/>
     <g:FlowPanel ui:field="buttonsPanel" styleName="{res.QP_SLIDESHOW_BUTTON_PANEL}">
         <c:TwoStateButton ui:field="playPauseButton"/>
         <b:CustomPushButton ui:field="stopButton" styleName="{res.QP_SLIDESHOW_BUTTON_STOP}"/>

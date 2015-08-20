@@ -4,14 +4,20 @@ import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.gin.factory.SelectionModuleFactory;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
+import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.handlers.ChoiceButtonClickHandler;
-import eu.ydp.empiria.player.client.module.selection.model.*;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
+import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.empiria.player.client.module.selection.presenter.SelectionModulePresenter;
-import eu.ydp.empiria.player.client.module.selection.structure.*;
-import eu.ydp.empiria.player.client.module.selection.view.*;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.selection.structure.SelectionInteractionBean;
+import eu.ydp.empiria.player.client.module.selection.structure.SelectionItemBean;
+import eu.ydp.empiria.player.client.module.selection.structure.SelectionSimpleChoiceBean;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionElementPositionGenerator;
+import eu.ydp.empiria.player.client.module.selection.view.SelectionModuleView;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectionViewBuilder {
 
@@ -19,12 +25,12 @@ public class SelectionViewBuilder {
     private SelectionModuleFactory selectionModuleFactory;
     private SelectionModulePresenter selectionModulePresenter;
     private SelectionInteractionBean bean;
-    private StyleNameConstants styleNameConstants;
+    private SelectionStyleNameConstants styleNameConstants;
     private SelectionElementPositionGenerator elementPositionGenerator;
     private SelectionModuleModel selectionModuleModel;
 
     @Inject
-    public SelectionViewBuilder(SelectionModuleFactory selectionModuleFactory, StyleNameConstants styleNameConstants,
+    public SelectionViewBuilder(SelectionModuleFactory selectionModuleFactory, SelectionStyleNameConstants styleNameConstants,
             SelectionElementPositionGenerator elementPositionGenerator, @ModuleScoped SelectionModuleView selectionModuleView,
             @ModuleScoped SelectionModuleModel selectionModuleModel) {
         this.styleNameConstants = styleNameConstants;

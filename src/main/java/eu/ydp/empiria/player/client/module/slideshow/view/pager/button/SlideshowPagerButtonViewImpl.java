@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.slideshow.SlideshowStyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
@@ -29,7 +29,7 @@ public class SlideshowPagerButtonViewImpl extends Composite implements Slideshow
     @Inject
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private SlideshowStyleNameConstants styleNameConstants;
 
     public SlideshowPagerButtonViewImpl() {
         uiBinder.createAndBindUi(this);
