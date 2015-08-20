@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
+import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureAltProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerTitleBean;
-import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class PicturePlayerPresenterTest {
     @Mock
     private PicturePlayerFullscreenController fullscreenController;
     @Mock
-    private PictureTitleProvider pictureTitleProvider;
+    private PictureAltProvider pictureAltProvider;
 
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
@@ -37,10 +37,12 @@ public class PicturePlayerPresenterTest {
 
     private String src = "src";
     private String srcFullscreen = "src_f";
+    private String alt = "alt";
 
     @Before
     public void setUp() throws Exception {
         bean.setSrc(src);
+        bean.setAlt(alt);
         bean.setSrcFullScreen(srcFullscreen);
         PicturePlayerTitleBean titleBean = new PicturePlayerTitleBean();
         bean.setTitleBean(titleBean);
@@ -107,6 +109,17 @@ public class PicturePlayerPresenterTest {
 
         // then
         verify(fullscreenController).openFullscreen(bean, inlineBodyGeneratorSocket);
+
+    }
+
+    @Test
+    public void shouldSetTitle() {
+
+        // when
+        testObj.init(bean, inlineBodyGeneratorSocket);
+
+        // then
+        verify(pictureAltProvider).getPictureAltString(bean);
 
     }
 }
