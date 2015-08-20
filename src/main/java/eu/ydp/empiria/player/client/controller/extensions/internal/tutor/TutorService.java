@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.tutor;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.collections.MapStringToInt;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Maps.newHashMap;
 
+@Singleton
 public class TutorService {
 
     private final Map<String, TutorConfig> tutors = newHashMap();

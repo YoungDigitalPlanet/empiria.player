@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.sourcelist.view;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class ScormScrollPanel {
     public void lockScroll() {
         nativeLockScroll();

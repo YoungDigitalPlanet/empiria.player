@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.style;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class ComputedStyleImpl implements ComputedStyle {
 
     @Override

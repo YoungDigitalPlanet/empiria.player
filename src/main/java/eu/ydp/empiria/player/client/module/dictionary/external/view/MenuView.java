@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryStyleNameConstants;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox;
 import eu.ydp.empiria.player.client.module.dictionary.external.components.PasteAwareTextBox.PasteListener;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Singleton
 public class MenuView extends Composite implements VisibilityClient {
 
     private static final int PASSWORDS_COUNT_INIT = 25;

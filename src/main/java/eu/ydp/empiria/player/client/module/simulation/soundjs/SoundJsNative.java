@@ -2,11 +2,13 @@ package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class SoundJsNative {
 
     private SoundApiForJs api;
