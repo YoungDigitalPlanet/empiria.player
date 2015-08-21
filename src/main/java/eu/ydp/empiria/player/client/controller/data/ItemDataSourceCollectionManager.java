@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
@@ -9,6 +10,7 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class ItemDataSourceCollectionManager {
 
     private ItemDataSource[] items;
