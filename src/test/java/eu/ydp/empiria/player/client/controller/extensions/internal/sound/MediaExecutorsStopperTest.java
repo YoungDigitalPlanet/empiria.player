@@ -1,10 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.sound;
 
-import eu.ydp.empiria.player.client.AbstractTestWithMocksBase;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,16 +13,9 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.mockito.Mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
-public class MediaExecutorsStopperTest extends AbstractTestWithMocksBase {
+public class MediaExecutorsStopperTest {
 
-    private MediaExecutorsStopper stopper;
-
-    @Override
-    @Before
-    public void setUp() {
-        super.setUp(MediaExecutorsStopper.class);
-        stopper = injector.getInstance(MediaExecutorsStopper.class);
-    }
+    private MediaExecutorsStopper testObj = new MediaExecutorsStopper();
 
     @SuppressWarnings("unused")
     private Object[] parametersForForceStop() {
@@ -65,7 +56,7 @@ public class MediaExecutorsStopperTest extends AbstractTestWithMocksBase {
         List<MediaExecutor<?>> executors = Arrays.asList(new MediaExecutor<?>[]{executor});
 
         // when
-        stopper.forceStop(currentMediaWrapper, executors);
+        testObj.forceStop(currentMediaWrapper, executors);
 
         // then
         assertResult(executor, result);

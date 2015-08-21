@@ -8,10 +8,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentContentView;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
 
+@Singleton
 public class PlayerContentView extends Composite implements PlayerViewSocket {
     private static PlayerContentViewUiBinder uiBinder = GWT.create(PlayerContentViewUiBinder.class);
 

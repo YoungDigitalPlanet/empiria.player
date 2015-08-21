@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.controller.assets;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class AssetOpenDelegatorService {
 
     @Inject

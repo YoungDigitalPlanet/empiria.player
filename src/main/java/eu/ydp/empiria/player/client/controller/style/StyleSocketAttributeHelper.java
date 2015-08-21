@@ -3,12 +3,14 @@ package eu.ydp.empiria.player.client.controller.style;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.util.BooleanUtils;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 
 import java.util.Map;
 
+@Singleton
 public class StyleSocketAttributeHelper {
 
     private final XMLParser xmlParser;

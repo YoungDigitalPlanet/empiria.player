@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.identification.IdentificationStyleNameConstants;
 
 public class SelectableChoiceViewImpl extends Composite implements SelectableChoiceView {
 
@@ -32,10 +32,10 @@ public class SelectableChoiceViewImpl extends Composite implements SelectableCho
     @UiField(provided = true)
     Widget contentWidget;
 
-    private final StyleNameConstants styleNameConstants;
+    private final IdentificationStyleNameConstants styleNameConstants;
 
     @Inject
-    public SelectableChoiceViewImpl(@Assisted Widget contentWidget, StyleNameConstants styleNameConstants) {
+    public SelectableChoiceViewImpl(@Assisted Widget contentWidget, IdentificationStyleNameConstants styleNameConstants) {
         this.contentWidget = contentWidget;
         this.styleNameConstants = styleNameConstants;
         uiBinder.createAndBindUi(this);

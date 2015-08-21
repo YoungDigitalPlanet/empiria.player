@@ -20,7 +20,6 @@ import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ParenthoodSocket;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.internal.page.PageEventHandler;
@@ -38,7 +37,7 @@ import static eu.ydp.empiria.player.client.util.events.internal.state.StateChang
 
 public class ItemController implements PageEventHandler, StateChangeEventHandler {
 
-    private final StyleNameConstants styleNames;
+    private final ItemStyleNameConstants styleNames;
     private final EventsBus eventsBus;
 
     private final ItemData data;
@@ -54,7 +53,7 @@ public class ItemController implements PageEventHandler, StateChangeEventHandler
     @Inject
     public ItemController(@Assisted ItemViewSocket itemViewSocket, @Assisted ItemSessionSocket itemSessionSocket,
                           @PageScoped ItemData data, IPlayerContainersAccessor accessor,
-                          StyleNameConstants styleNames, EventsBus eventsBus,
+                          ItemStyleNameConstants styleNames, EventsBus eventsBus,
                           PageScopeFactory pageScopeFactory, AssessmentControllerFactory controllerFactory) {
         this.itemViewSocket = itemViewSocket;
         this.itemSessionSocket = itemSessionSocket;

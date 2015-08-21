@@ -16,10 +16,10 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
+import eu.ydp.empiria.player.client.module.draggap.DragGapStyleNameConstants;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListViewItemContentFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.ui.drop.FlowPanelWithDropZone;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
@@ -37,7 +37,7 @@ public class DragGapViewImpl implements DragGapView {
     @Inject
     private TouchController touchController;
     private final DragDropHelper dragDropHelper;
-    private final StyleNameConstants styleNameConstants;
+    private final DragGapStyleNameConstants styleNameConstants;
     private final DragGapStylesProvider dragGapStylesProvider;
 
     private SourceListViewItemContentFactory contentFactory;
@@ -49,7 +49,7 @@ public class DragGapViewImpl implements DragGapView {
     private DragEndHandler dragEndHandler;
 
     @Inject
-    public DragGapViewImpl(DragDropHelper dragDropHelper, StyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider, MathJaxNative mathJaxNative, SourceListViewItemContentFactory contentFactory) {
+    public DragGapViewImpl(DragDropHelper dragDropHelper, DragGapStyleNameConstants styleNameConstants, DragGapStylesProvider dragGapStylesProvider, MathJaxNative mathJaxNative, SourceListViewItemContentFactory contentFactory) {
         this.dragDropHelper = dragDropHelper;
         this.styleNameConstants = styleNameConstants;
         this.dragGapStylesProvider = dragGapStylesProvider;

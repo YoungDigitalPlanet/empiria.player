@@ -4,8 +4,12 @@ import com.google.inject.Inject;
 
 public class SymjaExpressionCharactersAdapter {
 
+    private final DefaultExpressionCharactersAdapter defaultAdapter;
+
     @Inject
-    private DefaultExpressionCharactersAdapter defaultAdapter;
+    public SymjaExpressionCharactersAdapter(DefaultExpressionCharactersAdapter defaultAdapter) {
+        this.defaultAdapter = defaultAdapter;
+    }
 
     public String process(String expression) {
         expression = fixOperators(expression);

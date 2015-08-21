@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -27,12 +27,12 @@ public class ItemStylesContainer implements PlayerEventHandler {
 
     private final Map<String, String> pageStyles;
     private final DataSourceManager dataManager;
-    private final StyleNameConstants styleNameConstants;
+    private final PageStyleNameConstants pageStyleNameConstants;
 
     @Inject
-    public ItemStylesContainer(EventsBus eventsBus, DataSourceManager dataManager, StyleNameConstants styleNameConstants) {
+    public ItemStylesContainer(EventsBus eventsBus, DataSourceManager dataManager, PageStyleNameConstants pageStyleNameConstants) {
         this.dataManager = dataManager;
-        this.styleNameConstants = styleNameConstants;
+        this.pageStyleNameConstants = pageStyleNameConstants;
         this.pageStyles = new HashMap<>();
 
         eventsBus.addHandler(PlayerEvent.getTypes(ASSESSMENT_LOADED), this);
@@ -66,6 +66,6 @@ public class ItemStylesContainer implements PlayerEventHandler {
         return Optional.fromNullable(style);
     }
     private String constructStyle(String string) {
-        return styleNameConstants.QP_PAGE_TEMPLATE() + "-" + string;
+        return pageStyleNameConstants.QP_PAGE_TEMPLATE() + "-" + string;
     }
 }

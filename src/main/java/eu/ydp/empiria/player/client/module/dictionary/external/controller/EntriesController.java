@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.gin.factory.DictionaryModuleFactory;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.filename.DictionaryFilenameProvider;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -11,6 +12,7 @@ import eu.ydp.jsfilerequest.client.FileRequest;
 import eu.ydp.jsfilerequest.client.FileRequestCallback;
 import eu.ydp.jsfilerequest.client.FileRequestException;
 
+@Singleton
 public class EntriesController {
 
     @Inject

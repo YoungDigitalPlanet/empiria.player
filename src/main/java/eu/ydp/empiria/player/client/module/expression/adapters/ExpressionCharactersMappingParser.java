@@ -9,8 +9,12 @@ import java.util.Map;
 
 public class ExpressionCharactersMappingParser {
 
+    private final PipedReplacementsParser expressionReplacementsParser;
+
     @Inject
-    private PipedReplacementsParser expressionReplacementsParser;
+    public ExpressionCharactersMappingParser(PipedReplacementsParser expressionReplacementsParser) {
+        this.expressionReplacementsParser = expressionReplacementsParser;
+    }
 
     public Map<String, String> parse(String raw) {
         Map<String, String> parts = expressionReplacementsParser.parse(raw);

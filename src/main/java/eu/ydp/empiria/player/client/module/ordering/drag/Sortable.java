@@ -1,8 +1,10 @@
 package eu.ydp.empiria.player.client.module.ordering.drag;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
 
+@Singleton
 public class Sortable {
 
     @Inject

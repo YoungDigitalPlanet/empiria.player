@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.extensions.internal.SoundProcessorManagerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension;
@@ -17,6 +18,7 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import javax.inject.Provider;
 import java.util.List;
 
+@Singleton
 public class ExtensionsProvider {
 
     private ModuleProviderFactory moduleProviderFactory;

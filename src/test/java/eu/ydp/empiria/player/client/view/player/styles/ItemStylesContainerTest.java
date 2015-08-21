@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
@@ -33,7 +33,7 @@ public class ItemStylesContainerTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private DataSourceManager dataManager;
     @Mock
-    private StyleNameConstants styleNameConstants;
+    private PageStyleNameConstants pageStyleNameConstants;
     @Mock
     private PlayerEvent playerEvent;
     @Mock
@@ -46,7 +46,7 @@ public class ItemStylesContainerTest {
     @Before
     public void init() {
         when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
-        when(styleNameConstants.QP_PAGE_TEMPLATE()).thenReturn("templ");
+        when(pageStyleNameConstants.QP_PAGE_TEMPLATE()).thenReturn("templ");
 
         XmlData xmlData = mock(XmlData.class, RETURNS_DEEP_STUBS);
         when(dataManager.getAssessmentData().getData()).thenReturn(xmlData);

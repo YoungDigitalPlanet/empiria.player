@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.events.delivery;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.events.activity.FlowActivityEventType;
 import eu.ydp.empiria.player.client.controller.events.interaction.*;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Singleton
 public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsSocket {
 
     private List<DeliveryEventsListener> deliveryEventsListeners;

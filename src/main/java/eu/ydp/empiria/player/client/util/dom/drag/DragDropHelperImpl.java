@@ -2,8 +2,10 @@ package eu.ydp.empiria.player.client.util.dom.drag;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.gin.factory.DragDropObjectFactory;
 
+@Singleton
 public class DragDropHelperImpl implements DragDropHelper {
 
     @Inject

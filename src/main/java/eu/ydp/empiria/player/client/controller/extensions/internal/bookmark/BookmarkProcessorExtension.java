@@ -19,7 +19,6 @@ import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -41,7 +40,7 @@ public class BookmarkProcessorExtension extends InternalExtension implements Mod
     @Inject
     IBookmarkPopupView bookmarkPopup;
     @Inject
-    StyleNameConstants styleNames;
+    BookmarkStyleNameConstants styleNames;
     @Inject
     EventsBus eventsBus;
 

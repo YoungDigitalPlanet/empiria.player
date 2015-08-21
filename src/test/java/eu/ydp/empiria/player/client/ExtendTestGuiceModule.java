@@ -4,16 +4,11 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.binder.AnnotatedBindingBuilder;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
-import eu.ydp.gwtutil.test.AbstractTestModule;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 public abstract class ExtendTestGuiceModule extends AbstractTestModule {
-    protected final Set<BindDescriptor<?>> bindDescriptors = new HashSet<BindDescriptor<?>>();
 
     public ExtendTestGuiceModule(Class<?>... classToOmit) {
         super(classToOmit);
@@ -23,7 +18,7 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
         super(classToOmit);
     }
 
-    protected Provider<?> getProvider(final Class<?> clazz, final BindType bindType) {
+    private Provider<?> getProvider(final Class<?> clazz, final BindType bindType) {
         Provider<?> provider = new Provider<Object>() {
             @Override
             public Object get() {
@@ -44,12 +39,7 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
         return provider;
     }
 
-    /**
-     * binduje klasy do mockow
-     *
-     * @param bindDescriptor
-     */
-    protected void bindToMock(BindDescriptor bindDescriptor) {
+    private void bindToMock(BindDescriptor bindDescriptor) {
         if (bindDescriptor.getIn() != null && bindDescriptor.getIn().isAssignableFrom(Singleton.class)) {// SINGLETON
             if (bindDescriptor.isAllSet()) {// wszystkie pola ustawione
                 bind(bindDescriptor.getBind()).toInstance(mock(bindDescriptor.getTo()));
@@ -65,12 +55,7 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
         }
     }
 
-    /**
-     * binduje klasy do spy
-     *
-     * @param bindDescriptor
-     */
-    protected void bindToSpy(BindDescriptor bindDescriptor) {
+    private void bindToSpy(BindDescriptor bindDescriptor) {
         if (bindDescriptor.getIn() != null && bindDescriptor.getIn().isAssignableFrom(Singleton.class)) {// SINGLETON
             try {
                 if (bindDescriptor.isAllSet()) {// wszystkie pola ustawione

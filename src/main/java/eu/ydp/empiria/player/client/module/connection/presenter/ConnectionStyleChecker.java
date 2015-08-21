@@ -8,8 +8,8 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.connection.exception.CssStyleException;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.style.CssHelper;
 import eu.ydp.gwtutil.client.xml.XMLParser;
@@ -22,14 +22,14 @@ import java.util.Set;
 public class ConnectionStyleChecker {
 
     private final CssHelper cssHelper;
-    private final StyleNameConstants styleNames;
+    private final ConnectionStyleNameConstants styleNames;
     private final XMLParser xmlParser;
     private final StyleSocket styleSocket;
 
     protected Set<String> cssClassNames = Sets.newHashSet();
 
     @Inject
-    public ConnectionStyleChecker(StyleSocket styleSocket, XMLParser xmlParser, StyleNameConstants styleNames, CssHelper cssHelper) {
+    public ConnectionStyleChecker(StyleSocket styleSocket, XMLParser xmlParser, ConnectionStyleNameConstants styleNames, CssHelper cssHelper) {
         this.styleNames = styleNames;
         this.cssHelper = cssHelper;
         this.xmlParser = xmlParser;
