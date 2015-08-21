@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.img.explorable;
 
 import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.junit.GWTMockUtilities;
-import eu.ydp.empiria.player.client.module.img.explorable.AbstractExplorableImgContentBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,11 +17,11 @@ import static org.mockito.Mockito.mock;
 
 public class AbstractExplorableImgContentBaseJUnitTest {
 
-    private AbstractExplorableImgContentBase explorableImgContent;
+    private ExplorableImgContent explorableImgContent;
 
     @Before
     public void init() {
-        explorableImgContent = mock(AbstractExplorableImgContentBase.class, Mockito.CALLS_REAL_METHODS);
+        explorableImgContent = mock(ExplorableImgContent.class, Mockito.CALLS_REAL_METHODS);
     }
 
     @Test
