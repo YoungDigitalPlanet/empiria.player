@@ -4,10 +4,10 @@ import com.google.common.base.Optional;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
+import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
-import org.fest.assertions.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +24,7 @@ public class ItemStylesContainerTest {
 
     private static final String IDENTIFIER_ATTRIBUTE = "identifier";
     private static final String CLASS_ATTRIBUTE = "class";
+    private static final String ASSESSMENT_ITEM_REF = "assessmentItemRef";
 
     @InjectMocks
     private ItemStylesContainer testObj;
@@ -32,18 +33,24 @@ public class ItemStylesContainerTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private DataSourceManager dataManager;
     @Mock
+    private StyleNameConstants styleNameConstants;
+    @Mock
     private PlayerEvent playerEvent;
     @Mock
     private NodeList itemsList;
     @Mock
     private Element element;
 
+    private String identifier = "id";
+
     @Before
     public void init() {
-        String assessmentItemTag = "assessmentItemRef";
+        when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
+        when(styleNameConstants.QP_PAGE_TEMPLATE()).thenReturn("templ");
+
         XmlData xmlData = mock(XmlData.class, RETURNS_DEEP_STUBS);
         when(dataManager.getAssessmentData().getData()).thenReturn(xmlData);
-        when(xmlData.getDocument().getElementsByTagName(assessmentItemTag)).thenReturn(itemsList);
+        when(xmlData.getDocument().getElementsByTagName(ASSESSMENT_ITEM_REF)).thenReturn(itemsList);
         when(itemsList.getLength()).thenReturn(1);
         when(itemsList.item(0)).thenReturn(element);
     }
@@ -51,9 +58,8 @@ public class ItemStylesContainerTest {
     @Test
     public void shouldContainsStyleOfItem_whenStyleIsNotNullOrEmpty() {
         // given
-        String identifier = "id";
         String style = "style";
-        when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
+        String expectedStyle = "templ-style";
         when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
 
         // wehn
@@ -62,15 +68,13 @@ public class ItemStylesContainerTest {
 
         // then
         assertThat(result.isPresent()).isTrue();
-        assertThat(result.get()).isEqualTo(style);
+        assertThat(result.get()).isEqualTo(expectedStyle);
     }
 
     @Test
     public void shouldNotContainsStyleOfItem_whenStyleIsNull() {
         // given
-        String identifier = "id";
         String style = null;
-        when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
         when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
 
         // wehn
@@ -84,9 +88,7 @@ public class ItemStylesContainerTest {
     @Test
     public void shouldNotContainsStyleOfItem_whenStyleIsEmpty() {
         // given
-        String identifier = "id";
         String style = "";
-        when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
         when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
 
         // wehn

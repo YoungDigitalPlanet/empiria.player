@@ -26,24 +26,14 @@ public class PlayerStylesControllerTest {
     @Mock
     private CurrentItemStyleProvider styleProvider;
     @Mock
-    private StyleNameConstants styleNameConstants;
-    @Mock
     private EventsBus eventsBus;
     @Mock
     private PlayerEvent playerEvent;
-
-    private String pageTemplate = "pageTemplate";
-
-    @Before
-    public void init() {
-        when(styleNameConstants.QP_PAGE_TEMPLATE()).thenReturn(pageTemplate);
-    }
 
     @Test
     public void shouldAddTemplateStyle_onPageLoaded_whenIsPresent() {
         // given
         String style = "style";
-        String fixedStyle = pageTemplate + "-" + style;
         Optional<String> optionalStyle = Optional.of(style);
         when(styleProvider.getCurrentItemStyle()).thenReturn(optionalStyle);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.PAGE_LOADED);
@@ -52,14 +42,13 @@ public class PlayerStylesControllerTest {
         testObj.onPlayerEvent(playerEvent);
 
         // then
-        verify(playerView).addStyleName(fixedStyle);
+        verify(playerView).addStyleName(style);
     }
 
     @Test
     public void shouldRemoveTemplateStyle_beforeFlow_whenIsPresent() {
         // given
         String style = "style";
-        String fixedStyle = pageTemplate + "-" + style;
         Optional<String> optionalStyle = Optional.of(style);
         when(styleProvider.getCurrentItemStyle()).thenReturn(optionalStyle);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
@@ -68,7 +57,7 @@ public class PlayerStylesControllerTest {
         testObj.onPlayerEvent(playerEvent);
 
         // then
-        verify(playerView).removeStyleName(fixedStyle);
+        verify(playerView).removeStyleName(style);
     }
 
     @Test

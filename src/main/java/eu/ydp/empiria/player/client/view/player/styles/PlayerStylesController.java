@@ -14,46 +14,32 @@ import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEve
 public class PlayerStylesController implements PlayerEventHandler {
     private final PlayerContentView playerView;
     private final CurrentItemStyleProvider styleProvider;
-    private final StyleNameConstants styleNameConstants;
 
     @Inject
-    public PlayerStylesController(PlayerContentView playerView, CurrentItemStyleProvider styleProvider, StyleNameConstants styleNameConstants, EventsBus eventsBus) {
+    public PlayerStylesController(PlayerContentView playerView, CurrentItemStyleProvider styleProvider, EventsBus eventsBus) {
         this.playerView = playerView;
         this.styleProvider = styleProvider;
-        this.styleNameConstants = styleNameConstants;
 
         eventsBus.addHandler(PlayerEvent.getTypes(PAGE_LOADED, BEFORE_FLOW), this);
     }
 
     @Override
     public void onPlayerEvent(PlayerEvent event) {
+        Optional<String> template = styleProvider.getCurrentItemStyle();
+        if (template.isPresent()) {
+            String style = template.get();
+            setStyles(event, style);
+        }
+    }
+
+    private void setStyles(PlayerEvent event, String style) {
         switch (event.getType()) {
             case BEFORE_FLOW:
-                removeTemplateStyle();
+                playerView.removeStyleName(style);
                 break;
             case PAGE_LOADED:
-                addTemplateStyle();
+                playerView.addStyleName(style);
                 break;
         }
-    }
-
-    private void addTemplateStyle() {
-        Optional<String> template = styleProvider.getCurrentItemStyle();
-        if (template.isPresent()) {
-            String style = fixStyle(template.get());
-            playerView.addStyleName(style);
-        }
-    }
-
-    private void removeTemplateStyle() {
-        Optional<String> template = styleProvider.getCurrentItemStyle();
-        if (template.isPresent()) {
-            String style = fixStyle(template.get());
-            playerView.removeStyleName(style);
-        }
-    }
-
-    private String fixStyle(String string) {
-        return styleNameConstants.QP_PAGE_TEMPLATE() + "-" + string;
     }
 }
