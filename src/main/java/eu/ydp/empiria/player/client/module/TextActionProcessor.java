@@ -79,7 +79,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
 
     @Override
     public void clearFeedback() {
-        feedbackPresenter.clearTextElement();
+        feedbackPresenter.hideTextElement();
         feedbackPresenter.hide();
     }
 

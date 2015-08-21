@@ -10,5 +10,5 @@ public interface TextFeedback {
 
     void setTextElement(Widget widget);
 
-    void clearTextElement();
+    void hideTextElement();
 }

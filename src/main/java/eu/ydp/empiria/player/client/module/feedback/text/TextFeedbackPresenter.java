@@ -25,12 +25,15 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     @Override
     public void setTextElement(Widget widget) {
-        feedbackTextPanel.add(widget);
+        if (!isFeedbackPanelContainsWidgets(feedbackTextPanel)) {
+            feedbackTextPanel.add(widget);
+        }
+        feedbackTextPanel.setStyleName("qp-feedback-text");
     }
 
     @Override
-    public void clearTextElement() {
-        feedbackTextPanel.clear();
+    public void hideTextElement() {
+        feedbackTextPanel.setStyleName("qp-feedback-hide");
     }
 
     @Override
@@ -41,5 +44,9 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     @Override
     public void hide() {
         this.setVisible(false);
+    }
+
+    private boolean isFeedbackPanelContainsWidgets(FlowPanel feedbackTextPanel) {
+        return feedbackTextPanel.getWidgetCount() > 0;
     }
 }

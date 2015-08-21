@@ -22,7 +22,7 @@ public class TextFeedbackPresenterMock implements TextFeedback {
     }
 
     @Override
-    public void clearTextElement() {
+    public void hideTextElement() {
 
     }
 
