@@ -1,10 +1,13 @@
 package eu.ydp.empiria.player.client.controller.workmode;
 
+import com.google.inject.Singleton;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode.FULL;
 
+@Singleton
 public class PlayerWorkModeService {
 
     private final List<WorkModeClientType> moduleList = new ArrayList<>();

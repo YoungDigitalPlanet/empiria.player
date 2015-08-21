@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -39,7 +39,7 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
     FlowRequestInvoker requestInvoker;
     private ClickHandler handler;
     private CustomPushButton button;
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
 
     private static class CustomGuiceModule implements Module {
         @Override
@@ -56,7 +56,7 @@ public class ShowAnswersButtonModuleTest extends AbstractTestBaseWithoutAutoInje
         eventsBus = injector.getInstance(EventsBus.class);
         requestInvoker = mock(FlowRequestInvoker.class);
         button = injector.getInstance(CustomPushButton.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        styleNameConstants = injector.getInstance(ModeStyleNameConstants.class);
         doAnswer(new Answer<ClickHandler>() {
 
             @Override

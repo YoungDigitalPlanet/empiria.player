@@ -8,8 +8,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.ordering.OrderingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.ordering.structure.OrderInteractionOrientation;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -25,7 +25,7 @@ public class OrderInteractionViewWidgetImpl extends Composite implements OrderIn
     protected FlowPanel mainPanel;
     private final String mainPanelUniqueCssClass;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private OrderingStyleNameConstants styleNameConstants;
 
     @Inject
     public OrderInteractionViewWidgetImpl(OrderInteractionViewUniqueCssProvider interactionViewUniqueCssClassSuffixGenerator) {

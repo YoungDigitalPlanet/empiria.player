@@ -4,9 +4,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.accordion.AccordionContentGenerator;
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionSectionBean;
 
+@Singleton
 public class AccordionSectionFactory {
     @Inject
     private Provider<AccordionSectionPresenter> sectionProvider;

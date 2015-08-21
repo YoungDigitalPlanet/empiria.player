@@ -27,6 +27,8 @@ public abstract class TextEntryGapModulePresenterBase extends GapModulePesenterB
     @Inject
     protected StyleNameConstants styleNames;
     @Inject
+    protected TextEntryStyleNameConstants textEntryStyleNameConstants;
+    @Inject
     protected DragDropHelper dragDropHelper;
 
     protected DroppableObject<TextBox> droppable;

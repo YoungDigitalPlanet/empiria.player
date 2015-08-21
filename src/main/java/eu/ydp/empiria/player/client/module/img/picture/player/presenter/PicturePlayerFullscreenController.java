@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
@@ -9,6 +10,7 @@ import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBoxP
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerBean;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PictureTitleProvider;
 
+@Singleton
 public class PicturePlayerFullscreenController {
 
     private LightBoxProvider lightBoxProvider;

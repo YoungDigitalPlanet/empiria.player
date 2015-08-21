@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.gin.scopes.module.providers;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.style.IOSModuleStyle;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.empiria.player.client.style.ModuleStyleImpl;
@@ -13,6 +14,7 @@ import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 import java.util.Map;
 
+@Singleton
 public class CssStylesModuleScopedProvider implements Provider<ModuleStyle> {
 
     @Inject

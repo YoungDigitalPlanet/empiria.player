@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.multiview.touch;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.multiview.IMultiPageController;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestClient;
@@ -13,6 +14,7 @@ import eu.ydp.gwtutil.client.event.TouchEventReader;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
+@Singleton
 public class TouchController implements WorkModeTestClient {
 
     private static final int PERCENT_MAX = 100;

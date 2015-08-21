@@ -2,9 +2,11 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 
 import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Entry;
 import eu.ydp.empiria.player.client.module.dictionary.external.view.MainView;
 
+@Singleton
 public class MainController implements WordsLoadingListener, ExplanationListener {
 
     @Inject

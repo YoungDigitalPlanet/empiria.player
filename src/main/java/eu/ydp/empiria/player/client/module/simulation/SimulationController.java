@@ -2,8 +2,10 @@ package eu.ydp.empiria.player.client.module.simulation;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.json.NativeMethodInvocator;
 
+@Singleton
 public class SimulationController {
     private static final String METHOD_NAME_RESUME_ANIMATION = "resumeAnimation";
     private static final String METHOD_NAME_PAUSE_ANIMATION = "pauseAnimation";

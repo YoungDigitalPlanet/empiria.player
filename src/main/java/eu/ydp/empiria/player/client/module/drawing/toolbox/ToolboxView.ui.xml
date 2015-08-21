@@ -2,8 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:t="urn:import:eu.ydp.empiria.player.client.module.drawing.toolbox.view">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
-             field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.drawing.DrawingStyleNameConstants" field="res"/>
     <g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX}">
         <t:ToolboxButton ui:field="pencilButton" addStyleNames="{res.QP_DRAWING_TOOLBOX_BUTTON_PENCIL}"/>
         <g:FlowPanel styleName="{res.QP_DRAWING_TOOLBOX_PALETTE_CONTAINER}">

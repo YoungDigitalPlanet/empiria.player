@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.gin.factory.MediaFactory;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -36,6 +37,7 @@ import static eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent.FIREFO
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE8;
 import static eu.ydp.gwtutil.client.util.UserAgentChecker.UserAgent.IE9;
 
+@Singleton
 public class VideoFullScreenHelper implements KeyUpHandler, VideoFullScreenEventHandler {
 
     @Inject

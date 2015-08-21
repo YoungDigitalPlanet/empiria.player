@@ -1,11 +1,13 @@
 package eu.ydp.empiria.player.client.controller.session.times;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.session.SessionDataManager;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
+@Singleton
 public class SessionTimeUpdater implements PlayerEventHandler {
 
     private final SessionDataManager sessionDataManager;

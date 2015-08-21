@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.scripts;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.inject.ScriptInjectorWrapper;
 import eu.ydp.gwtutil.client.util.paths.UrlConverter;
 
+@Singleton
 public class ScriptsLoader {
 
     private static final String MATH_JAX_URL = "mathjax/MathJax.js?config=yJax&locale=en";

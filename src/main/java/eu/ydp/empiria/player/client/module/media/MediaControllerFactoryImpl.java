@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.media;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.gin.factory.VideoTextTrackElementFactory;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
@@ -14,7 +15,7 @@ import eu.ydp.empiria.player.client.module.media.progress.MediaProgressBarImpl;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
-@SuppressWarnings("PMD")
+@Singleton
 public class MediaControllerFactoryImpl implements MediaControllerFactory {
 
     @Inject
