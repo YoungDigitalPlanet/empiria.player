@@ -253,13 +253,10 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(ProgressUpdateLogic.class).in(Singleton.class);
         bind(WindowResizeController.class).asEagerSingleton();
         bind(LessonStateReset.class).asEagerSingleton();
-        bind(PlayerStylesController.class).asEagerSingleton();
         bind(SoundProcessorManagerExtension.class).in(Singleton.class);
         bind(ExtensionsProvider.class).in(Singleton.class);
         bind(ExternalEventDispatcher.class).in(Singleton.class);
         bind(ResizeTimer.class).in(Singleton.class);
-        bind(ItemStylesContainer.class).in(Singleton.class);
-        bind(CurrentItemStyleProvider.class).in(Singleton.class);
 
         install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

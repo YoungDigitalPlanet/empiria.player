@@ -2,9 +2,11 @@ package eu.ydp.empiria.player.client.view.player.styles;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.ItemDataSourceCollectionManager;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 
+@Singleton
 public class CurrentItemStyleProvider {
 
     private final ItemDataSourceCollectionManager itemDataSourceCollectionManager;

@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.ASSESSMENT_LOADED;
 
+@Singleton
 public class ItemStylesContainer implements PlayerEventHandler {
 
     private static final String IDENTIFIER = "identifier";
