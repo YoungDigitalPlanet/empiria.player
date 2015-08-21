@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.data;
 import com.google.common.base.Optional;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
@@ -13,11 +14,23 @@ import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
+
+    private static final String ASSESSMENT_ITEM_NODE = "assessmentItem";
+    private static final String TEST_VIEW_NODE = "testView";
+    private static final String ASSESSMENT_ITEM_REF_NODE = "assessmentItemRef";
+    private static final String ASSESSMENT_TEST_NODE = "assessmentTest";
+    private static final String EXTENSIONS_LIBRARY_NODE = "extensionsLibrary";
+    private static final String STYLE_DECLARATION_NODE = "styleDeclaration";
+    private static final String GTM_ATTR = "gtm";
+    private static final String HREF_ATTR = "href";
+    private static final String TITLE_ATTR = "title";
 
     public AssessmentDataSourceManager() {
         itemsCount = -1;
@@ -40,6 +53,8 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
     private WorkModeParserForAssessment workModeParser;
     @Inject
     private PlayerWorkModeService playerWorkModeService;
+    @Inject
+    private Logger logger;
 
     public void setSkinListener(AssessmentDataLoaderEventListener listener) {
         this.listener = listener;
@@ -62,7 +77,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
 
     public void setAssessmentLoadingError(String err) {
         String detail = "";
-        if (err != null && err.indexOf(':') != -1) {
+        if (err != null && err.contains(":")) {
             detail = err.substring(0, err.indexOf(':'));
         }
         errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ASSESSMENT_FAILED_TO_LOAD) + detail;
@@ -72,7 +87,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         data = new XmlData(XMLParser.parse("<assessmentTest title=\"\"/>"), "");
         itemsCount = 1;
         styleDeclaration = new StyleLinkDeclaration(data.getDocument()
-                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
+                .getElementsByTagName(STYLE_DECLARATION_NODE), data.getBaseURL());
         listener.onAssessmentDataLoaded();
     }
 
@@ -82,9 +97,9 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         data = xmlData;
         itemsCount = -1;
         styleDeclaration = new StyleLinkDeclaration(data.getDocument()
-                .getElementsByTagName("styleDeclaration"), data.getBaseURL());
+                .getElementsByTagName(STYLE_DECLARATION_NODE), data.getBaseURL());
         libraryLink = new LibraryLink(data.getDocument()
-                .getElementsByTagName("extensionsLibrary"), data.getBaseURL());
+                .getElementsByTagName(EXTENSIONS_LIBRARY_NODE), data.getBaseURL());
         setWorkMode();
 
         if (skinUrl == null) {
@@ -103,10 +118,6 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         if (workMode.isPresent()) {
             playerWorkModeService.tryToUpdateWorkMode(workMode.get());
         }
-    }
-
-    public XmlData getAssessmentXMLData() {
-        return data;
     }
 
     public AssessmentData getAssessmentData() {
@@ -138,10 +149,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         if (data != null) {
             try {
                 Node rootNode = data.getDocument()
-                        .getElementsByTagName("assessmentTest")
+                        .getElementsByTagName(ASSESSMENT_TEST_NODE)
                         .item(0);
-                title = ((Element) rootNode).getAttribute("title");
+                title = ((Element) rootNode).getAttribute(TITLE_ATTR);
             } catch (Exception e) {
+                logger.error(e);
             }
 
         }
@@ -155,21 +167,21 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         if (data != null) {
             try {
                 NodeList nodes = data.getDocument()
-                        .getElementsByTagName("assessmentItemRef");
+                        .getElementsByTagName(ASSESSMENT_ITEM_REF_NODE);
                 String[] tmpItemUrls = new String[nodes.getLength()];
                 for (int i = 0; i < nodes.getLength(); i++) {
                     Node itemRefNode = nodes.item(i);
 
-                    String name = "href";
-                    if (((Element) itemRefNode).getAttribute(name)
+                    if (((Element) itemRefNode).getAttribute(HREF_ATTR)
                             .startsWith("http")) {
-                        tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(name);
+                        tmpItemUrls[i] = ((Element) itemRefNode).getAttribute(HREF_ATTR);
                     } else {
-                        tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(name);
+                        tmpItemUrls[i] = data.getBaseURL() + ((Element) itemRefNode).getAttribute(HREF_ATTR);
                     }
                 }
                 itemUrls = tmpItemUrls;
-            } catch (Exception e) {// NOPMD
+            } catch (Exception e) {
+                logger.error(e);
             }
         }
 
@@ -185,9 +197,9 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
     public Element getItem(int index) {
         if (data != null && items == null) {
             try {
-                items = new ArrayList<Element>();
+                items = new ArrayList<>();
                 NodeList nodes = data.getDocument()
-                        .getElementsByTagName("assessmentItemRef");
+                        .getElementsByTagName(ASSESSMENT_ITEM_REF_NODE);
                 for (int x = 0; x < nodes.getLength(); ++x) {
                     Node n = nodes.item(x);
                     if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -195,7 +207,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
                     }
                 }
             } catch (Exception e) {
-
+                logger.error(e);
             }
         }
         if (items != null && index < items.size() && index > -1) {
@@ -213,7 +225,7 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
     }
 
     public List<String> getStyleLinksForUserAgent(String userAgent) {
-        List<String> declarations = new ArrayList<String>();
+        List<String> declarations = new ArrayList<>();
 
         if (styleDeclaration != null) {
             declarations.addAll(styleDeclaration.getStyleLinksForUserAgent(userAgent));
@@ -240,12 +252,13 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         String url = null;
 
         try {
-            Node testViewNode = document.getElementsByTagName("testView")
+            Node testViewNode = document.getElementsByTagName(TEST_VIEW_NODE)
                     .item(0);
             url = testViewNode.getAttributes()
-                    .getNamedItem("href")
+                    .getNamedItem(HREF_ATTR)
                     .getNodeValue();
         } catch (Exception e) {
+            logger.error(e);
         }
 
         return url;
@@ -255,10 +268,26 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         try {
             return doc.getDocumentElement()
                     .getNodeName()
-                    .equals("assessmentItem");
+                    .equals(ASSESSMENT_ITEM_NODE);
         } catch (Exception e) {
+            logger.error(e);
         }
         return true;
     }
 
+    public Optional<String> getAssessmentGtm() {
+        if (data == null) {
+            return Optional.absent();
+        }
+        try {
+            Element rootElement = (Element) data.getDocument()
+                    .getElementsByTagName(ASSESSMENT_TEST_NODE)
+                    .item(0);
+            String gtm = rootElement.getAttribute(GTM_ATTR);
+            return Optional.of(gtm);
+        } catch (Exception e) {
+            logger.error(e);
+        }
+        return Optional.absent();
+    }
 }

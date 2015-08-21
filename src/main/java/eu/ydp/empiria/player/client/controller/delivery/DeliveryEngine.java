@@ -5,6 +5,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import eu.ydp.empiria.player.client.controller.GtmLoader;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.*;
@@ -84,6 +85,8 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
     private final Provider<ExtensionsManager> extensionsManagerProvider;
     private ExtensionsProvider extensionsProvider;
     private final PageScopeFactory pageScopeFactory;
+    private final GtmLoader gtmLoader;
+
 
     private JavaScriptObject playerJsObject;
     private String stateAsync;
@@ -97,7 +100,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
                           ProgressBonusService progressBonusService, DeliveryEventsHub deliveryEventsHub, StyleLinkManager styleManager, UserAgentUtil userAgentUtil,
                           AssessmentFactory assessmentFactory, PlayerWorkModeState playerWorkModeState,
                           FlowRequestFactory flowRequestFactory, SoundProcessorManagerExtension soundProcessorManager, ExtensionsProvider extensionsProvider,
-                          Provider<ExtensionsManager> extensionsManagerProvider, PageScopeFactory pageScopeFactory) {
+                          Provider<ExtensionsManager> extensionsManagerProvider, PageScopeFactory pageScopeFactory, GtmLoader gtmLoader) {
         this.playerViewSocket = playerViewSocket;
         this.dataManager = dataManager;
         this.sessionDataManager = sessionDataManager;
@@ -120,6 +123,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         dataManager.setDataLoaderEventListener(this);
         this.styleSocket = styleSocket;
         this.extensionsManagerProvider = extensionsManagerProvider;
+        this.gtmLoader = gtmLoader;
 
         eventsBus.addHandler(PageEvent.getTypes(PageEventTypes.values()), this);
         eventsBus.addHandler(PlayerEvent.getTypes(PlayerEventTypes.values()), this);
@@ -177,10 +181,15 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTING));
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTING));
         updateAssessmentStyle();
+        loadGtm();
         initFlow();
         getDeliveryEventsListener().onDeliveryEvent(new DeliveryEvent(DeliveryEventType.ASSESSMENT_STARTED));
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.ASSESSMENT_STARTED));
         updatePageStyle();
+    }
+
+    private void loadGtm() {
+        gtmLoader.loadGtm();
     }
 
     private void initFlow() {
@@ -377,7 +386,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         }
     }
 
-    public DeliveryEventsListener getDeliveryEventsListener() {
+    private DeliveryEventsListener getDeliveryEventsListener() {
         return deliveryEventsHub;
     }
 
@@ -425,13 +434,13 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
         flowManager.setDisplayOptions(o);
     }
 
-    public void updateAssessmentStyle() {
+    private void updateAssessmentStyle() {
         String userAgent = userAgentUtil.getUserAgentString();
         List<String> links = dataManager.getAssessmentStyleLinksForUserAgent(userAgent);
         styleManager.registerAssessmentStyles(links);
     }
 
-    public void updatePageStyle() {
+    private void updatePageStyle() {
         String userAgent = userAgentUtil.getUserAgentString();
         List<String> links = dataManager.getPageStyleLinksForUserAgent(flowManager.getPageReference(), userAgent);
         styleManager.registerItemStyles(links);
