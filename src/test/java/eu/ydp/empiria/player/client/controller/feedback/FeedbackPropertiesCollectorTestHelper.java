@@ -88,7 +88,7 @@ class FeedbackPropertiesCollectorTestHelper {
 
         private int errors;
 
-        private String lastChange;
+        private String lastChange = "+Selected";
 
         public ModuleInfo(String id) {
             this.id = id;
