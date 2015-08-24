@@ -2,9 +2,8 @@ package eu.ydp.empiria.player.client.module.menu;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
 import eu.ydp.empiria.player.client.module.menu.view.MenuStyleNameConstants;
 import eu.ydp.empiria.player.client.module.menu.view.MenuView;
 import org.junit.Before;
@@ -15,7 +14,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class MenuPresenterTest {
@@ -29,9 +29,7 @@ public class MenuPresenterTest {
     @Mock
     private ClickEvent clickEvent;
     @Mock
-    private FlexTable flexTable;
-    @Mock
-    private HTMLTable.RowFormatter rowFormatter;
+    private ReportTable reportTable;
     @Captor
     private ArgumentCaptor<ClickHandler> commandCaptor;
     private String qpMenuHidden = "qp-menu-hidden";
@@ -43,8 +41,7 @@ public class MenuPresenterTest {
         when(styleNameConstants.QP_MENU_TABLE_CURRENT_ROW()).thenReturn(qpMenuTableCurrentRow);
 
         verify(view).addClickHandler(commandCaptor.capture());
-        when(flexTable.getRowFormatter()).thenReturn(rowFormatter);
-        testObj.setTable(flexTable);
+        testObj.setReportTable(reportTable);
     }
 
     @Test
@@ -75,58 +72,24 @@ public class MenuPresenterTest {
     @Test
     public void shouldAddStyleToRow_whenIsValid() {
         // given
-        int rowCount = 5;
-        int rowToMark = 2;
-        when(flexTable.getRowCount()).thenReturn(rowCount);
+        int pageToMark = 2;
 
         // when
-        testObj.markRow(rowToMark);
+        testObj.markPage(pageToMark);
 
         // then
-        verify(rowFormatter).addStyleName(rowToMark, qpMenuTableCurrentRow);
+        verify(reportTable).addRowStyleName(pageToMark, qpMenuTableCurrentRow);
     }
 
     @Test
     public void shouldRemoveStyleFromRow_whenIsValid() {
         // given
-        int rowCount = 5;
-        int rowToMark = 2;
-        when(flexTable.getRowCount()).thenReturn(rowCount);
+        int pageToMark = 2;
 
         // when
-        testObj.unmarkRow(rowToMark);
+        testObj.unmarkPage(pageToMark);
 
         // then
-        verify(rowFormatter).removeStyleName(rowToMark, qpMenuTableCurrentRow);
-    }
-
-    @Test
-    public void shouldNotChangeStyles_whenRowIsNegative() {
-        // given
-        int rowCount = 5;
-        int rowToMark = -1;
-        when(flexTable.getRowCount()).thenReturn(rowCount);
-
-        // when
-        testObj.markRow(rowToMark);
-        testObj.unmarkRow(rowToMark);
-
-        // then
-        verifyZeroInteractions(rowFormatter);
-    }
-
-    @Test
-    public void shouldNotChangeStyles_whenRowNumberIsBigger_thanRowCount() {
-        // given
-        int rowCount = 5;
-        int rowToMark = 10;
-        when(flexTable.getRowCount()).thenReturn(rowCount);
-
-        // when
-        testObj.markRow(rowToMark);
-        testObj.unmarkRow(rowToMark);
-
-        // then
-        verifyZeroInteractions(rowFormatter);
+        verify(reportTable).removeRowStyleName(pageToMark, qpMenuTableCurrentRow);
     }
 }

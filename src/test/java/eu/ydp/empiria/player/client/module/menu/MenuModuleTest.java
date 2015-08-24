@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
 import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.gin.factory.ReportModuleFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -43,37 +44,30 @@ public class MenuModuleTest {
     private FlowDataSupplier flowDataSupplier;
     @Mock
     private ReportTableGenerator reportTableGenerator;
-
-    private Map<Integer, Integer> pageToRow;
     int currentPageIndex = 1;
 
     @Before
     public void init() {
-        pageToRow = new HashMap<>();
         when(reportModuleFactory.createReportTableGenerator(bodyGeneratorSocket)).thenReturn(reportTableGenerator);
-        when(reportTableGenerator.getPageToRowMap()).thenReturn(pageToRow);
         when(flowDataSupplier.getCurrentPageIndex()).thenReturn(currentPageIndex);
     }
 
     @Test
     public void shouldCreateTable_onInit() {
         // given
-        FlexTable flexTable = mock(FlexTable.class);
-        when(reportTableGenerator.generate(element)).thenReturn(flexTable);
+        ReportTable reportTable = mock(ReportTable.class);
+        when(reportTableGenerator.generate(element)).thenReturn(reportTable);
 
         // when
         testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // then
-        verify(presenter).setTable(flexTable);
+        verify(presenter).setReportTable(reportTable);
     }
 
     @Test
     public void shouldHideMenu_onPlayerEvent() {
         // given
-        int row = 2;
-        pageToRow.put(currentPageIndex, row);
-
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
 
@@ -84,15 +78,12 @@ public class MenuModuleTest {
 
         // then
         verify(presenter).hide();
-        verify(presenter).unmarkRow(row);
+        verify(presenter).unmarkPage(currentPageIndex);
     }
 
     @Test
     public void shouldMarkRow_whenPageLoaded() {
         // given
-        int row = 2;
-        pageToRow.put(currentPageIndex, row);
-
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.PAGE_LOADED);
 
@@ -102,23 +93,6 @@ public class MenuModuleTest {
         testObj.onPlayerEvent(playerEvent);
 
         // then
-        verify(presenter).markRow(row);
-    }
-
-    @Test
-    public void shouldMarkNotExistingRow_whenPageIsNotMapped(){
-        // given
-        pageToRow.remove(currentPageIndex);
-
-        PlayerEvent playerEvent = mock(PlayerEvent.class);
-        when(playerEvent.getType()).thenReturn(PlayerEventTypes.PAGE_LOADED);
-
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
-
-        // when
-        testObj.onPlayerEvent(playerEvent);
-
-        // then
-        verify(presenter).markRow(-1);
+        verify(presenter).markPage(currentPageIndex);
     }
 }

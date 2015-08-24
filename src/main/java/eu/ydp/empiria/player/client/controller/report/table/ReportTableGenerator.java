@@ -66,18 +66,14 @@ public class ReportTableGenerator {
         this.colspanExtractor = colspanExtractor;
     }
 
-    public FlexTable generate(Element element) {
+    public ReportTable generate(Element element) {
         pageToRow = new HashMap<>();
         showNonActivites = showNonActivitiesExtractor.extract(element);
         pagesIndexes = pagesRangeExtractor.extract(element);
 
         table = createTableWithStyles(element);
         generateTableContent(element);
-        return table;
-    }
-
-    public Map<Integer, Integer> getPageToRowMap() {
-        return pageToRow;
+        return new ReportTable(table, pageToRow);
     }
 
     private FlexTable createTableWithStyles(Element element) {
