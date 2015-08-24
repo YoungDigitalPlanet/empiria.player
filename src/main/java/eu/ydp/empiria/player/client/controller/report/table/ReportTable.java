@@ -19,27 +19,20 @@ public class ReportTable {
     }
 
     public void addRowStyleName(int page, String styleName) {
-        int row = currentRow(page);
-        if (isRowValid(row)) {
+        if (isPageValid(page)) {
+            int row = pageToRow.get(page);
             flexTable.getRowFormatter().addStyleName(row, styleName);
         }
     }
 
     public void removeRowStyleName(int page, String styleName) {
-        int row = currentRow(page);
-        if (isRowValid(row)) {
+        if (isPageValid(page)) {
+            int row = pageToRow.get(page);
             flexTable.getRowFormatter().removeStyleName(row, styleName);
         }
     }
 
-    private int currentRow(int page) {
-        if (pageToRow.containsKey(page)) {
-            return pageToRow.get(page);
-        }
-        return -1;
-    }
-
-    private boolean isRowValid(int row) {
-        return row >= 0;
+    private boolean isPageValid(int page) {
+        return pageToRow.containsKey(page);
     }
 }
