@@ -12,7 +12,6 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
@@ -35,7 +34,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     @UniqueId
     private String moduleId;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private AudioPlayerStyleNameConstants styleNameConstants;
     @Inject
     private CustomPushButton button;
     @Inject

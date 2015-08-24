@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.module.accordion.presenter;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.module.accordion.AccordionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.accordion.Transition;
 import eu.ydp.empiria.player.client.module.accordion.view.section.AccordionSectionView;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class AccordionSectionPresenterTest {
     @Mock
     private AccordionSectionView view;
     @Mock
-    private StyleNameConstants styleNameConstants;
+    private AccordionStyleNameConstants styleNameConstants;
 
     @Before
     public void init() {

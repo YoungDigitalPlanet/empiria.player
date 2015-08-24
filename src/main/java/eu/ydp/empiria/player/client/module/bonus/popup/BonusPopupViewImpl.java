@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.event.factory.Command;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.util.geom.Size;
@@ -19,6 +20,7 @@ import eu.ydp.gwtutil.client.util.geom.WidgetSize;
 
 import javax.annotation.PostConstruct;
 
+@Singleton
 public class BonusPopupViewImpl implements BonusPopupView {
 
     private static BonusPopupViewUiBinder uiBinder = GWT.create(BonusPopupViewUiBinder.class);

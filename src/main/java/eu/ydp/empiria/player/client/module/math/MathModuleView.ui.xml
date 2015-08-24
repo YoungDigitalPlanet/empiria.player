@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.math.MathStyleNameConstants" field="res"/>
     <g:FlowPanel ui:field="placeholder" styleName="{res.QP_PLACEHOLDER}">
         <g:AbsolutePanel ui:field="outerPanel" styleName="{res.QP_MATHINTERACTION}">
             <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_MATHINTERACTION_INNER}"/>

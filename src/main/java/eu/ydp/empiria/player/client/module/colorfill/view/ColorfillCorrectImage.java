@@ -6,18 +6,18 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.colorfill.ColorfillStyleNameConstants;
 import eu.ydp.empiria.player.client.module.colorfill.structure.Image;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 import javax.annotation.PostConstruct;
 
 public class ColorfillCorrectImage implements IsWidget {
 
     private final FlowPanel image;
-    private final StyleNameConstants styleNameConstants;
+    private final ColorfillStyleNameConstants styleNameConstants;
 
     @Inject
-    public ColorfillCorrectImage(StyleNameConstants styleNameConstants) {
+    public ColorfillCorrectImage(ColorfillStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
         image = new FlowPanel();
     }

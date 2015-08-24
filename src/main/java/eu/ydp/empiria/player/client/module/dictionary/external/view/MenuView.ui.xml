@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:c="urn:import:eu.ydp.empiria.player.client.module.dictionary.external.components">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.dictionary.DictionaryStyleNameConstants" field="res"/>
     <g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_CONTAINER}">
         <g:FlowPanel styleName="{res.QP_DICTIONARY_MENU}">
             <g:FlowPanel styleName="{res.QP_DICTIONARY_MENU_HEADER}">

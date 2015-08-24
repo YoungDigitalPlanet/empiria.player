@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
@@ -62,6 +63,7 @@ import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 import eu.ydp.empiria.player.client.module.video.VideoModule;
 
+@Singleton
 public class ModuleProviderFactory {
     @Inject
     private Provider<ConnectionModule> connectionModule;

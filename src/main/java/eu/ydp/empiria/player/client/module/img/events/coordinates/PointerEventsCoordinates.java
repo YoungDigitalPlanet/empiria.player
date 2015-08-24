@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.img.events.coordinates;
 
 import com.google.gwt.event.shared.EventHandler;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEvent;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.events.pointer.PointerEvent;
 import eu.ydp.empiria.player.client.util.position.Point;
@@ -10,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Singleton
 public class PointerEventsCoordinates {
 
     private final Map<Integer, Point> pointersPoints = new LinkedHashMap<>();

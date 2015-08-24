@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.controller.report.table.extraction.PagesRang
 import eu.ydp.empiria.player.client.controller.report.table.extraction.ShowNonActivitiesExtractor;
 import eu.ydp.empiria.player.client.controller.report.table.modification.ItemIndexAppender;
 import eu.ydp.empiria.player.client.controller.report.table.modification.RowStylesAppender;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.report.ReportStyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ReportTableGenerator {
     private final static String PRR = "prr";
     private final static String RD = "rd";
 
-    private final StyleNameConstants styleNames;
+    private final ReportStyleNameConstants styleNames;
 
     private final BodyGeneratorSocket bodyGeneratorSocket;
     private final DataSourceDataSupplier dataSourceDataSupplier;
@@ -48,7 +48,7 @@ public class ReportTableGenerator {
     private FlexTable table;
 
     @Inject
-    public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, StyleNameConstants styleNames,
+    public ReportTableGenerator(@Assisted BodyGeneratorSocket bgs, DataSourceDataSupplier dataSourceDataSupplier, ReportStyleNameConstants styleNames,
                                 RowStylesAppender rowStylesAppender, ShowNonActivitiesExtractor showNonActivitiesExtractor,
                                 ItemIndexAppender itemIndexAppender, ColspanExtractor colspanExtractor, PagesRangeExtractor pagesRangeExtractor, PageTodoExtractor pageTodoExtractor) {
         this.bodyGeneratorSocket = bgs;

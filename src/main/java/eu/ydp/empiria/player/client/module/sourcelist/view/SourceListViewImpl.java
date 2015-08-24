@@ -76,12 +76,6 @@ public class SourceListViewImpl extends Composite implements SourceListView {
         sourceListDropZone.addDropHandler(dropHandler);
     }
 
-    public void disableItems(boolean disabled) {
-        for (SourceListViewItem item : itemIdToItemCollection.values()) {
-            item.setDisableDrag(disabled);
-        }
-    }
-
     public void onDragEvent(DragDropEventTypes dropEventType, SourceListViewItem item, DragDropEventBase<?> dragEvent) {
         String itemId = itemIdToItemCollection.inverse().get(item);
         if (dropEventType == DragDropEventTypes.DRAG_START) {

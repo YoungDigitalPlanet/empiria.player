@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.gwtutil.client.xml.XMLParser;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -25,13 +25,13 @@ import static org.mockito.Mockito.when;
 public class ConnectionStyleXMLElementCacheTest {
 
     private ConnectionStyleXMLElementCache testObj;
-    private StyleNameConstants styleNames;
+    private ConnectionStyleNameConstants styleNames;
     private final Map<MultiplePairModuleConnectType, String> styles = new HashMap<>();
 
     @Before
     public void before() {
         XMLParser parser = mock(XMLParser.class);
-        styleNames = mock(StyleNameConstants.class);
+        styleNames = mock(ConnectionStyleNameConstants.class);
         when(styleNames.QP_CONNECTION_WRONG()).thenReturn("qp-connection-wrong");
         when(styleNames.QP_CONNECTION_CORRECT()).thenReturn("qp-connection-correct");
         when(styleNames.QP_CONNECTION_DISABLED()).thenReturn("qp-connection-disabled");

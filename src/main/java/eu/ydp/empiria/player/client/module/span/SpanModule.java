@@ -5,15 +5,15 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.TextStyleNameConstants;
 
 public class SpanModule extends SimpleModuleBase implements ISimpleModule {
 
     protected Widget contents;
-    private final StyleNameConstants styleNames;
+    private final TextStyleNameConstants styleNames;
 
     @Inject
-    public SpanModule(StyleNameConstants styleNames) {
+    public SpanModule(TextStyleNameConstants styleNames) {
         this.styleNames = styleNames;
     }
 

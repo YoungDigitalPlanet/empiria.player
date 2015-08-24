@@ -4,8 +4,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaController;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 public class VideoTextTrackElement extends AbstractMediaController implements MediaEventHandler {
     private final EventsBus eventsBus;
-    private final StyleNameConstants styleNames;
+    private final MediaStyleNameConstants styleNames;
     protected final VideoTextTrackElementPresenter presenter;
 
     private final TextTrackKind kind;
@@ -21,7 +21,7 @@ public class VideoTextTrackElement extends AbstractMediaController implements Me
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public VideoTextTrackElement(EventsBus eventsBus, StyleNameConstants styleNames, VideoTextTrackElementPresenter presenter,
+    public VideoTextTrackElement(EventsBus eventsBus, MediaStyleNameConstants styleNames, VideoTextTrackElementPresenter presenter,
                                  PageScopeFactory pageScopeFactory, @Assisted TextTrackKind kind) {
         this.kind = kind;
         this.eventsBus = eventsBus;

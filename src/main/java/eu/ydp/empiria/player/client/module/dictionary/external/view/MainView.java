@@ -7,7 +7,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class MainView extends SimplePanel {
 
     private static MainViewUiBinder uiBinder = GWT.create(MainViewUiBinder.class);

@@ -15,7 +15,6 @@ import eu.ydp.empiria.player.client.module.binding.BindingProxy;
 import eu.ydp.empiria.player.client.module.binding.BindingType;
 import eu.ydp.empiria.player.client.module.binding.gapwidth.GapWidthBindingManager;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.NumberUtils;
 
@@ -28,11 +27,11 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
 
     protected Panel tablePanel;
     private GapWidthBindingManager gapWidthBindingManager;
-    private final StyleNameConstants styleNames;
+    private final TableStyleNameConstants styleNames;
     private final StyleSocket styleSocket;
 
     @Inject
-    public TableModule(StyleNameConstants styleNames, StyleSocket styleSocket) {
+    public TableModule(TableStyleNameConstants styleNames, StyleSocket styleSocket) {
         this.styleNames = styleNames;
         this.styleSocket = styleSocket;
 

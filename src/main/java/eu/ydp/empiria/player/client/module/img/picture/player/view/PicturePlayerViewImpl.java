@@ -12,13 +12,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.img.picture.player.presenter.PicturePlayerPresenter;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class PicturePlayerViewImpl extends Composite implements PicturePlayerView {
 
     private PicturePlayerUiBinder uiBinder = GWT.create(PicturePlayerUiBinder.class);
-    private StyleNameConstants styleNameConstants;
+    private MediaStyleNameConstants styleNameConstants;
     private PicturePlayerPresenter presenter;
 
     @UiTemplate(value = "PicturePlayerView.ui.xml")
@@ -31,7 +31,7 @@ public class PicturePlayerViewImpl extends Composite implements PicturePlayerVie
     protected FlowPanel container;
 
     @Inject
-    public PicturePlayerViewImpl(StyleNameConstants styleNameConstants) {
+    public PicturePlayerViewImpl(MediaStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
         initWidget(uiBinder.createAndBindUi(this));
     }
