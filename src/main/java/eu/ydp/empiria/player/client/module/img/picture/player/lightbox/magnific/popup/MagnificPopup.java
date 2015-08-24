@@ -2,8 +2,10 @@ package eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.LightBox;
 
+@Singleton
 public class MagnificPopup implements LightBox {
 
     @Override

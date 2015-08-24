@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.controller;
 
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.InternalExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.FlowDataSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 
+@Singleton
 public class Page extends InternalExtension implements FlowDataSocketUserExtension {
 
     private static FlowDataSupplier supplier;

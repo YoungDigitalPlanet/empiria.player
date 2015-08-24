@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.controller.item;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 
+@Singleton
 public class ItemDataProvider implements Provider<ItemData> {
 
     @Inject

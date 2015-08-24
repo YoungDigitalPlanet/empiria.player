@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.bus;
 
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.command.FireCommand;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -18,6 +19,7 @@ import eu.ydp.gwtutil.client.scheduler.Scheduler;
 import java.util.*;
 import java.util.Map.Entry;
 
+@Singleton
 public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
     private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();

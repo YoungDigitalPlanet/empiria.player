@@ -3,10 +3,12 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.extern
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JsArrayString;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 
 import java.util.Map;
 
+@Singleton
 public class ExternalFullscreenVideoConnector implements FullscreenVideoConnector {
 
     private Map<String, FullscreenVideoConnectorListener> idToListeners = Maps.newHashMap();

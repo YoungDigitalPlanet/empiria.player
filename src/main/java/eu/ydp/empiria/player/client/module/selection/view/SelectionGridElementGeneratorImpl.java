@@ -4,8 +4,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants;
+import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
@@ -14,7 +15,8 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     public static final int ROWS_RESERVED_FOR_COLUMN_HEADER = 1;
     public static final int COLUMNS_RESERVED_FOR_ROW_HEADER = 1;
 
-    private StyleNameConstants styleNameConstants;
+    private MarkAnswersStyleNameConstants styleNameConstants;
+    private SelectionStyleNameConstants selectionStyleNameConstants;
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
@@ -24,7 +26,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     }
 
     @Inject
-    public SelectionGridElementGeneratorImpl(StyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory) {
+    public SelectionGridElementGeneratorImpl(MarkAnswersStyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory) {
         this.styleNameConstants = styleNameConstants;
         this.userInteractionHandlerFactory = userInteractionHandlerFactory;
     }
@@ -45,10 +47,10 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
         SelectionItemGridElementImpl itemLabelElement = new SelectionItemGridElementImpl();
         Widget itemTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item, true);
 
-        itemTextLabel.setStyleName(styleNameConstants.QP_SELECTION_ITEM_LABEL());
+        itemTextLabel.setStyleName(selectionStyleNameConstants.QP_SELECTION_ITEM_LABEL());
         itemTextLabel.addStyleName(styleNameConstants.QP_MARKANSWERS_LABEL_INACTIVE());
 
-        itemLabelElement.setStyleName(styleNameConstants.QP_SELECTION_ITEM());
+        itemLabelElement.setStyleName(selectionStyleNameConstants.QP_SELECTION_ITEM());
         itemLabelElement.addStyleName(styleNameConstants.QP_MARKANSWERS_MARKER_INACTIVE());
         itemLabelElement.add(itemTextLabel);
         return itemLabelElement;
@@ -58,7 +60,7 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     public SelectionChoiceGridElementImpl createChoiceDisplayElement(Element item) {
         SelectionChoiceGridElementImpl choiceLabelElement = new SelectionChoiceGridElementImpl();
         Widget choiceTextLabel = inlineBodyGeneratorSocket.generateInlineBody(item);
-        choiceTextLabel.setStyleName(styleNameConstants.QP_SELECTION_CHOICE());
+        choiceTextLabel.setStyleName(selectionStyleNameConstants.QP_SELECTION_CHOICE());
 
         choiceLabelElement.add(choiceTextLabel);
         return choiceLabelElement;

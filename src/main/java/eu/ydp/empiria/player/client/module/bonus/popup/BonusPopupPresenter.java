@@ -3,12 +3,14 @@ package eu.ydp.empiria.player.client.module.bonus.popup;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.components.animation.swiffy.SwiffyObject;
 import eu.ydp.empiria.player.client.module.EndHandler;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 import javax.annotation.PostConstruct;
 
+@Singleton
 public class BonusPopupPresenter {
 
     @Inject

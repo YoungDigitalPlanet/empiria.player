@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.ordering.drag;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class SortableNative {
 
     public native void init(String selector, String dragAxis, SortCallback callback) /*-{

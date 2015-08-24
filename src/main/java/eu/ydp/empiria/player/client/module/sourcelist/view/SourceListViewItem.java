@@ -12,11 +12,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.draggap.DragGapStyleNameConstants;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.dom.drag.DraggableObject;
 import eu.ydp.empiria.player.client.util.events.internal.dragdrop.DragDropEventTypes;
@@ -36,7 +35,7 @@ public class SourceListViewItem extends Composite implements LockUnlockDragDrop 
     FlowPanel item;
     private
     @Inject
-    StyleNameConstants styleNames;
+    DragGapStyleNameConstants styleNames;
     private
     @Inject
     DragDropHelper dragDropHelper;

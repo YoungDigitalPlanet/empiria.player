@@ -6,7 +6,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -18,7 +17,7 @@ public class BookmarkPopup implements IBookmarkPopupView, IBookmarkPopupContents
     PopupPanel popup = new PopupPanel(true, true);
 
     @Inject
-    StyleNameConstants styleNameConstants;
+    BookmarkStyleNameConstants styleNameConstants;
     @Inject
     EventsBus eventBus;
 

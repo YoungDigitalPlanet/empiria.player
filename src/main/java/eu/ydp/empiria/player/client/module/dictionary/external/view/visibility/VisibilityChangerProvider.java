@@ -2,9 +2,11 @@ package eu.ydp.empiria.player.client.module.dictionary.external.view.visibility;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.gwtutil.client.util.UserAgentChecker.MobileUserAgent;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
+@Singleton
 public class VisibilityChangerProvider implements Provider<VisibilityChanger> {
 
     @Inject

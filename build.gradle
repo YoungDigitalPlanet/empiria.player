@@ -43,6 +43,9 @@ ext {
 }
 
 repositories {
+    maven {
+        url "https://jitpack.io"
+    }
     jcenter {
         url "http://jcenter.bintray.com/"
     }
@@ -99,8 +102,8 @@ dependencies {
     testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.3'
 
-    testCompile group: 'cglib', name: 'cglib-nodep', version: '3.1'
-    testCompile group: 'org.objenesis', name: 'objenesis', version: '1.2'
+    testCompile group: 'org.objenesis', name: 'objenesis', version: '2.1'
+    testCompile group: 'com.github.cglib.cglib', name: 'cglib-nodep', version: '5503bcca74'
 }
 
 eclipse {
