@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.view.player.styles;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -28,11 +27,11 @@ public class PlayerStylesController implements PlayerEventHandler {
         Optional<String> template = styleProvider.getCurrentItemStyle();
         if (template.isPresent()) {
             String style = template.get();
-            setStyles(event, style);
+            toggleStyle(event, style);
         }
     }
 
-    private void setStyles(PlayerEvent event, String style) {
+    private void toggleStyle(PlayerEvent event, String style) {
         switch (event.getType()) {
             case BEFORE_FLOW:
                 playerView.removeStyleName(style);

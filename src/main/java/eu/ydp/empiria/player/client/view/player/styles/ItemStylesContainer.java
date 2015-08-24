@@ -22,10 +22,10 @@ import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEve
 public class ItemStylesContainer implements PlayerEventHandler {
 
     private static final String IDENTIFIER = "identifier";
-    private static final String CLASS ="class";
+    private static final String CLASS = "class";
     private static final String ASSESSMENT_ITEM_REF = "assessmentItemRef";
 
-    private final Map<String, String> pageStyles;
+    private final Map<String, String> pageStyles = new HashMap<>();
     private final DataSourceManager dataManager;
     private final PageStyleNameConstants pageStyleNameConstants;
 
@@ -33,7 +33,6 @@ public class ItemStylesContainer implements PlayerEventHandler {
     public ItemStylesContainer(EventsBus eventsBus, DataSourceManager dataManager, PageStyleNameConstants pageStyleNameConstants) {
         this.dataManager = dataManager;
         this.pageStyleNameConstants = pageStyleNameConstants;
-        this.pageStyles = new HashMap<>();
 
         eventsBus.addHandler(PlayerEvent.getTypes(ASSESSMENT_LOADED), this);
     }
@@ -65,6 +64,7 @@ public class ItemStylesContainer implements PlayerEventHandler {
         String style = pageStyles.get(itemIdentifier);
         return Optional.fromNullable(style);
     }
+
     private String constructStyle(String string) {
         return pageStyleNameConstants.QP_PAGE_TEMPLATE() + "-" + string;
     }

@@ -56,7 +56,7 @@ public class ItemStylesContainerTest {
     }
 
     @Test
-    public void shouldContainsStyleOfItem_whenStyleIsNotNullOrEmpty() {
+    public void shouldContainStyleOfItem_whenStyleIsNotNullOrEmpty() {
         // given
         String style = "style";
         String expectedStyle = "templ-style";
@@ -72,7 +72,7 @@ public class ItemStylesContainerTest {
     }
 
     @Test
-    public void shouldNotContainsStyleOfItem_whenStyleIsNull() {
+    public void shouldNotContainStyleOfItem_whenStyleIsNull() {
         // given
         String style = null;
         when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
@@ -86,7 +86,7 @@ public class ItemStylesContainerTest {
     }
 
     @Test
-    public void shouldNotContainsStyleOfItem_whenStyleIsEmpty() {
+    public void shouldNotContainStyleOfItem_whenStyleIsEmpty() {
         // given
         String style = "";
         when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
