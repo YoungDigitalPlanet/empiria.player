@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.data;
 import com.google.common.base.Optional;
 import com.google.gwt.xml.client.*;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.SkinDataLoaderListener;
@@ -15,9 +16,16 @@ import eu.ydp.empiria.player.client.util.localisation.LocalePublisher;
 import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Singleton
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
+
+    public static final String IDENTIFIER = "identifier";
+    public static final String CLASS = "class";
+    public static final String ASSESSMENT_ITEM_REF = "assessmentItemRef";
 
     public AssessmentDataSourceManager() {
         itemsCount = -1;
@@ -174,6 +182,23 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         }
 
         return itemUrls;
+    }
+
+    public Map<String, String> getPageIdToStyleMap(){
+        Map<String, String> map = new HashMap<>();
+
+        NodeList itemsList = getItemsList();
+        for (int i = 0; i < itemsList.getLength(); i++) {
+            Element item = (Element) itemsList.item(i);
+            String identifier = item.getAttribute(IDENTIFIER);
+            String style = item.getAttribute(CLASS);
+            map.put(identifier, style);
+        }
+        return map;
+    }
+
+    private NodeList getItemsList() {
+        return data.getDocument().getElementsByTagName(ASSESSMENT_ITEM_REF);
     }
 
     /**

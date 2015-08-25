@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.view.player.styles;
 import com.google.common.base.Optional;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
+import eu.ydp.empiria.player.client.controller.data.AssessmentDataSourceManager;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -16,43 +17,33 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.fest.assertions.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemStylesContainerTest {
 
-    private static final String IDENTIFIER_ATTRIBUTE = "identifier";
-    private static final String CLASS_ATTRIBUTE = "class";
-    private static final String ASSESSMENT_ITEM_REF = "assessmentItemRef";
-
     @InjectMocks
     private ItemStylesContainer testObj;
     @Mock
     private EventsBus eventsBus;
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private DataSourceManager dataManager;
+    @Mock
+    private AssessmentDataSourceManager dataSourceManager;
     @Mock
     private PageStyleNameConstants pageStyleNameConstants;
     @Mock
     private PlayerEvent playerEvent;
-    @Mock
-    private NodeList itemsList;
-    @Mock
-    private Element element;
 
+    private Map<String, String> pageItToStyle = new HashMap<>();
     private String identifier = "id";
 
     @Before
     public void init() {
-        when(element.getAttribute(IDENTIFIER_ATTRIBUTE)).thenReturn(identifier);
         when(pageStyleNameConstants.QP_PAGE_TEMPLATE()).thenReturn("templ");
-
-        XmlData xmlData = mock(XmlData.class, RETURNS_DEEP_STUBS);
-        when(dataManager.getAssessmentData().getData()).thenReturn(xmlData);
-        when(xmlData.getDocument().getElementsByTagName(ASSESSMENT_ITEM_REF)).thenReturn(itemsList);
-        when(itemsList.getLength()).thenReturn(1);
-        when(itemsList.item(0)).thenReturn(element);
+        when(dataSourceManager.getPageIdToStyleMap()).thenReturn(pageItToStyle);
     }
 
     @Test
@@ -60,7 +51,7 @@ public class ItemStylesContainerTest {
         // given
         String style = "style";
         String expectedStyle = "templ-style";
-        when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
+        pageItToStyle.put(identifier, style);
 
         // wehn
         testObj.onPlayerEvent(playerEvent);
@@ -75,7 +66,7 @@ public class ItemStylesContainerTest {
     public void shouldNotContainStyleOfItem_whenStyleIsNull() {
         // given
         String style = null;
-        when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
+        pageItToStyle.put(identifier, style);
 
         // wehn
         testObj.onPlayerEvent(playerEvent);
@@ -89,7 +80,7 @@ public class ItemStylesContainerTest {
     public void shouldNotContainStyleOfItem_whenStyleIsEmpty() {
         // given
         String style = "";
-        when(element.getAttribute(CLASS_ATTRIBUTE)).thenReturn(style);
+        pageItToStyle.put(identifier, style);
 
         // wehn
         testObj.onPlayerEvent(playerEvent);
