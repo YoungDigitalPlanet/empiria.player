@@ -117,7 +117,7 @@ public class DataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     private DataSourceManager createDataSourceManager() {
-        return new DataSourceManager(new AssessmentDataSourceManager());
+        return new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager());
     }
 
     protected void processLoad(DataSourceManager dsm, String itemXml) {
