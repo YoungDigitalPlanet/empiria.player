@@ -39,11 +39,13 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathjax.inline.InlineMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
+import eu.ydp.empiria.player.client.module.menu.MenuModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.progressbonus.ProgressBonusModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
+import eu.ydp.empiria.player.client.module.report.ReportModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
 import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
@@ -177,6 +179,10 @@ public class ModuleProviderFactory {
     private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
     @Inject
     private Provider<AccordionModule> accordionModule;
+    @Inject
+    private Provider<ReportModule> reportModuleProvider;
+    @Inject
+    private Provider<MenuModule> menuModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -404,5 +410,13 @@ public class ModuleProviderFactory {
 
     public Provider<AccordionModule> getAccordionModule() {
         return accordionModule;
+    }
+
+    public Provider<ReportModule> getReportModule() {
+        return reportModuleProvider;
+    }
+
+    public Provider<MenuModule> getMenuModule() {
+        return menuModule;
     }
 }
