@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.gin.module;
 
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
 import com.google.inject.TypeLiteral;
+import eu.ydp.empiria.player.client.controller.feedback.blend.FeedbackBlendView;
+import eu.ydp.empiria.player.client.controller.feedback.blend.FeedbackBlendViewImpl;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.gin.factory.SingleFeedbackSoundPlayerFactory;
@@ -18,6 +20,7 @@ public class FeedbackGinModule extends BaseGinModule {
     protected void configure() {
         bind(TextFeedback.class).to(TextFeedbackPresenter.class);
         bind(ImageFeedback.class).to(ImageFeedbackPresenter.class);
+        bind(FeedbackBlendView.class).to(FeedbackBlendViewImpl.class);
 
         bindPageScoped(PowerFeedbackMediator.class, new TypeLiteral<PageScopedProvider<PowerFeedbackMediator>>() {
         });

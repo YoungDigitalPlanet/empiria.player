@@ -1,0 +1,6 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <ui:with field="res" type="eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants"/>
+    <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_FEEDBACK_BLEND} {res.QP_FEEDBACK_BLEND_HIDDEN}"/>
+</ui:UiBinder>
