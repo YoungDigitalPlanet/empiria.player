@@ -66,7 +66,7 @@ public class MenuModuleTest {
     }
 
     @Test
-    public void shouldHideMenu_onPlayerEvent() {
+    public void shouldHideMenu_beforeFlow() {
         // given
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
@@ -78,6 +78,20 @@ public class MenuModuleTest {
 
         // then
         verify(presenter).hide();
+    }
+
+    @Test
+    public void shouldUnmarkPage_beforeFlow() {
+        // given
+        PlayerEvent playerEvent = mock(PlayerEvent.class);
+        when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
+
+        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+
+        // when
+        testObj.onPlayerEvent(playerEvent);
+
+        // then
         verify(presenter).unmarkPage(currentPageIndex);
     }
 
