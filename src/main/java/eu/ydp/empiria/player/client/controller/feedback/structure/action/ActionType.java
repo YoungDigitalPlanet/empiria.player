@@ -4,13 +4,7 @@ public enum ActionType {
     NARRATION, VIDEO, POPUP, IMAGE;
 
     public boolean equalsToString(String value) {
-        boolean equals = false;
-
-        if (this.getName().equals(value)) {
-            equals = true;
-        }
-
-        return equals;
+        return getName().equals(value);
     }
 
     public String getName() {

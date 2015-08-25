@@ -50,7 +50,7 @@ class FeedbackPropertiesCollectorTestHelper {
         OutcomeCreator creator = new OutcomeCreator(info.getId());
 
         return OutcomeListBuilder.init().put(creator.createDoneOutcome(info.getDone())).put(creator.createTodoOutcome(info.getTodo()))
-                .put(creator.createErrorsOutcome(info.getErrors())).put(creator.createLastChangeOutcome(info.getId()))
+                .put(creator.createErrorsOutcome(info.getErrors())).put(creator.createLastChangeOutcome(info.getLastChange()))
                 .put(creator.createLastMistakenOutcome(info.getLastMistaken())).getMap();
     }
 
@@ -87,6 +87,8 @@ class FeedbackPropertiesCollectorTestHelper {
         private int done;
 
         private int errors;
+
+        private String lastChange = "+Selected";
 
         public ModuleInfo(String id) {
             this.id = id;
@@ -136,5 +138,13 @@ class FeedbackPropertiesCollectorTestHelper {
             return errors;
         }
 
+        public String getLastChange() {
+            return lastChange;
+        }
+
+        public ModuleInfo setLastChange(String lastChange) {
+            this.lastChange = lastChange;
+            return this;
+        }
     }
 }
