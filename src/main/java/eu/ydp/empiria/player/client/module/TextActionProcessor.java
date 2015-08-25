@@ -73,13 +73,11 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     }-*/;
 
     private void showFeedback(Widget widget) {
-        feedbackPresenter.setTextElement(widget);
-        feedbackPresenter.show();
+        feedbackPresenter.show(widget);
     }
 
     @Override
     public void clearFeedback() {
-        feedbackPresenter.clearTextElement();
         feedbackPresenter.hide();
     }
 

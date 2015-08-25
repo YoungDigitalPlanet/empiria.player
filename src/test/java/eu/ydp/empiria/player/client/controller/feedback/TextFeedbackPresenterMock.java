@@ -9,21 +9,12 @@ public class TextFeedbackPresenterMock implements TextFeedback {
     }
 
     @Override
-    public void show() {
+    public void show(Widget widget) {
 
     }
 
     @Override
     public void hide() {
-    }
-
-    @Override
-    public void setTextElement(Widget widget) {
-    }
-
-    @Override
-    public void clearTextElement() {
-
     }
 
 }

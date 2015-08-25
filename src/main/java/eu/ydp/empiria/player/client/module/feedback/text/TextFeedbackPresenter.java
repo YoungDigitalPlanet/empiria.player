@@ -7,10 +7,15 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 
 public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     private static TextFeedbackViewUiBinder uiBinder = GWT.create(TextFeedbackViewUiBinder.class);
+
+    @Inject
+    private FeedbackStyleNameConstants feedbackStyleNameConstants;
 
     @UiTemplate("TextFeedbackView.ui.xml")
     interface TextFeedbackViewUiBinder extends UiBinder<Widget, TextFeedbackPresenter> {
@@ -24,22 +29,18 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     FlowPanel feedbackTextPanel;
 
     @Override
-    public void setTextElement(Widget widget) {
-        feedbackTextPanel.add(widget);
-    }
-
-    @Override
-    public void clearTextElement() {
-        feedbackTextPanel.clear();
-    }
-
-    @Override
-    public void show() {
-        this.setVisible(true);
+    public void show(Widget widget) {
+        addNewFeedback(widget);
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
     }
 
     @Override
     public void hide() {
-        this.setVisible(false);
+        addStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
+    }
+
+    private void addNewFeedback(Widget widget) {
+        feedbackTextPanel.clear();
+        feedbackTextPanel.add(widget);
     }
 }
