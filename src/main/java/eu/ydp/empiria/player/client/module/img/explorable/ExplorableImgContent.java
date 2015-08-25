@@ -24,21 +24,32 @@ import java.util.Map;
 
 public class ExplorableImgContent extends Composite implements ImgContent {
 
+    private static final String ZOOMOUT_BUTTON = "zoomoutButton";
+    private static final String ZOOMIN_BUTTON = "zoominButton";
     private static ExplorableImgContentUiBinder uiBinder = GWT.create(ExplorableImgContentUiBinder.class);
-
-    interface ExplorableImgContentUiBinder extends UiBinder<Widget, ExplorableImgContent> {
-    }
-
+    private final Timer startZoomTimer;
+    @UiField(provided = true)
+    ExplorableImgWindow window;
+    @UiField
+    FlowPanel mainPanel;
+    @UiField
+    FlowPanel windowPanel;
+    @UiField
+    PushButton zoominButton;
+    @UiField
+    PushButton zoomoutButton;
+    @UiField
+    FlowPanel toolbox;
+    private boolean touchingButtons = false;
+    private boolean zoomInClicked = false;
+    private int windowWidth = ExplorableImageConst.WINDOW_WIDTH;
+    private int windowHeight = ExplorableImageConst.WINDOW_HEIGHT;
+    private double scale = ExplorableImageConst.ZOOM_SCALE;
+    private double scaleStep = ExplorableImageConst.ZOOM_SCALE_STEP;
+    private double zoomMax = ExplorableImageConst.ZOOM_SCALE_MAX;
     @Inject
     private StyleSocket styleSocket;
-
-    @UiField(provided = true)
-    protected ExplorableImgWindow window;
-
-
-    protected void initUiBinder() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
+    private Timer zoomTimer;
 
     @Inject
     public ExplorableImgContent(ExplorableImgWindowProvider explorableImgWindowProvider) {
@@ -54,6 +65,10 @@ public class ExplorableImgContent extends Composite implements ImgContent {
         startZoomTimer = initializeZoomTimer();
     }
 
+    private void initUiBinder() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
     @Override
     public void init(Element element, ModuleSocket moduleSocket) {
         parseStyles(styleSocket.getStyles(element));
@@ -63,7 +78,7 @@ public class ExplorableImgContent extends Composite implements ImgContent {
         window.init(windowWidth, windowHeight, element.getAttribute(EmpiriaTagConstants.ATTR_SRC), scale, scaleStep, zoomMax, title);
     }
 
-    protected void zoom() {
+    private void zoom() {
         if (zoomInClicked) {
             window.zoomIn();
         } else {
@@ -71,32 +86,7 @@ public class ExplorableImgContent extends Composite implements ImgContent {
         }
     }
 
-    protected static final String ZOOMOUT_BUTTON = "zoomoutButton";
-    protected static final String ZOOMIN_BUTTON = "zoominButton";
-    protected boolean touchingButtons = false;
-    protected boolean zoomInClicked = false;
-
-    protected int windowWidth = ExplorableImageConst.WINDOW_WIDTH;
-    protected int windowHeight = ExplorableImageConst.WINDOW_HEIGHT;
-    protected double scale = ExplorableImageConst.ZOOM_SCALE;
-    protected double scaleStep = ExplorableImageConst.ZOOM_SCALE_STEP;
-    protected double zoomMax = ExplorableImageConst.ZOOM_SCALE_MAX;
-    private final Timer startZoomTimer;
-    private Timer zoomTimer;
-
-    @UiField
-    protected FlowPanel mainPanel;
-    @UiField
-    protected FlowPanel windowPanel;
-    @UiField
-    protected PushButton zoominButton;
-    @UiField
-    protected PushButton zoomoutButton;
-    @UiField
-    protected FlowPanel toolbox;
-
-
-    protected void parseStyles(Map<String, String> styles) {
+    private void parseStyles(Map<String, String> styles) {
         String toReplace = "\\D";
         if (styles.containsKey(EmpiriaStyleNameConstants.EMPIRIA_IMG_EXPLORABLE_SCALE_INITIAL)) {
             scale = (double) (NumberUtils
@@ -134,7 +124,7 @@ public class ExplorableImgContent extends Composite implements ImgContent {
         };
     }
 
-    protected void cancelZoomTimers() {
+    private void cancelZoomTimers() {
         zoomTimer.cancel();
         startZoomTimer.cancel();
     }
@@ -203,6 +193,9 @@ public class ExplorableImgContent extends Composite implements ImgContent {
     private void zoomOut() {
         zoomInClicked = false;
         zoom();
+    }
+
+    interface ExplorableImgContentUiBinder extends UiBinder<Widget, ExplorableImgContent> {
     }
 
 }
