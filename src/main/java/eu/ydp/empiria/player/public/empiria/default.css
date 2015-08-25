@@ -58,3 +58,7 @@ button.mfp-close, button.mfp-arrow {
 .qp-accordion-section-content-element {
     display: inline-block;
 }
+
+.qp-feedback-text-module-hidden {
+    display: none;
+}
