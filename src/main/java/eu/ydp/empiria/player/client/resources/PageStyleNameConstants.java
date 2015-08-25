@@ -48,4 +48,7 @@ public interface PageStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-body")
     String QP_BODY();
+
+    @DefaultStringValue("qp-page-template")
+    String QP_PAGE_TEMPLATE();
 }

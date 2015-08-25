@@ -12,7 +12,7 @@ import static org.mockito.Mockito.verify;
 public class DataSourceManagerJUnitTest extends TestCase {
 
     public void testMainPreloaderAddedAndRemoved() {
-        DataSourceManager dsm = new DataSourceManager(new AssessmentDataSourceManager());
+        DataSourceManager dsm = new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager());
 
         ForIsWidget mockRootPanel = mock(ForIsWidget.class);
         IsWidget mockImage = mock(IsWidget.class);
