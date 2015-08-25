@@ -63,7 +63,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
 
     @Test
     public void shouldIgnoreFeedbackBecauseIsOnUnselect() {
-        ModuleInfo info = ModuleInfo.create("-" + MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0);
+        ModuleInfo info = ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0).setLastChange("-");
         List<FeedbackAction> actions = processUserAction(info);
 
         assertThat(actions.size(), is(equalTo(0)));

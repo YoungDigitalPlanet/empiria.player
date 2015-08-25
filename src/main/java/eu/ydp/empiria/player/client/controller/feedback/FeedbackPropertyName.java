@@ -3,7 +3,8 @@ package eu.ydp.empiria.player.client.controller.feedback;
 public enum FeedbackPropertyName {
     RESULT("result"), OK("ok"), WRONG("wrong"), ALL_OK("allOk"), TEXT("text"), ANSWER_TEXT("answerText"), DEMAND("demand"), SELECTED("selected"), UNSELECT(
             "unselect"), DEFAULT("default"), SEND_ONCE("sendOnce"), SOURCE_ID("sourceId"), MISTAKES("mistakes"), HINTS("hints"), TODO("todo"), DONE("done"), ERRORS(
-            "errors");
+            "errors"), LAST_CHANGE("lastChange");
+
 
     private String name;
 

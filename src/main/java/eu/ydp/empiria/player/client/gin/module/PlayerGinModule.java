@@ -72,6 +72,7 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTou
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.player.PlayerContentView;
 import eu.ydp.empiria.player.client.view.player.PlayerViewSocket;
+import eu.ydp.empiria.player.client.view.player.styles.PlayerStylesController;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBoxDelays;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 import eu.ydp.jsfilerequest.client.FileRequest;
@@ -114,6 +115,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(FlowDataSupplier.class).to(MainFlowProcessor.class);
         bind(FlowCommandsListener.class).to(MainFlowProcessor.class);
         bind(WindowResizeController.class).asEagerSingleton();
+        bind(PlayerStylesController.class).asEagerSingleton();
         bind(GroupedAnswersManager.class).annotatedWith(PageScoped.class).toProvider(GroupedAnswersManagerPageScopeProvider.class);
         bind(ModulesVariablesProcessor.class).annotatedWith(PageScoped.class).toProvider(ModulesVariablesProcessorPageScopedProvider.class);
         bind(ModulesProcessingResults.class).annotatedWith(PageScoped.class).toProvider(ModulesProcessingResultsPageScopeProvider.class);
@@ -143,7 +145,6 @@ public class PlayerGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(InlineBodyGeneratorFactory.class));
-        install(new GinFactoryModuleBuilder().build(RaportModuleFactory.class));
         install(new GinFactoryModuleBuilder().build(ModulesInstalatorFactory.class));
         install(new GinFactoryModuleBuilder().build(PlayerFactory.class));
         install(new GinFactoryModuleBuilder().build(AssessmentFactory.class));

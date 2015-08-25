@@ -2,9 +2,8 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport;
 
 import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.controller.extensions.internal.jsonreport.mock.*;
-import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
+import eu.ydp.empiria.player.client.controller.report.*;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
@@ -13,17 +12,19 @@ import java.util.List;
 
 public class AssessmentJsonReportGeneratorGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
+    private final AssessmentReportFactoryMock factory = new AssessmentReportFactoryMock();
+    private final SessionDataSupplierMock sessionSupplier = factory.getSessionSupplier();
+    private final DataSourceDataSupplierMock dataSupplier = factory.getDataSupplier();
+
     public void testGeneratingJsonReport() {
-        AssessmentReportFactory factory = PlayerGinjectorFactory.getNewPlayerGinjectorForGWTTestCase().getAssessmentReportFactory();
-        SessionDataSupplierMock sessionSupplier = new SessionDataSupplierMock();
-        DataSourceDataSupplierMock dataSupplier = new DataSourceDataSupplierMock();
+        AssessmentReportProvider reportProvider = new AssessmentReportProvider(dataSupplier, sessionSupplier, factory);
 
         dataSupplier.setAssessmentTitle("Lesson 1");
         dataSupplier.setItemTitles(Lists.newArrayList("Page 1", "Page 2"));
         sessionSupplier.setAssessmentSessionDataSocket(getAssessmentSessionDataSocket());
         sessionSupplier.setItemSessionDataSocketList(getItemSessionDataSocketList());
 
-        AssessmentJsonReportGenerator generator = factory.getAssessmentJsonReportGenerator(dataSupplier, sessionSupplier);
+        AssessmentJsonReportGenerator generator = new AssessmentJsonReportGenerator(dataSupplier, sessionSupplier, reportProvider);
         AssessmentJsonReport report = generator.generate();
 
         String expectedReport = "{\"title\":\"Lesson 1\", " + "\"result\":{\"done\":1, \"todo\":4, \"errors\":2, \"result\":25}, "
@@ -66,5 +67,4 @@ public class AssessmentJsonReportGeneratorGWTTestCase extends EmpiriaPlayerGWTTe
         itemSessionDataSocket.setVariableProvider(variableProvider);
         return itemSessionDataSocket;
     }
-
 }

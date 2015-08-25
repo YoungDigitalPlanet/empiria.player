@@ -17,7 +17,9 @@ import eu.ydp.empiria.player.client.util.localisation.LocaleVariable;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class AssessmentDataSourceManager implements SkinDataLoaderListener {
@@ -31,6 +33,8 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
     private static final String GTM_ATTR = "gtm";
     private static final String HREF_ATTR = "href";
     private static final String TITLE_ATTR = "title";
+    private static final String IDENTIFIER_ATTR = "identifier";
+    private static final String CLASS_ATTR = "class";
 
     public AssessmentDataSourceManager() {
         itemsCount = -1;
@@ -186,6 +190,23 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         }
 
         return itemUrls;
+    }
+
+    public Map<String, String> getPageIdToStyleMap() {
+        Map<String, String> map = new HashMap<>();
+
+        NodeList itemsList = getItemsList();
+        for (int i = 0; i < itemsList.getLength(); i++) {
+            Element item = (Element) itemsList.item(i);
+            String identifier = item.getAttribute(IDENTIFIER_ATTR);
+            String style = item.getAttribute(CLASS_ATTR);
+            map.put(identifier, style);
+        }
+        return map;
+    }
+
+    private NodeList getItemsList() {
+        return data.getDocument().getElementsByTagName(ASSESSMENT_ITEM_REF_NODE);
     }
 
     /**
