@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.module.menu;
 
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
 import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.gin.factory.ReportModuleFactory;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
@@ -13,18 +13,22 @@ import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
+
+import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.BEFORE_FLOW;
+import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.PAGE_LOADED;
 
 public class MenuModule extends ContainerModuleBase implements PlayerEventHandler {
 
     private final MenuPresenter presenter;
+    private FlowDataSupplier flowDataSupplier;
     private final ReportModuleFactory reportModuleFactory;
 
     @Inject
-    public MenuModule(MenuPresenter presenter, ReportModuleFactory reportModuleFactory, EventsBus eventsBus) {
+    public MenuModule(MenuPresenter presenter, ReportModuleFactory reportModuleFactory, EventsBus eventsBus, FlowDataSupplier flowDataSupplier) {
         this.reportModuleFactory = reportModuleFactory;
         this.presenter = presenter;
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.BEFORE_FLOW), this);
+        this.flowDataSupplier = flowDataSupplier;
+        eventsBus.addHandler(PlayerEvent.getTypes(BEFORE_FLOW, PAGE_LOADED), this);
     }
 
     @Override
@@ -32,9 +36,8 @@ public class MenuModule extends ContainerModuleBase implements PlayerEventHandle
         super.initModule(element, moduleSocket, bgs);
 
         ReportTableGenerator reportTableGenerator = reportModuleFactory.createReportTableGenerator(bgs);
-        FlexTable table = reportTableGenerator.generate(element);
-
-        presenter.setTable(table);
+        ReportTable table = reportTableGenerator.generate(element);
+        presenter.setReportTable(table);
     }
 
     @Override
@@ -44,6 +47,14 @@ public class MenuModule extends ContainerModuleBase implements PlayerEventHandle
 
     @Override
     public void onPlayerEvent(PlayerEvent event) {
-        presenter.hide();
+        int page = flowDataSupplier.getCurrentPageIndex();
+        switch (event.getType()) {
+            case BEFORE_FLOW:
+                presenter.hide();
+                presenter.unmarkPage(page);
+                break;
+            case PAGE_LOADED:
+                presenter.markPage(page);
+        }
     }
 }

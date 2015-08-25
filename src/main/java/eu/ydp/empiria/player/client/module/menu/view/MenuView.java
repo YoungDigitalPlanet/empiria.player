@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.menu.view;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.IsWidget;
-import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 
 public interface MenuView extends IsWidget {
     void setTable(FlexTable table);
@@ -11,5 +11,5 @@ public interface MenuView extends IsWidget {
 
     void removeStyleName(String style);
 
-    void addClickHandler(EventHandlerProxy userClickHandler);
+    void addClickHandler(ClickHandler clickHandler);
 }

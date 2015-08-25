@@ -1,17 +1,17 @@
 package eu.ydp.empiria.player.client.module.report;
 
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.gin.factory.ReportModuleFactory;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OnModuleShowHandler;
-import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.module.report.view.ReportView;
 
 public class ReportModule extends ContainerModuleBase implements OnModuleShowHandler {
@@ -33,9 +33,9 @@ public class ReportModule extends ContainerModuleBase implements OnModuleShowHan
         super.initModule(element, moduleSocket, bgs);
 
         ReportTableGenerator reportTableGenerator = reportModuleFactory.createReportTableGenerator(bgs);
-        FlexTable table = reportTableGenerator.generate(element);
+        ReportTable table = reportTableGenerator.generate(element);
 
-        view.setTable(table);
+        view.setTable(table.getFlexTable());
     }
 
     @Override

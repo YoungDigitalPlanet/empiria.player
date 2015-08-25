@@ -1,17 +1,21 @@
 package eu.ydp.empiria.player.client.module.menu;
 
-import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
 import eu.ydp.empiria.player.client.module.menu.view.MenuStyleNameConstants;
 import eu.ydp.empiria.player.client.module.menu.view.MenuView;
-import eu.ydp.gwtutil.client.event.factory.Command;
-import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class MenuPresenterTest {
@@ -23,41 +27,69 @@ public class MenuPresenterTest {
     @Mock
     private MenuStyleNameConstants styleNameConstants;
     @Mock
-    private UserInteractionHandlerFactory userInteractionHandlerFactory;
+    private ClickEvent clickEvent;
     @Mock
-    private NativeEvent nativeEvent;
+    private ReportTable reportTable;
     @Captor
-    private ArgumentCaptor<Command> commandCaptor;
+    private ArgumentCaptor<ClickHandler> commandCaptor;
     private String qpMenuHidden = "qp-menu-hidden";
+    private String qpMenuTableCurrentRow = "current-row";
 
     @Before
-    public void init(){
+    public void init() {
         when(styleNameConstants.QP_MENU_HIDDEN()).thenReturn(qpMenuHidden);
-        verify(userInteractionHandlerFactory).createUserClickHandler(commandCaptor.capture());
+        when(styleNameConstants.QP_MENU_TABLE_CURRENT_ROW()).thenReturn(qpMenuTableCurrentRow);
+
+        verify(view).addClickHandler(commandCaptor.capture());
+        testObj.setReportTable(reportTable);
     }
 
     @Test
-    public void shouldShowMenu_onFirstClick(){
+    public void shouldShowMenu_onFirstClick() {
         // given
-        Command command = commandCaptor.getValue();
+        ClickHandler clickHandler = commandCaptor.getValue();
 
         // when
-        command.execute(nativeEvent);
+        clickHandler.onClick(clickEvent);
 
         // then
         verify(view).removeStyleName(qpMenuHidden);
     }
 
     @Test
-    public void shouldHideMenu_onSecondClick(){
+    public void shouldHideMenu_onSecondClick() {
         // given
-        Command command = commandCaptor.getValue();
+        ClickHandler clickHandler = commandCaptor.getValue();
 
         // when
-        command.execute(nativeEvent);
-        command.execute(nativeEvent);
+        clickHandler.onClick(clickEvent);
+        clickHandler.onClick(clickEvent);
 
         // then
         verify(view).addStyleName(qpMenuHidden);
+    }
+
+    @Test
+    public void shouldAddStyleToRow_whenIsValid() {
+        // given
+        int pageToMark = 2;
+
+        // when
+        testObj.markPage(pageToMark);
+
+        // then
+        verify(reportTable).addRowStyleName(pageToMark, qpMenuTableCurrentRow);
+    }
+
+    @Test
+    public void shouldRemoveStyleFromRow_whenIsValid() {
+        // given
+        int pageToMark = 2;
+
+        // when
+        testObj.unmarkPage(pageToMark);
+
+        // then
+        verify(reportTable).removeRowStyleName(pageToMark, qpMenuTableCurrentRow);
     }
 }

@@ -17,4 +17,7 @@ public interface MenuStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-menu-table")
     String QP_MENU_TABLE();
+
+    @DefaultStringValue("qp-menu-table-current-row")
+    String QP_MENU_TABLE_CURRENT_ROW();
 }

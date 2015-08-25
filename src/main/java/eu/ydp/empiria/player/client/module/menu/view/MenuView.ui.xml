@@ -1,9 +1,10 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b='urn:import:eu.ydp.gwtutil.client.ui.button'
         >
     <ui:with type="eu.ydp.empiria.player.client.module.menu.view.MenuStyleNameConstants" field="res"/>
     <g:FlowPanel ui:field="menuWrapper" styleName="{res.QP_MENU} {res.QP_MENU_HIDDEN}">
-        <g:PushButton ui:field="button" styleName="{res.QP_MENU_BUTTON}"/>
+        <b:CustomPushButton ui:field="button" styleName="{res.QP_MENU_BUTTON}"/>
         <g:FlowPanel ui:field="tableContainer" styleName="{res.QP_MENU_TABLE}"/>
     </g:FlowPanel>
 </ui:UiBinder>
