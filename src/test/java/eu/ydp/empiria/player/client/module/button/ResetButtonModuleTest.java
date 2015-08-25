@@ -8,7 +8,7 @@ import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 import org.junit.AfterClass;
@@ -35,7 +35,8 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
     protected ClickHandler handler;
 
     private CustomPushButton button;
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
+    private ButtonStyleNameConstants buttonStyleNameConstants;
 
     private static class CustomGuiceModule implements Module {
         @Override
@@ -62,7 +63,8 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         requestInvoker = mock(FlowRequestInvoker.class);
         instance.setFlowRequestsInvoker(requestInvoker);
         button = injector.getInstance(CustomPushButton.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        styleNameConstants = injector.getInstance(ModeStyleNameConstants.class);
+        buttonStyleNameConstants = injector.getInstance(ButtonStyleNameConstants.class);
         doAnswer(new Answer<ClickHandler>() {
 
             @Override
@@ -91,7 +93,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
     @Test
     public void testGetStyleName() {
         final String EXPECTED_STYLE = "qp-reset-button";
-        when(styleNameConstants.QP_RESET_BUTTON()).thenReturn(EXPECTED_STYLE);
+        when(buttonStyleNameConstants.QP_RESET_BUTTON()).thenReturn(EXPECTED_STYLE);
 
         assertEquals(EXPECTED_STYLE, instance.getStyleName());
     }
@@ -120,7 +122,7 @@ public class ResetButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         doReturn(null).when(instance)
                 .getCurrentGroupIdentifier();
         when(styleNameConstants.QP_MODULE_MODE_PREVIEW()).thenReturn(inactiveStyleName);
-        when(styleNameConstants.QP_RESET_BUTTON()).thenReturn("qp-reset-button");
+        when(buttonStyleNameConstants.QP_RESET_BUTTON()).thenReturn("qp-reset-button");
         instance.enablePreviewMode();
 
         // when

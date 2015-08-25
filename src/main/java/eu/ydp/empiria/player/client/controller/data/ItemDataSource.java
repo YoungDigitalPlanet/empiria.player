@@ -15,27 +15,40 @@ import java.util.List;
 
 public class ItemDataSource {
 
+
+    public static final String STYLE_DECLARATION = "styleDeclaration";
+    public static final String ASSESSMENT_ITEM = "assessmentItem";
+    public static final String TITLE = "title";
+    public static final String IDENTIFIER = "identifier";
+    public static final String REPORT_FEEDBACK_TEXT = "reportFeedbackText";
+
     private XmlData data;
     private StyleLinkDeclaration styleDeclaration;
     private String title;
     private ReportFeedbacksParser reportFeedbacksParser = new ReportFeedbacksParser();
     private ProgressToStringRangeMap reportFeedbacks;
     private final String errorMessage;
+    private String identifier;
+
+    public String getPageIdentifier() {
+        return identifier;
+    }
 
     public ItemDataSource(XmlData d) {
         data = d;
-        styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName("styleDeclaration"), data.getBaseURL());
-        Node rootNode = data.getDocument().getElementsByTagName("assessmentItem").item(0);
+        styleDeclaration = new StyleLinkDeclaration(data.getDocument().getElementsByTagName(STYLE_DECLARATION), data.getBaseURL());
+        Node rootNode = data.getDocument().getElementsByTagName(ASSESSMENT_ITEM).item(0);
         Element rootElement = (Element) rootNode;
-        title = rootElement.getAttribute("title");
-        NodeList feedbacksNodeList = rootElement.getElementsByTagName("reportFeedbackText");
+        title = rootElement.getAttribute(TITLE);
+        identifier = rootElement.getAttribute(IDENTIFIER);
+        NodeList feedbacksNodeList = rootElement.getElementsByTagName(REPORT_FEEDBACK_TEXT);
         this.reportFeedbacks = reportFeedbacksParser.parse(feedbacksNodeList);
         errorMessage = "";
     }
 
     public ItemDataSource(String err) {
         String detail = "";
-        if (err.indexOf(":") != -1) {
+        if (err.contains(":")) {
             detail = err.substring(0, err.indexOf(":"));
         }
         errorMessage = LocalePublisher.getText(LocaleVariable.ERROR_ITEM_FAILED_TO_LOAD) + detail;

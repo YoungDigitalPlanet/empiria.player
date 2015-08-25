@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.simulation.soundjs;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
@@ -12,6 +13,7 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class SoundJsPlugin implements SoundApiForJs {
 
     private final MediaWrapperCreator mediaWrapperCreator;

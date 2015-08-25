@@ -1,68 +1,50 @@
 package eu.ydp.empiria.player.client.module.report;
 
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTable;
+import eu.ydp.empiria.player.client.controller.report.table.ReportTableGenerator;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.gin.factory.RaportModuleFactory;
+import eu.ydp.empiria.player.client.gin.factory.ReportModuleFactory;
 import eu.ydp.empiria.player.client.module.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.OnModuleShowHandler;
-import eu.ydp.empiria.player.client.module.report.table.ReportTableGenerator;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.report.view.ReportView;
 
 public class ReportModule extends ContainerModuleBase implements OnModuleShowHandler {
 
-    private final SessionDataSupplier sessionDataSupplier;
-    private final DataSourceDataSupplier dataSourceDataSupplier;
-
-    private final Panel mainPanel;
-    private FlexTable table;
-    private final StyleNameConstants styleNames;
+    private final ReportView view;
     private final PlayerWorkModeService playerWorkModeService;
-    private final RaportModuleFactory raportModuleFactory;
+    private final ReportModuleFactory reportModuleFactory;
 
     @Inject
-    public ReportModule(@Assisted DataSourceDataSupplier dataSourceDataSupplier,
-                        @Assisted SessionDataSupplier sessionDataSupplier,
-                        StyleNameConstants styleNames, PlayerWorkModeService playerWorkModeService,
-                        RaportModuleFactory raportModuleFactory) {
-        this.dataSourceDataSupplier = dataSourceDataSupplier;
-        this.sessionDataSupplier = sessionDataSupplier;
-        this.styleNames = styleNames;
+    public ReportModule(ReportView view, PlayerWorkModeService playerWorkModeService,
+                        ReportModuleFactory reportModuleFactory) {
         this.playerWorkModeService = playerWorkModeService;
-        this.raportModuleFactory = raportModuleFactory;
-
-        mainPanel = new FlowPanel();
-        mainPanel.setStyleName(this.styleNames.QP_REPORT());
+        this.reportModuleFactory = reportModuleFactory;
+        this.view = view;
     }
 
     @Override
     public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
         super.initModule(element, moduleSocket, bgs);
 
-        ReportTableGenerator reportTableGenerator = raportModuleFactory.createReportTableGenerator(bgs, dataSourceDataSupplier, sessionDataSupplier);
-        table = reportTableGenerator.generate(element);
+        ReportTableGenerator reportTableGenerator = reportModuleFactory.createReportTableGenerator(bgs);
+        ReportTable table = reportTableGenerator.generate(element);
 
-        mainPanel.add(table);
+        view.setTable(table.getFlexTable());
     }
 
     @Override
     public Widget getView() {
-        return mainPanel;
+        return view.asWidget();
     }
 
     @Override
     public void onShow() {
         playerWorkModeService.tryToUpdateWorkMode(PlayerWorkMode.TEST_SUBMITTED);
-
     }
 }

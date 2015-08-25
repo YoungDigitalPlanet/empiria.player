@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.TextStyleNameConstants;
 import eu.ydp.gwtutil.client.geom.Rectangle;
 
 public class SimpleTextModule extends SimpleModuleBase implements IBookmarkable {
@@ -18,7 +18,7 @@ public class SimpleTextModule extends SimpleModuleBase implements IBookmarkable 
     private final BookmarkingHelper bookmarkingHelper;
 
     @Inject
-    public SimpleTextModule(StyleNameConstants styleNames) {
+    public SimpleTextModule(TextStyleNameConstants styleNames) {
         contents = new ElementWrapperWidget(Document.get().createPElement());
         contents.setStyleName(styleNames.QP_SIMPLETEXT());
         bookmarkingHelper = new BookmarkingHelper(contents);

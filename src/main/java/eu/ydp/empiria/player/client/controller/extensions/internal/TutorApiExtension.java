@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorService;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.gwtutil.client.collections.JsMapStringToInt;
@@ -9,6 +10,7 @@ import eu.ydp.gwtutil.client.collections.JsMapStringToInt;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@Singleton
 public class TutorApiExtension extends InternalExtension implements PlayerJsObjectModifierExtension {
 
     private final TutorService tutorService;

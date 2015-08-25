@@ -1,11 +1,13 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.lightbox;
 
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.lightbox2.LightBox2;
 import eu.ydp.empiria.player.client.module.img.picture.player.lightbox.magnific.popup.MagnificPopup;
 
 import javax.inject.Inject;
 
+@Singleton
 public class LightBoxProvider {
 
     @Inject

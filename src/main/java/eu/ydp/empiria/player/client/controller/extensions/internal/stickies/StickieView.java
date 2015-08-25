@@ -21,7 +21,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.posi
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.ContainerDimensions;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.presenter.IStickiePresenter;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.scroll.WindowToStickieScroller;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -42,7 +41,7 @@ public class StickieView extends Composite implements IStickieView {
 
     private final HasWidgets parent;
     private final boolean android;
-    private final StyleNameConstants styleNames;
+    private final StickieStyleNameConstants styleNames;
     private final EventsBus eventsBus;
     private final StickieDragHandlersManager stickieDragHandlersManager;
     private final WidgetSizeHelper widgetSizeHelper;
@@ -73,7 +72,7 @@ public class StickieView extends Composite implements IStickieView {
 
     @Inject
     public StickieView(@Assisted HasWidgets parent, @Assisted IStickiePresenter presenter, @Assisted StickieDragHandlersManager stickieDragHandlersManager,
-                       StyleNameConstants styleNameConstants, EventsBus eventsBus, WidgetSizeHelper widgetSizeHelper, WindowToStickieScroller windowToStickieScroller) {
+                       StickieStyleNameConstants styleNameConstants, EventsBus eventsBus, WidgetSizeHelper widgetSizeHelper, WindowToStickieScroller windowToStickieScroller) {
         this.presenter = presenter;
         this.stickieDragHandlersManager = stickieDragHandlersManager;
         this.styleNames = styleNameConstants;

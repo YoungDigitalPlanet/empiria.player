@@ -2,7 +2,9 @@ package eu.ydp.empiria.player.client.util.events.external;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class ExternalEventDispatcher {
 
     private Optional<ExternalCallback> optionalCallback = Optional.absent();

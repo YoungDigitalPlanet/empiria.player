@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.resources.StyleNameConstants;
@@ -13,15 +14,16 @@ import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 public class AssessmentBodyView extends FlowPanel implements WorkModeClient {
 
     protected WidgetWorkflowListener widgetWorkflowListener;
+    protected ModeStyleNameConstants modeStyleNameConstants;
     protected StyleNameConstants styleNameConstants;
     private final PlayerWorkModeService playerWorkModeService;
 
     @Inject
-    public AssessmentBodyView(@Assisted WidgetWorkflowListener wwl, StyleNameConstants styleNameConstants, PlayerWorkModeService playerWorkModeService) {
+    public AssessmentBodyView(@Assisted WidgetWorkflowListener wwl, ModeStyleNameConstants modeStyleNameConstants, StyleNameConstants styleNameConstants, PlayerWorkModeService playerWorkModeService) {
         widgetWorkflowListener = wwl;
-        this.styleNameConstants = styleNameConstants;
+        this.modeStyleNameConstants = modeStyleNameConstants;
         this.playerWorkModeService = playerWorkModeService;
-
+        this.styleNameConstants = styleNameConstants;
         setStyleName(styleNameConstants.QP_ASSESSMENT_VIEW());
         this.sinkEvents(Event.ONCHANGE);
         this.sinkEvents(Event.ONMOUSEDOWN);
@@ -49,26 +51,26 @@ public class AssessmentBodyView extends FlowPanel implements WorkModeClient {
 
     @Override
     public void enablePreviewMode() {
-        addStyleName(styleNameConstants.QP_MODULE_MODE_PREVIEW());
+        addStyleName(modeStyleNameConstants.QP_MODULE_MODE_PREVIEW());
     }
 
     @Override
     public void enableTestMode() {
-        addStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
+        addStyleName(modeStyleNameConstants.QP_MODULE_MODE_TEST());
     }
 
     @Override
     public void disableTestMode() {
-        removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST());
+        removeStyleName(modeStyleNameConstants.QP_MODULE_MODE_TEST());
     }
 
     @Override
     public void enableTestSubmittedMode() {
-        addStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+        addStyleName(modeStyleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
     }
 
     @Override
     public void disableTestSubmittedMode() {
-        removeStyleName(styleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
+        removeStyleName(modeStyleNameConstants.QP_MODULE_MODE_TEST_SUBMITTED());
     }
 }

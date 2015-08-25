@@ -11,6 +11,8 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import eu.ydp.empiria.player.client.BindDescriptor.BindType;
+import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
+import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -41,7 +43,6 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBPa
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParser;
 import eu.ydp.empiria.player.client.overlaytypes.OverlayTypesParserMock;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDropHelper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -147,6 +148,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(ExListBoxDelays.class).to(EmpiriaExListBoxDelay.class);
         bind(LogAppender.class).to(ConsoleAppender.class);
         bind(PlayerWorkModeState.class).toInstance(mock(PlayerWorkModeState.class));
+        bind(DataSourceDataSupplier.class).toInstance(mock(DataSourceManager.class));
         install(new FactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new FactoryModuleBuilder().build(PageScopeFactory.class));
         install(new FactoryModuleBuilder().build(TextTrackFactory.class));
@@ -157,6 +159,7 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         install(new FactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new FactoryModuleBuilder().build(FeedbackModuleFactory.class));
         install(new FactoryModuleBuilder().build(MediaFactory.class));
+        install(new StyleNameConstantsProvider());
     }
 
     private void addPostConstructInterceptor(GuiceModuleConfiguration guiceModuleConfiguration) {
@@ -170,11 +173,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         });
     }
 
-    @Provides
-    @Singleton
-    public StyleNameConstants getNameConstants() {
-        return mock(StyleNameConstants.class);
-    }
 
     @Provides
     public MediaControllerFactory getMediaControllerFactory() {

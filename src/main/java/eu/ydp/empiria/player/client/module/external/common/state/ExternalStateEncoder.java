@@ -4,7 +4,9 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.inject.Singleton;
 
+@Singleton
 public class ExternalStateEncoder {
 
     public JSONArray encodeState(JavaScriptObject state) {

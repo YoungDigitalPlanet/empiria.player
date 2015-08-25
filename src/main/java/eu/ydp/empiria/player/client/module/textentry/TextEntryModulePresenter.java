@@ -44,7 +44,7 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
     public void installViewInContainer(HasWidgets container) {
         container.add(moduleWidget);
 
-        moduleWidget.setStyleName(styleNames.QP_TEXTENTRY(), true);
+        moduleWidget.setStyleName(textEntryStyleNameConstants.QP_TEXTENTRY(), true);
     }
 
     @Override
@@ -57,11 +57,11 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
         String markStyleName;
 
         if (GapModulePresenter.CORRECT.equals(mode)) {
-            markStyleName = styleNames.QP_TEXT_TEXTENTRY_CORRECT();
+            markStyleName = textEntryStyleNameConstants.QP_TEXT_TEXTENTRY_CORRECT();
         } else if (GapModulePresenter.WRONG.equals(mode)) {
-            markStyleName = styleNames.QP_TEXT_TEXTENTRY_WRONG();
+            markStyleName = textEntryStyleNameConstants.QP_TEXT_TEXTENTRY_WRONG();
         } else {
-            markStyleName = styleNames.QP_TEXT_TEXTENTRY_NONE();
+            markStyleName = textEntryStyleNameConstants.QP_TEXT_TEXTENTRY_NONE();
         }
 
         moduleWidget.setStylePrimaryName(markStyleName);
@@ -69,7 +69,7 @@ public class TextEntryModulePresenter extends TextEntryGapModulePresenterBase {
 
     @Override
     public void removeMarking() {
-        moduleWidget.setStylePrimaryName(styleNames.QP_TEXT_TEXTENTRY());
+        moduleWidget.setStylePrimaryName(textEntryStyleNameConstants.QP_TEXT_TEXTENTRY());
     }
 
     @Override

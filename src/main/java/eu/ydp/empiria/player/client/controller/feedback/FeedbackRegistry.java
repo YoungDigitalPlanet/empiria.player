@@ -7,6 +7,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.module.IModule;
 
@@ -17,6 +18,7 @@ import static com.google.common.base.Optional.fromNullable;
 import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.NAME_FEEDBACK;
 import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.NAME_FEEDBACKS;
 
+@Singleton
 public class FeedbackRegistry {
 
     @Inject

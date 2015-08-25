@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.TwoStateButton;
+import eu.ydp.empiria.player.client.module.slideshow.SlideshowStyleNameConstants;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowButtonsPresenter;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 public class SlideshowButtonsViewImpl extends Composite implements SlideshowButtonsView {
     @UiTemplate("SlideshowButtonsView.ui.xml")
@@ -34,11 +34,11 @@ public class SlideshowButtonsViewImpl extends Composite implements SlideshowButt
     @UiField
     protected PushButton previousButton;
 
-    private StyleNameConstants styleNameConstants;
+    private SlideshowStyleNameConstants styleNameConstants;
     private SlideshowButtonsPresenter presenter;
 
     @Inject
-    public SlideshowButtonsViewImpl(StyleNameConstants styleNameConstants) {
+    public SlideshowButtonsViewImpl(SlideshowStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
         uiBinder.createAndBindUi(this);
         addEventsHandlers();

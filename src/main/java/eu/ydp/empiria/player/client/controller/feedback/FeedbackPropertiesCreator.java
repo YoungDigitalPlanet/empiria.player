@@ -51,12 +51,17 @@ public class FeedbackPropertiesCreator {
         properties.addIntegerProperty(FeedbackPropertyName.TODO, getIntegerVariable(TODO));
         properties.addIntegerProperty(FeedbackPropertyName.ERRORS, getIntegerVariable(ERRORS));
         properties.addDoubleProperty(FeedbackPropertyName.RESULT, getResultValue());
+        properties.addStringProperty(FeedbackPropertyName.LAST_CHANGE, getLastChangeValue());
 
         boolean isSelect = checkIfFeedbackIsOnSelectAction();
         properties.addBooleanProperty(FeedbackPropertyName.SELECTED, isSelect);
         properties.addBooleanProperty(FeedbackPropertyName.UNSELECT, !isSelect);
 
         return properties;
+    }
+
+    private String getLastChangeValue() {
+        return getVariableValue(LASTCHANGE);
     }
 
     private LastMistaken getLastmistaken() {

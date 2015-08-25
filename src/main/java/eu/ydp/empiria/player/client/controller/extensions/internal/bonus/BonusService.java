@@ -1,9 +1,11 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.bonus;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Singleton;
 
 import java.util.Map;
 
+@Singleton
 public class BonusService {
 
     private final Map<String, BonusConfig> cache = Maps.newHashMap();

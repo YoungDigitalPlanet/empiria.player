@@ -2,7 +2,9 @@ package eu.ydp.empiria.player.client.module.mathjax.common;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
+import com.google.inject.Singleton;
 
+@Singleton
 public class MathJaxNative {
 
     public void renderMath() {

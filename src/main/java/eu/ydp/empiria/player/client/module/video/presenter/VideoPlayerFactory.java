@@ -2,12 +2,14 @@ package eu.ydp.empiria.player.client.module.video.presenter;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.gin.factory.VideoModuleFactory;
 import eu.ydp.empiria.player.client.module.video.VideoElementWrapperBuilder;
 import eu.ydp.empiria.player.client.module.video.structure.VideoBean;
 import eu.ydp.empiria.player.client.module.video.view.VideoPlayer;
 import eu.ydp.empiria.player.client.module.video.wrappers.VideoElementWrapper;
 
+@Singleton
 public class VideoPlayerFactory {
 
     @Inject
