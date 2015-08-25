@@ -31,14 +31,12 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     @Override
     public void show(Widget widget) {
         addNewFeedback(widget);
-        feedbackTextPanel.removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_HIDDEN());
-        this.setVisible(true);
+        this.removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_HIDDEN());
     }
 
     @Override
     public void hide() {
-        feedbackTextPanel.addStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_HIDDEN());
-        this.setVisible(false);
+        this.addStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_HIDDEN());
     }
 
     private void addNewFeedback(Widget widget) {
