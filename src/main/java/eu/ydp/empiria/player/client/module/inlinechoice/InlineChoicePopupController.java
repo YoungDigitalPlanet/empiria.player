@@ -238,6 +238,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
         listBox.setShowEmptyOptions(showEmptyOption);
         updateResponse(false, true);
         listBox.setEnabled(true);
+        listBox.reset();
         container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
     }
 
