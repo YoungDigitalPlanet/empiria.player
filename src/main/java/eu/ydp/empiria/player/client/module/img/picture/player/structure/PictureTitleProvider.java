@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 
+
 @Singleton
 public class PictureTitleProvider {
 
@@ -18,13 +19,17 @@ public class PictureTitleProvider {
         }
     }
 
-    public String getPictutreTitleString(PicturePlayerBean bean) {
+    public String getPictureTitleString(PicturePlayerBean bean) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            String titleXmlString = titleXmlElement.getChildNodes().toString();
+            String titleXmlString = stripStringFromHTMLTags(titleXmlElement);
             return titleXmlString;
         } else {
             return "";
         }
+    }
+
+    private String stripStringFromHTMLTags(Element titleXmlElement) {
+        return titleXmlElement.toString().replaceAll("<.*?>", "");
     }
 }

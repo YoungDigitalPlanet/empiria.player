@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 
 import com.google.inject.Inject;
 
+
 public class PictureAltProvider {
 
     private PictureTitleProvider pictureTitleProvider;
@@ -16,7 +17,7 @@ public class PictureAltProvider {
         if (bean.hasAlt()) {
             return bean.getAlt();
         } else {
-            return pictureTitleProvider.getPictutreTitleString(bean);
+            return pictureTitleProvider.getPictureTitleString(bean);
         }
     }
 }

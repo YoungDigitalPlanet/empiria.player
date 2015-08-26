@@ -42,7 +42,7 @@ public class PictureAltProviderTest {
     public void shouldReturnTitle_whenAltIsNotPresent() throws Exception {
         //given
         when(bean.hasAlt()).thenReturn(false);
-        when(pictureTitleProvider.getPictutreTitleString(bean)).thenReturn(TEAST_TITLE);
+        when(pictureTitleProvider.getPictureTitleString(bean)).thenReturn(TEAST_TITLE);
 
         //when
         String result = testObj.getPictureAltString(bean);

@@ -46,7 +46,7 @@ public class PictureTitleProviderTest {
         // given
         bean.setTitleBean(titleBean);
         // when
-        String titleString = testObj.getPictutreTitleString(bean);
+        String titleString = testObj.getPictureTitleString(bean);
         // then
         assertThat(titleString).isEqualTo(titleXml);
     }
@@ -54,7 +54,7 @@ public class PictureTitleProviderTest {
     @Test
     public void shouldReturnEmptyXmlString() {
         // when
-        String titleString = testObj.getPictutreTitleString(bean);
+        String titleString = testObj.getPictureTitleString(bean);
         // then
         assertThat(titleString).isEqualTo("");
     }
@@ -68,7 +68,7 @@ public class PictureTitleProviderTest {
     }
 
     @Test
-    public void shoulCreateTitleWidget() {
+    public void shouldCreateTitleWidget() {
         // given
         bean.setTitleBean(titleBean);
         // when
