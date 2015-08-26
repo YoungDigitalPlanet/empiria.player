@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.feedback.text;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
+import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
@@ -23,10 +25,13 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     public TextFeedbackPresenter() {
         initWidget(uiBinder.createAndBindUi(this));
+        feedbackCloseButton.addClickHandler(createButtonClickHandler());
     }
 
     @UiField
     FlowPanel feedbackTextPanel;
+    @UiField
+    CustomPushButton feedbackCloseButton;
 
     @Override
     public void show(Widget widget) {
@@ -42,5 +47,13 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     private void addNewFeedback(Widget widget) {
         feedbackTextPanel.clear();
         feedbackTextPanel.add(widget);
+    }
+
+    private ClickHandler createButtonClickHandler() {
+        return new ClickHandler() {
+            @Override public void onClick(ClickEvent event) {
+                hide();
+            }
+        };
     }
 }

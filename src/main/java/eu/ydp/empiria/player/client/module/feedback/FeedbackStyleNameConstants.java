@@ -19,4 +19,6 @@ public interface FeedbackStyleNameConstants extends Constants {
     @DefaultStringValue("qp-feedback-text-module")
     String QP_FEEDBACK_TEXT_MODULE();
 
+    @DefaultStringValue("qp-feedback-text-module-button")
+    String QP_FEEDBACK_TEXT_MODULE_BUTTON();
 }
