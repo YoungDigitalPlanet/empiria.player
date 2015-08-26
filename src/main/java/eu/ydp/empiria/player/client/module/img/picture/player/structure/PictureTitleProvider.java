@@ -22,14 +22,14 @@ public class PictureTitleProvider {
     public String getPictureTitleString(PicturePlayerBean bean) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            String titleXmlString = stripStringFromHTMLTags(titleXmlElement);
+            String titleXmlString = stripTextFromHTMLTags(titleXmlElement);
             return titleXmlString;
         } else {
             return "";
         }
     }
 
-    private String stripStringFromHTMLTags(Element titleXmlElement) {
+    private String stripTextFromHTMLTags(Element titleXmlElement) {
         return titleXmlElement.toString().replaceAll("<.*?>", "");
     }
 }
