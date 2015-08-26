@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 
@@ -10,11 +11,14 @@ public class TextFeedbackPresenterMock implements TextFeedback {
 
     @Override
     public void show(Widget widget) {
-
     }
 
     @Override
     public void hide() {
+    }
+
+    @Override
+    public void addCloseButtonClickHandler(ClickHandler handler) {
     }
 
 }
