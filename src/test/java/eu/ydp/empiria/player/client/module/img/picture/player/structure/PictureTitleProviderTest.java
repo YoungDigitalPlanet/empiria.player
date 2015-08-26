@@ -26,8 +26,7 @@ public class PictureTitleProviderTest {
 
     private PicturePlayerBean bean;
     private String titleXml = "titleXml";
-    private String regexpMather = "<.*?>";
-    private String regexpReplace = "";
+    private String titleXmlWithHTMLTags = "<b>titleXml</b>";
     PicturePlayerTitleBean titleBean;
 
     @Before
@@ -39,8 +38,7 @@ public class PictureTitleProviderTest {
         when(xmlContent.getValue()).thenReturn(titleElement);
         titleBean.setTitleName(xmlContent);
         when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleWidget);
-        when(titleElement.getChildNodes().toString()).thenReturn(titleXml);
-        when(titleElement.toString().replaceAll(regexpMather, regexpReplace)).thenReturn(titleXml);
+        when(titleElement.toString()).thenReturn(titleXmlWithHTMLTags);
     }
 
 
