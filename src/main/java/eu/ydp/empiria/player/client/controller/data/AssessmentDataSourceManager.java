@@ -152,14 +152,11 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
         String title = "";
         if (data != null) {
             try {
-                Node rootNode = data.getDocument()
-                        .getElementsByTagName(ASSESSMENT_TEST_NODE)
-                        .item(0);
-                title = ((Element) rootNode).getAttribute(TITLE_ATTR);
+                Element rootNode = getFirstElementByName(ASSESSMENT_TEST_NODE);
+                title = rootNode.getAttribute(TITLE_ATTR);
             } catch (Exception e) {
                 logger.error(e);
             }
-
         }
         return title;
     }
@@ -297,18 +294,17 @@ public class AssessmentDataSourceManager implements SkinDataLoaderListener {
     }
 
     public Optional<String> getAssessmentGtm() {
-        if (data == null) {
-            return Optional.absent();
-        }
-        try {
-            Element rootElement = (Element) data.getDocument()
-                    .getElementsByTagName(ASSESSMENT_TEST_NODE)
-                    .item(0);
-            String gtm = rootElement.getAttribute(GTM_ATTR);
-            return Optional.of(gtm);
-        } catch (Exception e) {
-            logger.error(e);
+        Element rootElement = getFirstElementByName(ASSESSMENT_TEST_NODE);
+        if (rootElement.hasAttribute(GTM_ATTR)) {
+            String gtmAttribute = rootElement.getAttribute(GTM_ATTR);
+            return Optional.of(gtmAttribute);
         }
         return Optional.absent();
+    }
+
+    private Element getFirstElementByName(String attributeName) {
+        return (Element) data.getDocument()
+                .getElementsByTagName(attributeName)
+                .item(0);
     }
 }
