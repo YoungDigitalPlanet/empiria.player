@@ -81,7 +81,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
 
     private void showFeedback(Widget widget) {
         feedbackPresenter.show(widget);
-        feedbackBlend.show();
+        feedbackBlend.show(feedbackPresenter);
     }
 
     @Override
