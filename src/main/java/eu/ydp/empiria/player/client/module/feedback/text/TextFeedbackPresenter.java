@@ -25,7 +25,6 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     public TextFeedbackPresenter() {
         initWidget(uiBinder.createAndBindUi(this));
-        feedbackCloseButton.addClickHandler(createButtonClickHandler());
     }
 
     @UiField
@@ -44,16 +43,14 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
         addStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
     }
 
+    @Override
+    public void addCloseButtonClickHandler(ClickHandler handler) {
+        feedbackCloseButton.addClickHandler(handler);
+
+    }
+
     private void addNewFeedback(Widget widget) {
         feedbackTextPanel.clear();
         feedbackTextPanel.add(widget);
-    }
-
-    private ClickHandler createButtonClickHandler() {
-        return new ClickHandler() {
-            @Override public void onClick(ClickEvent event) {
-                hide();
-            }
-        };
     }
 }
