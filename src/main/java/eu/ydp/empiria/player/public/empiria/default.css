@@ -60,5 +60,5 @@ button.mfp-close, button.mfp-arrow {
 }
 
 .qp-feedback-text-module.qp-feedback-text-module-hidden {
-    display: none !important;
+    display: none;
 }
