@@ -28,9 +28,9 @@ public class PicturePlayerPresenter {
         this.bean = bean;
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         view.setPresenter(this);
-        String pictureAltAttributeContent = pictureAltProvider.getPictureAltString(bean);
-        String pictureSourceAttributeContent = bean.getSrc();
-        view.setImage(pictureAltAttributeContent, pictureSourceAttributeContent);
+        String pictureAlt = pictureAltProvider.getPictureAltString(bean);
+        String pictureSource = bean.getSrc();
+        view.setImage(pictureAlt, pictureSource);
         initFullScreenMediaButton(bean);
     }
 

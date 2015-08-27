@@ -15,8 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PicturePlayerPresenterTest {
@@ -29,7 +28,6 @@ public class PicturePlayerPresenterTest {
     private PicturePlayerFullscreenController fullscreenController;
     @Mock
     private PictureAltProvider pictureAltProvider;
-
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
@@ -51,11 +49,14 @@ public class PicturePlayerPresenterTest {
 
     @Test
     public void shouldInitFullPicturePlayer() {
+        // given
+        when(pictureAltProvider.getPictureAltString(bean)).thenReturn(alt);
+
         // when
         testObj.init(bean, inlineBodyGeneratorSocket);
 
         // then
-        verify(view).setImage(anyString(), eq(src));
+        verify(view).setImage(alt, src);
         verify(view).addFullscreenButton();
     }
 
@@ -109,17 +110,6 @@ public class PicturePlayerPresenterTest {
 
         // then
         verify(fullscreenController).openFullscreen(bean, inlineBodyGeneratorSocket);
-
-    }
-
-    @Test
-    public void shouldSetTitle() {
-
-        // when
-        testObj.init(bean, inlineBodyGeneratorSocket);
-
-        // then
-        verify(pictureAltProvider).getPictureAltString(bean);
 
     }
 }

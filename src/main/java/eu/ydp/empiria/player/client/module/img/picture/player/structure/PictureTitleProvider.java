@@ -5,15 +5,13 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 
-
 @Singleton
 public class PictureTitleProvider {
 
     public Widget getPictureTitleWidget(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            Widget titleWidget = inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
-            return titleWidget;
+            return inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
         } else {
             return new Widget();
         }
@@ -22,8 +20,7 @@ public class PictureTitleProvider {
     public String getPictureTitleString(PicturePlayerBean bean) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            String titleXmlString = stripTextFromHTMLTags(titleXmlElement);
-            return titleXmlString;
+            return stripTextFromHTMLTags(titleXmlElement);
         } else {
             return "";
         }

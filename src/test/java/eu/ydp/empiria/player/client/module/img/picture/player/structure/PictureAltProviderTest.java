@@ -22,32 +22,32 @@ public class PictureAltProviderTest {
     @Mock
     private PicturePlayerBean bean;
 
-    String TEAST_ALT = "testAlt";
-    String TEAST_TITLE = "testTitle";
+    private String TEST_ALT = "testAlt";
+    private String TEST_TITLE = "testTitle";
 
     @Test
     public void shouldReturnAlt_whenAltIsPresent() {
         // given
         when(bean.hasAlt()).thenReturn(true);
-        when(bean.getAlt()).thenReturn(TEAST_ALT);
+        when(bean.getAlt()).thenReturn(TEST_ALT);
 
         //when
         String result = testObj.getPictureAltString(bean);
 
         //then
-        assertThat(result).isEqualTo(TEAST_ALT);
+        assertThat(result).isEqualTo(TEST_ALT);
     }
 
     @Test
     public void shouldReturnTitle_whenAltIsNotPresent() throws Exception {
         //given
         when(bean.hasAlt()).thenReturn(false);
-        when(pictureTitleProvider.getPictureTitleString(bean)).thenReturn(TEAST_TITLE);
+        when(pictureTitleProvider.getPictureTitleString(bean)).thenReturn(TEST_TITLE);
 
         //when
         String result = testObj.getPictureAltString(bean);
 
         //then
-        assertThat(result).isEqualTo(TEAST_TITLE);
+        assertThat(result).isEqualTo(TEST_TITLE);
     }
 }
