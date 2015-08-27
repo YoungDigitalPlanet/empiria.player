@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.blend;
+package eu.ydp.empiria.player.client.module.feedback.text.blend;
 
 import com.google.common.base.Optional;
 import com.google.gwt.dom.client.NativeEvent;
