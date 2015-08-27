@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
+import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
@@ -177,6 +178,11 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
     public MediaControllerFactory getMediaControllerFactory() {
         MediaControllerFactory factory = mock(MediaControllerFactory.class);
         return factory;
+    }
+
+    @Provides
+    public FeedbackBlend getFeedbackBlend() {
+        return mock(FeedbackBlend.class);
     }
 
     @Provides

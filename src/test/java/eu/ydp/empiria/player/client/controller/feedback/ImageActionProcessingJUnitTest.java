@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ImageActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
