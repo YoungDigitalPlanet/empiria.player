@@ -11,20 +11,22 @@ public class PictureTitleProvider {
     public Widget getPictureTitleWidget(PicturePlayerBean bean, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            Widget titleWidget = inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
-            return titleWidget;
+            return inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
         } else {
             return new Widget();
         }
     }
 
-    public String getPictutreTitleString(PicturePlayerBean bean) {
+    public String getPictureTitleString(PicturePlayerBean bean) {
         if (bean.hasTitle()) {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
-            String titleXmlString = titleXmlElement.getChildNodes().toString();
-            return titleXmlString;
+            return stripTextFromHTMLTags(titleXmlElement);
         } else {
             return "";
         }
+    }
+
+    private String stripTextFromHTMLTags(Element titleXmlElement) {
+        return titleXmlElement.toString().replaceAll("<.*?>", "");
     }
 }

@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.selection.view;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants;
+import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import junit.framework.Assert;
@@ -24,6 +25,9 @@ public class SelectionGridElementGeneratorImplTest {
     private MarkAnswersStyleNameConstants styleNameConstants;
 
     @Mock
+    private SelectionStyleNameConstants selectionStyleNameConstants;
+
+    @Mock
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     @InjectMocks
     private SelectionGridElementGeneratorImpl selectionGridElementGeneratorImpl;
@@ -36,7 +40,7 @@ public class SelectionGridElementGeneratorImplTest {
         styleNameConstants = mock(MarkAnswersStyleNameConstants.class);
         inlineBodyGenerator = mock(InlineBodyGeneratorSocket.class);
 
-        gridElementGenerator = new SelectionGridElementGeneratorImpl(styleNameConstants, userInteractionHandlerFactory);
+        gridElementGenerator = new SelectionGridElementGeneratorImpl(styleNameConstants, userInteractionHandlerFactory, selectionStyleNameConstants);
         gridElementGenerator.setInlineBodyGenerator(inlineBodyGenerator);
     }
 

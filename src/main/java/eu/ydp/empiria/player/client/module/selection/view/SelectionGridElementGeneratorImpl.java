@@ -26,9 +26,10 @@ public class SelectionGridElementGeneratorImpl implements SelectionElementPositi
     }
 
     @Inject
-    public SelectionGridElementGeneratorImpl(MarkAnswersStyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory) {
+    public SelectionGridElementGeneratorImpl(MarkAnswersStyleNameConstants styleNameConstants, UserInteractionHandlerFactory userInteractionHandlerFactory, SelectionStyleNameConstants selectionStyleNameConstants) {
         this.styleNameConstants = styleNameConstants;
         this.userInteractionHandlerFactory = userInteractionHandlerFactory;
+        this.selectionStyleNameConstants = selectionStyleNameConstants;
     }
 
     @Override

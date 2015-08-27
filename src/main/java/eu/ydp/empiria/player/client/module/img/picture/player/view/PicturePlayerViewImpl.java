@@ -52,7 +52,6 @@ public class PicturePlayerViewImpl extends Composite implements PicturePlayerVie
 
     @Override
     public void setImage(String altText, String url) {
-        //TODO: YPUB-7282
         image.setAltText(altText);
         image.setUrl(url);
     }
