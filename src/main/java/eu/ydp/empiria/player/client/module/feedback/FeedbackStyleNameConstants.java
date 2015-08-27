@@ -13,15 +13,18 @@ public interface FeedbackStyleNameConstants extends Constants {
     @DefaultStringValue("qp-feedback-text")
     String QP_FEEDBACK_TEXT();
 
-    @DefaultStringValue("qp-feedback-text-module-hidden")
-    String QP_FEEDBACK_TEXT_MODULE_HIDDEN();
-
     @DefaultStringValue("qp-feedback-text-module")
     String QP_FEEDBACK_TEXT_MODULE();
 
+    @DefaultStringValue("qp-feedback-text-module-hidden")
+    String QP_FEEDBACK_TEXT_MODULE_HIDDEN();
+    
     @DefaultStringValue("qp-feedback-blend")
     String QP_FEEDBACK_BLEND();
 
     @DefaultStringValue("qp-feedback-blend-hidden")
     String QP_FEEDBACK_BLEND_HIDDEN();
+    
+    @DefaultStringValue("qp-feedback-text-module-close-button")
+    String QP_FEEDBACK_TEXT_MODULE_CLOSE_BUTTON();
 }

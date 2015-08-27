@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactory;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackParserFactoryMock;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
-import eu.ydp.empiria.player.client.controller.feedback.TextFeedbackPresenterMock;
 import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistry;
 import eu.ydp.empiria.player.client.controller.feedback.matcher.MatcherRegistryFactory;
@@ -130,8 +129,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
         bind(MatcherRegistry.class).in(Singleton.class);
         bind(OverlayTypesParser.class).toInstance(mock(OverlayTypesParserMock.class));
-        bind(TextFeedback.class).toInstance(mock(TextFeedbackPresenterMock.class));
-        bind(ImageFeedback.class).toInstance(mock(ImageFeedbackPresenterMock.class));
+        bind(TextFeedback.class).toInstance(mock(TextFeedback.class));
+        bind(ImageFeedback.class).toInstance(mock(ImageFeedback.class));
         bind(FeedbackRegistry.class).toInstance(mock(FeedbackRegistry.class));
         bind(XMLProxy.class).to(XMLProxyWrapper.class);
         bind(UserAgentUtil.class).toInstance(mock(UserAgentUtil.class));

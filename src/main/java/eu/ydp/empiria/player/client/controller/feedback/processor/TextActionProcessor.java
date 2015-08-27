@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -92,6 +93,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
         initModule(ms);
         feedbackPresenter.hide();
+        feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
     }
 
     @Override
@@ -104,4 +106,11 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
         clearFeedback();
     }
 
+    private ClickHandler createCloseButtonClickHandler() {
+        return new ClickHandler() {
+            @Override public void onClick(ClickEvent event) {
+                clearFeedback();
+            }
+        };
+    }
 }
