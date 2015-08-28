@@ -12,6 +12,8 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.externa
 import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementView;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ExplorableImgContentView;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ExplorableImgContentViewImpl;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactory;
 import eu.ydp.empiria.player.client.module.media.MediaControllerFactoryImpl;
 import eu.ydp.empiria.player.client.module.media.fullscreen.VideoFullScreenView;
@@ -26,6 +28,7 @@ public class MediaGinModule extends AbstractGinModule {
         bind(MediaConnector.class).to(JsMediaConnector.class);
         bind(MediaConnectorListener.class).to(ExternalMediaEngine.class);
         bind(VideoTextTrackElementPresenter.class).to(VideoTextTrackElementView.class);
+        bind(ExplorableImgContentView.class).to(ExplorableImgContentViewImpl.class);
 
         install(new GinFactoryModuleBuilder().build(VideoTextTrackElementFactory.class));
         install(new GinFactoryModuleBuilder().build(MediaWrapperFactory.class));

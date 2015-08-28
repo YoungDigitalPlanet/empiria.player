@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ImageProperties;
 
 public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
 
@@ -30,12 +31,12 @@ public class ExplorableImgWindowImg extends AbstractExplorableImgWindowBase {
     }
 
     @Override
-    public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {
-        setWindowWidth(wndWidth);
-        setWindowHeight(wndHeight);
-        setScale(initialScale);
-        setScaleStep(scaleStep);
-        setZoomMax(zoomMax);
+    public void init(String imageUrl, ImageProperties properties, String title) {
+        setWindowWidth(properties.getWindowWidth());
+        setWindowHeight(properties.getWindowHeight());
+        setScale(properties.getScale());
+        setScaleStep(properties.getScaleStep());
+        setZoomMax(properties.getZoomMax());
 
         windowPanel.setSize(getWindowWidth() + "px", getWindowHeight() + "px");
         windowPanel.getElement().getStyle().setOverflow(Overflow.AUTO);

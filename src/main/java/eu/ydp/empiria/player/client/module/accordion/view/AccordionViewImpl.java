@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.accordion.presenter.AccordionSectionPresenter;
-import eu.ydp.empiria.player.client.module.accordion.view.section.AccordionSectionView;
 
 public class AccordionViewImpl extends Composite implements AccordionView {
     private static AccordionUiBinder uiBinder = GWT.create(AccordionUiBinder.class);
