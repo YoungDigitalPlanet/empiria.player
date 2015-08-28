@@ -17,10 +17,11 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class ExplorableImgContentPresenter implements ImgContent {
 
-    private ExplorableImgContentView view;
+    private final ExplorableImgContentView view;
     private final Timer zoomInTicker;
     private final Timer zoomOutTicker;
-    private StyleParser styleParser;
+    private final StyleParser styleParser;
+    private final UserInteractionHandlerFactory handlerFactory;
 
 
     @Inject
@@ -33,24 +34,22 @@ public class ExplorableImgContentPresenter implements ImgContent {
         registerHandlers();
     }
 
-    UserInteractionHandlerFactory handlerFactory;
-
     private void registerHandlers() {
 
-        EventHandlerProxy handler = createToolboxTouchStartHandler();
-        view.registerCommandOnToolbox(handler);
+        EventHandlerProxy toolboxTouchStartHandler = createToolboxTouchStartHandler();
+        view.registerCommandOnToolbox(toolboxTouchStartHandler);
 
-        handler = createZoomInButtonUserDownHandler();
-        view.registerZoomInButtonCommands(handler);
+        EventHandlerProxy zoomInButtonUserDownHandler = createZoomInButtonUserDownHandler();
+        view.registerZoomInButtonCommands(zoomInButtonUserDownHandler);
 
-        handler = createZoomInButtonUserUpHandler();
-        view.registerZoomInButtonCommands(handler);
+        EventHandlerProxy zoomInButtonUserUpHandler = createZoomInButtonUserUpHandler();
+        view.registerZoomInButtonCommands(zoomInButtonUserUpHandler);
 
-        handler = createZoomOutButtonUserUpHandler();
-        view.registerZoomOutButtonCommands(handler);
+        EventHandlerProxy zoomOutButtonUserUpHandler = createZoomOutButtonUserUpHandler();
+        view.registerZoomOutButtonCommands(zoomOutButtonUserUpHandler);
 
-        handler = createZoomOutButtonUserDownHandler();
-        view.registerZoomOutButtonCommands(handler);
+        EventHandlerProxy zoomOutButtonUserDownHandler = createZoomOutButtonUserDownHandler();
+        view.registerZoomOutButtonCommands(zoomOutButtonUserDownHandler);
     }
 
     private EventHandlerProxy createToolboxTouchStartHandler() {
@@ -98,7 +97,7 @@ public class ExplorableImgContentPresenter implements ImgContent {
         Command command = new Command() {
             @Override
             public void execute(NativeEvent event) {
-                cancelzoomInTicker();
+                cancelZoomInTicker();
                 event.preventDefault();
             }
 
@@ -111,7 +110,7 @@ public class ExplorableImgContentPresenter implements ImgContent {
         Command command = new Command() {
             @Override
             public void execute(NativeEvent event) {
-                cancelzoomOutTicker();
+                cancelZoomOutTicker();
                 event.preventDefault();
             }
 
@@ -143,11 +142,11 @@ public class ExplorableImgContentPresenter implements ImgContent {
         return zoomTimer;
     }
 
-    private void cancelzoomInTicker() {
+    private void cancelZoomInTicker() {
         zoomInTicker.cancel();
     }
 
-    private void cancelzoomOutTicker() {
+    private void cancelZoomOutTicker() {
         zoomOutTicker.cancel();
     }
 
