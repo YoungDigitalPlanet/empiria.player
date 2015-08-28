@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
 import eu.ydp.empiria.player.client.module.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
-import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImgContent;
+import eu.ydp.empiria.player.client.module.img.explorable.presenter.ExplorableImgContentPresenter;
 import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.img.template.ImgTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -32,7 +32,7 @@ public class ImgModule extends InlineModuleBase implements IBookmarkable {
     @Inject
     protected Provider<PicturePlayerModule> picturePlayerModuleProvider;
     @Inject
-    private Provider<ExplorableImgContent> explorableImgContentProvider;
+    private Provider<ExplorableImgContentPresenter> explorableImgContentProvider;
     @Inject
     private StyleSocket styleSocket;
     @Inject

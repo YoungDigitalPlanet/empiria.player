@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.accordion.presenter;
 
-import com.google.common.base.Strings;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,7 +11,6 @@ import eu.ydp.empiria.player.client.module.accordion.controller.AccordionSection
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionBean;
 import eu.ydp.empiria.player.client.module.accordion.structure.AccordionSectionBean;
 import eu.ydp.empiria.player.client.module.accordion.view.AccordionView;
-import eu.ydp.empiria.player.client.structure.ModuleBean;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public class AccordionPresenter implements IsWidget {
