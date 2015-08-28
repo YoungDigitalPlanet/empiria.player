@@ -2,6 +2,8 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.CountFeedbackProperties;
 
 public abstract class ModuleBase extends ParentedModuleBase {
 

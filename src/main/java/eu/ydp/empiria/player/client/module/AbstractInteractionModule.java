@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
+import eu.ydp.empiria.player.client.controller.feedback.matcher.CountFeedbackProperties;
 import eu.ydp.empiria.player.client.controller.style.StyleSocketAttributeHelper;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CountMode;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
@@ -47,6 +48,8 @@ public abstract class AbstractInteractionModule< H extends AbstractResponseModel
 
     @Inject
     private StyleSocket styleSocket;
+    @Inject
+    private CountFeedbackProperties countFeedbackProperties;
 
     @Override
     public void installViews(List<HasWidgets> placeholders) {
@@ -119,6 +122,7 @@ public abstract class AbstractInteractionModule< H extends AbstractResponseModel
 
     @Override
     public void reset() {
+        countFeedbackProperties.reset(this);
         presenter.reset();
         clearModel();
         fireStateChanged(false, true);
