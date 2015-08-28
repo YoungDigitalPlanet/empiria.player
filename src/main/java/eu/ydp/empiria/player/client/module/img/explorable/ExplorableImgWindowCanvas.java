@@ -10,7 +10,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window.Navigator;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
 import eu.ydp.empiria.player.client.components.PanelWithScrollbars;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.module.img.events.CanvasMoveEvents;
@@ -19,6 +18,7 @@ import eu.ydp.empiria.player.client.module.img.events.handlers.TouchHandlerOnIma
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageEndHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageMoveHandler;
 import eu.ydp.empiria.player.client.module.img.events.handlers.touchonimage.TouchOnImageStartHandler;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ImageProperties;
 import eu.ydp.empiria.player.client.util.position.Point;
 
 public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase implements CanvasMoveEvents {
@@ -62,12 +62,12 @@ public class ExplorableImgWindowCanvas extends AbstractExplorableImgWindowBase i
     }
 
     @Override
-    public void init(int wndWidth, int wndHeight, String imageUrl, double initialScale, double scaleStep, double zoomMax, String title) {
-        setWindowWidth(wndWidth);
-        setWindowHeight(wndHeight);
-        setScale(initialScale);
-        setScaleStep(scaleStep);
-        setZoomMax(zoomMax);
+    public void init(String imageUrl, ImageProperties properties, String title) {
+        setWindowWidth(properties.getWindowWidth());
+        setWindowHeight(properties.getWindowHeight());
+        setScale(properties.getScale());
+        setScaleStep(properties.getScaleStep());
+        setZoomMax(properties.getZoomMax());
 
         createAndInitializeTempImage(imageUrl);
         setUpImageCanvasProperties(title);
