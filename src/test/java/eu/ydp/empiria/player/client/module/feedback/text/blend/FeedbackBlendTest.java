@@ -4,9 +4,11 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockitoTestRunner;
+import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationCommand;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.gwtutil.client.event.factory.Command;
+import eu.ydp.gwtutil.client.event.factory.EventHandlerProxy;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 import org.junit.Before;
@@ -35,6 +37,10 @@ public class FeedbackBlendTest {
     private UserInteractionHandlerFactory userInteractionHandlerFactory;
     @Mock
     private TextFeedback textFeedback;
+    @Mock
+    private TouchReservationCommand touchReservationCommand;
+    @Mock
+    private EventHandlerProxy eventHandlerProxy;
     @Captor
     private ArgumentCaptor<Command> commandCaptor;
 
@@ -42,12 +48,13 @@ public class FeedbackBlendTest {
 
     @Before
     public void init(){
+        when(userInteractionHandlerFactory.createUserTouchStartHandler(isA(Command.class))).thenReturn(eventHandlerProxy);
         when(styleNameConstants.QP_FEEDBACK_BLEND_HIDDEN()).thenReturn(blendHidden);
         when(rootPanelDelegate.getRootPanel()).thenReturn(rootPanel);
         Widget viewWidget = mock(Widget.class);
         when(view.asWidget()).thenReturn(viewWidget);
 
-        testObj = new FeedbackBlend(view, styleNameConstants, rootPanelDelegate, userInteractionHandlerFactory);
+        testObj = new FeedbackBlend(view, styleNameConstants, rootPanelDelegate, userInteractionHandlerFactory, touchReservationCommand);
         verify(userInteractionHandlerFactory).applyUserClickHandler(commandCaptor.capture(), eq(viewWidget));
     }
 
