@@ -17,10 +17,9 @@ import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;
 
 public class ExplorableImgContentPresenter implements ImgContent {
 
-    private boolean zoomInClicked = false;
     private ExplorableImgContentView view;
-    private final Timer startZoomTimer;
-    private Timer zoomTimer;
+    private final Timer zoomInTicker;
+    private final Timer zoomOutTicker;
     private StyleParser styleParser;
 
 
@@ -29,7 +28,8 @@ public class ExplorableImgContentPresenter implements ImgContent {
         this.view = view;
         this.handlerFactory = handlerFactory;
         this.styleParser = styleParser;
-        startZoomTimer = initializeZoomTimer();
+        zoomInTicker = initializeZoomInTimer();
+        zoomOutTicker = initializeZoomOutTimer();
         registerHandlers();
     }
 
@@ -43,8 +43,10 @@ public class ExplorableImgContentPresenter implements ImgContent {
         handler = createZoomInButtonUserDownHandler();
         view.registerZoomInButtonCommands(handler);
 
-        handler = createZoomInOutButtonUserUpHandler();
+        handler = createZoomInButtonUserUpHandler();
         view.registerZoomInButtonCommands(handler);
+
+        handler = createZoomOutButtonUserUpHandler();
         view.registerZoomOutButtonCommands(handler);
 
         handler = createZoomOutButtonUserDownHandler();
@@ -67,9 +69,8 @@ public class ExplorableImgContentPresenter implements ImgContent {
         Command command = new Command() {
             @Override
             public void execute(NativeEvent event) {
-                zoomInClicked = true;
                 zoomIn();
-                startZoomTimer.schedule(500);
+                zoomInTicker.scheduleRepeating(200);
                 event.preventDefault();
             }
 
@@ -82,9 +83,8 @@ public class ExplorableImgContentPresenter implements ImgContent {
         Command command = new Command() {
             @Override
             public void execute(NativeEvent event) {
-                zoomInClicked = false;
                 zoomOut();
-                startZoomTimer.schedule(500);
+                zoomOutTicker.scheduleRepeating(200);
                 event.preventDefault();
             }
 
@@ -94,11 +94,11 @@ public class ExplorableImgContentPresenter implements ImgContent {
     }
 
 
-    private EventHandlerProxy createZoomInOutButtonUserUpHandler() {
+    private EventHandlerProxy createZoomInButtonUserUpHandler() {
         Command command = new Command() {
             @Override
             public void execute(NativeEvent event) {
-                cancelZoomTimers();
+                cancelzoomInTicker();
                 event.preventDefault();
             }
 
@@ -107,27 +107,48 @@ public class ExplorableImgContentPresenter implements ImgContent {
         return handlerFactory.createUserUpHandler(command);
     }
 
-    private final Timer initializeZoomTimer() {
-        zoomTimer = new Timer() {
-
+    private EventHandlerProxy createZoomOutButtonUserUpHandler() {
+        Command command = new Command() {
             @Override
-            public void run() {
-                zoom();
+            public void execute(NativeEvent event) {
+                cancelzoomOutTicker();
+                event.preventDefault();
             }
+
         };
 
-        return new Timer() {
-
-            @Override
-            public void run() {
-                zoomTimer.scheduleRepeating(200);
-            }
-        };
+        return handlerFactory.createUserUpHandler(command);
     }
 
-    private void cancelZoomTimers() {
-        zoomTimer.cancel();
-        startZoomTimer.cancel();
+    private Timer initializeZoomInTimer() {
+        Timer zoomTimer = new Timer() {
+
+            @Override
+            public void run() {
+                zoomIn();
+            }
+        };
+        return zoomTimer;
+    }
+
+    private Timer initializeZoomOutTimer() {
+        Timer zoomTimer = new Timer() {
+
+            @Override
+            public void run() {
+                zoomOut();
+            }
+        };
+
+        return zoomTimer;
+    }
+
+    private void cancelzoomInTicker() {
+        zoomInTicker.cancel();
+    }
+
+    private void cancelzoomOutTicker() {
+        zoomOutTicker.cancel();
     }
 
     private void zoomIn() {
@@ -137,15 +158,6 @@ public class ExplorableImgContentPresenter implements ImgContent {
     private void zoomOut() {
         view.zoomOut();
     }
-
-    private void zoom() {
-        if (zoomInClicked) {
-            view.zoomIn();
-        } else {
-            view.zoomOut();
-        }
-    }
-
 
     @Override
     public void init(Element element, ModuleSocket moduleSocket) {
