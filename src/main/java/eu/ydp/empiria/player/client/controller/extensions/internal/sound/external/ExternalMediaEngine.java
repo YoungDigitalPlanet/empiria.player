@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.sound.extern
 import com.google.common.collect.Maps;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SingleMediaPlayback;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnector;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.connector.MediaConnectorListener;
@@ -17,6 +18,7 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 
 import java.util.Map;
 
+@Singleton
 public class ExternalMediaEngine implements MediaConnectorListener, EmulatedTimeUpdateListener {
 
     public static final int PLAY_INITIAL_TIME = 0;

@@ -3,8 +3,10 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 
+@Singleton
 public class ConnectionItemPairFinder {
 
     private final class CheckIfItemClickedPredicate implements Predicate<ConnectionItem> {

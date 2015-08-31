@@ -7,7 +7,6 @@ import eu.ydp.empiria.player.client.module.HasParent;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.collections.ListCreator;
 import eu.ydp.gwtutil.client.collections.StackMap;
@@ -34,7 +33,7 @@ public class BookmarkProcessorExtensionJUnitTest {
         bookmarkProcessor = spy(new BookmarkProcessorExtension());
         doNothing().when(bookmarkProcessor).editBookmark(any(IBookmarkable.class));
         bookmarkProcessor.eventsBus = mock(EventsBus.class);
-        bookmarkProcessor.styleNames = mock(StyleNameConstants.class);
+        bookmarkProcessor.styleNames = mock(BookmarkStyleNameConstants.class);
         bookmarkProcessor.dataSourceSupplier = mock(DataSourceDataSupplier.class);
         when(bookmarkProcessor.dataSourceSupplier.getItemTitle(any(Integer.class))).thenReturn("Mock title 1");
         doReturn(SELECTED).when(bookmarkProcessor.styleNames).QP_BOOKMARK_SELECTED();

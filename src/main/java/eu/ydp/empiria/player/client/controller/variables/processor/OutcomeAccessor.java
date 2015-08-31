@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
@@ -13,6 +14,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
 import static java.lang.Integer.parseInt;
 
+@Singleton
 public class OutcomeAccessor {
 
     @Inject

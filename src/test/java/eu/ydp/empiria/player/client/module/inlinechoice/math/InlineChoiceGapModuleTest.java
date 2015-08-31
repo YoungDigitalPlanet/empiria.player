@@ -1,14 +1,10 @@
 package eu.ydp.empiria.player.client.module.inlinechoice.math;
 
 import com.google.gwt.junit.GWTMockUtilities;
-import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.inject.Binder;
-import com.google.inject.Key;
 import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.gap.GapBinder;
 import eu.ydp.empiria.player.client.module.math.MathGapModel;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -16,27 +12,23 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
-import eu.ydp.gwtutil.client.components.exlistbox.IsExListBox;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
-import eu.ydp.gwtutil.test.mock.ReturnsJavaBeanAnswers;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 
 import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings("PMD")
 @RunWith(GwtMockitoTestRunner.class)
 public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
     InlineChoiceMathGapModule instance;
     ExListBox listBox;
     EventsBus eventsBus;
-
-    GapBinder gapBinder;
 
     @BeforeClass
     public static void disarm() {
@@ -87,7 +79,7 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
         instance.onPlayerEvent(event);
 
         verify(listBox).hidePopup();
-        Set<PlayerEventTypes> types = new HashSet<PlayerEventTypes>(Arrays.asList(PlayerEventTypes.values()));
+        Set<PlayerEventTypes> types = new HashSet<>(Arrays.asList(PlayerEventTypes.values()));
         types.remove(PlayerEventTypes.PAGE_SWIPE_STARTED);
         for (PlayerEventTypes type : types) {
             when(event.getType()).thenReturn(type);
@@ -96,32 +88,8 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
         verify(listBox).hidePopup();
     }
 
-    @Test
-    public void resetSetsNoItemsWhenChoiceGapWithoutEmptyOption() {
-        Map<String, String> mathStyles = mockMathStyles(false);
-        MathGapModel mathGapModel = injector.getInstance(Key.get(MathGapModel.class, ModuleScoped.class));
-        mathGapModel.setMathStyles(mathStyles);
-        InlineChoiceMathGapModule choiceGap = new InlineChoiceGapModuleMock();
-
-        choiceGap.reset();
-
-        assertThat(choiceGap.getListBox().getSelectedIndex(), equalTo(-1));
-    }
-
-    @Test
-    public void resetSetsNoItemsWhenChoiceGapWithEmptyOption() {
-        Map<String, String> mathStyles = mockMathStyles(true);
-        MathGapModel mathGapModel = injector.getInstance(Key.get(MathGapModel.class, ModuleScoped.class));
-        mathGapModel.setMathStyles(mathStyles);
-        InlineChoiceMathGapModule choiceGap = new InlineChoiceGapModuleMock();
-
-        choiceGap.reset();
-
-        assertThat(choiceGap.getListBox().getSelectedIndex(), equalTo(0));
-    }
-
     public Map<String, String> mockMathStyles(boolean hasEmptyOption) {
-        Map<String, String> mathStyles = new HashMap<String, String>();
+        Map<String, String> mathStyles = new HashMap<>();
 
         String styleValue = (hasEmptyOption) ? EmpiriaStyleNameConstants.VALUE_SHOW : EmpiriaStyleNameConstants.VALUE_HIDE;
 
@@ -129,40 +97,4 @@ public class InlineChoiceGapModuleTest extends AbstractTestBaseWithoutAutoInject
 
         return mathStyles;
     }
-
-    private class InlineChoiceGapModuleMock extends InlineChoiceMathGapModule {
-
-        private IsExListBox mockedListBox;
-
-        public InlineChoiceGapModuleMock() {
-            mathGapModel = injector.getInstance(Key.get(MathGapModel.class, ModuleScoped.class));
-            initParametersBasedOnMathStyles();
-            options = createOptions(getModuleElement(), getModuleSocket());
-        }
-
-        @Override
-        protected List<String> createOptions(Element moduleElement, ModuleSocket moduleSocket) {
-            ArrayList<String> mockedListBoxIdentifiers = new ArrayList<String>();
-
-            mockedListBoxIdentifiers.add("MATH_RESPONSE_7_3");
-            mockedListBoxIdentifiers.add("MATH_RESPONSE_7_4");
-            mockedListBoxIdentifiers.add("MATH_RESPONSE_7_5");
-
-            return mockedListBoxIdentifiers;
-        }
-
-        @Override
-        public IsExListBox getListBox() {
-            if (mockedListBox == null) {
-                mockedListBox = mock(IsExListBox.class, new ReturnsJavaBeanAnswers());
-            }
-            return mockedListBox;
-        }
-    }
-
-    @After
-    public void after() {
-
-    }
-
 }

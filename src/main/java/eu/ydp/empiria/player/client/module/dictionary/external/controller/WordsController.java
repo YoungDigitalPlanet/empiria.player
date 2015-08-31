@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.dictionary.external.controller;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.dictionary.external.controller.filename.WordsFilenameProvider;
 import eu.ydp.empiria.player.client.module.dictionary.external.model.Words;
 import eu.ydp.gwtutil.client.debug.log.Logger;
@@ -13,6 +14,7 @@ import eu.ydp.jsfilerequest.client.FileResponse;
 
 import java.util.Set;
 
+@Singleton
 public class WordsController implements WordsSocket, FileRequestCallback {
 
     @Inject

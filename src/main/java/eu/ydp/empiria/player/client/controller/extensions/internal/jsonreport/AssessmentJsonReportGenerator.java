@@ -11,31 +11,29 @@ import java.util.List;
 
 public class AssessmentJsonReportGenerator {
 
-    AssessmentReportFactory factory;
+    AssessmentReportProvider reportProvider;
 
     DataSourceDataSupplier dataSupplier;
 
     SessionDataSupplier sessionSupplier;
 
     @Inject
-    public AssessmentJsonReportGenerator(@Assisted DataSourceDataSupplier dataSupplier, @Assisted SessionDataSupplier sessionSupplier,
-                                         AssessmentReportFactory factory) {
+    public AssessmentJsonReportGenerator(DataSourceDataSupplier dataSupplier, SessionDataSupplier sessionSupplier, AssessmentReportProvider reportProvider) {
         this.dataSupplier = dataSupplier;
         this.sessionSupplier = sessionSupplier;
-        this.factory = factory;
+        this.reportProvider = reportProvider;
     }
 
     public AssessmentJsonReport generate() {
         AssessmentJsonReport jsonReport = AssessmentJsonReport.create();
-        AssessmentReportProvider reportProvider = factory.getAssessmentReportProvider(dataSupplier, sessionSupplier);
 
-        appendAssessmentAttributes(jsonReport, reportProvider);
-        appendItemsReports(jsonReport, reportProvider);
+        appendAssessmentAttributes(jsonReport);
+        appendItemsReports(jsonReport);
 
         return jsonReport;
     }
 
-    private void appendAssessmentAttributes(AssessmentJsonReport jsonReport, AssessmentReportProvider reportProvider) {
+    private void appendAssessmentAttributes(AssessmentJsonReport jsonReport) {
         ResultInfo assessmentResultInfo = reportProvider.getResult();
         ResultJsonReport assessmentResult = getResultReport(assessmentResultInfo);
         HintInfo assessmentHintInfo = reportProvider.getHints();
@@ -46,7 +44,7 @@ public class AssessmentJsonReportGenerator {
         jsonReport.setHints(assessmentHint);
     }
 
-    private void appendItemsReports(AssessmentJsonReport jsonReport, AssessmentReportProvider reportProvider) {
+    private void appendItemsReports(AssessmentJsonReport jsonReport) {
         List<ItemJsonReport> itemReportList = Lists.newArrayList();
 
         for (ItemReportProvider itemProvider : reportProvider.getItems()) {

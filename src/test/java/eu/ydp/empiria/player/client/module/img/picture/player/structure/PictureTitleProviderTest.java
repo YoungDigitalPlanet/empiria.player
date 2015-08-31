@@ -26,6 +26,7 @@ public class PictureTitleProviderTest {
 
     private PicturePlayerBean bean;
     private String titleXml = "titleXml";
+    private String titleXmlWithHTMLTags = "<b>titleXml</b>";
     PicturePlayerTitleBean titleBean;
 
     @Before
@@ -37,7 +38,7 @@ public class PictureTitleProviderTest {
         when(xmlContent.getValue()).thenReturn(titleElement);
         titleBean.setTitleName(xmlContent);
         when(inlineBodyGeneratorSocket.generateInlineBody(titleElement)).thenReturn(titleWidget);
-        when(titleElement.getChildNodes().toString()).thenReturn(titleXml);
+        when(titleElement.toString()).thenReturn(titleXmlWithHTMLTags);
     }
 
 
@@ -46,7 +47,7 @@ public class PictureTitleProviderTest {
         // given
         bean.setTitleBean(titleBean);
         // when
-        String titleString = testObj.getPictutreTitleString(bean);
+        String titleString = testObj.getPictureTitleString(bean);
         // then
         assertThat(titleString).isEqualTo(titleXml);
     }
@@ -54,7 +55,7 @@ public class PictureTitleProviderTest {
     @Test
     public void shouldReturnEmptyXmlString() {
         // when
-        String titleString = testObj.getPictutreTitleString(bean);
+        String titleString = testObj.getPictureTitleString(bean);
         // then
         assertThat(titleString).isEqualTo("");
     }
@@ -68,7 +69,7 @@ public class PictureTitleProviderTest {
     }
 
     @Test
-    public void shoulCreateTitleWidget() {
+    public void shouldCreateTitleWidget() {
         // given
         bean.setTitleBean(titleBean);
         // when

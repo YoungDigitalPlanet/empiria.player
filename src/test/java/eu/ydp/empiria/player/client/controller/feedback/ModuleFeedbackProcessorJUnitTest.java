@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import org.junit.Before;
 import org.junit.Test;
 

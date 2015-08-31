@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTex
 import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import eu.ydp.empiria.player.client.module.HasChildren;
 import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;

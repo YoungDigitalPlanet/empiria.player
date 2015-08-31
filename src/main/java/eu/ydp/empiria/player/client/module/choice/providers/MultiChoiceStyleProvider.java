@@ -1,14 +1,14 @@
 package eu.ydp.empiria.player.client.module.choice.providers;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants;
 
 public class MultiChoiceStyleProvider implements SimpleChoiceStyleProvider {
 
-    private StyleNameConstants styleNameConstants;
+    private ChoiceStyleNameConstants styleNameConstants;
 
     @Inject
-    public MultiChoiceStyleProvider(StyleNameConstants styleNameConstants) {
+    public MultiChoiceStyleProvider(ChoiceStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
     }
 

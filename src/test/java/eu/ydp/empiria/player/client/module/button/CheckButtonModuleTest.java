@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequest;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -38,7 +38,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
     CheckButtonModule instance;
     EventsBus eventsBus;
     FlowRequestInvoker requestInvoker;
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
     private CustomPushButton button;
     protected ClickHandler handler;
 
@@ -55,7 +55,7 @@ public class CheckButtonModuleTest extends AbstractTestBaseWithoutAutoInjectorIn
         setUp(new Class<?>[]{CustomPushButton.class}, new Class<?>[]{}, new Class<?>[]{EventsBus.class}, new CustomGuiceModule());
         instance = spy(injector.getInstance(CheckButtonModule.class));
         eventsBus = injector.getInstance(EventsBus.class);
-        styleNameConstants = injector.getInstance(StyleNameConstants.class);
+        styleNameConstants = injector.getInstance(ModeStyleNameConstants.class);
         requestInvoker = mock(FlowRequestInvoker.class);
         button = injector.getInstance(CustomPushButton.class);
         doAnswer(new Answer<ClickHandler>() {

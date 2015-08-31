@@ -12,9 +12,9 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
-import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImgContent;
 import eu.ydp.empiria.player.client.module.img.ImgContent;
 import eu.ydp.empiria.player.client.module.img.LabelledImgContent;
+import eu.ydp.empiria.player.client.module.img.explorable.presenter.ExplorableImgContentPresenter;
 import eu.ydp.empiria.player.client.module.img.picture.player.PicturePlayerModule;
 import eu.ydp.empiria.player.client.module.media.button.MediaController;
 import eu.ydp.empiria.player.client.style.StyleSocket;
@@ -34,7 +34,7 @@ public class ImgTemplateParser extends AbstractTemplateParser {
     @Inject
     private Provider<PicturePlayerModule> defaultImgContentProvider;
     @Inject
-    private Provider<ExplorableImgContent> explorableImgContentProvider;
+    private Provider<ExplorableImgContentPresenter> explorableImgContentProvider;
     @Inject
     private StyleSocket styleSocket;
     @Inject

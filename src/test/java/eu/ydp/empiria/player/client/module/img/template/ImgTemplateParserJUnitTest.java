@@ -19,6 +19,8 @@ import eu.ydp.empiria.player.client.gin.factory.TouchHandlerFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 import eu.ydp.empiria.player.client.module.img.ImgContent;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ExplorableImgContentView;
+import eu.ydp.empiria.player.client.module.img.explorable.view.ExplorableImgContentViewImpl;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerJAXBParser;
 import eu.ydp.empiria.player.client.module.img.picture.player.structure.PicturePlayerJAXBParserMock;
 import eu.ydp.empiria.player.client.module.img.picture.player.view.PicturePlayerView;
@@ -52,6 +54,7 @@ public class ImgTemplateParserJUnitTest extends AbstractTestBaseWithoutAutoInjec
             binder.install(new FactoryModuleBuilder().build(TemplateParserFactory.class));
             binder.bind(PicturePlayerView.class).to(PicturePlayerViewImpl.class);
             binder.bind(PicturePlayerJAXBParser.class).to(PicturePlayerJAXBParserMock.class);
+            binder.bind(ExplorableImgContentView.class).to(ExplorableImgContentViewImpl.class);
             binder.install(new FactoryModuleBuilder().build(TouchHandlerFactory.class));
         }
     }

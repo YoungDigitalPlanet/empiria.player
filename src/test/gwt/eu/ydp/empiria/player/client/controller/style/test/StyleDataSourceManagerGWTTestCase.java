@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.style.test;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -13,7 +12,6 @@ import eu.ydp.empiria.player.client.controller.communication.PageReference;
 import eu.ydp.empiria.player.client.controller.communication.PageType;
 import eu.ydp.empiria.player.client.controller.data.CssParser;
 import eu.ydp.empiria.player.client.controller.data.StyleDataSourceManager;
-import eu.ydp.empiria.player.client.gin.module.ScriptInjectorGinModule;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
 import eu.ydp.empiria.player.client.style.StyleDocument;
@@ -29,7 +27,6 @@ public class StyleDataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase 
     private final String css3 = "h1 { font-weight: bold; }";
     private ScriptsLoader scriptsLoader;
 
-    @GinModules(ScriptInjectorGinModule.class)
     interface TestGinjector extends Ginjector {
         ScriptsLoader getScriptsLoader();
     }

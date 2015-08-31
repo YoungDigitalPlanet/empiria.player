@@ -2,15 +2,16 @@ package eu.ydp.empiria.player.client.gin.factory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.TutorApiExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.AudioMuteButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.CheckButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ResetButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
-import eu.ydp.empiria.player.client.module.ImageActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
 import eu.ydp.empiria.player.client.module.InlineContainerModule;
-import eu.ydp.empiria.player.client.module.TextActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.accordion.AccordionModule;
 import eu.ydp.empiria.player.client.module.bonus.BonusModule;
 import eu.ydp.empiria.player.client.module.button.download.ButtonModule;
@@ -23,7 +24,6 @@ import eu.ydp.empiria.player.client.module.containers.SupHtmlContainerModule;
 import eu.ydp.empiria.player.client.module.containers.TextInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupModule;
 import eu.ydp.empiria.player.client.module.dictionary.DictionaryModule;
-import eu.ydp.empiria.player.client.module.draggap.DragGapBaseModule;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
 import eu.ydp.empiria.player.client.module.draggap.standard.DragGapModule;
 import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
@@ -39,11 +39,13 @@ import eu.ydp.empiria.player.client.module.math.MathModule;
 import eu.ydp.empiria.player.client.module.mathjax.inline.InlineMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.InteractionMathJaxModule;
 import eu.ydp.empiria.player.client.module.mathtext.MathTextModule;
+import eu.ydp.empiria.player.client.module.menu.MenuModule;
 import eu.ydp.empiria.player.client.module.object.ObjectModule;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.progressbonus.ProgressBonusModule;
 import eu.ydp.empiria.player.client.module.prompt.PromptModule;
+import eu.ydp.empiria.player.client.module.report.ReportModule;
 import eu.ydp.empiria.player.client.module.selection.SelectionModule;
 import eu.ydp.empiria.player.client.module.shape.ShapeModule;
 import eu.ydp.empiria.player.client.module.simpletext.SimpleTextModule;
@@ -61,6 +63,7 @@ import eu.ydp.empiria.player.client.module.textentry.math.TextEntryMathGapModule
 import eu.ydp.empiria.player.client.module.tutor.TutorModule;
 import eu.ydp.empiria.player.client.module.video.VideoModule;
 
+@Singleton
 public class ModuleProviderFactory {
     @Inject
     private Provider<ConnectionModule> connectionModule;
@@ -176,6 +179,10 @@ public class ModuleProviderFactory {
     private Provider<ExternalPresentationModule> externalPresentationModuleProvider;
     @Inject
     private Provider<AccordionModule> accordionModule;
+    @Inject
+    private Provider<ReportModule> reportModuleProvider;
+    @Inject
+    private Provider<MenuModule> menuModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -403,5 +410,13 @@ public class ModuleProviderFactory {
 
     public Provider<AccordionModule> getAccordionModule() {
         return accordionModule;
+    }
+
+    public Provider<ReportModule> getReportModule() {
+        return reportModuleProvider;
+    }
+
+    public Provider<MenuModule> getMenuModule() {
+        return menuModule;
     }
 }

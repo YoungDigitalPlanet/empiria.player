@@ -1,13 +1,14 @@
 package eu.ydp.empiria.player.client.view.player;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.multiview.MultiPageController;
 import eu.ydp.empiria.player.client.gin.factory.PageContentFactory;
 import eu.ydp.empiria.player.client.view.page.PageContentView;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
-import eu.ydp.empiria.player.client.view.page.PageViewSocketImpl;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
+@Singleton
 public class PageViewCache extends AbstractElementCache<KeyValue<PageViewSocket, PageContentView>> {
     @Inject
     private MultiPageController multiPageView;

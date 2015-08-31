@@ -11,14 +11,13 @@ public class CommutationEvaluator implements Evaluator {
 
     private final ResponseValuesFetcherFunctions fetcherFunctions;
     private final ResponseFinder responseFinder;
+    private final DefaultExpressionCharactersAdapter expressionAdapter;
 
     @Inject
-    private DefaultExpressionCharactersAdapter expressionAdapter;
-
-    @Inject
-    public CommutationEvaluator(ResponseValuesFetcherFunctions fetcherFunctions, ResponseFinder responseFinder) {
+    public CommutationEvaluator(ResponseValuesFetcherFunctions fetcherFunctions, ResponseFinder responseFinder, DefaultExpressionCharactersAdapter expressionAdapter) {
         this.fetcherFunctions = fetcherFunctions;
         this.responseFinder = responseFinder;
+        this.expressionAdapter = expressionAdapter;
     }
 
     @Override

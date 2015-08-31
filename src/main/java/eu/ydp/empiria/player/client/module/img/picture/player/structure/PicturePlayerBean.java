@@ -12,6 +12,8 @@ public class PicturePlayerBean extends ModuleBean {
     @XmlElement(name = "title")
     private PicturePlayerTitleBean titleBean;
     @XmlAttribute
+    private String alt;
+    @XmlAttribute
     private String src;
     @XmlAttribute
     private String srcFullScreen;
@@ -24,6 +26,14 @@ public class PicturePlayerBean extends ModuleBean {
 
     public void setTitleBean(PicturePlayerTitleBean titleBean) {
         this.titleBean = titleBean;
+    }
+
+    public String getAlt() {
+        return alt;
+    }
+
+    public void setAlt(String alt) {
+        this.alt = alt;
     }
 
     public String getSrc() {
@@ -52,6 +62,10 @@ public class PicturePlayerBean extends ModuleBean {
 
     public boolean hasTitle() {
         return titleBean != null;
+    }
+
+    public boolean hasAlt() {
+        return alt != null;
     }
 
     public boolean hasFullscreen() {
