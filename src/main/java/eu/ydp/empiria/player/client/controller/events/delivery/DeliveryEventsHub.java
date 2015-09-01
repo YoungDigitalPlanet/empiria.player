@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Singleton
-public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsSocket {
+public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEventsListener {
 
     private List<DeliveryEventsListener> deliveryEventsListeners;
     private List<StateChangedInteractionEventListener> stateChangedInteractionEventsListeners;
@@ -30,20 +30,6 @@ public class DeliveryEventsHub implements DeliveryEventsListener, InteractionEve
 
     public void addDeliveryEventsListener(DeliveryEventsListener del) {
         deliveryEventsListeners.add(del);
-    }
-
-    @Override
-    public void addStateChangedInteractionEventsListener(StateChangedInteractionEventListener listener) {
-        stateChangedInteractionEventsListeners.add(listener);
-    }
-
-    @Override
-    public void removeStateChangedInteractionEventsListener(StateChangedInteractionEventListener listener) {
-        stateChangedInteractionEventsListeners.remove(listener);
-    }
-
-    public InteractionEventsSocket getInteractionSocket() {
-        return this;
     }
 
     @Override

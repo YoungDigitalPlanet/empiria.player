@@ -3,11 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback.processor;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.feedback.processor.ActionProcessorHelper;
-import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
@@ -68,7 +64,7 @@ public class ImageActionProcessor extends ParentedModuleBase implements Feedback
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
+    public void initModule(Element element, ModuleSocket ms) {
         initModule(ms);
         feedbackPresenter.hide();
     }

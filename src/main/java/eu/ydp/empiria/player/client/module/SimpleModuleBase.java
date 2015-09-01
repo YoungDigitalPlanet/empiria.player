@@ -1,20 +1,16 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 
-public abstract class SimpleModuleBase extends SingleViewModuleBase implements ISimpleModule {
-
-    private InteractionEventsListener interactionEventsListener;
+public abstract class SimpleModuleBase extends ModuleBase implements ISimpleModule, IInlineModule {
 
     @Override
-    public final void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-        interactionEventsListener = iel;
-        super.initModuleInternal(element, ms);
+    public final void initModule(Element element, ModuleSocket ms) {
+        initModule(ms);
+        readAttributes(element);
+        initModule(element);
+        applyIdAndClassToView(getView());
     }
 
-    protected InteractionEventsListener getInteractionEventsListener() {
-        return interactionEventsListener;
-    }
-
+    protected abstract void initModule(Element element);
 }

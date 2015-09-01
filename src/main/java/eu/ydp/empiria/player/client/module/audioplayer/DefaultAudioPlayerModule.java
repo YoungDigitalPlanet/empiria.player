@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -45,7 +44,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     private Map<String, String> sources;
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, InteractionEventsListener iel) {
+    public void initModule(Element element, ModuleSocket moduleSocket) {
         initModule(moduleSocket);
         sources = SourceUtil.getSource(element, "audio");
         button.setStyleName(styleNameConstants.QP_AUDIOPLAYER_BUTTON());

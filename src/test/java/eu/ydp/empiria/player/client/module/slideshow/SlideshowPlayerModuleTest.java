@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.slideshow.presenter.SlideshowPlayerPresenter;
 import eu.ydp.empiria.player.client.module.slideshow.slides.SlideshowController;
@@ -46,8 +45,6 @@ public class SlideshowPlayerModuleTest {
     private ModuleSocket moduleSocket;
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
-    @Mock
-    private InteractionEventsListener interactionEventsListener;
 
     @Before
     public void init() {
@@ -82,7 +79,7 @@ public class SlideshowPlayerModuleTest {
         when(moduleStructure.getBean()).thenReturn(slideshowPlayer);
 
         // when
-        testObj.initModule(element, moduleSocket, interactionEventsListener);
+        testObj.initModule(element, moduleSocket);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);
@@ -107,7 +104,7 @@ public class SlideshowPlayerModuleTest {
         when(templateInterpreter.isPagerTemplateActivate(slideshowPlayer)).thenReturn(true);
 
         // when
-        testObj.initModule(element, moduleSocket, interactionEventsListener);
+        testObj.initModule(element, moduleSocket);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);

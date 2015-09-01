@@ -137,8 +137,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
         assessmentController = assessmentFactory.createAssessmentController(
                 playerViewSocket.getAssessmentViewSocket(),
-                flowManager.getFlowSocket(),
-                deliveryEventsHub.getInteractionSocket()
+                flowManager.getFlowSocket()
         );
         playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
         loadPredefinedExtensions();

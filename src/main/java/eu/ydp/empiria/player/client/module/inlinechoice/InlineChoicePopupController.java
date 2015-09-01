@@ -9,7 +9,6 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -48,7 +47,6 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     protected boolean locked = false;
     protected boolean shuffle = false;
 
-    protected List<Integer> identifiersMap;
     protected boolean showEmptyOption = true;
 
     @Inject
@@ -71,7 +69,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     protected IUniqueModule parentModule;
 
     @Override
-    public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
+    public void initModule(ModuleSocket moduleSocket) {
         super.initModule(moduleSocket);
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED), this, scopeFactory.getCurrentPageScope());
     }

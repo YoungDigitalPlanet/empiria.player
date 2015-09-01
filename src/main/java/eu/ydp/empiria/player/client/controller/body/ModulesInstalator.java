@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
@@ -20,7 +19,6 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
     private ModulesRegistrySocket registry;
     private ModuleSocket moduleSocket;
-    private InteractionEventsListener interactionListener;
     private ParenthoodGeneratorSocket parenthood;
     private List<IModule> singleViewModules;
 
@@ -32,10 +30,9 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
     @Inject
     public ModulesInstalator(@Assisted ParenthoodGeneratorSocket pts, @Assisted ModulesRegistrySocket reg,
-                             @Assisted ModuleSocket ms, @Assisted InteractionEventsListener mil, FeedbackRegistry feedbackRegistry) {
+                             @Assisted ModuleSocket ms, FeedbackRegistry feedbackRegistry) {
         this.registry = reg;
         this.moduleSocket = ms;
-        this.interactionListener = mil;
         this.parenthood = pts;
         this.feedbackRegistry = feedbackRegistry;
         singleViewModules = new ArrayList<>();
@@ -91,9 +88,9 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
             ((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket);
             parenthood.popParent();
         } else if (module instanceof ISingleViewSimpleModule) {
-            ((ISingleViewSimpleModule) module).initModule(element, moduleSocket, interactionListener);
+            ((ISingleViewSimpleModule) module).initModule(element, moduleSocket);
         } else if (module instanceof IInlineModule) {
-            ((IInlineModule) module).initModule(element, moduleSocket, interactionListener);
+            ((IInlineModule) module).initModule(element, moduleSocket);
         }
         if (((ISingleViewModule) module).getView() instanceof Widget) {
             parent.add(((ISingleViewModule) module).getView());
@@ -115,7 +112,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
                 IMultiViewModule multiViewModule = (IMultiViewModule) module;
                 List<HasWidgets> placeholders = moduleMap.getValues();
 
-                multiViewModule.initModule(moduleSocket, interactionListener);
+                multiViewModule.initModule(moduleSocket);
                 multiViewModule.addElement(currElement);
                 multiViewModule.installViews(placeholders);
                 registerModuleFeedbacks(module, currElement);
@@ -136,7 +133,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
                 if (currModule == null) {
                     currModule = multiViewModulesMap.get(responseIdentifier);
                     if (currModule instanceof IMultiViewModule) {
-                        ((IMultiViewModule) currModule).initModule(moduleSocket, interactionListener);
+                        ((IMultiViewModule) currModule).initModule(moduleSocket);
                     }
 
                     registerModuleFeedbacks(currModule, currElement);

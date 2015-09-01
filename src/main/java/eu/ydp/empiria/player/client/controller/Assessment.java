@@ -11,7 +11,6 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
@@ -56,7 +55,6 @@ public class Assessment {
      * Properties instance prepared by assessmentController (based on item body
      * properties through the page controller)
      */
-    private InteractionEventsListener interactionEventsListener;
     private final AssessmentFactory assessmentFactory;
     private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
@@ -66,8 +64,8 @@ public class Assessment {
      * @param data XMLData object as data source
      */
     @Inject
-    public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-                      @Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
+    public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted ModulesRegistrySocket modulesRegistrySocket,
+                      AssessmentFactory assessmentFactory, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
 
         this.assessmentFactory = assessmentFactory;
         this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
@@ -87,16 +85,15 @@ public class Assessment {
         styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
         title = rootNode.getAttribute("title");
 
-        initializeBody(skinBody, interactionEventsListener);
+        initializeBody(skinBody);
     }
 
-    private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
+    private void initializeBody(Element bodyNode) {
         if (bodyNode != null) {
-            body = assessmentFactory.createAssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
+            body = assessmentFactory.createAssessmentBody(options, moduleSocket, modulesRegistrySocket);
             bodyView = assessmentFactory.createAssessmentBodyView(body);
             bodyView.init(body.init(bodyNode));
             pageSlot = body.getPageSlot();
-            this.interactionEventsListener = interactionEventsListener;
         }
     }
 
@@ -151,7 +148,7 @@ public class Assessment {
         @Override
         public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
             if (inlineBodyGenerator == null) {
-                inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
+                inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, options, body.getParenthood());
             }
             return inlineBodyGenerator;
         }

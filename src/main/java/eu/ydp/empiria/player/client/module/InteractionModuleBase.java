@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
@@ -18,9 +17,6 @@ import java.util.List;
 
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, WorkModeTestSubmittedClient, IIgnored {
 
-    private InteractionEventsListener interactionEventsListener;
-    private ModuleSocket moduleSocket;
-
     private Response response;
     private String responseIdentifier;
 
@@ -33,13 +29,6 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
     @Inject
     @PageScoped
     private ResponseSocket responseSocket;
-
-    @Override
-    public final void initModule(ModuleSocket moduleSocket, InteractionEventsListener interactionEventsListener) {
-        initModule(moduleSocket);
-        this.interactionEventsListener = interactionEventsListener;
-        this.moduleSocket = moduleSocket;
-    }
 
     @Override
     public final String getIdentifier() {
@@ -59,10 +48,6 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
         return responseSocket.getResponse(responseIdentifier);
     }
 
-    protected final InteractionEventsListener getInteractionEventsListener() {
-        return interactionEventsListener;
-    }
-
     protected void fireStateChanged(boolean userInteract, boolean isReset) {
         eventsBus.fireEvent(new StateChangeEvent(StateChangeEventTypes.STATE_CHANGED, new StateChangedInteractionEvent(userInteract, isReset, this)),
                 pageScopeFactory.getCurrentPageScope());
@@ -70,7 +55,7 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
 
     @Override
     public List<IModule> getChildren() {
-        return moduleSocket.getChildren(this);
+        return getModuleSocket().getChildren(this);
     }
 
     @Override

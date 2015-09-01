@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
@@ -35,7 +34,6 @@ public class ItemBody implements WidgetWorkflowListener {
 
     protected ParenthoodManager parenthood;
 
-    protected InteractionEventsListener interactionEventsListener;
     protected DisplayContentOptions options;
     protected ModuleSocket moduleSocket;
     protected ModulesRegistrySocket modulesRegistrySocket;
@@ -55,7 +53,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
-                    InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
+                    ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
                     IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
                     ModulesInstalatorFactory modulesInstalatorFactory) {
 
@@ -68,7 +66,6 @@ public class ItemBody implements WidgetWorkflowListener {
 
         this.parenthood = parenthood;
 
-        this.interactionEventsListener = interactionEventsListener;
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
         this.modulesInstalatorFactory = modulesInstalatorFactory;
@@ -76,7 +73,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public Widget init(Element itemBodyElement) {
 
-        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket);
         BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 
         itemBodyModule = new ItemBodyModule();

@@ -10,7 +10,6 @@ import eu.ydp.empiria.player.client.controller.body.BodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
@@ -27,7 +26,6 @@ public class AssessmentBody implements WidgetWorkflowListener {
     private final DisplayContentOptions options;
     private final ModuleSocket moduleSocket;
     private final ModulesRegistrySocket modulesRegistrySocket;
-    private final InteractionEventsListener interactionEventsListener;
     private Panel pageSlot;
     private final ParenthoodManager parenthood;
     private List<IModule> modules;
@@ -36,14 +34,12 @@ public class AssessmentBody implements WidgetWorkflowListener {
     private final ModulesInstalatorFactory modulesInstalatorFactory;
 
     @Inject
-    public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket,
-                          @Assisted final InteractionEventsListener interactionEventsListener, @Assisted ModulesRegistrySocket modulesRegistrySocket,
+    public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, @Assisted ModulesRegistrySocket modulesRegistrySocket,
                           PlayerWorkModeService playerWorkModeService, ParenthoodManager parenthood, Provider<AssessmentBodyModule> assessmentBodyModuleProvider,
                           ModulesInstalatorFactory modulesInstalatorFactory) {
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.modulesRegistrySocket = modulesRegistrySocket;
-        this.interactionEventsListener = interactionEventsListener;
         this.playerWorkModeService = playerWorkModeService;
 
         this.parenthood = parenthood;
@@ -53,7 +49,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
     public Widget init(Element assessmentBodyElement) {
 
-        ModulesInstalator instalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator instalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket);
         BodyGenerator generator = new BodyGenerator(instalator, options);
 
         AssessmentBodyModule bodyModule = assessmentBodyModuleProvider.get();

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Gives possibility to use inline formatting for modules implementing IInlineModule
  */
-public class InlineContainerModule extends InlineModuleBase implements IInlineContainerModule {
+public class InlineContainerModule extends SimpleModuleBase implements IInlineContainerModule {
 
     private ElementWrapperWidget widget;
     private InlineFormattingContainerType type;

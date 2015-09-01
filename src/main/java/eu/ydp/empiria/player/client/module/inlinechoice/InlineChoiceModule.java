@@ -38,7 +38,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
 
     public void initModule() {
         setStyles();
-        controller.initModule(getModuleSocket(), getInteractionEventsListener());
+        controller.initModule(getModuleSocket());
         controller.setParentInlineModule(this);
     }
 

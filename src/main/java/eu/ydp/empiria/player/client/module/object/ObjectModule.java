@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.InlineModuleBase;
+import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
-public class ObjectModule extends InlineModuleBase {
+public class ObjectModule extends SimpleModuleBase {
     private static final int DEFAULT_HEIGHT = 240;
     private static final int DEFAULT_WIDTH = 320;
 
@@ -92,7 +92,7 @@ public class ObjectModule extends InlineModuleBase {
                 player = defaultAudioPlayerModuleProvider.get();
             }
 
-            player.initModule(element, getModuleSocket(), getInteractionEventsListener());
+            player.initModule(element, getModuleSocket());
             this.moduleView = player.getView();
         } else {
             int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);

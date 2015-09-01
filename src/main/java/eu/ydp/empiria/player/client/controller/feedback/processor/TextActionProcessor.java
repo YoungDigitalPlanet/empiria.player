@@ -1,13 +1,12 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
@@ -16,6 +15,7 @@ import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
+import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.gwtutil.client.StringUtils;
 
@@ -90,7 +90,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
+    public void initModule(Element element, ModuleSocket ms) {
         initModule(ms);
         feedbackPresenter.hide();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
@@ -108,7 +108,8 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
 
     private ClickHandler createCloseButtonClickHandler() {
         return new ClickHandler() {
-            @Override public void onClick(ClickEvent event) {
+            @Override
+            public void onClick(ClickEvent event) {
                 clearFeedback();
             }
         };

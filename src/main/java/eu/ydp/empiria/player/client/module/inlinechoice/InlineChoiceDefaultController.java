@@ -12,7 +12,6 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -25,7 +24,6 @@ import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventT
 import eu.ydp.gwtutil.client.collections.RandomizedSet;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class InlineChoiceDefaultController extends ParentedModuleBase implements InlineChoiceController {
@@ -51,8 +49,8 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
     IUniqueModule parentModule;
 
     @Override
-    public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
-        initModule(moduleSocket);
+    public void initModule(ModuleSocket moduleSocket) {
+        super.initModule(moduleSocket);
     }
 
     @Override
@@ -130,9 +128,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         listBox.setEnabled(!lock);
     }
 
-    /**
-     * @see IActivity#markAnswers()
-     */
     @Override
     public void markAnswers(boolean mark) {
         if (mark) {
@@ -152,9 +147,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         }
     }
 
-    /**
-     * @see IActivity#reset()
-     */
     @Override
     public void reset() {
         markAnswers(false);
@@ -165,9 +157,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         container.setStyleName("qp-text-choice");
     }
 
-    /**
-     * @see IActivity#showCorrectAnswers()
-     */
     @Override
     public void showCorrectAnswers(boolean show) {
 
@@ -198,9 +187,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         return ModuleJsSocketFactory.createSocketObject(this);
     }
 
-    /**
-     * @see IStateful#getState()
-     */
     @Override
     public JSONArray getState() {
 
@@ -217,9 +203,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         return jsonArr;
     }
 
-    /**
-     * @see IStateful#setState(Serializable)
-     */
     @Override
     public void setState(JSONArray newState) {
 
@@ -243,11 +226,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         updateResponse(false);
     }
 
-    /**
-     * init widget view
-     *
-     * @param element
-     */
     private void init(Element inlineChoiceElement) {
         NodeList nodes = inlineChoiceElement.getChildNodes();
 
@@ -266,11 +244,6 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
         }
     }
 
-    /**
-     * init widget view. Randomize options
-     *
-     * @param element
-     */
     private void initRandom(Element inlineChoiceElement) {
         RandomizedSet<Element> randomizedNodes = new RandomizedSet<Element>();
         NodeList nodes = inlineChoiceElement.getChildNodes();

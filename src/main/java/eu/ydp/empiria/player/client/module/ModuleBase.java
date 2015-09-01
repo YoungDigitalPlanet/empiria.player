@@ -9,7 +9,7 @@ public abstract class ModuleBase extends ParentedModuleBase {
     private String moduleClass;
 
     @Override
-    protected final void initModule(ModuleSocket moduleSocket) {
+    public final void initModule(ModuleSocket moduleSocket) {
         super.initModule(moduleSocket);
     }
 
