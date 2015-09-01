@@ -3,8 +3,6 @@ package eu.ydp.empiria.player.client.controller.feedback.player;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -15,18 +13,13 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings("PMD")
 public class FeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
     private FeedbackSoundPlayer instance;
-    private EventsBus eventsBus;
-    private MediaWrapper<?> mediaWrapper;
-    private MediaEvent mediaEvent;
 
     @Before
     public void before() {
-        setUp(new Class<?>[]{}, new Class<?>[]{}, new Class<?>[]{EventsBus.class});
+        setUp(new Class<?>[]{}, new Class<?>[]{}, new Class<?>[]{});
         instance = spy(injector.getInstance(FeedbackSoundPlayer.class));
-        eventsBus = injector.getInstance(EventsBus.class);
     }
 
     @Test

@@ -44,7 +44,7 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
 
     @Before
     public void before() {
-        setUp(new Class<?>[]{}, new Class<?>[]{}, new Class<?>[]{EventsBus.class}, new CustomGuiceModule());
+        setUp(new Class<?>[]{}, new Class<?>[]{}, new Class<?>[]{}, new CustomGuiceModule());
         eventsBus = injector.getInstance(EventsBus.class);
         instance = injector.getInstance(InlineChoicePopupController.class);
         exListBox = injector.getInstance(ExListBox.class);
