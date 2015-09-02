@@ -82,10 +82,12 @@ public class InteractionMathJaxModuleTest {
     @Test
     public void rerenderModule_onEvent() {
         //given
+        String script = "script";
         PlayerEvent event = mock(PlayerEvent.class);
         when(event.getType()).thenReturn(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
         String elementId = "id";
         when(element.getAttribute("id")).thenReturn(elementId);
+        when(element.getChildNodes().toString()).thenReturn(script);
 
         //when
         testObj.initModule(element, moduleSocket, bodyGenerator);
