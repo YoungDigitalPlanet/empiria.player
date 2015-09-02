@@ -23,6 +23,8 @@ import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
 
 public class InteractionMathJaxModule extends AbstractActivityContainerModuleBase implements PlayerEventHandler {
 
+    private static final String REGEX_MATCH_FEEDBACKS = "<feedbacks>[\\s\\S]*?</feedbacks>";
+
     private MathJaxPresenter presenter;
     private RootPanelDelegate rootPanel;
     private boolean toRerender;
@@ -61,11 +63,12 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
 
     private void initPresenter(Element element) {
         String mmlScript = element.getChildNodes().toString();
-        presenter.setMmlScript(mmlScript);
+        String cleanScript = clearFeedbacks(mmlScript);
+        presenter.setMmlScript(cleanScript);
     }
 
-    public boolean isToRerender() {
-        return toRerender;
+    private String clearFeedbacks(String script){
+        return script.replaceAll(REGEX_MATCH_FEEDBACKS, "");
     }
 
     public void markToRerender() {
@@ -76,7 +79,7 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
     @Override
     public void onPlayerEvent(PlayerEvent event) {
         if (event.getType() == PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED) {
-            if (isToRerender()) {
+            if (toRerender) {
                 rerender();
                 toRerender = false;
             }

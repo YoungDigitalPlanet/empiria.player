@@ -94,6 +94,29 @@ public class InteractionMathJaxModuleTest {
 
         //then
         verify(presenter).rerenderMathElement(elementId);
+    }
 
+    @Test
+    public void shouldClearFeedbacksFromMmlScript() {
+        String script = "<script><gap>" +
+                "<feedbacks><script></script></feedbacks>" +
+                "</gap></script>";
+        String cleanScript = "<script><gap>" +
+                "</gap></script>";
+
+        NodeList gaps = mock(NodeList.class);
+        when(gaps.getLength()).thenReturn(1);
+
+        Node gap = mock(Node.class);
+        when(gaps.item(0)).thenReturn(gap);
+
+        when(element.getElementsByTagName("gap")).thenReturn(gaps);
+        when(element.getChildNodes().toString()).thenReturn(script);
+
+        // when
+        testObj.initModule(element, moduleSocket, bodyGenerator);
+
+        // then
+        verify(presenter).setMmlScript(cleanScript);
     }
 }
