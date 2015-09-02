@@ -8,10 +8,18 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackTypeStyleProvider;
+import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 
 public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
 
     private static ImageFeedbackViewUiBinder uiBinder = GWT.create(ImageFeedbackViewUiBinder.class);
+
+    @Inject
+    private FeedbackStyleNameConstants feedbackStyleNameConstants;
+    @Inject
+    private FeedbackTypeStyleProvider typeStyleProvider;
 
     @UiTemplate("ImageFeedbackView.ui.xml")
     interface ImageFeedbackViewUiBinder extends UiBinder<Widget, ImageFeedbackPresenter> {
@@ -39,6 +47,8 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
 
     @Override
     public void show() {
+        clearStyleNames();
+        addStyleName(typeStyleProvider.getStyleName());
         this.setVisible(true);
     }
 
@@ -47,4 +57,9 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
         this.setVisible(false);
     }
 
+    private void clearStyleNames() {
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_ALLOK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_OK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_WRONG());
+    }
 }

@@ -29,17 +29,19 @@ public class ModuleFeedbackProcessor {
     private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
     protected FeedbackActionCollector feedbackActionCollector;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    private FeedbackTypeStyleProvider typeProvider;
 
     @Inject
     public ModuleFeedbackProcessor(@Assisted InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackRegistry feedbackRegistry,
-                                   FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
-                                   Provider<FeedbackActionCollector> feedbackActionCollectorProvider) {
+            FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
+            Provider<FeedbackActionCollector> feedbackActionCollectorProvider, FeedbackTypeStyleProvider typeProvider) {
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         this.feedbackRegistry = feedbackRegistry;
         this.matcher = matcher;
         this.soundProcessor = soundProcessor;
         this.propertiesCollector = propertiesCollector;
         this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
+        this.typeProvider = typeProvider;
         initializeFeedbackActionCollector();
     }
 
@@ -103,6 +105,7 @@ public class ModuleFeedbackProcessor {
         List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
 
         for (FeedbackActionProcessor processor : processors) {
+            typeProvider.prepareStyleName(feedbackActionCollector.getSourceProperties(module));
             List<FeedbackAction> actions = feedbackActionCollector.getActions();
             List<FeedbackAction> processedActions = processor.processActions(actions, inlineBodyGeneratorSocket);
             feedbackActionCollector.removeActions(processedActions);

@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static org.mockito.Mockito.*;
+
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
@@ -15,9 +17,6 @@ import org.junit.Before;
 
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-
 public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAutoInjectorInit {
 
     protected FeedbackActionCollector collector;
@@ -29,6 +28,8 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
     protected MathJaxNative mathJaxNative;
 
     protected IModule source;
+
+    protected FeedbackProperties properties;
 
     @Before
     @Override
@@ -84,9 +85,11 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 
         private void createCollector(List<FeedbackAction> actions) {
             source = mock(IModule.class);
+            properties = mock(FeedbackProperties.class);
             collector = new FeedbackActionCollector();
             collector.setSource(source);
             collector.appendActionsToSource(actions, source);
+            collector.appendPropertiesToSource(properties, source);
         }
 
         private void createProcessor() {
