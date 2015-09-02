@@ -275,9 +275,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
             if (extension instanceof DeliveryEngineSocketUserExtension) {
                 ((DeliveryEngineSocketUserExtension) extension).setDeliveryEngineSocket(this);
             }
-            if (extension instanceof InteractionEventSocketUserExtension) {
-                ((InteractionEventSocketUserExtension) extension).setInteractionEventsListener(deliveryEventsHub);
-            }
             if (extension instanceof PlayerJsObjectModifierExtension) {
                 ((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);
             }
