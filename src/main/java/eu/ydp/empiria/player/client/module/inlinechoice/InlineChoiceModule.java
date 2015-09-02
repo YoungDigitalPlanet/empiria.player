@@ -36,12 +36,10 @@ public class InlineChoiceModule extends InteractionModuleBase {
 
     @Inject
     private StyleSocket styleSocket;
-    @Inject
-    private EventsBus eventsBus;
 
     public void initModule() {
         setStyles();
-        controller.initModule(getModuleSocket(), eventsBus);
+        controller.initModule(getModuleSocket(), getEventsBus());
         controller.setParentInlineModule(this);
     }
 

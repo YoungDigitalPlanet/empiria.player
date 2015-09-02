@@ -80,7 +80,8 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
 
         Element element = mock(Element.class);
-        testObj.initModule(element, moduleSocket, injector.getInstance(EventsBus.class));
+        EventsBus eventsBus = injector.getInstance(EventsBus.class);
+        testObj.initModule(element, moduleSocket, eventsBus);
     }
 
     @Test
