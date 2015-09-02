@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
-import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -39,18 +38,14 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     @Override
     public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
-        List<FeedbackAction> processedActions = Lists.newArrayList();
+        return getHelper().processActions(actions, inlineBodyGeneratorSocket);
+    }
 
-        clearFeedback();
-
-        for (FeedbackAction action : actions) {
-            if (canProcessAction(action)) {
-                processSingleAction(action);
-                processedActions.add(action);
-            }
+    private ActionProcessorHelper getHelper() {
+        if (helper == null) {
+            helper = new ActionProcessorHelper(this);
         }
-
-        return processedActions;
+        return helper;
     }
 
     @Override
