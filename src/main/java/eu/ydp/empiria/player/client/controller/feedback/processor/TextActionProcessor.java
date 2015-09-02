@@ -5,46 +5,27 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
-import eu.ydp.empiria.player.client.module.IResetable;
-import eu.ydp.empiria.player.client.module.ISimpleModule;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
+import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.gwtutil.client.StringUtils;
 
-import java.util.List;
+public class TextActionProcessor extends AbstractActionProcessor {
 
-public class TextActionProcessor extends ParentedModuleBase implements FeedbackActionProcessor, ActionProcessorTarget, ISimpleModule, IResetable {
-
-    private ActionProcessorHelper helper;
-
-    @Inject
     private TextFeedback feedbackPresenter;
-    @Inject
     private MathJaxNative mathJaxNative;
-    @Inject
     private FeedbackBlend feedbackBlend;
 
-    private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
-
-    @Override
-    public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
-        this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
-        return getHelper().processActions(actions, inlineBodyGeneratorSocket);
-    }
-
-    private ActionProcessorHelper getHelper() {
-        if (helper == null) {
-            helper = new ActionProcessorHelper(this);
-        }
-        return helper;
+    @Inject
+    public TextActionProcessor(TextFeedback feedbackPresenter, MathJaxNative mathJaxNative,
+            FeedbackBlend feedbackBlend) {
+        this.feedbackPresenter = feedbackPresenter;
+        this.mathJaxNative = mathJaxNative;
+        this.feedbackBlend = feedbackBlend;
     }
 
     @Override
@@ -61,25 +42,23 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     }
 
     @Override
-    public void processSingleAction(FeedbackAction action) {
-        if (action instanceof ShowTextAction) {
-            ShowTextAction textAction = (ShowTextAction) action;
-            Element element = textAction.getContent().getValue();
-            Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
-            JavaScriptObject mathJaxCallback = createCallback(widget);
-            mathJaxNative.renderMath(mathJaxCallback);
-        }
+    public void processSingleAction(FeedbackAction action, FeedbackMark mark) {
+        ShowTextAction textAction = (ShowTextAction) action;
+        Element element = textAction.getContent().getValue();
+        Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
+        JavaScriptObject mathJaxCallback = createCallback(widget, mark);
+        mathJaxNative.renderMath(mathJaxCallback);
     }
 
-    private native JavaScriptObject createCallback(Widget widget)/*-{
-        var that = this;
-        return function () {
-            that.@TextActionProcessor::showFeedback(*)(widget);
-        };
-    }-*/;
+    private native JavaScriptObject createCallback(Widget widget, FeedbackMark mark)/*-{
+		var that = this;
+		return function () {
+			that.@TextActionProcessor::showFeedback(*)(widget, mark);
+		};
+	}-*/;
 
-    private void showFeedback(Widget widget) {
-        feedbackPresenter.show(widget);
+    private void showFeedback(Widget widget, FeedbackMark mark) {
+        feedbackPresenter.show(widget, mark);
         feedbackBlend.show(feedbackPresenter);
     }
 
@@ -99,11 +78,6 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     @Override
     public Widget getView() {
         return (Widget) feedbackPresenter;
-    }
-
-    @Override
-    public void reset() {
-        clearFeedback();
     }
 
     private ClickHandler createCloseButtonClickHandler() {

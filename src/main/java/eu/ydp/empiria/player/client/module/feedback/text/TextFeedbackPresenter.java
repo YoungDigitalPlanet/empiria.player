@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.feedback.FeedbackTypeStyleProvider;
+import eu.ydp.empiria.player.client.controller.feedback.*;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
@@ -20,7 +20,7 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     @Inject
     private FeedbackStyleNameConstants feedbackStyleNameConstants;
     @Inject
-    private FeedbackTypeStyleProvider typeStyleProvider;
+    private FeedbackMarkStyleProvider typeStyleProvider;
 
     @UiTemplate("TextFeedbackView.ui.xml")
     interface TextFeedbackViewUiBinder extends UiBinder<Widget, TextFeedbackPresenter> {
@@ -36,10 +36,10 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     CustomPushButton feedbackCloseButton;
 
     @Override
-    public void show(Widget widget) {
+    public void show(Widget widget, FeedbackMark mark) {
         addNewFeedback(widget);
         clearStyleNames();
-        addStyleName(typeStyleProvider.getStyleName());
+        addStyleName(typeStyleProvider.getStyleName(mark));
     }
 
     @Override

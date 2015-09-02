@@ -160,7 +160,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
         ModuleFeedbackProcessor processor = getProcessor();
         processor.processFeedbacks(helper.getVariables(), (IUniqueModule) sender);
 
-        verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.any(InlineBodyGeneratorSocket.class));
+        verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.any(InlineBodyGeneratorSocket.class), Matchers.any(FeedbackMark.class));
 
         return captor.getAllValues();
     }

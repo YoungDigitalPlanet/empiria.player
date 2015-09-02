@@ -86,6 +86,7 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
         private void createCollector(List<FeedbackAction> actions) {
             source = mock(IModule.class);
             properties = mock(FeedbackProperties.class);
+            when(properties.getBooleanProperty(FeedbackPropertyName.OK)).thenReturn(true);
             collector = new FeedbackActionCollector();
             collector.setSource(source);
             collector.appendActionsToSource(actions, source);

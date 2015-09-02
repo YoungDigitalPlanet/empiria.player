@@ -1,22 +1,17 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import com.google.inject.*;
+import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
 import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEvent;
-import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEventHandler;
-import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEventTypes;
-
+import eu.ydp.empiria.player.client.util.events.internal.feedback.*;
 import java.util.List;
 
 @Singleton
-public class SoundActionProcessor extends AbstractFeedbackActionProcessor implements FeedbackEventHandler {
+public class SoundActionProcessor implements FeedbackEventHandler, FeedbackActionProcessor {
 
     @Inject
     private FeedbackSoundPlayer player;
@@ -29,6 +24,19 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor implem
     }
 
     @Override
+    public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackMark mark) {
+        List<FeedbackAction> processedActions = Lists.newArrayList();
+
+        for (FeedbackAction action : actions) {
+            if (canProcessAction(action)) {
+                processSingleAction(action);
+                processedActions.add(action);
+            }
+        }
+
+        return processedActions;
+    }
+
     protected boolean canProcessAction(FeedbackAction action) {
         boolean canProcess = false;
 
@@ -40,7 +48,6 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor implem
         return canProcess;
     }
 
-    @Override
     protected void processSingleAction(FeedbackAction action) {
         if (action instanceof ShowUrlAction && !isMuted) {
             ShowUrlAction urlAction = ((ShowUrlAction) action);
@@ -52,10 +59,6 @@ public class SoundActionProcessor extends AbstractFeedbackActionProcessor implem
                 player.play(sources);
             }
         }
-    }
-
-    @Override
-    protected void clearFeedback() {
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.feedback.FeedbackTypeStyleProvider;
+import eu.ydp.empiria.player.client.controller.feedback.*;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 
 public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
@@ -19,7 +19,7 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
     @Inject
     private FeedbackStyleNameConstants feedbackStyleNameConstants;
     @Inject
-    private FeedbackTypeStyleProvider typeStyleProvider;
+    private FeedbackMarkStyleProvider typeStyleProvider;
 
     @UiTemplate("ImageFeedbackView.ui.xml")
     interface ImageFeedbackViewUiBinder extends UiBinder<Widget, ImageFeedbackPresenter> {
@@ -46,9 +46,9 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
     }
 
     @Override
-    public void show() {
+    public void show(FeedbackMark mark) {
         clearStyleNames();
-        addStyleName(typeStyleProvider.getStyleName());
+        addStyleName(typeStyleProvider.getStyleName(mark));
         this.setVisible(true);
     }
 
