@@ -24,10 +24,11 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
     private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
 
-    @Inject
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
 
-    public PlayerEventsBus() {
+    @Inject
+    public PlayerEventsBus(Scheduler scheduler) {
+        this.scheduler = scheduler;
         // Czyszczenie szyny z niepotrzebnych handlerow
         this.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), this);
     }
