@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.external.interaction;
 
 import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
-import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +18,6 @@ public class ExternalPathsTest {
     @InjectMocks
     private ExternalPaths testObj;
     @Mock
-    private EmpiriaPaths empiriaPaths;
-    @Mock
     private ExternalFolderNameProvider externalFolderNameProvider;
 
     @Before
@@ -34,7 +31,7 @@ public class ExternalPathsTest {
         // given
         String fileName = "file";
         String expectedPath = "media/src/file";
-        when(empiriaPaths.getMediaFilePath("src/file")).thenReturn(expectedPath);
+        when(externalFolderNameProvider.getExternalRelativePath("src/file")).thenReturn(expectedPath);
 
         // when
         String pathToFile = testObj.getExternalFilePath(fileName);
@@ -47,7 +44,7 @@ public class ExternalPathsTest {
     public void shouldReturnPathToEntryPoint() {
         // given
         String expectedPath = "media/src/index.html";
-        when(empiriaPaths.getMediaFilePath("src/index.html")).thenReturn(expectedPath);
+        when(externalFolderNameProvider.getExternalRelativePath("src/index.html")).thenReturn(expectedPath);
 
         // when
         String pathToEntryPoint = testObj.getExternalEntryPointPath();

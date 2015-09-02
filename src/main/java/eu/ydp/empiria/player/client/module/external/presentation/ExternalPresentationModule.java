@@ -4,12 +4,10 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.ILockable;
-import eu.ydp.empiria.player.client.module.IResetable;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
-import eu.ydp.empiria.player.client.module.StatefulModule;
+import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
+import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 public class ExternalPresentationModule extends SimpleModuleBase implements ILockable, IResetable, ExternalFolderNameProvider,
@@ -18,16 +16,22 @@ public class ExternalPresentationModule extends SimpleModuleBase implements ILoc
     public static final String SOURCE_ATTRIBUTE = "src";
     private final ExternalPresentationPresenter presenter;
     private final ExternalPaths externalPaths;
+    private final EmpiriaPaths empiriaPaths;
     private String presentationName;
+    private ModuleTagName moduleTagName;
 
     @Inject
-    public ExternalPresentationModule(ExternalPresentationPresenter presenter, @ModuleScoped ExternalPaths externalPaths) {
+    public ExternalPresentationModule(ExternalPresentationPresenter presenter, @ModuleScoped ExternalPaths externalPaths,
+                                      EmpiriaPaths empiriaPaths) {
         this.presenter = presenter;
         this.externalPaths = externalPaths;
+        this.empiriaPaths = empiriaPaths;
     }
 
     @Override
     protected void initModule(Element element) {
+        String tagName = element.getTagName();
+        moduleTagName = ModuleTagName.getTag(tagName);
         presentationName = element.getAttribute(SOURCE_ATTRIBUTE);
         externalPaths.setExternalFolderNameProvider(this);
         presenter.init();
@@ -70,5 +74,17 @@ public class ExternalPresentationModule extends SimpleModuleBase implements ILoc
     @Override
     public String getExternalFolderName() {
         return presentationName;
+    }
+
+    @Override
+    public String getExternalRelativePath(String file) {
+        switch (moduleTagName) {
+            case EXTERNAL_PRESENTATION:
+                return empiriaPaths.getMediaFilePath(file);
+            case EXTERNAL_COMMON_PRESENTATION:
+                return empiriaPaths.getCommonsFilePath(file);
+            default:
+                throw new RuntimeException("Cannot create presentation module from " + moduleTagName);
+        }
     }
 }
