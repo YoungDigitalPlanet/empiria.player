@@ -12,6 +12,7 @@ import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowBean;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowModuleStructure;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideshowPlayerBean;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.service.json.IJSONService;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +44,8 @@ public class SlideshowPlayerModuleTest {
     private SlideshowTemplateInterpreter templateInterpreter;
     @Mock
     private ModuleSocket moduleSocket;
+    @Mock
+    private EventsBus eventsBus;
     @Mock
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
 
@@ -79,7 +82,7 @@ public class SlideshowPlayerModuleTest {
         when(moduleStructure.getBean()).thenReturn(slideshowPlayer);
 
         // when
-//        testObj.initModule(element, moduleSocket);
+        testObj.initModule(element, moduleSocket, eventsBus);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);
@@ -104,7 +107,7 @@ public class SlideshowPlayerModuleTest {
         when(templateInterpreter.isPagerTemplateActivate(slideshowPlayer)).thenReturn(true);
 
         // when
-//        testObj.initModule(element, moduleSocket);
+        testObj.initModule(element, moduleSocket, eventsBus);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);

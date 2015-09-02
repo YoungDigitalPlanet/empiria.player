@@ -4,6 +4,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ public class ExternalPresentationModuleTest {
     @Test
     public void shouldReturnPresentationNameAsModuleIdentifier() {
         // given
-//        testObj.initModule(element, mock(ModuleSocket.class));
+        testObj.initModule(element, mock(ModuleSocket.class), mock(EventsBus.class));
 
         // when
         String actual = testObj.getIdentifier();

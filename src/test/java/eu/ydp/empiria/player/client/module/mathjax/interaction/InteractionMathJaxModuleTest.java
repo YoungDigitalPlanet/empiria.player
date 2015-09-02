@@ -71,7 +71,7 @@ public class InteractionMathJaxModuleTest {
         when(element.getChildNodes().toString()).thenReturn(script);
 
         // when
-//        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
 
         // then
         verify(rootPanel).add(isA(FlowPanel.class));
@@ -90,7 +90,7 @@ public class InteractionMathJaxModuleTest {
         when(element.getChildNodes().toString()).thenReturn(script);
 
         //when
-//        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
         testObj.markToRerender();
         testObj.onPlayerEvent(event);
 
@@ -109,7 +109,7 @@ public class InteractionMathJaxModuleTest {
         when(element.getChildNodes().toString()).thenReturn(script);
 
         // when
-//        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
 
         // then
         verify(presenter).setMmlScript(cleanScript);

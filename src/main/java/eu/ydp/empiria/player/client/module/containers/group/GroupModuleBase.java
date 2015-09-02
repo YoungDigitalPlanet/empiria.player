@@ -27,6 +27,7 @@ public abstract class GroupModuleBase extends BindingContainerModule implements 
 
     @Override
     public void initModule(Element element) {
+        super.initModule(element);
         groupIdentifier = new DefaultGroupIdentifier(getModuleId());
     }
 

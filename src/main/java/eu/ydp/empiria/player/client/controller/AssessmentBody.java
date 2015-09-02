@@ -57,7 +57,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
         AssessmentBodyModule bodyModule = assessmentBodyModuleProvider.get();
         instalator.setInitialParent(bodyModule);
-        bodyModule.initModule(assessmentBodyElement,moduleSocket, generator, eventsBus);
+        bodyModule.initModule(assessmentBodyElement, moduleSocket, generator, eventsBus);
 
         modules = instalator.getInstalledSingleViewModules();
 
