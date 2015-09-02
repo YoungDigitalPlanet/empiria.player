@@ -1,13 +1,13 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionProcessorTarget;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
+import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.gwtutil.client.StringUtils;
 
@@ -74,12 +75,17 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     private native JavaScriptObject createCallback(Widget widget)/*-{
         var that = this;
         return function () {
-            that.@TextActionProcessor::showFeedback(*)(widget);
+            that.@TextActionProcessor::addFeedback(*)(widget);
         };
     }-*/;
 
-    private void showFeedback(Widget widget) {
-        feedbackPresenter.show(widget);
+    private void addFeedback(Widget widget) {
+        feedbackPresenter.addFeedback(widget);
+        feedbackBlend.show(feedbackPresenter);
+    }
+
+    private void showFeedback() {
+        feedbackPresenter.show();
         feedbackBlend.show(feedbackPresenter);
     }
 
@@ -94,6 +100,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
         initModule(ms);
         feedbackPresenter.hide();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
+        feedbackPresenter.addShowButtonClickHandler(createShowButtonClickHandler());
     }
 
     @Override
@@ -110,6 +117,15 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
         return new ClickHandler() {
             @Override public void onClick(ClickEvent event) {
                 clearFeedback();
+            }
+        };
+    }
+
+    private ClickHandler createShowButtonClickHandler() {
+        return new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                showFeedback();
             }
         };
     }

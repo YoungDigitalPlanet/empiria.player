@@ -5,9 +5,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface TextFeedback {
 
-    void show(Widget widget);
+    void addFeedback(Widget widget);
+
+    void show();
 
     void hide();
 
     void addCloseButtonClickHandler(ClickHandler handler);
+
+    void addShowButtonClickHandler(ClickHandler handler);
 }
