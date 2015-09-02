@@ -69,7 +69,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     protected IUniqueModule parentModule;
 
     @Override
-    public void initModule(ModuleSocket moduleSocket) {
+    public void initModule(ModuleSocket moduleSocket, EventsBus eventsBus) {
         super.initModule(moduleSocket);
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED), this, scopeFactory.getCurrentPageScope());
     }

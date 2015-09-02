@@ -18,6 +18,7 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 import java.util.List;
 
@@ -32,11 +33,12 @@ public class AssessmentBody implements WidgetWorkflowListener {
     private final PlayerWorkModeService playerWorkModeService;
     private final Provider<AssessmentBodyModule> assessmentBodyModuleProvider;
     private final ModulesInstalatorFactory modulesInstalatorFactory;
+    private final EventsBus eventsBus;
 
     @Inject
     public AssessmentBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, @Assisted ModulesRegistrySocket modulesRegistrySocket,
                           PlayerWorkModeService playerWorkModeService, ParenthoodManager parenthood, Provider<AssessmentBodyModule> assessmentBodyModuleProvider,
-                          ModulesInstalatorFactory modulesInstalatorFactory) {
+                          ModulesInstalatorFactory modulesInstalatorFactory, EventsBus eventsBus) {
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.modulesRegistrySocket = modulesRegistrySocket;
@@ -45,6 +47,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
         this.parenthood = parenthood;
         this.assessmentBodyModuleProvider = assessmentBodyModuleProvider;
         this.modulesInstalatorFactory = modulesInstalatorFactory;
+        this.eventsBus = eventsBus;
     }
 
     public Widget init(Element assessmentBodyElement) {
@@ -54,7 +57,7 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
         AssessmentBodyModule bodyModule = assessmentBodyModuleProvider.get();
         instalator.setInitialParent(bodyModule);
-        bodyModule.initModule(assessmentBodyElement, generator);
+        bodyModule.initModule(assessmentBodyElement,moduleSocket, generator, eventsBus);
 
         modules = instalator.getInstalledSingleViewModules();
 

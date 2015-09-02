@@ -23,6 +23,7 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 import java.util.ArrayList;
@@ -50,12 +51,13 @@ public class ItemBody implements WidgetWorkflowListener {
     private final IgnoredModules ignoredModules;
     private final PlayerWorkModeService playerWorkModeService;
     private final ModulesInstalatorFactory modulesInstalatorFactory;
+    private final EventsBus eventsBus;
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
                     ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
                     IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
-                    ModulesInstalatorFactory modulesInstalatorFactory) {
+                    ModulesInstalatorFactory modulesInstalatorFactory, EventsBus eventsBus) {
 
         this.moduleSocket = moduleSocket;
         this.options = options;
@@ -69,6 +71,7 @@ public class ItemBody implements WidgetWorkflowListener {
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
         this.modulesInstalatorFactory = modulesInstalatorFactory;
+        this.eventsBus = eventsBus;
     }
 
     public Widget init(Element itemBodyElement) {
@@ -78,7 +81,7 @@ public class ItemBody implements WidgetWorkflowListener {
 
         itemBodyModule = new ItemBodyModule();
         modulesInstalator.setInitialParent(itemBodyModule);
-        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
+        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator, eventsBus);
 
         modules = new ArrayList<>();
         modules.add(itemBodyModule);

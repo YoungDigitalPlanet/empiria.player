@@ -48,7 +48,7 @@ public class ExternalPresentationModuleTest {
     @Test
     public void shouldReturnPresentationNameAsModuleIdentifier() {
         // given
-        testObj.initModule(element, mock(ModuleSocket.class));
+//        testObj.initModule(element, mock(ModuleSocket.class));
 
         // when
         String actual = testObj.getIdentifier();

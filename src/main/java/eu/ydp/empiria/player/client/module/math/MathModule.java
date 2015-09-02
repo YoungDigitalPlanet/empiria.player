@@ -84,11 +84,9 @@ public class MathModule extends AbstractActivityContainerModuleBase implements I
     private StyleSocket styleSocket;
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
+    public void initModule(Element element) {
         uiBinder = GWT.create(MathModuleViewUiBinder.class);
         uiBinder.createAndBindUi(this);
-
-        super.initModule(element, moduleSocket, bodyGenerator);
 
         moduleElement = element;
         styles = styleSocket.getStyles(moduleElement);
@@ -97,7 +95,7 @@ public class MathModule extends AbstractActivityContainerModuleBase implements I
         initStyles(styles);
         initializePanels();
         initializeMathPlayer();
-        generateGaps(bodyGenerator);
+        generateGaps(getBodyGenerator());
         setGapMathStyles();
     }
 

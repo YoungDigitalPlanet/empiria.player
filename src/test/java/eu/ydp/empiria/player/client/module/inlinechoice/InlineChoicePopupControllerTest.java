@@ -53,7 +53,7 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
     @Test
     public void testInitModuleModuleSocketInteractionEventsListener() {
         ModuleSocket moduleSocket = mock(ModuleSocket.class);
-        instance.initModule(moduleSocket);
+//        instance.initModule(moduleSocket);
         verify(eventsBus)
                 .addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED)), Matchers.eq(instance), Matchers.any(EventScope.class));
     }

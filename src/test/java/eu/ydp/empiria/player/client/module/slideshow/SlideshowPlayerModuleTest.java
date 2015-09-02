@@ -79,7 +79,7 @@ public class SlideshowPlayerModuleTest {
         when(moduleStructure.getBean()).thenReturn(slideshowPlayer);
 
         // when
-        testObj.initModule(element, moduleSocket);
+//        testObj.initModule(element, moduleSocket);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);
@@ -104,7 +104,7 @@ public class SlideshowPlayerModuleTest {
         when(templateInterpreter.isPagerTemplateActivate(slideshowPlayer)).thenReturn(true);
 
         // when
-        testObj.initModule(element, moduleSocket);
+//        testObj.initModule(element, moduleSocket);
 
         // then
         verify(presenter).init(slideshowBean, inlineBodyGeneratorSocket);

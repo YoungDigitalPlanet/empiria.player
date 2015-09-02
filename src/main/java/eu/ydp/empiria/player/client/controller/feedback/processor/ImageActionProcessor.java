@@ -13,6 +13,7 @@ import eu.ydp.empiria.player.client.module.ISimpleModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class ImageActionProcessor extends ParentedModuleBase implements Feedback
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms) {
+    public void initModule(Element element, ModuleSocket ms, EventsBus eventsBus) {
         initModule(ms);
         feedbackPresenter.hide();
     }

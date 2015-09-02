@@ -92,7 +92,7 @@ public class ObjectModule extends SimpleModuleBase {
                 player = defaultAudioPlayerModuleProvider.get();
             }
 
-            player.initModule(element, getModuleSocket());
+            player.initModule(element, getModuleSocket(), eventsBus);
             this.moduleView = player.getView();
         } else {
             int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);

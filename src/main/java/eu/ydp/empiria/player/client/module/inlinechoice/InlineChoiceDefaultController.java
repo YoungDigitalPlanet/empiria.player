@@ -49,8 +49,8 @@ public class InlineChoiceDefaultController extends ParentedModuleBase implements
     IUniqueModule parentModule;
 
     @Override
-    public void initModule(ModuleSocket moduleSocket) {
-        super.initModule(moduleSocket);
+    public void initModule(ModuleSocket moduleSocket, EventsBus eventsBus) {
+        initModule(moduleSocket);
     }
 
     @Override

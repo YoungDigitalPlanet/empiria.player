@@ -45,7 +45,7 @@ public class AccordionModuleTest {
         BodyGeneratorSocket bodyGeneratorSocket = mock(BodyGeneratorSocket.class);
 
         // when
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+//        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // then
         verify(presenter).initialize(eq(bean), isA(AccordionContentGenerator.class));

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -17,6 +18,7 @@ import eu.ydp.empiria.player.client.module.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.StringUtils;
 
 import java.util.List;
@@ -37,14 +39,18 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     @Override
     public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket) {
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
-        return getHelper().processActions(actions, inlineBodyGeneratorSocket);
-    }
+        List<FeedbackAction> processedActions = Lists.newArrayList();
 
-    private ActionProcessorHelper getHelper() {
-        if (helper == null) {
-            helper = new ActionProcessorHelper(this);
+        clearFeedback();
+
+        for (FeedbackAction action : actions) {
+            if (canProcessAction(action)) {
+                processSingleAction(action);
+                processedActions.add(action);
+            }
         }
-        return helper;
+
+        return processedActions;
     }
 
     @Override
@@ -90,7 +96,7 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms) {
+    public void initModule(Element element, ModuleSocket ms, EventsBus eventsBus) {
         initModule(ms);
         feedbackPresenter.hide();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());

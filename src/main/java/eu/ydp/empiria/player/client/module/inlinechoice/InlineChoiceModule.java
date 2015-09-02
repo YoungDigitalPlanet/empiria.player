@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.module.IActivity;
 import eu.ydp.empiria.player.client.module.IStateful;
 import eu.ydp.empiria.player.client.module.InteractionModuleBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 import java.io.Serializable;
@@ -35,10 +36,12 @@ public class InlineChoiceModule extends InteractionModuleBase {
 
     @Inject
     private StyleSocket styleSocket;
+    @Inject
+    private EventsBus eventsBus;
 
     public void initModule() {
         setStyles();
-        controller.initModule(getModuleSocket());
+        controller.initModule(getModuleSocket(), eventsBus);
         controller.setParentInlineModule(this);
     }
 

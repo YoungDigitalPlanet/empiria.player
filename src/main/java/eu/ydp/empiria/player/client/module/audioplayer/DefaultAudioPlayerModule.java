@@ -44,7 +44,7 @@ public class DefaultAudioPlayerModule extends ParentedModuleBase implements Audi
     private Map<String, String> sources;
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket) {
+    public void initModule(Element element, ModuleSocket moduleSocket, EventsBus eventsBus) {
         initModule(moduleSocket);
         sources = SourceUtil.getSource(element, "audio");
         button.setStyleName(styleNameConstants.QP_AUDIOPLAYER_BUTTON());

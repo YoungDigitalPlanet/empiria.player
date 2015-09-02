@@ -2,15 +2,22 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public abstract class ModuleBase extends ParentedModuleBase {
 
     private String moduleId;
     private String moduleClass;
+    private EventsBus eventsBus;
 
     @Override
-    public final void initModule(ModuleSocket moduleSocket) {
+    protected final void initModule(ModuleSocket moduleSocket) {
         super.initModule(moduleSocket);
+    }
+
+    public void initModule(ModuleSocket moduleSocket, EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
+        initModule(moduleSocket);
     }
 
     protected final void readAttributes(Element element) {
@@ -44,5 +51,9 @@ public abstract class ModuleBase extends ParentedModuleBase {
             if (getModuleClass() != null && !"".equals(getModuleClass().trim()))
                 widget.addStyleName(getModuleClass());
         }
+    }
+
+    protected EventsBus getEventsBus() {
+        return eventsBus;
     }
 }

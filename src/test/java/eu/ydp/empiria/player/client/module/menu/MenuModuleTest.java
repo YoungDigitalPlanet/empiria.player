@@ -59,7 +59,7 @@ public class MenuModuleTest {
         when(reportTableGenerator.generate(element)).thenReturn(reportTable);
 
         // when
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+//        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // then
         verify(presenter).setReportTable(reportTable);
@@ -71,7 +71,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+//        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // when
         testObj.onPlayerEvent(playerEvent);
@@ -86,7 +86,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+//        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // when
         testObj.onPlayerEvent(playerEvent);
@@ -101,7 +101,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.PAGE_LOADED);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+//        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
 
         // when
         testObj.onPlayerEvent(playerEvent);

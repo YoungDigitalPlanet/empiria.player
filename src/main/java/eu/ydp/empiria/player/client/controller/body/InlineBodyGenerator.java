@@ -14,6 +14,7 @@ import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.TextStyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 
@@ -21,16 +22,18 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
     private ModuleSocket moduleSocket;
     private DisplayContentOptions options;
     private TextStyleNameConstants styleNames;
+    private final EventsBus eventsBus;
     private ParenthoodManager parenthood;
 
     @Inject
     public InlineBodyGenerator(@Assisted ModulesRegistrySocket mrs, @Assisted ModuleSocket moduleSocket, @Assisted DisplayContentOptions options,
-                               @Assisted ParenthoodManager parenthood, TextStyleNameConstants styleNames) {
+                               @Assisted ParenthoodManager parenthood, TextStyleNameConstants styleNames, EventsBus eventsBus) {
         this.modulesRegistrySocket = mrs;
         this.options = options;
         this.moduleSocket = moduleSocket;
         this.parenthood = parenthood;
         this.styleNames = styleNames;
+        this.eventsBus = eventsBus;
     }
 
     @Override
@@ -105,7 +108,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
                 IModule module = modulesRegistrySocket.createModule((Element) currNode);
                 if (module instanceof IInlineModule) {
                     parenthood.addChild(module);
-                    ((IInlineModule) module).initModule((Element) currNode, moduleSocket);
+                    ((IInlineModule) module).initModule((Element) currNode, moduleSocket, eventsBus);
                     Widget moduleView = ((IInlineModule) module).getView();
                     if (moduleView != null) {
                         parentElement.appendChild(moduleView.getElement());
@@ -145,7 +148,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
             if (modulesRegistrySocket.isModuleSupported(moduleName) && modulesRegistrySocket.isInlineModule(moduleName)) {
                 IModule module = modulesRegistrySocket.createModule((Element) node);
                 if (module instanceof IInlineModule) {
-                    ((IInlineModule) module).initModule((Element) node, moduleSocket);
+                    ((IInlineModule) module).initModule((Element) node, moduleSocket, eventsBus);
                     Widget moduleView = ((IInlineModule) module).getView();
                     if (parent instanceof ComplexPanel && moduleView != null) {
                         Panel parentPanel = ((Panel) parent);

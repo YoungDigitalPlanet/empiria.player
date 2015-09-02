@@ -15,6 +15,7 @@ import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
 import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.xml.XMLParser;
@@ -79,7 +80,7 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
 
         Element element = mock(Element.class);
-        testObj.initModule(element, moduleSocket);
+        testObj.initModule(element, moduleSocket, injector.getInstance(EventsBus.class));
     }
 
     @Test
