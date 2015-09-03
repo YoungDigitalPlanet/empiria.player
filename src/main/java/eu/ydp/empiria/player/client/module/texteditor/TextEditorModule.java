@@ -5,8 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
-import eu.ydp.empiria.player.client.module.core.flow.IActivity;
-import eu.ydp.empiria.player.client.module.core.flow.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.core.flow.Activity;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 import eu.ydp.empiria.player.client.module.texteditor.model.TextEditorModel;
@@ -15,8 +15,8 @@ import eu.ydp.empiria.player.client.module.texteditor.presenter.TextEditorPresen
 import eu.ydp.empiria.player.client.module.texteditor.structure.TextEditorBean;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, IActivity,
-        ILifecycleModule, StatefulModule {
+public class TextEditorModule extends SimpleModuleBase implements WorkModePreviewClient, Activity,
+        LifecycleModule, StatefulModule {
 
     private final TextEditorPresenter presenter;
     private final TextEditorModelEncoder textEditorModelEncoder;

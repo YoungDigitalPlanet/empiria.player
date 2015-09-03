@@ -22,8 +22,8 @@ import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.core.base.*;
-import eu.ydp.empiria.player.client.module.core.flow.IGroup;
-import eu.ydp.empiria.player.client.module.core.flow.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.core.base.Group;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.core.flow.OnModuleShowHandler;
 import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
@@ -106,8 +106,8 @@ public class ItemBody implements WidgetWorkflowListener {
     @Override
     public void onLoad() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyLoad();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyLoad();
             }
         }
 
@@ -119,16 +119,16 @@ public class ItemBody implements WidgetWorkflowListener {
     @Override
     public void onUnload() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyUnload();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyUnload();
             }
         }
     }
 
     public void setUp() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onSetUp();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onSetUp();
             }
             if (currModule instanceof InteractionModuleBase) {
                 InteractionModuleBase moduleBase = (InteractionModuleBase) currModule;
@@ -148,8 +148,8 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public void start() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onStart();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onStart();
             }
         }
     }
@@ -164,8 +164,8 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public void close() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onClose();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onClose();
             }
         }
     }
@@ -196,7 +196,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void markAnswers(boolean mark, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.markAnswers(mark);
         }
@@ -207,7 +207,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void showCorrectAnswers(boolean show, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.showCorrectAnswers(show);
         }
@@ -218,7 +218,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void reset(GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.reset();
         }
@@ -229,17 +229,17 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void lock(boolean lo, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.lock(lo);
         }
     }
 
-    private IGroup getGroupByGroupIdentifier(GroupIdentifier gi) {
-        IGroup lastGroup = null;
+    private Group getGroupByGroupIdentifier(GroupIdentifier gi) {
+        Group lastGroup = null;
         for (IModule currModule : modules) {
-            if (currModule instanceof IGroup) {
-                lastGroup = (IGroup) currModule;
+            if (currModule instanceof Group) {
+                lastGroup = (Group) currModule;
                 if (lastGroup.getGroupIdentifier()
                         .equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
                     return lastGroup;

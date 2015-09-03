@@ -5,11 +5,11 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
-import eu.ydp.empiria.player.client.module.core.flow.IResetable;
+import eu.ydp.empiria.player.client.module.core.flow.Resetable;
 
 import java.util.List;
 
-public abstract class AbstractActionProcessor extends SimpleModuleBase implements FeedbackActionProcessor, IResetable {
+public abstract class AbstractActionProcessor extends SimpleModuleBase implements FeedbackActionProcessor, Resetable {
 
     protected InlineBodyGeneratorSocket inlineBodyGenerator;
 

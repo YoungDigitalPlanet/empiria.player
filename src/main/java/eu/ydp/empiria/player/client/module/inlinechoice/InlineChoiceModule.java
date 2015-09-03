@@ -6,8 +6,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.core.flow.IActivity;
-import eu.ydp.empiria.player.client.module.core.flow.IStateful;
+import eu.ydp.empiria.player.client.module.core.flow.Activity;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 import eu.ydp.empiria.player.client.module.core.base.InteractionModuleBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
@@ -119,7 +119,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
     }
 
     /**
-     * @see IActivity#markAnswers()
+     * @see Activity#markAnswers()
      */
     @Override
     public void markAnswers(boolean mark) {
@@ -127,7 +127,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
     }
 
     /**
-     * @see IActivity#reset()
+     * @see Activity#reset()
      */
     @Override
     public void reset() {
@@ -135,7 +135,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
     }
 
     /**
-     * @see IActivity#showCorrectAnswers()
+     * @see Activity#showCorrectAnswers()
      */
     @Override
     public void showCorrectAnswers(boolean show) {
@@ -149,7 +149,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
     }
 
     /**
-     * @see IStateful#getState()
+     * @see Stateful#getState()
      */
     @Override
     public JSONArray getState() {
@@ -158,7 +158,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
     }
 
     /**
-     * @see IStateful#setState(Serializable)
+     * @see Stateful#setState(Serializable)
      */
     @Override
     public void setState(JSONArray newState) {

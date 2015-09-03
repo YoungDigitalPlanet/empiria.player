@@ -3,9 +3,9 @@ package eu.ydp.empiria.player.client.controller.workmode;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.json.JSONStateSerializer;
-import eu.ydp.empiria.player.client.module.core.flow.IStateful;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 
-public class PlayerWorkModeState implements IStateful {
+public class PlayerWorkModeState implements Stateful {
 
     @Inject
     private PlayerWorkModeService playerWorkModeService;

@@ -4,12 +4,12 @@ import com.google.common.base.Optional;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.core.flow.IStateful;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AbstractResponseModel<T> implements IStateful {
+public abstract class AbstractResponseModel<T> implements Stateful {
 
     private Response response;
     private Optional<ResponseModelChangeListener> responseModelChange;

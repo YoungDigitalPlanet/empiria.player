@@ -21,7 +21,7 @@ import eu.ydp.empiria.player.client.module.core.base.HasChildren;
 import eu.ydp.empiria.player.client.module.core.base.HasParent;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
-import eu.ydp.empiria.player.client.module.core.flow.IGroup;
+import eu.ydp.empiria.player.client.module.core.base.Group;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
@@ -169,11 +169,11 @@ public class Assessment {
         @Override
         public GroupIdentifier getParentGroupIdentifier(IModule module) {
             IModule currParent = module;
-            while (currParent != null && !(currParent instanceof IGroup)) {
+            while (currParent != null && !(currParent instanceof Group)) {
                 currParent = getParent(currParent);
             }
             if (currParent != null) {
-                return ((IGroup) currParent).getGroupIdentifier();
+                return ((Group) currParent).getGroupIdentifier();
             }
             return new DefaultGroupIdentifier("");
         }

@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.core.flow;
 
-public interface ILifecycleModule {
+public interface LifecycleModule {
 
     public void onBodyLoad();
 

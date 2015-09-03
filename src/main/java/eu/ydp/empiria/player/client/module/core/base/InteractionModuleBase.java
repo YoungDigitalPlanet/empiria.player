@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestSubmittedClient;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.core.flow.IIgnored;
+import eu.ydp.empiria.player.client.module.core.flow.Ignored;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
@@ -17,7 +17,7 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
 
-public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, WorkModeTestSubmittedClient, IIgnored {
+public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, WorkModeTestSubmittedClient, Ignored {
 
     private Response response;
     private String responseIdentifier;

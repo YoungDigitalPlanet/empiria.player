@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.module.core.flow.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 import eu.ydp.empiria.player.client.module.model.image.ShowImageDTO;
@@ -24,7 +24,7 @@ import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventH
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ProgressBonusModule extends SimpleModuleBase implements ILifecycleModule, StatefulModule {
+public class ProgressBonusModule extends SimpleModuleBase implements LifecycleModule, StatefulModule {
 
     private static final String PROGRESS_BONUS_ID_ATTR = "progressBonusId";
 

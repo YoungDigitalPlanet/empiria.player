@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.core.flow;
 /**
  * Interface for widgets implementing interactive module functions
  */
-public interface IActivity extends ILockable, IResetable {
+public interface Activity extends Lockable, Resetable {
 
     /**
      * Mark wrong and mark correct answers

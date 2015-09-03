@@ -14,7 +14,7 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.gin.binding.FlowManagerDataSupplier;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.module.core.flow.ILifecycleModule;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
@@ -28,7 +28,7 @@ import eu.ydp.gwtutil.client.NumberUtils;
 
 import java.util.List;
 
-public class InfoModule extends SimpleModuleBase implements ILifecycleModule, PlayerEventHandler {
+public class InfoModule extends SimpleModuleBase implements LifecycleModule, PlayerEventHandler {
 
     @Inject
     @FlowManagerDataSupplier
