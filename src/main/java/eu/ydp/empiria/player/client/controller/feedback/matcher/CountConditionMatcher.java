@@ -3,21 +3,19 @@ package eu.ydp.empiria.player.client.controller.feedback.matcher;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackProperties;
+import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackConditionCounter;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
 import eu.ydp.gwtutil.client.operator.MatchOperator;
 
 public class CountConditionMatcher extends ConditionMatcherBase implements FeedbackMatcher {
 
-    private final CountFeedbackProperties countFeedbackProperties;
-    private CountConditionBean condition;
-
-    private MatchOperator operator;
+    private final FeedbackConditionCounter feedbackConditionCounter;
 
     @Inject
-    public CountConditionMatcher(@Assisted MatcherRegistry registry, CountFeedbackProperties countFeedbackProperties) {
+    public CountConditionMatcher(@Assisted MatcherRegistry registry, FeedbackConditionCounter feedbackConditionCounter) {
         super(registry);
-        this.countFeedbackProperties = countFeedbackProperties;
+        this.feedbackConditionCounter = feedbackConditionCounter;
     }
 
     @Override
@@ -25,14 +23,14 @@ public class CountConditionMatcher extends ConditionMatcherBase implements Feedb
         boolean matches = false;
 
         if (condition instanceof CountConditionBean) {
-            this.condition = (CountConditionBean) condition;
-            FeedbackCondition childCondition = this.condition.getCondition();
+            CountConditionBean countCondition = (CountConditionBean) condition;
+            FeedbackCondition childCondition = countCondition.getCondition();
             FeedbackMatcher feedbackMatcher = getMatcher(childCondition);
             boolean match = feedbackMatcher.match(childCondition, properties);
             if (match) {
-                countFeedbackProperties.add(condition);
-                this.operator = MatchOperator.getOperator(this.condition.getOperator());
-                matches = operator.match(getCountValue(condition), this.condition.getCount());
+                feedbackConditionCounter.add(countCondition);
+                MatchOperator operator = MatchOperator.getOperator(countCondition.getOperator());
+                matches = operator.match(getCountValue(countCondition), countCondition.getCount());
             }
         }
 
@@ -40,6 +38,6 @@ public class CountConditionMatcher extends ConditionMatcherBase implements Feedb
     }
 
     private Integer getCountValue(FeedbackCondition condition) {
-        return countFeedbackProperties.getCount(condition);
+        return feedbackConditionCounter.getCount(condition);
     }
 }
