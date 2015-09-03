@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchReservationCommand;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
@@ -40,7 +39,7 @@ public class FeedbackBlend {
             @Override
             public void execute(NativeEvent event) {
                 if (textFeedback.isPresent()) {
-                    textFeedback.get().hide();
+                    textFeedback.get().hideFeedback();
                 }
                 hide();
             }

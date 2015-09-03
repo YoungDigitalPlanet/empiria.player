@@ -7,9 +7,11 @@ public interface TextFeedback {
 
     void addFeedback(Widget widget);
 
-    void show();
+    void hideModule();
 
-    void hide();
+    void showFeedback();
+
+    void hideFeedback();
 
     void addCloseButtonClickHandler(ClickHandler handler);
 

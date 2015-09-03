@@ -81,24 +81,25 @@ public class TextActionProcessor extends ParentedModuleBase implements FeedbackA
 
     private void addFeedback(Widget widget) {
         feedbackPresenter.addFeedback(widget);
+        feedbackPresenter.showFeedback();
         feedbackBlend.show(feedbackPresenter);
     }
 
     private void showFeedback() {
-        feedbackPresenter.show();
+        feedbackPresenter.showFeedback();
         feedbackBlend.show(feedbackPresenter);
     }
 
     @Override
     public void clearFeedback() {
-        feedbackPresenter.hide();
+        feedbackPresenter.hideFeedback();
         feedbackBlend.hide();
     }
 
     @Override
     public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
         initModule(ms);
-        feedbackPresenter.hide();
+        feedbackPresenter.hideModule();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
         feedbackPresenter.addShowButtonClickHandler(createShowButtonClickHandler());
     }
