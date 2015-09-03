@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.module.base;
+package eu.ydp.empiria.player.client.module.core;
 
 import eu.ydp.empiria.player.client.module.IInlineModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;

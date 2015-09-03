@@ -9,7 +9,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Font;
-import eu.ydp.empiria.player.client.module.base.InlineModuleBase;
+import eu.ydp.empiria.player.client.module.core.InlineModuleBase;
 
 public class MathTextModule extends InlineModuleBase {
 
