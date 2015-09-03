@@ -19,10 +19,9 @@ public class AccordionModule extends AbstractActivityContainerModuleBase {
     private AccordionJAXBParser parser;
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
-        super.initModule(element, moduleSocket, bodyGenerator);
+    public void initModule(Element element) {
         AccordionBean accordionBean = parser.create().parse(element.toString());
-        AccordionContentGenerator generator = new AccordionContentGenerator(moduleSocket.getInlineBodyGeneratorSocket(), bodyGenerator);
+        AccordionContentGenerator generator = new AccordionContentGenerator(getModuleSocket().getInlineBodyGeneratorSocket(), getBodyGenerator());
         presenter.initialize(accordionBean, generator);
     }
 

@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import org.junit.Before;
 import org.junit.Test;
 

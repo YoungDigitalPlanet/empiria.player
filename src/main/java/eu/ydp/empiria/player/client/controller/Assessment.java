@@ -11,13 +11,17 @@ import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.style.StyleLinkDeclaration;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
 import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.base.Group;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentBodyView;
@@ -56,7 +60,6 @@ public class Assessment {
      * Properties instance prepared by assessmentController (based on item body
      * properties through the page controller)
      */
-    private InteractionEventsListener interactionEventsListener;
     private final AssessmentFactory assessmentFactory;
     private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
@@ -66,8 +69,8 @@ public class Assessment {
      * @param data XMLData object as data source
      */
     @Inject
-    public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted InteractionEventsListener interactionEventsListener,
-                      @Assisted ModulesRegistrySocket modulesRegistrySocket, AssessmentFactory assessmentFactory, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
+    public Assessment(@Assisted AssessmentData data, @Assisted DisplayContentOptions options, @Assisted ModulesRegistrySocket modulesRegistrySocket,
+                      AssessmentFactory assessmentFactory, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
 
         this.assessmentFactory = assessmentFactory;
         this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
@@ -87,16 +90,15 @@ public class Assessment {
         styleDeclaration = new StyleLinkDeclaration(xmlData.getDocument().getElementsByTagName("styleDeclaration"), xmlData.getBaseURL());
         title = rootNode.getAttribute("title");
 
-        initializeBody(skinBody, interactionEventsListener);
+        initializeBody(skinBody);
     }
 
-    private void initializeBody(Element bodyNode, InteractionEventsListener interactionEventsListener) {
+    private void initializeBody(Element bodyNode) {
         if (bodyNode != null) {
-            body = assessmentFactory.createAssessmentBody(options, moduleSocket, interactionEventsListener, modulesRegistrySocket);
+            body = assessmentFactory.createAssessmentBody(options, moduleSocket, modulesRegistrySocket);
             bodyView = assessmentFactory.createAssessmentBodyView(body);
             bodyView.init(body.init(bodyNode));
             pageSlot = body.getPageSlot();
-            this.interactionEventsListener = interactionEventsListener;
         }
     }
 
@@ -151,7 +153,7 @@ public class Assessment {
         @Override
         public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
             if (inlineBodyGenerator == null) {
-                inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, options, interactionEventsListener, body.getParenthood());
+                inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, options, body.getParenthood());
             }
             return inlineBodyGenerator;
         }
@@ -167,11 +169,11 @@ public class Assessment {
         @Override
         public GroupIdentifier getParentGroupIdentifier(IModule module) {
             IModule currParent = module;
-            while (currParent != null && !(currParent instanceof IGroup)) {
+            while (currParent != null && !(currParent instanceof Group)) {
                 currParent = getParent(currParent);
             }
             if (currParent != null) {
-                return ((IGroup) currParent).getGroupIdentifier();
+                return ((Group) currParent).getGroupIdentifier();
             }
             return new DefaultGroupIdentifier("");
         }

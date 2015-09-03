@@ -19,7 +19,7 @@ import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.ItemSessionSocket;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.page.PageEvent;
 import eu.ydp.empiria.player.client.util.events.internal.page.PageEventHandler;

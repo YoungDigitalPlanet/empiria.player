@@ -10,12 +10,12 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.sound.Default
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.external.ExternalMediaProcessor;
 import eu.ydp.empiria.player.client.controller.extensions.jswrappers.*;
 import eu.ydp.empiria.player.client.controller.extensions.types.StatefulExtension;
-import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExtensionsManager implements IStateful {
+public class ExtensionsManager implements Stateful {
 
     private List<Extension> extensions;
 

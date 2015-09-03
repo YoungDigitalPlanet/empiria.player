@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.modules;
 
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.SimpleModuleCreator;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.creator.SimpleModuleCreator;
 import org.junit.Before;
 import org.junit.Test;
 

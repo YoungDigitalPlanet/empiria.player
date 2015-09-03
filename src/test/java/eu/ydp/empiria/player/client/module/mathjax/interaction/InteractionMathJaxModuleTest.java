@@ -71,7 +71,7 @@ public class InteractionMathJaxModuleTest {
         when(element.getChildNodes().toString()).thenReturn(script);
 
         // when
-        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
 
         // then
         verify(rootPanel).add(isA(FlowPanel.class));
@@ -82,18 +82,36 @@ public class InteractionMathJaxModuleTest {
     @Test
     public void rerenderModule_onEvent() {
         //given
+        String script = "script";
         PlayerEvent event = mock(PlayerEvent.class);
         when(event.getType()).thenReturn(PlayerEventTypes.SOURCE_LIST_CLIENTS_SET_SIZE_COMPLETED);
         String elementId = "id";
         when(element.getAttribute("id")).thenReturn(elementId);
+        when(element.getChildNodes().toString()).thenReturn(script);
 
         //when
-        testObj.initModule(element, moduleSocket, bodyGenerator);
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
         testObj.markToRerender();
         testObj.onPlayerEvent(event);
 
         //then
         verify(presenter).rerenderMathElement(elementId);
+    }
 
+    @Test
+    public void shouldClearFeedbacksFromMmlScript() {
+        String script = "<script><gap>" +
+                "<feedbacks><script></script></feedbacks>" +
+                "</gap></script>";
+        String cleanScript = "<script><gap>" +
+                "</gap></script>";
+
+        when(element.getChildNodes().toString()).thenReturn(script);
+
+        // when
+        testObj.initModule(element, moduleSocket, bodyGenerator, eventsBus);
+
+        // then
+        verify(presenter).setMmlScript(cleanScript);
     }
 }

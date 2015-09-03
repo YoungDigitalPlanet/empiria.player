@@ -137,8 +137,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
         assessmentController = assessmentFactory.createAssessmentController(
                 playerViewSocket.getAssessmentViewSocket(),
-                flowManager.getFlowSocket(),
-                deliveryEventsHub.getInteractionSocket()
+                flowManager.getFlowSocket()
         );
         playerViewSocket.setPlayerViewCarrier(new PlayerViewCarrier());
         loadPredefinedExtensions();
@@ -275,9 +274,6 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
             }
             if (extension instanceof DeliveryEngineSocketUserExtension) {
                 ((DeliveryEngineSocketUserExtension) extension).setDeliveryEngineSocket(this);
-            }
-            if (extension instanceof InteractionEventSocketUserExtension) {
-                ((InteractionEventSocketUserExtension) extension).setInteractionEventsListener(deliveryEventsHub);
             }
             if (extension instanceof PlayerJsObjectModifierExtension) {
                 ((PlayerJsObjectModifierExtension) extension).setPlayerJsObject(playerJsObject);

@@ -13,8 +13,8 @@ public class SoundActionProcessorMock extends SoundActionProcessor {
     }
 
     @Override
-    protected void processSingleAction(FeedbackAction action) {
-        super.processSingleAction(action);
+    public void processSingleAction(FeedbackAction action, FeedbackMark mark) {
+        super.processSingleAction(action, mark);
     }
 
 }

@@ -2,11 +2,10 @@ package eu.ydp.empiria.player.client.module.mathtext;
 
 import com.google.gwt.xml.client.Element;
 import com.mathplayer.player.geom.Font;
-import eu.ydp.empiria.player.client.module.IInlineModule;
+import eu.ydp.empiria.player.client.module.core.base.IInlineModule;
 import eu.ydp.empiria.player.client.module.InlineFormattingContainerType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

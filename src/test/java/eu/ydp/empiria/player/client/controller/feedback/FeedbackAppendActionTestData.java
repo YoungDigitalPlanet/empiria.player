@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 
 import java.util.List;
 import java.util.Map;

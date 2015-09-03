@@ -24,7 +24,7 @@ public interface FeedbackStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-feedback-text-module-wrapper-hidden")
     String QP_FEEDBACK_TEXT_MODULE_WRAPPER_HIDDEN();
-    
+
     @DefaultStringValue("qp-feedback-blend")
     String QP_FEEDBACK_BLEND();
 
@@ -36,4 +36,13 @@ public interface FeedbackStyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-feedback-text-module-show-button")
     String QP_FEEDBACK_TEXT_MODULE_SHOW_BUTTON();
+
+    @DefaultStringValue("qp-feedback-ok")
+    String QP_FEEDBACK_OK();
+
+    @DefaultStringValue("qp-feedback-wrong")
+    String QP_FEEDBACK_WRONG();
+
+    @DefaultStringValue("qp-feedback-allok")
+    String QP_FEEDBACK_ALLOK();
 }

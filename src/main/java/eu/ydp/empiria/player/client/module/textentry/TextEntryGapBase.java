@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistClient;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -14,7 +14,6 @@ import eu.ydp.empiria.player.client.module.gap.GapDropHandler;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.gwtutil.client.StringUtils;
-import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 
 import java.util.List;
 import java.util.Map;

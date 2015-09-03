@@ -6,11 +6,14 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.Group;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
@@ -25,7 +28,6 @@ public class ItemModuleSocket implements ModuleSocket {
     private final Item item;
     private final YJsJsonConverter yJsJsonConverter;
     private final ModulesRegistrySocket modulesRegistrySocket;
-    private final InteractionEventsListener interactionEventsListener;
     private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
     private JSONArray state;
@@ -34,11 +36,10 @@ public class ItemModuleSocket implements ModuleSocket {
 
     @Inject
     public ItemModuleSocket(@Assisted Item item, YJsJsonConverter yJsJsonConverter, ModulesRegistrySocket modulesRegistrySocket,
-                            InteractionEventsListener interactionEventsListener, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
+                            InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
         this.item = item;
         this.yJsJsonConverter = yJsJsonConverter;
         this.modulesRegistrySocket = modulesRegistrySocket;
-        this.interactionEventsListener = interactionEventsListener;
         this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
     }
 
@@ -50,7 +51,7 @@ public class ItemModuleSocket implements ModuleSocket {
     @Override
     public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
         if (inlineBodyGenerator == null) {
-            inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, this.item.options, interactionEventsListener, itemBody.getParenthood());
+            inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, this.item.options, itemBody.getParenthood());
         }
         return inlineBodyGenerator;
     }
@@ -66,12 +67,12 @@ public class ItemModuleSocket implements ModuleSocket {
 
         while (true) {
             currParent = getParent(currParent);
-            if (currParent == null || currParent instanceof IGroup) {
+            if (currParent == null || currParent instanceof Group) {
                 break;
             }
         }
         if (currParent != null) {
-            return ((IGroup) currParent).getGroupIdentifier();
+            return ((Group) currParent).getGroupIdentifier();
         }
         return new DefaultGroupIdentifier("");
     }

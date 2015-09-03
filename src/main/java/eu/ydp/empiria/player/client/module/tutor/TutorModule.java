@@ -7,7 +7,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.tutor.TutorCo
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.EndHandler;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackMediator;
 import eu.ydp.empiria.player.client.module.mediator.powerfeedback.PowerFeedbackTutorClient;
 import eu.ydp.empiria.player.client.module.tutor.presenter.TutorPresenter;

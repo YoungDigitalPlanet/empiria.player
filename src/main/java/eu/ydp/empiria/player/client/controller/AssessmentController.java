@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptio
 import eu.ydp.empiria.player.client.controller.communication.PageData;
 import eu.ydp.empiria.player.client.controller.communication.sockets.AssessmentInterferenceSocket;
 import eu.ydp.empiria.player.client.controller.communication.sockets.PageInterferenceSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.session.sockets.AssessmentSessionSocket;
 import eu.ydp.empiria.player.client.gin.factory.AssessmentFactory;
@@ -29,7 +28,6 @@ public class AssessmentController implements AssessmentInterferenceSocket {
     private Assessment assessment;
     protected PageController pageController;
     private int controllerPageNumber = -1;
-    private final InteractionEventsSocket interactionEventsSocket;
     private final ModulesRegistrySocket modulesRegistrySocket;
     private final IFlowSocket flowSocket;
     private final AssessmentViewSocket assessmentViewSocket;
@@ -40,12 +38,11 @@ public class AssessmentController implements AssessmentInterferenceSocket {
     private final AssessmentFactory assessmentFactory;
 
     @Inject
-    public AssessmentController(@Assisted AssessmentViewSocket avs, @Assisted IFlowSocket fsocket, @Assisted InteractionEventsSocket interactionsocket,
-                                AssessmentSessionSocket ass, ModulesRegistrySocket mrs, Page page, AssessmentControllerFactory controllerFactory,
+    public AssessmentController(@Assisted AssessmentViewSocket avs, @Assisted IFlowSocket fsocket, AssessmentSessionSocket ass,
+                                ModulesRegistrySocket mrs, Page page, AssessmentControllerFactory controllerFactory,
                                 PageControllerCache controllerCache, EventsBus eventBus, AssessmentFactory assessmentFactory) {
         assessmentViewSocket = avs;
         assessmentSessionSocket = ass;
-        interactionEventsSocket = interactionsocket;
         modulesRegistrySocket = mrs;
         flowSocket = fsocket;
         this.page = page;
@@ -86,7 +83,7 @@ public class AssessmentController implements AssessmentInterferenceSocket {
 
     public void init(AssessmentData data, DisplayContentOptions options) {
         if (data != null) {
-            assessment = assessmentFactory.createAssessment(data, options, interactionEventsSocket, modulesRegistrySocket);
+            assessment = assessmentFactory.createAssessment(data, options, modulesRegistrySocket);
             assessmentViewSocket.setAssessmentViewCarrier(new AssessmentViewCarrier(assessment, headerViewSocket, footerViewSocket));
             assessment.setUp();
             assessment.start();

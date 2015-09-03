@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.ordering;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParserFactory;
-import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
+import eu.ydp.empiria.player.client.module.core.base.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.ActivityPresenter;
 import eu.ydp.empiria.player.client.module.abstractmodule.structure.AbstractModuleStructure;
 import eu.ydp.empiria.player.client.module.ordering.drag.DragController;

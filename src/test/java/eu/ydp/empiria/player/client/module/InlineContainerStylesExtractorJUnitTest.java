@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module;
 
+import eu.ydp.empiria.player.client.controller.InlineContainerStylesExtractor;
 import eu.ydp.empiria.player.client.module.containers.DivModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.InlineContainerModule;
 import org.junit.Test;
 
 import java.util.Set;

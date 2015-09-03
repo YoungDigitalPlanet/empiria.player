@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.speechscore;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.speechscore.presenter.SpeechScorePresenter;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 

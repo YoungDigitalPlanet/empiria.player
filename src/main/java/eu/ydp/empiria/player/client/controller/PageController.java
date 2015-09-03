@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.controller.log.OperationLogEvent;
 import eu.ydp.empiria.player.client.controller.log.OperationLogManager;
 import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEvent;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEventHandler;

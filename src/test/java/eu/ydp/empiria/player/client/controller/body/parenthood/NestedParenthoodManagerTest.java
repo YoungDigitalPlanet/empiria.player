@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.body.parenthood;
 
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
 import org.junit.Test;
 
 import java.util.List;
