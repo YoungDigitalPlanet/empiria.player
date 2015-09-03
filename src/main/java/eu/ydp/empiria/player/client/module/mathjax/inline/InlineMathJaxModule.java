@@ -4,12 +4,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.MathJaxModuleFactory;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxPresenter;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
 import eu.ydp.empiria.player.client.module.mathjax.inline.view.InlineMathJax;
 
-public class InlineMathJaxModule extends SimpleModuleBase {
+public class InlineMathJaxModule extends InlineModuleBase {
 
     private MathJaxPresenter presenter;
 

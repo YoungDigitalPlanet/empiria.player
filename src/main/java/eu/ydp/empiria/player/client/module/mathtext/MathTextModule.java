@@ -9,9 +9,9 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.mathplayer.player.MathPlayerManager;
 import com.mathplayer.player.geom.Font;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.base.InlineModuleBase;
 
-public class MathTextModule extends SimpleModuleBase {
+public class MathTextModule extends InlineModuleBase {
 
     private static final byte BASELINE_TO_VERTICAL_ALIGN_FACTOR = -1;
     protected Panel mainPanel;

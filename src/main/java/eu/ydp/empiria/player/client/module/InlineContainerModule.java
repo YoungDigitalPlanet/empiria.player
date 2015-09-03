@@ -4,13 +4,14 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
+import eu.ydp.empiria.player.client.module.base.InlineModuleBase;
 
 import java.util.List;
 
 /**
  * Gives possibility to use inline formatting for modules implementing IInlineModule
  */
-public class InlineContainerModule extends SimpleModuleBase implements IInlineContainerModule {
+public class InlineContainerModule extends InlineModuleBase implements IInlineContainerModule {
 
     private ElementWrapperWidget widget;
     private InlineFormattingContainerType type;

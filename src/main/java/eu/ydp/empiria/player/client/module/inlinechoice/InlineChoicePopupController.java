@@ -49,7 +49,6 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
     protected boolean showEmptyOption = true;
 
-    @Inject
     private EventsBus eventsBus;
     @Inject
     private SwypeBlocker swypeBlocker;
@@ -70,6 +69,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
     @Override
     public void initModule(ModuleSocket moduleSocket, EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
         super.initModule(moduleSocket);
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED), this, scopeFactory.getCurrentPageScope());
     }

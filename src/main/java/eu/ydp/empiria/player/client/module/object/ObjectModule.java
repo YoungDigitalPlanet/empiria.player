@@ -11,6 +11,7 @@ import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
+import eu.ydp.empiria.player.client.module.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
-public class ObjectModule extends SimpleModuleBase {
+public class ObjectModule extends InlineModuleBase {
     private static final int DEFAULT_HEIGHT = 240;
     private static final int DEFAULT_WIDTH = 320;
 
