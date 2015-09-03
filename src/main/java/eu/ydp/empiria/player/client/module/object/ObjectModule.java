@@ -10,7 +10,7 @@ import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
-import eu.ydp.empiria.player.client.module.core.InlineModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;

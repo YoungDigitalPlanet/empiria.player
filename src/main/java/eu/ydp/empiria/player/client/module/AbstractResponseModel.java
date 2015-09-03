@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.module.core.flow.IStateful;
 
 import java.util.Collection;
 import java.util.List;

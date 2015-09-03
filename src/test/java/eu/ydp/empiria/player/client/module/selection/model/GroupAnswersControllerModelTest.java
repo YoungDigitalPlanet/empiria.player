@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection.model;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.selection.SelectionModuleModel;
 import eu.ydp.empiria.player.client.module.selection.controller.GroupAnswersController;
 import eu.ydp.empiria.player.client.module.selection.controller.IdentifiableAnswersByTypeFinder;

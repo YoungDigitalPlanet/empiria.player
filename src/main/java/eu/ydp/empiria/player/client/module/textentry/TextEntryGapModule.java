@@ -47,6 +47,7 @@ public class TextEntryGapModule extends TextEntryGapBase implements SourcelistCl
         initReplacements(styles);
         parseInitialText();
         fillGapWithInitial();
+
     }
 
     private void parseInitialText() {

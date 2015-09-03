@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.ILockable;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IResetable;
+import eu.ydp.empiria.player.client.module.core.flow.IActivity;
+import eu.ydp.empiria.player.client.module.core.flow.ILockable;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.IResetable;
 
 import java.util.List;
 

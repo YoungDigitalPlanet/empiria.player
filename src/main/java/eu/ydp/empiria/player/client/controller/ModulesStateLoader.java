@@ -5,9 +5,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.IStateful;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.List;

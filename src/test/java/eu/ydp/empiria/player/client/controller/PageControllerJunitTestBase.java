@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller;
 
 import com.google.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import org.junit.Before;
 
 import java.util.ArrayList;

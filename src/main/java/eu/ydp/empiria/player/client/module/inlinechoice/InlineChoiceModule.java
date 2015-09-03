@@ -6,11 +6,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.IActivity;
+import eu.ydp.empiria.player.client.module.core.flow.IStateful;
+import eu.ydp.empiria.player.client.module.core.base.InteractionModuleBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
 import java.io.Serializable;

@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.external.interaction;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.AbstractInteractionModule;
+import eu.ydp.empiria.player.client.module.core.base.AbstractInteractionModule;
 import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleBean;

@@ -52,7 +52,7 @@ import eu.ydp.empiria.player.client.gin.providers.*;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceView;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceViewImpl;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;

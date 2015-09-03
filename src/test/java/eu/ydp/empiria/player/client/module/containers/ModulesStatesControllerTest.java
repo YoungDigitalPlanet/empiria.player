@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IResetable;
+import eu.ydp.empiria.player.client.module.core.flow.IActivity;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.IResetable;
 import org.junit.Before;
 import org.junit.Test;
 

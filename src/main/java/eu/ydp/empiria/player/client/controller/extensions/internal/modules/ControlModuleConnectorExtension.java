@@ -6,9 +6,9 @@ import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsLis
 import eu.ydp.empiria.player.client.controller.extensions.types.*;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
-import eu.ydp.empiria.player.client.module.ControlModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.core.base.ControlModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.creator.ModuleCreator;
 
 import java.util.ArrayList;
 import java.util.List;

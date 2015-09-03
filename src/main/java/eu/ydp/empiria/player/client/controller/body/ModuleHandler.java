@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.body;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 
 public interface ModuleHandler {
 

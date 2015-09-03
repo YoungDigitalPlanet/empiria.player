@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.communication.sockets;
 
-import eu.ydp.empiria.player.client.module.IActivity;
+import eu.ydp.empiria.player.client.module.core.flow.IActivity;
 
 public interface ModuleInterferenceSocket extends JsSocketHolder, IActivity {
 

@@ -9,6 +9,7 @@ import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.core.base.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.collections.StackMap;

@@ -7,8 +7,12 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClient;
-import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.core.base.ControlModule;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ISimpleModule;
+import eu.ydp.empiria.player.client.module.core.flow.IGroup;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 import java.util.ArrayList;
