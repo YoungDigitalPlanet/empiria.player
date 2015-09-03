@@ -27,4 +27,13 @@ public interface FeedbackStyleNameConstants extends Constants {
     
     @DefaultStringValue("qp-feedback-text-module-close-button")
     String QP_FEEDBACK_TEXT_MODULE_CLOSE_BUTTON();
+
+    @DefaultStringValue("qp-feedback-ok")
+    String QP_FEEDBACK_OK();
+
+    @DefaultStringValue("qp-feedback-wrong")
+    String QP_FEEDBACK_WRONG();
+
+    @DefaultStringValue("qp-feedback-allok")
+    String QP_FEEDBACK_ALLOK();
 }
