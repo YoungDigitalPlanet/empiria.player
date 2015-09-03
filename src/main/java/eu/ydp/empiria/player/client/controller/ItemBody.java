@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
@@ -24,6 +23,7 @@ import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 import java.util.ArrayList;
@@ -35,7 +35,6 @@ public class ItemBody implements WidgetWorkflowListener {
 
     protected ParenthoodManager parenthood;
 
-    protected InteractionEventsListener interactionEventsListener;
     protected DisplayContentOptions options;
     protected ModuleSocket moduleSocket;
     protected ModulesRegistrySocket modulesRegistrySocket;
@@ -52,12 +51,13 @@ public class ItemBody implements WidgetWorkflowListener {
     private final IgnoredModules ignoredModules;
     private final PlayerWorkModeService playerWorkModeService;
     private final ModulesInstalatorFactory modulesInstalatorFactory;
+    private final EventsBus eventsBus;
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
-                    InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
+                    ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
                     IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
-                    ModulesInstalatorFactory modulesInstalatorFactory) {
+                    ModulesInstalatorFactory modulesInstalatorFactory, EventsBus eventsBus) {
 
         this.moduleSocket = moduleSocket;
         this.options = options;
@@ -68,20 +68,20 @@ public class ItemBody implements WidgetWorkflowListener {
 
         this.parenthood = parenthood;
 
-        this.interactionEventsListener = interactionEventsListener;
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
         this.modulesInstalatorFactory = modulesInstalatorFactory;
+        this.eventsBus = eventsBus;
     }
 
     public Widget init(Element itemBodyElement) {
 
-        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket);
         BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 
         itemBodyModule = new ItemBodyModule();
         modulesInstalator.setInitialParent(itemBodyModule);
-        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
+        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator, eventsBus);
 
         modules = new ArrayList<>();
         modules.add(itemBodyModule);

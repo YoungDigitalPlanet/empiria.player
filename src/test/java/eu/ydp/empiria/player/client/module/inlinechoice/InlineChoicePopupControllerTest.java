@@ -4,7 +4,6 @@ import com.google.gwt.junit.GWTMockUtilities;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -54,8 +53,7 @@ public class InlineChoicePopupControllerTest extends AbstractTestBaseWithoutAuto
     @Test
     public void testInitModuleModuleSocketInteractionEventsListener() {
         ModuleSocket moduleSocket = mock(ModuleSocket.class);
-        InteractionEventsListener moduleInteractionListener = mock(InteractionEventsListener.class);
-        instance.initModule(moduleSocket, moduleInteractionListener);
+        instance.initModule(moduleSocket, eventsBus);
         verify(eventsBus)
                 .addHandler(Matchers.eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED)), Matchers.eq(instance), Matchers.any(EventScope.class));
     }

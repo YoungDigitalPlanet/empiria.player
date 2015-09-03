@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.components.ElementWrapperWidget;
+import eu.ydp.empiria.player.client.module.core.InlineModuleBase;
 
 import java.util.List;
 

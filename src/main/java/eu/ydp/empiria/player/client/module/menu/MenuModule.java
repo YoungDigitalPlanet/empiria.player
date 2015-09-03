@@ -32,10 +32,8 @@ public class MenuModule extends ContainerModuleBase implements PlayerEventHandle
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
-        super.initModule(element, moduleSocket, bgs);
-
-        ReportTableGenerator reportTableGenerator = reportModuleFactory.createReportTableGenerator(bgs);
+    public void initModule(Element element) {
+        ReportTableGenerator reportTableGenerator = reportModuleFactory.createReportTableGenerator(getBodyGenerator());
         ReportTable table = reportTableGenerator.generate(element);
         presenter.setReportTable(table);
     }

@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.menu;
 
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
@@ -17,9 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
@@ -59,7 +55,7 @@ public class MenuModuleTest {
         when(reportTableGenerator.generate(element)).thenReturn(reportTable);
 
         // when
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+        testObj.initModule(element, moduleSocket, bodyGeneratorSocket, eventsBus);
 
         // then
         verify(presenter).setReportTable(reportTable);
@@ -71,7 +67,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+        testObj.initModule(element, moduleSocket, bodyGeneratorSocket, eventsBus);
 
         // when
         testObj.onPlayerEvent(playerEvent);
@@ -86,7 +82,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.BEFORE_FLOW);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+        testObj.initModule(element, moduleSocket, bodyGeneratorSocket, eventsBus);
 
         // when
         testObj.onPlayerEvent(playerEvent);
@@ -101,7 +97,7 @@ public class MenuModuleTest {
         PlayerEvent playerEvent = mock(PlayerEvent.class);
         when(playerEvent.getType()).thenReturn(PlayerEventTypes.PAGE_LOADED);
 
-        testObj.initModule(element, moduleSocket, bodyGeneratorSocket);
+        testObj.initModule(element, moduleSocket, bodyGeneratorSocket, eventsBus);
 
         // when
         testObj.onPlayerEvent(playerEvent);

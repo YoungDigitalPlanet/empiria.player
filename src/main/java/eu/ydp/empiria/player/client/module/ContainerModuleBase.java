@@ -2,15 +2,20 @@ package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 import java.util.List;
 
 public abstract class ContainerModuleBase extends ModuleBase implements ISingleViewWithBodyModule {
 
+    private BodyGeneratorSocket bodyGenerator;
+
     @Override
-    public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bgs) {
-        initModule(ms);
+    public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bodyGenerator, EventsBus eventsBus) {
+        this.bodyGenerator = bodyGenerator;
+        initModule(ms, eventsBus);
         readAttributes(element);
+        initModule(element);
         applyIdAndClassToView(getView());
     }
 
@@ -23,4 +28,10 @@ public abstract class ContainerModuleBase extends ModuleBase implements ISingleV
     public List<HasParent> getNestedChildren() {
         return getModuleSocket().getNestedChildren(this);
     }
+
+    protected BodyGeneratorSocket getBodyGenerator() {
+        return bodyGenerator;
+    }
+
+    public abstract void initModule(Element element);
 }

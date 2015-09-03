@@ -3,10 +3,10 @@ package eu.ydp.empiria.player.client.controller.feedback.processor;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackUrlAction;
 import eu.ydp.empiria.player.client.module.feedback.image.ImageFeedback;
 
 public class ImageActionProcessor extends AbstractActionProcessor {

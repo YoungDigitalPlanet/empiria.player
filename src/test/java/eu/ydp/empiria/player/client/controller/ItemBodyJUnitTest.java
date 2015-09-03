@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.controller;
 
 import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.IInteractionModule;
 import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -31,8 +30,6 @@ public class ItemBodyJUnitTest {
     private ModuleSocket moduleSocket;
     @Mock
     private ModuleHandlerManager moduleHandlerManager;
-    @Mock
-    private InteractionEventsListener interactionEventsListener;
     @Mock
     private ModulesRegistrySocket modulesRegistrySocket;
     @Mock

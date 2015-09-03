@@ -1,7 +1,8 @@
 package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -48,11 +49,11 @@ public class TextActionProcessor extends AbstractActionProcessor {
     }
 
     private native JavaScriptObject createCallback(Widget widget, FeedbackMark mark)/*-{
-		var that = this;
-		return function () {
-			that.@TextActionProcessor::showFeedback(*)(widget, mark);
-		};
-	}-*/;
+        var that = this;
+        return function () {
+            that.@TextActionProcessor::showFeedback(*)(widget, mark);
+        };
+    }-*/;
 
     private void showFeedback(Widget widget, FeedbackMark mark) {
         feedbackPresenter.show(widget, mark);
@@ -78,7 +79,8 @@ public class TextActionProcessor extends AbstractActionProcessor {
 
     private ClickHandler createCloseButtonClickHandler() {
         return new ClickHandler() {
-            @Override public void onClick(ClickEvent event) {
+            @Override
+            public void onClick(ClickEvent event) {
                 clearFeedback();
             }
         };

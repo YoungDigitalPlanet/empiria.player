@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGenerator;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
@@ -25,7 +24,6 @@ public class ItemModuleSocket implements ModuleSocket {
     private final Item item;
     private final YJsJsonConverter yJsJsonConverter;
     private final ModulesRegistrySocket modulesRegistrySocket;
-    private final InteractionEventsListener interactionEventsListener;
     private final InlineBodyGeneratorFactory inlineBodyGeneratorFactory;
 
     private JSONArray state;
@@ -34,11 +32,10 @@ public class ItemModuleSocket implements ModuleSocket {
 
     @Inject
     public ItemModuleSocket(@Assisted Item item, YJsJsonConverter yJsJsonConverter, ModulesRegistrySocket modulesRegistrySocket,
-                            InteractionEventsListener interactionEventsListener, InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
+                            InlineBodyGeneratorFactory inlineBodyGeneratorFactory) {
         this.item = item;
         this.yJsJsonConverter = yJsJsonConverter;
         this.modulesRegistrySocket = modulesRegistrySocket;
-        this.interactionEventsListener = interactionEventsListener;
         this.inlineBodyGeneratorFactory = inlineBodyGeneratorFactory;
     }
 
@@ -50,7 +47,7 @@ public class ItemModuleSocket implements ModuleSocket {
     @Override
     public InlineBodyGeneratorSocket getInlineBodyGeneratorSocket() {
         if (inlineBodyGenerator == null) {
-            inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, this.item.options, interactionEventsListener, itemBody.getParenthood());
+            inlineBodyGenerator = inlineBodyGeneratorFactory.createInlineBodyGenerator(modulesRegistrySocket, this, this.item.options, itemBody.getParenthood());
         }
         return inlineBodyGenerator;
     }

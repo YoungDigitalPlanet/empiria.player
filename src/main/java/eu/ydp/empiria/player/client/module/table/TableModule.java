@@ -40,9 +40,7 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bgs) {
-        super.initModule(element, moduleSocket, bgs);
-
+    public void initModule(Element element) {
         FlexTable table = new FlexTable();
         table.setStyleName(styleNames.QP_TABLE_TABLE());
 
@@ -68,7 +66,7 @@ public class TableModule extends AbstractActivityContainerModuleBase implements 
             for (int d = 0; d < tdNodes.getLength(); d++) {
                 Panel dPanel = new FlowPanel();
                 dPanel.setStyleName(styleNames.QP_TABLE_CELL());
-                bgs.generateBody(tdNodes.item(d), dPanel);
+                getBodyGenerator().generateBody(tdNodes.item(d), dPanel);
                 table.setWidget(r, d, dPanel);
 
                 int colspan = 1;

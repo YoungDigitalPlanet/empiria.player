@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.external.presentation;
 
 import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +52,7 @@ public class ExternalPresentationModuleTest {
     @Test
     public void shouldReturnPresentationNameAsModuleIdentifier() {
         // given
-        testObj.initModule(element, mock(ModuleSocket.class), mock(InteractionEventsListener.class));
+        testObj.initModule(element, mock(ModuleSocket.class), mock(EventsBus.class));
 
         // when
         String actual = testObj.getIdentifier();

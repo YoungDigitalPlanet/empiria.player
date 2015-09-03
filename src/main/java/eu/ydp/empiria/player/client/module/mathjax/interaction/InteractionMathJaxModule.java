@@ -42,14 +42,12 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGenerator) {
-        super.initModule(element, moduleSocket, bodyGenerator);
-
+    public void initModule(Element element) {
         initPresenter(element);
-        generateGaps(element, bodyGenerator);
+        generateGaps(element);
     }
 
-    private void generateGaps(Element element, BodyGeneratorSocket bodyGenerator) {
+    private void generateGaps(Element element) {
         Panel gapContainer = new FlowPanel();
         gapContainer.setVisible(false);
         rootPanel.getRootPanel().add(gapContainer);
@@ -57,7 +55,7 @@ public class InteractionMathJaxModule extends AbstractActivityContainerModuleBas
         NodeList gaps = element.getElementsByTagName("gap");
         for (int i = 0; i < gaps.getLength(); i++) {
             Node gap = gaps.item(i);
-            bodyGenerator.processNode(gap, gapContainer);
+            getBodyGenerator().processNode(gap, gapContainer);
         }
     }
 
