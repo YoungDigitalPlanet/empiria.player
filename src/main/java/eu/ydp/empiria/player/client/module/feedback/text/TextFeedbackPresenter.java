@@ -9,7 +9,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.feedback.*;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
+import eu.ydp.empiria.player.client.controller.feedback.FeedbackMarkStyleProvider;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
@@ -17,16 +18,17 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     private static TextFeedbackViewUiBinder uiBinder = GWT.create(TextFeedbackViewUiBinder.class);
 
-    @Inject
     private FeedbackStyleNameConstants feedbackStyleNameConstants;
-    @Inject
     private FeedbackMarkStyleProvider typeStyleProvider;
 
     @UiTemplate("TextFeedbackView.ui.xml")
     interface TextFeedbackViewUiBinder extends UiBinder<Widget, TextFeedbackPresenter> {
     }
 
-    public TextFeedbackPresenter() {
+    @Inject
+    public TextFeedbackPresenter(FeedbackStyleNameConstants feedbackStyleNameConstants, FeedbackMarkStyleProvider typeStyleProvider) {
+        this.feedbackStyleNameConstants = feedbackStyleNameConstants;
+        this.typeStyleProvider = typeStyleProvider;
         initWidget(uiBinder.createAndBindUi(this));
     }
 
