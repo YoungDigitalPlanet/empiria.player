@@ -43,7 +43,7 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 
         // then
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
-        verify(textProcessor).processSingleAction(argument.capture());
+        verify(textProcessor).processSingleAction(argument.capture(), eq(FeedbackMark.OK));
         FeedbackAction processedAction = argument.getValue();
 
         assertThat(argument.getAllValues().size(), is(equalTo(1)));
@@ -74,7 +74,7 @@ public class TextActionProcessingJUnitTest extends ProcessingFeedbackActionTestB
 
         // then
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
-        verify(textProcessor, times(2)).processSingleAction(argument.capture());
+        verify(textProcessor, times(2)).processSingleAction(argument.capture(), eq(FeedbackMark.OK));
 
         verify(mathJaxNative, times(2)).renderMath(Mockito.isA(JavaScriptObject.class));
 

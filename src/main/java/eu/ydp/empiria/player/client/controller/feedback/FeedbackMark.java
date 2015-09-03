@@ -1,13 +1,24 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 public enum FeedbackMark {
-    NONE, CORRECT, WRONG;
+    ALL_OK("allOk"), OK("ok"), WRONG("wrong"), DEFAULT("");
 
-    public static FeedbackMark fromString(String s) {
-        if (s.toUpperCase().compareTo("CORRECT") == 0)
-            return CORRECT;
-        if (s.toUpperCase().compareTo("WRONG") == 0)
-            return WRONG;
-        return NONE;
+    private String name;
+
+    private FeedbackMark(String name) {
+        this.name = name;
+    }
+
+    public static FeedbackMark getMark(FeedbackProperties properties) {
+
+        for(FeedbackMark mark : values()) {
+            FeedbackPropertyName propertyName = FeedbackPropertyName.getPropertyName(mark.name);
+
+            if(properties.getBooleanProperty(propertyName)) {
+                return mark;
+            }
+        }
+
+        return DEFAULT;
     }
 }

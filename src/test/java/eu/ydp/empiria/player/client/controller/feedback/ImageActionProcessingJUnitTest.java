@@ -1,20 +1,16 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import com.google.common.collect.Lists;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
 import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.module.*;
+import java.util.List;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTestBase {
 
@@ -23,7 +19,7 @@ public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTest
     @Test
     public void shouldProcessSingleImageAction() { // given
         List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addUrlAction(ActionType.IMAGE, "good.jpg")
-                .getList();
+                                                        .getList();
 
         initializeWithActions(actions);
         initializeModuleHierarchyWithImageProcessor();
@@ -33,7 +29,7 @@ public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 
         // then
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
-        verify(imageProcessor).processSingleAction(argument.capture());
+        verify(imageProcessor).processSingleAction(argument.capture(), eq(FeedbackMark.OK));
         FeedbackAction processedAction = argument.getValue();
 
         assertThat(argument.getAllValues().size(), is(equalTo(1)));
@@ -46,7 +42,7 @@ public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTest
     public void shouldProcessManyImageActions() {
         // given
         List<FeedbackAction> actions = ActionListBuilder.create().addUrlAction(ActionType.NARRATION, "good.mp3").addUrlAction(ActionType.IMAGE, "good.jpg")
-                .addUrlAction(ActionType.NARRATION, "allok.mp3").addUrlAction(ActionType.IMAGE, "bad.jpg").getList();
+                                                        .addUrlAction(ActionType.NARRATION, "allok.mp3").addUrlAction(ActionType.IMAGE, "bad.jpg").getList();
 
         initializeWithActions(actions);
         initializeModuleHierarchyWithImageProcessor();
@@ -56,7 +52,7 @@ public class ImageActionProcessingJUnitTest extends ProcessingFeedbackActionTest
 
         // then
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
-        verify(imageProcessor, times(2)).processSingleAction(argument.capture());
+        verify(imageProcessor, times(2)).processSingleAction(argument.capture(), eq(FeedbackMark.OK));
         assertThat(collector.getActions().size(), is(equalTo(0)));
         List<FeedbackAction> processedActions = argument.getAllValues();
 

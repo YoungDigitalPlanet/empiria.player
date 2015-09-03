@@ -29,17 +29,19 @@ public class ModuleFeedbackProcessor {
     private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
     protected FeedbackActionCollector feedbackActionCollector;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
+    private FeedbackMarkStyleProvider typeProvider;
 
     @Inject
     public ModuleFeedbackProcessor(@Assisted InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackRegistry feedbackRegistry,
-                                   FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
-                                   Provider<FeedbackActionCollector> feedbackActionCollectorProvider) {
+            FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
+            Provider<FeedbackActionCollector> feedbackActionCollectorProvider, FeedbackMarkStyleProvider typeProvider) {
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         this.feedbackRegistry = feedbackRegistry;
         this.matcher = matcher;
         this.soundProcessor = soundProcessor;
         this.propertiesCollector = propertiesCollector;
         this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
+        this.typeProvider = typeProvider;
         initializeFeedbackActionCollector();
     }
 
@@ -101,10 +103,12 @@ public class ModuleFeedbackProcessor {
 
     protected void processActions(IModule module) {
         List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
+        FeedbackProperties sourceProperties = feedbackActionCollector.getSourceProperties(module);
+        FeedbackMark mark = FeedbackMark.getMark(sourceProperties);
 
         for (FeedbackActionProcessor processor : processors) {
             List<FeedbackAction> actions = feedbackActionCollector.getActions();
-            List<FeedbackAction> processedActions = processor.processActions(actions, inlineBodyGeneratorSocket);
+            List<FeedbackAction> processedActions = processor.processActions(actions, inlineBodyGeneratorSocket, mark);
             feedbackActionCollector.removeActions(processedActions);
         }
     }

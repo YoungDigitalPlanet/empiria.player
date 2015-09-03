@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.feedback.*;
 import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
@@ -18,6 +19,8 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
 
     @Inject
     private FeedbackStyleNameConstants feedbackStyleNameConstants;
+    @Inject
+    private FeedbackMarkStyleProvider typeStyleProvider;
 
     @UiTemplate("TextFeedbackView.ui.xml")
     interface TextFeedbackViewUiBinder extends UiBinder<Widget, TextFeedbackPresenter> {
@@ -33,9 +36,10 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     CustomPushButton feedbackCloseButton;
 
     @Override
-    public void show(Widget widget) {
+    public void show(Widget widget, FeedbackMark mark) {
         addNewFeedback(widget);
-        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
+        clearStyleNames();
+        addStyleName(typeStyleProvider.getStyleName(mark));
     }
 
     @Override
@@ -46,11 +50,17 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     @Override
     public void addCloseButtonClickHandler(ClickHandler handler) {
         feedbackCloseButton.addClickHandler(handler);
-
     }
 
     private void addNewFeedback(Widget widget) {
         feedbackTextPanel.clear();
         feedbackTextPanel.add(widget);
+    }
+
+    private void clearStyleNames() {
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_ALLOK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_OK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_WRONG());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
     }
 }

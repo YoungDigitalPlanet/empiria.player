@@ -8,10 +8,18 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.feedback.*;
+import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 
 public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
 
     private static ImageFeedbackViewUiBinder uiBinder = GWT.create(ImageFeedbackViewUiBinder.class);
+
+    @Inject
+    private FeedbackStyleNameConstants feedbackStyleNameConstants;
+    @Inject
+    private FeedbackMarkStyleProvider typeStyleProvider;
 
     @UiTemplate("ImageFeedbackView.ui.xml")
     interface ImageFeedbackViewUiBinder extends UiBinder<Widget, ImageFeedbackPresenter> {
@@ -33,12 +41,9 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
     }
 
     @Override
-    public String getUrl() {
-        return feedbackImage.getUrl();
-    }
-
-    @Override
-    public void show() {
+    public void show(FeedbackMark mark) {
+        clearStyleNames();
+        addStyleName(typeStyleProvider.getStyleName(mark));
         this.setVisible(true);
     }
 
@@ -47,4 +52,9 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
         this.setVisible(false);
     }
 
+    private void clearStyleNames() {
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_ALLOK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_OK());
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_WRONG());
+    }
 }
