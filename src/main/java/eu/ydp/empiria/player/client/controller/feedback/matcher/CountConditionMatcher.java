@@ -9,13 +9,15 @@ import eu.ydp.gwtutil.client.operator.MatchOperator;
 
 public class CountConditionMatcher extends ConditionMatcherBase implements FeedbackMatcher {
 
+    private final CountFeedbackProperties countFeedbackProperties;
     private CountConditionBean condition;
 
     private MatchOperator operator;
 
     @Inject
-    public CountConditionMatcher(@Assisted MatcherRegistry registry) {
+    public CountConditionMatcher(@Assisted MatcherRegistry registry, CountFeedbackProperties countFeedbackProperties) {
         super(registry);
+        this.countFeedbackProperties = countFeedbackProperties;
     }
 
     @Override
@@ -24,14 +26,20 @@ public class CountConditionMatcher extends ConditionMatcherBase implements Feedb
 
         if (condition instanceof CountConditionBean) {
             this.condition = (CountConditionBean) condition;
-            this.operator = MatchOperator.getOperator(this.condition.getOperator());
-            matches = operator.match(getCountValue(this.condition.getCondition()), this.condition.getCount());
+            FeedbackCondition childCondition = this.condition.getCondition();
+            FeedbackMatcher feedbackMatcher = getMatcher(childCondition);
+            boolean match = feedbackMatcher.match(childCondition, properties);
+            if (match) {
+                countFeedbackProperties.add(condition);
+                this.operator = MatchOperator.getOperator(this.condition.getOperator());
+                matches = operator.match(getCountValue(condition), this.condition.getCount());
+            }
         }
 
         return matches;
     }
 
     private Integer getCountValue(FeedbackCondition condition) {
-        return 0;
+        return countFeedbackProperties.getCount(condition);
     }
 }
