@@ -22,7 +22,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 
         processor.processActions(source);
-        verify(soundProcessor).processSingleAction(argument.capture());
+        verify(soundProcessor).processSingleAction(argument.capture(), isA(FeedbackMark.class));
         FeedbackAction processedAction = argument.getValue();
 
         assertThat(argument.getAllValues().size(), is(equalTo(1)));
@@ -45,7 +45,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 
         processor.processActions(source);
-        verify(soundProcessor, times(2)).processSingleAction(argument.capture());
+        verify(soundProcessor, times(2)).processSingleAction(argument.capture(), isA(FeedbackMark.class));
         List<FeedbackAction> processedActions = argument.getAllValues();
 
         assertThat(processedActions.size(), is(equalTo(2)));

@@ -103,7 +103,8 @@ public class ModuleFeedbackProcessor {
 
     protected void processActions(IModule module) {
         List<FeedbackActionProcessor> processors = getFeedbackProcessors(module);
-        FeedbackMark mark = FeedbackMark.getMark(feedbackActionCollector.getSourceProperties(module));
+        FeedbackProperties sourceProperties = feedbackActionCollector.getSourceProperties(module);
+        FeedbackMark mark = FeedbackMark.getMark(sourceProperties);
 
         for (FeedbackActionProcessor processor : processors) {
             List<FeedbackAction> actions = feedbackActionCollector.getActions();

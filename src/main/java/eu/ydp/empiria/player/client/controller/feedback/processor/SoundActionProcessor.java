@@ -29,7 +29,7 @@ public class SoundActionProcessor implements FeedbackEventHandler, FeedbackActio
 
         for (FeedbackAction action : actions) {
             if (canProcessAction(action)) {
-                processSingleAction(action);
+                processSingleAction(action, mark);
                 processedActions.add(action);
             }
         }
@@ -37,7 +37,8 @@ public class SoundActionProcessor implements FeedbackEventHandler, FeedbackActio
         return processedActions;
     }
 
-    protected boolean canProcessAction(FeedbackAction action) {
+    @Override
+    public boolean canProcessAction(FeedbackAction action) {
         boolean canProcess = false;
 
         if (action instanceof FeedbackUrlAction) {
@@ -48,7 +49,8 @@ public class SoundActionProcessor implements FeedbackEventHandler, FeedbackActio
         return canProcess;
     }
 
-    protected void processSingleAction(FeedbackAction action) {
+    @Override
+    public void processSingleAction(FeedbackAction action, FeedbackMark mark) {
         if (action instanceof ShowUrlAction && !isMuted) {
             ShowUrlAction urlAction = ((ShowUrlAction) action);
 

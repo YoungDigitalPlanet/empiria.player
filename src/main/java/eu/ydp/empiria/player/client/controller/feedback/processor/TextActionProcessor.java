@@ -5,10 +5,8 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
@@ -21,8 +19,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
     private FeedbackBlend feedbackBlend;
 
     @Inject
-    public TextActionProcessor(TextFeedback feedbackPresenter, MathJaxNative mathJaxNative,
-            FeedbackBlend feedbackBlend) {
+    public TextActionProcessor(TextFeedback feedbackPresenter, MathJaxNative mathJaxNative, FeedbackBlend feedbackBlend) {
         this.feedbackPresenter = feedbackPresenter;
         this.mathJaxNative = mathJaxNative;
         this.feedbackBlend = feedbackBlend;
@@ -45,7 +42,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
     public void processSingleAction(FeedbackAction action, FeedbackMark mark) {
         ShowTextAction textAction = (ShowTextAction) action;
         Element element = textAction.getContent().getValue();
-        Widget widget = inlineBodyGeneratorSocket.generateInlineBody(element);
+        Widget widget = inlineBodyGenerator.generateInlineBody(element);
         JavaScriptObject mathJaxCallback = createCallback(widget, mark);
         mathJaxNative.renderMath(mathJaxCallback);
     }
@@ -69,15 +66,14 @@ public class TextActionProcessor extends AbstractActionProcessor {
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-        initModule(ms);
+    public void initModule(Element element) {
         feedbackPresenter.hide();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
     }
 
     @Override
     public Widget getView() {
-        return (Widget) feedbackPresenter;
+        return feedbackPresenter.asWidget();
     }
 
     private ClickHandler createCloseButtonClickHandler() {

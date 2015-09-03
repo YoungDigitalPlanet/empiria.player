@@ -15,7 +15,7 @@ public class FeedbackMarkTest {
     }
 
     @Test
-    public void shouldGetAllOkFeedbackMark() {
+    public void shouldGetAllOkMark() {
         // given
         when(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK)).thenReturn(true);
 
@@ -27,7 +27,20 @@ public class FeedbackMarkTest {
     }
 
     @Test
-    public void shouldGetOkFeedbackMark() {
+    public void shouldGetAllOkMark_whenOkAndAllOkIsTrue() {
+        // given
+        when(properties.getBooleanProperty(FeedbackPropertyName.ALL_OK)).thenReturn(true);
+        when(properties.getBooleanProperty(FeedbackPropertyName.OK)).thenReturn(true);
+
+        // when
+        FeedbackMark mark = FeedbackMark.getMark(properties);
+
+        // then
+        assertThat(mark).isEqualTo(FeedbackMark.ALL_OK);
+    }
+
+    @Test
+    public void shouldGetOkMark() {
         // given
         when(properties.getBooleanProperty(FeedbackPropertyName.OK)).thenReturn(true);
 
@@ -39,7 +52,7 @@ public class FeedbackMarkTest {
     }
 
     @Test
-    public void shouldGetWrongFeedbackMark() {
+    public void shouldGetWrongMark() {
         // given
         when(properties.getBooleanProperty(FeedbackPropertyName.WRONG)).thenReturn(true);
 
@@ -51,7 +64,7 @@ public class FeedbackMarkTest {
     }
 
     @Test
-    public void shouldGetDefaultFeedbackMark() {
+    public void shouldGetDefaultMark() {
         // when
         FeedbackMark mark = FeedbackMark.getMark(properties);
 

@@ -16,4 +16,8 @@ public interface FeedbackActionProcessor {
      */
     List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackMark mark);
 
+    boolean canProcessAction(FeedbackAction action);
+
+    void processSingleAction(FeedbackAction action, FeedbackMark mark);
+
 }

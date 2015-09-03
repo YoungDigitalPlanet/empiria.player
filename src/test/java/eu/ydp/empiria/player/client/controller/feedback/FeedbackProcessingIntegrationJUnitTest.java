@@ -122,7 +122,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
         processor.processFeedbacks(variables, (IUniqueModule) sender);
 
         ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
-        verify(processor.soundProcessor, times(1)).processActions(argument.capture(), Matchers.any(InlineBodyGeneratorSocket.class), Matchers.any(FeedbackMark.class));
+        verify(processor.soundProcessor, times(1)).processActions(argument.capture(), Matchers.isA(InlineBodyGeneratorSocket.class), Matchers.isA(FeedbackMark.class));
 
         return argument.getValue();
     }

@@ -44,14 +44,13 @@ public class ImageActionProcessor extends AbstractActionProcessor {
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket ms, InteractionEventsListener iel) {
-        initModule(ms);
+    public void initModule(Element element) {
         feedbackPresenter.hide();
     }
 
     @Override
     public Widget getView() {
-        return (Widget) feedbackPresenter;
+        return feedbackPresenter.asWidget();
     }
 
 }

@@ -41,11 +41,6 @@ public class ImageFeedbackPresenter extends Composite implements ImageFeedback {
     }
 
     @Override
-    public String getUrl() {
-        return feedbackImage.getUrl();
-    }
-
-    @Override
     public void show(FeedbackMark mark) {
         clearStyleNames();
         addStyleName(typeStyleProvider.getStyleName(mark));
