@@ -22,9 +22,8 @@ import com.mathplayer.player.interaction.GapIdentifier;
 import com.mathplayer.player.interaction.InteractionManager;
 import com.mathplayer.player.model.interaction.CustomFieldDescription;
 import eu.ydp.empiria.player.client.controller.body.BodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
@@ -36,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MathModule extends AbstractActivityContainerModuleBase implements ILifecycleModule {
+public class MathModule extends AbstractActivityContainerModuleBase implements LifecycleModule {
 
     private static final String MINUS = "-";
 

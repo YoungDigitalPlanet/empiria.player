@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.registry;
 
 import com.google.gwt.xml.client.Element;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 
 public interface ModulesRegistrySocket {
 

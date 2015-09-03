@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
         >
-    <ui:with type="eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants"
+    <ui:with type="eu.ydp.empiria.player.client.module.core.answer.MarkAnswersStyleNameConstants"
              field="mark"></ui:with>
     <ui:with type="eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants"
              field="choice"></ui:with>

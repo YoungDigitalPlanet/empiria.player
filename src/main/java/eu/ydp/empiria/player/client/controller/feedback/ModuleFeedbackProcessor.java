@@ -10,8 +10,8 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 
 import java.util.Collection;
 import java.util.List;

@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.bookmark;
 
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkProcessorExtension.Mode;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IInteractionModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.collections.ListCreator;

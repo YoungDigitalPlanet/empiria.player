@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 import com.google.gwt.xml.client.Node;
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.gwtutil.xml.XMLParser;
 import org.junit.Before;
 import org.junit.Test;

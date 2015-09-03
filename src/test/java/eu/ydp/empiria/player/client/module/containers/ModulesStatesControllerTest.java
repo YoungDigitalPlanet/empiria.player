@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IResetable;
+import eu.ydp.empiria.player.client.module.core.flow.Activity;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.Resetable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,8 +26,8 @@ public class ModulesStatesControllerTest {
         // given
         boolean show = true;
 
-        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
-        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
+        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
+        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
         IModule notActivityModule = mock(IModule.class);
 
         modules = Lists.newArrayList(activityModule1, activityModule2);
@@ -36,8 +36,8 @@ public class ModulesStatesControllerTest {
         testObj.showCorrectAnswers(modules, show);
 
         // then
-        verify((IActivity) activityModule1).showCorrectAnswers(show);
-        verify((IActivity) activityModule2).showCorrectAnswers(show);
+        verify((Activity) activityModule1).showCorrectAnswers(show);
+        verify((Activity) activityModule2).showCorrectAnswers(show);
         verifyZeroInteractions(notActivityModule);
     }
 
@@ -46,8 +46,8 @@ public class ModulesStatesControllerTest {
         // given
         boolean mark = true;
 
-        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
-        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
+        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
+        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
         IModule notActivityModule = mock(IModule.class);
 
         modules = Lists.newArrayList(activityModule1, activityModule2);
@@ -56,8 +56,8 @@ public class ModulesStatesControllerTest {
         testObj.markAnswers(modules, mark);
 
         // then
-        verify((IActivity) activityModule1).markAnswers(mark);
-        verify((IActivity) activityModule2).markAnswers(mark);
+        verify((Activity) activityModule1).markAnswers(mark);
+        verify((Activity) activityModule2).markAnswers(mark);
         verifyZeroInteractions(notActivityModule);
     }
 
@@ -66,8 +66,8 @@ public class ModulesStatesControllerTest {
         // given
         boolean state = true;
 
-        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
-        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(IActivity.class));
+        IModule activityModule1 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
+        IModule activityModule2 = mock(IModule.class, withSettings().extraInterfaces(Activity.class));
         IModule notActivityModule = mock(IModule.class);
 
         modules = Lists.newArrayList(activityModule1, activityModule2);
@@ -76,8 +76,8 @@ public class ModulesStatesControllerTest {
         testObj.lock(modules, state);
 
         // then
-        verify((IActivity) activityModule1).lock(state);
-        verify((IActivity) activityModule2).lock(state);
+        verify((Activity) activityModule1).lock(state);
+        verify((Activity) activityModule2).lock(state);
         verifyZeroInteractions(notActivityModule);
     }
 
@@ -85,8 +85,8 @@ public class ModulesStatesControllerTest {
     public void shouldResetModules() {
         // given
 
-        IModule resetableModule1 = mock(IModule.class, withSettings().extraInterfaces(IResetable.class));
-        IModule resetableModule2 = mock(IModule.class, withSettings().extraInterfaces(IResetable.class));
+        IModule resetableModule1 = mock(IModule.class, withSettings().extraInterfaces(Resetable.class));
+        IModule resetableModule2 = mock(IModule.class, withSettings().extraInterfaces(Resetable.class));
         IModule notResetableModule = mock(IModule.class);
 
         modules = Lists.newArrayList(resetableModule1, resetableModule2);
@@ -95,8 +95,8 @@ public class ModulesStatesControllerTest {
         testObj.reset(modules);
 
         // then
-        verify((IResetable) resetableModule1).reset();
-        verify((IResetable) resetableModule2).reset();
+        verify((Resetable) resetableModule1).reset();
+        verify((Resetable) resetableModule2).reset();
         verifyZeroInteractions(notResetableModule);
     }
 

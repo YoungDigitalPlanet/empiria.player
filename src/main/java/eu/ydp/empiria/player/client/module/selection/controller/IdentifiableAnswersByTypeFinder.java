@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.selection.controller;
 
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.components.choicebutton.Identifiable;
 
 import java.util.ArrayList;

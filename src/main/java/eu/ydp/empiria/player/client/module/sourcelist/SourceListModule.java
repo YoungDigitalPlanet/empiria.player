@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.dragdrop.Sourcelist;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistItemValue;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;

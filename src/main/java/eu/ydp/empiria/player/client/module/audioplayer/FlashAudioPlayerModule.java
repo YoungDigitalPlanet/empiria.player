@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ParentedModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.ParentedModuleBase;
 import eu.ydp.empiria.player.client.module.object.impl.flash.FlashLocalAudioImpl;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.xml.XMLUtils;

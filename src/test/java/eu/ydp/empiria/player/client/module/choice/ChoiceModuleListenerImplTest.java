@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.choice;
 
-import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.choice.presenter.ChoiceModulePresenter;
 import eu.ydp.empiria.player.client.module.choice.presenter.SimpleChoicePresenter;
 import org.junit.Test;

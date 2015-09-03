@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.events.delivery;
 import com.google.gwt.core.client.JavaScriptObject;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.ActivityProcessingEvent;
 import eu.ydp.empiria.player.client.controller.flow.processing.events.FlowProcessingEvent;
-import eu.ydp.empiria.player.client.module.IInteractionModule;
+import eu.ydp.empiria.player.client.module.core.base.IInteractionModule;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 

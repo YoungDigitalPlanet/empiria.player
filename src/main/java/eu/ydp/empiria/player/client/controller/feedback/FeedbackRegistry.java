@@ -9,7 +9,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 
 import java.util.List;
 import java.util.Map;

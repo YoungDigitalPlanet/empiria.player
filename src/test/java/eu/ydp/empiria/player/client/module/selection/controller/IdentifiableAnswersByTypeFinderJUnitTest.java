@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.selection.controller;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.components.choicebutton.Identifiable;
 import org.junit.After;
 import org.junit.Before;

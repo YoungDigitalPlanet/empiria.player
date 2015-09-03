@@ -12,8 +12,8 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.multiview.touch.TouchController;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.inject.Instance;
-import eu.ydp.empiria.player.client.module.ILifecycleModule;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.simulation.soundjs.SoundJsPlugin;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -26,7 +26,7 @@ import eu.ydp.gwtcreatejs.client.loader.Manifest;
 import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.PAGE_CHANGE;
 import static eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes.WINDOW_RESIZED;
 
-public class SimulationModule extends SimpleModuleBase implements ILifecycleModule, ManifestLoadHandler, PlayerEventHandler {
+public class SimulationModule extends SimpleModuleBase implements LifecycleModule, ManifestLoadHandler, PlayerEventHandler {
 
     protected final class TouchReservationHandler implements TouchStartHandler {
         @Override

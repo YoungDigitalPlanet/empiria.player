@@ -16,6 +16,11 @@ import eu.ydp.empiria.player.client.controller.workmode.WorkModeClientType;
 import eu.ydp.empiria.player.client.gin.factory.ModulesInstalatorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.AssessmentBodyModule;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.pageinpage.PageInPageModule;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -98,8 +103,8 @@ public class AssessmentBody implements WidgetWorkflowListener {
     @Override
     public void onLoad() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyLoad();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyLoad();
             }
         }
     }
@@ -107,16 +112,16 @@ public class AssessmentBody implements WidgetWorkflowListener {
     @Override
     public void onUnload() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyUnload();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyUnload();
             }
         }
     }
 
     public void setUp() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onSetUp();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onSetUp();
             }
             workModeProceeding(currModule);
         }
@@ -130,16 +135,16 @@ public class AssessmentBody implements WidgetWorkflowListener {
 
     public void start() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onStart();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onStart();
             }
         }
     }
 
     public void close() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onClose();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onClose();
             }
         }
     }

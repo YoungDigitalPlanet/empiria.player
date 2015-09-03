@@ -5,12 +5,16 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.Lockable;
+import eu.ydp.empiria.player.client.module.core.flow.Resetable;
+import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 import eu.ydp.empiria.player.client.module.external.common.ExternalFolderNameProvider;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.resources.EmpiriaPaths;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
-public class ExternalPresentationModule extends SimpleModuleBase implements ILockable, IResetable, ExternalFolderNameProvider,
+public class ExternalPresentationModule extends SimpleModuleBase implements Lockable, Resetable, ExternalFolderNameProvider,
         StatefulModule {
 
     public static final String SOURCE_ATTRIBUTE = "src";

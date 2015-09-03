@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.internal.dragdrop;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;

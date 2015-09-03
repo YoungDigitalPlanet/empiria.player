@@ -7,8 +7,11 @@ import static org.mockito.Mockito.*;
 import com.google.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
-import eu.ydp.empiria.player.client.module.*;
+
 import java.util.List;
+
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 

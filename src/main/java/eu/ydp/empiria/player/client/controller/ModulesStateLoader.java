@@ -5,9 +5,9 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class ModulesStateLoader {
                 JSONValue moduleState = stateObj.get(moduleIdentifier);
 
                 if (moduleStateExists(moduleState)) {
-                    ((IStateful) module).setState(moduleState.isArray());
+                    ((Stateful) module).setState(moduleState.isArray());
                 }
             }
         }
@@ -65,7 +65,7 @@ public class ModulesStateLoader {
     }
 
     private boolean moduleIsStatefulAndUnique(IModule module) {
-        return module instanceof IStateful && module instanceof IUniqueModule;
+        return module instanceof Stateful && module instanceof IUniqueModule;
     }
 
     private boolean moduleStateExists(JSONValue moduleState) {

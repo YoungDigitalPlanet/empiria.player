@@ -10,6 +10,10 @@ import eu.ydp.empiria.player.client.gin.factory.InlineBodyGeneratorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.Group;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.js.YJsJsonConverter;
@@ -63,12 +67,12 @@ public class ItemModuleSocket implements ModuleSocket {
 
         while (true) {
             currParent = getParent(currParent);
-            if (currParent == null || currParent instanceof IGroup) {
+            if (currParent == null || currParent instanceof Group) {
                 break;
             }
         }
         if (currParent != null) {
-            return ((IGroup) currParent).getGroupIdentifier();
+            return ((Group) currParent).getGroupIdentifier();
         }
         return new DefaultGroupIdentifier("");
     }

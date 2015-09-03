@@ -5,10 +5,10 @@ import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 
 import java.util.List;
 import java.util.Map;
