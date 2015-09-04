@@ -4,9 +4,9 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.ordering.OrderingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,12 +14,12 @@ import java.util.Set;
 public class OrderInteractionViewItemStylesImpl implements OrderInteractionViewItemStyles {
 
     @Inject
-    private StyleNameConstants styleNames;
+    private OrderingStyleNameConstants styleNames;
     private Map<UserAnswerType, String> stylesMap = Maps.newHashMap();
     private static final String SEPARATOR = " ";
 
     @Inject
-    public OrderInteractionViewItemStylesImpl(StyleNameConstants styleNames) {
+    public OrderInteractionViewItemStylesImpl(OrderingStyleNameConstants styleNames) {
         this.styleNames = styleNames;
 
         stylesMap.put(UserAnswerType.CORRECT, styleNames.QP_ORDERED_ITEM_CORRECT());

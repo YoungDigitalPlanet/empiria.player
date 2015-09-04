@@ -1,16 +1,16 @@
 package eu.ydp.empiria.player.client.module.draggap.view;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.draggap.DragGapStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.StringUtils;
 
 public class DragGapStylesProvider {
 
-    private final StyleNameConstants styleNameConstants;
+    private final DragGapStyleNameConstants styleNameConstants;
 
     @Inject
-    public DragGapStylesProvider(StyleNameConstants styleNameConstants) {
+    public DragGapStylesProvider(DragGapStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
     }
 

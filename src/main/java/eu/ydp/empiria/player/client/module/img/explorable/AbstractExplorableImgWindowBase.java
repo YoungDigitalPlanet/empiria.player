@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.module.img.explorable;
 
 import com.google.gwt.user.client.ui.Composite;
-import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImageConst;
-import eu.ydp.empiria.player.client.module.img.explorable.ExplorableImgWindow;
 
 public abstract class AbstractExplorableImgWindowBase extends Composite implements ExplorableImgWindow {
 
@@ -49,7 +47,8 @@ public abstract class AbstractExplorableImgWindowBase extends Composite implemen
         return windowWidth;
     }
 
-    protected void setWindowWidth(int windowWidth) {
+    protected void
+    setWindowWidth(int windowWidth) {
         this.windowWidth = windowWidth;
     }
 

@@ -5,19 +5,19 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.accordion.AccordionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.accordion.Transition;
 import eu.ydp.empiria.player.client.module.accordion.view.section.AccordionSectionView;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.event.factory.Command;
 
 public class AccordionSectionPresenter implements IsWidget {
     private static final String PX = Style.Unit.PX.toString();
 
-    private final StyleNameConstants styleNameConstants;
+    private final AccordionStyleNameConstants styleNameConstants;
     private final AccordionSectionView view;
 
     @Inject
-    public AccordionSectionPresenter(AccordionSectionView view, StyleNameConstants styleNameConstants) {
+    public AccordionSectionPresenter(AccordionSectionView view, AccordionStyleNameConstants styleNameConstants) {
         this.styleNameConstants = styleNameConstants;
         this.view = view;
     }

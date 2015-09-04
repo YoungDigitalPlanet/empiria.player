@@ -18,7 +18,6 @@ import eu.ydp.empiria.player.client.module.ILifecycleModule;
 import eu.ydp.empiria.player.client.module.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -38,7 +37,7 @@ public class InfoModule extends SimpleModuleBase implements ILifecycleModule, Pl
     @CachedModuleScoped
     private ModuleStyle moduleStyle;
     @Inject
-    private StyleNameConstants styleNames;
+    private InfoStyleNameConstants styleNames;
     @Inject
     private EventsBus eventsBus;
     @Inject

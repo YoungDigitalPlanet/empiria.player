@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.*;
 import eu.ydp.empiria.player.client.controller.data.events.AssessmentDataLoaderEventListener;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -30,6 +31,7 @@ import eu.ydp.gwtutil.client.PathUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class DataSourceManager implements AssessmentDataLoaderEventListener, ItemDataCollectionLoaderEventListener, DataSourceDataSupplier,
         LibraryLoaderListener {
 
@@ -49,11 +51,12 @@ public class DataSourceManager implements AssessmentDataLoaderEventListener, Ite
     private Image mainPreloader;
 
     @Inject
-    public DataSourceManager(AssessmentDataSourceManager assessmentDataManager) {
+    public DataSourceManager(AssessmentDataSourceManager assessmentDataManager, ItemDataSourceCollectionManager itemDataCollectionManager) {
         this.assessmentDataManager = assessmentDataManager;
         this.assessmentDataManager.setSkinListener(this);
         mode = DataSourceManagerMode.NONE;
-        itemDataCollectionManager = new ItemDataSourceCollectionManager(this);
+        this.itemDataCollectionManager = itemDataCollectionManager;
+        itemDataCollectionManager.setLoaderEventListener(this);
         libraryLoader = new LibraryLoader(this);
         styleDataSourceLoader = new StyleDataSourceLoader();
     }

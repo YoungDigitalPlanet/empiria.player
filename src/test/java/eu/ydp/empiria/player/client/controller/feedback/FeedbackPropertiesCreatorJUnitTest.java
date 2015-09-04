@@ -72,16 +72,22 @@ public class FeedbackPropertiesCreatorJUnitTest {
 
     @Test
     public void shouldApplyModuleResultWhen_thereIsError() {
+        // given
+        String lastChange = "lastChange";
         OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createDoneOutcome(1)).put(creator.createErrorsOutcome(1))
-                .put(creator.createTodoOutcome(2));
+                .put(creator.createTodoOutcome(2)).put(creator.createLastChangeOutcome(lastChange));
+
+        // when
         FeedbackProperties properties = getProperties(builder);
 
+        // then
         assertThat("not null", properties, is(notNullValue()));
         assertThat("allOk", properties.getBooleanProperty(ALL_OK), is(equalTo(false)));
         assertThat("done", properties.getIntegerProperty(DONE), is(equalTo(1)));
         assertThat("todo", properties.getIntegerProperty(TODO), is(equalTo(2)));
         assertThat("errors", properties.getIntegerProperty(ERRORS), is(equalTo(1)));
         assertThat("result", properties.getDoubleProperty(RESULT), is(equalTo(50.0)));
+        assertThat("lastChange", properties.getStringProperty(LAST_CHANGE), is(equalTo(lastChange)));
     }
 
     @Test
@@ -116,30 +122,42 @@ public class FeedbackPropertiesCreatorJUnitTest {
 
     @Test
     public void shouldApplyModuleResultWhen_thereIsNoError() {
+        // given
+        String lastChange = "lastChange";
         OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createDoneOutcome(1)).put(creator.createErrorsOutcome(0))
-                .put(creator.createTodoOutcome(2));
+                .put(creator.createTodoOutcome(2)).put(creator.createLastChangeOutcome(lastChange));
+
+        // when
         FeedbackProperties properties = getProperties(builder);
 
+        // then
         assertThat("not null", properties, is(notNullValue()));
         assertThat("allOk", properties.getBooleanProperty(ALL_OK), is(equalTo(false)));
         assertThat("done", properties.getIntegerProperty(DONE), is(equalTo(1)));
         assertThat("todo", properties.getIntegerProperty(TODO), is(equalTo(2)));
         assertThat("errors", properties.getIntegerProperty(ERRORS), is(equalTo(0)));
         assertThat("result", properties.getDoubleProperty(RESULT), is(equalTo(50.0)));
+        assertThat("lastChange", properties.getStringProperty(LAST_CHANGE), is(equalTo(lastChange)));
     }
 
     @Test
     public void shouldApplyModuleResultWhen_allAllDoneNoError() {
+        //given
+        String lastChange = "lastChange";
         OutcomeListBuilder builder = OutcomeListBuilder.init().put(creator.createDoneOutcome(2)).put(creator.createErrorsOutcome(0))
-                .put(creator.createTodoOutcome(2));
+                .put(creator.createTodoOutcome(2)).put(creator.createLastChangeOutcome(lastChange));
+
+        // when
         FeedbackProperties properties = getProperties(builder);
 
+        // then
         assertThat("not null", properties, is(notNullValue()));
         assertThat("allOk", properties.getBooleanProperty(ALL_OK), is(equalTo(true)));
         assertThat("done", properties.getIntegerProperty(DONE), is(equalTo(2)));
         assertThat("todo", properties.getIntegerProperty(TODO), is(equalTo(2)));
         assertThat("errors", properties.getIntegerProperty(ERRORS), is(equalTo(0)));
         assertThat("result", properties.getDoubleProperty(RESULT), is(equalTo(100.0)));
+        assertThat("lastChange", properties.getStringProperty(LAST_CHANGE), is(equalTo(lastChange)));
     }
 
     private FeedbackProperties getProperties(OutcomeListBuilder builder) {

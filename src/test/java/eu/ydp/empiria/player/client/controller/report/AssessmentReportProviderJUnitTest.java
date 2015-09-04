@@ -21,7 +21,7 @@ public class AssessmentReportProviderJUnitTest extends AbstractTestBase {
         AssessmentReportFactory factory = injector.getInstance(AssessmentReportFactory.class);
         DataSourceDataSupplier dataSupplier = getDataSupplier();
         SessionDataSupplier sessionSupplier = getSessionSupplier();
-        AssessmentReportProvider provider = factory.getAssessmentReportProvider(dataSupplier, sessionSupplier);
+        AssessmentReportProvider provider = new AssessmentReportProvider(dataSupplier, sessionSupplier, factory);
 
         assertThat(provider.getTitle(), is(equalTo("Lesson 1")));
         assertThat(provider.getResult(), is(notNullValue()));

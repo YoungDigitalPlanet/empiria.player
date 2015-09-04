@@ -2,10 +2,12 @@ package eu.ydp.empiria.player.client.controller.feedback.matcher;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.*;
 
 import java.util.Map;
 
+@Singleton
 public class MatcherRegistry {
 
     Map<Class<? extends FeedbackCondition>, FeedbackMatcher> map;

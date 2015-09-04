@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module.ordering.drag;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class SortableNative {
 
     public native void init(String selector, String dragAxis, SortCallback callback) /*-{
@@ -7,6 +10,8 @@ public class SortableNative {
             .jQuery(selector)
             .sortable(
             {
+
+                containment: ".qp-player",
                 axis: dragAxis,
                 start: function (event, ui) {
                     this.from = ui.item.index();

@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.ordering.view.items;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwtmockito.GwtMockito;
+import eu.ydp.empiria.player.client.module.ordering.OrderingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.After;
@@ -25,7 +25,7 @@ public class OrderInteractionViewItemStylesImplJUnitTest {
 
     private OrderInteractionViewItemStylesImpl instance;
     @Mock
-    private StyleNameConstants styleNames;
+    private OrderingStyleNameConstants styleNames;
     @Mock
     private OrderInteractionViewItem viewItem;
     @Mock

@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.events.ItemDataCollectionLoaderEventListener;
@@ -9,15 +10,16 @@ import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class ItemDataSourceCollectionManager {
 
-    public ItemDataSourceCollectionManager(ItemDataCollectionLoaderEventListener l) {
-        listener = l;
-    }
-
     private ItemDataSource[] items;
-    private final ItemDataCollectionLoaderEventListener listener;
+    private ItemDataCollectionLoaderEventListener listener;
     private int itemsLoadCounter;
+
+    public void setLoaderEventListener(ItemDataCollectionLoaderEventListener listener) {
+        this.listener = listener;
+    }
 
     public void initItemDataCollection(int itemsCount) {
         items = new ItemDataSource[itemsCount];
@@ -81,6 +83,10 @@ public class ItemDataSourceCollectionManager {
         } else {
             return 0;
         }
+    }
+
+    public String getItemIdentifier(int index) {
+        return items[index].getPageIdentifier();
     }
 
     public List<String> getStyleLinksForUserAgent(int itemIndex, String userAgent) {

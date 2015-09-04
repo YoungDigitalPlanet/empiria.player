@@ -1,7 +1,9 @@
 package eu.ydp.empiria.player.client.module.connection;
 
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.util.position.Point;
 
+@Singleton
 public class DistanceCalculator {
 
     public double calculateDistanceBetween(LineSegment lineSegment, Point point) {

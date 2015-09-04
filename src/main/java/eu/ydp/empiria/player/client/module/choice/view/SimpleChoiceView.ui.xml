@@ -2,21 +2,23 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
         >
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants"
-             field="res"></ui:with>
-    <g:FlowPanel ui:field="mainPanel" styleName="{res.QP_CHOICE_OPTION_BOX}">
+    <ui:with type="eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants"
+             field="mark"></ui:with>
+    <ui:with type="eu.ydp.empiria.player.client.module.choice.ChoiceStyleNameConstants"
+             field="choice"></ui:with>
+    <g:FlowPanel ui:field="mainPanel" styleName="{choice.QP_CHOICE_OPTION_BOX}">
         <g:FlowPanel ui:field="optionPanel"
-                     styleName="{res.QP_CHOICE_OPTION} {res.QP_MARKANSWERS_BUTTON_INACTIVE}">
+                     styleName="{choice.QP_CHOICE_OPTION} {mark.QP_MARKANSWERS_BUTTON_INACTIVE}">
             <g:FlowPanel ui:field="markAnswersPanel"
-                         styleName="{res.QP_MARKANSWERS_BUTTON_INACTIVE}"/>
-            <g:FlowPanel ui:field="buttonPlace" styleName="{res.QP_CHOICE_BUTTON_PLACE}"/>
+                         styleName="{mark.QP_MARKANSWERS_BUTTON_INACTIVE}"/>
+            <g:FlowPanel ui:field="buttonPlace" styleName="{choice.QP_CHOICE_BUTTON_PLACE}"/>
             <g:FlowPanel ui:field="labelPanel"
-                         styleName="{res.QP_CHOICE_LABEL} {res.QP_MARKANSWERS_LABEL_INACTIVE}">
+                         styleName="{choice.QP_CHOICE_LABEL} {mark.QP_MARKANSWERS_LABEL_INACTIVE}">
                 <g:AbsolutePanel ui:field="container"
-                                 styleName="{res.QP_CHOICE_OPTION_CONTAINER}">
+                                 styleName="{choice.QP_CHOICE_OPTION_CONTAINER}">
                     <g:FlowPanel ui:field="contentWidgetPlace"/>
                     <g:AbsolutePanel ui:field="cover"
-                                     styleName="{res.QP_CHOICE_OPTION_COVER}"/>
+                                     styleName="{choice.QP_CHOICE_OPTION_COVER}"/>
                 </g:AbsolutePanel>
             </g:FlowPanel>
         </g:FlowPanel>

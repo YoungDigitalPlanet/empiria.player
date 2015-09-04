@@ -3,10 +3,12 @@ package eu.ydp.empiria.player.client.module.mathjax.interaction;
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.math.MathGap;
 
 import java.util.Map;
 
+@Singleton
 public class MathJaxGapContainer {
 
     private final Map<String, Widget> mathGaps = Maps.newHashMap();

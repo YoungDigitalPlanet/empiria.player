@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback.processor;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlayer;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
@@ -14,6 +15,7 @@ import eu.ydp.empiria.player.client.util.events.internal.feedback.FeedbackEventT
 
 import java.util.List;
 
+@Singleton
 public class SoundActionProcessor extends AbstractFeedbackActionProcessor implements FeedbackEventHandler {
 
     @Inject

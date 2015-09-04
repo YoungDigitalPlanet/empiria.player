@@ -4,7 +4,7 @@
     <ui:style>
 
     </ui:style>
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.img.ImgStyleNameConstants" field="res"/>
     <g:AbsolutePanel styleName="{res.QP_IMG_LABELLED_PANEL}" ui:field="mainPanel">
         <g:Image styleName="{res.QP_IMG_LABELLED_IMAGE}" ui:field="image"/>
         <k:Canvas styleName="{res.QP_IMG_LABELLED_CANVAS}" ui:field="canvas"/>

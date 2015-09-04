@@ -8,7 +8,7 @@
             cursor: move;
         }
     </ui:style>
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.img.ImgStyleNameConstants" field="res"/>
     <g:FlowPanel addStyleNames="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS_PANEL} {style.imagearea}" ui:field="imagePanel">
         <c:PanelWithScrollbars ui:field="scrollbarsPanel">
             <k:Canvas styleName="{res.QP_IMG_EXPLORABLE_IMAGE_CANVAS}" ui:field="canvas"/>

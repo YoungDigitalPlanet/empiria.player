@@ -1,10 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with type="eu.ydp.empiria.player.client.resources.StyleNameConstants" field="res"></ui:with>
+    <ui:with type="eu.ydp.empiria.player.client.module.accordion.AccordionStyleNameConstants" field="res"></ui:with>
     <g:FlowPanel ui:field="section" styleName="{res.QP_ACCORDION_SECTION} {res.QP_ACCORDION_SECTION_HIDDEN}">
         <g:SimplePanel ui:field="title" styleName="{res.QP_ACCORDION_SECTION_TITLE}"/>
-        <g:SimplePanel ui:field="contentWrapper" styleName="{res.QP_ACCORDION_SECTION_CONTENT} {res.QP_ZERO_WIDTH} {res.QP_ZERO_HEIGHT}">
+        <g:SimplePanel ui:field="contentWrapper"
+                       styleName="{res.QP_ACCORDION_SECTION_CONTENT} {res.QP_ZERO_WIDTH} {res.QP_ZERO_HEIGHT}">
             <g:FlowPanel ui:field="content" styleName="{res.QP_ACCORDION_SECTION_CONTENT_ELEMENT}"/>
         </g:SimplePanel>
     </g:FlowPanel>

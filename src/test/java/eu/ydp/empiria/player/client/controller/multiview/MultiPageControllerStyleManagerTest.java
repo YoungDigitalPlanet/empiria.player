@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.multiview;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ public class MultiPageControllerStyleManagerTest {
     @InjectMocks
     private MultiPageControllerStyleManager testObj;
     @Mock
-    private StyleNameConstants styleNames;
+    private PageStyleNameConstants styleNames;
     @Mock
     private FlowPanel keyPanel1;
     @Mock

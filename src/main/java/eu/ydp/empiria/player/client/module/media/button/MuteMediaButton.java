@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.media.button;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
@@ -14,7 +14,7 @@ public class MuteMediaButton extends AbstractMediaButton {
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public MuteMediaButton(StyleNameConstants styleNames, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
+    public MuteMediaButton(MediaStyleNameConstants styleNames, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_MUTE());
         this.eventsBus = eventsBus;
         this.pageScopeFactory = pageScopeFactory;

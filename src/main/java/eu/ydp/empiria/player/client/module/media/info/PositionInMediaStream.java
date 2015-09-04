@@ -2,8 +2,8 @@ package eu.ydp.empiria.player.client.module.media.info;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
@@ -18,7 +18,7 @@ public class PositionInMediaStream extends AbstractMediaTime {
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public PositionInMediaStream(StyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic, PageScopeFactory pageScopeFactory) {
+    public PositionInMediaStream(MediaStyleNameConstants styleNames, ProgressUpdateLogic progressUpdateLogic, PageScopeFactory pageScopeFactory) {
         super(styleNames.QP_MEDIA_POSITIONINSTREAM());
         this.progressUpdateLogic = progressUpdateLogic;
         this.pageScopeFactory = pageScopeFactory;

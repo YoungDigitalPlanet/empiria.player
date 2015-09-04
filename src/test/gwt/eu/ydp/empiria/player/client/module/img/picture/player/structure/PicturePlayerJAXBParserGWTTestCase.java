@@ -16,6 +16,7 @@ public class PicturePlayerJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase
         picturePlayerExpected.setFullscreenMode("mode");
         picturePlayerExpected.setSrcFullScreen("src_f.jpg");
         picturePlayerExpected.setSrc("src.jpg");
+        picturePlayerExpected.setAlt("alt");
         picturePlayerExpected.setTitleBean(titleExpected);
     }
 
@@ -63,12 +64,26 @@ public class PicturePlayerJAXBParserGWTTestCase extends EmpiriaPlayerGWTTestCase
 
     }
 
+    public void testPicturePlayer_withoutAlt() {
+        // given
+        picturePlayerExpected.setAlt(null);
+
+        // when
+        PicturePlayerBean picturePlayerResult = parse(PicturePlayerJAXBParserMock.PICTURE_PLAYER_WITHOUT_ALT);
+
+        // then
+        assertPicturePlayerEquals(picturePlayerExpected, picturePlayerResult);
+    }
+
     private void assertPicturePlayerEquals(PicturePlayerBean expected, PicturePlayerBean result) {
         assertEquals(expected.getFullscreenMode(), result.getFullscreenMode());
         assertEquals(expected.getSrcFullScreen(), result.getSrcFullScreen());
         assertEquals(expected.getSrc(), result.getSrc());
         if (result.hasTitle()) {
             assertTitleEquals(expected.getTitleBean(), result.getTitleBean());
+        }
+        if (result.hasAlt()) {
+            assertEquals(expected.getAlt(), result.getAlt());
         }
     }
 

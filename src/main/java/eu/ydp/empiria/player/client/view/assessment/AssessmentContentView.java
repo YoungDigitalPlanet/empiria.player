@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.Page;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 import eu.ydp.empiria.player.client.view.page.PageViewSocket;
 import eu.ydp.empiria.player.client.view.player.PageViewCache;
 
@@ -16,7 +16,7 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
     protected FlowPanel headerPanel;
     protected FlowPanel navigationPanel;
 
-    protected StyleNameConstants styleNames;
+    protected PageStyleNameConstants styleNames;
 
     @Inject
     protected PageViewCache pageViewCache;
@@ -32,7 +32,7 @@ public class AssessmentContentView extends Composite implements AssessmentViewSo
     }
 
     @Inject
-    public AssessmentContentView(@Assisted Panel parentPanel, StyleNameConstants styleNameConstants) {
+    public AssessmentContentView(@Assisted Panel parentPanel, PageStyleNameConstants styleNameConstants) {
         this.styleNames = styleNameConstants;
         createView();
         assessmentPanel = parentPanel;

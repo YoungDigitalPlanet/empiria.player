@@ -16,7 +16,6 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Respon
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.*;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -58,7 +57,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     private SwypeBlocker swypeBlocker;
 
     @Inject
-    private StyleNameConstants styleNames;
+    private InlineChoiceStyleNameConstants styleNames;
 
     @Inject
     private PageScopeFactory scopeFactory;
@@ -239,6 +238,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
         listBox.setShowEmptyOptions(showEmptyOption);
         updateResponse(false, true);
         listBox.setEnabled(true);
+        listBox.reset();
         container.setStyleName(styleNames.QP_TEXT_CHOICE_POPUP());
     }
 

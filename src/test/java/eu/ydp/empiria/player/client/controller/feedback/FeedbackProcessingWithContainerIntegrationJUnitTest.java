@@ -81,10 +81,10 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
     @Test
     public void shouldIgnoreUnselectFeedback() {
         // given
-        ModuleInfo[] infos = new ModuleInfo[]{ModuleInfo.create("-" + MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0),
-                ModuleInfo.create("-" + MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0),
-                ModuleInfo.create(null).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0),
-                ModuleInfo.create("+").setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0)};
+        ModuleInfo[] infos = new ModuleInfo[]{ModuleInfo.create(MODULE_1).setLastOk(CORRECT).setDone(1).setTodo(3).setErrors(0).setLastChange("-"),
+                ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(2).setTodo(6).setErrors(0).setLastChange("-"),
+                ModuleInfo.create(null).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0).setLastChange(null),
+                ModuleInfo.create(MODULE_2).setLastOk(WRONG).setDone(1).setTodo(3).setErrors(0).setLastChange("+")};
         String[] expectedUrls = new String[]{};
 
         // when

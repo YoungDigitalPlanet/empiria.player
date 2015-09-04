@@ -53,10 +53,12 @@ MathJax.Hub.Config({
         preferredFont: "TeX",
         webFont: "TeX",
         imageFont: null,
-        matchFontHeight: true
+        matchFontHeight: true,
+        mtextFontInherit: true
     },
     SVG: {
-        font: "TeX"
+        font: "TeX",
+        mtextFontInherit: true
     }
 });
 

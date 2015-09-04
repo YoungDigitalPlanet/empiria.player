@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.factory.ProgressBarFactory;
+import eu.ydp.empiria.player.client.module.media.MediaStyleNameConstants;
 import eu.ydp.empiria.player.client.module.media.button.AbstractMediaScroll;
 import eu.ydp.empiria.player.client.module.media.button.SimpleMediaButton;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.empiria.player.client.style.ComputedStyle;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
@@ -42,7 +42,7 @@ public class MediaProgressBarImpl extends AbstractMediaScroll implements MediaPr
     protected FlowPanel afterButton;
 
     @Inject
-    private StyleNameConstants styleNames;
+    private MediaStyleNameConstants styleNames;
     @Inject
     protected EventsBus eventsBus;
     @Inject

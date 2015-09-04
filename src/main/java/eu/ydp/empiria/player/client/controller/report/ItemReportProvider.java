@@ -11,7 +11,7 @@ public class ItemReportProvider extends AbstractReportProvider {
     private int index;
 
     @Inject
-    public ItemReportProvider(@Assisted DataSourceDataSupplier dataSupplier, @Assisted SessionDataSupplier sessionSupplier, @Assisted int index,
+    public ItemReportProvider(@Assisted int index, DataSourceDataSupplier dataSupplier, SessionDataSupplier sessionSupplier,
                               AssessmentReportFactory factory) {
         super(dataSupplier, sessionSupplier, factory);
         this.index = index;

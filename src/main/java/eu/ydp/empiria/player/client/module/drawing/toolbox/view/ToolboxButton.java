@@ -9,8 +9,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.module.drawing.DrawingStyleNameConstants;
 import eu.ydp.empiria.player.client.module.model.color.ColorModel;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 public class ToolboxButton extends Composite implements HasClickHandlers {
@@ -18,7 +18,7 @@ public class ToolboxButton extends Composite implements HasClickHandlers {
     @UiField
     CustomPushButton button;
     @Inject
-    private StyleNameConstants styleNames;
+    private DrawingStyleNameConstants styleNames;
     private String currentColorStyle;
 
     private static ToolboxButtonUiBinder uiBinder = GWT.create(ToolboxButtonUiBinder.class);

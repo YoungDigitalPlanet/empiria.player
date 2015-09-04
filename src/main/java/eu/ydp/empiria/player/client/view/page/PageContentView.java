@@ -5,8 +5,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.PlayerGinjectorFactory;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
+import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 
 public class PageContentView extends Composite {
     private Panel pagePanel;
@@ -14,7 +13,7 @@ public class PageContentView extends Composite {
     private Panel titlePanel = new FlowPanel();
 
     @Inject
-    public PageContentView(@Assisted Panel parentPanel, StyleNameConstants styleNames) {
+    public PageContentView(@Assisted Panel parentPanel, PageStyleNameConstants styleNames) {
         setParent(parentPanel);
         itemsPanel.setStyleName(styleNames.QP_PAGE_CONTENT());
         titlePanel.setStyleName(styleNames.QP_PAGE_TITLE());

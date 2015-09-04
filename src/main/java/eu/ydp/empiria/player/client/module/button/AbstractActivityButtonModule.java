@@ -5,10 +5,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeClient;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
-import eu.ydp.empiria.player.client.resources.StyleNameConstants;
 import eu.ydp.gwtutil.client.ui.button.CustomPushButton;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public abstract class AbstractActivityButtonModule extends ControlModule impleme
     @Inject
     private CustomPushButton button;
     @Inject
-    private StyleNameConstants styleNameConstants;
+    private ModeStyleNameConstants styleNameConstants;
     private boolean isEnabled = true;
     private final List<String> styles = new ArrayList<>();
 
