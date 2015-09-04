@@ -43,7 +43,7 @@ class PlayerEventsBusSpec extends Specification {
         testObj.fireEvent(event)
 
         then:
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should dispatch event to registered handler"() {
