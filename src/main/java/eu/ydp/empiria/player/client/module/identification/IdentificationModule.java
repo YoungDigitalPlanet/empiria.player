@@ -110,6 +110,7 @@ public class IdentificationModule extends InteractionModuleBase {
 
     @Override
     public void reset() {
+        super.reset();
         markAnswers(false);
         lock(false);
         choicesManager.clearSelections();

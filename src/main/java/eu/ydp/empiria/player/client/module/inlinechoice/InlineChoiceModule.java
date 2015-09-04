@@ -118,25 +118,17 @@ public class InlineChoiceModule extends InteractionModuleBase {
         controller.lock(lock);
     }
 
-    /**
-     * @see Activity#markAnswers()
-     */
     @Override
     public void markAnswers(boolean mark) {
         controller.markAnswers(mark);
     }
 
-    /**
-     * @see Activity#reset()
-     */
     @Override
     public void reset() {
+        super.reset();
         controller.reset();
     }
 
-    /**
-     * @see Activity#showCorrectAnswers()
-     */
     @Override
     public void showCorrectAnswers(boolean show) {
 
@@ -148,21 +140,14 @@ public class InlineChoiceModule extends InteractionModuleBase {
         return controller.getJsSocket();
     }
 
-    /**
-     * @see Stateful#getState()
-     */
     @Override
     public JSONArray getState() {
         // IMPORTANT: STATE MUST BE COMMON FOR ALL CONTROLLERS
         return controller.getState();
     }
 
-    /**
-     * @see Stateful#setState(Serializable)
-     */
     @Override
     public void setState(JSONArray newState) {
-
         controller.setState(newState);
     }
 }

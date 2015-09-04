@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.core.base;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
+import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent;
 import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
@@ -17,7 +18,11 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
 
+import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.RESET_COUNTER;
+
 public abstract class InteractionModuleBase extends ModuleBase implements IInteractionModule, WorkModePreviewClient, WorkModeTestSubmittedClient, Ignored {
+
+    private final FeedbackCounterEvent feedbackCounterResetEvent = new FeedbackCounterEvent(RESET_COUNTER, this);
 
     private Response response;
     private String responseIdentifier;
@@ -78,5 +83,10 @@ public abstract class InteractionModuleBase extends ModuleBase implements IInter
     @Override
     public boolean isIgnored() {
         return false;
+    }
+
+    @Override
+    public void reset() {
+        getEventsBus().fireEvent(feedbackCounterResetEvent);
     }
 }

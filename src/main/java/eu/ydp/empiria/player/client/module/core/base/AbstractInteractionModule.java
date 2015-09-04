@@ -38,8 +38,6 @@ public abstract class AbstractInteractionModule< H extends AbstractResponseModel
 
     protected boolean locked = false;
 
-    protected boolean showingAnswers = false;
-
     protected boolean markingAnswers = false;
 
     private ActivityPresenter<H, U> presenter;
@@ -126,6 +124,7 @@ public abstract class AbstractInteractionModule< H extends AbstractResponseModel
 
     @Override
     public void reset() {
+        super.reset();
         presenter.reset();
         clearModel();
         fireStateChanged(false, true);
