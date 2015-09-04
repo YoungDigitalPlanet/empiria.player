@@ -28,7 +28,8 @@ public class FeedbackConditionCounter implements FeedbackCounterEventHandler {
     }
 
     public void add(FeedbackCondition feedbackCondition) {
-        Integer count = 1;
+        int count = 1;
+
         if (map.containsKey(feedbackCondition)) {
             count = map.get(feedbackCondition) + 1;
         }

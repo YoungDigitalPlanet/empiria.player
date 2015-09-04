@@ -215,7 +215,7 @@ class PlayerEventsBusSpec extends Specification {
         }
 
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should notify handlers asynchronously on asynchronous event"() {
@@ -232,7 +232,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncHandler.onPlayerEvent(event)
         1 * handler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should notify synchronous handlers synchronously and asynchronous handlers asynchronously on synchronous event"() {
@@ -249,7 +249,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncHandler.onPlayerEvent(event)
         1 * handler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should dispatch async event with scope to all handlers"() {
@@ -266,7 +266,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncScopedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should dispatch async event without scope to all handlers"() {
@@ -283,7 +283,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncScopedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should not dispatch async event without different scope"() {
@@ -300,7 +300,7 @@ class PlayerEventsBusSpec extends Specification {
 
         0 * asyncScopedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should dispatch async event to handlers with same source or without source"() {
@@ -317,7 +317,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncSourcedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should not dispatch async event to handlers with different source"() {
@@ -334,7 +334,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncHandler.onPlayerEvent(event)
         0 * asyncSourcedHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should dispatch async event to handlers with same source and scope or without any of them"() {
@@ -351,7 +351,7 @@ class PlayerEventsBusSpec extends Specification {
 
         1 * asyncSourcedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should not dispatch async event to handlers with same source and different scope"() {
@@ -363,7 +363,7 @@ class PlayerEventsBusSpec extends Specification {
 
         then:
         0 * scheduler.scheduleDeferred(_)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should not dispatch async event to handlers with different source and same scope"() {
@@ -380,7 +380,7 @@ class PlayerEventsBusSpec extends Specification {
 
         0 * asyncSourcedHandler.onPlayerEvent(event)
         1 * asyncHandler.onPlayerEvent(event)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should not dispatch async event to handlers with different source and different scope"() {
@@ -392,7 +392,7 @@ class PlayerEventsBusSpec extends Specification {
 
         then:
         0 * scheduler.scheduleDeferred(_)
-        0 * _.onFeedbackCounterEvent(_)
+        0 * _.onPlayerEvent(_)
     }
 
     def "should unregister scoped handler when page is removed"() {

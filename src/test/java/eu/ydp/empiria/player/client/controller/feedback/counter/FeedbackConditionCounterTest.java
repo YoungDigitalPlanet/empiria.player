@@ -21,70 +21,71 @@ public class FeedbackConditionCounterTest {
     @Mock
     private EventsBus eventsBus;
     @Mock
-    private FeedbackCondition firstCondition;
+    private FeedbackCondition condition;
     @Mock
-    private FeedbackCondition secondCondition;
+    private FeedbackCondition anotherCondition;
 
     @Test
-    public void shouldReturnZero_whenIsNotPresent() {
+    public void shouldReturnZero_whenConditionIsNotPresent() {
         // given
         int expected = 0;
 
         // when
-        int result = testObj.getCount(firstCondition);
+        int result = testObj.getCount(condition);
 
         // then
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
-    public void shouldReturnZero_whenAddedAnother() {
+    public void shouldReturnZero_whenAddedAnotherConditionOccurrence() {
         // given
         int expected = 0;
 
         // when
-        testObj.add(secondCondition);
-        int result = testObj.getCount(firstCondition);
+        testObj.add(anotherCondition);
+        int result = testObj.getCount(condition);
 
         // then
         assertThat(result).isEqualTo(expected);
     }
     @Test
-    public void shouldReturnOne_whenAddedOnce(){
+    public void shouldReturnOne_whenConditionOccurrenceAddedOnce(){
         // given
         int expected = 1;
 
         // when
-        testObj.add(firstCondition);
-        int result = testObj.getCount(firstCondition);
+        testObj.add(condition);
+        int result = testObj.getCount(condition);
 
         // then
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
-    public void shouldReturnTwo_whenAddedTwice(){
+    public void shouldReturnTwo_whenConditionOccurrenceAddedTwice(){
         // given
         int expected = 2;
 
         // when
-        testObj.add(firstCondition);
-        testObj.add(firstCondition);
-        int result = testObj.getCount(firstCondition);
+        testObj.add(condition);
+        testObj.add(condition);
+        int result = testObj.getCount(condition);
 
         // then
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
-    public void shouldReturnOne_whenAddedOnce_andAnother(){
+    public void shouldReturnOne_whenConditionOccurrenceAddedOnce_andAnotherConditionAddedTwice(){
         // given
         int expected = 1;
 
         // when
-        testObj.add(firstCondition);
-        testObj.add(secondCondition);
-        int result = testObj.getCount(firstCondition);
+        testObj.add(condition);
+        testObj.add(anotherCondition);
+        testObj.add(anotherCondition);
+        int result = testObj.getCount(condition);
 
         // then
         assertThat(result).isEqualTo(expected);
