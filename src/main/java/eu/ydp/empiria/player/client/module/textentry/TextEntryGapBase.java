@@ -65,6 +65,7 @@ public abstract class TextEntryGapBase extends GapBase implements SourcelistClie
 
     @Override
     public void reset() {
+        super.reset();
         if (!Strings.isNullOrEmpty(getTextEntryPresenter().getText())) {
             presenter.setText(StringUtils.EMPTY_STRING);
             updateResponse(false, true);

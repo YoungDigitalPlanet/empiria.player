@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.controller.feedback.counter;
 
 import com.google.common.collect.Maps;
-import com.google.gwt.query.client.impl.ConsoleBrowser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -13,11 +12,11 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import java.util.List;
 import java.util.Map;
 
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent.*;
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.*;
+import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent.getType;
+import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.RESET_COUNTER;
 
 @Singleton
-public class FeedbackConditionCounter implements FeedbackCounterEventHandler{
+public class FeedbackConditionCounter implements FeedbackCounterEventHandler {
     private Map<FeedbackCondition, Integer> map = Maps.newHashMap();
 
     private final FeedbackRegistry feedbackRegistry;

@@ -158,6 +158,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 
     @Override
     public void reset() {
+        super.reset();
         getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
         updateResponse(true);
     }

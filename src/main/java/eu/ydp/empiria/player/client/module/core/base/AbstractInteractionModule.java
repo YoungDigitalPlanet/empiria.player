@@ -124,6 +124,7 @@ public abstract class AbstractInteractionModule< H extends AbstractResponseModel
 
     @Override
     public void reset() {
+        super.reset();
         presenter.reset();
         clearModel();
         fireStateChanged(false, true);
