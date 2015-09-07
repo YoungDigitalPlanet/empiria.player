@@ -78,7 +78,7 @@ public class FeedbackBlendTest {
         value.execute(nativeEvent);
 
         // then
-        verify(textFeedback).hide();
+        verify(textFeedback).hideFeedback();
     }
 
     @Test
@@ -100,7 +100,7 @@ public class FeedbackBlendTest {
         value.execute(nativeEvent);
 
         // then
-        verify(textFeedback, never()).hide();
+        verify(textFeedback, never()).hideFeedback();
     }
 
     @Test

@@ -6,9 +6,15 @@ import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
 
 public interface TextFeedback extends IsWidget {
 
-    void show(Widget widget, FeedbackMark mark);
+    void addFeedback(Widget widget, FeedbackMark mark);
 
-    void hide();
+    void hideModule();
+
+    void showFeedback();
+
+    void hideFeedback();
 
     void addCloseButtonClickHandler(ClickHandler handler);
+
+    void addShowButtonClickHandler(ClickHandler handler);
 }

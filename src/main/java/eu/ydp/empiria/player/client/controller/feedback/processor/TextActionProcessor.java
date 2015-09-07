@@ -7,7 +7,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
-import eu.ydp.empiria.player.client.controller.feedback.structure.action.*;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
+import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
 import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
@@ -51,25 +52,37 @@ public class TextActionProcessor extends AbstractActionProcessor {
     private native JavaScriptObject createCallback(Widget widget, FeedbackMark mark)/*-{
         var that = this;
         return function () {
-            that.@TextActionProcessor::showFeedback(*)(widget, mark);
+            that.@TextActionProcessor::addFeedback(*)(widget, mark);
         };
     }-*/;
 
-    private void showFeedback(Widget widget, FeedbackMark mark) {
-        feedbackPresenter.show(widget, mark);
+    private void addFeedback(Widget widget, FeedbackMark mark) {
+        feedbackPresenter.addFeedback(widget, mark);
+        showFeedback();
+    }
+
+    private void showFeedback() {
+        feedbackPresenter.showFeedback();
         feedbackBlend.show(feedbackPresenter);
     }
 
     @Override
     public void clearFeedback() {
-        feedbackPresenter.hide();
+        hideFeedback();
+        feedbackPresenter.hideModule();
+    }
+
+    private void hideFeedback() {
+        feedbackPresenter.hideFeedback();
         feedbackBlend.hide();
     }
 
+
     @Override
     public void initModule(Element element) {
-        feedbackPresenter.hide();
+        feedbackPresenter.hideModule();
         feedbackPresenter.addCloseButtonClickHandler(createCloseButtonClickHandler());
+        feedbackPresenter.addShowButtonClickHandler(createShowButtonClickHandler());
     }
 
     @Override
@@ -81,7 +94,16 @@ public class TextActionProcessor extends AbstractActionProcessor {
         return new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                clearFeedback();
+                hideFeedback();
+            }
+        };
+    }
+
+    private ClickHandler createShowButtonClickHandler() {
+        return new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                showFeedback();
             }
         };
     }
