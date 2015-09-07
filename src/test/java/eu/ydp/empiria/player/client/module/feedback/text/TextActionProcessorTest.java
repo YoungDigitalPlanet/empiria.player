@@ -7,11 +7,11 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.feedback.text.blend.FeedbackBlend;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.mock;
@@ -20,7 +20,8 @@ import static org.mockito.Mockito.verify;
 @RunWith(GwtMockitoTestRunner.class)
 public class TextActionProcessorTest {
 
-    TextActionProcessor testObj;
+    @InjectMocks
+    private TextActionProcessor testObj;
     @Mock
     private TextFeedback feedbackPresenter;
     @Mock
@@ -29,11 +30,6 @@ public class TextActionProcessorTest {
     private FeedbackBlend feedbackBlend;
     @Captor
     private ArgumentCaptor<ClickHandler> clickHandlerCaptor;
-
-    @Before
-    public void init() {
-        testObj = new TextActionProcessor(feedbackPresenter, mathJaxNative, feedbackBlend);
-    }
 
     @Test
     public void shouldShowFeedback() {
