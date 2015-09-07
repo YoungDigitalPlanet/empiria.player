@@ -3,10 +3,10 @@
     <ui:with type="eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants" field="res"/>
 
     <g:FlowPanel ui:field="feedbackTextModuleWraper" styleName="{res.QP_FEEDBACK_TEXT_MODULE_WRAPPER}">
+        <b:CustomPushButton ui:field="feedbackShowButton" styleName="{res.QP_FEEDBACK_TEXT_MODULE_SHOW_BUTTON}"/>
         <g:FlowPanel ui:field="feedbackTextModule" styleName="{res.QP_FEEDBACK_TEXT_MODULE}">
             <b:CustomPushButton ui:field="feedbackCloseButton" styleName="{res.QP_FEEDBACK_TEXT_MODULE_CLOSE_BUTTON}"/>
             <g:FlowPanel ui:field="feedbackTextPanel" styleName="{res.QP_FEEDBACK_TEXT}"/>
         </g:FlowPanel>
-        <b:CustomPushButton ui:field="feedbackShowButton" styleName="{res.QP_FEEDBACK_TEXT_MODULE_SHOW_BUTTON}"/>
     </g:FlowPanel>
 </ui:UiBinder> 

@@ -58,8 +58,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
 
     private void addFeedback(Widget widget, FeedbackMark mark) {
         feedbackPresenter.addFeedback(widget, mark);
-        feedbackPresenter.showFeedback();
-        feedbackBlend.show(feedbackPresenter);
+        showFeedback();
     }
 
     private void showFeedback() {
@@ -69,9 +68,15 @@ public class TextActionProcessor extends AbstractActionProcessor {
 
     @Override
     public void clearFeedback() {
+        hideFeedback();
+        feedbackPresenter.hideModule();
+    }
+
+    private void hideFeedback() {
         feedbackPresenter.hideFeedback();
         feedbackBlend.hide();
     }
+
 
     @Override
     public void initModule(Element element) {
@@ -89,7 +94,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
         return new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                clearFeedback();
+                hideFeedback();
             }
         };
     }
