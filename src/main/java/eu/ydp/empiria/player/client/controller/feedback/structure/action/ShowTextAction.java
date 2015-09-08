@@ -48,6 +48,6 @@ public class ShowTextAction implements FeedbackAction {
 
     @Override
     public String toString() {
-        return "ShowTextAction [text=" + content.getValue().toString() + " notify= " + notify + " notifyOperator= " + notifyOperator + "]";
+        return "ShowTextAction [text=" + content.toString() + "]";
     }
 }
