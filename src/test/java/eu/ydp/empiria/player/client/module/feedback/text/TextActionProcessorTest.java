@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(GwtMockitoTestRunner.class)
@@ -54,11 +55,12 @@ public class TextActionProcessorTest {
         verify(feedbackPresenter).addCloseButtonClickHandler(clickHandlerCaptor.capture());
         ClickHandler clickHandler = clickHandlerCaptor.getValue();
         ClickEvent clickEvent = mock(ClickEvent.class);
+
         //when
         clickHandler.onClick(clickEvent);
-        //then
-        verify(feedbackPresenter).hideFeedback();
-        verify(feedbackBlend).hide();
-    }
 
+        //then
+        verify(feedbackPresenter, times(2)).hideFeedback();
+        verify(feedbackBlend, times(2)).hide();
+    }
 }
