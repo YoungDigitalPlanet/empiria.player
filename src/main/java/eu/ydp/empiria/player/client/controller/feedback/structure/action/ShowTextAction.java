@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.module.abstractmodule.structure.XMLContentTypeAdapt
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "showText")
 public class ShowTextAction implements FeedbackAction {
 

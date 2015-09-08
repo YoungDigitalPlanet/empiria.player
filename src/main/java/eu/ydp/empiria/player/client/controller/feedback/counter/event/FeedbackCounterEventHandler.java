@@ -1,4 +1,4 @@
-package eu.ydp.empiria.player.client.controller.feedback.counter;
+package eu.ydp.empiria.player.client.controller.feedback.counter.event;
 
 import eu.ydp.gwtutil.client.event.EventHandler;
 

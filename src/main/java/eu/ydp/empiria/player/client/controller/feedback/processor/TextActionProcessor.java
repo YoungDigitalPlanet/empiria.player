@@ -3,12 +3,11 @@ package eu.ydp.empiria.player.client.controller.feedback.processor;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.impl.ConsoleBrowser;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackMark;
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackNotifyCounter;
+import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounter;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowTextAction;
 import eu.ydp.empiria.player.client.module.feedback.text.TextFeedback;
@@ -22,15 +21,15 @@ public class TextActionProcessor extends AbstractActionProcessor {
     private TextFeedback feedbackPresenter;
     private MathJaxNative mathJaxNative;
     private FeedbackBlend feedbackBlend;
-    private final FeedbackNotifyCounter feedbackNotifyCounter;
+    private final FeedbackCounter feedbackCounter;
 
     @Inject
     public TextActionProcessor(TextFeedback feedbackPresenter, MathJaxNative mathJaxNative, FeedbackBlend feedbackBlend,
-                               FeedbackNotifyCounter feedbackNotifyCounter) {
+                               FeedbackCounter feedbackCounter) {
         this.feedbackPresenter = feedbackPresenter;
         this.mathJaxNative = mathJaxNative;
         this.feedbackBlend = feedbackBlend;
-        this.feedbackNotifyCounter = feedbackNotifyCounter;
+        this.feedbackCounter = feedbackCounter;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
     @Override
     public void processSingleAction(FeedbackAction action, FeedbackMark mark) {
         ShowTextAction textAction = (ShowTextAction) action;
-        feedbackNotifyCounter.add(textAction);
+        feedbackCounter.add(textAction);
 
         Element element = textAction.getContent().getValue();
         Widget widget = inlineBodyGenerator.generateInlineBody(element);
@@ -84,7 +83,7 @@ public class TextActionProcessor extends AbstractActionProcessor {
         if (action.hasNotify()) {
             String notifyOperator = action.getNotifyOperator();
             MatchOperator operator = MatchOperator.getOperator(notifyOperator);
-            int count = feedbackNotifyCounter.getCount(action);
+            int count = feedbackCounter.getCount(action);
             return operator.match(count, action.getNotify());
         }
         return true;

@@ -57,12 +57,10 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
         addStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_WRAPPER_HIDDEN());
     }
 
-
     @Override
     public void showFeedback() {
         removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_HIDDEN());
     }
-
 
     @Override
     public void hideFeedback() {

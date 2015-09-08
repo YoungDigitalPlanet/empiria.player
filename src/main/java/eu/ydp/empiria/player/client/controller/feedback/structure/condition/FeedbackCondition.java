@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.structure.condition;
 
-public interface FeedbackCondition {
+import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCountable;
+
+public interface FeedbackCondition extends FeedbackCountable {
 
 }
