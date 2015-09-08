@@ -35,20 +35,22 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
     @UiField
     FlowPanel feedbackTextPanel;
     @UiField
-    FlowPanel feedbackTextModuleWraper;
-    @UiField
     CustomPushButton feedbackCloseButton;
     @UiField
     CustomPushButton feedbackShowButton;
 
-
     @Override
-    public void addFeedback(Widget widget, FeedbackMark mark) {
-        addNewFeedback(widget);
+    public void setFeedbackContent(Widget widget, FeedbackMark mark) {
+        feedbackTextPanel.clear();
+        feedbackTextPanel.add(widget);
         clearStyleNames();
         addStyleName(typeStyleProvider.getStyleName(mark));
     }
 
+    @Override
+    public void showModule() {
+        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_WRAPPER_HIDDEN());
+    }
 
     @Override
     public void hideModule() {
@@ -77,15 +79,9 @@ public class TextFeedbackPresenter extends Composite implements TextFeedback {
         feedbackShowButton.addClickHandler(handler);
     }
 
-    private void addNewFeedback(Widget widget) {
-        feedbackTextPanel.clear();
-        feedbackTextPanel.add(widget);
-    }
-
     private void clearStyleNames() {
         removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_ALLOK());
         removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_OK());
         removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_WRONG());
-        removeStyleName(feedbackStyleNameConstants.QP_FEEDBACK_TEXT_MODULE_WRAPPER_HIDDEN());
     }
 }

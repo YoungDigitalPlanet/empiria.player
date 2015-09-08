@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback.counter;
 
-import com.google.common.collect.Maps;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
@@ -9,52 +10,30 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.condition.Feed
 import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent.getType;
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.RESET_COUNTER;
 
 @Singleton
-public class FeedbackConditionCounter implements FeedbackCounterEventHandler {
-    private Map<FeedbackCondition, Integer> map = Maps.newHashMap();
+public class FeedbackConditionCounter extends FeedbackCounter<FeedbackCondition> {
+
+    private static final Function<Feedback, FeedbackCondition> FEEDBACK_TO_CONDITION_MAPPER = new Function<Feedback, FeedbackCondition>() {
+        @Override
+        public FeedbackCondition apply(Feedback feedback) {
+            return feedback.getCondition();
+        }
+    };
 
     private final FeedbackRegistry feedbackRegistry;
 
     @Inject
-    public FeedbackConditionCounter(FeedbackRegistry feedbackRegistry, EventsBus eventsBus) {
+    public FeedbackConditionCounter(EventsBus eventsBus, FeedbackRegistry feedbackRegistry) {
+        super(eventsBus);
         this.feedbackRegistry = feedbackRegistry;
-        eventsBus.addHandler(getType(RESET_COUNTER), this);
     }
-
-    public void add(FeedbackCondition feedbackCondition) {
-        int count = 1;
-
-        if (map.containsKey(feedbackCondition)) {
-            count = map.get(feedbackCondition) + 1;
-        }
-        map.put(feedbackCondition, count);
-    }
-
-    public int getCount(FeedbackCondition feedbackCondition) {
-        if (map.containsKey(feedbackCondition)) {
-            return map.get(feedbackCondition);
-        }
-
-        return 0;
-    }
-
 
     @Override
-    public void onFeedbackCounterEvent(FeedbackCounterEvent event) {
-        IModule sourceModule = event.getSourceModule();
-        reset(sourceModule);
-    }
-
-    private void reset(IModule module) {
+    protected Collection<FeedbackCondition> getObjectsToRemove(IModule module) {
         List<Feedback> moduleFeedbacks = feedbackRegistry.getModuleFeedbacks(module);
-        for (Feedback feedback : moduleFeedbacks) {
-            map.remove(feedback.getCondition());
-        }
+        return Collections2.transform(moduleFeedbacks, FEEDBACK_TO_CONDITION_MAPPER);
     }
 }

@@ -17,7 +17,7 @@ public abstract class AbstractActionProcessor extends SimpleModuleBase implement
     public List<FeedbackAction> processActions(List<FeedbackAction> actions, InlineBodyGeneratorSocket inlineBodyGenerator, FeedbackMark mark) {
         this.inlineBodyGenerator = inlineBodyGenerator;
 
-        clearFeedback();
+        hideModule();
 
         return processActions(actions, mark);
     }
@@ -36,9 +36,9 @@ public abstract class AbstractActionProcessor extends SimpleModuleBase implement
 
     @Override
     public void reset() {
-        clearFeedback();
+        hideModule();
     }
 
-    public abstract void clearFeedback();
+    protected abstract void hideModule();
 
 }
