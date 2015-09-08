@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.gin;
 
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
+import eu.ydp.empiria.player.client.controller.ContentPreloader;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
-import eu.ydp.empiria.player.client.controller.report.AssessmentReportFactory;
 import eu.ydp.empiria.player.client.gin.factory.PlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.*;
@@ -44,4 +44,6 @@ public interface PlayerGinjector extends Ginjector {
     ExternalEventDispatcher getEventDispatcher();
 
     PlayerFactory getPlayerFactory();
+
+    ContentPreloader getContentPreloader();
 }

@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.data;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.controller.ContentPreloader;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
@@ -117,7 +118,7 @@ public class DataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     private DataSourceManager createDataSourceManager() {
-        return new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager());
+        return new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager(), new StyleDataSourceLoader(), new ContentPreloader());
     }
 
     protected void processLoad(DataSourceManager dsm, String itemXml) {

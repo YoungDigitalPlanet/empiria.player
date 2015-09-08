@@ -4,6 +4,7 @@ import com.google.gwt.core.client.*;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import eu.ydp.empiria.player.client.controller.ContentPreloader;
 import eu.ydp.empiria.player.client.gin.factory.PlayerFactory;
 import eu.ydp.empiria.player.client.scripts.ScriptsLoader;
 import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
@@ -30,6 +31,9 @@ public class PlayerEntryPoint implements EntryPoint {
     @Override
     public void onModuleLoad() {
         final Logger logger = PlayerGinjectorFactory.getPlayerGinjector().getLogger();
+        ContentPreloader contentPreloader = PlayerGinjectorFactory.getPlayerGinjector().getContentPreloader();
+        contentPreloader.setPreloader();
+
         SynchronousScriptsCallback onScriptsLoadCallback = createPlayerInitializationCallback(logger);
 
         ScriptsLoader scriptsLoader = PlayerGinjectorFactory.getPlayerGinjector().getScriptsLoader();
