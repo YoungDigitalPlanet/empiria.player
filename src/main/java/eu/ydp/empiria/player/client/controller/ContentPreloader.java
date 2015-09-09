@@ -55,7 +55,7 @@ public class ContentPreloader {
     }
 
     public void removePreloader() {
-        if (mainPreloader.isAttached()) {
+        if (mainPreloader != null && mainPreloader.isAttached()) {
             mainPreloader.removeFromParent();
         }
     }
