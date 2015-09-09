@@ -1,52 +1,62 @@
 package eu.ydp.empiria.player.client.controller;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.InsertPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
+import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 @Singleton
 public class ContentPreloader {
 
-    private final String MAIN_PRELOADER_ID = "mainPreloader";
+    private static final String MAIN_PRELOADER_ID = "mainPreloader";
+    private final RootPanelDelegate rootPanelDelegate;
+
+    private final WindowDelegate windowDelegate;
+    private final ProgressBundle progressBundle;
+
     private Image mainPreloader;
 
+    @Inject
+    public ContentPreloader(ProgressBundle progressBundle, WindowDelegate windowDelegate, RootPanelDelegate rootPanelDelegate) {
+        this.progressBundle = progressBundle;
+        this.windowDelegate = windowDelegate;
+        this.rootPanelDelegate = rootPanelDelegate;
+    }
+
     public void setPreloader() {
-        InsertPanel.ForIsWidget rootPanel = RootPanel.get();
-        RootPanel preloaderWidget = RootPanel.get(MAIN_PRELOADER_ID);
+        RootPanel preloaderWidget = rootPanelDelegate.getRootPanel(MAIN_PRELOADER_ID);
         if (preloaderWidget == null) {
-            ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
             ImageResource progressImage = progressBundle.getProgressImage();
             mainPreloader = new Image(progressImage);
         } else {
-            RootPanel widget = preloaderWidget;
-            mainPreloader = Image.wrap(widget.getElement());
+            mainPreloader = Image.wrap(preloaderWidget.getElement());
         }
+        RootPanel rootPanel = rootPanelDelegate.getRootPanel();
         rootPanel.add(mainPreloader);
-        centerMainPreloader(Window.getClientWidth() / 2, Window.getClientHeight() / 2, mainPreloader.getElement());
+
+        int halfWidth = windowDelegate.getClientWidth() / 2;
+        int halfHeight = windowDelegate.getClientHeight() / 2;
+        centerMainPreloader(halfWidth, halfHeight, mainPreloader.getElement());
     }
 
-    private void centerMainPreloader(int x, int y, com.google.gwt.dom.client.Element preloaderElement) {
+    private void centerMainPreloader(int x, int y, Element preloaderElement) {
         preloaderElement.setId(MAIN_PRELOADER_ID);
-        preloaderElement.getStyle()
-                .setPosition(Style.Position.ABSOLUTE);
-        preloaderElement.getStyle()
-                .setLeft(x - preloaderElement.getOffsetWidth() / 2, Style.Unit.PX);
-        preloaderElement.getStyle()
-                .setTop(y - preloaderElement.getOffsetHeight() / 2, Style.Unit.PX);
+        preloaderElement.getStyle().setPosition(Style.Position.ABSOLUTE);
+        int leftOffset = x - preloaderElement.getOffsetWidth() / 2;
+        preloaderElement.getStyle().setLeft(leftOffset, Style.Unit.PX);
+        int topOffset = y - preloaderElement.getOffsetHeight() / 2;
+        preloaderElement.getStyle().setTop(topOffset, Style.Unit.PX);
     }
 
     public void removePreloader() {
-        RootPanel rootPanel = RootPanel.get();
-        int preloaderIndex = rootPanel.getWidgetIndex(mainPreloader);
-
-        if (preloaderIndex >= 0) {
-            rootPanel.remove(preloaderIndex);
+        if (mainPreloader.isAttached()) {
+            mainPreloader.removeFromParent();
         }
     }
 }

@@ -12,7 +12,6 @@ import eu.ydp.empiria.player.client.scripts.SynchronousScriptsCallback;
 import eu.ydp.empiria.player.client.util.events.external.ExternalCallback;
 import eu.ydp.empiria.player.client.util.events.external.ExternalEventDispatcher;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
-import eu.ydp.gwtutil.client.Alternative;
 import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.debug.log.UncaughtExceptionHandler;
 
@@ -22,27 +21,29 @@ import java.util.List;
 @Singleton
 public class PlayerLoader {
 
-    private static Player player;
-    private static JavaScriptObject jsObject;
-    private static String node_id;
-    private static List<Alternative<String, JavaScriptObject>> extensionsToLoad = new ArrayList<>();
+    private Player player;
+    private JavaScriptObject jsObject;
+    private String node_id;
+    private List<String> namedExtensions = new ArrayList<>();
+    private List<JavaScriptObject> javaScriptExtensions = new ArrayList<>();
 
     private final Logger logger;
     private final ContentPreloader contentPreloader;
     private final ScriptsLoader scriptsLoader;
+    private final PlayerFactory playerFactory;
 
     @Inject
-    public PlayerLoader(Logger logger, ContentPreloader contentPreloader, ScriptsLoader scriptsLoader) {
+    public PlayerLoader(Logger logger, ContentPreloader contentPreloader, ScriptsLoader scriptsLoader, PlayerFactory playerFactory) {
         this.logger = logger;
         this.contentPreloader = contentPreloader;
         this.scriptsLoader = scriptsLoader;
+        this.playerFactory = playerFactory;
     }
 
     public void load() {
         contentPreloader.setPreloader();
 
         SynchronousScriptsCallback onScriptsLoadCallback = createPlayerInitializationCallback(logger);
-
 
         scriptsLoader.inject(onScriptsLoadCallback);
     }
@@ -64,24 +65,27 @@ public class PlayerLoader {
 
     private native void initJavaScriptAPI() /*-{
         // CreatePlayer
+        var that = this;
         $wnd.empiriaCreatePlayer = function (id) {
-            var player = @PlayerLoader::createPlayer(Ljava/lang/String;)(id);
+            var player = that.@PlayerLoader::createPlayer(Ljava/lang/String;)(id);
             player.load = function (url) {
-                @eu.ydp.empiria.player.client.PlayerLoader::load(Ljava/lang/String;)(url);
+                that.@PlayerLoader::load(Ljava/lang/String;)(url);
             };
             player.loadFromData = function (assessmentData, itemDatas) {
-                @PlayerLoader::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
+                that.@PlayerLoader::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
             };
 
             player.loadExtension = function (obj) {
-                if (typeof obj == 'object')
-                    @PlayerLoader::loadExtension(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-                else if (typeof obj == 'string')
-                    @PlayerLoader::loadExtension(Ljava/lang/String;)(obj);
+                if (typeof obj == 'object') {
+                    that.@PlayerLoader::loadObjectExtension(*)(obj);
+                }
+                else if (typeof obj == 'string') {
+                    that.@PlayerLoader::loadStringExtension(*)(obj);
+                }
             };
 
             player.onEvent = function (funct) {
-                @PlayerLoader::onEvent(*)(funct);
+                that.@PlayerLoader::onEvent(*)(funct);
             };
 
             return player;
@@ -97,13 +101,13 @@ public class PlayerLoader {
         }
     }-*/;
 
-    public static JavaScriptObject createPlayer(String node_id) {
-        PlayerLoader.node_id = node_id;
+    private JavaScriptObject createPlayer(String node_id) {
+        this.node_id = node_id;
         jsObject = JavaScriptObject.createFunction();
         return jsObject;
     }
 
-    public static void load(final String url) {
+    private void load(final String url) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
@@ -117,23 +121,20 @@ public class PlayerLoader {
         });
     }
 
-    private static void doLoad(final String url) {
+    private void doLoad(final String url) {
         if (player == null) {
-            PlayerFactory playerFactory = PlayerGinjectorFactory.getPlayerGinjector().getPlayerFactory();
             player = playerFactory.createPlayer(node_id, jsObject);
         }
-        for (Alternative<String, JavaScriptObject> extAlt : extensionsToLoad) {
-            if (extAlt.hasMain()) {
-                player.loadExtension(extAlt.getMain());
-            } else {
-                player.loadExtension(extAlt.getOther());
-            }
-
+        for (String namedExtension : namedExtensions) {
+            player.loadExtension(namedExtension);
+        }
+        for (JavaScriptObject javaScriptExtension : javaScriptExtensions) {
+            player.loadExtension(javaScriptExtension);
         }
         player.load(url);
     }
 
-    public static void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
+    private void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
@@ -147,7 +148,6 @@ public class PlayerLoader {
                     Document itemDoc = XMLParser.parse(decodeXmlDataDocument(itemDatasArray.get(i)));
                     itemXmlDatas[i] = new XmlData(itemDoc, decodeXmlDataBaseURL(itemDatasArray.get(i)));
                 }
-                PlayerFactory playerFactory = PlayerGinjectorFactory.getPlayerGinjector().getPlayerFactory();
                 player = playerFactory.createPlayer(node_id, jsObject);
                 player.load(assessmentXmlData, itemXmlDatas);
             }
@@ -159,27 +159,27 @@ public class PlayerLoader {
         });
     }
 
-    private native static String decodeXmlDataDocument(JavaScriptObject data)/*-{
+    private native String decodeXmlDataDocument(JavaScriptObject data)/*-{
         if (typeof data.document == 'string')
             return data.document;
         return "";
     }-*/;
 
-    private native static String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
+    private native String decodeXmlDataBaseURL(JavaScriptObject data)/*-{
         if (typeof data.baseURL == 'string')
             return data.baseURL;
         return "";
     }-*/;
 
-    public static void loadExtension(JavaScriptObject extension) {
-        extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForOther(extension));
+    private void loadObjectExtension(JavaScriptObject extension) {
+        javaScriptExtensions.add(extension);
     }
 
-    public static void loadExtension(String extension) {
-        extensionsToLoad.add(Alternative.<String, JavaScriptObject>createForMain(extension));
+    private void loadStringExtension(String extension) {
+        namedExtensions.add(extension);
     }
 
-    public static void onEvent(ExternalCallback callbackFunction) {
+    private void onEvent(ExternalCallback callbackFunction) {
         ExternalEventDispatcher dispatcher = PlayerGinjectorFactory.getPlayerGinjector().getEventDispatcher();
         dispatcher.setCallbackFunction(callbackFunction);
     }

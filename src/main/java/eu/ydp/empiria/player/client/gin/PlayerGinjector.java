@@ -37,7 +37,5 @@ public interface PlayerGinjector extends Ginjector {
 
     ExternalEventDispatcher getEventDispatcher();
 
-    PlayerFactory getPlayerFactory();
-
     PlayerLoader getPlayerLoader();
 }
