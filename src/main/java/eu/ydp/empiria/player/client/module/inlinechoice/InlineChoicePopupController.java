@@ -10,7 +10,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent;
+import eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEvent;
 import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -33,7 +33,7 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.RESET_COUNTER;
+import static eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEventTypes.RESET_COUNTER;
 
 public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener, PlayerEventHandler {
 

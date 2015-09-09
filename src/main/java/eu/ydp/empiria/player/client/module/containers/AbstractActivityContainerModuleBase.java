@@ -1,11 +1,10 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent;
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes;
+import eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEvent;
 import eu.ydp.empiria.player.client.module.core.base.ContainerModuleBase;
 import eu.ydp.empiria.player.client.module.core.flow.Activity;
 
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.*;
+import static eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEventTypes.*;
 
 public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements Activity {
 

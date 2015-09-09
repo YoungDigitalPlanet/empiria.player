@@ -3,17 +3,17 @@ package eu.ydp.empiria.player.client.controller.feedback.matcher;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackProperties;
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackConditionCounter;
+import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounter;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.CountConditionBean;
 import eu.ydp.empiria.player.client.controller.feedback.structure.condition.FeedbackCondition;
 import eu.ydp.gwtutil.client.operator.MatchOperator;
 
 public class CountConditionMatcher extends ConditionMatcherBase implements FeedbackMatcher {
 
-    private final FeedbackConditionCounter feedbackConditionCounter;
+    private final FeedbackCounter feedbackConditionCounter;
 
     @Inject
-    public CountConditionMatcher(@Assisted MatcherRegistry registry, FeedbackConditionCounter feedbackConditionCounter) {
+    public CountConditionMatcher(@Assisted MatcherRegistry registry, FeedbackCounter feedbackConditionCounter) {
         super(registry);
         this.feedbackConditionCounter = feedbackConditionCounter;
     }

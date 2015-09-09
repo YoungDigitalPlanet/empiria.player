@@ -13,7 +13,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.AccessibleListBox;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
-import eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEvent;
+import eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEvent;
 import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
@@ -30,7 +30,7 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.List;
 
-import static eu.ydp.empiria.player.client.controller.feedback.counter.FeedbackCounterEventTypes.RESET_COUNTER;
+import static eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEventTypes.RESET_COUNTER;
 
 public class InlineChoiceDefaultController extends ParentedModuleBase implements InlineChoiceController {
 

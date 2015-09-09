@@ -38,7 +38,7 @@ public class ImageActionProcessor extends AbstractActionProcessor {
     }
 
     @Override
-    public void clearFeedback() {
+    public void hideModule() {
         feedbackPresenter.setUrl("");
         feedbackPresenter.hide();
     }
