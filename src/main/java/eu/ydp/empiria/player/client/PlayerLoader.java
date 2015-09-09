@@ -69,10 +69,10 @@ public class PlayerLoader {
         $wnd.empiriaCreatePlayer = function (id) {
             var player = that.@PlayerLoader::createPlayer(Ljava/lang/String;)(id);
             player.load = function (url) {
-                that.@PlayerLoader::load(Ljava/lang/String;)(url);
+                that.@PlayerLoader::loadContent(*)(url);
             };
             player.loadFromData = function (assessmentData, itemDatas) {
-                that.@PlayerLoader::load(Lcom/google/gwt/core/client/JavaScriptObject;Lcom/google/gwt/core/client/JavaScriptObject;)(assessmentData, itemDatas);
+                that.@PlayerLoader::loadStructure(*)(assessmentData, itemDatas);
             };
 
             player.loadExtension = function (obj) {
@@ -107,7 +107,7 @@ public class PlayerLoader {
         return jsObject;
     }
 
-    private void load(final String url) {
+    private void loadContent(final String url) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
@@ -134,7 +134,7 @@ public class PlayerLoader {
         player.load(url);
     }
 
-    private void load(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
+    private void loadStructure(final JavaScriptObject assessmentData, final JavaScriptObject itemDatas) {
         GWT.runAsync(new RunAsyncCallback() {
             @Override
             public void onSuccess() {
