@@ -67,7 +67,7 @@ public class PlayerLoader {
         // CreatePlayer
         var that = this;
         $wnd.empiriaCreatePlayer = function (id) {
-            var player = that.@PlayerLoader::createPlayer(Ljava/lang/String;)(id);
+            var player = that.@PlayerLoader::createPlayer(*)(id);
             player.load = function (url) {
                 that.@PlayerLoader::loadContent(*)(url);
             };
