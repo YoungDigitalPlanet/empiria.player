@@ -1,12 +1,17 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
+import eu.ydp.empiria.player.client.controller.ContentPreloader;
 import eu.ydp.empiria.player.client.controller.communication.InitialData;
 import eu.ydp.empiria.player.client.controller.communication.InitialItemData;
 import eu.ydp.empiria.player.client.controller.data.events.DataLoaderEventListener;
+import eu.ydp.empiria.player.client.preloader.view.ProgressBundle;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
+import eu.ydp.gwtutil.client.proxy.RootPanelDelegate;
+import eu.ydp.gwtutil.client.proxy.WindowDelegate;
 
 public class DataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
@@ -117,7 +122,10 @@ public class DataSourceManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
     }
 
     private DataSourceManager createDataSourceManager() {
-        return new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager());
+        ProgressBundle progressBundle = GWT.create(ProgressBundle.class);
+        ContentPreloader contentPreloader = new ContentPreloader(progressBundle, new WindowDelegate(), new RootPanelDelegate());
+        contentPreloader.setPreloader();
+        return new DataSourceManager(new AssessmentDataSourceManager(), new ItemDataSourceCollectionManager(), new StyleDataSourceLoader(), contentPreloader);
     }
 
     protected void processLoad(DataSourceManager dsm, String itemXml) {

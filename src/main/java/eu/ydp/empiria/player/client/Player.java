@@ -5,7 +5,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.IPlayerContainersAccessor;
-import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.util.file.xml.XmlData;
 import eu.ydp.empiria.player.client.version.Version;
@@ -58,10 +57,6 @@ public class Player {
 
     public void load(XmlData assessmentData, XmlData[] itemsData) {
         deliveryEngine.load(assessmentData, itemsData);
-    }
-
-    public void setFlowOptions(FlowOptions o) {
-        deliveryEngine.setFlowOptions(o);
     }
 
     private void logVersion() {
