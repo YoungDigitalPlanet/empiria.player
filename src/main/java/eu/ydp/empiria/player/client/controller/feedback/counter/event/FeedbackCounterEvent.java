@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.feedback.counter.event;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class FeedbackCounterEvent extends AbstractEvent<FeedbackCounterEventHandler, FeedbackCounterEventTypes> {
     public static EventTypes<FeedbackCounterEventHandler, FeedbackCounterEventTypes> types = new EventTypes<>();

@@ -4,7 +4,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 /**
  * emulacja zdarzen touch

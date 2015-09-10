@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.player;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class PlayerEvent extends AbstractEvent<PlayerEventHandler, PlayerEventTypes> {
     public static EventTypes<PlayerEventHandler, PlayerEventTypes> types = new EventTypes<PlayerEventHandler, PlayerEventTypes>();

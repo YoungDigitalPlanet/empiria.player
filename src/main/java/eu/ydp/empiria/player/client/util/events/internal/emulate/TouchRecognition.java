@@ -16,7 +16,7 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.toucho
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnMoveHandler;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnStartHandler;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEventHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 //TODO dopisac rozpoznawanie gestow
 public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, MouseDownHandler, MouseUpHandler,

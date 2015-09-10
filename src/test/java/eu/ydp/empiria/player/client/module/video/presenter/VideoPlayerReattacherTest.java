@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

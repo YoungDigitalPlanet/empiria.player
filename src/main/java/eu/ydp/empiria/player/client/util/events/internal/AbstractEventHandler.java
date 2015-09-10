@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.internal;
 
-import eu.ydp.gwtutil.client.event.Event;
 import eu.ydp.gwtutil.client.event.EventHandlerRegistrator;
-import eu.ydp.gwtutil.client.event.EventType;
 import eu.ydp.gwtutil.client.event.HandlerRegistration;
 
 import java.util.Set;

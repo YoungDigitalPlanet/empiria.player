@@ -13,7 +13,7 @@ import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;

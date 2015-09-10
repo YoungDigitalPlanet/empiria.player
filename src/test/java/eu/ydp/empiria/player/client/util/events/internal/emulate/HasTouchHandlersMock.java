@@ -4,7 +4,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEventHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers {
 

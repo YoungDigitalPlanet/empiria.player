@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.connection;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class ConnectionEvent extends AbstractEvent<ConnectionEventHandler, ConnectionEventTypes> {
     public static EventTypes<ConnectionEventHandler, ConnectionEventTypes> types = new EventTypes<ConnectionEventHandler, ConnectionEventTypes>();

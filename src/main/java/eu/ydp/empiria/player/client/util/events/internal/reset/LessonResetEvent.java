@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.reset;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class LessonResetEvent extends AbstractEvent<LessonResetEventHandler, LessonResetEventTypes> {
     public static EventTypes<LessonResetEventHandler, LessonResetEventTypes> types = new EventTypes<>();

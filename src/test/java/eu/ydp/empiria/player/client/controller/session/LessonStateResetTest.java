@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEvent;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

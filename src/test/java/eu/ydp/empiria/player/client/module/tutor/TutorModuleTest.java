@@ -10,7 +10,7 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;

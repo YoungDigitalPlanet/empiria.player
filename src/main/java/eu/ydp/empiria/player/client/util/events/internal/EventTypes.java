@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.util.events.internal;
 
-import eu.ydp.gwtutil.client.event.EventType;
-
 import java.util.HashMap;
 import java.util.Map;
 

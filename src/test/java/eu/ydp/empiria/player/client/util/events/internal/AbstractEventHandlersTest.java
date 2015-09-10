@@ -6,8 +6,6 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.event.Event;
-import eu.ydp.gwtutil.client.event.EventType;
 import eu.ydp.gwtutil.client.event.HandlerRegistration;
 import org.junit.Test;
 import org.mockito.Matchers;

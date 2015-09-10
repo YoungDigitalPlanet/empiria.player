@@ -10,9 +10,9 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandl
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.gwtutil.client.event.Event;
+import eu.ydp.empiria.player.client.util.events.internal.Event;
 import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 import java.util.*;

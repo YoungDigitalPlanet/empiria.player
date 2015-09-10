@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.page;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class PageEvent extends AbstractEvent<PageEventHandler, PageEventTypes> {
 

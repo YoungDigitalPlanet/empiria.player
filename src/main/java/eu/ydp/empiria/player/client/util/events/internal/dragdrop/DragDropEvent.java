@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
-import eu.ydp.gwtutil.client.event.EventType;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class DragDropEvent extends AbstractEvent<DragDropEventHandler, DragDropEventTypes> {
     public static EventTypes<DragDropEventHandler, DragDropEventTypes> types = new EventTypes<DragDropEventHandler, DragDropEventTypes>();
