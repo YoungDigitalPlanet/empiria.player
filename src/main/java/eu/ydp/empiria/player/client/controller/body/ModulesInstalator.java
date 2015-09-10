@@ -8,7 +8,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.core.base.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -131,17 +131,14 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
         for (String responseIdentifier : uniqueModulesMap.getKeys()) {
             StackMap<Element, HasWidgets> currModuleMap = uniqueModulesMap.get(responseIdentifier);
 
-            IModule currModule = null;
+            IModule currModule = multiViewModulesMap.get(responseIdentifier);
+            if (currModule instanceof IMultiViewModule) {
+                ((IMultiViewModule) currModule).initModule(moduleSocket, eventsBus);
+            }
 
             for (Element currElement : currModuleMap.getKeys()) {
-                if (currModule == null) {
-                    currModule = multiViewModulesMap.get(responseIdentifier);
-                    if (currModule instanceof IMultiViewModule) {
-                        ((IMultiViewModule) currModule).initModule(moduleSocket, eventsBus);
-                    }
+                registerModuleFeedbacks(currModule, currElement);
 
-                    registerModuleFeedbacks(currModule, currElement);
-                }
                 if (currModule instanceof IMultiViewModule) {
                     ((IMultiViewModule) currModule).addElement(currElement);
                 }

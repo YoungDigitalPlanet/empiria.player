@@ -29,19 +29,17 @@ public class ModuleFeedbackProcessor {
     private Provider<FeedbackActionCollector> feedbackActionCollectorProvider;
     protected FeedbackActionCollector feedbackActionCollector;
     private InlineBodyGeneratorSocket inlineBodyGeneratorSocket;
-    private FeedbackMarkStyleProvider typeProvider;
 
     @Inject
     public ModuleFeedbackProcessor(@Assisted InlineBodyGeneratorSocket inlineBodyGeneratorSocket, FeedbackRegistry feedbackRegistry,
-            FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
-            Provider<FeedbackActionCollector> feedbackActionCollectorProvider, FeedbackMarkStyleProvider typeProvider) {
+                                   FeedbackConditionMatcher matcher, SoundActionProcessor soundProcessor, FeedbackPropertiesCollector propertiesCollector,
+                                   Provider<FeedbackActionCollector> feedbackActionCollectorProvider) {
         this.inlineBodyGeneratorSocket = inlineBodyGeneratorSocket;
         this.feedbackRegistry = feedbackRegistry;
         this.matcher = matcher;
         this.soundProcessor = soundProcessor;
         this.propertiesCollector = propertiesCollector;
         this.feedbackActionCollectorProvider = feedbackActionCollectorProvider;
-        this.typeProvider = typeProvider;
         initializeFeedbackActionCollector();
     }
 
