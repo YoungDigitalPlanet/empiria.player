@@ -3,13 +3,13 @@ package eu.ydp.empiria.player.client.util.events.internal.emulate;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
-import eu.ydp.gwtutil.client.event.AbstractEventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.AbstractEventHandler;
+import eu.ydp.gwtutil.client.event.EventType;
 
 public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers {
 
     @Override
-    public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {
+    public HandlerRegistration addTouchHandler(TouchHandler handler, EventType<TouchHandler, TouchTypes> event) {
         return addHandler(handler, event);
     }
 
@@ -23,7 +23,7 @@ public class HasTouchHandlersMock extends AbstractEventHandler<TouchHandler, Tou
     }
 
     @Override
-    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... event) {
+    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, EventType<TouchHandler, TouchTypes>... event) {
         HandlerRegistration[] reg = new HandlerRegistration[event.length];
         for (int x = 0; x < reg.length; ++x) {
             reg[x] = addHandler(handler, event[x]);

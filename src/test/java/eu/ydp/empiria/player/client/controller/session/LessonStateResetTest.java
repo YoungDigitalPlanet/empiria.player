@@ -4,7 +4,7 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEvent;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.reset.LessonResetEventTypes;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.EventType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,7 +28,7 @@ public class LessonStateResetTest {
     @Test
     public void shouldAddHandler() {
         // given
-        Type<LessonResetEventHandler, LessonResetEventTypes> eventType = LessonResetEvent.getType(LessonResetEventTypes.RESET);
+        EventType<LessonResetEventHandler, LessonResetEventTypes> eventType = LessonResetEvent.getType(LessonResetEventTypes.RESET);
 
         // than
         verify(eventsBus).addHandler(eventType, testObj);

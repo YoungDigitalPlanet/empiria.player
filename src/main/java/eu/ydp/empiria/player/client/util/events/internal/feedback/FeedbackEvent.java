@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.feedback;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.gwtutil.client.event.EventType;
 
 public class FeedbackEvent extends AbstractEvent<FeedbackEventHandler, FeedbackEventTypes> {
 
@@ -28,7 +29,7 @@ public class FeedbackEvent extends AbstractEvent<FeedbackEventHandler, FeedbackE
         handler.onFeedbackEvent(this);
     }
 
-    public static Type<FeedbackEventHandler, FeedbackEventTypes> getType(FeedbackEventTypes type) {
+    public static EventType<FeedbackEventHandler, FeedbackEventTypes> getType(FeedbackEventTypes type) {
         return types.getType(type);
     }
 

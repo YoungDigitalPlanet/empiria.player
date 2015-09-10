@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
-import eu.ydp.gwtutil.client.event.AbstractEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.AbstractEventHandler;
 
 public class ConnectionEventHandler extends AbstractEventHandler<PairConnectEventHandler, PairConnectEventTypes, PairConnectEvent> {
 

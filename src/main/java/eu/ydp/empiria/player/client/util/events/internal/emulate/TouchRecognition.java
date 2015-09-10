@@ -15,8 +15,8 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.toucho
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnEndHandler;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnMoveHandler;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.touchon.TouchOnStartHandler;
-import eu.ydp.gwtutil.client.event.AbstractEventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.AbstractEventHandler;
+import eu.ydp.gwtutil.client.event.EventType;
 
 //TODO dopisac rozpoznawanie gestow
 public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTypes, TouchEvent> implements HasTouchHandlers, MouseDownHandler, MouseUpHandler,
@@ -118,14 +118,14 @@ public class TouchRecognition extends AbstractEventHandler<TouchHandler, TouchTy
     }
 
     @Override
-    public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event) {
+    public HandlerRegistration addTouchHandler(TouchHandler handler, EventType<TouchHandler, TouchTypes> event) {
         addTouchHandlers((TouchTypes) event.getType());
         return addHandler(handler, event);
     }
 
     @Override
-    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... events) {
-        for (Type<TouchHandler, TouchTypes> event : events) {
+    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, EventType<TouchHandler, TouchTypes>... events) {
+        for (EventType<TouchHandler, TouchTypes> event : events) {
             addTouchHandlers((TouchTypes) event.getType());
         }
         return addHandlers(handler, events);

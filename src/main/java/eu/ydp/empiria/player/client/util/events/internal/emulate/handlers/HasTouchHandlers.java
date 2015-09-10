@@ -2,11 +2,11 @@ package eu.ydp.empiria.player.client.util.events.internal.emulate.handlers;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchTypes;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.EventType;
 
 public interface HasTouchHandlers {
-    public HandlerRegistration addTouchHandler(TouchHandler handler, Type<TouchHandler, TouchTypes> event);
+    public HandlerRegistration addTouchHandler(TouchHandler handler, EventType<TouchHandler, TouchTypes> event);
 
-    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, Type<TouchHandler, TouchTypes>... event);
+    public HandlerRegistration[] addTouchHandlers(TouchHandler handler, EventType<TouchHandler, TouchTypes>... event);
 
 }

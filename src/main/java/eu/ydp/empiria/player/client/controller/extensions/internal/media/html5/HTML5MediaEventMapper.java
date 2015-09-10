@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;

@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchTypes;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.EventType;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import javax.annotation.PostConstruct;
@@ -56,8 +56,8 @@ public class ConnectionViewVertical extends AbstractConnectionView {
         }
     }
 
-    private Type<TouchHandler, TouchTypes>[] getTouchTypes() {
-        Type<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_CANCEL);
+    private EventType<TouchHandler, TouchTypes>[] getTouchTypes() {
+        EventType<TouchHandler, TouchTypes>[] types = TouchEvent.getTypes(TouchTypes.TOUCH_START, TouchTypes.TOUCH_END, TouchTypes.TOUCH_CANCEL);
         if (isDrawFollowTouch()) {
             types = ObjectArrays.concat(types, TouchEvent.getType(TouchTypes.TOUCH_MOVE));
         }

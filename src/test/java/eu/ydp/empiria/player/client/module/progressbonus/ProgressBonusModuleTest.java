@@ -12,8 +12,8 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandl
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventHandler;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
+import eu.ydp.gwtutil.client.event.EventType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -139,7 +139,7 @@ public class ProgressBonusModuleTest {
 
                 return null;
             }
-        }).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class), eq(currentPageScope));
+        }).when(eventsBus).addHandler(any(EventType.class), any(EventHandler.class), eq(currentPageScope));
         doAnswer(new Answer<Void>() {
 
             @Override
@@ -152,6 +152,6 @@ public class ProgressBonusModuleTest {
 
                 return null;
             }
-        }).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class));
+        }).when(eventsBus).addHandler(any(EventType.class), any(EventHandler.class));
     }
 }

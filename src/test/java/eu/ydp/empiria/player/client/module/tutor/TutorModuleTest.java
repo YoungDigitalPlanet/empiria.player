@@ -9,9 +9,8 @@ import eu.ydp.empiria.player.client.module.tutor.view.TutorView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
+import eu.ydp.gwtutil.client.event.EventType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -43,7 +42,7 @@ public class TutorModuleTest {
     private PowerFeedbackMediator mediator;
 
     private TutorEventHandler tutorEventHandler;
-    private final Type<TutorEventHandler, TutorEventTypes> TUTOR_CHANGED = TutorEvent.getType(TutorEventTypes.TUTOR_CHANGED);
+    private final EventType<TutorEventHandler, TutorEventTypes> TUTOR_CHANGED = TutorEvent.getType(TutorEventTypes.TUTOR_CHANGED);
 
     private final CurrentPageScope singlePageScope = mock(CurrentPageScope.class);
 
@@ -117,7 +116,7 @@ public class TutorModuleTest {
 
             @Override
             public Void answer(InvocationOnMock invocation) throws Throwable {
-                EventImpl.Type type = (Type) invocation.getArguments()[0];
+                EventType type = (EventType) invocation.getArguments()[0];
                 Object handler = invocation.getArguments()[1];
 
                 if (handler instanceof TutorEventHandler && type == TUTOR_CHANGED) {
@@ -126,7 +125,7 @@ public class TutorModuleTest {
 
                 return null;
             }
-        }).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class), any(EventScope.class));
+        }).when(eventsBus).addHandler(any(EventType.class), any(EventHandler.class), any(EventScope.class));
     }
 
     private void mockScopeFactoryToReturnSinglePageScope() {

@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.gwtutil.client.event.EventType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -47,21 +47,21 @@ public class SingleFeedbackSoundPlayerJUnitTest extends AbstractTestBaseWithoutA
     @Test
     public void constructorTest() {
         // prepare
-        Function<Type, MediaEventTypes> typeToMediaType = new Function<Type, MediaEventTypes>() {
+        Function<EventType, MediaEventTypes> typeToMediaType = new Function<EventType, MediaEventTypes>() {
             @Override
-            public MediaEventTypes apply(Type type) {
+            public MediaEventTypes apply(EventType type) {
                 return (MediaEventTypes) type.getType();
             }
         };
 
         instance.firePlayEvent(mediaWrapper);
 
-        ArgumentCaptor<Type[]> arguments = ArgumentCaptor.forClass(Type[].class);
+        ArgumentCaptor<EventType[]> arguments = ArgumentCaptor.forClass(EventType[].class);
         // test
         verify(eventsBus).addHandlerToSource(arguments.capture(), org.mockito.Matchers.eq(mediaWrapper), org.mockito.Matchers.any(SingleFeedbackSoundPlayer.class));
 
         // verify
-        List<Type> event = Arrays.asList(arguments.getValue());
+        List<EventType> event = Arrays.asList(arguments.getValue());
         List<MediaEventTypes> registerEventsTypes = Lists.transform(event, typeToMediaType);
         // org.fest.assertions.Assertions.assertThat(registerEventsTypes).containsOnly(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY);
         MatcherAssert.assertThat(registerEventsTypes, Matchers.containsInAnyOrder(MediaEventTypes.ON_STOP, MediaEventTypes.ON_PLAY, MediaEventTypes.ON_PAUSE));
