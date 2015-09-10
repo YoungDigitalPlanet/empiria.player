@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.connection;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class ConnectionEvent extends AbstractEvent<ConnectionEventHandler, ConnectionEventTypes> {
     public static EventTypes<ConnectionEventHandler, ConnectionEventTypes> types = new EventTypes<ConnectionEventHandler, ConnectionEventTypes>();
@@ -36,7 +37,7 @@ public class ConnectionEvent extends AbstractEvent<ConnectionEventHandler, Conne
         handler.onConnectionEvent(this);
     }
 
-    public static Type<ConnectionEventHandler, ConnectionEventTypes> getType(ConnectionEventTypes type) {
+    public static EventType<ConnectionEventHandler, ConnectionEventTypes> getType(ConnectionEventTypes type) {
         return types.getType(type);
     }
 

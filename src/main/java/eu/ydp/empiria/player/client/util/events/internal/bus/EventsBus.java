@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.util.events.internal.bus;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.gwtutil.client.event.Event;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.Event;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 /**
  * Wewnetrzna szyna zdarzen playera
@@ -12,28 +12,28 @@ import eu.ydp.gwtutil.client.event.EventImpl.Type;
 public interface EventsBus {
 
     /**
-     * Dodaje handlera do typu zdarzenia type. Handler rejestrowany jest jako handler globalny {@link EventsBus#addAsyncHandler(Type, EventHandler, EventScope)}
+     * Dodaje handlera do typu zdarzenia type. Handler rejestrowany jest jako handler globalny {@link EventsBus#addAsyncHandler(EventType, EventHandler, EventScope)}
      *
      * @param type    typ eventu
      * @param handler handler
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(Type<H, T> type, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(EventType<H, T> type, H handler);
 
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(Type<H, T>[] type, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(EventType<H, T>[] type, H handler);
 
     /**
      * Dodaje handlera do typu zdarzenia type. Handler jest uruchamiany jedynie w obrebie wskazanym przez eventScope. Aby zarejestrowac handler globalny
-     * parametr eventScope powinien miec wartosc null lub nalezy uzyc {@link EventsBus#addHandler(Type, EventHandler)}
+     * parametr eventScope powinien miec wartosc null lub nalezy uzyc {@link EventsBus#addHandler(EventType, EventHandler)}
      *
      * @param type       typ zdarzenia
      * @param handler
      * @param eventScope zakres widocznosci handlera
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(Type<H, T> type, H handler, EventScope<?> eventScope);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(EventType<H, T> type, H handler, EventScope<?> eventScope);
 
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(Type<H, T>[] type, H handler, EventScope<?> eventScope);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(EventType<H, T>[] type, H handler, EventScope<?> eventScope);
 
     /**
      * Dodaje handlera dla zdarzen typu type dla ktorych producenetem jest objekt source.
@@ -43,9 +43,9 @@ public interface EventsBus {
      * @param handler
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(EventType<H, T> type, Object source, H handler);
 
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(Type<H, T>[] type, Object source, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(EventType<H, T>[] type, Object source, H handler);
 
     /**
      * Dodaje handlera dla zdarzen typu type dla ktorych producenetem jest objekt source.
@@ -57,7 +57,7 @@ public interface EventsBus {
      * @return
      */
 
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler,
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(EventType<H, T> type, Object source, H handler,
                                                                                                        EventScope<?> eventScope);
 
     /**
@@ -67,18 +67,18 @@ public interface EventsBus {
      * @param handler
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(Type<H, T> type, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(EventType<H, T> type, H handler);
 
     /**
      * Dodaje handlera dla zdarzen typu type. Handler jest uruchamiany jedynie w obrebie wskazanym przez eventScope. Aby zarejestrowac handler globalny parametr
-     * eventScope powinien miec wartosc null lub nalezy uzyc {@link EventsBus#addHandler(Type, EventHandler)}. Handlery sa wykonywane asynchronicznie.
+     * eventScope powinien miec wartosc null lub nalezy uzyc {@link EventsBus#addHandler(EventType, EventHandler)}. Handlery sa wykonywane asynchronicznie.
      *
      * @param type       typ zdarzenia
      * @param handler
      * @param eventScope zakres widocznosci handlera
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(Type<H, T> type, H handler, EventScope<?> eventScope);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(EventType<H, T> type, H handler, EventScope<?> eventScope);
 
     /**
      * Dodaje handlera dla zdarzen typu type dla ktorych producenetem jest objekt source. Handlery rejestrowane sa jako globalne. Handlery sa wykonywane
@@ -89,12 +89,12 @@ public interface EventsBus {
      * @param handler
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler);
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(EventType<H, T> type, Object source, H handler);
 
     /**
      * Dodaje handlera dla zdarzen typu type dla ktorych producenetem jest objekt source. Handler jest uruchamiany jedynie w obrebie wskazanym przez eventScope.
      * Aby zarejestrowac handler globalny parametr eventScope powinien miec wartosc null lub nalezy uzyc
-     * {@link EventsBus#addAsyncHandlerToSource(Type, Object, EventHandler)} Handlery sa wykonywane asynchronicznie.
+     * {@link EventsBus#addAsyncHandlerToSource(EventType, Object, EventHandler)} Handlery sa wykonywane asynchronicznie.
      *
      * @param type       typ zdarzenia
      * @param source     obiekt producenta
@@ -102,7 +102,7 @@ public interface EventsBus {
      * @param eventScope zakres widocznosci handlera
      * @return
      */
-    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler,
+    public abstract <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(EventType<H, T> type, Object source, H handler,
                                                                                                             EventScope<?> eventScope);
 
     /**

@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.multiplepair;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, PairConnectEventTypes> {
     public static EventTypes<PairConnectEventHandler, PairConnectEventTypes> types = new EventTypes<PairConnectEventHandler, PairConnectEventTypes>();
@@ -42,7 +43,7 @@ public class PairConnectEvent extends AbstractEvent<PairConnectEventHandler, Pai
         handler.onConnectionEvent(this);
     }
 
-    public static Type<PairConnectEventHandler, PairConnectEventTypes> getType(PairConnectEventTypes type) {
+    public static EventType<PairConnectEventHandler, PairConnectEventTypes> getType(PairConnectEventTypes type) {
         return types.getType(type);
     }
 

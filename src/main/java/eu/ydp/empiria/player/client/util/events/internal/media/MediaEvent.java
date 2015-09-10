@@ -4,6 +4,7 @@ import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
     public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
@@ -59,11 +60,11 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
         handler.onMediaEvent(this);
     }
 
-    public static Type<MediaEventHandler, MediaEventTypes> getType(MediaEventTypes type) {
+    public static EventType<MediaEventHandler, MediaEventTypes> getType(MediaEventTypes type) {
         return types.getType(type);
     }
 
-    public static Type<MediaEventHandler, MediaEventTypes>[] getTypes(MediaEventTypes... type) {
+    public static EventType<MediaEventHandler, MediaEventTypes>[] getTypes(MediaEventTypes... type) {
         return types.getTypes(type);
     }
 

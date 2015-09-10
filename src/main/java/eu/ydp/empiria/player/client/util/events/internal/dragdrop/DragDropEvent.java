@@ -4,6 +4,7 @@ import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.util.dom.drag.DragDataObject;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class DragDropEvent extends AbstractEvent<DragDropEventHandler, DragDropEventTypes> {
     public static EventTypes<DragDropEventHandler, DragDropEventTypes> types = new EventTypes<DragDropEventHandler, DragDropEventTypes>();
@@ -42,11 +43,11 @@ public class DragDropEvent extends AbstractEvent<DragDropEventHandler, DragDropE
         return dragDataObject;
     }
 
-    public static Type<DragDropEventHandler, DragDropEventTypes> getType(DragDropEventTypes type) {
+    public static EventType<DragDropEventHandler, DragDropEventTypes> getType(DragDropEventTypes type) {
         return types.getType(type);
     }
 
-    public static Type<DragDropEventHandler, DragDropEventTypes>[] getTypes(DragDropEventTypes... type) {
+    public static EventType<DragDropEventHandler, DragDropEventTypes>[] getTypes(DragDropEventTypes... type) {
         return types.getTypes(type);
     }
 

@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.util.events.internal.state;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class StateChangeEvent extends AbstractEvent<StateChangeEventHandler, StateChangeEventTypes> {
     public static EventTypes<StateChangeEventHandler, StateChangeEventTypes> types = new EventTypes<StateChangeEventHandler, StateChangeEventTypes>();
@@ -27,7 +28,7 @@ public class StateChangeEvent extends AbstractEvent<StateChangeEventHandler, Sta
         handler.onStateChange(this);
     }
 
-    public static Type<StateChangeEventHandler, StateChangeEventTypes> getType(StateChangeEventTypes type) {
+    public static EventType<StateChangeEventHandler, StateChangeEventTypes> getType(StateChangeEventTypes type) {
         return types.getType(type);
     }
 
