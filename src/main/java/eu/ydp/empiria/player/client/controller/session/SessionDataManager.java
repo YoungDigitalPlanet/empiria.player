@@ -17,7 +17,7 @@ import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.module.IStateful;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
-public class SessionDataManager implements SessionSocket, IStateful, SessionDataSupplier, SessionDataSocket {
+public class SessionDataManager implements SessionSocket, Stateful, SessionDataSupplier, SessionDataSocket {
 
     private ItemSessionData[] itemSessionDatas;
     private final AssessmentVariableStorageImpl variableProvider;

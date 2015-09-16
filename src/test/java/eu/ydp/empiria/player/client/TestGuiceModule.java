@@ -31,7 +31,7 @@ import eu.ydp.empiria.player.client.gin.binding.UniqueId;
 import eu.ydp.empiria.player.client.gin.factory.*;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.media.texttrack.VideoTextTrackElementPresenter;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.connection.ConnectionSurface;
 import eu.ydp.empiria.player.client.module.connection.presenter.view.ConnectionView;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
@@ -99,9 +99,6 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
         bindDescriptors.add(new BindDescriptor<Scheduler>().bind(Scheduler.class)
                 .to(SchedulerMockImpl.class)
                 .in(Singleton.class));
-        bindDescriptors.add(new BindDescriptor<EventsBus>().bind(EventsBus.class)
-                .to(PlayerEventsBus.class)
-                .in(Singleton.class));
         bindDescriptors.add(new BindDescriptor<ConnectionModuleFactory>().bind(ConnectionModuleFactory.class)
                 .to(ConnectionModuleFactoryMock.class)
                 .in(Singleton.class));
@@ -125,6 +122,8 @@ public class TestGuiceModule extends ExtendTestGuiceModule {
                 bind(bindDescriptor, BindType.SIMPLE);
             }
         }
+        Scheduler scheduler = new SchedulerMockImpl();
+        binder.bind(EventsBus.class).toInstance(spy(new PlayerEventsBus(scheduler)));
 
         bind(SourceListJAXBParser.class).toInstance(spy(new SourceListJAXBParserMock()));
         bind(MatcherRegistry.class).in(Singleton.class);

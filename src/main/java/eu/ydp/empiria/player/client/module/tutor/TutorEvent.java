@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.tutor;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes> {
 
@@ -34,7 +35,7 @@ public class TutorEvent extends AbstractEvent<TutorEventHandler, TutorEventTypes
         handler.onTutorChanged(this);
     }
 
-    public static Type<TutorEventHandler, TutorEventTypes> getType(TutorEventTypes type) {
+    public static EventType<TutorEventHandler, TutorEventTypes> getType(TutorEventTypes type) {
         return types.getType(type);
     }
 

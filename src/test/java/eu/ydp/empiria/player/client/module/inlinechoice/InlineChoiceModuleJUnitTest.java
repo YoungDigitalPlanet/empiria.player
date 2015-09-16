@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.inlinechoice;
 
 import com.google.gwt.junit.GWTMockUtilities;
 import eu.ydp.empiria.player.client.AbstractTestBase;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;

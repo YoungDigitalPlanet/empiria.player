@@ -5,7 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.AbstractResponseModel;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.gwtutil.client.collections.KeyValue;
 
 import java.util.ArrayList;

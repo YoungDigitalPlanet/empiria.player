@@ -5,10 +5,10 @@ import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModePreviewClient;
 import eu.ydp.empiria.player.client.controller.workmode.WorkModeTestSubmittedClient;
-import eu.ydp.empiria.player.client.module.ILockable;
-import eu.ydp.empiria.player.client.module.SimpleModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.Lockable;
+import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 
-public class TestPageSubmitButtonModule extends SimpleModuleBase implements ILockable, WorkModePreviewClient, WorkModeTestSubmittedClient {
+public class TestPageSubmitButtonModule extends SimpleModuleBase implements Lockable, WorkModePreviewClient, WorkModeTestSubmittedClient {
 
     private final TestPageSubmitButtonPresenter presenter;
 

@@ -17,9 +17,8 @@ public class LabellingModule extends AbstractActivityContainerModuleBase {
     private Widget view;
 
     @Override
-    public void initModule(Element element, ModuleSocket ms, BodyGeneratorSocket bgs) {
-        super.initModule(element, ms, bgs);
-        view = createView(element, bgs);
+    public void initModule(Element element) {
+        view = createView(element, getBodyGenerator());
     }
 
     private SimplePanel createView(Element element, BodyGeneratorSocket bgs) {

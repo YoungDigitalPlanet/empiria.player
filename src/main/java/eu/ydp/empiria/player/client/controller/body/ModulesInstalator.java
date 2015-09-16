@@ -7,10 +7,11 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackRegistry;
-import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.core.base.*;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
     private ModulesRegistrySocket registry;
     private ModuleSocket moduleSocket;
-    private InteractionEventsListener interactionListener;
     private ParenthoodGeneratorSocket parenthood;
     private List<IModule> singleViewModules;
 
@@ -29,15 +29,16 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
     private StackMap<String, IModule> multiViewModulesMap = new StackMap<>();
 
     private FeedbackRegistry feedbackRegistry;
+    private final EventsBus eventsBus;
 
     @Inject
     public ModulesInstalator(@Assisted ParenthoodGeneratorSocket pts, @Assisted ModulesRegistrySocket reg,
-                             @Assisted ModuleSocket ms, @Assisted InteractionEventsListener mil, FeedbackRegistry feedbackRegistry) {
+                             @Assisted ModuleSocket ms, FeedbackRegistry feedbackRegistry, EventsBus eventsBus) {
         this.registry = reg;
         this.moduleSocket = ms;
-        this.interactionListener = mil;
         this.parenthood = pts;
         this.feedbackRegistry = feedbackRegistry;
+        this.eventsBus = eventsBus;
         singleViewModules = new ArrayList<>();
     }
 
@@ -88,12 +89,12 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
 
         if (module instanceof ISingleViewWithBodyModule) {
             parenthood.pushParent((ISingleViewWithBodyModule) module);
-            ((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket);
+            ((ISingleViewWithBodyModule) module).initModule(element, moduleSocket, bodyGeneratorSocket, eventsBus);
             parenthood.popParent();
         } else if (module instanceof ISingleViewSimpleModule) {
-            ((ISingleViewSimpleModule) module).initModule(element, moduleSocket, interactionListener);
+            ((ISingleViewSimpleModule) module).initModule(element, moduleSocket, eventsBus);
         } else if (module instanceof IInlineModule) {
-            ((IInlineModule) module).initModule(element, moduleSocket, interactionListener);
+            ((IInlineModule) module).initModule(element, moduleSocket, eventsBus);
         }
         if (((ISingleViewModule) module).getView() instanceof Widget) {
             parent.add(((ISingleViewModule) module).getView());
@@ -115,7 +116,7 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
                 IMultiViewModule multiViewModule = (IMultiViewModule) module;
                 List<HasWidgets> placeholders = moduleMap.getValues();
 
-                multiViewModule.initModule(moduleSocket, interactionListener);
+                multiViewModule.initModule(moduleSocket, eventsBus);
                 multiViewModule.addElement(currElement);
                 multiViewModule.installViews(placeholders);
                 registerModuleFeedbacks(module, currElement);
@@ -130,17 +131,14 @@ public class ModulesInstalator implements ModulesInstalatorSocket {
         for (String responseIdentifier : uniqueModulesMap.getKeys()) {
             StackMap<Element, HasWidgets> currModuleMap = uniqueModulesMap.get(responseIdentifier);
 
-            IModule currModule = null;
+            IModule currModule = multiViewModulesMap.get(responseIdentifier);
+            if (currModule instanceof IMultiViewModule) {
+                ((IMultiViewModule) currModule).initModule(moduleSocket, eventsBus);
+            }
 
             for (Element currElement : currModuleMap.getKeys()) {
-                if (currModule == null) {
-                    currModule = multiViewModulesMap.get(responseIdentifier);
-                    if (currModule instanceof IMultiViewModule) {
-                        ((IMultiViewModule) currModule).initModule(moduleSocket, interactionListener);
-                    }
+                registerModuleFeedbacks(currModule, currElement);
 
-                    registerModuleFeedbacks(currModule, currElement);
-                }
                 if (currModule instanceof IMultiViewModule) {
                     ((IMultiViewModule) currModule).addElement(currElement);
                 }

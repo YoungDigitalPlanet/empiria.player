@@ -6,9 +6,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.IActivity;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.Activity;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
+import eu.ydp.empiria.player.client.module.core.base.InteractionModuleBase;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.components.exlistbox.ExListBox;
 
@@ -38,7 +38,7 @@ public class InlineChoiceModule extends InteractionModuleBase {
 
     public void initModule() {
         setStyles();
-        controller.initModule(getModuleSocket(), getInteractionEventsListener());
+        controller.initModule(getModuleSocket(), getEventsBus());
         controller.setParentInlineModule(this);
     }
 
@@ -118,25 +118,17 @@ public class InlineChoiceModule extends InteractionModuleBase {
         controller.lock(lock);
     }
 
-    /**
-     * @see IActivity#markAnswers()
-     */
     @Override
     public void markAnswers(boolean mark) {
         controller.markAnswers(mark);
     }
 
-    /**
-     * @see IActivity#reset()
-     */
     @Override
     public void reset() {
+        super.reset();
         controller.reset();
     }
 
-    /**
-     * @see IActivity#showCorrectAnswers()
-     */
     @Override
     public void showCorrectAnswers(boolean show) {
 
@@ -148,21 +140,14 @@ public class InlineChoiceModule extends InteractionModuleBase {
         return controller.getJsSocket();
     }
 
-    /**
-     * @see IStateful#getState()
-     */
     @Override
     public JSONArray getState() {
         // IMPORTANT: STATE MUST BE COMMON FOR ALL CONTROLLERS
         return controller.getState();
     }
 
-    /**
-     * @see IStateful#setState(Serializable)
-     */
     @Override
     public void setState(JSONArray newState) {
-
         controller.setState(newState);
     }
 }

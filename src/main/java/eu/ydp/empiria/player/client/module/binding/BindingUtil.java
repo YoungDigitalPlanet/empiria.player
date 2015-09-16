@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.module.binding;
 
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 
 public abstract class BindingUtil {
 

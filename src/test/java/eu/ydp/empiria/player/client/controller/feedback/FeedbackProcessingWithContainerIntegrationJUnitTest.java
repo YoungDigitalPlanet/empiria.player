@@ -12,8 +12,8 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionT
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import org.junit.Before;
 import org.junit.Test;
@@ -160,7 +160,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
         ModuleFeedbackProcessor processor = getProcessor();
         processor.processFeedbacks(helper.getVariables(), (IUniqueModule) sender);
 
-        verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.any(InlineBodyGeneratorSocket.class));
+        verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.isA(InlineBodyGeneratorSocket.class), Matchers.isA(FeedbackMark.class));
 
         return captor.getAllValues();
     }

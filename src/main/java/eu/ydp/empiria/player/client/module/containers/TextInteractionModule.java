@@ -21,11 +21,6 @@ public class TextInteractionModule extends BindingContainerModule implements IBo
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
-        super.initModule(element, moduleSocket, bodyGeneratorSocket);
-    }
-
-    @Override
     public void setBookmarkingStyleName(String styleName) {
         bookmarkingHelper.setBookmarkingStyleName(styleName);
     }

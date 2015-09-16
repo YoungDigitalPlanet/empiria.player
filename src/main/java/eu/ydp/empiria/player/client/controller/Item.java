@@ -29,16 +29,16 @@ import eu.ydp.empiria.player.client.controller.variables.processor.item.Feedback
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.IStateful;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
 
 import java.util.Map;
 
-public class Item implements IStateful, ItemInterferenceSocket {
+public class Item implements Stateful, ItemInterferenceSocket {
 
     protected ItemBody itemBody;
     protected ItemBodyView itemBodyView;

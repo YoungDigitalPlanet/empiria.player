@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives;
 
 import com.google.gwt.dom.client.Element;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 
 public class HTML5MediaNativeListeners {
 

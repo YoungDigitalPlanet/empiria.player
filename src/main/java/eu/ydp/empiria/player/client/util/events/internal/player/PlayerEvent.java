@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.player;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class PlayerEvent extends AbstractEvent<PlayerEventHandler, PlayerEventTypes> {
     public static EventTypes<PlayerEventHandler, PlayerEventTypes> types = new EventTypes<PlayerEventHandler, PlayerEventTypes>();
@@ -30,11 +31,11 @@ public class PlayerEvent extends AbstractEvent<PlayerEventHandler, PlayerEventTy
         handler.onPlayerEvent(this);
     }
 
-    public static Type<PlayerEventHandler, PlayerEventTypes> getType(PlayerEventTypes type) {
+    public static EventType<PlayerEventHandler, PlayerEventTypes> getType(PlayerEventTypes type) {
         return types.getType(type);
     }
 
-    public static Type<PlayerEventHandler, PlayerEventTypes>[] getTypes(PlayerEventTypes... typeList) {
+    public static EventType<PlayerEventHandler, PlayerEventTypes>[] getTypes(PlayerEventTypes... typeList) {
         return types.getTypes(typeList);
     }
 

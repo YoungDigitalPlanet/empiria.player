@@ -2,7 +2,10 @@ package eu.ydp.empiria.player.client.module.containers;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
-import eu.ydp.empiria.player.client.module.IModule;
+import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -96,6 +99,10 @@ public class ActivityContainerModuleBaseJUnitTest {
     public void createMockActivityContainerModuleBase() {
         activityContainerMock = spy(new AbstractActivityContainerModuleBase() {
             @Override
+            public void initModule(Element element) {
+            }
+
+            @Override
             public Widget getView() {
                 return null;
             }
@@ -105,5 +112,6 @@ public class ActivityContainerModuleBaseJUnitTest {
                 return Lists.newArrayList();
             }
         });
+        activityContainerMock.initModule(mock(ModuleSocket.class), mock(EventsBus.class));
     }
 }

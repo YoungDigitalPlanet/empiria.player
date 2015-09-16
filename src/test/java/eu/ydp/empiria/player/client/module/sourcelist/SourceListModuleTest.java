@@ -1,29 +1,38 @@
 package eu.ydp.empiria.player.client.module.sourcelist;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-
 import com.google.gwt.junit.GWTMockUtilities;
 import com.google.gwt.xml.client.Element;
-import com.google.inject.*;
-import eu.ydp.empiria.player.client.*;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
+import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.dragdrop.SourcelistManager;
 import eu.ydp.empiria.player.client.module.sourcelist.presenter.SourceListPresenter;
-import eu.ydp.empiria.player.client.module.sourcelist.structure.*;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListBean;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListJAXBParserMock;
+import eu.ydp.empiria.player.client.module.sourcelist.structure.SourceListModuleStructure;
 import eu.ydp.empiria.player.client.module.sourcelist.view.SourceListView;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.util.geom.HasDimensions;
 import eu.ydp.gwtutil.xml.XMLParser;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.Matchers;
+
 import java.util.List;
-import org.junit.*;
-import org.mockito.*;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("PMD")
 public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorInit {
@@ -71,8 +80,8 @@ public class SourceListModuleTest extends AbstractTestBaseWithoutAutoInjectorIni
         when(moduleSocket.getInlineBodyGeneratorSocket()).thenReturn(inlineBodyGeneratorSocket);
 
         Element element = mock(Element.class);
-        InteractionEventsListener interactionEventsListener = mock(InteractionEventsListener.class);
-        testObj.initModule(element, moduleSocket, interactionEventsListener);
+        EventsBus eventsBus = injector.getInstance(EventsBus.class);
+        testObj.initModule(element, moduleSocket, eventsBus);
     }
 
     @Test

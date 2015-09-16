@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.module.mediator.powerfeedback;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.EndHandler;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -12,9 +12,8 @@ import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.state.StateChangeEventTypes;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -157,13 +156,13 @@ public class PowerFeedbackMediatorTest {
     private void initEventHandlersInterception() {
         doAnswer(new Answer<Void>() {
 
-            final Type<StateChangeEventHandler, StateChangeEventTypes> STATE_CHANGED_TYPE = StateChangeEvent.getType(OUTCOME_STATE_CHANGED);
-            final Type<PlayerEventHandler, PlayerEventTypes> PAGE_UNLOADED_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED);
-            final Type<PlayerEventHandler, PlayerEventTypes> TEST_PAGE_LOADED_TYPE = PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED);
+            final EventType<StateChangeEventHandler, StateChangeEventTypes> STATE_CHANGED_TYPE = StateChangeEvent.getType(OUTCOME_STATE_CHANGED);
+            final EventType<PlayerEventHandler, PlayerEventTypes> PAGE_UNLOADED_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_UNLOADED);
+            final EventType<PlayerEventHandler, PlayerEventTypes> TEST_PAGE_LOADED_TYPE = PlayerEvent.getType(PlayerEventTypes.TEST_PAGE_LOADED);
 
             @Override
             public Void answer(InvocationOnMock invocation) throws Throwable {
-                EventImpl.Type type = (Type) invocation.getArguments()[0];
+                EventType type = (EventType) invocation.getArguments()[0];
                 Object handler = invocation.getArguments()[1];
 
                 if (handler instanceof StateChangeEventHandler && type == STATE_CHANGED_TYPE) {
@@ -176,6 +175,6 @@ public class PowerFeedbackMediatorTest {
 
                 return null;
             }
-        }).when(eventsBus).addHandler(any(EventImpl.Type.class), any(EventHandler.class), any(EventScope.class));
+        }).when(eventsBus).addHandler(any(EventType.class), any(EventHandler.class), any(EventScope.class));
     }
 }

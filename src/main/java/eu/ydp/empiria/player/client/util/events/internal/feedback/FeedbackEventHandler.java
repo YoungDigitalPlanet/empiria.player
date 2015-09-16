@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.util.events.internal.feedback;
 
-import eu.ydp.gwtutil.client.event.EventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
 
 public interface FeedbackEventHandler extends EventHandler {
 

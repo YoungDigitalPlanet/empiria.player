@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.drawing;
 
+import com.google.gwt.xml.client.Element;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommand;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandFactory;
 import eu.ydp.empiria.player.client.module.drawing.command.DrawCommandType;
@@ -18,8 +19,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DrawingModuleTest {
@@ -58,7 +58,7 @@ public class DrawingModuleTest {
         when(bean.getImage()).thenReturn(image);
 
         // when
-        drawingModule.initModule(null);
+        drawingModule.initModule(mock(Element.class));
 
         // then
         ArgumentCaptor<Size> sizeCaptor = ArgumentCaptor.forClass(Size.class);

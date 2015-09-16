@@ -8,32 +8,32 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.module.IInlineContainerModule;
-import eu.ydp.empiria.player.client.module.IInlineModule;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IInlineContainerModule;
+import eu.ydp.empiria.player.client.module.core.base.IInlineModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
 import eu.ydp.empiria.player.client.resources.TextStyleNameConstants;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
-public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
+public class InlineBodyGenerator implements InlineBodyGeneratorSocket {
 
     private ModulesRegistrySocket modulesRegistrySocket;
     private ModuleSocket moduleSocket;
     private DisplayContentOptions options;
     private TextStyleNameConstants styleNames;
-    private InteractionEventsListener interactionEventsListener;
+    private final EventsBus eventsBus;
     private ParenthoodManager parenthood;
 
     @Inject
     public InlineBodyGenerator(@Assisted ModulesRegistrySocket mrs, @Assisted ModuleSocket moduleSocket, @Assisted DisplayContentOptions options,
-                               @Assisted InteractionEventsListener interactionEventsListener, @Assisted ParenthoodManager parenthood, TextStyleNameConstants styleNames) {
+                               @Assisted ParenthoodManager parenthood, TextStyleNameConstants styleNames, EventsBus eventsBus) {
         this.modulesRegistrySocket = mrs;
         this.options = options;
         this.moduleSocket = moduleSocket;
-        this.interactionEventsListener = interactionEventsListener;
         this.parenthood = parenthood;
         this.styleNames = styleNames;
+        this.eventsBus = eventsBus;
     }
 
     @Override
@@ -108,7 +108,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
                 IModule module = modulesRegistrySocket.createModule((Element) currNode);
                 if (module instanceof IInlineModule) {
                     parenthood.addChild(module);
-                    ((IInlineModule) module).initModule((Element) currNode, moduleSocket, interactionEventsListener);
+                    ((IInlineModule) module).initModule((Element) currNode, moduleSocket, eventsBus);
                     Widget moduleView = ((IInlineModule) module).getView();
                     if (moduleView != null) {
                         parentElement.appendChild(moduleView.getElement());
@@ -148,7 +148,7 @@ public class InlineBodyGenerator implements InlineBodyGeneratorSocket {// NOPMD
             if (modulesRegistrySocket.isModuleSupported(moduleName) && modulesRegistrySocket.isInlineModule(moduleName)) {
                 IModule module = modulesRegistrySocket.createModule((Element) node);
                 if (module instanceof IInlineModule) {
-                    ((IInlineModule) module).initModule((Element) node, moduleSocket, interactionEventsListener);
+                    ((IInlineModule) module).initModule((Element) node, moduleSocket, eventsBus);
                     Widget moduleView = ((IInlineModule) module).getView();
                     if (parent instanceof ComplexPanel && moduleView != null) {
                         Panel parentPanel = ((Panel) parent);

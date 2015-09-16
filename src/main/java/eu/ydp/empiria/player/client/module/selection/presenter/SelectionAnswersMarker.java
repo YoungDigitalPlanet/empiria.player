@@ -1,9 +1,9 @@
 package eu.ydp.empiria.player.client.module.selection.presenter;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.AnswersMarkingTemplate;
-import eu.ydp.empiria.player.client.module.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.AnswersMarkingTemplate;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.selection.model.GroupAnswersControllerModel;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionAnswerDto;
 import eu.ydp.empiria.player.client.module.selection.model.UserAnswerType;

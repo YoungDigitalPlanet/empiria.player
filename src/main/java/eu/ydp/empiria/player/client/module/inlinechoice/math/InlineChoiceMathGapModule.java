@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.gap.GapBase;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
 import eu.ydp.empiria.player.client.module.math.MathGap;
@@ -158,6 +158,7 @@ public class InlineChoiceMathGapModule extends GapBase implements MathGap, Playe
 
     @Override
     public void reset() {
+        super.reset();
         getListBox().setSelectedIndex((hasEmptyOption) ? 0 : -1);
         updateResponse(true);
     }

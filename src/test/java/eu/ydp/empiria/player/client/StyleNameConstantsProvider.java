@@ -5,11 +5,13 @@ import com.google.inject.Module;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.StickieStyleNameConstants;
+import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.workmode.ModeStyleNameConstants;
 import eu.ydp.empiria.player.client.module.button.ButtonStyleNameConstants;
 import eu.ydp.empiria.player.client.module.colorfill.ColorfillStyleNameConstants;
 import eu.ydp.empiria.player.client.module.connection.ConnectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.drawing.DrawingStyleNameConstants;
+import eu.ydp.empiria.player.client.module.feedback.FeedbackStyleNameConstants;
 import eu.ydp.empiria.player.client.module.img.ImgStyleNameConstants;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceStyleNameConstants;
 import eu.ydp.empiria.player.client.module.labelling.LabellingStyleNameConstants;
@@ -99,6 +101,12 @@ public class StyleNameConstantsProvider implements Module {
     @Singleton
     public ModeStyleNameConstants getModeStyleNameConstants() {
         return mock(ModeStyleNameConstants.class);
+    }
+
+    @Provides
+    @Singleton
+    public FeedbackStyleNameConstants getFeedbackStyleNameConstants() {
+        return mock(FeedbackStyleNameConstants.class);
     }
 
     @Override

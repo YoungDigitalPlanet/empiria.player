@@ -13,8 +13,8 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.Feedbac
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,7 +122,7 @@ public class FeedbackProcessingIntegrationJUnitTest extends AbstractTestBaseWith
         processor.processFeedbacks(variables, (IUniqueModule) sender);
 
         ArgumentCaptor<List> argument = ArgumentCaptor.forClass(List.class);
-        verify(processor.soundProcessor, times(1)).processActions(argument.capture(), Matchers.any(InlineBodyGeneratorSocket.class));
+        verify(processor.soundProcessor, times(1)).processActions(argument.capture(), Matchers.isA(InlineBodyGeneratorSocket.class), Matchers.isA(FeedbackMark.class));
 
         return argument.getValue();
     }

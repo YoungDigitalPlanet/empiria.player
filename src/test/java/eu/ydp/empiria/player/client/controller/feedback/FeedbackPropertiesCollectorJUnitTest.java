@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.feedback.FeedbackPropertiesCollectorTestHelper.ModuleInfo;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.core.base.ISingleViewWithBodyModule;
 import eu.ydp.empiria.player.client.module.math.MathModule;
 import org.junit.Before;
 import org.junit.Test;

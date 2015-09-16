@@ -5,9 +5,9 @@ import eu.ydp.empiria.player.client.controller.extensions.types.FlowRequestSocke
 import eu.ydp.empiria.player.client.controller.extensions.types.ModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.flow.request.FlowRequestInvoker;
 import eu.ydp.empiria.player.client.gin.factory.LinkModuleFactory;
-import eu.ydp.empiria.player.client.module.AbstractModuleCreator;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.core.creator.AbstractModuleCreator;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.creator.ModuleCreator;
 import eu.ydp.empiria.player.client.module.ModuleTagName;
 
 public class LinkModuleConnectorExtension extends ModuleExtension implements ModuleConnectorExtension, FlowRequestSocketUserExtension {

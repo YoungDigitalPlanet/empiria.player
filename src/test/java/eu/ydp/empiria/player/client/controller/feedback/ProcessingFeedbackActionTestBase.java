@@ -1,5 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
+import static org.mockito.Mockito.*;
+
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
@@ -9,14 +11,11 @@ import eu.ydp.empiria.player.client.controller.feedback.player.FeedbackSoundPlay
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
-import eu.ydp.empiria.player.client.module.IModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import org.junit.Before;
 
 import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 
 public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAutoInjectorInit {
 
@@ -29,6 +28,8 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
     protected MathJaxNative mathJaxNative;
 
     protected IModule source;
+
+    protected FeedbackProperties properties;
 
     @Before
     @Override
@@ -84,9 +85,12 @@ public class ProcessingFeedbackActionTestBase extends AbstractTestBaseWithoutAut
 
         private void createCollector(List<FeedbackAction> actions) {
             source = mock(IModule.class);
+            properties = mock(FeedbackProperties.class);
+            when(properties.getBooleanProperty(FeedbackPropertyName.OK)).thenReturn(true);
             collector = new FeedbackActionCollector();
             collector.setSource(source);
             collector.appendActionsToSource(actions, source);
+            collector.appendPropertiesToSource(properties, source);
         }
 
         private void createProcessor() {

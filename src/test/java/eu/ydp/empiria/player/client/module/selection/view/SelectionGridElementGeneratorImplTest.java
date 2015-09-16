@@ -2,7 +2,7 @@ package eu.ydp.empiria.player.client.module.selection.view;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.module.MarkAnswersStyleNameConstants;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.SelectionStyleNameConstants;
 import eu.ydp.empiria.player.client.module.selection.model.SelectionGridElementPosition;
 import eu.ydp.gwtutil.client.event.factory.UserInteractionHandlerFactory;

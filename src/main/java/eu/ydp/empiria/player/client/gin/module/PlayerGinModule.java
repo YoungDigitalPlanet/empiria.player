@@ -14,8 +14,7 @@ import eu.ydp.empiria.player.client.controller.communication.ItemData;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.data.DataSourceManager;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventsHub;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
+import eu.ydp.empiria.player.client.controller.events.interaction.FeedbackInteractionEventListener;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.BookmarkPopup;
 import eu.ydp.empiria.player.client.controller.extensions.internal.bookmark.IBookmarkPopupView;
 import eu.ydp.empiria.player.client.controller.extensions.internal.stickies.*;
@@ -53,7 +52,7 @@ import eu.ydp.empiria.player.client.gin.providers.*;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceView;
 import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceViewImpl;
 import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
@@ -99,8 +98,7 @@ public class PlayerGinModule extends AbstractGinModule {
         bind(IPlayerContainersAccessor.class).to(PlayerContainersAccessor.class);
         bind(PlayerViewSocket.class).to(PlayerContentView.class);
         bind(ModulesRegistrySocket.class).to(ModulesRegistry.class);
-        bind(InteractionEventsListener.class).to(DeliveryEventsHub.class);
-        bind(InteractionEventsSocket.class).to(DeliveryEventsHub.class);
+        bind(FeedbackInteractionEventListener.class).to(DeliveryEventsHub.class);
         bind(DataSourceDataSupplier.class).to(DataSourceManager.class);
         bind(EventsBus.class).to(PlayerEventsBus.class);
         bind(String.class).annotatedWith(UniqueId.class)
