@@ -41,10 +41,11 @@ public class BodyGenerator implements BodyGeneratorSocket {
 
         } else if (moduleInstalatorSocket != null && moduleInstalatorSocket.isModuleSupported(node.getNodeName())) {
 
-            if (moduleInstalatorSocket.isMultiViewModule(node.getNodeName())) {
-                moduleInstalatorSocket.registerModuleView((Element) node, parent);
+            Element element = (Element) node;
+            if (moduleInstalatorSocket.isMultiViewModule(element)) {
+                moduleInstalatorSocket.registerModuleView(element, parent);
             } else {
-                moduleInstalatorSocket.createSingleViewModule((Element) node, parent, this);
+                moduleInstalatorSocket.createSingleViewModule(element, parent, this);
             }
         }
 

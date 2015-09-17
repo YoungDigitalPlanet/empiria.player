@@ -30,6 +30,7 @@ import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionModule;
 import eu.ydp.empiria.player.client.module.external.presentation.ExternalPresentationModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
+import eu.ydp.empiria.player.client.module.identification.math.IdentificationMathModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
@@ -183,6 +184,8 @@ public class ModuleProviderFactory {
     private Provider<ReportModule> reportModuleProvider;
     @Inject
     private Provider<MenuModule> menuModule;
+    @Inject
+    private Provider<IdentificationMathModule> identificationMathModule;
 
     public Provider<ConnectionModule> getConnectionModule() {
         return connectionModule;
@@ -418,5 +421,9 @@ public class ModuleProviderFactory {
 
     public Provider<MenuModule> getMenuModule() {
         return menuModule;
+    }
+
+    public Provider<IdentificationMathModule> getIdentificationMathModule() {
+        return identificationMathModule;
     }
 }

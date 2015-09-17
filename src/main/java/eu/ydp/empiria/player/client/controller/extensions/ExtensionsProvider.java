@@ -69,6 +69,7 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getChoiceModule(), ModuleTagName.CHOICE_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getSelectionModule(), ModuleTagName.SELECTION_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getIdentificationModule(), ModuleTagName.IDENTYFICATION_INTERACTION, true),
+                new SimpleConnectorExtension(moduleProviderFactory.getIdentificationMathModule(), ModuleTagName.IDENTYFICATION_MATH_INTERACTION, false),
                 new SimpleConnectorExtension(moduleProviderFactory.getTextEntryGapModule(), ModuleTagName.TEXT_ENTRY_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getTextEntryMathGapModule(), ModuleTagName.MATH_GAP_TEXT_ENTRY_TYPE, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getDragGapModule(), ModuleTagName.DRAG_GAP, true),
