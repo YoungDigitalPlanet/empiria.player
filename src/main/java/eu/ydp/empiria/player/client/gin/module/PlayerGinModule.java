@@ -139,7 +139,6 @@ public class PlayerGinModule extends AbstractGinModule {
                 .build(StickieFactory.class));
         install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class)
                 .build(TouchReservationFactory.class));
-        install(new GinFactoryModuleBuilder().implement(SelectableChoiceView.class, SelectableChoiceViewImpl.class).build(IdentificationModuleFactory.class));
         install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(InlineBodyGeneratorFactory.class));

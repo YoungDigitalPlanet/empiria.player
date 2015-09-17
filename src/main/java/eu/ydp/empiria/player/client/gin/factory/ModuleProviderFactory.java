@@ -10,7 +10,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Reset
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
-import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.core.base.InlineContainerModule;
 import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.accordion.AccordionModule;
@@ -31,7 +30,7 @@ import eu.ydp.empiria.player.client.module.drawing.DrawingModule;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionModule;
 import eu.ydp.empiria.player.client.module.external.presentation.ExternalPresentationModule;
 import eu.ydp.empiria.player.client.module.flash.FlashModule;
-import eu.ydp.empiria.player.client.module.identification.IdentificationMathModule;
+import eu.ydp.empiria.player.client.module.identification.math.IdentificationMathModule;
 import eu.ydp.empiria.player.client.module.identification.IdentificationModule;
 import eu.ydp.empiria.player.client.module.img.ImgModule;
 import eu.ydp.empiria.player.client.module.inlinechoice.InlineChoiceModule;
