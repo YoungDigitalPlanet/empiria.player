@@ -67,16 +67,16 @@ public class ModulesRegistry implements ModulesRegistrySocket {
     }
 
     @Override
-    public IModule createModule(Element node) {
-        String nodeName = node.getNodeName();
+    public IModule createModule(Element element) {
+        String nodeName = element.getNodeName();
         ModuleCreator currCreator = moduleCreators.get(nodeName);
 
-        if ((currCreator == null) && (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
-            nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
+        if ((currCreator == null) && (element.hasAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
+            nodeName = ModuleTagName.getTagNameWithType(element);
             currCreator = moduleCreators.get(nodeName);
         }
 
-        ModuleCreationContext context = new ModuleCreationContext(node);
+        ModuleCreationContext context = new ModuleCreationContext(element);
         moduleScopeStack.pushContext(context);
         IModule module = currCreator.createModule();
         moduleScopeStack.pop();

@@ -13,12 +13,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.ATTR_RESPONSE_IDENTIFIER;
 import static org.mockito.Mockito.*;
 
 @RunWith(GwtMockitoTestRunner.class)
 public class IdentificationMathModuleTest {
-
-    private static final String RESPONSE_IDENTIFIER = "responseIdentifier";
 
     @InjectMocks
     private IdentificationMathModule testObj;
@@ -44,7 +43,7 @@ public class IdentificationMathModuleTest {
     public void shouldAddViewToMathJaxContainer() {
         // given
         String responseIdentifier = "response";
-        when(element.getAttribute(RESPONSE_IDENTIFIER)).thenReturn(responseIdentifier);
+        when(element.getAttribute(ATTR_RESPONSE_IDENTIFIER)).thenReturn(responseIdentifier);
 
         Widget widget = mock(Widget.class);
         when(view.asWidget()).thenReturn(widget);

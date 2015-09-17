@@ -6,10 +6,11 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.containers.AbstractActivityContainerModuleBase;
 import eu.ydp.empiria.player.client.module.identification.math.view.IdentificationMathView;
 import eu.ydp.empiria.player.client.module.mathjax.interaction.MathJaxGapContainer;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+
+import static eu.ydp.empiria.player.client.resources.EmpiriaTagConstants.*;
 
 public class IdentificationMathModule extends AbstractActivityContainerModuleBase {
-
-    private static final String RESPONSE_IDENTIFIER = "responseIdentifier";
 
     private final MathJaxGapContainer mathJaxGapContainer;
     private final IdentificationMathView view;
@@ -23,7 +24,7 @@ public class IdentificationMathModule extends AbstractActivityContainerModuleBas
     @Override
     public void initModule(Element element) {
         getBodyGenerator().generateBody(element, view);
-        String responseIdentifier = element.getAttribute(RESPONSE_IDENTIFIER);
+        String responseIdentifier = element.getAttribute(ATTR_RESPONSE_IDENTIFIER);
         mathJaxGapContainer.addMathGap(view.asWidget(), responseIdentifier);
     }
 

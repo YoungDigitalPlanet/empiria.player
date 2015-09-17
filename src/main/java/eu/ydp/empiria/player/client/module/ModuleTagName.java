@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
 
 public enum ModuleTagName {
     DIV("div"),
@@ -104,7 +105,13 @@ public enum ModuleTagName {
         return returnValue;
     }
 
-    public static String getTagNameWithType(String tagName, String type) {
+    public static String getTagNameWithType(Element element) {
+        String tagName = element.getTagName();
+        String type = element.getAttribute(EmpiriaTagConstants.ATTR_TYPE);
+        return getTagNameWithType(tagName, type);
+    }
+
+    private static String getTagNameWithType(String tagName, String type) {
         String tagNameWithType = "";
         if ("gap".equals(tagName)) {
             if ("text-entry".equals(type)) {
@@ -118,12 +125,6 @@ public enum ModuleTagName {
             }
         }
         return tagNameWithType;
-    }
-
-    public static String getTagNameWithType(Element element) {
-        String tagName = element.getTagName();
-        String type = element.getAttribute("type");
-        return getTagNameWithType(tagName, type);
     }
 
     @Override
