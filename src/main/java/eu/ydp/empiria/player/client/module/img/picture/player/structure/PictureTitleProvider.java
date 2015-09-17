@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.img.picture.player.structure;
 
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Singleton;
@@ -13,7 +14,7 @@ public class PictureTitleProvider {
             Element titleXmlElement = bean.getTitleBean().getTitleName().getValue();
             return inlineBodyGeneratorSocket.generateInlineBody(titleXmlElement);
         } else {
-            return new Widget();
+            return new FlowPanel();
         }
     }
 
