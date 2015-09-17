@@ -13,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.body.ModuleHandlerManager;
 import eu.ydp.empiria.player.client.controller.body.ModulesInstalator;
 import eu.ydp.empiria.player.client.controller.body.parenthood.ParenthoodManager;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.IgnoredModules;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
@@ -22,8 +21,14 @@ import eu.ydp.empiria.player.client.gin.factory.ModulesInstalatorFactory;
 import eu.ydp.empiria.player.client.module.*;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.ItemBodyModule;
+import eu.ydp.empiria.player.client.module.core.base.*;
+import eu.ydp.empiria.player.client.module.core.base.Group;
+import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
+import eu.ydp.empiria.player.client.module.core.flow.OnModuleShowHandler;
+import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.registry.ModulesRegistrySocket;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.js.JSArrayUtils;
 
 import java.util.ArrayList;
@@ -35,7 +40,6 @@ public class ItemBody implements WidgetWorkflowListener {
 
     protected ParenthoodManager parenthood;
 
-    protected InteractionEventsListener interactionEventsListener;
     protected DisplayContentOptions options;
     protected ModuleSocket moduleSocket;
     protected ModulesRegistrySocket modulesRegistrySocket;
@@ -52,12 +56,13 @@ public class ItemBody implements WidgetWorkflowListener {
     private final IgnoredModules ignoredModules;
     private final PlayerWorkModeService playerWorkModeService;
     private final ModulesInstalatorFactory modulesInstalatorFactory;
+    private final EventsBus eventsBus;
 
     @Inject
     public ItemBody(@Assisted DisplayContentOptions options, @Assisted ModuleSocket moduleSocket, ModuleHandlerManager moduleHandlerManager,
-                    InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
+                    ModulesRegistrySocket modulesRegistrySocket, ModulesStateLoader modulesStateLoader,
                     IgnoredModules ignoredModules, PlayerWorkModeService playerWorkModeService, MathJaxNative mathJaxNative, ParenthoodManager parenthood,
-                    ModulesInstalatorFactory modulesInstalatorFactory) {
+                    ModulesInstalatorFactory modulesInstalatorFactory, EventsBus eventsBus) {
 
         this.moduleSocket = moduleSocket;
         this.options = options;
@@ -68,20 +73,20 @@ public class ItemBody implements WidgetWorkflowListener {
 
         this.parenthood = parenthood;
 
-        this.interactionEventsListener = interactionEventsListener;
         this.ignoredModules = ignoredModules;
         this.playerWorkModeService = playerWorkModeService;
         this.modulesInstalatorFactory = modulesInstalatorFactory;
+        this.eventsBus = eventsBus;
     }
 
     public Widget init(Element itemBodyElement) {
 
-        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket, interactionEventsListener);
+        ModulesInstalator modulesInstalator = modulesInstalatorFactory.createModulesInstalator(parenthood, modulesRegistrySocket, moduleSocket);
         BodyGenerator generator = new BodyGenerator(modulesInstalator, options);
 
         itemBodyModule = new ItemBodyModule();
         modulesInstalator.setInitialParent(itemBodyModule);
-        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator);
+        itemBodyModule.initModule(itemBodyElement, moduleSocket, generator, eventsBus);
 
         modules = new ArrayList<>();
         modules.add(itemBodyModule);
@@ -101,8 +106,8 @@ public class ItemBody implements WidgetWorkflowListener {
     @Override
     public void onLoad() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyLoad();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyLoad();
             }
         }
 
@@ -114,16 +119,16 @@ public class ItemBody implements WidgetWorkflowListener {
     @Override
     public void onUnload() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onBodyUnload();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onBodyUnload();
             }
         }
     }
 
     public void setUp() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onSetUp();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onSetUp();
             }
             if (currModule instanceof InteractionModuleBase) {
                 InteractionModuleBase moduleBase = (InteractionModuleBase) currModule;
@@ -143,8 +148,8 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public void start() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onStart();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onStart();
             }
         }
     }
@@ -159,8 +164,8 @@ public class ItemBody implements WidgetWorkflowListener {
 
     public void close() {
         for (IModule currModule : modules) {
-            if (currModule instanceof ILifecycleModule) {
-                ((ILifecycleModule) currModule).onClose();
+            if (currModule instanceof LifecycleModule) {
+                ((LifecycleModule) currModule).onClose();
             }
         }
     }
@@ -191,7 +196,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void markAnswers(boolean mark, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.markAnswers(mark);
         }
@@ -202,7 +207,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void showCorrectAnswers(boolean show, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.showCorrectAnswers(show);
         }
@@ -213,7 +218,7 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void reset(GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.reset();
         }
@@ -224,17 +229,17 @@ public class ItemBody implements WidgetWorkflowListener {
     }
 
     public void lock(boolean lo, GroupIdentifier groupIdentifier) {
-        IGroup currGroup = getGroupByGroupIdentifier(groupIdentifier);
+        Group currGroup = getGroupByGroupIdentifier(groupIdentifier);
         if (currGroup != null) {
             currGroup.lock(lo);
         }
     }
 
-    private IGroup getGroupByGroupIdentifier(GroupIdentifier gi) {
-        IGroup lastGroup = null;
+    private Group getGroupByGroupIdentifier(GroupIdentifier gi) {
+        Group lastGroup = null;
         for (IModule currModule : modules) {
-            if (currModule instanceof IGroup) {
-                lastGroup = (IGroup) currModule;
+            if (currModule instanceof Group) {
+                lastGroup = (Group) currModule;
                 if (lastGroup.getGroupIdentifier()
                         .equals(gi) || ("".equals(gi.getIdentifier()) && lastGroup instanceof ItemBodyModule)) {
                     return lastGroup;

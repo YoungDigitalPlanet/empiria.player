@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.module;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.structure.ModuleBean;
 
 /**

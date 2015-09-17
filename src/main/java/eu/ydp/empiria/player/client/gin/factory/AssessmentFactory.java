@@ -6,8 +6,6 @@ import eu.ydp.empiria.player.client.controller.AssessmentBody;
 import eu.ydp.empiria.player.client.controller.AssessmentController;
 import eu.ydp.empiria.player.client.controller.communication.AssessmentData;
 import eu.ydp.empiria.player.client.controller.communication.DisplayContentOptions;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsSocket;
 import eu.ydp.empiria.player.client.controller.events.widgets.WidgetWorkflowListener;
 import eu.ydp.empiria.player.client.controller.flow.IFlowSocket;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
@@ -17,15 +15,13 @@ import eu.ydp.empiria.player.client.view.assessment.AssessmentContentView;
 import eu.ydp.empiria.player.client.view.assessment.AssessmentViewSocket;
 
 public interface AssessmentFactory {
-    public AssessmentContentView geAssessmentContentView(Panel panel);
+    AssessmentContentView geAssessmentContentView(Panel panel);
 
-    public AssessmentController createAssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket, InteractionEventsSocket interactionsocket);
+    AssessmentController createAssessmentController(AssessmentViewSocket avs, IFlowSocket fsocket);
 
-    public Assessment createAssessment(AssessmentData data, DisplayContentOptions options, InteractionEventsListener interactionEventsListener,
-                                       ModulesRegistrySocket modulesRegistrySocket);
+    Assessment createAssessment(AssessmentData data, DisplayContentOptions options, ModulesRegistrySocket modulesRegistrySocket);
 
-    public AssessmentBody createAssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket,
-                                               final InteractionEventsListener interactionEventsListener, ModulesRegistrySocket modulesRegistrySocket);
+    AssessmentBody createAssessmentBody(DisplayContentOptions options, ModuleSocket moduleSocket, ModulesRegistrySocket modulesRegistrySocket);
 
-    public AssessmentBodyView createAssessmentBodyView(WidgetWorkflowListener wwl);
+    AssessmentBodyView createAssessmentBodyView(WidgetWorkflowListener wwl);
 }

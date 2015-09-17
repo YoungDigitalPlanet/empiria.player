@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.events.interaction;
 
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 
 import java.util.HashMap;
 import java.util.Map;

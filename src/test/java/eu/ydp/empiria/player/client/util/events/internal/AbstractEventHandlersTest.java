@@ -6,10 +6,6 @@ import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.event.AbstractEventHandler;
-import eu.ydp.gwtutil.client.event.Event;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
 import eu.ydp.gwtutil.client.event.HandlerRegistration;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -25,17 +21,17 @@ import static org.mockito.Mockito.verify;
 public class AbstractEventHandlersTest {
     abstract class AbstractEventHandlerImpl<H extends EventHandler, E extends Enum<E>, EV extends Event<H, E>> extends AbstractEventHandler<H, E, EV> {
         @Override
-        public HandlerRegistration addHandler(H handler, Type<H, E> event) {
+        public HandlerRegistration addHandler(H handler, EventType<H, E> event) {
             return super.addHandler(handler, event);
         }
 
         @Override
-        public HandlerRegistration[] addHandlers(H handler, Type<H, E>[] event) {
+        public HandlerRegistration[] addHandlers(H handler, EventType<H, E>[] event) {
             return super.addHandlers(handler, event);
         }
 
         @Override
-        public Set<H> getHandlers(Type<H, E> event) {
+        public Set<H> getHandlers(EventType<H, E> event) {
             return super.getHandlers(event);
         }
 

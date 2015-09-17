@@ -59,9 +59,9 @@ public abstract class ExtendTestGuiceModule extends AbstractTestModule {
         if (bindDescriptor.getIn() != null && bindDescriptor.getIn().isAssignableFrom(Singleton.class)) {// SINGLETON
             try {
                 if (bindDescriptor.isAllSet()) {// wszystkie pola ustawione
-                    bind(bindDescriptor.getBind()).toInstance(spy(bindDescriptor.getTo().newInstance()));
+                    bind(bindDescriptor.getBind()).toInstance(spy(bindDescriptor.getTo()));
                 } else {
-                    bind(bindDescriptor.getBind()).toInstance(spy(bindDescriptor.getBind().newInstance()));
+                    bind(bindDescriptor.getBind()).toInstance(spy(bindDescriptor.getBind()));
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();

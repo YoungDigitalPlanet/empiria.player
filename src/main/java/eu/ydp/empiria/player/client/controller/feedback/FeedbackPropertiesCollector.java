@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.controller.feedback;
 
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ISingleViewWithBodyModule;
-import eu.ydp.empiria.player.client.module.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ISingleViewWithBodyModule;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 
 import java.util.Map;
 

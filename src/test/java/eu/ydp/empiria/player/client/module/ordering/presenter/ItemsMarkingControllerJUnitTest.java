@@ -2,9 +2,9 @@ package eu.ydp.empiria.player.client.module.ordering.presenter;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
-import eu.ydp.empiria.player.client.module.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
-import eu.ydp.empiria.player.client.module.ResponseSocket;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItem;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;

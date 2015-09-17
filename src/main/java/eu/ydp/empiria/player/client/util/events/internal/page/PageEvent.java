@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.util.events.internal.page;
 
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 public class PageEvent extends AbstractEvent<PageEventHandler, PageEventTypes> {
 
@@ -31,12 +32,12 @@ public class PageEvent extends AbstractEvent<PageEventHandler, PageEventTypes> {
         handler.onPageEvent(this);
     }
 
-    public static Type<PageEventHandler, PageEventTypes> getType(PageEventTypes type) {
+    public static EventType<PageEventHandler, PageEventTypes> getType(PageEventTypes type) {
         return types.getType(type);
     }
 
-    public static Type<PageEventHandler, PageEventTypes>[] getTypes(PageEventTypes... typeList) {
-        return typeList.length > 0 ? types.getTypes(typeList) : new Type[0];
+    public static EventType<PageEventHandler, PageEventTypes>[] getTypes(PageEventTypes... typeList) {
+        return typeList.length > 0 ? types.getTypes(typeList) : new EventType[0];
     }
 
 }

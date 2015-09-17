@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.data;
 
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.style.StyleDocument;
 import eu.ydp.empiria.player.client.util.file.DocumentLoadCallback;
 import eu.ydp.empiria.player.client.util.file.TextDocument;
@@ -16,10 +17,11 @@ public class StyleDataSourceLoader {
     private Map<String, String> errorMessages;
     private Map<String, List<DocumentLoadCallback<StyleDocument>>> pending;
 
+    @Inject
     public StyleDataSourceLoader() {
-        documents = new HashMap<String, StyleDocument>();
-        errorMessages = new HashMap<String, String>();
-        pending = new HashMap<String, List<DocumentLoadCallback<StyleDocument>>>();
+        documents = new HashMap<>();
+        errorMessages = new HashMap<>();
+        pending = new HashMap<>();
     }
 
     public synchronized void load(String url, final DocumentLoadCallback<StyleDocument> callback) {

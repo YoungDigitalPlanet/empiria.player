@@ -5,7 +5,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType;
+import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
@@ -19,7 +19,7 @@ import org.mockito.*;
 
 import java.util.List;
 
-import static eu.ydp.empiria.player.client.event.html5.HTML5MediaEventsType.*;
+import static eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType.*;
 import static eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes.*;
 import static junitparams.JUnitParamsRunner.$;
 import static org.fest.assertions.api.Assertions.assertThat;

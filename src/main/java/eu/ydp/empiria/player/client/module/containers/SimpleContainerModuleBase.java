@@ -20,13 +20,11 @@ public abstract class SimpleContainerModuleBase extends AbstractActivityContaine
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
-        super.initModule(element, moduleSocket, bodyGeneratorSocket);
-
+    public void initModule(Element element) {
         readAttributes(element);
         applyIdAndClassToView(getView());
 
-        bodyGeneratorSocket.generateBody(element, panel);
+        getBodyGenerator().generateBody(element, panel);
     }
 
     @Override

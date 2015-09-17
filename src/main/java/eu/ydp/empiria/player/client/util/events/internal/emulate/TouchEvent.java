@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.NativeEvent;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
 import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 /**
  * emulacja zdarzen touch
@@ -28,12 +29,12 @@ public class TouchEvent extends AbstractEvent<TouchHandler, TouchTypes> {
         handler.onTouchEvent(this);
     }
 
-    public static Type<TouchHandler, TouchTypes> getType(TouchTypes type) {
+    public static EventType<TouchHandler, TouchTypes> getType(TouchTypes type) {
         return types.getType(type);
     }
 
-    public static Type<TouchHandler, TouchTypes>[] getTypes(TouchTypes... typeList) {
-        return typeList.length > 0 ? types.getTypes(typeList) : new Type[0];
+    public static EventType<TouchHandler, TouchTypes>[] getTypes(TouchTypes... typeList) {
+        return typeList.length > 0 ? types.getTypes(typeList) : new EventType[0];
 
     }
 

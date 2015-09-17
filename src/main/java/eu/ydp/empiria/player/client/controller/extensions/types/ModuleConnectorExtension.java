@@ -1,6 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.types;
 
-import eu.ydp.empiria.player.client.module.ModuleCreator;
+import eu.ydp.empiria.player.client.module.core.creator.ModuleCreator;
 
 public interface ModuleConnectorExtension {
 

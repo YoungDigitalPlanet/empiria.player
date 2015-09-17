@@ -9,10 +9,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.module.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
-import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;

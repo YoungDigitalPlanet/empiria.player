@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrl
 import eu.ydp.empiria.player.client.jaxb.XmlContentMock;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 
         processor.processActions(source);
-        verify(soundProcessor).processSingleAction(argument.capture());
+        verify(soundProcessor).processSingleAction(argument.capture(), Mockito.isA(FeedbackMark.class));
         FeedbackAction processedAction = argument.getValue();
 
         assertThat(argument.getAllValues().size(), is(equalTo(1)));
@@ -49,7 +50,7 @@ public class SoundActionProcessingJUnitTest extends ProcessingFeedbackActionTest
         ArgumentCaptor<FeedbackAction> argument = ArgumentCaptor.forClass(FeedbackAction.class);
 
         processor.processActions(source);
-        verify(soundProcessor, times(2)).processSingleAction(argument.capture());
+        verify(soundProcessor, times(2)).processSingleAction(argument.capture(), Mockito.isA(FeedbackMark.class));
         List<FeedbackAction> processedActions = argument.getAllValues();
 
         assertThat(processedActions.size(), is(equalTo(2)));

@@ -11,12 +11,12 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 
 import javax.inject.Inject;
 
 public class VideoPlayerAttachHandler implements Handler {
-    private static final Type<PlayerEventHandler, PlayerEventTypes> PAGE_CHANGE_EVENT_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE);
+    private static final EventType<PlayerEventHandler, PlayerEventTypes> PAGE_CHANGE_EVENT_TYPE = PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE);
 
     private final EventsBus eventsBus;
     private final VideoPlayer videoPlayer;

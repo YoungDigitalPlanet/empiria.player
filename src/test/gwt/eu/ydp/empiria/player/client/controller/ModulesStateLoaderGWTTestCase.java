@@ -7,9 +7,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.gin.PlayerGinjector;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.StatefulModule;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.flow.StatefulModule;
 
 import java.util.List;
 

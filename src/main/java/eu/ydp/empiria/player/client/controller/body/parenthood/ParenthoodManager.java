@@ -2,10 +2,10 @@ package eu.ydp.empiria.player.client.controller.body.parenthood;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
-import eu.ydp.empiria.player.client.module.IModule;
-import eu.ydp.empiria.player.client.module.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.IModule;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
 import eu.ydp.gwtutil.client.collections.StackMap;
 
 import java.util.ArrayList;

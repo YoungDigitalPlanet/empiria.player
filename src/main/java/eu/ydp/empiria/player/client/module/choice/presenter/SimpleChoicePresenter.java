@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.module.choice.presenter;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import eu.ydp.empiria.player.client.module.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.choice.ChoiceModuleListener;
 
 public interface SimpleChoicePresenter extends IsWidget {

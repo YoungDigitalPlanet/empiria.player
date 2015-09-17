@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.gin.factory.TemplateParserFactory;
-import eu.ydp.empiria.player.client.module.InlineModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.bookmark.BookmarkingHelper;
 import eu.ydp.empiria.player.client.module.bookmark.IBookmarkable;
 import eu.ydp.empiria.player.client.module.img.explorable.presenter.ExplorableImgContentPresenter;

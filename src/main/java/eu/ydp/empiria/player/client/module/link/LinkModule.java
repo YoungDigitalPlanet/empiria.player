@@ -115,9 +115,8 @@ public class LinkModule extends SimpleContainerModuleBase implements WorkModeTes
     }
 
     @Override
-    public void initModule(Element element, ModuleSocket moduleSocket, BodyGeneratorSocket bodyGeneratorSocket) {
-        super.initModule(element, moduleSocket, bodyGeneratorSocket);
-
+    public void initModule(Element element) {
+        super.initModule(element);
         if (element.hasAttribute("itemIndex")) {
             itemIndex = NumberUtils.tryParseInt(element.getAttribute("itemIndex"), -1);
         }

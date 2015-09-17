@@ -10,10 +10,9 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandl
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 import eu.ydp.empiria.player.client.util.events.internal.scope.EventScope;
-import eu.ydp.gwtutil.client.event.Event;
-import eu.ydp.gwtutil.client.event.EventHandler;
-import eu.ydp.gwtutil.client.event.EventImpl;
-import eu.ydp.gwtutil.client.event.EventImpl.Type;
+import eu.ydp.empiria.player.client.util.events.internal.Event;
+import eu.ydp.empiria.player.client.util.events.internal.EventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import eu.ydp.gwtutil.client.scheduler.Scheduler;
 
 import java.util.*;
@@ -21,70 +20,71 @@ import java.util.Map.Entry;
 
 @Singleton
 public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
-    private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
-    private final Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
+    private final Map<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> syncMap = new HashMap<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
+    private final Map<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> asyncMap = new HashMap<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>>();
+
+    private final Scheduler scheduler;
 
     @Inject
-    private Scheduler scheduler;
-
-    public PlayerEventsBus() {
+    public PlayerEventsBus(Scheduler scheduler) {
+        this.scheduler = scheduler;
         // Czyszczenie szyny z niepotrzebnych handlerow
         this.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_REMOVED), this);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(Type<H, T> type, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(EventType<H, T> type, H handler) {
         return doAdd(type, null, handler, false, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(Type<H, T>[] types, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(EventType<H, T>[] types, H handler) {
         return doAddAll(types, null, handler, false, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(Type<H, T> type, H handler, EventScope<?> eventScope) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandler(EventType<H, T> type, H handler, EventScope<?> eventScope) {
         return doAdd(type, null, handler, false, eventScope);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(Type<H, T>[] types, H handler, EventScope<?> eventScope) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandler(EventType<H, T>[] types, H handler, EventScope<?> eventScope) {
         return doAddAll(types, null, handler, false, eventScope);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(EventType<H, T> type, Object source, H handler) {
         return doAdd(type, source, handler, false, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(Type<H, T>[] types, Object source, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] addHandlerToSource(EventType<H, T>[] types, Object source, H handler) {
         return doAddAll(types, source, handler, false, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(Type<H, T> type, Object source, H handler,
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addHandlerToSource(EventType<H, T> type, Object source, H handler,
                                                                                               EventScope<?> eventScope) {
         return doAdd(type, source, handler, false, eventScope);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(Type<H, T> type, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(EventType<H, T> type, H handler) {
         return doAdd(type, null, handler, true, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(Type<H, T> type, H handler, EventScope<?> eventScope) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandler(EventType<H, T> type, H handler, EventScope<?> eventScope) {
         return doAdd(type, null, handler, true, eventScope);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler) {
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(EventType<H, T> type, Object source, H handler) {
         return doAdd(type, source, handler, true, null);
     }
 
     @Override
-    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(Type<H, T> type, Object source, H handler,
+    public <H extends EventHandler, T extends Enum<T>> HandlerRegistration addAsyncHandlerToSource(EventType<H, T> type, Object source, H handler,
                                                                                                    EventScope<?> eventScope) {
         return doAdd(type, source, handler, true, eventScope);
     }
@@ -217,11 +217,11 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     }
 
     private <H extends EventHandler, T extends Enum<T>> Map<Object, Map<EventScope<?>, List<?>>> getHandlersList(Event<H, T> type,
-                                                                                                                 Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map) {
+                                                                                                                 Map<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map) {
         return map.get(type.getAssociatedType());
     }
 
-    private <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] doAddAll(final Type<H, T> types[], final Object source, final H handler,
+    private <H extends EventHandler, T extends Enum<T>> HandlerRegistration[] doAddAll(final EventType<H, T> types[], final Object source, final H handler,
                                                                                        final boolean async, final EventScope<?> eventScope) {
         HandlerRegistration[] registrations = new HandlerRegistration[types.length];
         for (int x = 0; x < types.length; ++x) {
@@ -231,7 +231,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes", "PMD"})
-    private <H extends EventHandler, T extends Enum<T>> HandlerRegistration doAdd(final Type<H, T> type, final Object source, final H handler,
+    private <H extends EventHandler, T extends Enum<T>> HandlerRegistration doAdd(final EventType<H, T> type, final Object source, final H handler,
                                                                                   final boolean async, final EventScope<?> eventScope) {
         if (type == null) {
             throw new NullPointerException("Cannot add a handler with a null type");
@@ -271,7 +271,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
 
     }
 
-    private <H extends EventHandler, T extends Enum<T>> void doRemove(Type<H, T> type, Object source, H handler, EventScope<?> scope, boolean async) {
+    private <H extends EventHandler, T extends Enum<T>> void doRemove(EventType<H, T> type, Object source, H handler, EventScope<?> scope, boolean async) {
         Map<Object, Map<EventScope<?>, List<?>>> handlerMap = async ? asyncMap.get(type) : syncMap.get(type);
         if (handlerMap != null) {
             Map<EventScope<?>, List<?>> handlers = handlerMap.get(source);
@@ -282,7 +282,7 @@ public class PlayerEventsBus implements EventsBus, PlayerEventHandler {
     }
 
     private void doRemoveAllWithScope(EventScope<?> scope) {
-        for (Map<EventImpl.Type<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map : Arrays.asList(syncMap, asyncMap)) {
+        for (Map<EventType<?, ?>, Map<Object, Map<EventScope<?>, List<?>>>> map : Arrays.asList(syncMap, asyncMap)) {
             for (Map<Object, Map<EventScope<?>, List<?>>> handlerMap : map.values()) {
                 for (Map.Entry<Object, Map<EventScope<?>, List<?>>> entry : handlerMap.entrySet()) {
                     Map<EventScope<?>, List<?>> handlers = entry.getValue();

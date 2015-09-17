@@ -1,10 +1,14 @@
 package eu.ydp.empiria.player.client.module.containers;
 
-import eu.ydp.empiria.player.client.module.ContainerModuleBase;
-import eu.ydp.empiria.player.client.module.IActivity;
+import eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEvent;
+import eu.ydp.empiria.player.client.module.core.base.ContainerModuleBase;
+import eu.ydp.empiria.player.client.module.core.flow.Activity;
 
-public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements IActivity {
+import static eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEventTypes.*;
 
+public abstract class AbstractActivityContainerModuleBase extends ContainerModuleBase implements Activity {
+
+    private final FeedbackCounterEvent feedbackCounterResetEvent = new FeedbackCounterEvent(RESET_COUNTER, this);
     private final ModulesActivitiesController modulesActivitiesController;
 
     private boolean markingAnswers = false;
@@ -37,6 +41,7 @@ public abstract class AbstractActivityContainerModuleBase extends ContainerModul
 
     @Override
     public void reset() {
+        getEventsBus().fireEvent(feedbackCounterResetEvent);
         showCorrectAnswers(false);
         markAnswers(false);
         modulesActivitiesController.reset(getChildren());

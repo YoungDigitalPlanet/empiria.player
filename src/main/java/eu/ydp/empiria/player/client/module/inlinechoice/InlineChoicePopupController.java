@@ -9,13 +9,16 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
-import eu.ydp.empiria.player.client.controller.events.interaction.InteractionEventsListener;
 import eu.ydp.empiria.player.client.controller.events.interaction.StateChangedInteractionEvent;
+import eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEvent;
+import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
 import eu.ydp.empiria.player.client.controller.multiview.touch.SwypeBlocker;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 import eu.ydp.empiria.player.client.module.*;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.ParentedModuleBase;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
@@ -30,7 +33,11 @@ import eu.ydp.gwtutil.client.xml.XMLUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static eu.ydp.empiria.player.client.controller.feedback.counter.event.FeedbackCounterEventTypes.RESET_COUNTER;
+
 public class InlineChoicePopupController extends ParentedModuleBase implements InlineChoiceController, ExListBoxChangeListener, PlayerEventHandler {
+
+    private final FeedbackCounterEvent feedbackCounterResetEvent = new FeedbackCounterEvent(RESET_COUNTER, this);
 
     private Response response;
     private String responseIdentifier;
@@ -48,10 +55,8 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     protected boolean locked = false;
     protected boolean shuffle = false;
 
-    protected List<Integer> identifiersMap;
     protected boolean showEmptyOption = true;
 
-    @Inject
     private EventsBus eventsBus;
     @Inject
     private SwypeBlocker swypeBlocker;
@@ -71,7 +76,8 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
     protected IUniqueModule parentModule;
 
     @Override
-    public void initModule(ModuleSocket moduleSocket, InteractionEventsListener moduleInteractionListener) {
+    public void initModule(ModuleSocket moduleSocket, EventsBus eventsBus) {
+        this.eventsBus = eventsBus;
         super.initModule(moduleSocket);
         eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE_STARTED), this, scopeFactory.getCurrentPageScope());
     }
@@ -233,6 +239,7 @@ public class InlineChoicePopupController extends ParentedModuleBase implements I
 
     @Override
     public void reset() {
+        eventsBus.fireEvent(feedbackCounterResetEvent);
         markAnswers(false);
         lock(false);
         listBox.setShowEmptyOptions(showEmptyOption);

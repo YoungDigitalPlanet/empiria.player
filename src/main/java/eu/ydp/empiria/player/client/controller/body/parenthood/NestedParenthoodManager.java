@@ -1,8 +1,8 @@
 package eu.ydp.empiria.player.client.controller.body.parenthood;
 
 import com.google.common.collect.Maps;
-import eu.ydp.empiria.player.client.module.HasChildren;
-import eu.ydp.empiria.player.client.module.HasParent;
+import eu.ydp.empiria.player.client.module.core.base.HasChildren;
+import eu.ydp.empiria.player.client.module.core.base.HasParent;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.module.ordering.presenter;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
-import eu.ydp.empiria.player.client.module.ShowAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.ordering.OrderInteractionModuleModel;
 import eu.ydp.empiria.player.client.module.ordering.model.OrderingItemsDao;
 import org.junit.Before;

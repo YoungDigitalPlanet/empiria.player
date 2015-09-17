@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.CorrectAnswers;
 import eu.ydp.empiria.player.client.gin.factory.IdentificationModuleFactory;
-import eu.ydp.empiria.player.client.module.InteractionModuleBase;
+import eu.ydp.empiria.player.client.module.core.base.InteractionModuleBase;
 import eu.ydp.empiria.player.client.module.ModuleJsSocketFactory;
 import eu.ydp.empiria.player.client.module.identification.presenter.SelectableChoicePresenter;
 import eu.ydp.gwtutil.client.event.factory.Command;
@@ -110,6 +110,7 @@ public class IdentificationModule extends InteractionModuleBase {
 
     @Override
     public void reset() {
+        super.reset();
         markAnswers(false);
         lock(false);
         choicesManager.clearSelections();
