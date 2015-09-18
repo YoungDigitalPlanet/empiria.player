@@ -1,7 +1,5 @@
 package eu.ydp.empiria.player.client.module.info.handler;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
@@ -9,8 +7,7 @@ public abstract class ProviderAssessmentValueHandlerBase implements FieldValueHa
 
     private VariableProviderSocket assessmentVariableProvider;
 
-    @Inject
-    public ProviderAssessmentValueHandlerBase(@Assisted VariableProviderSocket assessmentVariableProvider) {
+    public ProviderAssessmentValueHandlerBase(VariableProviderSocket assessmentVariableProvider) {
         this.assessmentVariableProvider = assessmentVariableProvider;
     }
 

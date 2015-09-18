@@ -1,7 +1,8 @@
-package eu.ydp.empiria.player.client.module.info;
+package eu.ydp.empiria.player.client.module.info.progress;
 
 import com.google.common.collect.Range;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 
 import javax.annotation.PostConstruct;
@@ -27,12 +28,11 @@ public class InfoModuleProgressMapping {
     }
 
     private ProgressToStringRangeMap progressToStyleName;
-    private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
+    private InfoModuleCssProgressParser cssMappingParser;
 
     @Inject
-    public InfoModuleProgressMapping(InfoModuleCssProgressMappingConfigurationParser cssMappingParser,
+    public InfoModuleProgressMapping(@Assisted InfoModuleCssProgressParser cssMappingParser,
                                      ProgressToStringRangeMap progressToStyleName) {
-
         this.cssMappingParser = cssMappingParser;
         this.progressToStyleName = progressToStyleName;
     }
