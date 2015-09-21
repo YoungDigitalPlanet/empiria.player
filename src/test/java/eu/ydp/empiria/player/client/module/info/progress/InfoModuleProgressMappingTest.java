@@ -1,7 +1,9 @@
-package eu.ydp.empiria.player.client.module.info;
+package eu.ydp.empiria.player.client.module.info.progress;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import eu.ydp.empiria.player.client.module.info.progress.InfoModuleCssProgressParser;
+import eu.ydp.empiria.player.client.module.info.progress.InfoModuleProgressMapping;
 import eu.ydp.empiria.player.client.module.item.ProgressToStringRangeMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class InfoModuleProgressMappingTest {
 
     private InfoModuleProgressMapping testObj;
     @Mock
-    private InfoModuleCssProgressMappingConfigurationParser cssMappingParser;
+    private InfoModuleCssProgressParser cssMappingParser;
     private ProgressToStringRangeMap progressToStyleName;
 
     String styleName = "xxx";

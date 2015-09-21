@@ -17,6 +17,7 @@ import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.core.flow.LifecycleModule;
 import eu.ydp.empiria.player.client.module.core.base.SimpleModuleBase;
 import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
+import eu.ydp.empiria.player.client.module.info.progress.InfoModuleProgressStyleName;
 import eu.ydp.empiria.player.client.resources.EmpiriaStyleNameConstants;
 import eu.ydp.empiria.player.client.style.ModuleStyle;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -174,5 +175,4 @@ public class InfoModule extends SimpleModuleBase implements LifecycleModule, Pla
     private void resetMainPanelStyleToInitialState() {
         mainPanel.setStyleName(initialStyleName);
     }
-
 }
