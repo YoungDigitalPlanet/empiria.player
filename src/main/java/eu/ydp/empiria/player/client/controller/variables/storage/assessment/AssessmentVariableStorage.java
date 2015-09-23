@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.storage.assessment;
 
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.controller.communication.sockets.JsSocketHolder;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemsCollectionSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderBase;
@@ -11,6 +12,7 @@ import eu.ydp.gwtutil.client.NumberUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+@Singleton
 public class AssessmentVariableStorage extends VariableProviderBase implements JsSocketHolder {
 
     private final Set<String> identifiers;
@@ -54,6 +56,13 @@ public class AssessmentVariableStorage extends VariableProviderBase implements J
             return new Outcome(identifier, Cardinality.SINGLE, String.valueOf(value));
         }
         return null;
+    }
+
+    public int getVariableIntValue(String identifier){
+        if (identifiers.contains(identifier)) {
+            return getOutcomeVariableAssessmentTotal(identifier);
+        }
+        return 0;
     }
 
     protected int getOutcomeVariableAssessmentTotal(String identifier) {

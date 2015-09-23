@@ -1,7 +1,6 @@
 package eu.ydp.empiria.player.client.module.info.handler;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
@@ -14,9 +13,7 @@ public class ResultForPageIndexProvider {
     private SessionDataSupplier sessionDataSupplier;
 
     @Inject
-    public ResultForPageIndexProvider(@Assisted SessionDataSupplier sessionDataSupplier,
-                                      ResultExtractorsFactory variableResultFactory) {
-
+    public ResultForPageIndexProvider(SessionDataSupplier sessionDataSupplier, ResultExtractorsFactory variableResultFactory) {
         this.sessionDataSupplier = sessionDataSupplier;
         this.variableResultFactory = variableResultFactory;
     }

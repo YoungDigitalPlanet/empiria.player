@@ -13,7 +13,7 @@ public class ResultValueHandler extends ProviderItemValueHandlerBase {
     private ResultExtractorsFactory resultExtractorsFactory;
 
     @Inject
-    public ResultValueHandler(@Assisted SessionDataSupplier sessionDataSupplier,
+    public ResultValueHandler(SessionDataSupplier sessionDataSupplier,
                               ResultExtractorsFactory resultExtractorsFactory) {
         super(sessionDataSupplier);
         this.resultExtractorsFactory = resultExtractorsFactory;
@@ -24,5 +24,4 @@ public class ResultValueHandler extends ProviderItemValueHandlerBase {
         VariableResult result = resultExtractorsFactory.createVariableResult(provider);
         return String.valueOf(result.getResult());
     }
-
 }

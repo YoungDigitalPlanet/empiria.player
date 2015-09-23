@@ -14,7 +14,7 @@ public class TitleValueHandler implements FieldValueHandler {
     private DataSourceDataSupplier dataSourceDataSupplier;
 
     @Inject
-    public TitleValueHandler(@Assisted DataSourceDataSupplier dataSourceDataSupplier) {
+    public TitleValueHandler(DataSourceDataSupplier dataSourceDataSupplier) {
         this.dataSourceDataSupplier = dataSourceDataSupplier;
     }
 
