@@ -18,8 +18,6 @@ import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 public class ScormSupportExtension extends InternalExtension implements PlayerJsObjectModifierExtension, SessionDataSocketUserExtension,
         DataSourceDataSocketUserExtension {
 
-    private static final Logger LOGGER = new Logger();
-
     protected SessionDataSupplier sessionDataSupplier;
     protected JavaScriptObject playerJsObject;
     protected DataSourceDataSupplier dataSourceDataSupplier;

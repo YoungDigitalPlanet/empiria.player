@@ -7,7 +7,6 @@ import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
 import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
-import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
@@ -57,9 +56,6 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
     public void shouldReturnCorrectContentString() {
         ItemSessionDataSocket itemSessionDataSocketPage0 = createItemSessionDataSocketForFirstPage();
         ItemSessionDataSocket itemSessionDataSocketPage1 = createItemSessionDataSocketForSecondPage();
-        AssessmentSessionDataSocket assessmentSessionDataSocket = mock(AssessmentSessionDataSocket.class);
-        VariableProviderSocket assessmentVariableSocket = mock(VariableProviderSocket.class);
-        OutcomeCreator outcomeCreator = new OutcomeCreator();
 
         when(sessionSupplier.getItemSessionDataSocket(0)).thenReturn(itemSessionDataSocketPage0);
         when(sessionSupplier.getItemSessionDataSocket(1)).thenReturn(itemSessionDataSocketPage1);
@@ -69,11 +65,6 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
         when(sourceSupplier.getItemTitle(1)).thenReturn("Page 2");
         when(sourceSupplier.getItemsCount()).thenReturn(1);
 
-        when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
-        when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(assessmentVariableSocket);
-
-        when(assessmentVariableSocket.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(2));
-
         List<ContentInfo> infos = Lists.newArrayList(ContentInfo.create("$[item.title]", "Page 1", 0), ContentInfo.create("$[item.title]", "Page 2", 1),
                 ContentInfo.create("$[test.title]", "Lesson 1", 0), ContentInfo.create("$[item.index]", "1", 0), ContentInfo.create("$[item.index]", "2", 1),
                 ContentInfo.create("$[item.page_num]", "1", 0), ContentInfo.create("$[item.page_count]", "1", 0), ContentInfo.create("$[item.todo]", "3", 0),
@@ -82,7 +73,7 @@ public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInj
                 ContentInfo.create("$[item.mistakes]", "3", 1), ContentInfo.create("$[item.show_answers]", "0", 0),
                 ContentInfo.create("$[item.show_answers]", "2", 1), ContentInfo.create("$[item.reset]", "0", 0), ContentInfo.create("$[item.reset]", "10", 1),
                 ContentInfo.create("$[item.result]", "0", 0), ContentInfo.create("$[item.result]", "80", 1), ContentInfo.create("$[test.todo]", "0", 0),
-                ContentInfo.create("$[test.done]", "2", 0), ContentInfo.create("$[test.checks]", "0", 0), ContentInfo.create("$[test.mistakes]", "0", 0),
+                ContentInfo.create("$[test.checks]", "0", 0), ContentInfo.create("$[test.mistakes]", "0", 0),
                 ContentInfo.create("$[test.show_answers]", "0", 0), ContentInfo.create("$[test.reset]", "0", 0), ContentInfo.create("$[test.result]", "0", 0),
                 ContentInfo.create("$[item.title], $[test.title] result is $[test.result]%", "Page 1, Lesson 1 result is 0%", 0));
 

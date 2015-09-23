@@ -10,7 +10,7 @@ public class PageCountValueHandler implements FieldValueHandler {
     private DataSourceDataSupplier dataSourceDataSupplier;
 
     @Inject
-    public PageCountValueHandler(@Assisted DataSourceDataSupplier dataSourceDataSupplier) {
+    public PageCountValueHandler(DataSourceDataSupplier dataSourceDataSupplier) {
         this.dataSourceDataSupplier = dataSourceDataSupplier;
     }
 

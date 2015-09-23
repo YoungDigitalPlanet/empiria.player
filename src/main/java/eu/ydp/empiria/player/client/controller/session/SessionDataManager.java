@@ -15,7 +15,7 @@ import eu.ydp.empiria.player.client.controller.session.sockets.PageSessionSocket
 import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorageImpl;
+import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorage;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -29,12 +29,12 @@ import java.util.Map;
 public class SessionDataManager implements SessionSocket, Stateful, SessionDataSupplier, SessionDataSocket {
 
     private ItemSessionData[] itemSessionDatas;
-    private final AssessmentVariableStorageImpl variableProvider;
+    private final AssessmentVariableStorage variableProvider;
     private final EventsBus eventsBus;
     private final PageScopeFactory pageScopeFactory;
 
     @Inject
-    public SessionDataManager(AssessmentVariableStorageImpl variableProvider, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
+    public SessionDataManager(AssessmentVariableStorage variableProvider, EventsBus eventsBus, PageScopeFactory pageScopeFactory) {
         this.variableProvider = variableProvider;
         this.eventsBus = eventsBus;
         this.pageScopeFactory = pageScopeFactory;

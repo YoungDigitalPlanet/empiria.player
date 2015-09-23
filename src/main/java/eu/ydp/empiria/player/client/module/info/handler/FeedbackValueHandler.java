@@ -12,9 +12,7 @@ public class FeedbackValueHandler implements FieldValueHandler {
     private final ResultForPageIndexProvider resultForPageIndexProvider;
 
     @Inject
-    public FeedbackValueHandler(@Assisted ResultForPageIndexProvider resultForPageIndexProvider,
-                                @Assisted DataSourceDataSupplier dataSourceDataSupplier) {
-
+    public FeedbackValueHandler(ResultForPageIndexProvider resultForPageIndexProvider, DataSourceDataSupplier dataSourceDataSupplier) {
         this.dataSourceDataSupplier = dataSourceDataSupplier;
         this.resultForPageIndexProvider = resultForPageIndexProvider;
     }

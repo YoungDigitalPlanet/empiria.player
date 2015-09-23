@@ -4,21 +4,21 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
+import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorage;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
 
-public class ProviderAssessmentValueHandler extends ProviderAssessmentValueHandlerBase {
+public class ProviderAssessmentValueHandler implements FieldValueHandler  {
 
-    private static final String DEFAULT_VALUE = "0";
+    private final AssessmentVariableStorage assessmentVariableStorage;
 
     @Inject
-    public ProviderAssessmentValueHandler(@Assisted VariableProviderSocket assessmentVariableProvider) {
-        super(assessmentVariableProvider);
+    public ProviderAssessmentValueHandler(AssessmentVariableStorage assessmentVariableStorage) {
+        this.assessmentVariableStorage = assessmentVariableStorage;
     }
 
     @Override
-    protected String countValue(ContentFieldInfo info, VariableProviderSocket provider) {
-        VariableUtil util = new VariableUtil(provider);
-        return util.getVariableValue(info.getValueName(), DEFAULT_VALUE);
+    public String getValue(ContentFieldInfo info, int refItemIndex) {
+        int variableIntValue = assessmentVariableStorage.getVariableIntValue(info.getValueName());
+        return String.valueOf(variableIntValue);
     }
-
 }
