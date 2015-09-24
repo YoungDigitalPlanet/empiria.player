@@ -8,8 +8,10 @@ import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.gwtutil.client.NumberUtils;
+import eu.ydp.gwtutil.client.collections.CollectionsUtil;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Singleton
@@ -52,25 +54,31 @@ public class AssessmentVariableStorage extends VariableProviderBase implements J
     @Override
     public Variable getVariableValue(String identifier) {
         if (identifiers.contains(identifier)) {
-            int value = getOutcomeVariableAssessmentTotal(identifier);
+            List<Integer> itemsIndexes = getAllItemsIndexes();
+            int value = getOutcomeVariableAssessmentTotal(identifier, itemsIndexes);
             return new Outcome(identifier, Cardinality.SINGLE, String.valueOf(value));
         }
         return null;
     }
 
-    public int getVariableIntValue(String identifier){
+    public int getVariableIntValue(String identifier) {
+        List<Integer> itemsToInclude = getAllItemsIndexes();
+        return getVariableIntValue(identifier, itemsToInclude);
+    }
+
+    public int getVariableIntValue(String identifier, List<Integer> itemsToInclude) {
         if (identifiers.contains(identifier)) {
-            return getOutcomeVariableAssessmentTotal(identifier);
+            return getOutcomeVariableAssessmentTotal(identifier, itemsToInclude);
         }
         return 0;
     }
 
-    protected int getOutcomeVariableAssessmentTotal(String identifier) {
+    protected int getOutcomeVariableAssessmentTotal(String identifier, List<Integer> itemsToInclude) {
         int total = 0;
         Variable currVar;
         String currValue;
         int currValueInt;
-        for (int i = 0; i < itemsCollectionSessionDataSocket.getItemSessionDataSocketsCount(); i++) {
+        for (int i : itemsToInclude) {
             if (itemsCollectionSessionDataSocket.getItemSessionDataSocket(i) != null) {
                 currVar = itemsCollectionSessionDataSocket.getItemSessionDataSocket(i).getVariableProviderSocket().getVariableValue(identifier);
                 if (currVar == null) {
@@ -90,4 +98,8 @@ public class AssessmentVariableStorage extends VariableProviderBase implements J
         return total;
     }
 
+    private List<Integer> getAllItemsIndexes() {
+        int itemsCount = itemsCollectionSessionDataSocket.getItemSessionDataSocketsCount();
+        return CollectionsUtil.getRangeList(0, itemsCount);
+    }
 }
