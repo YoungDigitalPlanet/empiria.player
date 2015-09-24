@@ -1,31 +1,28 @@
 package eu.ydp.empiria.player.client.view.page;
 
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.*;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.resources.PageStyleNameConstants;
 
 public class PageContentView extends Composite {
-    private Panel pagePanel;
-    private Panel itemsPanel = new FlowPanel();
-    private Panel titlePanel = new FlowPanel();
+
+    private static PageContentUiBinder uiBinder = GWT.create(PageContentUiBinder.class);
+
+    @UiTemplate("PageContentView.ui.xml")
+    interface PageContentUiBinder extends UiBinder<Widget, PageContentView> {
+    }
+
+    @UiField
+    Panel itemsPanel;
+    @UiField
+    Panel titlePanel;
 
     @Inject
-    public PageContentView(@Assisted Panel parentPanel, PageStyleNameConstants styleNames) {
-        setParent(parentPanel);
-        itemsPanel.setStyleName(styleNames.QP_PAGE_CONTENT());
-        titlePanel.setStyleName(styleNames.QP_PAGE_TITLE());
-    }
-
-    private void setParent(Panel panel) {
-        pagePanel = panel;
-        pagePanel.add(itemsPanel);
-    }
-
-    public Panel getPagePanel() {
-        return pagePanel;
+    public PageContentView(@Assisted Panel parentPanel) {
+        uiBinder.createAndBindUi(this);
+        parentPanel.add(itemsPanel);
     }
 
     public Panel getItemsPanel() {
@@ -34,9 +31,5 @@ public class PageContentView extends Composite {
 
     public Panel getTitlePanel() {
         return titlePanel;
-    }
-
-    public void setParentPanel(Panel parent) {
-        setParent(parent);
     }
 }
