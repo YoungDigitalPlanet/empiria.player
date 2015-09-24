@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.view.assessment;
 
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.controller.Assessment;
 import eu.ydp.empiria.player.client.view.sockets.ViewSocket;
@@ -20,10 +19,6 @@ public class AssessmentViewCarrier {
 
     public Widget getHeaderView() {
         return (headerViewSocket == null) ? null : headerViewSocket.getView(); // NOPMD
-    }
-
-    public Panel getPageSlot() {
-        return assessment.getPageSlot();
     }
 
     public Widget getSkinView() {

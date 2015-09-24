@@ -46,20 +46,16 @@ public class PageViewSocketImpl implements PageViewSocket {
         view.getTitlePanel().add(pageViewCarrier.getPageTitle());
         if (pageViewCarrier.hasContent()) {
             Panel contentPanel = new FlowPanel();
+
             if (pageViewCarrier.pageType == PageType.ERROR) {
                 contentPanel.setStyleName(styleNames.QP_PAGE_ERROR());
                 Label errorLabel = new Label(pageViewCarrier.errorMessage);
                 errorLabel.setStyleName(styleNames.QP_PAGE_ERROR_TEXT());
                 contentPanel.add(errorLabel);
-
-            } else if (pageViewCarrier.pageType == PageType.LESSON_SKIN) {
-                view.setParentPanel(pageViewCarrier.getPageSlot());
             }
 
-            if (pageViewCarrier.pageType != PageType.LESSON_SKIN) {
-                view.getItemsPanel().clear();
-                view.getItemsPanel().add(contentPanel);
-            }
+            view.getItemsPanel().clear();
+            view.getItemsPanel().add(contentPanel);
         }
     }
 }
