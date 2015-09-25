@@ -124,6 +124,7 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getTestResetButtonModule(), ModuleTagName.TEST_RESET, false),
                 new SimpleConnectorExtension(moduleProviderFactory.getExternalInteractionModule(), ModuleTagName.EXTERNAL_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getExternalPresentationModule(), ModuleTagName.EXTERNAL_PRESENTATION),
+                new SimpleConnectorExtension(moduleProviderFactory.getExternalPresentationModule(), ModuleTagName.EXTERNAL_COMMON_PRESENTATION),
                 moduleProviderFactory.getMediaProcessor().get(),
                 multiPageProvider.get(),
                 pageProvider.get(),
