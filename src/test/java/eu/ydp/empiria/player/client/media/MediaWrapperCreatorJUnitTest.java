@@ -3,7 +3,7 @@ package eu.ydp.empiria.player.client.media;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.SimulationMediaEventController;
+import eu.ydp.empiria.player.client.controller.extensions.internal.media.event.DefaultMediaEventController;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MimeSourceProvider;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -31,7 +31,7 @@ public class MediaWrapperCreatorJUnitTest {
     @Mock
     private EventsBus eventsBus;
     @Mock
-    private Provider<SimulationMediaEventController> simulationMediaEventControllerProvider;
+    private Provider<DefaultMediaEventController> mediaEventControllerProvider;
 
     @Mock
     private CallbackReceiver callbackReceiver;
@@ -86,7 +86,7 @@ public class MediaWrapperCreatorJUnitTest {
     @Test
     public void shouldCreateSimulationMediaWrapper() {
         // given
-        when(simulationMediaEventControllerProvider.get()).thenReturn(mock(SimulationMediaEventController.class));
+        when(mediaEventControllerProvider.get()).thenReturn(mock(DefaultMediaEventController.class));
 
         // when
         testObj.createSimulationMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
@@ -100,6 +100,27 @@ public class MediaWrapperCreatorJUnitTest {
         assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
         assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
         assertThat(capturedConfiguration.getMediaEventControllerOpt().get()).isNotNull();
+        assertThat(capturedCallback).isEqualTo(callbackReceiver);
+    }
+
+    @Test
+    public void shouldCreateExternalnMediaWrapper() {
+        // given
+        DefaultMediaEventController defaultMediaEventController = mock(DefaultMediaEventController.class);
+        when(mediaEventControllerProvider.get()).thenReturn(defaultMediaEventController);
+
+        // when
+        testObj.createExternalMediaWrapper(sourcesKey, callbackReceiver);
+
+        // then
+        verify(eventsBus).fireEvent(playerEventCaptor.capture());
+        PlayerEvent capturedEvent = playerEventCaptor.getValue();
+        BaseMediaConfiguration capturedConfiguration = (BaseMediaConfiguration) capturedEvent.getValue();
+        CallbackReceiver capturedCallback = (CallbackReceiver) capturedEvent.getSource();
+
+        assertThat(capturedEvent.getType()).isEqualTo(PlayerEventTypes.CREATE_MEDIA_WRAPPER);
+        assertThat(capturedConfiguration.getSources()).isEqualTo(sourcesWithTypes);
+        assertThat(capturedConfiguration.getMediaEventControllerOpt().get()).isEqualTo(defaultMediaEventController);
         assertThat(capturedCallback).isEqualTo(callbackReceiver);
     }
 }
