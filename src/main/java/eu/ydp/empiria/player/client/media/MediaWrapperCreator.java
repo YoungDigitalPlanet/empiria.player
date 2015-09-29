@@ -16,7 +16,7 @@ public class MediaWrapperCreator {
     @Inject
     private EventsBus eventsBus;
     @Inject
-    private Provider<DefaultMediaEventController> mediaEventControllerProvider;
+    private Provider<DefaultMediaEventController> defaultMediaEventControllerProvider;
     @Inject
     private MimeSourceProvider mimeSourceProvider;
 
@@ -32,13 +32,13 @@ public class MediaWrapperCreator {
     }
 
     public void createSimulationMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
-        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, mediaEventControllerProvider.get());
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, defaultMediaEventControllerProvider.get());
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
     }
 
     public void createExternalMediaWrapper(String src, CallbackReceiver callbackRecevier) {
         Map<String, String> sourcesWithTypes = mimeSourceProvider.getSourcesWithTypeByExtension(src);
-        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, mediaEventControllerProvider.get());
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, defaultMediaEventControllerProvider.get());
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
     }
 }

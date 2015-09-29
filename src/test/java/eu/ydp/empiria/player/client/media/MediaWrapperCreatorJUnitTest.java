@@ -31,7 +31,7 @@ public class MediaWrapperCreatorJUnitTest {
     @Mock
     private EventsBus eventsBus;
     @Mock
-    private Provider<DefaultMediaEventController> mediaEventControllerProvider;
+    private Provider<DefaultMediaEventController> defaultMediaEventControllerProvider;
 
     @Mock
     private CallbackReceiver callbackReceiver;
@@ -86,7 +86,7 @@ public class MediaWrapperCreatorJUnitTest {
     @Test
     public void shouldCreateSimulationMediaWrapper() {
         // given
-        when(mediaEventControllerProvider.get()).thenReturn(mock(DefaultMediaEventController.class));
+        when(defaultMediaEventControllerProvider.get()).thenReturn(mock(DefaultMediaEventController.class));
 
         // when
         testObj.createSimulationMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
@@ -107,7 +107,7 @@ public class MediaWrapperCreatorJUnitTest {
     public void shouldCreateExternalnMediaWrapper() {
         // given
         DefaultMediaEventController defaultMediaEventController = mock(DefaultMediaEventController.class);
-        when(mediaEventControllerProvider.get()).thenReturn(defaultMediaEventController);
+        when(defaultMediaEventControllerProvider.get()).thenReturn(defaultMediaEventController);
 
         // when
         testObj.createExternalMediaWrapper(sourcesKey, callbackReceiver);
