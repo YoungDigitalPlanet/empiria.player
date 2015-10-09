@@ -2,9 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with type="eu.ydp.empiria.player.client.resources.PageStyleNameConstants" field="res"/>
-    <g:FlowPanel ui:field="parent">
+    <g:Panel ui:field="assessmentPanel">
         <g:FlowPanel ui:field="headerPanel" styleName="{res.QP_HEADER}"/>
-        <g:FlowPanel ui:field="pagePanel" styleName="{res.QP_BODY}"/>
         <g:FlowPanel ui:field="navigationPanel" styleName="{res.QP_FOOTER}"/>
-    </g:FlowPanel>
+    </g:Panel>
 </ui:UiBinder>

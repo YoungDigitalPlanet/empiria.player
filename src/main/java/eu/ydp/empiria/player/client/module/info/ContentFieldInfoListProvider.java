@@ -5,25 +5,30 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
 import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
 import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandler;
-import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
-import eu.ydp.empiria.player.client.module.info.handler.ResultForPageIndexProvider;
+import eu.ydp.empiria.player.client.module.info.handler.*;
 
 import java.util.List;
 
 public class ContentFieldInfoListProvider {
 
     @Inject
-    private DataSourceDataSupplier dataSourceDataSupplier;
-    @Inject
-    private SessionDataSupplier sessionDataSupplier;
-    @Inject
-    private FieldValueHandlerFactory handlerFactory;
-    @Inject
     private ContentFieldInfoFactory contentFieldInfoFactory;
     @Inject
-    private ResultExtractorsFactory resultExtractorsFactory;
+    private ProviderAssessmentValueHandler providerAssessmentValueHandler;
+    @Inject
+    private AssessmentResultValueHandler assessmentResultValueHandler;
+    @Inject
+    private ResultValueHandler resultValueHandler;
+    @Inject
+    private PageCountValueHandler pageCountValueHandler;
+    @Inject
+    private ItemIndexValueHandler itemIndexValueHandler;
+    @Inject
+    private TitleValueHandler titleValueHandler;
+    @Inject
+    private ItemValueHandler itemValueHandler;
+    @Inject
+    private FeedbackValueHandler feedbackValueHandler;
 
     private static final String TEST_RESULT = "test.result";
     private static final String TEST_TITLE = "test.title";
@@ -72,7 +77,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getAssessmentResultInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler assessmentResultValueHandler = handlerFactory.getAssessmentResultValueHandler(getAssessmentVariableProvider());
 
         contentFieldInfos.add(contentFieldInfoFactory.create(TEST_RESULT, assessmentResultValueHandler));
 
@@ -81,7 +85,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getResultInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler resultValueHandler = handlerFactory.getResultValueHandler(sessionDataSupplier);
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_RESULT, resultValueHandler));
 
@@ -90,7 +93,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getPageCountInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler pageCountValueHandler = handlerFactory.getPageCountValueHandler(dataSourceDataSupplier);
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_PAGE_COUNT, pageCountValueHandler));
 
@@ -99,7 +101,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getItemIndexInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler itemIndexValueHandler = handlerFactory.getItemIndexValueHandler();
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_INDEX, itemIndexValueHandler));
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_PAGE_NUM, itemIndexValueHandler));
@@ -109,7 +110,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getTitleInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler titleValueHandler = handlerFactory.getTitleValueHandler(dataSourceDataSupplier);
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_TITLE, titleValueHandler));
         contentFieldInfos.add(contentFieldInfoFactory.create(TEST_TITLE, titleValueHandler));
@@ -119,7 +119,6 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getItemInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler itemValueHandler = handlerFactory.getProviderValueHandler(sessionDataSupplier);
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_TODO, itemValueHandler));
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_DONE, itemValueHandler));
@@ -133,26 +132,19 @@ public class ContentFieldInfoListProvider {
 
     private List<ContentFieldInfo> getAssessmentInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        FieldValueHandler assessmentValueHandler = handlerFactory.getProviderAssessmentValueHandler(getAssessmentVariableProvider());
 
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_TODO, assessmentValueHandler));
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_DONE, assessmentValueHandler));
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_CHECKS, assessmentValueHandler));
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_MISTAKES, assessmentValueHandler));
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_SHOW_ANSWERS, assessmentValueHandler));
-        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_RESET, assessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_TODO, providerAssessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_DONE, providerAssessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_CHECKS, providerAssessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_MISTAKES, providerAssessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_SHOW_ANSWERS, providerAssessmentValueHandler));
+        contentFieldInfos.add(contentFieldInfoFactory.create(TEST_RESET, providerAssessmentValueHandler));
 
         return contentFieldInfos;
     }
 
-    private VariableProviderSocket getAssessmentVariableProvider() {
-        return sessionDataSupplier.getAssessmentSessionDataSocket().getVariableProviderSocket();
-    }
-
     private List<ContentFieldInfo> getReportFeedbackInfos() {
         List<ContentFieldInfo> contentFieldInfos = Lists.newArrayList();
-        ResultForPageIndexProvider resultForPageIndexProvider = resultExtractorsFactory.createResultForPageIndexProvider(sessionDataSupplier);
-        FieldValueHandler feedbackValueHandler = handlerFactory.getFeedbackValueHandler(resultForPageIndexProvider, dataSourceDataSupplier);
 
         contentFieldInfos.add(contentFieldInfoFactory.create(ITEM_FEEDBACK, feedbackValueHandler));
 

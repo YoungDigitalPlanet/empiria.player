@@ -1,24 +1,22 @@
 package eu.ydp.empiria.player.client.module.info.handler;
 
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.VariableUtil;
+import eu.ydp.empiria.player.client.controller.report.table.extraction.PagesRangeExtractor;
+import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorage;
+import eu.ydp.empiria.player.client.gin.binding.CachedModuleScoped;
 import eu.ydp.empiria.player.client.module.info.ContentFieldInfo;
+import eu.ydp.empiria.player.client.style.ModuleStyle;
 
-public class ProviderAssessmentValueHandler extends ProviderAssessmentValueHandlerBase {
-
-    private static final String DEFAULT_VALUE = "0";
+public class ProviderAssessmentValueHandler extends AssessmentValueHandlerBase implements FieldValueHandler {
 
     @Inject
-    public ProviderAssessmentValueHandler(@Assisted VariableProviderSocket assessmentVariableProvider) {
-        super(assessmentVariableProvider);
+    public ProviderAssessmentValueHandler(@CachedModuleScoped ModuleStyle moduleStyle, AssessmentVariableStorage assessmentVariableStorage, PagesRangeExtractor pagesRangeExtractor) {
+        super(moduleStyle, assessmentVariableStorage, pagesRangeExtractor);
     }
 
     @Override
-    protected String countValue(ContentFieldInfo info, VariableProviderSocket provider) {
-        VariableUtil util = new VariableUtil(provider);
-        return util.getVariableValue(info.getValueName(), DEFAULT_VALUE);
+    public String getValue(ContentFieldInfo info, int refItemIndex) {
+        int variableIntValue = getVariableValue(info.getValueName());
+        return String.valueOf(variableIntValue);
     }
-
 }

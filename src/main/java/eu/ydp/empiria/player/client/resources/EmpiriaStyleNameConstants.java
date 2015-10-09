@@ -16,6 +16,7 @@ public final class EmpiriaStyleNameConstants {
     public static final String EMPIRIA_IMG_LABEL_LINE_THICKNESS = "-empiria-img-label-line-thickness";
     public static final String EMPIRIA_IMG_MODE = "-empiria-img-mode";
     public static final String EMPIRIA_INFO_CONTENT = "-empiria-info-content";
+    public static final String EMPIRIA_INFO_TEST_INCLUDE = "-empiria-info-test-include";
     public static final String EMPIRIA_INLINECHOICE_EMPTY_OPTION = "-empiria-inlinechoice-empty-option";
     public static final String EMPIRIA_INLINECHOICE_POPUP_POSITION = "-empiria-inlinechoice-popup-position";
     public static final String EMPIRIA_INLINECHOICE_TYPE = "-empiria-inlinechoice-type";

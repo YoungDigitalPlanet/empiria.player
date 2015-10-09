@@ -1,160 +1,105 @@
 package eu.ydp.empiria.player.client.module.info;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import eu.ydp.empiria.player.client.AbstractTestBaseWithoutAutoInjectorInit;
-import eu.ydp.empiria.player.client.GuiceModuleConfiguration;
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.feedback.OutcomeCreator;
-import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
-import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
-import eu.ydp.empiria.player.client.module.info.InfoModuleContentTokenizer.Token;
+import org.fest.assertions.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VariableInterpreterJUnitTest extends AbstractTestBaseWithoutAutoInjectorInit {
+public class VariableInterpreterJUnitTest {
 
-    private class CustomGinModule implements Module {
-        @Override
-        public void configure(Binder binder) {
-            binder.bind(DataSourceDataSupplier.class).toInstance(sourceSupplier);
-            binder.bind(SessionDataSupplier.class).toInstance(sessionSupplier);
-        }
-    }
-
-    private VariableInterpreter interpreter;
-
+    @InjectMocks
+    private VariableInterpreter testObj;
     @Mock
-    private DataSourceDataSupplier sourceSupplier;
+    private ContentFieldRegistry contentFieldRegistry;
     @Mock
-    private SessionDataSupplier sessionSupplier;
-    private final InfoModuleContentTokenizer contentTokenizer = new InfoModuleContentTokenizer();
+    private ContentFieldInfo contentFieldInfo;
+    @Mock
+    private InfoModuleContentTokenizer.Token firstToken;
+    @Mock
+    private InfoModuleContentTokenizer.Token secondToken;
+    private String firstTokenName = "first";
+    private String secondTokenName = "second";
 
     @Before
-    public void initialize() {
-        setUpAndOverrideMainModule(new GuiceModuleConfiguration(), new CustomGinModule());
-        interpreter = injector.getInstance(VariableInterpreter.class);
+    public void init(){
+        when(firstToken.getName()).thenReturn(firstTokenName);
+        when(secondToken.getName()).thenReturn(secondTokenName);
+        when(contentFieldRegistry.getFieldInfo(firstTokenName)).thenReturn(Optional.of(contentFieldInfo));
     }
 
     @Test
-    public void shouldReturnCorrectContentString() {
-        ItemSessionDataSocket itemSessionDataSocketPage0 = createItemSessionDataSocketForFirstPage();
-        ItemSessionDataSocket itemSessionDataSocketPage1 = createItemSessionDataSocketForSecondPage();
-        AssessmentSessionDataSocket assessmentSessionDataSocket = mock(AssessmentSessionDataSocket.class);
-        VariableProviderSocket assessmentVariableSocket = mock(VariableProviderSocket.class);
-        OutcomeCreator outcomeCreator = new OutcomeCreator();
+    public void shouldReturnTokenName_whenIsNotFieldInfo() {
+        // given
+        when(firstToken.isFieldInfo()).thenReturn(false);
+        List<InfoModuleContentTokenizer.Token> tokens = Lists.newArrayList(firstToken);
 
-        when(sessionSupplier.getItemSessionDataSocket(0)).thenReturn(itemSessionDataSocketPage0);
-        when(sessionSupplier.getItemSessionDataSocket(1)).thenReturn(itemSessionDataSocketPage1);
+        // when
+        String result = testObj.replaceAllTags(tokens, 0);
 
-        when(sourceSupplier.getAssessmentTitle()).thenReturn("Lesson 1");
-        when(sourceSupplier.getItemTitle(0)).thenReturn("Page 1");
-        when(sourceSupplier.getItemTitle(1)).thenReturn("Page 2");
-        when(sourceSupplier.getItemsCount()).thenReturn(1);
-
-        when(sessionSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
-        when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(assessmentVariableSocket);
-
-        when(assessmentVariableSocket.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(2));
-
-        List<ContentInfo> infos = Lists.newArrayList(ContentInfo.create("$[item.title]", "Page 1", 0), ContentInfo.create("$[item.title]", "Page 2", 1),
-                ContentInfo.create("$[test.title]", "Lesson 1", 0), ContentInfo.create("$[item.index]", "1", 0), ContentInfo.create("$[item.index]", "2", 1),
-                ContentInfo.create("$[item.page_num]", "1", 0), ContentInfo.create("$[item.page_count]", "1", 0), ContentInfo.create("$[item.todo]", "3", 0),
-                ContentInfo.create("$[item.todo]", "5", 1), ContentInfo.create("$[item.done]", "0", 0), ContentInfo.create("$[item.done]", "4", 1),
-                ContentInfo.create("$[item.checks]", "0", 0), ContentInfo.create("$[item.checks]", "6", 1), ContentInfo.create("$[item.mistakes]", "0", 0),
-                ContentInfo.create("$[item.mistakes]", "3", 1), ContentInfo.create("$[item.show_answers]", "0", 0),
-                ContentInfo.create("$[item.show_answers]", "2", 1), ContentInfo.create("$[item.reset]", "0", 0), ContentInfo.create("$[item.reset]", "10", 1),
-                ContentInfo.create("$[item.result]", "0", 0), ContentInfo.create("$[item.result]", "80", 1), ContentInfo.create("$[test.todo]", "0", 0),
-                ContentInfo.create("$[test.done]", "2", 0), ContentInfo.create("$[test.checks]", "0", 0), ContentInfo.create("$[test.mistakes]", "0", 0),
-                ContentInfo.create("$[test.show_answers]", "0", 0), ContentInfo.create("$[test.reset]", "0", 0), ContentInfo.create("$[test.result]", "0", 0),
-                ContentInfo.create("$[item.title], $[test.title] result is $[test.result]%", "Page 1, Lesson 1 result is 0%", 0));
-
-        for (ContentInfo info : infos) {
-            assertInfo(info);
-        }
+        // then
+        assertThat(result).isEqualTo(firstTokenName);
     }
 
-    private ItemSessionDataSocket createItemSessionDataSocketForFirstPage() {
-        OutcomeCreator outcomeCreator = new OutcomeCreator();
-        ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
-        VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
+    @Test
+    public void shouldReturnConnectedTokenNames_whenAreNotFieldInfo() {
+        // given
+        String expectedString = "firstsecond";
+        when(firstToken.isFieldInfo()).thenReturn(false);
+        when(secondToken.isFieldInfo()).thenReturn(false);
 
-        when(itemVariableSocketPage.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(3));
-        when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
+        List<InfoModuleContentTokenizer.Token> tokens = Lists.newArrayList(firstToken, secondToken);
 
-        return itemSessionDataSocket;
+        // when
+        String result = testObj.replaceAllTags(tokens, 0);
+
+        // then
+        assertThat(result).isEqualTo(expectedString);
     }
 
-    private ItemSessionDataSocket createItemSessionDataSocketForSecondPage() {
-        OutcomeCreator outcomeCreator = new OutcomeCreator();
-        ItemSessionDataSocket itemSessionDataSocket = mock(ItemSessionDataSocket.class);
-        VariableProviderSocket itemVariableSocketPage = mock(VariableProviderSocket.class);
+    @Test
+    public void shouldReturnContentFieldValue_whenIsFieldInfo(){
+        // given
+        int itemIndex = 5;
+        String contentFieldValue = "contentValue";
+        when(contentFieldInfo.getValue(itemIndex)).thenReturn(contentFieldValue);
+        when(firstToken.isFieldInfo()).thenReturn(true);
+        List<InfoModuleContentTokenizer.Token> tokens = Lists.newArrayList(firstToken);
 
-        when(itemVariableSocketPage.getVariableValue(TODO.toString())).thenReturn(outcomeCreator.createTodoOutcome(5));
-        when(itemVariableSocketPage.getVariableValue(DONE.toString())).thenReturn(outcomeCreator.createDoneOutcome(4));
-        when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.CHECKS)).thenReturn(outcomeCreator.createChecksOutcome(6));
-        when(itemVariableSocketPage.getVariableValue(MISTAKES.toString())).thenReturn(outcomeCreator.createMistakesOutcome(3));
-        when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.SHOW_ANSWERS)).thenReturn(outcomeCreator.createShowAnswersOutcome(2));
-        when(itemVariableSocketPage.getVariableValue(FlowActivityVariablesProcessor.RESET)).thenReturn(outcomeCreator.createResetOutcome(10));
-        when(itemSessionDataSocket.getVariableProviderSocket()).thenReturn(itemVariableSocketPage);
+        // when
+        String result = testObj.replaceAllTags(tokens, itemIndex);
 
-        return itemSessionDataSocket;
+        //then
+        assertThat(result).isEqualTo(contentFieldValue);
     }
 
-    private void assertInfo(ContentInfo info) {
-        String template = "This is %1$s.";
-        String content = String.format(template, info.getContentTag());
-        String expectedValue = String.format(template, info.getExpectedValue());
-        List<Token> allTokens = contentTokenizer.getAllTokens(content);
-        assertThat(info.getContentTag() + " page: " + info.getRefItemIndex(), interpreter.replaceAllTags(allTokens, info.getRefItemIndex()),
-                is(equalTo(expectedValue)));
+    @Test
+    public void shouldReturnConectedContentFieldValue_andTokenName_whenFirstIsFieldInfo_andSecondIsNot(){
+        // given
+        int itemIndex = 5;
+        String contentFieldValue = "contentValue";
+        String expectedValue = "contentValuesecond";
+        when(contentFieldInfo.getValue(itemIndex)).thenReturn(contentFieldValue);
+        when(firstToken.isFieldInfo()).thenReturn(true);
+        when(secondToken.isFieldInfo()).thenReturn(false);
+        List<InfoModuleContentTokenizer.Token> tokens = Lists.newArrayList(firstToken, secondToken);
+
+        // when
+        String result = testObj.replaceAllTags(tokens, itemIndex);
+
+        //then
+        assertThat(result).isEqualTo(expectedValue);
     }
-
-    private static class ContentInfo {
-
-        private final String contentTag;
-        private final String expectedValue;
-        private final int refItemIndex;
-
-        public static ContentInfo create(String content, String expectedValue, int refItemIndex) {
-            return new ContentInfo(content, expectedValue, refItemIndex);
-        }
-
-        public ContentInfo(String contentTag, String expectedValue, int refItemIndex) {
-            this.contentTag = contentTag;
-            this.expectedValue = expectedValue;
-            this.refItemIndex = refItemIndex;
-        }
-
-        public String getContentTag() {
-            return contentTag;
-        }
-
-        public int getRefItemIndex() {
-            return refItemIndex;
-        }
-
-        public String getExpectedValue() {
-            return expectedValue;
-        }
-
-    }
-
 }

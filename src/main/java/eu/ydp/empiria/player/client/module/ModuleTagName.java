@@ -1,5 +1,8 @@
 package eu.ydp.empiria.player.client.module;
 
+import com.google.gwt.xml.client.Element;
+import eu.ydp.empiria.player.client.resources.EmpiriaTagConstants;
+
 public enum ModuleTagName {
     DIV("div"),
     GROUP("group"),
@@ -9,6 +12,7 @@ public enum ModuleTagName {
     CHOICE_INTERACTION("choiceInteraction"),
     SELECTION_INTERACTION("selectionInteraction"),
     IDENTYFICATION_INTERACTION("identificationInteraction"),
+    IDENTYFICATION_MATH_INTERACTION("identificationMathInteraction"),
     TEXT_ENTRY_INTERACTION("textEntryInteraction"),
     INLINE_CHOICE_INTERACTION("inlineChoiceInteraction"),
     SIMPLE_TEXT("simpleText"),
@@ -101,7 +105,13 @@ public enum ModuleTagName {
         return returnValue;
     }
 
-    public static String getTagNameWithType(String tagName, String type) {
+    public static String getTagNameWithType(Element element) {
+        String tagName = element.getTagName();
+        String type = element.getAttribute(EmpiriaTagConstants.ATTR_TYPE);
+        return getTagNameWithType(tagName, type);
+    }
+
+    private static String getTagNameWithType(String tagName, String type) {
         String tagNameWithType = "";
         if ("gap".equals(tagName)) {
             if ("text-entry".equals(type)) {
@@ -110,6 +120,8 @@ public enum ModuleTagName {
                 tagNameWithType = MATH_GAP_INLINE_CHOICE_TYPE.toString();
             } else if ("drag".equals(type)) {
                 tagNameWithType = MATH_DRAG_GAP_TYPE.toString();
+            } else if ("identification".equals(type)) {
+                tagNameWithType = IDENTYFICATION_MATH_INTERACTION.toString();
             }
         }
         return tagNameWithType;
