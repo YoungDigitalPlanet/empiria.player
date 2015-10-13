@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.registry;
 
 import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
@@ -39,11 +40,17 @@ public class ModulesRegistry implements ModulesRegistrySocket {
     }
 
     @Override
-    public boolean isMultiViewModule(String nodeName) {
-        if (EmpiriaTagConstants.NAME_GAP.equals(nodeName)) {
-            return true;
+    public boolean isMultiViewModule(Element element) {
+        if (EmpiriaTagConstants.NAME_GAP.equals(element.getTagName())) {
+            String tagNameWithType = ModuleTagName.getTagNameWithType(element);
+            return isMultiViewModule(tagNameWithType);
         }
-        ModuleCreator currCreator = moduleCreators.get(nodeName);
+
+        return isMultiViewModule(element.getTagName());
+    }
+
+    private boolean isMultiViewModule(String tagName){
+        ModuleCreator currCreator = moduleCreators.get(tagName);
         if (currCreator != null) {
             return currCreator.isMultiViewModule();
         }
@@ -60,16 +67,16 @@ public class ModulesRegistry implements ModulesRegistrySocket {
     }
 
     @Override
-    public IModule createModule(Element node) {
-        String nodeName = node.getNodeName();
+    public IModule createModule(Element element) {
+        String nodeName = element.getNodeName();
         ModuleCreator currCreator = moduleCreators.get(nodeName);
 
-        if ((currCreator == null) && (node.hasAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
-            nodeName = ModuleTagName.getTagNameWithType(nodeName, node.getAttribute(EmpiriaTagConstants.ATTR_TYPE));
+        if ((currCreator == null) && (element.hasAttribute(EmpiriaTagConstants.ATTR_TYPE))) {
+            nodeName = ModuleTagName.getTagNameWithType(element);
             currCreator = moduleCreators.get(nodeName);
         }
 
-        ModuleCreationContext context = new ModuleCreationContext(node);
+        ModuleCreationContext context = new ModuleCreationContext(element);
         moduleScopeStack.pushContext(context);
         IModule module = currCreator.createModule();
         moduleScopeStack.pop();

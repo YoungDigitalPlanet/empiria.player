@@ -33,7 +33,7 @@ public class PagesRangeExtractor {
         return parseRange(range);
     }
 
-    private List<Integer> parseRange(String range) {
+    public List<Integer> parseRange(String range) {
         List<Integer> items = new ArrayList<Integer>();
         String[] level1 = range.split(",");
         for (int i = 0; i < level1.length; i++) {

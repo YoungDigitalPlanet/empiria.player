@@ -6,7 +6,6 @@ import eu.ydp.empiria.player.client.PlayerLoader;
 import eu.ydp.empiria.player.client.controller.Page;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngine;
 import eu.ydp.empiria.player.client.controller.multiview.PanelCache;
-import eu.ydp.empiria.player.client.gin.factory.PlayerFactory;
 import eu.ydp.empiria.player.client.gin.factory.TextTrackFactory;
 import eu.ydp.empiria.player.client.gin.module.*;
 import eu.ydp.empiria.player.client.gin.module.tutor.TutorGinModule;
@@ -22,7 +21,9 @@ import eu.ydp.gwtutil.client.gin.module.UtilGinModule;
         ExternalGinModule.class, PicturePlayerGinModule.class, MathJaxGinModule.class, AccordionGinModule.class,
         PageContentGinModule.class, MathGinModule.class, FeedbackGinModule.class, StyleGinModule.class,
         MediaGinModule.class,
-        ReportGinModule.class})
+        ReportGinModule.class,
+        IdentificationGinModule.class
+})
 public interface PlayerGinjector extends Ginjector {
 
     DeliveryEngine getDeliveryEngine();

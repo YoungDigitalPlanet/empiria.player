@@ -6,6 +6,9 @@ public interface IdentificationStyleNameConstants extends Constants {
     @DefaultStringValue("qp-identification-module")
     String QP_IDENTIFICATION_MODULE();
 
+    @DefaultStringValue("qp-identification-math-module")
+    String QP_IDENTIFICATION_MATH_MODULE();
+
     @DefaultStringValue("qp-identification-option")
     String QP_IDENTIFICATION_OPTION();
 

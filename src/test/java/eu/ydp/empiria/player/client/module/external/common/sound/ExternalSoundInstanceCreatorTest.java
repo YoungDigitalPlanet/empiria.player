@@ -54,7 +54,7 @@ public class ExternalSoundInstanceCreatorTest {
 
         // when
         testObj.createSound(src, callback, onEndCallback);
-        verify(mediaWrapperCreator).createMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
+        verify(mediaWrapperCreator).createExternalMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
         CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = argumentCaptor.getValue();
         callbackReceiver.setCallbackReturnObject(audioWrapper);
 

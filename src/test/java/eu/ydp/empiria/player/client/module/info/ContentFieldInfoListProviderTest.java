@@ -1,11 +1,7 @@
 package eu.ydp.empiria.player.client.module.info;
 
-import eu.ydp.empiria.player.client.controller.data.DataSourceDataSupplier;
-import eu.ydp.empiria.player.client.controller.session.datasockets.AssessmentSessionDataSocket;
-import eu.ydp.empiria.player.client.controller.session.datasupplier.SessionDataSupplier;
-import eu.ydp.empiria.player.client.controller.variables.ResultExtractorsFactory;
-import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.module.info.handler.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,21 +21,23 @@ public class ContentFieldInfoListProviderTest {
     @InjectMocks
     private ContentFieldInfoListProvider testObj;
     @Mock
-    private DataSourceDataSupplier dataSourceDataSupplier;
-    @Mock
-    private SessionDataSupplier sessionDataSupplier;
-    @Mock
-    private FieldValueHandlerFactory handlerFactory;
-    @Mock
     private ContentFieldInfoFactory contentFieldInfoFactory;
     @Mock
-    private AssessmentSessionDataSocket assessmentSessionDataSocket;
+    private ItemValueHandler itemValueHandler;
     @Mock
-    private VariableProviderSocket variableProviderSocket;
+    private ProviderAssessmentValueHandler assessmentValueHandler;
     @Mock
-    private ResultExtractorsFactory resultExtractorsFactory;
+    private TitleValueHandler titleValueHandler;
     @Mock
-    private ResultForPageIndexProvider resultForPageIndexProvider;
+    private ItemIndexValueHandler itemIndexValueHandler;
+    @Mock
+    private PageCountValueHandler pageCountValueHandler;
+    @Mock
+    private AssessmentResultValueHandler assessmentResultValueHandler;
+    @Mock
+    private ResultValueHandler resultValueHandler;
+    @Mock
+    private FeedbackValueHandler feedbackValueHandler;
     @Mock
     private ContentFieldInfo itemTodoContentFieldInfo;
     @Mock
@@ -79,10 +77,32 @@ public class ContentFieldInfoListProviderTest {
     @Mock
     private ContentFieldInfo itemFeedbackContentFieldInfo;
 
+    @Before
+    public void prepareMocks() {
+        when(contentFieldInfoFactory.create("item.todo", itemValueHandler)).thenReturn(itemTodoContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.done", itemValueHandler)).thenReturn(itemDoneContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.checks", itemValueHandler)).thenReturn(itemChecksContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.mistakes", itemValueHandler)).thenReturn(itemMistakesContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.show_answers", itemValueHandler)).thenReturn(itemShowAnswersContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.reset", itemValueHandler)).thenReturn(itemResetContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.title", titleValueHandler)).thenReturn(itemTitleContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.index", itemIndexValueHandler)).thenReturn(itemIndexContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.page_num", itemIndexValueHandler)).thenReturn(itemPageNumContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.page_count", pageCountValueHandler)).thenReturn(itemPageCountContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.result", resultValueHandler)).thenReturn(itemResetContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.todo", assessmentValueHandler)).thenReturn(testTodoContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.done", assessmentValueHandler)).thenReturn(testDoneContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.checks", assessmentValueHandler)).thenReturn(testChecksContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.mistakes", assessmentValueHandler)).thenReturn(testMistakesContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.show_answers", assessmentValueHandler)).thenReturn(testShowAnswersContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.reset", assessmentValueHandler)).thenReturn(testResetContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.title", titleValueHandler)).thenReturn(testTitleContentFieldInfo);
+        when(contentFieldInfoFactory.create("test.result", assessmentResultValueHandler)).thenReturn(testResultContentFieldInfo);
+        when(contentFieldInfoFactory.create("item.feedback", feedbackValueHandler)).thenReturn(itemFeedbackContentFieldInfo);
+    }
+
     @Test
     public void testGet() {
-        // given
-        prepareMocks();
         // when
         List<ContentFieldInfo> result = testObj.get();
         // then
@@ -105,52 +125,6 @@ public class ContentFieldInfoListProviderTest {
         assertTrue(result.contains(testTitleContentFieldInfo));
         assertTrue(result.contains(testResultContentFieldInfo));
         assertTrue(result.contains(itemFeedbackContentFieldInfo));
-
-    }
-
-    private void prepareMocks() {
-        when(sessionDataSupplier.getAssessmentSessionDataSocket()).thenReturn(assessmentSessionDataSocket);
-        when(assessmentSessionDataSocket.getVariableProviderSocket()).thenReturn(variableProviderSocket);
-
-        ProviderValueHandler itemValueHandler = mock(ProviderValueHandler.class);
-        ProviderAssessmentValueHandler assessmentValueHandler = mock(ProviderAssessmentValueHandler.class);
-        TitleValueHandler titleValueHandler = mock(TitleValueHandler.class);
-        ItemIndexValueHandler itemIndexValueHandler = mock(ItemIndexValueHandler.class);
-        PageCountValueHandler pageCountValueHandler = mock(PageCountValueHandler.class);
-        AssessmentResultValueHandler assessmentResultValueHandler = mock(AssessmentResultValueHandler.class);
-        ResultValueHandler resultValueHandler = mock(ResultValueHandler.class);
-        FeedbackValueHandler feedbackValueHandler = mock(FeedbackValueHandler.class);
-
-        when(handlerFactory.getProviderValueHandler(sessionDataSupplier)).thenReturn(itemValueHandler);
-        when(handlerFactory.getProviderAssessmentValueHandler(variableProviderSocket)).thenReturn(assessmentValueHandler);
-        when(handlerFactory.getTitleValueHandler(dataSourceDataSupplier)).thenReturn(titleValueHandler);
-        when(handlerFactory.getItemIndexValueHandler()).thenReturn(itemIndexValueHandler);
-        when(handlerFactory.getPageCountValueHandler(dataSourceDataSupplier)).thenReturn(pageCountValueHandler);
-        when(handlerFactory.getAssessmentResultValueHandler(variableProviderSocket)).thenReturn(assessmentResultValueHandler);
-        when(handlerFactory.getResultValueHandler(sessionDataSupplier)).thenReturn(resultValueHandler);
-        when(resultExtractorsFactory.createResultForPageIndexProvider(sessionDataSupplier)).thenReturn(resultForPageIndexProvider);
-        when(handlerFactory.getFeedbackValueHandler(resultForPageIndexProvider, dataSourceDataSupplier)).thenReturn(feedbackValueHandler);
-
-        when(contentFieldInfoFactory.create("item.todo", itemValueHandler)).thenReturn(itemTodoContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.done", itemValueHandler)).thenReturn(itemDoneContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.checks", itemValueHandler)).thenReturn(itemChecksContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.mistakes", itemValueHandler)).thenReturn(itemMistakesContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.show_answers", itemValueHandler)).thenReturn(itemShowAnswersContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.reset", itemValueHandler)).thenReturn(itemResetContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.title", titleValueHandler)).thenReturn(itemTitleContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.index", itemIndexValueHandler)).thenReturn(itemIndexContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.page_num", itemIndexValueHandler)).thenReturn(itemPageNumContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.page_count", pageCountValueHandler)).thenReturn(itemPageCountContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.result", resultValueHandler)).thenReturn(itemResetContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.todo", assessmentValueHandler)).thenReturn(testTodoContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.done", assessmentValueHandler)).thenReturn(testDoneContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.checks", assessmentValueHandler)).thenReturn(testChecksContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.mistakes", assessmentValueHandler)).thenReturn(testMistakesContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.show_answers", assessmentValueHandler)).thenReturn(testShowAnswersContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.reset", assessmentValueHandler)).thenReturn(testResetContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.title", titleValueHandler)).thenReturn(testTitleContentFieldInfo);
-        when(contentFieldInfoFactory.create("test.result", assessmentResultValueHandler)).thenReturn(testResultContentFieldInfo);
-        when(contentFieldInfoFactory.create("item.feedback", feedbackValueHandler)).thenReturn(itemFeedbackContentFieldInfo);
     }
 
 }

@@ -26,7 +26,7 @@ public class ExternalSoundInstanceCreator {
 
     public void createSound(final String audioName, final ExternalSoundInstanceCallback callback, Optional<OnEndCallback> onEndCallback) {
         String audioPath = paths.getExternalFilePath(audioName);
-        mediaWrapperCreator.createMediaWrapper(audioPath, createCallbackReceiver(audioName, callback, onEndCallback));
+        mediaWrapperCreator.createExternalMediaWrapper(audioPath, createCallbackReceiver(audioName, callback, onEndCallback));
     }
 
     private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback, final Optional<OnEndCallback> onEndCallback) {

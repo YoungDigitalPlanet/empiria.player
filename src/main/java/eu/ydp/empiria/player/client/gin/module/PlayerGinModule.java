@@ -52,10 +52,6 @@ import eu.ydp.empiria.player.client.gin.providers.*;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.ResponseModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.module.providers.XmlElementModuleScopedProvider;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.controller.item.ResponseSocket;
-import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceView;
-import eu.ydp.empiria.player.client.module.identification.view.SelectableChoiceViewImpl;
-import eu.ydp.empiria.player.client.module.info.handler.FieldValueHandlerFactory;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildView;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingChildViewImpl;
 import eu.ydp.empiria.player.client.module.labelling.view.LabellingView;
@@ -132,20 +128,19 @@ public class PlayerGinModule extends AbstractGinModule {
         install(new GinFactoryModuleBuilder().build(AssessmentReportFactory.class));
         install(new GinFactoryModuleBuilder().implement(HasTouchHandlers.class, TouchRecognition.class)
                 .build(TouchRecognitionFactory.class));
-        install(new GinFactoryModuleBuilder().build(FieldValueHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(ProcessingResultsToOutcomeMapConverterFactory.class));
         install(new GinFactoryModuleBuilder().implement(IStickieView.class, StickieView.class)
                 .implement(IStickiePresenter.class, StickiePresenter.class)
                 .build(StickieFactory.class));
         install(new GinFactoryModuleBuilder().implement(HandlerRegistration.class, TouchReservationHandler.class)
                 .build(TouchReservationFactory.class));
-        install(new GinFactoryModuleBuilder().implement(SelectableChoiceView.class, SelectableChoiceViewImpl.class).build(IdentificationModuleFactory.class));
         install(new GinFactoryModuleBuilder().build(ResultExtractorsFactory.class));
         install(new GinFactoryModuleBuilder().build(TouchHandlerFactory.class));
         install(new GinFactoryModuleBuilder().build(InlineBodyGeneratorFactory.class));
         install(new GinFactoryModuleBuilder().build(ModulesInstalatorFactory.class));
         install(new GinFactoryModuleBuilder().build(PlayerFactory.class));
         install(new GinFactoryModuleBuilder().build(AssessmentFactory.class));
+        install(new GinFactoryModuleBuilder().build(InfoModuleFactory.class));
     }
 
     @Provides
