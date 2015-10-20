@@ -17,7 +17,7 @@ public class FormattedTextPredicate implements Predicate<Element>{
     private static final String SUB = ModuleTagName.SUB.toString();
     private static final String SUP = ModuleTagName.SUP.toString();
     private static final String MATH_JAX = ModuleTagName.INLINE_MATH_JAX.toString();
-    private static final String SPAN = "span";
+    private static final String SPAN = ModuleTagName.SPAN.toString();
     private static final String END_OF_LINE = "br";
 
     private static final List<String> formatters = Arrays.asList(BOLD, ITALIC, UNDERLINE, SUB, SUP, MATH_JAX, SPAN, END_OF_LINE);
