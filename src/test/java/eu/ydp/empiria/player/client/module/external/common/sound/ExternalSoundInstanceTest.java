@@ -29,37 +29,69 @@ public class ExternalSoundInstanceTest {
     @Mock
     private MediaWrapper<Widget> mediaWrapper;
     @Mock
-    private Optional<OnEndCallback> onEndCallback;
+    private Optional<OnEndCallback> onEndCallbackOptional;
     @Mock
-    private OnEndCallback callback;
+    private Optional<OnPauseCallback> onPauseCallbackOptional;
+    @Mock
+    private OnEndCallback onEndCallback;
+    @Mock
+    private OnPauseCallback onPauseCallback;
     @Captor
     private ArgumentCaptor<MediaEventHandler> mediaEventHandlerArgumentCaptor;
 
     @Test
     public void shouldRegisterOnEndCallback() {
         // given
-        onEndCallback = Optional.of(callback);
+        onEndCallbackOptional = Optional.of(onEndCallback);
 
         // when
-        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallback, mediaWrapperController);
+        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
         verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventHandlerArgumentCaptor.capture());
         MediaEventHandler mediaEventHandler = mediaEventHandlerArgumentCaptor.getValue();
         mediaEventHandler.onMediaEvent(null);
 
         // then
-        verify(callback).onEnd();
+        verify(onEndCallback).onEnd();
     }
 
     @Test
     public void shouldNotRegisterAbsentOnEndCallback() {
         // given
-        onEndCallback = Optional.absent();
+        onEndCallbackOptional = Optional.absent();
 
         // when
-        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallback, mediaWrapperController);
+        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
 
         // then
         verify(mediaWrapperController, never()).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), isA(MediaEventHandler.class));
+    }
+
+
+    @Test
+    public void shouldRegisterOnPauseCallback() {
+        // given
+        onPauseCallbackOptional = Optional.of(onPauseCallback);
+
+        // when
+        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
+        verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_PAUSE), eq(mediaWrapper), mediaEventHandlerArgumentCaptor.capture());
+        MediaEventHandler mediaEventHandler = mediaEventHandlerArgumentCaptor.getValue();
+        mediaEventHandler.onMediaEvent(null);
+
+        // then
+        verify(onPauseCallback).onPause();
+    }
+
+    @Test
+    public void shouldNotRegisterAbsentOnPauseCallback() {
+        // given
+        onPauseCallbackOptional = Optional.absent();
+
+        // when
+        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
+
+        // then
+        verify(mediaWrapperController, never()).addHandler(eq(MediaEventTypes.ON_PAUSE), eq(mediaWrapper), isA(MediaEventHandler.class));
     }
 
     @Test

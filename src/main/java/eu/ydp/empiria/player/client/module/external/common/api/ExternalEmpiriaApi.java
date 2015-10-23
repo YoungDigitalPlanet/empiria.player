@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCallback;
 import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundInstanceCreator;
 import eu.ydp.empiria.player.client.module.external.common.sound.OnEndCallback;
+import eu.ydp.empiria.player.client.module.external.common.sound.OnPauseCallback;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
 
 @JsType
@@ -15,7 +16,7 @@ public class ExternalEmpiriaApi {
     @ModuleScoped
     private ExternalSoundInstanceCreator soundInstanceCreator;
 
-    public void initSound(String src, ExternalSoundInstanceCallback callback, OnEndCallback onEndCallback) {
-        soundInstanceCreator.createSound(src, callback, Optional.fromNullable(onEndCallback));
+    public void initSound(String src, ExternalSoundInstanceCallback callback, OnEndCallback onEndCallback, OnPauseCallback onPauseCallback) {
+        soundInstanceCreator.createSound(src, callback, Optional.fromNullable(onEndCallback), Optional.fromNullable(onPauseCallback));
     }
 }
