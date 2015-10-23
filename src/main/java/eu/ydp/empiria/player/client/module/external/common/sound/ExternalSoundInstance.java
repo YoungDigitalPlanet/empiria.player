@@ -23,7 +23,7 @@ public class ExternalSoundInstance {
         this.audioWrapper = audioWrapper;
         this.mediaWrapperController = mediaWrapperController;
         registerOnEndCallback(audioWrapper, onEndCallback);
-        registerOnStopCallback(audioWrapper, onPauseCallback);
+        registerOnPauseCallback(audioWrapper, onPauseCallback);
     }
 
     private void registerOnEndCallback(MediaWrapper<Widget> audioWrapper, final Optional<OnEndCallback> onEndCallback) {
@@ -37,7 +37,7 @@ public class ExternalSoundInstance {
         }
     }
 
-    private void registerOnStopCallback(MediaWrapper<Widget> audioWrapper, final Optional<OnPauseCallback> onPauseCallback) {
+    private void registerOnPauseCallback(MediaWrapper<Widget> audioWrapper, final Optional<OnPauseCallback> onPauseCallback) {
         if (onPauseCallback.isPresent()) {
             mediaWrapperController.addHandler(MediaEventTypes.ON_PAUSE, audioWrapper, new MediaEventHandler() {
                 @Override
