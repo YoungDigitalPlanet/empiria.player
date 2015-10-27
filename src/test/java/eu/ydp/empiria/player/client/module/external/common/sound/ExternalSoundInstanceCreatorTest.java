@@ -40,11 +40,12 @@ public class ExternalSoundInstanceCreatorTest {
     @Captor
     private ArgumentCaptor<CallbackReceiver<MediaWrapper<Widget>>> argumentCaptor;
     private Optional<OnEndCallback> onEndCallback = Optional.absent();
+    private Optional<OnPauseCallback> onPauseCallback = Optional.absent();
 
     @Before
     public void init() {
         when(paths.getExternalFilePath("ok.mp3")).thenReturn("external/ok.mp3");
-        when(moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback)).thenReturn(soundInstance);
+        when(moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback, onPauseCallback)).thenReturn(soundInstance);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class ExternalSoundInstanceCreatorTest {
         String src = "ok.mp3";
 
         // when
-        testObj.createSound(src, callback, onEndCallback);
+        testObj.createSound(src, callback, onEndCallback, onPauseCallback);
         verify(mediaWrapperCreator).createExternalMediaWrapper(eq("external/ok.mp3"), argumentCaptor.capture());
         CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = argumentCaptor.getValue();
         callbackReceiver.setCallbackReturnObject(audioWrapper);

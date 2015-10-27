@@ -24,16 +24,16 @@ public class ExternalSoundInstanceCreator {
         this.moduleFactory = moduleFactory;
     }
 
-    public void createSound(final String audioName, final ExternalSoundInstanceCallback callback, Optional<OnEndCallback> onEndCallback) {
+    public void createSound(final String audioName, final ExternalSoundInstanceCallback callback, Optional<OnEndCallback> onEndCallback, Optional<OnPauseCallback> onPauseCallback) {
         String audioPath = paths.getExternalFilePath(audioName);
-        mediaWrapperCreator.createExternalMediaWrapper(audioPath, createCallbackReceiver(audioName, callback, onEndCallback));
+        mediaWrapperCreator.createExternalMediaWrapper(audioPath, createCallbackReceiver(audioName, callback, onEndCallback, onPauseCallback));
     }
 
-    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback, final Optional<OnEndCallback> onEndCallback) {
+    private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audioName, final ExternalSoundInstanceCallback callback, final Optional<OnEndCallback> onEndCallback, final Optional<OnPauseCallback> onPauseCallback) {
         return new CallbackReceiver<MediaWrapper<Widget>>() {
             @Override
             public void setCallbackReturnObject(MediaWrapper<Widget> audioWrapper) {
-                ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback);
+                ExternalSoundInstance soundInstance = moduleFactory.getExternalSoundInstance(audioWrapper, onEndCallback, onPauseCallback);
                 callback.onSoundCreated(soundInstance, audioName);
             }
         };
