@@ -6,46 +6,47 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.MediaWrapperController;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ExternalSoundInstanceTest {
 
-    @InjectMocks
     private ExternalSoundInstance testObj;
     @Mock
     private MediaWrapperController mediaWrapperController;
     @Mock
     private MediaWrapper<Widget> mediaWrapper;
-    @Mock
-    private Optional<OnEndCallback> onEndCallbackOptional;
-    @Mock
-    private Optional<OnPauseCallback> onPauseCallbackOptional;
+    @Captor
+    private ArgumentCaptor<MediaEventHandler> mediaEventHandlerArgumentCaptor;
     @Mock
     private OnEndCallback onEndCallback;
     @Mock
     private OnPauseCallback onPauseCallback;
-    @Captor
-    private ArgumentCaptor<MediaEventHandler> mediaEventHandlerArgumentCaptor;
+
+    private Optional<OnEndCallback> onEndCallbackOptional;
+
+    private Optional<OnPauseCallback> onPauseCallbackOptional;
+
+    @Before
+    public void before() {
+        onEndCallbackOptional = Optional.of(onEndCallback);
+        onPauseCallbackOptional = Optional.of(onPauseCallback);
+        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
+    }
 
     @Test
     public void shouldRegisterOnEndCallback() {
-        // given
-        onEndCallbackOptional = Optional.of(onEndCallback);
-
         // when
-        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
         verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_END), eq(mediaWrapper), mediaEventHandlerArgumentCaptor.capture());
         MediaEventHandler mediaEventHandler = mediaEventHandlerArgumentCaptor.getValue();
         mediaEventHandler.onMediaEvent(null);
@@ -58,6 +59,7 @@ public class ExternalSoundInstanceTest {
     public void shouldNotRegisterAbsentOnEndCallback() {
         // given
         onEndCallbackOptional = Optional.absent();
+        mediaWrapperController = mock(MediaWrapperController.class);
 
         // when
         testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
@@ -69,11 +71,7 @@ public class ExternalSoundInstanceTest {
 
     @Test
     public void shouldRegisterOnPauseCallback() {
-        // given
-        onPauseCallbackOptional = Optional.of(onPauseCallback);
-
         // when
-        testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
         verify(mediaWrapperController).addHandler(eq(MediaEventTypes.ON_PAUSE), eq(mediaWrapper), mediaEventHandlerArgumentCaptor.capture());
         MediaEventHandler mediaEventHandler = mediaEventHandlerArgumentCaptor.getValue();
         mediaEventHandler.onMediaEvent(null);
@@ -86,6 +84,7 @@ public class ExternalSoundInstanceTest {
     public void shouldNotRegisterAbsentOnPauseCallback() {
         // given
         onPauseCallbackOptional = Optional.absent();
+        mediaWrapperController = mock(MediaWrapperController.class);
 
         // when
         testObj = new ExternalSoundInstance(mediaWrapper, onEndCallbackOptional, onPauseCallbackOptional, mediaWrapperController);
