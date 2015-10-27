@@ -47,15 +47,4 @@ public class MathJaxNative {
             mathJax.Hub.yRerenderElement(divId);
         }
     }-*/;
-
-    public void typesetMathElement() {
-        typesetMathElementNative();
-    }
-
-    private native void typesetMathElementNative() /*-{
-        var mathJax = $wnd.MathJax;
-        if (mathJax && typeof(mathJax.Hub.yTypeset) === 'function') {
-            mathJax.Hub.yTypeset();
-        }
-    }-*/;
 }

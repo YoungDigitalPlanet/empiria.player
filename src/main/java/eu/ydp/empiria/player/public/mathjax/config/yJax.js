@@ -41,10 +41,6 @@ MathJax.Hub.yRerenderElement = function (divId) {
     MathJax.Hub.Queue(["Rerender", jaxElement]);
 };
 
-MathJax.Hub.yTypeset = function () {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-};
-
 MathJax.Hub.Config({
     extensions: ["Gap.js"],
     jax: ["input/MathML", "output/" + renderer],

@@ -20,10 +20,9 @@ import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
 import java.util.Map;
@@ -49,10 +48,13 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
         mainPanel.setWidgetPosition(canvas.asWidget(), 0, 0);
         mainPanel.setWidgetPosition(textPanel, 0, 0);
     }
+
     @Inject
     private PageScopeFactory pageScopeFactory;
     @Inject
     private EventsBus eventsBus;
+    @Inject
+    MathJaxNative mathJaxNative;
 
     @UiField
     protected AbsolutePanel mainPanel;
@@ -117,6 +119,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
                         textPanel.add(parseText(text, anchor, moduleSocket));
                     }
                 }
+            mathJaxNative.renderMath();
             }
         });
         image.setUrl(element.getAttribute("src"));
@@ -203,7 +206,6 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
         }
 
         alignWidget(panel, anchor);
-        eventsBus.fireAsyncEvent(new PlayerEvent(PlayerEventTypes.PICTURE_LABEL_RENDERED), pageScopeFactory.getCurrentPageScope());
         return panel;
     }
 
