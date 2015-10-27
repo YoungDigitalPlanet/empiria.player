@@ -29,4 +29,8 @@ public class MathJaxPresenter {
     public void rerenderMathElement(String moduleId){
         mathJaxNative.rerenderMathElement(moduleId);
     }
+
+    public void typesetMathElement(){
+        mathJaxNative.typesetMathElement();
+    }
 }

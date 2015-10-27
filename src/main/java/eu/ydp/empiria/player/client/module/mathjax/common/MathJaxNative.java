@@ -37,14 +37,25 @@ public class MathJaxNative {
         }
     }-*/;
 
-	public void rerenderMathElement(String divId) {
-		rerenderMathElementNative(divId);
-	}
+    public void rerenderMathElement(String divId) {
+        rerenderMathElementNative(divId);
+    }
 
-	private native void rerenderMathElementNative(String divId) /*-{
-		var mathJax = $wnd.MathJax;
-		if (mathJax && typeof(mathJax.Hub.yRerenderElement) === 'function') {
-			mathJax.Hub.yRerenderElement(divId);
-		}
-	}-*/;
+    private native void rerenderMathElementNative(String divId) /*-{
+        var mathJax = $wnd.MathJax;
+        if (mathJax && typeof(mathJax.Hub.yRerenderElement) === 'function') {
+            mathJax.Hub.yRerenderElement(divId);
+        }
+    }-*/;
+
+    public void typesetMathElement() {
+        typesetMathElementNative();
+    }
+
+    private native void typesetMathElementNative() /*-{
+        var mathJax = $wnd.MathJax;
+        if (mathJax && typeof(mathJax.Hub.yTypeset) === 'function') {
+            mathJax.Hub.yTypeset();
+        }
+    }-*/;
 }

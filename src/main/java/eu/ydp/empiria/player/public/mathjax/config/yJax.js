@@ -36,9 +36,13 @@ MathJax.Hub.yProcessElements = function (callback) {
     MathJax.Hub.yElements = [];
 };
 
-MathJax.Hub.yRerenderElement = function(divId) {
-	var jaxElement = MathJax.Hub.getAllJax(divId)[0];
-	MathJax.Hub.Queue(["Rerender", jaxElement]);
+MathJax.Hub.yRerenderElement = function (divId) {
+    var jaxElement = MathJax.Hub.getAllJax(divId)[0];
+    MathJax.Hub.Queue(["Rerender", jaxElement]);
+};
+
+MathJax.Hub.yTypeset = function () {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 };
 
 MathJax.Hub.Config({
