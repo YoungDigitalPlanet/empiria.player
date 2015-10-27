@@ -39,6 +39,10 @@
     z-index: 21044 !important;
 }
 
+.mfp-content .mfp-figure:after {
+    background-color: #FFF;
+}
+
 button.mfp-close, button.mfp-arrow {
     z-index: 21046 !important;
 }
