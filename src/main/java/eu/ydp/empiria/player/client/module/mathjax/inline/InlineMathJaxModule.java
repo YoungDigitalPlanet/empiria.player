@@ -9,7 +9,7 @@ import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxPresenter;
 import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxView;
 import eu.ydp.empiria.player.client.module.mathjax.inline.view.InlineMathJax;
 
-public class InlineMathJaxModule extends InlineModuleBase{
+public class InlineMathJaxModule extends InlineModuleBase {
 
     private MathJaxPresenter presenter;
 
