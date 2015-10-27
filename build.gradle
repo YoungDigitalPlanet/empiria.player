@@ -202,6 +202,13 @@ task compileDev(dependsOn: [classes], type: GWTCompileTask) {
     gwtArgs['-XjsInteropMode'] = 'JS'
 }
 
+task compileDevPretty(dependsOn: [classes], type: GWTCompileTask) {
+    module = 'eu.ydp.empiria.player.Player_dev'
+    buildDir = empiriaWar
+    gwtArgs['-XjsInteropMode'] = 'JS'
+    gwtArgs['-style'] = 'PRETTY'
+}
+
 task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
     module = 'eu.ydp.empiria.player.Player_webkit'
     buildDir = empiriaWebkitWar
