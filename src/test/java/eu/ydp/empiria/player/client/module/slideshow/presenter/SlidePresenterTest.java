@@ -5,6 +5,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.peterfranza.gwt.jaxb.client.parser.utils.XMLContent;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideBean;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideNarrationBean;
 import eu.ydp.empiria.player.client.module.slideshow.structure.SlideTitleBean;
@@ -42,6 +43,8 @@ public class SlidePresenterTest {
     private XMLContent narrationXmlContent;
     @Mock
     private Widget narrationView;
+    @Mock
+    private MathJaxNative mathJaxNative;
 
     private final String src = "src";
     private SlideBean slide;
@@ -49,6 +52,9 @@ public class SlidePresenterTest {
     @Before
     public void init() {
         slide = new SlideBean();
+        SourceBean sourceBean = new SourceBean();
+        sourceBean.setSrc(src);
+        slide.setSource(sourceBean);
         testObj.setInlineBodyGenerator(inlineBodyGeneratorSocket);
     }
 
@@ -60,13 +66,8 @@ public class SlidePresenterTest {
         slideNarration.setNarrationValue(narrationXmlContent);
 
         when(inlineBodyGeneratorSocket.generateInlineBody(narrationElement)).thenReturn(narrationView);
-        String src = "src";
-
-        SourceBean srcBean = new SourceBean();
-        srcBean.setSrc(src);
 
         slide.setNarration(slideNarration);
-        slide.setSource(srcBean);
 
         // when
         testObj.replaceViewData(slide);
@@ -104,11 +105,6 @@ public class SlidePresenterTest {
 
     @Test
     public void shouldReplaceImageSource() {
-        // given
-        SourceBean sourceBean = new SourceBean();
-        sourceBean.setSrc(src);
-        slide.setSource(sourceBean);
-
         // when
         testObj.replaceViewData(slide);
 
@@ -117,6 +113,15 @@ public class SlidePresenterTest {
         verify(view).setImage(src);
         verify(view, never()).setNarration(any(Widget.class));
         verify(view, never()).setNarration(any(Widget.class));
+    }
+
+    @Test
+    public void shouldRenderMathAfterReplaceViewData() {
+        // when
+        testObj.replaceViewData(slide);
+
+        // then
+        verify(mathJaxNative, times(1)).renderMath();
     }
 
     private void verifyClearText() {
