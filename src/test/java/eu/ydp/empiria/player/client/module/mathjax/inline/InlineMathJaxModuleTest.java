@@ -42,5 +42,4 @@ public class InlineMathJaxModuleTest {
         // then
         verify(presenter).setMmlScript(script);
     }
-
 }
