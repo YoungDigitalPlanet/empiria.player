@@ -19,6 +19,7 @@ import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.components.CanvasArrow;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
+import eu.ydp.empiria.player.client.module.mathjax.common.MathJaxNative;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
@@ -45,6 +46,9 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
         mainPanel.setWidgetPosition(canvas.asWidget(), 0, 0);
         mainPanel.setWidgetPosition(textPanel, 0, 0);
     }
+
+    @Inject
+    MathJaxNative mathJaxNative;
 
     @UiField
     protected AbsolutePanel mainPanel;
@@ -109,6 +113,7 @@ public class LabelledImgContent extends Composite implements ImgContent {// NOPM
                         textPanel.add(parseText(text, anchor, moduleSocket));
                     }
                 }
+                mathJaxNative.renderMath();
             }
         });
         image.setUrl(element.getAttribute("src"));
