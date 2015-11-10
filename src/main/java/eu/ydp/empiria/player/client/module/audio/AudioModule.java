@@ -85,8 +85,8 @@ public class AudioModule extends InlineModuleBase {
            mediaWrapperCreator.createMediaWrapper(src, new CallbackReceiver <MediaWrapper<?>>() {
             @Override
                 public void setCallbackReturnObject(MediaWrapper<?> mediaWrapper) {
-                parseTemplate(defaultTemplate, objectModuleView.getContainerPanel(), mediaWrapper);
-                    eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
+                    parseTemplate(defaultTemplate, objectModuleView.getContainerPanel(), mediaWrapper);
+//                    eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
                 }
             });
 
