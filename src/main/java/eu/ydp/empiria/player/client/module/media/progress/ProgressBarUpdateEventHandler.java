@@ -5,6 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.view.ConsoleLog;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,8 +30,11 @@ public class ProgressBarUpdateEventHandler implements MediaEventHandler {
 
     @Override
     public void onMediaEvent(MediaEvent event) {
+//        ConsoleLog.consoleLog("on media event progress bar event handler: "+event);
         if (progressBar.isMediaReady() && !progressBar.isPressed()) {
             double currentTime = progressBar.getMediaWrapper().getCurrentTime();
+//            ConsoleLog.consoleLog("currentTime: "+currentTime);
+//            ConsoleLog.consoleLog("getMediaWrapper progress update: "+progressBar.getMediaWrapper());
 
             if (progressUpdateLogic.isReadyToUpdate(currentTime, lastTime) || fastUpdateEvents.contains(event.getType())) {
                 lastTime = (int) progressBar.getMediaWrapper().getCurrentTime();

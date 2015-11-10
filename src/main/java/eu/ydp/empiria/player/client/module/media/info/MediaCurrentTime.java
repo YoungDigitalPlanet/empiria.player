@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.module.media.progress.ProgressUpdateLogic;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
+import eu.ydp.empiria.player.client.view.ConsoleLog;
 
 /**
  * Widget wyswietlajacy pozycje w skaznika w pliku w postaci czasu. Dokladnosc 1
@@ -32,6 +33,7 @@ public class MediaCurrentTime extends AbstractMediaTime {
 
             @Override
             public void onMediaEvent(MediaEvent event) {
+//                ConsoleLog.consoleLog("progressbar: "+event);
                 double currentTime = getMediaWrapper().getCurrentTime();
                 if (progressUpdateLogic.isReadyToUpdate(currentTime, lastTime)) {
                     lastTime = (int) currentTime;

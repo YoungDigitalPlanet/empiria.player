@@ -31,6 +31,11 @@ public class MediaWrapperCreator {
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
     }
 
+    public void createMediaWrapper(Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
+        BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, true);
+        eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));
+    }
+
     public void createSimulationMediaWrapper(String sourcesKey, Map<String, String> sourcesWithTypes, CallbackReceiver callbackRecevier) {
         BaseMediaConfiguration bmc = new BaseMediaConfiguration(sourcesWithTypes, defaultMediaEventControllerProvider.get());
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackRecevier));

@@ -1,31 +1,19 @@
 package eu.ydp.empiria.player.client.module.media.button;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.media.client.MediaBase;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.ConsoleLog;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
-import eu.ydp.empiria.player.client.media.MediaWrapperCreator;
-import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
-import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.scope.CurrentPageScope;
 
-public abstract class AbstractPlayMediaButton extends AbstractMediaButton implements PlayerEventHandler {
+public abstract class AbstractPlayMediaButton extends AbstractMediaButton {
 
     @Inject
     protected EventsBus eventsBus;
     @Inject
     private PageScopeFactory pageScopeFactory;
-    private boolean shouldCreateNewWrapper;
-    private MediaEventHandler handler;
-    private CurrentPageScope scope;
 
     public AbstractPlayMediaButton(String baseStyleName) {
         super(baseStyleName);
@@ -37,13 +25,11 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton implem
 
     @Override
     public void init() {
-        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), this);
         super.init();
         if (initButtonStyleChangeHandlersCondition()) {
             initButtonStyleChangeHandlers();
         }
     }
-
 
     @Override
     public boolean isSupported() {
@@ -51,30 +37,13 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton implem
     }
 
     protected void initButtonStyleChangeHandlers() {
-        handler = createButtonActivationHandler();
-        scope = createCurrentPageScope();
+        MediaEventHandler handler = createButtonActivationHandler();
+        CurrentPageScope scope = createCurrentPageScope();
         addMediaEventHandlers(handler, scope);
     }
 
     protected CurrentPageScope createCurrentPageScope() {
         return pageScopeFactory.getCurrentPageScope();
-    }
-
-
-    public void setMediaDescriptor(MediaWrapper<?> mw) {
-        ConsoleLog.consoleLog(mw);
-        if (mw != null) {
-            MediaWrapper<MediaBase> mediaWrapper = (MediaWrapper<MediaBase>) mw;
-            String src = mediaWrapper.getMediaObject().getElement().getFirstChildElement().getAttribute("src");
-            mediaWrapperCreator.createMediaWrapper(src, new CallbackReceiver<MediaWrapper<?>>() {
-                @Override
-                public void setCallbackReturnObject(MediaWrapper<?> mw) {
-                    handler = createButtonActivationHandler();
-                    AbstractPlayMediaButton.super.setMediaDescriptor(mw);
-                    addMediaEventHandlers(handler, scope);
-                }
-            });
-        }
     }
 
     @Override
@@ -102,17 +71,5 @@ public abstract class AbstractPlayMediaButton extends AbstractMediaButton implem
                 changeStyleForClick();
             }
         };
-    }
-
-    @Inject
-    private MediaWrapperCreator mediaWrapperCreator;
-
-
-    @Override
-    public void onPlayerEvent(PlayerEvent playerEvent) {
-
-        MediaWrapper<MediaBase> mediaWrapper = (MediaWrapper<MediaBase>) super.getMediaWrapper();
-        shouldCreateNewWrapper = true;
-
     }
 }

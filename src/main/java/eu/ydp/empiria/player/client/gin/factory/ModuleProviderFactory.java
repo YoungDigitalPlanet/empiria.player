@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.modules.Reset
 import eu.ydp.empiria.player.client.controller.extensions.internal.modules.ShowAnswersButtonModuleConnectorExtension;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.DefaultMediaProcessorExtension;
 import eu.ydp.empiria.player.client.controller.feedback.processor.ImageActionProcessor;
+import eu.ydp.empiria.player.client.module.audio.AudioModule;
 import eu.ydp.empiria.player.client.module.core.base.InlineContainerModule;
 import eu.ydp.empiria.player.client.controller.feedback.processor.TextActionProcessor;
 import eu.ydp.empiria.player.client.module.accordion.AccordionModule;
@@ -164,6 +165,8 @@ public class ModuleProviderFactory {
     private Provider<ProgressBonusModule> progressBonusModule;
     @Inject
     private Provider<VideoModule> videoModule;
+    @Inject
+    private Provider<AudioModule> audioModule;
     @Inject
     private Provider<DictionaryModule> dictionaryModule;
     @Inject
@@ -377,6 +380,10 @@ public class ModuleProviderFactory {
 
     public Provider<VideoModule> getVideoModule() {
         return videoModule;
+    }
+
+    public Provider<AudioModule> getAudioModule(){
+        return audioModule;
     }
 
     public Provider<DictionaryModule> getDictionaryModule() {
