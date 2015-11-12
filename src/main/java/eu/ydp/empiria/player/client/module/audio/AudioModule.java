@@ -14,13 +14,11 @@ import eu.ydp.empiria.player.client.module.core.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.ObjectElementReader;
 import eu.ydp.empiria.player.client.module.object.ObjectModuleView;
-import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
+import eu.ydp.empiria.player.client.module.object.template.AudioTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
-import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.gwtutil.client.util.MediaChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
@@ -44,12 +42,10 @@ public class AudioModule extends InlineModuleBase {
     @Inject
     private ObjectModuleView objectModuleView;
     @Inject
-    private ObjectTemplateParser parser;
+    private AudioTemplateParser parser;
 
     private Widget moduleView = null;
     private ObjectElementReader elementReader = new ObjectElementReader();
-
-
 
     @Override
     protected void initModule(Element element) {
@@ -78,19 +74,13 @@ public class AudioModule extends InlineModuleBase {
             if (cls != null && !"".equals(cls)) {
                 objectModuleView.getContainerPanel().addStyleName(cls);
             }
-
             Map<String, String> src = SourceUtil.getSource(element, "audio");
-
-
-           mediaWrapperCreator.createMediaWrapper(src, new CallbackReceiver <MediaWrapper<?>>() {
-            @Override
+            mediaWrapperCreator.createMediaWrapper(src, new CallbackReceiver<MediaWrapper<?>>() {
+                @Override
                 public void setCallbackReturnObject(MediaWrapper<?> mediaWrapper) {
                     parseTemplate(defaultTemplate, objectModuleView.getContainerPanel(), mediaWrapper);
-//                    eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
                 }
             });
-
-
             this.moduleView = objectModuleView;
         }
     }
@@ -102,6 +92,6 @@ public class AudioModule extends InlineModuleBase {
 
     @Override
     public Widget getView() {
-            return moduleView;
-        }
+        return moduleView;
+    }
 }

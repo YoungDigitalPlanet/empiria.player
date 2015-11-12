@@ -1,29 +1,21 @@
 package eu.ydp.empiria.player.client.module.object;
 
-import com.google.gwt.media.client.Audio;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
-import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
-import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.core.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
-import eu.ydp.gwtutil.client.util.MediaChecker;
-import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import java.util.Map;
 
@@ -43,13 +35,7 @@ public class ObjectModule extends InlineModuleBase {
     @Inject
     private ObjectTemplateParser parser;
     @Inject
-    private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
-    @Inject
-    private Provider<FlashAudioPlayerModule> flashAudioPlayerModuleProvider;
-    @Inject
     private StyleSocket styleSocket;
-    @Inject
-    private MediaChecker mediaChecker;
 
     private ObjectElementReader elementReader = new ObjectElementReader();
 
@@ -82,19 +68,6 @@ public class ObjectModule extends InlineModuleBase {
         Map<String, String> styles = styleSocket.getStyles(element);
         String playerSkin = styles.get("-player-" + type + "-skin");
 
-        if ("audioPlayer".equals(element.getTagName()) && ((defaultTemplate == null && !"native".equals(playerSkin)) || ("old".equals(playerSkin)))) {
-            Map<String, String> sources = getSource(element, type);
-            AudioPlayerModule player;
-
-            if (((!mediaChecker.isHtml5Mp3Supported() && !SourceUtil.containsOgg(sources)) || !Audio.isSupported()) && UserAgentChecker.isLocal()) {
-                player = flashAudioPlayerModuleProvider.get();
-            } else {
-                player = defaultAudioPlayerModuleProvider.get();
-            }
-
-            player.initModule(element, getModuleSocket(), eventsBus);
-            this.moduleView = player.getView();
-        } else {
             int width = elementReader.getWidthOrDefault(element, DEFAULT_WIDTH);
             int height = elementReader.getHeightOrDefault(element, DEFAULT_HEIGHT);
 
@@ -141,6 +114,6 @@ public class ObjectModule extends InlineModuleBase {
                 }
             }
             this.moduleView = moduleView;
-        }
+
     }
 }

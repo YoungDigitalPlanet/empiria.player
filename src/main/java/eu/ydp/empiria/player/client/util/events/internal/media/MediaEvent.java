@@ -3,9 +3,8 @@ package eu.ydp.empiria.player.client.util.events.internal.media;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.AbstractEvent;
-import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.EventType;
-import eu.ydp.empiria.player.client.view.ConsoleLog;
+import eu.ydp.empiria.player.client.util.events.internal.EventTypes;
 
 public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes> {
     public static EventTypes<MediaEventHandler, MediaEventTypes> types = new EventTypes<MediaEventHandler, MediaEventTypes>();
@@ -58,7 +57,6 @@ public class MediaEvent extends AbstractEvent<MediaEventHandler, MediaEventTypes
 
     @Override
     public void dispatch(MediaEventHandler handler) {
-        ConsoleLog.consoleLog("Media event: "+this);
         handler.onMediaEvent(this);
     }
 
