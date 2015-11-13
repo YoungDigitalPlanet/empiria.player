@@ -69,7 +69,7 @@ public class MediaWrapperCreatorJUnitTest {
     @Test
     public void shouldCreateDefaultMediaWrapper() {
         // when
-        testObj.createMediaWrapper(sourcesKey, sourcesWithTypes, callbackReceiver);
+        testObj.createMediaWrapper(sourcesWithTypes, callbackReceiver);
 
         // then
         verify(eventsBus).fireEvent(playerEventCaptor.capture());
