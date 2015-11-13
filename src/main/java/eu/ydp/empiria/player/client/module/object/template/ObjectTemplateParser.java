@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.object.template;
 
-import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
@@ -18,36 +17,19 @@ import eu.ydp.empiria.player.client.module.media.button.VideoFullScreenMediaButt
 import eu.ydp.empiria.player.client.util.AbstractTemplateParser;
 import eu.ydp.gwtutil.client.xml.XMLUtils;
 
-import java.util.Set;
-
 public class ObjectTemplateParser extends AbstractTemplateParser {
     private Element fullScreenTemplate;
 
-    private static final Set<String> CONTROLLERS = Sets.newHashSet();
     private MediaWrapper<?> mediaWrapper;
     private MediaWrapper<?> fullScreenMediaWrapper;
 
     @Inject
     protected MediaControllerFactory factory;
 
-    private boolean fullScreen = false;
+    @Inject
+    private Controllers controllers;
 
-    public ObjectTemplateParser() {
-        if (CONTROLLERS.isEmpty()) {
-            CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_VOLUME_BAR.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_TOTAL_TIME.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_TEXT_TRACK.tagName());
-            CONTROLLERS.add(ModuleTagName.MEDIA_SCREEN.tagName());
-        }
-    }
+    private boolean fullScreen = false;
 
     protected Widget getMediaObject() {
         Widget mediaObjectWidget;
@@ -142,7 +124,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected boolean isModuleSupported(String moduleName) {
-        return CONTROLLERS.contains(moduleName);
+        return controllers.getControllers().contains(moduleName);
     }
 
     public void setFullScreenTemplate(Element fullScreenTemplate) {
