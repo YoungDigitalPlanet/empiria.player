@@ -26,7 +26,7 @@ public class AudioTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected boolean isModuleSupported(String moduleName) {
-        return controllers.getControllers().contains(moduleName);
+        return controllers.contains(moduleName);
     }
 
     public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {

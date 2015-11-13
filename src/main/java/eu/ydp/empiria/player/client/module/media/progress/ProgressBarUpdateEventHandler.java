@@ -31,6 +31,7 @@ public class ProgressBarUpdateEventHandler implements MediaEventHandler {
     public void onMediaEvent(MediaEvent event) {
         if (progressBar.isMediaReady() && !progressBar.isPressed()) {
             double currentTime = progressBar.getMediaWrapper().getCurrentTime();
+
             if (progressUpdateLogic.isReadyToUpdate(currentTime, lastTime) || fastUpdateEvents.contains(event.getType())) {
                 lastTime = (int) progressBar.getMediaWrapper().getCurrentTime();
                 double steep = progressBar.getScrollWidth() / progressBar.getMediaWrapper().getDuration();

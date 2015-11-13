@@ -29,7 +29,7 @@ public class Controllers {
         }
     }
 
-    public Set<String> getControllers() {
-        return controllers;
+    public boolean contains(Object object){
+        return controllers.contains(object);
     }
 }

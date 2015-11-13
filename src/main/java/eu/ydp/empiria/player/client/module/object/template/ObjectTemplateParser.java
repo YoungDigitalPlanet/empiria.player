@@ -124,7 +124,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected boolean isModuleSupported(String moduleName) {
-        return controllers.getControllers().contains(moduleName);
+        return controllers.contains(moduleName);
     }
 
     public void setFullScreenTemplate(Element fullScreenTemplate) {
