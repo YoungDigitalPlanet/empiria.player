@@ -8,12 +8,12 @@ import eu.ydp.empiria.player.client.module.ModuleTagName;
 import java.util.Set;
 
 @Singleton
-public class Controllers {
+public class TemplateControllers {
 
     private Set<String> controllers = Sets.newHashSet();
 
     @Inject
-    public Controllers() {
+    public TemplateControllers() {
         if (controllers.isEmpty()) {
             controllers.add(ModuleTagName.MEDIA_PLAY_PAUSE_BUTTON.tagName());
             controllers.add(ModuleTagName.MEDIA_PLAY_STOP_BUTTON.tagName());
@@ -29,7 +29,7 @@ public class Controllers {
         }
     }
 
-    public boolean contains(Object object){
+    public boolean isControllerSupported(Object object){
         return controllers.contains(object);
     }
 }

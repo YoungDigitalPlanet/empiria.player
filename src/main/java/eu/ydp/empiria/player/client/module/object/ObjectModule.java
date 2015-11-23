@@ -76,43 +76,52 @@ public class ObjectModule extends InlineModuleBase {
         final MediaWrapperHandler callbackHandler = new MediaWrapperHandler(this);
         final String narrationText = elementReader.getNarrationText(element);
         BaseMediaConfiguration bmc = new BaseMediaConfiguration(getSource(element, type), MediaType.valueOf(type.toUpperCase()), poster, height, width,
-                defaultTemplate != null && !"native".equals(playerSkin), fullScreenTemplate != null, narrationText);
+                !isNull(defaultTemplate) && !"native".equals(playerSkin), !isNull(fullScreenTemplate), narrationText);
 
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
 
         ObjectModuleView moduleView = new ObjectModuleView();
         String cls = element.getAttribute("class");
-        if (cls != null && !"".equals(cls)) {
+        if (!isNull(cls) && !"".equals(cls)) {
             moduleView.getContainerPanel().addStyleName(cls);
         }
 
-        if (widget != null) {
-            if (defaultTemplate == null) {
+        if (!isNull(widget)) {
+            if (isNull(defaultTemplate)) {
                 moduleView.getContainerPanel().add(widget);
             } else {
                 parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
             }
         }
 
-        if (mediaWrapper != null) {
-            eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
-        }
+        if (!isNull(mediaWrapper)) eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
 
-        NodeList titleNodes = element.getElementsByTagName("title");
-        if (titleNodes.getLength() > 0) {
-            Widget titleWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(titleNodes.item(0));
-            if (titleWidget != null) {
-                moduleView.setTitleWidget(titleWidget);
-            }
-        }
+        Widget titleWidget = getWidgetFromNodeList(element.getElementsByTagName("title"));
+        if(!isNull(titleWidget)) moduleView.setTitleWidget(titleWidget);
 
-        NodeList descriptionNodes = element.getElementsByTagName("description");
-        if (descriptionNodes.getLength() > 0) {
-            Widget descriptionWidget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(descriptionNodes.item(0));
-            if (descriptionWidget != null) {
-                moduleView.getDescriptionPanel().add(descriptionWidget);
-            }
-        }
+        Widget descriptionWidget = getWidgetFromNodeList(element.getElementsByTagName("description"));
+        if(!isNull(descriptionWidget)) moduleView.getDescriptionPanel().add(descriptionWidget);
+
+
         this.moduleView = moduleView;
     }
+
+    private Widget getWidgetFromNodeList (NodeList nodes){
+        Widget widget = null;
+        if(nodes.getLength() > 0){
+            widget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(nodes.item(0));
+            if (!isNull(widget)) {
+                return widget;
+            }
+        }
+        return widget;
+    }
+
+    private boolean isNull(Object object){
+        if(object == null){
+            return true;
+        }
+        return false;
+    }
+
 }

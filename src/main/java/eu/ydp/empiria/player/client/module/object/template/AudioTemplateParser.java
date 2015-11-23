@@ -14,10 +14,10 @@ public class AudioTemplateParser extends AbstractTemplateParser {
     private MediaWrapper<?> mediaWrapper;
 
     @Inject
-    protected MediaControllerFactory factory;
+    protected MediaControllerFactory mediaControllerFactory;
 
     @Inject
-    private Controllers controllers;
+    private TemplateControllers templateControllers;
 
     @Override
     public void beforeParse(Node mainNode, Widget parent) {
@@ -26,7 +26,7 @@ public class AudioTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected boolean isModuleSupported(String moduleName) {
-        return controllers.contains(moduleName);
+        return templateControllers.isControllerSupported(moduleName);
     }
 
     public void setMediaWrapper(MediaWrapper<?> mediaDescriptor) {
@@ -35,7 +35,7 @@ public class AudioTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected MediaController getMediaControllerNewInstance(String moduleName, Node node) {
-        MediaController controller = factory.get(ModuleTagName.getTag(moduleName));
+        MediaController controller = mediaControllerFactory.get(ModuleTagName.getTag(moduleName));
         if (controller != null) {
             controller.setMediaDescriptor(mediaWrapper);
         }

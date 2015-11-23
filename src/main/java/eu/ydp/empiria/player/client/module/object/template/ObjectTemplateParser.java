@@ -24,16 +24,16 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
     private MediaWrapper<?> fullScreenMediaWrapper;
 
     @Inject
-    protected MediaControllerFactory factory;
+    protected MediaControllerFactory mediaControllerFactory;
 
     @Inject
-    private Controllers controllers;
+    private TemplateControllers templateControllers;
 
-    private boolean fullScreen = false;
+    private boolean isFullScreen = false;
 
     protected Widget getMediaObject() {
         Widget mediaObjectWidget;
-        if (fullScreen) {
+        if (isFullScreen) {
             mediaObjectWidget = fullScreenMediaWrapper.getMediaObject();
         } else {
             FlowPanel videoContainer = new FlowPanel();
@@ -57,7 +57,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
     }
 
     private void attachMediaScreenToRootOfTemplate(Widget parent) {
-        if (fullScreen) {
+        if (isFullScreen) {
             attachMediaScreenToFullscreenTemplate(parent);
         } else {
             attachMediaScreenToNotFullscreenTemplate(parent);
@@ -103,15 +103,15 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
             } catch (IllegalArgumentException exception) { // NOPMD
 
             }
-            controller = factory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
+            controller = mediaControllerFactory.get(ModuleTagName.MEDIA_TEXT_TRACK, trackKind);
         } else if (ModuleTagName.MEDIA_SCREEN.tagName().equals(moduleName)) {
             controller = new MediaControllerWrapper(getMediaObject());
         } else {
-            controller = factory.get(ModuleTagName.getTag(moduleName));
+            controller = mediaControllerFactory.get(ModuleTagName.getTag(moduleName));
         }
         if (controller != null) {
             controller.setMediaDescriptor(mediaWrapper);
-            controller.setFullScreen(fullScreen);
+            controller.setFullScreen(isFullScreen);
         }
         if (controller instanceof VideoFullScreenMediaButton) {
             ((VideoFullScreenMediaButton) controller).setFullScreenTemplate(fullScreenTemplate);
@@ -124,7 +124,7 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
 
     @Override
     protected boolean isModuleSupported(String moduleName) {
-        return controllers.contains(moduleName);
+        return templateControllers.isControllerSupported(moduleName);
     }
 
     public void setFullScreenTemplate(Element fullScreenTemplate) {
@@ -132,6 +132,6 @@ public class ObjectTemplateParser extends AbstractTemplateParser {
     }
 
     public void setFullScreen(boolean fullScreen) {
-        this.fullScreen = fullScreen;
+        this.isFullScreen = fullScreen;
     }
 }
