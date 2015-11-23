@@ -6,6 +6,7 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.Element;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -33,6 +34,8 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     protected MediaBase mediaBase;
     @Mock
     protected BaseMediaConfiguration mediaConfiguration;
+    @Mock
+    protected UserAgentCheckerWrapper userAgentCheckerWrapper;
 
     @Test
     public void testInitNoConfiguration() {
@@ -209,6 +212,21 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
         instance.setMedia(mediaBase);
 
         // when
+        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
+        instance.stop();
+
+        // then
+        verify(mediaBase).pause();
+        verify(mediaBase, never()).setCurrentTime(Matchers.eq(0d));
+    }
+
+    @Test
+    public void testStopOnAndroidStackBrowser() {
+        // given
+        instance.setMedia(mediaBase);
+
+        // when
+        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
         instance.stop();
 
         // then
