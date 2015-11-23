@@ -38,7 +38,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     protected UserAgentCheckerWrapper userAgentCheckerWrapper;
 
     @Test
-    public void testInitNoConfiguration() {
+    public void shouldTestInitNoConfiguration() {
         // given
         Element element = mock(Element.class);
         MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
@@ -55,13 +55,13 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
         // then
         verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
         verify(mediaBase).setControls(Matchers.eq(true));
-        for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : creatEventsPairMap().entrySet()) {
+        for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : createEventsPairMap().entrySet()) {
             verify(html5MediaNativeListeners).addListener(element, typePair.getKey().toString());
         }
     }
 
     @Test
-    public void testInit() {
+    public void shouldInitiateValues_whenMediaBaseIsSet() {
         // given
         Element element = mock(Element.class);
         MediaWrapper<MediaBase> mediaDescriptor = mock(MediaWrapper.class);
@@ -77,13 +77,13 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
         // then
         verify(mediaBase).setPreload(Matchers.eq(getAssumedMediaPreloadType()));
         verify(mediaBase).setControls(Matchers.eq(false));
-        for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : creatEventsPairMap().entrySet()) {
+        for (Map.Entry<HTML5MediaEventsType, MediaEventTypes> typePair : createEventsPairMap().entrySet()) {
             verify(html5MediaNativeListeners).addListener(element, typePair.getKey().toString());
         }
     }
 
     @Test
-    public void testInitMediaNotSet() {
+    public void shouldInitiateValues_whenMediaBaseIsNotSet() {
         // given
         instance.setMedia(null);
 
@@ -97,7 +97,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetMediaWrapper() {
+    public void shouldSetMediaWrapper() {
         // given
         instance.setMedia(null);
         MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
@@ -112,11 +112,11 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testHtml5OnEvent() {
+    public void shouldMapHtml5EventWhenFired() {
         // given
         MediaWrapper<MediaBase> mediaWrapper = mock(MediaWrapper.class);
         doReturn(mediaBase).when(mediaWrapper).getMediaObject();
-        Map<HTML5MediaEventsType, MediaEventTypes> pairMap = creatEventsPairMap();
+        Map<HTML5MediaEventsType, MediaEventTypes> pairMap = createEventsPairMap();
         SoundExecutorListener soundExecutorListener = mock(SoundExecutorListener.class);
 
         instance.setMediaWrapper(mediaWrapper);
@@ -130,7 +130,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetBaseMediaConfiguration() {
+    public void shouldSetBaseMediaConfiguration() {
         // given
         instance.setBaseMediaConfiguration(mediaConfiguration);
 
@@ -141,7 +141,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
         assertEquals(mediaConfiguration, result);
     }
 
-    private Map<HTML5MediaEventsType, MediaEventTypes> creatEventsPairMap() {
+    private Map<HTML5MediaEventsType, MediaEventTypes> createEventsPairMap() {
         Map<HTML5MediaEventsType, MediaEventTypes> pairMap = ImmutableMap.<HTML5MediaEventsType, MediaEventTypes>builder()
                 .put(HTML5MediaEventsType.canplay, MediaEventTypes.CAN_PLAY)
                 .put(HTML5MediaEventsType.suspend, MediaEventTypes.SUSPEND)
@@ -157,7 +157,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetMedia() {
+    public void shouldSetMedia() {
         // given
         instance.setMedia(mediaBase);
 
@@ -169,7 +169,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testPlay() {
+    public void shouldPlayMediaElement() {
         // given
         instance.setMedia(mediaBase);
 
@@ -182,7 +182,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testPlayLooped() {
+    public void shouldPlayMediaElementLooped() {
         // given
         instance.setMedia(mediaBase);
 
@@ -195,7 +195,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testPlayWithString() {
+    public void shouldPlayMediaElementWithString() {
         // given
         instance.setMedia(mediaBase);
 
@@ -207,12 +207,12 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testStop() {
+    public void shouldStopPlaying() {
         // given
         instance.setMedia(mediaBase);
+        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
 
         // when
-        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
         instance.stop();
 
         // then
@@ -221,12 +221,12 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testStopOnAndroidStackBrowser() {
+    public void shouldStopPlayingOnAndroidStackBrowser() {
         // given
         instance.setMedia(mediaBase);
+        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
 
         // when
-        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
         instance.stop();
 
         // then
@@ -235,7 +235,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testPause() {
+    public void shouldPauseMediaElement() {
         // given
         instance.setMedia(mediaBase);
 
@@ -247,7 +247,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetMuted() {
+    public void shouldMutePlayedElement() {
         // given
         instance.setMedia(mediaBase);
 
@@ -259,7 +259,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetVolume() {
+    public void shouldSetGivenVolume() {
         // given
         instance.setMedia(mediaBase);
 
@@ -271,7 +271,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetCurrentTime() {
+    public void shouldSetCurrentTime() {
         // given
         instance.setMedia(mediaBase);
 
@@ -283,7 +283,7 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void testSetCurrentTimeNAN() {
+    public void shouldSetCurrentTimeOnZeroWhenNANGiven() {
         // given
         instance.setMedia(mediaBase);
         doReturn(Double.NaN).when(mediaBase).getDuration();
