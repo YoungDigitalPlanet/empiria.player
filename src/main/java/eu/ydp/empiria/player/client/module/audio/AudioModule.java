@@ -27,17 +27,16 @@ public class AudioModule extends InlineModuleBase {
     private AudioTemplateParser parser;
     private AudioPlayerModuleFactory audioPlayerModuleFactory;
     private ObjectElementReader elementReader;
-    private String AUDIO_SKIN = "-player-audio-skin";
+    private static final String AUDIO_SKIN = "-player-audio-skin";
     private Widget moduleView = null;
 
     @Inject
     public AudioModule (StyleSocket styleSocket,EventsBus eventsBus,MediaWrapperCreator mediaWrapperCreator,
-                        AudioModuleView objectModuleView, AudioTemplateParser parser,AudioPlayerModuleFactory audioPlayerModuleFactory,
+                        AudioTemplateParser parser,AudioPlayerModuleFactory audioPlayerModuleFactory,
                         ObjectElementReader elementReader){
         this.styleSocket = styleSocket;
         this.eventsBus = eventsBus;
         this.mediaWrapperCreator = mediaWrapperCreator;
-        this.audioModuleView = objectModuleView;
         this.parser = parser;
         this.audioPlayerModuleFactory = audioPlayerModuleFactory;
         this.elementReader = elementReader;
@@ -57,6 +56,7 @@ public class AudioModule extends InlineModuleBase {
             AudioPlayerModule player = getAudioPlayerModule(element, "audio");
             this.moduleView = player.getView();
         } else {
+            audioModuleView = new AudioModuleView();
             prepareObjectModuleView(element, defaultTemplate);
             this.moduleView = audioModuleView;
         }

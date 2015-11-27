@@ -26,7 +26,6 @@ public class ObjectModule extends InlineModuleBase {
     private static final int DEFAULT_HEIGHT = 240;
     private static final int DEFAULT_WIDTH = 320;
 
-    private Widget widget;
     private Widget moduleView = null;
     private MediaWrapper<?> mediaWrapper = null;
     private MediaWrapper<?> fullScreenMediaWrapper;
@@ -49,7 +48,6 @@ public class ObjectModule extends InlineModuleBase {
         this.mediaWrapper = mediaWrapper;
         this.fullScreenMediaWrapper = fullScreenMediaWrapper;
 
-        this.widget = mediaWrapper.getMediaObject();
     }
 
     private void parseTemplate(Element template, Element fullScreenTemplate, FlowPanel parent) {
@@ -64,6 +62,7 @@ public class ObjectModule extends InlineModuleBase {
 
         final Element defaultTemplate = elementReader.getDefaultTemplate(element);
         final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
+        Widget mediaObject = mediaWrapper.getMediaObject();
 
         createMediaWrapper(element,defaultTemplate,fullScreenTemplate);
 
@@ -73,9 +72,9 @@ public class ObjectModule extends InlineModuleBase {
             moduleView.getContainerPanel().addStyleName(cls);
         }
 
-        if (!isNull(widget)) {
+        if (!isNull(mediaObject)) {
             if (isNull(defaultTemplate)) {
-                moduleView.getContainerPanel().add(widget);
+                moduleView.getContainerPanel().add(mediaObject);
             } else {
                 parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
             }

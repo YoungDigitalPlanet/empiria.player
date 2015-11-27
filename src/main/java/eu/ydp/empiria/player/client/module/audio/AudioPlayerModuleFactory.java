@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.audio;
 import com.google.gwt.media.client.Audio;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.DefaultAudioPlayerModule;
 import eu.ydp.empiria.player.client.module.audioplayer.FlashAudioPlayerModule;
@@ -12,6 +13,7 @@ import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import java.util.Map;
 
+@Singleton
 public class AudioPlayerModuleFactory {
     @Inject
     private Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider;
@@ -19,6 +21,16 @@ public class AudioPlayerModuleFactory {
     private Provider<FlashAudioPlayerModule> flashAudioPlayerModuleProvider;
     @Inject
     private MediaChecker mediaChecker;
+
+    @Inject
+    public AudioPlayerModuleFactory (Provider<DefaultAudioPlayerModule> defaultAudioPlayerModuleProvider,
+                                     Provider<FlashAudioPlayerModule> flashAudioPlayerModuleProvider,
+                                     MediaChecker mediaChecker){
+        this.defaultAudioPlayerModuleProvider = defaultAudioPlayerModuleProvider;
+        this.flashAudioPlayerModuleProvider = flashAudioPlayerModuleProvider;
+        this.mediaChecker = mediaChecker;
+
+    }
 
     public AudioPlayerModule getAudioPlayerModule(Map<String, String> sources){
         AudioPlayerModule player;
