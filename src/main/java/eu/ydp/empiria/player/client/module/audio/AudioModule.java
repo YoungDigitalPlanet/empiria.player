@@ -19,15 +19,14 @@ import java.util.Map;
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
 public class AudioModule extends InlineModuleBase {
-
+    
+    private static final String AUDIO_SKIN = "-player-audio-skin";
     private StyleSocket styleSocket;
     private EventsBus eventsBus;
     private MediaWrapperCreator mediaWrapperCreator;
-    private AudioModuleView audioModuleView;
     private AudioTemplateParser parser;
     private AudioPlayerModuleFactory audioPlayerModuleFactory;
     private ObjectElementReader elementReader;
-    private static final String AUDIO_SKIN = "-player-audio-skin";
     private Widget moduleView = null;
 
     @Inject
@@ -56,8 +55,8 @@ public class AudioModule extends InlineModuleBase {
             AudioPlayerModule player = getAudioPlayerModule(element, "audio");
             this.moduleView = player.getView();
         } else {
-            audioModuleView = new AudioModuleView();
-            prepareObjectModuleView(element, defaultTemplate);
+            AudioModuleView audioModuleView = new AudioModuleView();
+            prepareObjectModuleView(element, defaultTemplate, audioModuleView);
             this.moduleView = audioModuleView;
         }
     }
@@ -69,13 +68,13 @@ public class AudioModule extends InlineModuleBase {
         return player;
     }
 
-    private void prepareObjectModuleView(Element element, Element defaultTemplate) {
-        addStyleName(element);
+    private void prepareObjectModuleView(Element element, Element defaultTemplate, AudioModuleView audioModuleView) {
+        addStyleName(element, audioModuleView);
         Map<String, String> src = getSource(element, "audio");
-        mediaWrapperCreator.createMediaWrapper(src, getCallbackRecevier(defaultTemplate));
+        mediaWrapperCreator.createMediaWrapper(src, getCallbackRecevier(defaultTemplate, audioModuleView));
     }
 
-    private CallbackReceiver<MediaWrapper<?>> getCallbackRecevier(final Element defaultTemplate) {
+    private CallbackReceiver<MediaWrapper<?>> getCallbackRecevier(final Element defaultTemplate, final AudioModuleView audioModuleView) {
         return new CallbackReceiver<MediaWrapper<?>>() {
             @Override
             public void setCallbackReturnObject(MediaWrapper<?> mediaWrapper) {
@@ -85,7 +84,7 @@ public class AudioModule extends InlineModuleBase {
         };
     }
 
-    private void addStyleName(Element element) {
+    private void addStyleName(Element element, AudioModuleView audioModuleView) {
         String cls = element.getAttribute("class");
         if (!Strings.isNullOrEmpty(cls)) {
             audioModuleView.getContainerPanel().addStyleName(cls);
