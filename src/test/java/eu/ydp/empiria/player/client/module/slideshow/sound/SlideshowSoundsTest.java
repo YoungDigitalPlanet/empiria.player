@@ -65,7 +65,7 @@ public class SlideshowSoundsTest {
 
         // then
         verify(mimeSourceProvider, times(1)).getSourcesWithTypeByExtension(filepath);
-        verify(mediaWrapperCreator, times(1)).createMediaWrapper(eq(filepath), eq(sourceWithType), callbackReceiverCaptor.capture());
+        verify(mediaWrapperCreator, times(1)).createMediaWrapper(eq(sourceWithType), callbackReceiverCaptor.capture());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class SlideshowSoundsTest {
         testObj.initSound(filepath);
 
         verify(mimeSourceProvider).getSourcesWithTypeByExtension(filepath);
-        verify(mediaWrapperCreator).createMediaWrapper(eq(filepath), eq(sourceWithType), callbackReceiverCaptor.capture());
+        verify(mediaWrapperCreator, atLeastOnce()).createMediaWrapper(eq(sourceWithType), callbackReceiverCaptor.capture());
 
         callbackReceiverCaptor.getValue().setCallbackReturnObject(mediaWrapper);
     }

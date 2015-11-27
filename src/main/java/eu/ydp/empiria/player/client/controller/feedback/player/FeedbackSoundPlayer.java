@@ -94,7 +94,7 @@ public class FeedbackSoundPlayer {
     protected void createMediaWrapperAndStopAndPlaySound(String sourcesKey, Map<String, String> sourcesWithTypes) {
         MediaWrapperHandler callbackHandler = new MediaWrapperHandler();
         callbackHandler.setWrappersSourcesKey(sourcesKey);
-        mediaWrapperCreator.createMediaWrapper(sourcesKey, sourcesWithTypes, callbackHandler);
+        mediaWrapperCreator.createMediaWrapper(sourcesWithTypes, callbackHandler);
     }
 
     // Klucz po ktorym przeszukiwany jest cache.

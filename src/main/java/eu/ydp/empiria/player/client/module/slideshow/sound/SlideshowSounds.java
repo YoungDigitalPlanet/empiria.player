@@ -46,7 +46,7 @@ public class SlideshowSounds {
         Map<String, String> sourceWithType = mimeSourceProvider.getSourcesWithTypeByExtension(audiopath);
         CallbackReceiver<MediaWrapper<Widget>> callbackReceiver = createCallbackReceiver(audiopath);
 
-        mediaWrapperCreator.createMediaWrapper(audiopath, sourceWithType, callbackReceiver);
+        mediaWrapperCreator.createMediaWrapper(sourceWithType, callbackReceiver);
     }
 
     private CallbackReceiver<MediaWrapper<Widget>> createCallbackReceiver(final String audiopath) {
