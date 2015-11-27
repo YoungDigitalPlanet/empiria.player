@@ -7,6 +7,7 @@ import eu.ydp.empiria.player.client.media.Video;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrack;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackCue;
 import eu.ydp.empiria.player.client.media.texttrack.TextTrackKind;
+import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration.MediaType;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
@@ -39,7 +40,7 @@ public class HTML5VideoMediaExecutorJUnitTest extends AbstractHTML5MediaExecutor
     public void setUp() {
         GwtMockito.initMocks(this);
 
-        instance = (AbstractHTML5MediaExecutor) new HTML5VideoMediaExecutor(mediaEventMapper, html5MediaNativeListeners, uniqueIdGenerator);
+        instance = (AbstractHTML5MediaExecutor) new HTML5VideoMediaExecutor(mediaEventMapper, html5MediaNativeListeners, uniqueIdGenerator, userAgentCheckerWrapper);
         Video video = mock(Video.class);
         mediaBase = video;
 
