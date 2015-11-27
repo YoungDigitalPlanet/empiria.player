@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.audio;
 
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
 import com.google.inject.Inject;
@@ -8,10 +9,8 @@ import eu.ydp.empiria.player.client.module.audioplayer.AudioPlayerModule;
 import eu.ydp.empiria.player.client.module.core.base.InlineModuleBase;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.ObjectElementReader;
-import eu.ydp.empiria.player.client.module.object.ObjectModuleView;
 import eu.ydp.empiria.player.client.module.object.template.AudioTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
-import eu.ydp.empiria.player.client.util.SourceUtil;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.callback.CallbackReceiver;
 
@@ -20,21 +19,29 @@ import java.util.Map;
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
 public class AudioModule extends InlineModuleBase {
-    @Inject
-    private StyleSocket styleSocket;
-    @Inject
-    private EventsBus eventsBus;
-    @Inject
-    private MediaWrapperCreator mediaWrapperCreator;
-    @Inject
-    private ObjectModuleView objectModuleView;
-    @Inject
-    private AudioTemplateParser parser;
-    @Inject
-    private AudioPlayerModuleFactory audioPlayerModuleFactory;
 
+    private StyleSocket styleSocket;
+    private EventsBus eventsBus;
+    private MediaWrapperCreator mediaWrapperCreator;
+    private AudioModuleView audioModuleView;
+    private AudioTemplateParser parser;
+    private AudioPlayerModuleFactory audioPlayerModuleFactory;
+    private ObjectElementReader elementReader;
+    private String AUDIO_SKIN = "-player-audio-skin";
     private Widget moduleView = null;
-    private ObjectElementReader elementReader = new ObjectElementReader();
+
+    @Inject
+    public AudioModule (StyleSocket styleSocket,EventsBus eventsBus,MediaWrapperCreator mediaWrapperCreator,
+                        AudioModuleView objectModuleView, AudioTemplateParser parser,AudioPlayerModuleFactory audioPlayerModuleFactory,
+                        ObjectElementReader elementReader){
+        this.styleSocket = styleSocket;
+        this.eventsBus = eventsBus;
+        this.mediaWrapperCreator = mediaWrapperCreator;
+        this.audioModuleView = objectModuleView;
+        this.parser = parser;
+        this.audioPlayerModuleFactory = audioPlayerModuleFactory;
+        this.elementReader = elementReader;
+    }
 
     @Override
     protected void initModule(Element element) {
@@ -43,16 +50,15 @@ public class AudioModule extends InlineModuleBase {
     }
 
     private void setModuleView(Element element, Map<String, String> styles) {
-        final String type = elementReader.getElementType(element);
         final Element defaultTemplate = elementReader.getDefaultTemplate(element);
-        String playerSkin = styles.get("-player-" + type + "-skin");
+        String playerSkin = styles.get(AUDIO_SKIN);
 
         if (isProperSkin(playerSkin, defaultTemplate)) {
-            AudioPlayerModule player = getAudioPlayerModule(element, type);
+            AudioPlayerModule player = getAudioPlayerModule(element, "audio");
             this.moduleView = player.getView();
         } else {
             prepareObjectModuleView(element, defaultTemplate);
-            this.moduleView = objectModuleView;
+            this.moduleView = audioModuleView;
         }
     }
 
@@ -65,7 +71,7 @@ public class AudioModule extends InlineModuleBase {
 
     private void prepareObjectModuleView(Element element, Element defaultTemplate) {
         addStyleName(element);
-        Map<String, String> src = SourceUtil.getSource(element, "audio");
+        Map<String, String> src = getSource(element, "audio");
         mediaWrapperCreator.createMediaWrapper(src, getCallbackRecevier(defaultTemplate));
     }
 
@@ -74,15 +80,15 @@ public class AudioModule extends InlineModuleBase {
             @Override
             public void setCallbackReturnObject(MediaWrapper<?> mediaWrapper) {
                 parser.setMediaWrapper(mediaWrapper);
-                parser.parse(defaultTemplate, objectModuleView.getContainerPanel());
+                parser.parse(defaultTemplate, audioModuleView.getContainerPanel());
             }
         };
     }
 
     private void addStyleName(Element element) {
         String cls = element.getAttribute("class");
-        if (cls != null && !"".equals(cls)) {
-            objectModuleView.getContainerPanel().addStyleName(cls);
+        if (!Strings.isNullOrEmpty(cls)) {
+            audioModuleView.getContainerPanel().addStyleName(cls);
         }
     }
 

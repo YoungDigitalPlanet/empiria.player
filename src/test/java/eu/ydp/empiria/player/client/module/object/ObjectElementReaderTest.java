@@ -29,19 +29,6 @@ public class ObjectElementReaderTest {
     }
 
     @Test
-    public void shouldReturnAudioType() {
-        // given
-        final String expected = "audio";
-        Element element = newNode().withTag("audioPlayer").withAttribute("type", "any").build();
-
-        // when
-        String actual = testObj.getElementType(element);
-
-        // then
-        assertEquals(expected, actual);
-    }
-
-    @Test
     public void shouldReturnNarrationTexts() {
         // given
         Element input = narrationTextNode();

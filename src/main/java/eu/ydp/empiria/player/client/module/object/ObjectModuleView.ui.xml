@@ -2,9 +2,11 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <g:FlowPanel ui:field="containerPanel" styleName="qp-object-container">
-        <g:FlowPanel ui:field="contentPanel" styleName="qp-object-content"/>
-        <g:FlowPanel ui:field="titlePanel" styleName="qp-object-title"/>
-        <g:FlowPanel ui:field="descriptionPanel" styleName="qp-object-description"/>
+    <ui:with type="eu.ydp.empiria.player.client.module.object.ObjectModuleConstants" field="res"/>
+
+    <g:FlowPanel ui:field="containerPanel" styleName="{res.QP_OBJECT_CONTAINER}">
+        <g:FlowPanel ui:field="contentPanel" styleName="{res.QP_OBJECT_CONTENT}"/>
+        <g:FlowPanel ui:field="titlePanel" styleName="{res.QP_OBJECT_TITLE}"/>
+        <g:FlowPanel ui:field="descriptionPanel" styleName="{res.QP_OBJECT_DESCRIPTION}"/>
     </g:FlowPanel>
 </ui:UiBinder>

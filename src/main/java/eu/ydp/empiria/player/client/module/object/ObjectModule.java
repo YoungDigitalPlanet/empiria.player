@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.module.object;
 
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
@@ -60,11 +61,38 @@ public class ObjectModule extends InlineModuleBase {
 
     @Override
     public void initModule(final Element element) {
-        final String type = elementReader.getElementType(element);
 
         final Element defaultTemplate = elementReader.getDefaultTemplate(element);
         final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
 
+        createMediaWrapper(element,defaultTemplate,fullScreenTemplate);
+
+        ObjectModuleView moduleView = new ObjectModuleView();
+        String cls = element.getAttribute("class");
+        if (!Strings.isNullOrEmpty(cls)) {
+            moduleView.getContainerPanel().addStyleName(cls);
+        }
+
+        if (!isNull(widget)) {
+            if (isNull(defaultTemplate)) {
+                moduleView.getContainerPanel().add(widget);
+            } else {
+                parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
+            }
+        }
+
+        Widget titleWidget = getWidgetFromNodeList(element.getElementsByTagName("title"));
+        if(!isNull(titleWidget)) moduleView.setTitleWidget(titleWidget);
+
+        Widget descriptionWidget = getWidgetFromNodeList(element.getElementsByTagName("description"));
+        if(!isNull(descriptionWidget)) moduleView.getDescriptionPanel().add(descriptionWidget);
+
+
+        this.moduleView = moduleView;
+    }
+
+    private void createMediaWrapper(Element element, Element defaultTemplate, Element fullScreenTemplate){
+        final String type = elementReader.getElementType(element);
         Map<String, String> styles = styleSocket.getStyles(element);
         String playerSkin = styles.get("-player-" + type + "-skin");
 
@@ -79,31 +107,6 @@ public class ObjectModule extends InlineModuleBase {
                 !isNull(defaultTemplate) && !"native".equals(playerSkin), !isNull(fullScreenTemplate), narrationText);
 
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
-
-        ObjectModuleView moduleView = new ObjectModuleView();
-        String cls = element.getAttribute("class");
-        if (!isNull(cls) && !"".equals(cls)) {
-            moduleView.getContainerPanel().addStyleName(cls);
-        }
-
-        if (!isNull(widget)) {
-            if (isNull(defaultTemplate)) {
-                moduleView.getContainerPanel().add(widget);
-            } else {
-                parseTemplate(defaultTemplate, fullScreenTemplate, moduleView.getContainerPanel());
-            }
-        }
-
-        if (!isNull(mediaWrapper)) eventsBus.fireEvent(new MediaEvent(MediaEventTypes.MEDIA_ATTACHED, mediaWrapper));
-
-        Widget titleWidget = getWidgetFromNodeList(element.getElementsByTagName("title"));
-        if(!isNull(titleWidget)) moduleView.setTitleWidget(titleWidget);
-
-        Widget descriptionWidget = getWidgetFromNodeList(element.getElementsByTagName("description"));
-        if(!isNull(descriptionWidget)) moduleView.getDescriptionPanel().add(descriptionWidget);
-
-
-        this.moduleView = moduleView;
     }
 
     private Widget getWidgetFromNodeList (NodeList nodes){
@@ -118,10 +121,7 @@ public class ObjectModule extends InlineModuleBase {
     }
 
     private boolean isNull(Object object){
-        if(object == null){
-            return true;
-        }
-        return false;
+        return object == null;
     }
 
 }
