@@ -19,7 +19,7 @@ import java.util.Map;
 import static eu.ydp.empiria.player.client.util.SourceUtil.getSource;
 
 public class AudioModule extends InlineModuleBase {
-    
+
     private static final String AUDIO_SKIN = "-player-audio-skin";
     private StyleSocket styleSocket;
     private EventsBus eventsBus;
@@ -55,9 +55,7 @@ public class AudioModule extends InlineModuleBase {
             AudioPlayerModule player = getAudioPlayerModule(element, "audio");
             this.moduleView = player.getView();
         } else {
-            AudioModuleView audioModuleView = new AudioModuleView();
-            prepareObjectModuleView(element, defaultTemplate, audioModuleView);
-            this.moduleView = audioModuleView;
+            this.moduleView = prepareObjectModuleView(element, defaultTemplate);
         }
     }
 
@@ -68,10 +66,12 @@ public class AudioModule extends InlineModuleBase {
         return player;
     }
 
-    private void prepareObjectModuleView(Element element, Element defaultTemplate, AudioModuleView audioModuleView) {
+    private Widget prepareObjectModuleView(Element element, Element defaultTemplate) {
+        AudioModuleView audioModuleView = new AudioModuleView();
         addStyleName(element, audioModuleView);
         Map<String, String> src = getSource(element, "audio");
         mediaWrapperCreator.createMediaWrapper(src, getCallbackRecevier(defaultTemplate, audioModuleView));
+        return audioModuleView;
     }
 
     private CallbackReceiver<MediaWrapper<?>> getCallbackRecevier(final Element defaultTemplate, final AudioModuleView audioModuleView) {
