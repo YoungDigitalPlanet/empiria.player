@@ -77,7 +77,7 @@ public class ExtensionsProvider {
                 new SimpleConnectorExtension(moduleProviderFactory.getMathDragGapModule(), ModuleTagName.MATH_DRAG_GAP_TYPE, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineChoiceModule(), ModuleTagName.INLINE_CHOICE_INTERACTION, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getSimpleTextModule(), ModuleTagName.SIMPLE_TEXT),
-                new SimpleConnectorExtension(moduleProviderFactory.getObjectModule(), ModuleTagName.AUDIO_PLAYER, false, true),
+                new SimpleConnectorExtension(moduleProviderFactory.getAudioModule(), ModuleTagName.AUDIO_PLAYER, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineContainerModule(), ModuleTagName.INLINE_CONTAINER_STYLE_STRONG, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getMathTextModule(), ModuleTagName.MATH_TEXT, false, true),
                 new SimpleConnectorExtension(moduleProviderFactory.getInlineMathJaxModule(), ModuleTagName.INLINE_MATH_JAX, false, true),

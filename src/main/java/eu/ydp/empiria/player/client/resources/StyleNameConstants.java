@@ -18,4 +18,5 @@ public interface StyleNameConstants extends Constants {
 
     @DefaultStringValue("qp-prompt")
     String QP_PROMPT();
+
 }
