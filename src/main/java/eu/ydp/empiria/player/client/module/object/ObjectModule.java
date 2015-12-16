@@ -13,8 +13,6 @@ import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.object.template.ObjectTemplateParser;
 import eu.ydp.empiria.player.client.style.StyleSocket;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
-import eu.ydp.empiria.player.client.util.events.internal.media.MediaEvent;
-import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 
@@ -62,9 +60,8 @@ public class ObjectModule extends InlineModuleBase {
 
         final Element defaultTemplate = elementReader.getDefaultTemplate(element);
         final Element fullScreenTemplate = elementReader.getFullscreenTemplate(element);
+        createMediaWrapper(element, defaultTemplate, fullScreenTemplate);
         Widget mediaObject = mediaWrapper.getMediaObject();
-
-        createMediaWrapper(element,defaultTemplate,fullScreenTemplate);
 
         ObjectModuleView moduleView = new ObjectModuleView();
         String cls = element.getAttribute("class");
@@ -81,16 +78,16 @@ public class ObjectModule extends InlineModuleBase {
         }
 
         Widget titleWidget = getWidgetFromNodeList(element.getElementsByTagName("title"));
-        if(!isNull(titleWidget)) moduleView.setTitleWidget(titleWidget);
+        if (!isNull(titleWidget)) moduleView.setTitleWidget(titleWidget);
 
         Widget descriptionWidget = getWidgetFromNodeList(element.getElementsByTagName("description"));
-        if(!isNull(descriptionWidget)) moduleView.getDescriptionPanel().add(descriptionWidget);
+        if (!isNull(descriptionWidget)) moduleView.getDescriptionPanel().add(descriptionWidget);
 
 
         this.moduleView = moduleView;
     }
 
-    private void createMediaWrapper(Element element, Element defaultTemplate, Element fullScreenTemplate){
+    private void createMediaWrapper(Element element, Element defaultTemplate, Element fullScreenTemplate) {
         final String type = elementReader.getElementType(element);
         Map<String, String> styles = styleSocket.getStyles(element);
         String playerSkin = styles.get("-player-" + type + "-skin");
@@ -108,9 +105,9 @@ public class ObjectModule extends InlineModuleBase {
         eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.CREATE_MEDIA_WRAPPER, bmc, callbackHandler));
     }
 
-    private Widget getWidgetFromNodeList (NodeList nodes){
+    private Widget getWidgetFromNodeList(NodeList nodes) {
         Widget widget = null;
-        if(nodes.getLength() > 0){
+        if (nodes.getLength() > 0) {
             widget = getModuleSocket().getInlineBodyGeneratorSocket().generateInlineBody(nodes.item(0));
             if (!isNull(widget)) {
                 return widget;
@@ -119,7 +116,7 @@ public class ObjectModule extends InlineModuleBase {
         return widget;
     }
 
-    private boolean isNull(Object object){
+    private boolean isNull(Object object) {
         return object == null;
     }
 
