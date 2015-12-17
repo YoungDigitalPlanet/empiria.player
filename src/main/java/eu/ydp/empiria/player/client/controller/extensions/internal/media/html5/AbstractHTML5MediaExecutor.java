@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.MediaBase;
-import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5OnMediaEventHandler;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
@@ -14,7 +13,6 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
-import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -142,7 +140,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
     private void stopOnTime(double time) {
         try {
             media.pause();
-            if(userAgentCheckerWrapper.isStackAndroidBrowser()){
+            if (userAgentCheckerWrapper.isStackAndroidBrowser()) {
                 media.setCurrentTime(time);
             }
         } catch (Exception e) {// NOPMD
