@@ -10,10 +10,11 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.n
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
 import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
-import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
+import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -124,7 +125,8 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
     @Override
     public void stop() {
-        stopOnTime(0);
+        setCurrentTime(0);
+        media.pause();
     }
 
     @Override
