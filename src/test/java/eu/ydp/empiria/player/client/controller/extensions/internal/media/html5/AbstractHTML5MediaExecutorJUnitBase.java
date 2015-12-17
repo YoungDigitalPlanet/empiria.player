@@ -210,21 +210,6 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     public void shouldStopPlaying() {
         // given
         instance.setMedia(mediaBase);
-        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(false);
-
-        // when
-        instance.stop();
-
-        // then
-        verify(mediaBase).pause();
-        verify(mediaBase, never()).setCurrentTime(Matchers.eq(0d));
-    }
-
-    @Test
-    public void shouldStopPlayingOnAndroidStackBrowser() {
-        // given
-        instance.setMedia(mediaBase);
-        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
 
         // when
         instance.stop();
@@ -244,6 +229,22 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
 
         // then
         verify(mediaBase).pause();
+    }
+
+    @Test
+    public void shouldPauseMediaElement_andSetCurrentTimeOnIt_whenOnAndroidStackBrowser() {
+        // given
+        double currentTime = 30;
+        when(mediaBase.getCurrentTime()).thenReturn(currentTime);
+        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
+        instance.setMedia(mediaBase);
+
+        // when
+        instance.pause();
+
+        // then
+        verify(mediaBase).pause();
+        verify(mediaBase).setCurrentTime(currentTime);
     }
 
     @Test
