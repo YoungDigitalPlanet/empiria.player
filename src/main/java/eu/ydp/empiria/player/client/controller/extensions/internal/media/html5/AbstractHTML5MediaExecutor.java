@@ -8,7 +8,6 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.n
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5OnMediaEventHandler;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.MediaExecutor;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
@@ -23,16 +22,14 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
     private MediaWrapper<MediaBase> mediaDescriptor;
     private SoundExecutorListener listener;
     private BaseMediaConfiguration baseMediaConfiguration;
-    private UserAgentCheckerWrapper userAgentCheckerWrapper;
 
     protected HTML5MediaEventMapper mediaEventMapper;
     protected final HTML5MediaNativeListeners html5MediaNativeListeners;
 
-    public AbstractHTML5MediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners, UserAgentCheckerWrapper userAgentCheckerWrapper) {
+    public AbstractHTML5MediaExecutor(HTML5MediaEventMapper mediaEventMapper, HTML5MediaNativeListeners html5MediaNativeListeners) {
         this.mediaEventMapper = mediaEventMapper;
         this.html5MediaNativeListeners = html5MediaNativeListeners;
         this.html5MediaNativeListeners.setCallbackListener(this);
-        this.userAgentCheckerWrapper = userAgentCheckerWrapper;
     }
 
     @Override
@@ -140,9 +137,7 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
     private void stopOnTime(double time) {
         try {
             media.pause();
-            if (userAgentCheckerWrapper.isStackAndroidBrowser()) {
-                media.setCurrentTime(time);
-            }
+            media.setCurrentTime(time);
         } catch (Exception e) {// NOPMD
             // chrome podczas przeladowania strony lekcji
             // generowal bledy
