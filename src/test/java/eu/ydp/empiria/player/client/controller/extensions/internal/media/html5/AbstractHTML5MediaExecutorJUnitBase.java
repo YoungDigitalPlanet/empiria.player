@@ -6,10 +6,9 @@ import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.user.client.Element;
 import eu.ydp.empiria.player.client.controller.extensions.internal.media.html5.natives.HTML5MediaNativeListeners;
 import eu.ydp.empiria.player.client.controller.extensions.internal.sound.SoundExecutorListener;
-import eu.ydp.empiria.player.client.module.UserAgentCheckerWrapper;
-import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
+import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
 import eu.ydp.empiria.player.client.util.events.internal.media.MediaEventTypes;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -34,8 +33,6 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     protected MediaBase mediaBase;
     @Mock
     protected BaseMediaConfiguration mediaConfiguration;
-    @Mock
-    protected UserAgentCheckerWrapper userAgentCheckerWrapper;
 
     @Test
     public void shouldTestInitNoConfiguration() {
@@ -220,23 +217,10 @@ public abstract class AbstractHTML5MediaExecutorJUnitBase {
     }
 
     @Test
-    public void shouldPauseMediaElement() {
-        // given
-        instance.setMedia(mediaBase);
-
-        // whe
-        instance.pause();
-
-        // then
-        verify(mediaBase).pause();
-    }
-
-    @Test
-    public void shouldPauseMediaElement_andSetCurrentTimeOnIt_whenOnAndroidStackBrowser() {
+    public void shouldPauseMediaElement_andSetCurrentTimeOnIt() {
         // given
         double currentTime = 30;
         when(mediaBase.getCurrentTime()).thenReturn(currentTime);
-        when(userAgentCheckerWrapper.isStackAndroidBrowser()).thenReturn(true);
         instance.setMedia(mediaBase);
 
         // when
