@@ -20,6 +20,7 @@ public class TemplateControllers {
             controllers.add(ModuleTagName.MEDIA_STOP_BUTTON.tagName());
             controllers.add(ModuleTagName.MEDIA_MUTE_BUTTON.tagName());
             controllers.add(ModuleTagName.MEDIA_PROGRESS_BAR.tagName());
+            controllers.add(ModuleTagName.MEDIA_FULL_SCREEN_BUTTON.tagName());
             controllers.add(ModuleTagName.MEDIA_POSITION_IN_STREAM.tagName());
             controllers.add(ModuleTagName.MEDIA_VOLUME_BAR.tagName());
             controllers.add(ModuleTagName.MEDIA_CURRENT_TIME.tagName());
@@ -29,7 +30,7 @@ public class TemplateControllers {
         }
     }
 
-    public boolean isControllerSupported(Object object){
-        return controllers.contains(object);
+    public boolean isControllerSupported(String templateName) {
+        return controllers.contains(templateName);
     }
 }
