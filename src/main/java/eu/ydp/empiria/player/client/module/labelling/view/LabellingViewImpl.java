@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.module.labelling.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -29,6 +30,8 @@ public class LabellingViewImpl extends Composite implements LabellingView {
     public void setBackground(ImgBean imgBean) {
         image.setUrl(imgBean.getSrc());
         setSize(imgBean.getWidth(), imgBean.getHeight());
+        inner.getElement().getStyle().setOverflow(Style.Overflow.VISIBLE);
+        container.getElement().getStyle().setOverflow(Style.Overflow.VISIBLE);
     }
 
     private void setSize(int width, int height) {
