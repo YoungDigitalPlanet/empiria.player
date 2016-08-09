@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.controller.body;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.components.ModulePlaceholder;

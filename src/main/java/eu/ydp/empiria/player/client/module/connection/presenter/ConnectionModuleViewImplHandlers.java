@@ -13,6 +13,8 @@ import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
+import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -47,12 +49,14 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
     @Override
     public void onConnectionStart(ConnectionMoveStartEvent event) {
+        new Logger(new ConsoleAppender()).info("onConnectionMoveStart, isLocked" + view.isLocked());
         if (view.isLocked())
             return;
 
         Optional<ConnectionItem> itemOptional = connectionsFinder.findConnectionItemForEventOnWidget(event, view, view.getConnectionItems());
 
         if (itemOptional.isPresent()) {
+            new Logger(new ConsoleAppender()).info("itemOptionalPresent");
             ConnectionItem item = itemOptional.get();
             eventsBus.fireEvent(new PlayerEvent(PlayerEventTypes.TOUCH_EVENT_RESERVATION));
             event.preventDefault();
@@ -62,17 +66,20 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
             ConnectionItem source = view.getConnectionItemPair().getSource();
             if (source != null && !item.equals(source)) {
+                new Logger(new ConsoleAppender()).info("sourceNotNull");
                 view.resetIfNotConnected(source.getBean().getIdentifier());
             }
 
             view.getConnectionItemPair().setSource(item);
 
         } else {
+            new Logger(new ConsoleAppender()).info("itemOptionalAbsent");
             NativeEvent nativeEvent = event.getNativeEvent();
             Point clickPoint = getClicktPoint(nativeEvent);
             ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
 
             if (pointOnPath != null) {
+                new Logger(new ConsoleAppender()).info("pointOnPathNotNull");
                 surfacesManager.removeSurfaceFromParent(view.getConnectedSurfaces(), pointOnPath);
                 view.disconnect(pointOnPath.getSource(), pointOnPath.getTarget(), true);
                 event.preventDefault();
@@ -82,6 +89,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
     @Override
     public void onConnectionMoveEnd(ConnectionMoveEndEvent event) {
+        new Logger(new ConsoleAppender()).info("onConnectionMoveEnd");
         if (view.isLocked())
             return;
 

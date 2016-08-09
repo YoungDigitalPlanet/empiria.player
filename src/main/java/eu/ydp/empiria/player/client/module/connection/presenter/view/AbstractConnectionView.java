@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.connection.presenter.view;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Touch;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -15,6 +16,8 @@ import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
 import eu.ydp.empiria.player.client.util.position.PositionHelper;
+import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
+import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.event.factory.TouchEventChecker;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
@@ -130,8 +133,11 @@ public abstract class AbstractConnectionView extends Composite implements Connec
         return positionHelper.getYPositionRelativeToTarget(event, getView().getElement());
     }
 
+
+
     @Override
     public void onTouchEvent(TouchEvent event) {
+        new Logger(new ConsoleAppender()).info("onTouchEvent + " + event.getNativeEvent());
         NativeEvent nativeEvent = event.getNativeEvent();
 
         JsArray<Touch> touches = nativeEvent.getTouches();
@@ -143,23 +149,29 @@ public abstract class AbstractConnectionView extends Composite implements Connec
         switch (event.getType()) {
             case TOUCH_START:
                 if (isMouseClick || isOneFingerTouch) {
+                    new Logger(new ConsoleAppender()).info("touchStart");
                     onTouchStart(nativeEvent);
                 } else {
+                    new Logger(new ConsoleAppender()).info("touchCancel");
                     onTouchCancel(nativeEvent);
                 }
                 break;
             case TOUCH_CANCEL:
             case TOUCH_END:
+                new Logger(new ConsoleAppender()).info("touchCancelEnd");
                 onTouchEnd(nativeEvent);
                 break;
             case TOUCH_MOVE:
                 if (isMouseClick || isOneFingerTouch) {
+                    new Logger(new ConsoleAppender()).info("touchMove");
                     onTouchMove(nativeEvent);
                 } else {
+                    new Logger(new ConsoleAppender()).info("touchMoveCancel");
                     onTouchCancel(nativeEvent);
                 }
                 break;
             default:
+                new Logger(new ConsoleAppender()).info("break");
                 break;
         }
 
