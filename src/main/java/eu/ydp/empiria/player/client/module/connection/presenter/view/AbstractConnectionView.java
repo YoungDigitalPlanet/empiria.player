@@ -130,8 +130,6 @@ public abstract class AbstractConnectionView extends Composite implements Connec
         return positionHelper.getYPositionRelativeToTarget(event, getView().getElement());
     }
 
-
-
     @Override
     public void onTouchEvent(TouchEvent event) {
         NativeEvent nativeEvent = event.getNativeEvent();

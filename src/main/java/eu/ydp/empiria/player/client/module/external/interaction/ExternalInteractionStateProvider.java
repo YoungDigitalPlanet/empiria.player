@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.external.interaction;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.BrowserLogger;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiProvider;

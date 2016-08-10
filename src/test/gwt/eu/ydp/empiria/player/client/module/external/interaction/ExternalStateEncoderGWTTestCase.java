@@ -14,7 +14,6 @@ public class ExternalStateEncoderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     public void testShouldWrapStateInJSONArray() {
         // given
-
         JavaScriptObject jsObject = JavaScriptObject.createObject();
         int expectedArraySize = 1;
 
@@ -25,7 +24,7 @@ public class ExternalStateEncoderGWTTestCase extends EmpiriaPlayerGWTTestCase {
         assertEquals(expectedArraySize, jsonArray.size());
         JavaScriptObject jsObjectResult = jsonArray.get(0).isObject().getJavaScriptObject();
 
-        assertEquals(jsObject, jsObjectResult);
+        assertEquals(jsObject.toString(), jsObjectResult.toString());
     }
 
     public void testShouldUnwrapStateFromArrayToJSO() {
@@ -40,5 +39,24 @@ public class ExternalStateEncoderGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
         // then
         assertEquals(state, jsObjectResult);
+    }
+
+    public void testShouldGetStateObject() {
+        // given
+        JavaScriptObject state = JavaScriptObject.createObject();
+        JSONArray stateArray = new JSONArray();
+        stateArray.set(0, new JSONObject(state));
+
+        JSONObject stateObject = new JSONObject();
+        stateObject.put("STATE", stateArray);
+
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.set(0, stateObject);
+
+        // when
+        JavaScriptObject result = testObj.decodeState(jsonArray);
+
+        // then
+        assertEquals(result, state);;
     }
 }
