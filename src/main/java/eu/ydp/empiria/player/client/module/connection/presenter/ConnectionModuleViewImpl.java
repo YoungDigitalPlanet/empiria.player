@@ -2,7 +2,6 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.logging.client.ConsoleLogHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -22,8 +21,6 @@ import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociable
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 import eu.ydp.empiria.player.client.util.position.Point;
-import eu.ydp.gwtutil.client.debug.log.ConsoleAppender;
-import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.util.geom.Size;
 
 import javax.annotation.PostConstruct;
@@ -212,7 +209,6 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
     }
 
     public void connectItems(ConnectionItem sourceItem, ConnectionItem targetItem, MultiplePairModuleConnectType type, boolean userAction) {
-        new Logger(new ConsoleAppender()).info("sourceItem is null: " + (sourceItem == null));
         if (sourceItem == null) {
             return; // na IE11 stukniecie w ekran liczone jest jako mouse click
             // jak i pointer down event. przy multitouche'u leci tutaj

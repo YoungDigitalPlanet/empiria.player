@@ -3,7 +3,6 @@ package eu.ydp.empiria.player.client.module.connection.structure;
 import com.google.gwt.json.client.JSONArray;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.module.connection.InteractionModuleVersionConverter;
-import eu.ydp.gwtutil.client.debug.log.Logger;
 import eu.ydp.gwtutil.client.json.YJsonArray;
 import eu.ydp.gwtutil.client.json.YJsonObject;
 import eu.ydp.gwtutil.client.json.YJsonString;
@@ -65,16 +64,10 @@ public class StateController {
         return simpleMatchSets;
     }
 
-    @Inject
-    Logger logger;
-
     public YJsonArray getStructure(YJsonValue yState) {
         YJsonObject object = yState.isArray().get(0).isObject();
-        logger.info("object: " + object);
 
-        YJsonArray array = object.get(STRUCTURE).isArray();
-        logger.info("array: " + array);
-        return array;
+        return object.get(STRUCTURE).isArray();
     }
 
     public JSONArray getResponse(JSONArray state) {
