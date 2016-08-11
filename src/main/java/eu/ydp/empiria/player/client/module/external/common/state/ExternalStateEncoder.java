@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import static eu.ydp.empiria.player.client.module.connection.structure.StateController.STATE;
@@ -11,9 +12,16 @@ import static eu.ydp.empiria.player.client.module.connection.structure.StateCont
 @Singleton
 public class ExternalStateEncoder {
 
+    private final ExternalFrameObjectFixer frameObjectFixer;
+
+    @Inject
+    public ExternalStateEncoder(ExternalFrameObjectFixer frameObjectFixer) {
+        this.frameObjectFixer = frameObjectFixer;
+    }
+
     public JSONArray encodeState(JavaScriptObject state) {
 
-        JavaScriptObject javaScriptObject = fixFrameObject(state);
+        JavaScriptObject javaScriptObject = frameObjectFixer.fix(state);
         JSONObject obj = new JSONObject(javaScriptObject);
         JSONArray jsonArray = new JSONArray();
 
@@ -38,9 +46,4 @@ public class ExternalStateEncoder {
 
         return state.getJavaScriptObject();
     }
-
-
-    private native JavaScriptObject fixFrameObject(JavaScriptObject object) /*-{
-        return JSON.parse(JSON.stringify(object));
-    }-*/;
 }
