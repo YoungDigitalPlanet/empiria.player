@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiProvider;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import org.junit.Before;
@@ -39,11 +40,14 @@ public class ExternalInteractionModulePresenterTest {
     private ExternalStateEncoder stateEncoder;
     @Mock
     private ExternalStateSaver stateSaver;
+    @Mock
+    private ExternalApiProvider externalApiProvider;
 
     @Before
     public void init() {
         Optional<JavaScriptObject> jsoOptional = Optional.absent();
         when(stateSaver.getExternalState()).thenReturn(jsoOptional);
+        when(externalApiProvider.getExternalApi()).thenReturn(externalApi);
         testObj.onExternalModuleLoaded(externalApi);
     }
 
@@ -209,22 +213,6 @@ public class ExternalInteractionModulePresenterTest {
         testObj.setState(array);
 
         // then
-        verify(stateSaver).setExternalState(jsObj);
-    }
-
-    @Test
-    public void shouldReturnState() {
-        // given
-        JavaScriptObject jsObj = mock(JavaScriptObject.class);
-        JSONArray jsonArray = mock(JSONArray.class);
-        when(externalApi.getStateFromExternal()).thenReturn(jsObj);
-        when(stateEncoder.encodeState(jsObj)).thenReturn(jsonArray);
-
-        // when
-        JSONArray array = testObj.getState();
-
-        // then
-        assertThat(array).isEqualTo(jsonArray);
         verify(stateSaver).setExternalState(jsObj);
     }
 }

@@ -53,11 +53,6 @@ public class ExternalInteractionModule
     }
 
     @Override
-    public JSONArray getState() {
-        return presenter.getState();
-    }
-
-    @Override
     public void setState(JSONArray stateAndStructure) {
         presenter.setState(stateAndStructure);
     }
