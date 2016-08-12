@@ -71,3 +71,6 @@ button.mfp-close, button.mfp-arrow {
     display: none;
 }
 
+#mainPreloader {
+    z-index: -1;
+}

@@ -69,7 +69,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
         } else {
             NativeEvent nativeEvent = event.getNativeEvent();
-            Point clickPoint = getClicktPoint(nativeEvent);
+            Point clickPoint = getClickPoint(nativeEvent);
             ConnectionPairEntry<String, String> pointOnPath = surfacesManager.findPointOnPath(view.getConnectedSurfaces(), clickPoint);
 
             if (pointOnPath != null) {
@@ -86,6 +86,13 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
             return;
 
         ConnectionItem connectionStartItem = view.getConnectionItemPair().getSource();
+
+        Optional<ConnectionItem> itemOptional = connectionsFinder.findConnectionItemForEventOnWidget(event, view, view.getConnectionItems());
+        if (shouldCancelConnection(itemOptional, connectionStartItem)) {
+            cancelConnection();
+            return;
+        }
+
         final int x = new Double(event.getX()).intValue();
         final int y = new Double(event.getY()).intValue();
 
@@ -112,6 +119,23 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
 
     @Override
     public void onConnectionMoveCancel() {
+        cancelConnection();
+    }
+
+    private boolean shouldCancelConnection(Optional<ConnectionItem> itemOptional, ConnectionItem connectionStartItem) {
+        if (!itemOptional.isPresent()) {
+            return true;
+        }
+
+        ConnectionItem connectionItem = itemOptional.get();
+        if (connectionItem == connectionStartItem) {
+            return false;
+        }
+
+        return connectionItem.getColumn().equals(connectionStartItem.getColumn());
+    }
+
+    private void cancelConnection() {
         ConnectionItem connectionStartItem = view.getConnectionItemPair().getSource();
         if (connectionStartItem != null) {
             view.resetIfNotConnected(connectionStartItem.getBean().getIdentifier());
@@ -132,7 +156,7 @@ public class ConnectionModuleViewImplHandlers implements HasConnectionMoveHandle
         }
     }
 
-    private Point getClicktPoint(NativeEvent event) {
+    private Point getClickPoint(NativeEvent event) {
         return positionHelper.getPoint(event, view.getConnectionViewElement());
     }
 

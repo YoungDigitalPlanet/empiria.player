@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anyString;
@@ -195,9 +196,13 @@ public class ConnectionModuleViewImplTest extends AbstractTestBaseWithoutAutoInj
 
     @Test
     public void resetTest() {
-        // test
+        // when
         instance.reset();
+
+        // then
         verify(instance.getConnectionItems()).resetAllItems();
+        assertThat(instance.getConnectionItemPair().getSource()).isNull();
+        assertThat(instance.getConnectionItemPair().getTarget()).isNull();
     }
 
     @Test

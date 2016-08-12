@@ -22,11 +22,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
-    private final Set<ConnectionMoveHandler> handlers = new HashSet<ConnectionMoveHandler>();
-    private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<ConnectionMoveEndHandler>();
-    private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<ConnectionMoveStartHandler>();
-    private final Set<ConnectionMoveCancelHandler> moveCancelHandlers = new HashSet<ConnectionMoveCancelHandler>();
+abstract class AbstractConnectionView extends Composite implements ConnectionView, TouchHandler {
+    private final Set<ConnectionMoveHandler> handlers = new HashSet<>();
+    private final Set<ConnectionMoveEndHandler> endMoveHandlers = new HashSet<>();
+    private final Set<ConnectionMoveStartHandler> startMoveHandlers = new HashSet<>();
+    private final Set<ConnectionMoveCancelHandler> moveCancelHandlers = new HashSet<>();
     @Inject
     private TouchEventChecker touchEventChecker;
     @Inject
