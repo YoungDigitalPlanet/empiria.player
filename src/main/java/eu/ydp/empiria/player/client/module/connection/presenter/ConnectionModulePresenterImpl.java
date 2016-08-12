@@ -2,20 +2,18 @@ package eu.ydp.empiria.player.client.module.connection.presenter;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
-import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
 import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
 import eu.ydp.gwtutil.client.collections.KeyValue;
-import eu.ydp.gwtutil.client.debug.gwtlogger.ILogger;
-import eu.ydp.gwtutil.client.debug.gwtlogger.Logger;
 
 import java.util.List;
 
@@ -23,11 +21,9 @@ import static eu.ydp.empiria.player.client.module.components.multiplepair.Multip
 
 public class ConnectionModulePresenterImpl implements ConnectionModulePresenter, PairConnectEventHandler {
 
-    ILogger log = new Logger();
-
     private MatchInteractionBean bean;
 
-    ConnectionModuleModel model;
+    private ConnectionModuleModel model;
 
     private ShowAnswersType lastAnswerType = ShowAnswersType.USER;
 
@@ -57,7 +53,7 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
     }
 
     @Override
-    public void setModuleView(MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView) {
+    public void setModuleView(MultiplePairModuleView moduleView) {
         this.moduleView = moduleView;
     }
 
@@ -111,7 +107,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
                 break;
             case WRONG_CONNECTION:
             default:
-                handleWrongConnection();
                 break;
         }
     }
@@ -143,10 +138,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
         } else {
             moduleView.disconnect(event.getSourceItem(), event.getTargetItem());
         }
-    }
-
-    private void handleWrongConnection() {
-        log.warning("ConnectionModulePresenter: wrong connection");
     }
 
     private ConnectionDirectedPairDTO getDirectedPair(PairConnectEvent event) {
@@ -269,8 +260,6 @@ public class ConnectionModulePresenterImpl implements ConnectionModulePresenter,
 
         if (markMode) {
             moduleView.connect(answersPair.getKey(), answersPair.getValue(), type);
-            // TODO: jesli dana pozycja nie jest zaznaczona wcale to
-            // wyslac MultiplePairModuleConnectType.NONE ??
         } else {
             moduleView.connect(answersPair.getKey(), answersPair.getValue(), MultiplePairModuleConnectType.NORMAL);
         }

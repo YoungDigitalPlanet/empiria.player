@@ -11,11 +11,11 @@ import com.google.gwt.user.client.ui.Widget;
 import eu.ydp.empiria.player.client.module.connection.item.ConnectionItem;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveEndEvent;
 import eu.ydp.empiria.player.client.module.connection.view.event.ConnectionMoveStartEvent;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchEvent;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.TouchTypes;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.HasTouchHandlers;
 import eu.ydp.empiria.player.client.util.events.internal.emulate.handlers.TouchHandler;
-import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import javax.annotation.PostConstruct;

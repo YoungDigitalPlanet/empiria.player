@@ -36,43 +36,32 @@ public class ConnectionModuleViewImplHandlersTest {
 
     @InjectMocks
     private ConnectionModuleViewImplHandlers testObj;
-
     @Mock
     private ConnectionModuleViewImpl view;
-
     @Mock
     private ConnectionPairEntry<ConnectionItem, ConnectionItem> connectionPairEntry;
-
     @Mock
     private ConnectionPairEntry<Double, Double> lastPoint;
-
     @Mock
     private ConnectionPairEntry<String, String> stringConnectionPairEntry;
-
     @Mock
     private ConnectionItem sourceConnectionItem;
-
+    @Mock
+    private ConnectionItem targetConnectionItem;
     @Mock
     private PairChoiceBean bean;
-
     @Mock
     private ConnectionItemPairFinder pairFinder;
-
     @Mock
     private ConnectionItems connectionItems;
-
     @Mock
     private UserAgentCheckerWrapper userAgent;
-
     @Mock
     private ConnectionsBetweenItemsFinder connectionsFinder;
-
     @Mock
     private EventsBus eventsBus;
-
     @Mock
     private PositionHelper positionHelper;
-
     @Mock
     private ConnectionSurfacesManager surfacesManager;
 
@@ -80,6 +69,8 @@ public class ConnectionModuleViewImplHandlersTest {
     public void setUp() {
         testObj.setView(view);
 
+        when(sourceConnectionItem.getColumn()).thenReturn(ConnectionItem.Column.LEFT);
+        when(targetConnectionItem.getColumn()).thenReturn(ConnectionItem.Column.RIGHT);
         when(sourceConnectionItem.getBean()).thenReturn(bean);
         when(connectionPairEntry.getSource()).thenReturn(sourceConnectionItem);
         when(view.getConnectionItemPair()).thenReturn(connectionPairEntry);
@@ -117,56 +108,57 @@ public class ConnectionModuleViewImplHandlersTest {
     }
 
     @Test
-    public void testOnConnectionMove_elementNotFound_mayConnect() {
+    public void testOnConnectionMoveEnd_elementNotFound_mayConnect() {
         // given
         final ConnectionMoveEndEvent event = mock(ConnectionMoveEndEvent.class);
         when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
                 Optional.<ConnectionItem>absent());
         when(view.isLocked()).thenReturn(false);
+        when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(targetConnectionItem));
 
         // when
         testObj.onConnectionMoveEnd(event);
 
         // then
-        verify(view, times(0)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
-        verify(view, times(0)).connect(eq(sourceConnectionItem), any(ConnectionItem.class), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
+        verify(view, never()).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
+        verify(view, never()).connect(eq(sourceConnectionItem), any(ConnectionItem.class), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
         verify(view).clearSurface(sourceConnectionItem);
     }
 
     @Test
-    public void testOnConnectionMove_elementNotFound_mayNotConnect() {
+    public void testOnConnectionMoveEnd_elementNotFound_mayNotConnect() {
         // given
         final ConnectionMoveEndEvent event = mock(ConnectionMoveEndEvent.class);
         when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
                 Optional.<ConnectionItem>absent());
         when(view.isLocked()).thenReturn(false);
-        final ConnectionItem targetConnectionItem = ConnectionItemFluentMockBuilder.newConnectionItem().build();
         when(connectionPairEntry.getTarget()).thenReturn(targetConnectionItem);
+        when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(targetConnectionItem));
 
         // when
         testObj.onConnectionMoveEnd(event);
 
         // then
-        verify(view, times(0)).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
-        verify(view, times(1)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
+        verify(view, never()).drawLineBetween(eq(sourceConnectionItem), anyInt(), anyInt());
+        verify(view).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
         verify(view).clearSurface(sourceConnectionItem);
     }
 
     @Test
-    public void testOnConnectionMove_elementFound() {
+    public void testOnConnectionMoveEnd_elementFound() {
         // given
         final ConnectionMoveEndEvent event = mock(ConnectionMoveEndEvent.class);
-        final ConnectionItem targetConnectionItem = ConnectionItemFluentMockBuilder.newConnectionItem().build();
         when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
                 Optional.of(targetConnectionItem));
         when(view.isLocked()).thenReturn(false);
+        when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(targetConnectionItem));
 
         // when
         testObj.onConnectionMoveEnd(event);
 
         // then
-        verify(view, times(1)).drawLineBetween(sourceConnectionItem, targetConnectionItem);
-        verify(view, times(0)).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
+        verify(view).drawLineBetween(sourceConnectionItem, targetConnectionItem);
+        verify(view, never()).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
         verify(view).clearSurface(sourceConnectionItem);
     }
 
@@ -308,6 +300,46 @@ public class ConnectionModuleViewImplHandlersTest {
 
         // then
 
+    }
+
+    @Test
+    public void shouldCancelConnection_whenDuringEndMouseWereNotOnConnectionItem() {
+        // given
+        final ConnectionMoveEndEvent event = mock(ConnectionMoveEndEvent.class);
+        when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
+                Optional.of(targetConnectionItem));
+        when(view.isLocked()).thenReturn(false);
+        when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.<ConnectionItem>absent());
+
+        // when
+        testObj.onConnectionMoveEnd(event);
+
+        // then
+        verify(view, never()).drawLineBetween(sourceConnectionItem, targetConnectionItem);
+        verify(view, never()).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
+        verify(view).clearSurface(sourceConnectionItem);
+        verify(view).resetTouchConnections();
+    }
+
+    @Test
+    public void shouldCancelConnection_whenConnectedItemsWereInSameColumn() {
+        // given
+        final ConnectionMoveEndEvent event = mock(ConnectionMoveEndEvent.class);
+        when(pairFinder.findConnectionItemForCoordinates(anyCollectionOf(ConnectionItem.class), anyInt(), anyInt())).thenReturn(
+                Optional.of(targetConnectionItem));
+        when(view.isLocked()).thenReturn(false);
+        when(connectionsFinder.findConnectionItemForEventOnWidget(event, view, connectionItems)).thenReturn(Optional.of(targetConnectionItem));
+        when(sourceConnectionItem.getColumn()).thenReturn(ConnectionItem.Column.LEFT);
+        when(targetConnectionItem.getColumn()).thenReturn(ConnectionItem.Column.LEFT);
+
+        // when
+        testObj.onConnectionMoveEnd(event);
+
+        // then
+        verify(view, never()).drawLineBetween(sourceConnectionItem, targetConnectionItem);
+        verify(view, never()).connect(eq(sourceConnectionItem), eq(targetConnectionItem), eq(MultiplePairModuleConnectType.NORMAL), (eq(Boolean.TRUE)));
+        verify(view).clearSurface(sourceConnectionItem);
+        verify(view).resetTouchConnections();
     }
 
 }
