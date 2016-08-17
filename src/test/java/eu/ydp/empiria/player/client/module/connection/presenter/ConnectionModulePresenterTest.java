@@ -9,15 +9,14 @@ import eu.ydp.empiria.player.client.controller.variables.objects.response.Correc
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseValue;
-import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
-import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.ResponseModelChangeListener;
-import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleConnectType;
 import eu.ydp.empiria.player.client.module.components.multiplepair.MultiplePairModuleView;
 import eu.ydp.empiria.player.client.module.connection.ConnectionModuleModel;
 import eu.ydp.empiria.player.client.module.connection.structure.MatchInteractionBean;
-import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
+import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
+import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEvent;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 import org.junit.Before;
@@ -43,7 +42,7 @@ public class ConnectionModulePresenterTest extends AbstractJAXBTestBase<MatchInt
     private static final Integer DEFAULT_MATCH_MAX = 2;
 
     private ConnectionModulePresenterImpl connectionModulePresenter;
-    private MultiplePairModuleView<SimpleAssociableChoiceBean> moduleView;
+    private MultiplePairModuleView moduleView;
     private ConnectionModuleModel connectionModuleModel;
 
     @Test
@@ -249,7 +248,6 @@ public class ConnectionModulePresenterTest extends AbstractJAXBTestBase<MatchInt
         Mockito.verify(connectionModuleModel, Mockito.never()).addAnswer(concatNodes(CONNECTION_RESPONSE_1_0, CONNECTION_RESPONSE_1_1));
     }
 
-    @SuppressWarnings("unchecked")
     @Before
     public void init() {
         connectionModulePresenter = spy(new ConnectionModulePresenterImpl());

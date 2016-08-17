@@ -11,12 +11,19 @@ import eu.ydp.empiria.player.client.module.components.multiplepair.structure.Pai
 public class ConnectionItemImpl implements ConnectionItem {
     private final AbstractConnectionItemView view;
     private final PairChoiceBean bean;
+    private final Column column;
 
     @Inject
     public ConnectionItemImpl(ConnectionModuleFactory itemViewFactory, @Assisted InlineBodyGeneratorSocket socket, @Assisted PairChoiceBean bean,
                               @Assisted Column column) {
         this.bean = bean;
+        this.column = column;
         view = column == Column.LEFT ? itemViewFactory.getConnectionItemViewLeft(bean, socket) : itemViewFactory.getConnectionItemViewRight(bean, socket);
+    }
+
+    @Override
+    public Column getColumn() {
+        return column;
     }
 
     @Override

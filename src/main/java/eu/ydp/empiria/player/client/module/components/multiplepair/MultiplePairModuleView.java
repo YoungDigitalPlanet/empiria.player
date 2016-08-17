@@ -3,16 +3,16 @@ package eu.ydp.empiria.player.client.module.components.multiplepair;
 import com.google.gwt.user.client.ui.IsWidget;
 import eu.ydp.empiria.player.client.module.ModuleSocket;
 import eu.ydp.empiria.player.client.module.components.multiplepair.structure.MultiplePairBean;
-import eu.ydp.empiria.player.client.module.components.multiplepair.structure.PairChoiceBean;
 import eu.ydp.empiria.player.client.module.connection.presenter.ConnectionModulePresenter;
+import eu.ydp.empiria.player.client.module.connection.structure.SimpleAssociableChoiceBean;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventHandler;
 import eu.ydp.empiria.player.client.util.events.internal.multiplepair.PairConnectEventTypes;
 
-public interface MultiplePairModuleView<T extends PairChoiceBean> extends IsWidget {
+public interface MultiplePairModuleView extends IsWidget {
 
     void bindView();
 
-    void setBean(MultiplePairBean<T> modelInterface);
+    void setBean(MultiplePairBean<SimpleAssociableChoiceBean> modelInterface);
 
     /**
      * Jezeli istnieja jakies polaczenia i zostanie wywolana ta metoda to dla
