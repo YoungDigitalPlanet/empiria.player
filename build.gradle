@@ -65,7 +65,7 @@ repositories {
     }
     mavenCentral()
     maven {
-        url 'http://gwtquery-plugins.googlecode.com/svn/mavenrepo/'
+        url 'https://code.lds.org/nexus/content/repositories/thirdparty/'
     }
 }
 

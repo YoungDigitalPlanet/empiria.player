@@ -27,7 +27,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
-public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAssociableChoiceBean> {
+public class ConnectionModuleViewImpl implements MultiplePairModuleView {
 
     @Inject
     private UserAgentCheckerWrapper userAgent;
@@ -91,6 +91,7 @@ public class ConnectionModuleViewImpl implements MultiplePairModuleView<SimpleAs
     public void reset() {
         connectionSurfacesManager.resetAll(connectedSurfaces);
         connectionItems.resetAllItems();
+        resetTouchConnections();
     }
 
     public void connect(ConnectionItem source, ConnectionItem target, MultiplePairModuleConnectType type, boolean userAction) {

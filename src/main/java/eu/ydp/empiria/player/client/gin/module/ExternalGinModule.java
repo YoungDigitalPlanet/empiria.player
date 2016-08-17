@@ -10,6 +10,7 @@ import eu.ydp.empiria.player.client.module.external.common.sound.ExternalSoundIn
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.module.external.interaction.ExternalInteractionResponseModel;
+import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiProvider;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleStructure;
@@ -37,6 +38,8 @@ public class ExternalGinModule extends BaseGinModule {
         bindModuleScoped(ExternalInteractionEmpiriaApi.class, new TypeLiteral<ModuleScopedProvider<ExternalInteractionEmpiriaApi>>() {
         });
         bindModuleScoped(ExternalStateSaver.class, new TypeLiteral<ModuleScopedProvider<ExternalStateSaver>>() {
+        });
+        bindModuleScoped(ExternalApiProvider.class, new TypeLiteral<ModuleScopedProvider<ExternalApiProvider>>() {
         });
 
         install(new GinFactoryModuleBuilder().build(ExternalInteractionModuleFactory.class));

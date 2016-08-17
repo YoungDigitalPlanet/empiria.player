@@ -9,6 +9,8 @@ public interface ConnectionItem extends IsWidget {
         LEFT, RIGHT
     }
 
+    Column getColumn();
+
     public PairChoiceBean getBean();
 
     public void reset();
