@@ -15,7 +15,7 @@ public class ExternalInteractionStateProvider {
     private final ExternalStateEncoder stateEncoder;
 
     @Inject
-    public ExternalInteractionStateProvider(@ModuleScoped ExternalApiProvider externalApi, ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
+    public ExternalInteractionStateProvider(@ModuleScoped ExternalApiProvider externalApi, @ModuleScoped ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder) {
         this.externalApi = externalApi;
         this.stateSaver = stateSaver;
         this.stateEncoder = stateEncoder;
