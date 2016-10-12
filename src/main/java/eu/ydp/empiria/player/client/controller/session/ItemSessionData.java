@@ -8,7 +8,7 @@ import eu.ydp.empiria.player.client.controller.session.datasockets.ItemSessionDa
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemVariableStorageImpl;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 
 import java.util.Date;
 import java.util.Map;
@@ -20,18 +20,18 @@ public class ItemSessionData implements ItemSessionDataSocket {
     private long timeStarted;
     private int time;
     private JSONArray itemBodyState;
-    private final ItemVariableStorageImpl<Outcome> variableStorage;
+    private final ItemOutcomeStorageImpl outcomeStorage;
 
     public ItemSessionData() {
         timeStarted = 0;
         time = 0;
         itemBodyState = new JSONArray();
-        variableStorage = new ItemVariableStorageImpl<Outcome>();
+        outcomeStorage = new ItemOutcomeStorageImpl();
     }
 
     public void begin() {
         timeStarted = getCurrentTimeInSeconds();
-        variableStorage.putVariable("VISITED", new Outcome("VISITED", Cardinality.SINGLE, "TRUE"));
+        outcomeStorage.putVariable("VISITED", new Outcome("VISITED", Cardinality.SINGLE, "TRUE"));
     }
 
     public void end() {
@@ -58,7 +58,7 @@ public class ItemSessionData implements ItemSessionDataSocket {
     public JSONValue getState() {
         JSONArray stateArr = new JSONArray();
         stateArr.set(0, itemBodyState);
-        stateArr.set(1, variableStorage.toJSON());
+        stateArr.set(1, outcomeStorage.toJSON());
 
         // instead of time return zero value - related to scorm documentation empiria should always return times of last session
         // zero is returned to keep compatibility with older player version and between states generated with different players
@@ -70,7 +70,7 @@ public class ItemSessionData implements ItemSessionDataSocket {
         JSONArray stateArr = (JSONArray) value;
         if (stateArr.size() == NUMBER_OF_ELEMENTS_IN_STATE) {
             itemBodyState = stateArr.get(0).isArray();
-            variableStorage.fromJSON(stateArr.get(1));
+            outcomeStorage.fromJSON(stateArr.get(1));
         }
     }
 
@@ -83,11 +83,11 @@ public class ItemSessionData implements ItemSessionDataSocket {
     }
 
     public void updateVariables(Map<String, Outcome> variablesMap) {
-        variableStorage.importFromMap(variablesMap);
+        outcomeStorage.importFromMap(variablesMap);
     }
 
-    public Map<String, Outcome> getOutcomeVariablesMap() {
-        return variableStorage.getVariablesMap();
+    public ItemOutcomeStorageImpl getOutcomeStorage() {
+        return outcomeStorage;
     }
 
     public ItemSessionDataSocket getItemSessionDataSocket() {
@@ -112,12 +112,12 @@ public class ItemSessionData implements ItemSessionDataSocket {
     }-*/;
 
     private JavaScriptObject getVariableStorageJsSocket() {
-        return variableStorage.getJsSocket();
+        return outcomeStorage.getJsSocket();
     }
 
     @Override
     public VariableProviderSocket getVariableProviderSocket() {
-        return variableStorage;
+        return outcomeStorage;
     }
 
     public void resetItemState() {

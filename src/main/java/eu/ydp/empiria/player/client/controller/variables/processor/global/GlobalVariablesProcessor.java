@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.function.ResultVariablesExtractingFunctions;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
@@ -22,8 +23,8 @@ public class GlobalVariablesProcessor {
     @Inject
     private ResultVariablesConverter converter;
 
-    public GlobalVariables calculateGlobalVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+    public GlobalVariables calculateGlobalVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, VariableManager<Response> responseManager) {
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responseManager);
         int done = calculateSumOfDone(resultVariables);
         int todo = calculateSumOfTodoVariables(resultVariables);
         int mistakes = calculateSumOfMistakes(resultVariables);

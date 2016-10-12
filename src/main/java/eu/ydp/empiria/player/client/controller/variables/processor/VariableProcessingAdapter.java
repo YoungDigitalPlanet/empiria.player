@@ -1,15 +1,14 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFacade;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-
-import java.util.Map;
 
 public class VariableProcessingAdapter {
 
@@ -28,10 +27,10 @@ public class VariableProcessingAdapter {
         this.globalVariablesProvider = globalVariablesProvider;
     }
 
-    public void processResponseVariables(Map<String, Response> responses, Map<String, Outcome> outcomes, ProcessingMode processingMode) {
-        ModulesProcessingResults modulesProcessingResults = modulesVariablesProcessor.processVariablesForResponses(responses, processingMode);
-        GlobalVariables globalVariables = globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responses);
-        mapConverterFacade.convert(outcomes, modulesProcessingResults, globalVariables);
+    public void processResponseVariables(VariableManager<Response> responseManager, ItemOutcomeStorageImpl outcomeManager, ProcessingMode processingMode) {
+        ModulesProcessingResults modulesProcessingResults = modulesVariablesProcessor.processVariablesForResponses(responseManager, processingMode);
+        GlobalVariables globalVariables = globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responseManager);
+        mapConverterFacade.convert(outcomeManager, modulesProcessingResults, globalVariables);
         answerEvaluationProvider.updateModulesProcessingResults(modulesProcessingResults);
     }
 }

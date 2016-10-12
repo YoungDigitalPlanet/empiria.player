@@ -10,10 +10,13 @@ import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionPro
 import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.variables.objects.Variable;
+import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -47,17 +50,27 @@ public class ModuleFeedbackProcessor {
         feedbackActionCollector = feedbackActionCollectorProvider.get();
     }
 
-    public void processFeedbacks(Map<String, ? extends Variable> outcomes, IUniqueModule sender) {
+    public void processFeedbacks(ItemOutcomeStorageImpl outcomeManager, IUniqueModule sender) {
         if (feedbackRegistry.hasFeedbacks()) {
-            process(sender, outcomes);
+            process(sender, outcomeManager);
         }
     }
 
-    private void process(IModule sender, Map<String, ? extends Variable> variables) {
+    private void process(IModule sender, ItemOutcomeStorageImpl variables) {
         initializeFeedbackActionCollector();
         feedbackActionCollector.setSource(sender);
-        propertiesCollector.setVariables(variables);
+        propertiesCollector.setVariables(createVariables(variables));
         processFeedbackActionCollector(sender);
+    }
+
+    private Map<String, Outcome> createVariables(ItemOutcomeStorageImpl outcomeStorage) {
+        HashMap<String, Outcome> result = new HashMap<>();
+
+        for (String id : outcomeStorage.getVariableIdentifiers()) {
+            result.put(id, outcomeStorage.getVariable(id));
+        }
+
+        return result;
     }
 
     private void processFeedbackActionCollector(IModule source) {

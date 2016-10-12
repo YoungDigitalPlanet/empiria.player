@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -12,7 +13,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ResponseChangesFinder {
 
@@ -25,11 +25,11 @@ public class ResponseChangesFinder {
         this.orderedResponseChangesFinder = ordererResponseChangesFinder;
     }
 
-    public List<DtoProcessedResponse> findChangesOfAnswers(ModulesProcessingResults processingResults, Map<String, Response> responses) {
+    public List<DtoProcessedResponse> findChangesOfAnswers(ModulesProcessingResults processingResults, VariableManager<Response> responseManager) {
         List<DtoProcessedResponse> changedResponses = new ArrayList<DtoProcessedResponse>();
 
-        for (String responseIdentifier : responses.keySet()) {
-            Response response = responses.get(responseIdentifier);
+        for (String responseIdentifier : responseManager.getVariableIdentifiers()) {
+            Response response = responseManager.getVariable(responseIdentifier);
             DtoModuleProcessingResult previousProcessingResult = processingResults.getProcessingResultsForResponseId(responseIdentifier);
 
             DtoProcessedResponse changedResponse = getChangedResponseForResponseId(response, previousProcessingResult);

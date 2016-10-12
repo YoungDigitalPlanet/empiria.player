@@ -14,6 +14,8 @@ import java.util.Vector;
 
 public class Outcome extends Variable {
 
+    public static final String OUTCOME = "Outcome";
+
     public Outcome() {
         super();
     }
@@ -74,7 +76,7 @@ public class Outcome extends Variable {
     @Override
     public JSONValue toJSON() {
         JSONArray jsonArr = new JSONArray();
-        jsonArr.set(0, new JSONString("Outcome"));
+        jsonArr.set(0, new JSONString(OUTCOME));
         jsonArr.set(1, new JSONString(identifier));
         jsonArr.set(2, new JSONString(cardinality.toString()));
         jsonArr.set(3, new JSONString(""));

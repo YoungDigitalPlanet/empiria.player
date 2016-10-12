@@ -1,13 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.grouped.GroupedAnswersManager;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-
-import java.util.Map;
 
 public class VariablesProcessingModulesInitializer {
 
@@ -23,11 +21,11 @@ public class VariablesProcessingModulesInitializer {
         this.mistakesInitializer = mistakesInitializer;
     }
 
-    public void initializeVariableProcessingModules(Map<String, Response> responses, Map<String, Outcome> outcomes) {
+    public void initializeVariableProcessingModules(ItemResponseManager responseManager, ItemOutcomeStorageImpl outcomeManager) {
 
-        groupedAnswersManager.initialize(responses);
-        modulesVariablesProcessor.initialize(responses);
-        mistakesInitializer.initialize(outcomes);
+        groupedAnswersManager.initialize(responseManager);
+        modulesVariablesProcessor.initialize(responseManager);
+        mistakesInitializer.initialize(outcomeManager);
     }
 
 }
