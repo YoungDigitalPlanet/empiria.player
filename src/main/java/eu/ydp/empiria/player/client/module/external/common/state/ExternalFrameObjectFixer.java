@@ -8,6 +8,10 @@ import javax.inject.Singleton;
 public class ExternalFrameObjectFixer {
 
     public native JavaScriptObject fix(JavaScriptObject object) /*-{
+      if (typeof object === "function") {
+        return {};
+      } else {
         return JSON.parse(JSON.stringify(object));
+      }
     }-*/;
 }
