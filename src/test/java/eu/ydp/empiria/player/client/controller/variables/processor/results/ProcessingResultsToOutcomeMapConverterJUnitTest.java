@@ -4,6 +4,7 @@ import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.*;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,18 +18,18 @@ import static org.junit.Assert.assertNotNull;
 public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 
     private ProcessingResultsToOutcomeMapConverter resultsToOutcomeMapConverter;
-    private Map<String, Outcome> outcomes;
     private ModulesProcessingResults modulesProcessingResults;
     private final String variableIdentifier = "variableID";
     private AnswersChangesFormater answerChangesFormatter;
+    private ItemOutcomeStorageImpl outcomeManager;
 
     @Before
     public void setUp() {
         modulesProcessingResults = new ModulesProcessingResults(new InitialProcessingResultFactory());
-        outcomes = Maps.newHashMap();
 
         answerChangesFormatter = new AnswersChangesFormater();
-        resultsToOutcomeMapConverter = new ProcessingResultsToOutcomeMapConverter(null, answerChangesFormatter);
+        outcomeManager = new ItemOutcomeStorageImpl();
+        resultsToOutcomeMapConverter = new ProcessingResultsToOutcomeMapConverter(outcomeManager, answerChangesFormatter);
     }
 
     @Test
@@ -78,7 +79,7 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
 
     private void assertModuleVariableExistsWithValues(VariableName variableName, List<String> values) {
         String variableId = (variableIdentifier + "-" + variableName);
-        Outcome outcome = outcomes.get(variableId);
+        Outcome outcome = outcomeManager.getVariable(variableId);
         assertNotNull(outcome);
         assertEquals(values, outcome.values);
     }
@@ -118,7 +119,7 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
     }
 
     private void assertVariableExists(String variableId, String variableValue) {
-        Outcome outcome = outcomes.get(variableId);
+        Outcome outcome = outcomeManager.getVariable(variableId);
         assertNotNull(outcome);
         assertEquals(variableValue, outcome.values.get(0));
     }
