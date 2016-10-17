@@ -46,7 +46,7 @@ public class ItemOutcomeStorageImpl extends VariablePossessorBase<Outcome> {
             for (int i = 0; i < jsonArr.size(); i++) {
                 if (!(jsonArr.get(0) instanceof JSONNull) && !(jsonArr.get(i).isArray().get(0) instanceof JSONNull)) {
                     String type = jsonArr.get(i).isArray().get(0).isString().stringValue();
-                    if (type.equals(Outcome.OUTCOME)) {
+                    if (type.equals(Outcome.OLD_OUTCOME) || type.equals(Outcome.OUTCOME)) {
                         Outcome o = new Outcome();
                         o.fromJSON(jsonArr.get(i));
                         variables.put(o.identifier, o);

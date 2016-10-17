@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.communication.DisplayOptions;
@@ -7,26 +8,37 @@ import eu.ydp.empiria.player.client.controller.communication.FlowOptions;
 import eu.ydp.empiria.player.client.controller.delivery.DeliveryEngineSocket;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEvent;
 import eu.ydp.empiria.player.client.controller.events.delivery.DeliveryEventType;
+import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaState;
+import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaStateImportCreator;
+import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaStateExportCreator;
+import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.EmpiriaStateSerializer;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEngineSocketUserExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.DeliveryEventsListenerExtension;
 import eu.ydp.empiria.player.client.controller.extensions.types.PlayerJsObjectModifierExtension;
 import eu.ydp.empiria.player.client.controller.flow.FlowDataSupplier;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkMode;
 import eu.ydp.empiria.player.client.controller.workmode.PlayerWorkModeService;
-import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 
 public class PlayerCoreApiExtension extends InternalExtension implements DeliveryEngineSocketUserExtension, PlayerJsObjectModifierExtension,
         DeliveryEventsListenerExtension {
 
-    @Inject
-    private EventsBus eventsBus;
-    @Inject
-    private FlowDataSupplier flowDataSupplier;
-    @Inject
-    private PlayerWorkModeService workModeService;
+    private final FlowDataSupplier flowDataSupplier;
+    private final PlayerWorkModeService workModeService;
+    private final EmpiriaStateImportCreator empiriaStateImportCreator;
+    private final EmpiriaStateExportCreator empiriaStateExportCreator;
+    private final EmpiriaStateSerializer empiriaStateSerializer;
 
     private JavaScriptObject playerJsObject;
     private DeliveryEngineSocket deliveryEngineSocket;
+
+    @Inject
+    public PlayerCoreApiExtension(FlowDataSupplier flowDataSupplier, PlayerWorkModeService workModeService, EmpiriaStateImportCreator empiriaStateImportCreator, EmpiriaStateExportCreator empiriaStateExportCreator, EmpiriaStateSerializer empiriaStateSerializer) {
+        this.flowDataSupplier = flowDataSupplier;
+        this.workModeService = workModeService;
+        this.empiriaStateImportCreator = empiriaStateImportCreator;
+        this.empiriaStateExportCreator = empiriaStateExportCreator;
+        this.empiriaStateSerializer = empiriaStateSerializer;
+    }
 
     @Override
     public void init() {
@@ -98,8 +110,11 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
 
     private void importState() {
         String state = callImportStateStringJs(playerJsObject);
-        if (!"".equals(state)) {
-            deliveryEngineSocket.setStateString(state);
+
+        if (!Strings.isNullOrEmpty(state)) {
+
+            String empiriaState = empiriaStateImportCreator.createState(state);
+            deliveryEngineSocket.setStateString(empiriaState);
         }
     }
 
@@ -110,7 +125,9 @@ public class PlayerCoreApiExtension extends InternalExtension implements Deliver
     }-*/;
 
     private String exportState() {
-        return deliveryEngineSocket.getStateString();
+        String stateString = deliveryEngineSocket.getStateString();
+        EmpiriaState empiriaState = empiriaStateExportCreator.create(stateString);
+        return empiriaStateSerializer.serialize(empiriaState).toString();
     }
 
     private int exportItemIndex() {

@@ -14,7 +14,8 @@ import java.util.Vector;
 
 public class Outcome extends Variable {
 
-    public static final String OUTCOME = "Outcome";
+    public static final String OUTCOME = "O";
+    public static final String OLD_OUTCOME = "Outcome";
 
     private String interpretation;
     private double normalMaximum;
