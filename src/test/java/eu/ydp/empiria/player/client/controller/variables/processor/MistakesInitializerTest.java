@@ -58,17 +58,17 @@ public class MistakesInitializerTest {
         DtoModuleProcessingResult dtoModuleProcessingResult2 = DtoModuleProcessingResult.fromDefaultVariables();
         DtoModuleProcessingResult dtoModuleProcessingResult3 = DtoModuleProcessingResult.fromDefaultVariables();
 
-        when(outcomeController.getAllMistakes(outcomes)).thenReturn(mistakeResponses);
+        when(outcomeController.getAllMistakes(null)).thenReturn(mistakeResponses);
         when(processingResults.getProcessingResultsForResponseId(id1)).thenReturn(dtoModuleProcessingResult1);
         when(processingResults.getProcessingResultsForResponseId(id2)).thenReturn(dtoModuleProcessingResult2);
         when(processingResults.getProcessingResultsForResponseId(id3)).thenReturn(dtoModuleProcessingResult3);
 
         // when
-        mistakesInitializer.initialize(outcomes);
+        mistakesInitializer.initialize(null);
 
         // then
         InOrder inOrder = inOrder(processingResults, outcomeController);
-        inOrder.verify(outcomeController).getAllMistakes(outcomes);
+        inOrder.verify(outcomeController).getAllMistakes(null);
         verify(processingResults).getProcessingResultsForResponseId(id1);
         verify(processingResults).getProcessingResultsForResponseId(id2);
         verify(processingResults).getProcessingResultsForResponseId(id3);

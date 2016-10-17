@@ -1,6 +1,9 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+import com.sun.xml.internal.bind.v2.model.core.ID;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
@@ -15,6 +18,8 @@ import static com.google.inject.Guice.createInjector;
 import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.*;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult.fromDefaultVariables;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ResultVariablesConverterJUnitTest {
 
@@ -24,11 +29,14 @@ public class ResultVariablesConverterJUnitTest {
     public void singleDefaultResponseWithoutChanges() {
         // given
         String ID = "id1";
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID)).thenReturn(createResponse(ID));
+
         Map<String, DtoModuleProcessingResult> modulesProcessingResults = ImmutableMap.of(ID, fromDefaultVariables());
-        Map<String, Response> responses = ImmutableMap.of(ID, createResponse(ID));
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE));
@@ -44,12 +52,14 @@ public class ResultVariablesConverterJUnitTest {
         final LastMistaken LAST_MISTAKEN = LastMistaken.WRONG;
         final int MISTAKES = 9;
 
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID)).thenReturn(createResponse(ID));
+
         DtoModuleProcessingResult processingResult = prepareProcessingResults(TODO, DONE, ERRORS, MISTAKES, LAST_MISTAKEN);
         Map<String, DtoModuleProcessingResult> modulesProcessingResults = ImmutableMap.of(ID, processingResult);
-        Map<String, Response> responses = ImmutableMap.of(ID, createResponse(ID));
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).containsOnly(new GlobalVariables(TODO, DONE, ERRORS, MISTAKES, LAST_MISTAKEN));
@@ -61,10 +71,14 @@ public class ResultVariablesConverterJUnitTest {
         String ID_0 = "id0";
         String ID_1 = "id1";
         Map<String, DtoModuleProcessingResult> modulesProcessingResults = ImmutableMap.of(ID_0, fromDefaultVariables(), ID_1, fromDefaultVariables());
-        Map<String, Response> responses = ImmutableMap.of(ID_0, createResponse(ID_0), ID_1, createResponse(ID_1));
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID_0)).thenReturn(createResponse(ID_0));
+        when(givenItemResponseManager.getVariable(ID_1)).thenReturn(createResponse(ID_1));
+
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).containsOnly(new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE), new GlobalVariables(0, 0, 0, 0, LastMistaken.NONE));
@@ -90,10 +104,13 @@ public class ResultVariablesConverterJUnitTest {
         DtoModuleProcessingResult processingResult0 = prepareProcessingResults(TODO_0, DONE_0, ERRORS_0, MISTAKES_0, LAST_MISTAKEN_0);
         DtoModuleProcessingResult processingResult1 = prepareProcessingResults(TODO_1, DONE_1, ERRORS_1, MISTAKES_1, LAST_MISTAKEN_1);
         Map<String, DtoModuleProcessingResult> modulesProcessingResults = ImmutableMap.of(ID_0, processingResult0, ID_1, processingResult1);
-        Map<String, Response> responses = ImmutableMap.of(ID_0, createResponse(ID_0), ID_1, createResponse(ID_1));
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID_0)).thenReturn(createResponse(ID_0));
+        when(givenItemResponseManager.getVariable(ID_1)).thenReturn(createResponse(ID_1));
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).hasSize(2);
@@ -130,10 +147,13 @@ public class ResultVariablesConverterJUnitTest {
         ExpressionBean expressionBean = new ExpressionBean();
         Response response0 = createExpressionResponse(ID_0, expressionBean);
         Response response1 = createExpressionResponse(ID_1, expressionBean);
-        Map<String, Response> responses = ImmutableMap.of(ID_0, response0, ID_1, response1);
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID_0)).thenReturn(response0);
+        when(givenItemResponseManager.getVariable(ID_1)).thenReturn(response1);
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).hasSize(1);
@@ -202,10 +222,14 @@ public class ResultVariablesConverterJUnitTest {
         Response response10 = createExpressionResponse(ID_1_0, expressionBean1);
         Response response11 = createExpressionResponse(ID_1_1, expressionBean1);
 
-        Map<String, Response> responses = ImmutableMap.of(ID_0_0, response00, ID_0_1, response01, ID_1_0, response10, ID_1_1, response11);
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID_0_0)).thenReturn(response00);
+        when(givenItemResponseManager.getVariable(ID_0_1)).thenReturn(response01);
+        when(givenItemResponseManager.getVariable(ID_1_0)).thenReturn(response10);
+        when(givenItemResponseManager.getVariable(ID_1_1)).thenReturn(response11);
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).containsOnly(new GlobalVariables(EXPR_TODO_0, EXPR_DONE_0, EXPR_ERRORS_0, EXPR_MISTAKES_0, EXPR_LAST_MISTAKEN_0),
@@ -253,10 +277,15 @@ public class ResultVariablesConverterJUnitTest {
         Response response0 = createExpressionResponse(ID_0, expressionBean);
         Response response1 = createExpressionResponse(ID_1, expressionBean);
         Response response2 = createResponse(ID_2);
-        Map<String, Response> responses = ImmutableMap.of(ID_0, response0, ID_1, response1, ID_2, response2);
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
+        when(givenItemResponseManager.getVariable(ID_0)).thenReturn(response0);
+        when(givenItemResponseManager.getVariable(ID_1)).thenReturn(response1);
+        when(givenItemResponseManager.getVariable(ID_2)).thenReturn(response2);
+        when(givenItemResponseManager.getVariableIdentifiers()).thenReturn(Sets.newHashSet(ID_0, ID_1, ID_2));
 
         // when
-        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, responses);
+        Iterable<ResultVariables> resultVariables = converter.convertToResultVariables(modulesProcessingResults, givenItemResponseManager);
 
         // then
         assertThat(resultVariables).contains(new GlobalVariables(EXPR_TODO, EXPR_DONE, EXPR_ERRORS, EXPR_MISTAKES, EXPR_LAST_MISTAKEN),

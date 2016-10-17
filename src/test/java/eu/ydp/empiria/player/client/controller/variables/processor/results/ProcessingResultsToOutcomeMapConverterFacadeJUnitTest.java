@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.results;
 import com.google.common.collect.Maps;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,17 +31,18 @@ public class ProcessingResultsToOutcomeMapConverterFacadeJUnitTest {
     @Test
     public void convert() {
         // given
-        HashMap<String, Outcome> outcomesMap = Maps.<String, Outcome>newHashMap();
+        ItemOutcomeStorageImpl givenOutcomeStorage = new ItemOutcomeStorageImpl();
+
         ModulesProcessingResults results = mock(ModulesProcessingResults.class);
         GlobalVariables globalVariables = mock(GlobalVariables.class);
         ProcessingResultsToOutcomeMapConverter converter = mock(ProcessingResultsToOutcomeMapConverter.class);
-        when(converterFactory.createConverter(anyMap())).thenReturn(converter);
+        when(converterFactory.createConverter(givenOutcomeStorage)).thenReturn(converter);
 
         // when
-        converterFacade.convert(outcomesMap, results, globalVariables);
+        converterFacade.convert(givenOutcomeStorage, results, globalVariables);
 
         // then
-        verify(converterFactory).createConverter(outcomesMap);
+        verify(converterFactory).createConverter(givenOutcomeStorage);
         verify(converter).updateOutcomeMapByModulesProcessingResults(results);
         verify(converter).updateOutcomeMapWithGlobalVariables(globalVariables);
     }

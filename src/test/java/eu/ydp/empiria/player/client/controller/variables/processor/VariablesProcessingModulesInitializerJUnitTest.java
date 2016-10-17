@@ -44,11 +44,11 @@ public class VariablesProcessingModulesInitializerJUnitTest {
     public void shouldCallAllRelatedInitializations() throws Exception {
         Map<String, Response> responses = Maps.newHashMap();
         Map<String, Outcome> outcomes = Maps.newHashMap();
-        variablesProcessingModulesInitializer.initializeVariableProcessingModules(responses, outcomes);
+        variablesProcessingModulesInitializer.initializeVariableProcessingModules(null, null);
 
         InOrder inOrder = inOrder(groupedAnswersManager, modulesVariablesProcessor, mistakesInitializer);
-        inOrder.verify(groupedAnswersManager).initialize(responses);
-        inOrder.verify(modulesVariablesProcessor).initialize(responses);
-        inOrder.verify(mistakesInitializer).initialize(outcomes);
+        inOrder.verify(groupedAnswersManager).initialize(null);
+        inOrder.verify(modulesVariablesProcessor).initialize(null);
+        inOrder.verify(mistakesInitializer).initialize(null);
     }
 }

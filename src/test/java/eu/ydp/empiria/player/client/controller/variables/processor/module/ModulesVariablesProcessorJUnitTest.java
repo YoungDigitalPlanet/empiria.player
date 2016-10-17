@@ -53,8 +53,8 @@ public class ModulesVariablesProcessorJUnitTest {
 
     @Test
     public void shouldInitializeConstantVariables() throws Exception {
-        modulesVariablesProcessor.initialize(responses);
-        verify(constantVariablesInitializer).initializeTodoVariables(responses, processingResults);
+        modulesVariablesProcessor.initialize(null);
+        verify(constantVariablesInitializer).initializeTodoVariables(null, processingResults);
     }
 
     @Test
@@ -62,11 +62,11 @@ public class ModulesVariablesProcessorJUnitTest {
         DtoProcessedResponse processedResponse = createProcessedResponseWithChanges();
         List<DtoProcessedResponse> changedResponses = Lists.newArrayList(processedResponse);
 
-        when(responseChangesFinder.findChangesOfAnswers(processingResults, responses)).thenReturn(changedResponses);
+        when(responseChangesFinder.findChangesOfAnswers(processingResults, null)).thenReturn(changedResponses);
 
-        modulesVariablesProcessor.processVariablesForResponses(responses, processingMode);
+        modulesVariablesProcessor.processVariablesForResponses(null, processingMode);
 
-        verify(responseChangesFinder).findChangesOfAnswers(processingResults, responses);
+        verify(responseChangesFinder).findChangesOfAnswers(processingResults, null);
         verify(responseVariablesProcessor).processChangedResponse(processedResponse, processingMode);
     }
 
@@ -75,11 +75,11 @@ public class ModulesVariablesProcessorJUnitTest {
         DtoProcessedResponse processedResponse = createProcessedResponseWithoutChanges();
         List<DtoProcessedResponse> changedResponses = Lists.newArrayList(processedResponse);
 
-        when(responseChangesFinder.findChangesOfAnswers(processingResults, responses)).thenReturn(changedResponses);
+        when(responseChangesFinder.findChangesOfAnswers(processingResults, null)).thenReturn(changedResponses);
 
-        modulesVariablesProcessor.processVariablesForResponses(responses, processingMode);
+        modulesVariablesProcessor.processVariablesForResponses(null, processingMode);
 
-        verify(responseChangesFinder).findChangesOfAnswers(processingResults, responses);
+        verify(responseChangesFinder).findChangesOfAnswers(processingResults, null);
         verify(responseVariablesProcessor).resetLastUserInteractionVariables(processedResponse.getPreviousProcessingResult().getUserInteractionVariables());
     }
 

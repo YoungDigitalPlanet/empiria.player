@@ -45,7 +45,7 @@ public class VariableProcessingAdapterTest {
 
     @Before
     public void setUp() throws Exception {
-        when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode)).thenReturn(modulesProcessingResults);
+        when(modulesVariablesProcessor.processVariablesForResponses(null, processingMode)).thenReturn(modulesProcessingResults);
     }
 
     @Test
@@ -57,20 +57,20 @@ public class VariableProcessingAdapterTest {
         when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
         GlobalVariables globalVariables = mock(GlobalVariables.class);
-        when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responses)).thenReturn(globalVariables);
+        when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, null)).thenReturn(globalVariables);
 
         // when
-        testObj.processResponseVariables(responses, outcomes, processingMode);
+        testObj.processResponseVariables(null, null, processingMode);
 
         // then
-        verify(modulesVariablesProcessor).processVariablesForResponses(responses, processingMode);
-        verify(resultsToOutcomeMapConverterFacade).convert(outcomes, modulesProcessingResults, globalVariables);
+        verify(modulesVariablesProcessor).processVariablesForResponses(null, processingMode);
+        verify(resultsToOutcomeMapConverterFacade).convert(null, modulesProcessingResults, globalVariables);
     }
 
     @Test
     public void shouldUpdateAnswerEvaluationProvider() throws Exception {
         // when
-        testObj.processResponseVariables(responses, outcomes, processingMode);
+        testObj.processResponseVariables(null, null, processingMode);
 
         // then
         verify(answerEvaluationProvider).updateModulesProcessingResults(modulesProcessingResults);

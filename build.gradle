@@ -26,9 +26,9 @@ def buildProfile = project.getProperties().get('buildProfile', 'develop')
 println "Picked build profile [$buildProfile]"
 
 apply plugin: 'java'
-apply plugin: 'jacoco'
+//apply plugin: 'jacoco'
 apply plugin: 'eclipse'
-apply plugin: 'sonar-runner'
+//apply plugin: 'sonar-runner'
 apply from: "gradle/profiles/${buildProfile}.gradle"
 apply plugin: 'ivy-publish'
 apply plugin: "groovy"
@@ -91,6 +91,8 @@ dependencies {
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
     compile group: 'eu.ydp', name: 'jaxb4gwt', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '0.0.10+'
+    compile group: 'de.knightsoft-net', name: 'gwt-lzma', version: '1.2'
+
 
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
     testCompile group: 'com.google.gwt.gwtmockito', name: 'gwtmockito', version: '1.1.5'
@@ -118,18 +120,18 @@ eclipse {
         defaultOutputDir file('/war/WEB-INF/classes')
     }
 }
-
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", sonar_host_url
-        property "sonar.jdbc.url", sonar_jdbc_url
-        property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
-        property "sonar.jdbc.username", sonar_jdbc_username
-        property "sonar.jdbc.password", sonar_jdbc_password
-        property "sonar.projectName", sonar_project_name
-        property "sonar.core.codeCoveragePlugin", "jacoco"
-    }
-}
+//
+//sonarRunner {
+//    sonarProperties {
+//        property "sonar.host.url", sonar_host_url
+//        property "sonar.jdbc.url", sonar_jdbc_url
+//        property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
+//        property "sonar.jdbc.username", sonar_jdbc_username
+//        property "sonar.jdbc.password", sonar_jdbc_password
+//        property "sonar.projectName", sonar_project_name
+//        property "sonar.core.codeCoveragePlugin", "jacoco"
+//    }
+//}
 
 sourceSets {
     test.java.srcDirs += 'src/test/gwt'
@@ -139,9 +141,9 @@ sourceSets {
 }
 
 task testJUnit(type: Test) {
-    jacoco {
-        enabled = true
-    }
+//    jacoco {
+//        enabled = true
+//    }
     useJUnit()
     include "**/*Spec.class"
     include "**/*Test.class"
@@ -152,9 +154,9 @@ task testJUnit(type: Test) {
     reports.html.destination = file("$buildDir/reports/junit")
 }
 task testGWTUnit(type: Test) {
-    jacoco {
-        enabled = false
-    }
+//    jacoco {
+//        enabled = false
+//    }
     useJUnit()
     include "**/GWTTestCaseSuite.*"
     include "**/MainFlowProcessorGWTTestCase.*"
@@ -173,18 +175,18 @@ task test(overwrite: true, dependsOn: [testJUnit, testGWTUnit]) {
     }
 }
 
-jacoco {
-    toolVersion = '0.7.1.201405082137'
-}
-
-jacocoTestReport {
-    executionData = files(jacocoReport)
-    reports {
-        xml.enabled true
-        csv.enabled false
-    }
-}
-testJUnit.finalizedBy jacocoTestReport
+//jacoco {
+//    toolVersion = '0.7.1.201405082137'
+//}
+//
+//jacocoTestReport {
+//    executionData = files(jacocoReport)
+//    reports {
+//        xml.enabled true
+//        csv.enabled false
+//    }
+//}
+//testJUnit.finalizedBy jacocoTestReport
 
 task cleanCache(dependsOn: clean) {
     delete "gwt-unitCache/"

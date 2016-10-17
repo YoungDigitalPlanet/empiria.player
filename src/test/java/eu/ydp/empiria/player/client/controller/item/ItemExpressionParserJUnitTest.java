@@ -61,7 +61,7 @@ public class ItemExpressionParserJUnitTest extends AbstractTestBaseWithoutAutoIn
         verify(document).getElementsByTagName("expressions");
         NodeListIterable iterator = new NodeListIterable(document.getElementsByTagName("expressions"));
         for (Node node : iterator) {
-            verify(expressionListBuilder).parseAndConnectExpressions(Matchers.eq(node.toString()), Matchers.anyMap());
+            verify(expressionListBuilder).parseAndConnectExpressions(Matchers.eq(node.toString()), isA(ItemResponseManager.class));
         }
 
     }

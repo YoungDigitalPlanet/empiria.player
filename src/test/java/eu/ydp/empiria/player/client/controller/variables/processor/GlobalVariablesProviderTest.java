@@ -38,10 +38,10 @@ public class GlobalVariablesProviderTest {
         GlobalVariables globalVariables = mock(GlobalVariables.class);
 
         when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(mapOfProcessingResults);
-        when(globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responses)).thenReturn(globalVariables);
+        when(globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, null)).thenReturn(globalVariables);
 
         // when
-        GlobalVariables actual = testObj.retrieveGlobalVariables(modulesProcessingResults, responses);
+        GlobalVariables actual = testObj.retrieveGlobalVariables(modulesProcessingResults, null);
 
         // then
         assertThat(actual).isEqualTo(globalVariables);

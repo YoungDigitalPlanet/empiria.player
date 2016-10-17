@@ -28,7 +28,7 @@ public class ProcessingResultsToOutcomeMapConverterJUnitTest {
         outcomes = Maps.newHashMap();
 
         answerChangesFormatter = new AnswersChangesFormater();
-        resultsToOutcomeMapConverter = new ProcessingResultsToOutcomeMapConverter(outcomes, answerChangesFormatter);
+        resultsToOutcomeMapConverter = new ProcessingResultsToOutcomeMapConverter(null, answerChangesFormatter);
     }
 
     @Test

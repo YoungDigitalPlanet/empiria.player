@@ -66,6 +66,10 @@ public class ModuleFeedbackProcessor {
     private Map<String, Outcome> createVariables(ItemOutcomeStorageImpl outcomeStorage) {
         HashMap<String, Outcome> result = new HashMap<>();
 
+        if (outcomeStorage == null) {
+            return result;
+        }
+
         for (String id : outcomeStorage.getVariableIdentifiers()) {
             result.put(id, outcomeStorage.getVariable(id));
         }

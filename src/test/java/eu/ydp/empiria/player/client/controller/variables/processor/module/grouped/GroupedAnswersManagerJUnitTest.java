@@ -85,6 +85,6 @@ public class GroupedAnswersManagerJUnitTest {
     private void initializeGroupedAnswersManager() {
         when(responseAnswersMapBuilder.createResponseAnswerGroupersMap()).thenReturn(responseAnswerGrouperMap);
 
-        groupedAnswersManager.initialize(responses);
+        groupedAnswersManager.initialize(null);
     }
 }
