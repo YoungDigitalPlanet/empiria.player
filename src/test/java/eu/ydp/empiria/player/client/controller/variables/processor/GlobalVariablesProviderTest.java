@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
@@ -26,7 +27,7 @@ public class GlobalVariablesProviderTest {
     @Mock
     private GlobalVariablesProcessor globalVariablesProcessor;
     @Mock
-    private Map<String, Response> responses;
+    private VariableManager<Response> responseManager;
     @Mock
     private ModulesProcessingResults modulesProcessingResults;
     @Mock
@@ -38,10 +39,10 @@ public class GlobalVariablesProviderTest {
         GlobalVariables globalVariables = mock(GlobalVariables.class);
 
         when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(mapOfProcessingResults);
-        when(globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, null)).thenReturn(globalVariables);
+        when(globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responseManager)).thenReturn(globalVariables);
 
         // when
-        GlobalVariables actual = testObj.retrieveGlobalVariables(modulesProcessingResults, null);
+        GlobalVariables actual = testObj.retrieveGlobalVariables(modulesProcessingResults, responseManager);
 
         // then
         assertThat(actual).isEqualTo(globalVariables);

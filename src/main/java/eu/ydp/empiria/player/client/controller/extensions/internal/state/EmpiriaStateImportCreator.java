@@ -1,16 +1,20 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.state;
 
-import com.google.gwt.json.client.JSONParser;
+import com.google.common.base.Strings;
 import com.google.gwt.json.client.JSONValue;
 import com.google.inject.Inject;
+import com.sun.javafx.binding.StringConstant;
 import eu.ydp.empiria.player.client.compressor.LzGwtWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.EmpiriaStateDeserializer;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.JsonParserWrapper;
+import eu.ydp.gwtutil.client.constants.StringConstants;
 
 import javax.inject.Singleton;
 
 @Singleton
 public class EmpiriaStateImportCreator {
+
+    private static final String EMPTY_STATE = "";
 
     private final EmpiriaStateDeserializer empiriaStateDeserializer;
     private final LzGwtWrapper lzGwtWrapper;
@@ -27,8 +31,10 @@ public class EmpiriaStateImportCreator {
         JSONValue jsonValue = jsonParser.parse(state);
         EmpiriaState empiriaState = empiriaStateDeserializer.deserialize(jsonValue);
 
-        if (empiriaState.getFormatType().equals(EmpiriaStateType.DEFAULT)) {
+        if (empiriaState.hasType(EmpiriaStateType.OLD)) {
             return empiriaState.getState();
+        } else if (empiriaState.hasType(EmpiriaStateType.UNKNOWN)) {
+            return EMPTY_STATE;
         } else {
             String stateString = empiriaState.getState();
             return lzGwtWrapper.decompress(stateString);

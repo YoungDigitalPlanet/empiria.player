@@ -12,14 +12,14 @@ public class EmpiriaStateSerializerGWTTestCase extends EmpiriaPlayerGWTTestCase 
 
     public void testShouldSerializeEmpiriaState() throws Exception {
         // GIVEN
-        EmpiriaState givenEmpiriaState = new EmpiriaState(EmpiriaStateType.DEFAULT, "givenState");
+        EmpiriaState givenEmpiriaState = new EmpiriaState(EmpiriaStateType.OLD, "givenState");
 
         // WHEN
         JSONValue result = testObj.serialize(givenEmpiriaState);
 
         // THEN
         assertNotNull(result.isObject());
-        assertEquals(result.isObject().get(EmpiriaState.TYPE), new JSONString("DEFAULT"));
+        assertEquals(result.isObject().get(EmpiriaState.TYPE), new JSONString("OLD"));
         assertEquals(result.isObject().get(EmpiriaState.STATE), new JSONString("givenState"));
     }
 }

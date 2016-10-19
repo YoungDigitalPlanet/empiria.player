@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
@@ -36,8 +37,8 @@ public class ModulesVariablesProcessorJUnitTest {
     @Mock
     private ModulesProcessingResults processingResults;
 
-    @SuppressWarnings("unchecked")
-    private Map<String, Response> responses = Mockito.mock(Map.class);
+    @Mock
+    private ItemResponseManager responseManager;
     private ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
 
     @Before
@@ -53,8 +54,8 @@ public class ModulesVariablesProcessorJUnitTest {
 
     @Test
     public void shouldInitializeConstantVariables() throws Exception {
-        modulesVariablesProcessor.initialize(null);
-        verify(constantVariablesInitializer).initializeTodoVariables(null, processingResults);
+        modulesVariablesProcessor.initialize(responseManager);
+        verify(constantVariablesInitializer).initializeTodoVariables(responseManager, processingResults);
     }
 
     @Test
@@ -62,11 +63,11 @@ public class ModulesVariablesProcessorJUnitTest {
         DtoProcessedResponse processedResponse = createProcessedResponseWithChanges();
         List<DtoProcessedResponse> changedResponses = Lists.newArrayList(processedResponse);
 
-        when(responseChangesFinder.findChangesOfAnswers(processingResults, null)).thenReturn(changedResponses);
+        when(responseChangesFinder.findChangesOfAnswers(processingResults, responseManager)).thenReturn(changedResponses);
 
-        modulesVariablesProcessor.processVariablesForResponses(null, processingMode);
+        modulesVariablesProcessor.processVariablesForResponses(responseManager, processingMode);
 
-        verify(responseChangesFinder).findChangesOfAnswers(processingResults, null);
+        verify(responseChangesFinder).findChangesOfAnswers(processingResults, responseManager);
         verify(responseVariablesProcessor).processChangedResponse(processedResponse, processingMode);
     }
 
@@ -75,11 +76,11 @@ public class ModulesVariablesProcessorJUnitTest {
         DtoProcessedResponse processedResponse = createProcessedResponseWithoutChanges();
         List<DtoProcessedResponse> changedResponses = Lists.newArrayList(processedResponse);
 
-        when(responseChangesFinder.findChangesOfAnswers(processingResults, null)).thenReturn(changedResponses);
+        when(responseChangesFinder.findChangesOfAnswers(processingResults, responseManager)).thenReturn(changedResponses);
 
-        modulesVariablesProcessor.processVariablesForResponses(null, processingMode);
+        modulesVariablesProcessor.processVariablesForResponses(responseManager, processingMode);
 
-        verify(responseChangesFinder).findChangesOfAnswers(processingResults, null);
+        verify(responseChangesFinder).findChangesOfAnswers(processingResults, responseManager);
         verify(responseVariablesProcessor).resetLastUserInteractionVariables(processedResponse.getPreviousProcessingResult().getUserInteractionVariables());
     }
 

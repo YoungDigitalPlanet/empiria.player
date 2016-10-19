@@ -13,6 +13,10 @@ public class EmpiriaState {
         this.state = state;
     }
 
+    public boolean hasType(EmpiriaStateType type) {
+        return formatType.equals(type);
+    }
+
     public EmpiriaStateType getFormatType() {
         return formatType;
     }

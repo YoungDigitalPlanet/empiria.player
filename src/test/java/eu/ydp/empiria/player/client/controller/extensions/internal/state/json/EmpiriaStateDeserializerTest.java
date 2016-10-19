@@ -36,7 +36,7 @@ public class EmpiriaStateDeserializerTest extends EmpiriaPlayerGWTTestCase{
 
         // then
         assertEquals(result.getState(), oldState.toString());
-        assertEquals(result.getFormatType(), EmpiriaStateType.DEFAULT);
+        assertEquals(result.getFormatType(), EmpiriaStateType.OLD);
     }
 
     public void testShouldDeserializeStateWithDefaultType_whenStateHasNoTypeField() throws Exception {

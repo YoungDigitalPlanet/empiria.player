@@ -66,8 +66,7 @@ public class Player {
         System.out.println(versionMessage);
     }
 
-    private native void log(String message)/*-{
-        if (typeof console == 'object')
+    public static native void log(Object message)/*-{
             console.log(message);
     }-*/;
 

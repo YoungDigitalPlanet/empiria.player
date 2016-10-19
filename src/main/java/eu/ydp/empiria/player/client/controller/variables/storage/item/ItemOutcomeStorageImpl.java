@@ -24,6 +24,14 @@ public class ItemOutcomeStorageImpl extends VariablePossessorBase<Outcome> {
         variables.put(key, variable);
     }
 
+    public Map<String, Outcome> getVariablesCopy() {
+        return new HashMap<>(variables);
+    }
+
+    public boolean hasOutcome(String key) {
+        return variables.containsKey(key);
+    }
+
     public JSONValue toJSON() {
         JSONArray stateArr = new JSONArray();
         int i = 0;

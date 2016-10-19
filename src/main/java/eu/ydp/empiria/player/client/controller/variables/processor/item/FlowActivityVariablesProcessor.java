@@ -31,8 +31,9 @@ public class FlowActivityVariablesProcessor {
     }
 
     private void increaseOutcome(ItemOutcomeStorageImpl outcomeManager, String key) {
-        Outcome outcome;
-        if ((outcome = outcomeManager.getVariable(key)) != null) {
+        if (outcomeManager.hasOutcome(key)) {
+            Outcome outcome = outcomeManager.getVariable(key);
+
             int value = 0;
             List<String> values = outcome.values;
             if (!values.isEmpty()) {

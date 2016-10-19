@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.group
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class GroupedAnswersManagerJUnitTest {
     @Mock
     private GroupedResponseAnswersMapBuilder responseAnswersMapBuilder;
     @Mock
-    private Map<String, Response> responses;
+    private ItemResponseManager responseManager;
 
     @Before
     public void setUp() throws Exception {
@@ -85,6 +86,6 @@ public class GroupedAnswersManagerJUnitTest {
     private void initializeGroupedAnswersManager() {
         when(responseAnswersMapBuilder.createResponseAnswerGroupersMap()).thenReturn(responseAnswerGrouperMap);
 
-        groupedAnswersManager.initialize(null);
+        groupedAnswersManager.initialize(responseManager);
     }
 }

@@ -183,7 +183,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
         }
 
         Assertions.assertThat(totalSize).isEqualTo(expectedUrls.length);
-//        assertThat(totalSize, is(equalTo(expectedUrls.length)));
+        assertThat(totalSize, is(equalTo(expectedUrls.length)));
     }
 
     private void assertUrlAction(FeedbackAction actualAction, ActionType expectedType, String expectedUrl) {

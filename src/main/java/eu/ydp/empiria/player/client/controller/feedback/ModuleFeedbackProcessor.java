@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.feedback;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.assistedinject.Assisted;
@@ -64,17 +65,11 @@ public class ModuleFeedbackProcessor {
     }
 
     private Map<String, Outcome> createVariables(ItemOutcomeStorageImpl outcomeStorage) {
-        HashMap<String, Outcome> result = new HashMap<>();
-
         if (outcomeStorage == null) {
-            return result;
+            return Maps.newHashMap();
         }
 
-        for (String id : outcomeStorage.getVariableIdentifiers()) {
-            result.put(id, outcomeStorage.getVariable(id));
-        }
-
-        return result;
+        return outcomeStorage.getVariablesCopy();
     }
 
     private void processFeedbackActionCollector(IModule source) {

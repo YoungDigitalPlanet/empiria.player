@@ -1,16 +1,18 @@
 package eu.ydp.empiria.player.client.controller.extensions.internal.state;
 
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwtmockito.GwtMockito;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.compressor.LzGwtWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.EmpiriaStateDeserializer;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.JsonParserWrapper;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -28,7 +30,7 @@ public class EmpiriaStateImportCreatorTest {
     private JsonParserWrapper jsonParser;
 
     @Test
-    public void testShouldDecompressState_whileCreating() throws Exception {
+    public void shouldDecompressState_whileCreating() throws Exception {
         // GIVEN
         String givenState = "state";
         String expectedState = "compressed";
@@ -49,14 +51,32 @@ public class EmpiriaStateImportCreatorTest {
     }
 
     @Test
-    public void testNotDecompressState_whenStateHasDefaultType() throws Exception {
+    public void shouldReturnEmptyState_whenStateIsUnknown() throws Exception {
         // GIVEN
         String givenState = "state";
 
         JSONObject parsedState = new JSONObject();
         when(jsonParser.parse(givenState)).thenReturn(parsedState);
 
-        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.DEFAULT, givenState);
+        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.UNKNOWN, givenState);
+        when(empiriaStateDeserializer.deserialize(parsedState)).thenReturn(empiriaState);
+
+        // WHEN
+        String result = testObj.createState(givenState);
+
+        // THEN
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldDoNothingWithState_whenStateHasOldType() throws Exception {
+        // GIVEN
+        String givenState = "state";
+
+        JSONObject parsedState = new JSONObject();
+        when(jsonParser.parse(givenState)).thenReturn(parsedState);
+
+        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.OLD, givenState);
         when(empiriaStateDeserializer.deserialize(parsedState)).thenReturn(empiriaState);
 
         // WHEN

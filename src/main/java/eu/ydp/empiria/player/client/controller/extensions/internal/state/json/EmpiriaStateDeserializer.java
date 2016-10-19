@@ -6,6 +6,7 @@ import eu.ydp.empiria.player.client.controller.extensions.internal.state.Empiria
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaStateType;
 
 import javax.inject.Singleton;
+import java.util.EnumSet;
 
 @Singleton
 public class EmpiriaStateDeserializer {
@@ -21,7 +22,7 @@ public class EmpiriaStateDeserializer {
             return new EmpiriaState(type, state);
         }
 
-        return new EmpiriaState(EmpiriaStateType.DEFAULT, stateJson.toString());
+        return new EmpiriaState(EmpiriaStateType.OLD, stateJson.toString());
     }
 
     private boolean isNewStateObject(JSONValue stateJson) {
@@ -30,6 +31,13 @@ public class EmpiriaStateDeserializer {
 
     private EmpiriaStateType getStateType(JSONObject jsonObject) {
         String typeValue = jsonObject.get(EmpiriaState.TYPE).isString().stringValue();
-        return EmpiriaStateType.valueOf(typeValue);
+
+        for (EmpiriaStateType stateType : EmpiriaStateType.values()) {
+            if (stateType.name().equals(typeValue)) {
+                return EmpiriaStateType.valueOf(typeValue);
+            }
+        }
+
+        return EmpiriaStateType.UNKNOWN;
     }
 }
