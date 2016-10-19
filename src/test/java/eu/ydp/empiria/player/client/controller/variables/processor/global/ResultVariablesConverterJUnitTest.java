@@ -1,8 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.global;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponsesMapBuilder;
@@ -19,8 +17,6 @@ import static com.google.inject.Guice.createInjector;
 import static eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesTestHelper.*;
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult.fromDefaultVariables;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ResultVariablesConverterJUnitTest {
 
