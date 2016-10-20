@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.expression;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.dev.util.collect.HashMap;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import org.junit.Before;
@@ -25,6 +26,8 @@ public class ExpressionToResponseConnectorJUnitTest {
 
     @Mock
     private IdentifiersFromExpressionExtractor identifiersFromExpressionExtractor;
+    @Mock
+    private ItemResponseManager itemResponseManager;
 
     @Before
     public void setUp() throws Exception {
@@ -40,15 +43,15 @@ public class ExpressionToResponseConnectorJUnitTest {
 
         Response relatedResponse = Mockito.mock(Response.class);
         Response unrelatedResponse = Mockito.mock(Response.class);
-        Map<String, Response> responses = new HashMap<String, Response>();
-        responses.put("relatedResponse", relatedResponse);
-        responses.put("unrelatedResponse", unrelatedResponse);
+
+        when(itemResponseManager.getVariable("relatedResponse")).thenReturn(relatedResponse);
+        when(itemResponseManager.getVariable("unrelatedResponse")).thenReturn(unrelatedResponse);
 
         when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template)).thenReturn(
                 Lists.newArrayList("relatedResponse", "notExistingId"));
 
         // when
-        expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
+        expressionToResponseConnector.connectResponsesToExpression(expressionBean, itemResponseManager);
 
         // then
         verify(identifiersFromExpressionExtractor).extractResponseIdentifiersFromTemplate(template);
@@ -66,13 +69,12 @@ public class ExpressionToResponseConnectorJUnitTest {
         expressionBean.setTemplate(template);
 
         Response unrelatedResponse = Mockito.mock(Response.class);
-        Map<String, Response> responses = new HashMap<String, Response>();
-        responses.put("unrelatedResponse", unrelatedResponse);
+        when(itemResponseManager.getVariable("unrelatedResponse")).thenReturn(unrelatedResponse);
 
         when(identifiersFromExpressionExtractor.extractResponseIdentifiersFromTemplate(template)).thenReturn(Lists.newArrayList("relatedResponse"));
 
         // when
-        expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
+        expressionToResponseConnector.connectResponsesToExpression(expressionBean, itemResponseManager);
 
         // then
         verify(identifiersFromExpressionExtractor).extractResponseIdentifiersFromTemplate(template);

@@ -18,25 +18,22 @@ import eu.ydp.empiria.player.client.controller.feedback.ModuleFeedbackProcessor;
 import eu.ydp.empiria.player.client.controller.item.ItemExpressionParser;
 import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.item.ItemXMLWrapper;
-import eu.ydp.empiria.player.client.controller.variables.manager.BindableVariableManager;
 import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariableProcessingAdapter;
 import eu.ydp.empiria.player.client.controller.variables.processor.VariablesProcessingModulesInitializer;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FeedbackAutoMarkInterpreter;
 import eu.ydp.empiria.player.client.controller.variables.processor.item.FlowActivityVariablesProcessor;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
-import eu.ydp.empiria.player.client.module.core.flow.Stateful;
-import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
-import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
 import eu.ydp.empiria.player.client.module.containers.group.DefaultGroupIdentifier;
 import eu.ydp.empiria.player.client.module.containers.group.GroupIdentifier;
+import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
+import eu.ydp.empiria.player.client.module.core.base.ParenthoodSocket;
+import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 import eu.ydp.empiria.player.client.view.item.ItemBodyView;
-
-import java.util.Map;
 
 public class Item implements Stateful, ItemInterferenceSocket {
 
@@ -47,7 +44,7 @@ public class Item implements Stateful, ItemInterferenceSocket {
 
     private final ModuleFeedbackProcessor moduleFeedbackProcessor;
     private final VariableManager<Response> responseManager;
-    private final BindableVariableManager<Outcome> outcomeManager;
+    private final ItemOutcomeStorageImpl outcomeStorage;
     private final ItemModuleSocket moduleSocket;
     private final String title;
     private final FlowActivityVariablesProcessor flowActivityVariablesProcessor;
@@ -56,7 +53,7 @@ public class Item implements Stateful, ItemInterferenceSocket {
     private JSONArray state;
 
     @Inject
-    public Item(@Assisted DisplayContentOptions options, @Assisted Map<String, Outcome> outcomeVariables, @Assisted JSONArray stateArray,
+    public Item(@Assisted DisplayContentOptions options, @Assisted ItemOutcomeStorageImpl outcomeStorage, @Assisted JSONArray stateArray,
                 FeedbackModuleFactory feedbackModuleFactory, FlowActivityVariablesProcessor flowActivityVariablesProcessor,
                 @PageScoped VariableProcessingAdapter variableProcessingAdapter, VariablesProcessingModulesInitializer variablesProcessingModulesInitializer,
                 @PageScoped ItemResponseManager responseManager, ItemXMLWrapper xmlMapper, ItemExpressionParser expressionParser,
@@ -66,12 +63,12 @@ public class Item implements Stateful, ItemInterferenceSocket {
         this.responseManager = responseManager;
         this.flowActivityVariablesProcessor = flowActivityVariablesProcessor;
         this.variableProcessor = variableProcessingAdapter;
+        this.outcomeStorage = outcomeStorage;
 
         Element itemBodyNode = xmlMapper.getItemBody();
         expressionParser.parseAndConnectExpressions();
 
-        outcomeManager = new BindableVariableManager<>(outcomeVariables);
-        new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager.getVariablesMap());
+        new FeedbackAutoMarkInterpreter().interpretFeedbackAutoMark(itemBodyNode, responseManager);
 
         moduleSocket = assessmentControllerFactory.getItemModuleSocket(this);
         itemBody = assessmentControllerFactory.getItemBody(options, moduleSocket);
@@ -84,7 +81,7 @@ public class Item implements Stateful, ItemInterferenceSocket {
         setState(stateArray);
         itemBodyView.init(itemBody.init(itemBodyNode));
 
-        variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager.getVariablesMap(), outcomeManager.getVariablesMap());
+        variablesProcessingModulesInitializer.initializeVariableProcessingModules(responseManager, this.outcomeStorage);
 
         Node rootNode = xmlMapper.getAssessmentItems()
                 .item(0);
@@ -104,9 +101,9 @@ public class Item implements Stateful, ItemInterferenceSocket {
     public void process(boolean userInteract, boolean isReset, IUniqueModule sender) {
         ProcessingMode processingMode = findCorrectProcessingMode(userInteract, isReset);
 
-        variableProcessor.processResponseVariables(responseManager.getVariablesMap(), outcomeManager.getVariablesMap(), processingMode);
+        variableProcessor.processResponseVariables(responseManager, outcomeStorage, processingMode);
         if (userInteract) {
-            moduleFeedbackProcessor.processFeedbacks(outcomeManager.getVariablesMap(), sender);
+            moduleFeedbackProcessor.processFeedbacks(outcomeStorage, sender);
         }
     }
 
@@ -151,7 +148,7 @@ public class Item implements Stateful, ItemInterferenceSocket {
             lockGroup(false, groupIdentifier);
         }
 
-        flowActivityVariablesProcessor.processFlowActivityVariables(outcomeManager.getVariablesMap(), event);
+        flowActivityVariablesProcessor.processFlowActivityVariables(outcomeStorage, event);
     }
 
     public String getTitle() {
@@ -273,7 +270,7 @@ public class Item implements Stateful, ItemInterferenceSocket {
     }-*/;
 
     private JavaScriptObject getOutcomeVariablesJsSocket() {
-        return outcomeManager.getJsSocket();
+        return outcomeStorage.getJsSocket();
     }
 
     private JavaScriptObject getResponseVariablesJsSocket() {

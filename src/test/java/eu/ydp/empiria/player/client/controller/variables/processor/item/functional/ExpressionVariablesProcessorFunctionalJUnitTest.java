@@ -1,10 +1,12 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.item.functional;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.CheckMode;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
+import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponsesMapBuilder;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.LastMistaken;
 import eu.ydp.empiria.player.client.module.expression.ExpressionToResponseConnector;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
@@ -14,10 +16,13 @@ import org.junit.Test;
 import java.util.Map;
 
 import static eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariableProcessorFunctionalTestBase {
 
     private ExpressionToResponseConnector expressionToResponseConnector;
+    private ResponsesMapBuilder responsesMapBuilder = new ResponsesMapBuilder();
 
     @Override
     @Before
@@ -181,7 +186,8 @@ public class ExpressionVariablesProcessorFunctionalJUnitTest extends VariablePro
     private void connectResponsesInOneExpression(String expressionTemplate, Map<String, Response> responses) {
         ExpressionBean expressionBean = new ExpressionBean();
         expressionBean.setTemplate(expressionTemplate);
-        expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
+
+        expressionToResponseConnector.connectResponsesToExpression(expressionBean, responsesMapBuilder.buildResponseManager(responses));
     }
 
     private ResponseBuilder builder() {

@@ -1,11 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.inject.Inject;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.OutcomeController;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.UserInteractionVariables;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 import java.util.Map;
@@ -21,8 +21,8 @@ public class MistakesInitializer {
         this.outcomeController = outcomeController;
     }
 
-    public void initialize(Map<String, Outcome> outcomes) {
-        Map<String, Integer> mistakeResponses = outcomeController.getAllMistakes(outcomes);
+    public void initialize(ItemOutcomeStorageImpl outcomeManager) {
+        Map<String, Integer> mistakeResponses = outcomeController.getAllMistakes(outcomeManager);
         updateMistakes(mistakeResponses);
     }
 

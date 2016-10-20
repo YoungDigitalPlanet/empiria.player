@@ -1,6 +1,8 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.ProcessingMode;
@@ -10,7 +12,6 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.model
 import eu.ydp.empiria.player.client.gin.scopes.page.PageScoped;
 
 import java.util.List;
-import java.util.Map;
 
 public class ModulesVariablesProcessor {
 
@@ -29,12 +30,12 @@ public class ModulesVariablesProcessor {
         this.processingResults = processingResults;
     }
 
-    public void initialize(Map<String, Response> responses) {
-        constantVariablesInitializer.initializeTodoVariables(responses, processingResults);
+    public void initialize(ItemResponseManager responseManager) {
+        constantVariablesInitializer.initializeTodoVariables(responseManager, processingResults);
     }
 
-    public ModulesProcessingResults processVariablesForResponses(Map<String, Response> responses, ProcessingMode processingMode) {
-        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responses);
+    public ModulesProcessingResults processVariablesForResponses(VariableManager<Response> responseManager, ProcessingMode processingMode) {
+        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responseManager);
         processVariablesForResponses(processedResponses, processingMode);
         return processingResults;
     }

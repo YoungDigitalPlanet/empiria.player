@@ -5,6 +5,7 @@ import com.google.inject.assistedinject.Assisted;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.*;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,12 +20,12 @@ public class ProcessingResultsToOutcomeMapConverter {
     private static final String LASTMISTAKEN = "LASTMISTAKEN";
     private static final String LASTCHANGE = "LASTCHANGE";
 
-    private final Map<String, Outcome> outcomes;
+    private final ItemOutcomeStorageImpl outcomeManager;
     private final AnswersChangesFormater answersChangesFormater;
 
     @Inject
-    public ProcessingResultsToOutcomeMapConverter(@Assisted Map<String, Outcome> outcomes, AnswersChangesFormater answersChangesFormater) {
-        this.outcomes = outcomes;
+    public ProcessingResultsToOutcomeMapConverter(@Assisted ItemOutcomeStorageImpl outcomeManager, AnswersChangesFormater answersChangesFormater) {
+        this.outcomeManager = outcomeManager;
         this.answersChangesFormater = answersChangesFormater;
     }
 
@@ -111,12 +112,12 @@ public class ProcessingResultsToOutcomeMapConverter {
 
     private void insertVariable(String identifier, String value) {
         Outcome outcome = new Outcome(identifier, Cardinality.SINGLE, "" + value);
-        outcomes.put(identifier, outcome);
+        outcomeManager.putVariable(identifier, outcome);
     }
 
     private void insertVariable(String identifier, List<String> values) {
         Outcome outcome = new Outcome(identifier, Cardinality.MULTIPLE);
         outcome.values = values;
-        outcomes.put(identifier, outcome);
+        outcomeManager.putVariable(identifier, outcome);
     }
 }

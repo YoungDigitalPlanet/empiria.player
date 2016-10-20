@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.objects.outcome;
 
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,15 +13,16 @@ public class OutcomeController {
 
     public final static String MISTAKE_SUFIX = "-" + VariableName.MISTAKES.toString();
 
-    public Map<String, Integer> getAllMistakes(Map<String, Outcome> outcomes) {
+    public Map<String, Integer> getAllMistakes(ItemOutcomeStorageImpl outcomeManager) {
         Map<String, Integer> result = new HashMap<String, Integer>();
 
-        for (String key : outcomes.keySet()) {
-            if (key != null && key.endsWith(MISTAKE_SUFIX)) {
-                Outcome outcome = outcomes.get(key);
+        for (String key : outcomeManager.getVariableIdentifiers()) {
+            if(key != null && key.endsWith(MISTAKE_SUFIX)) {
+                Outcome outcome = outcomeManager.getVariable(key);
                 addMistake(result, key, outcome);
             }
         }
+
         return result;
     }
 

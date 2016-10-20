@@ -49,7 +49,7 @@ public class VariableManagerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
         );
 
-        assertTrue(vm.getVariablesMap().size() == 1);
+        assertTrue(vm.getVariableIdentifiers().size() == 1);
         assertTrue(vm.getVariable("RESPONSE") instanceof CustomVariable);
     }
 

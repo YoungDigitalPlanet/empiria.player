@@ -23,11 +23,11 @@ public class ItemExpressionParser {
 
     public void parseAndConnectExpressions() {
         NodeList expressionsNodes = xmlMapper.getExpressions();
-        Map<String, Response> responsesMap = responseManager.getVariablesMap();
+
         for (int i = 0; i < expressionsNodes.getLength(); i++) {
             Element expressionsElement = (Element) expressionsNodes.item(i);
             String expressionsXml = expressionsElement.toString();
-            expressionListBuilder.parseAndConnectExpressions(expressionsXml, responsesMap);
+            expressionListBuilder.parseAndConnectExpressions(expressionsXml, responseManager);
         }
     }
 }

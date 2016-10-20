@@ -9,10 +9,10 @@ import java.util.TreeMap;
 
 public abstract class VariablePossessorBase<V extends Variable> extends VariableProviderBase {
 
-    public Map<String, V> variables;
+    protected Map<String, V> variables;
 
     public VariablePossessorBase() {
-        variables = new TreeMap<String, V>();
+        variables = new TreeMap<>();
     }
 
     public V getVariable(String identifier) {
@@ -48,7 +48,7 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
     private boolean checkVariable(String variableName) {
         String lastchange = VariableName.LASTCHANGE.toString();
         if (variableName.endsWith(lastchange)) {
-            V variable = getVariablesMap().get(variableName);
+            V variable = variables.get(variableName);
             if (hasSelectChange(variable)) {
                 return true;
             }
@@ -65,9 +65,4 @@ public abstract class VariablePossessorBase<V extends Variable> extends Variable
         }
         return false;
     }
-
-    public Map<String, V> getVariablesMap() {
-        return variables;
-    }
-
 }

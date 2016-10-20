@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.objects.outcome;
 
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.VariableName;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,20 +24,20 @@ public class OutcomeControllerTest {
     @Test
     public void getAllMistakesTest() {
         // given
-        Map<String, Outcome> outcomes = new HashMap<String, Outcome>();
-        outcomes.put(VariableName.MISTAKES.toString(), createOutcomes(5));
+        ItemOutcomeStorageImpl outcomeStorage = new ItemOutcomeStorageImpl();
+        outcomeStorage.putVariable(VariableName.MISTAKES.toString(), createOutcomes(5));
 
-        outcomes.put(null, null);
-        outcomes.put(OutcomeController.MISTAKE_SUFIX, createOutcomes(5));
-        outcomes.put("id" + OutcomeController.MISTAKE_SUFIX, createOutcomes(10));
-        outcomes.put("id1", createOutcomes(15));
-        outcomes.put("id2" + OutcomeController.MISTAKE_SUFIX, createOutcomes("wrong"));
-        outcomes.put("id3" + OutcomeController.MISTAKE_SUFIX, null);
-        outcomes.put("id4" + OutcomeController.MISTAKE_SUFIX, createNullOutcome());
-        outcomes.put("id5" + OutcomeController.MISTAKE_SUFIX, createEmptyOutcome());
+        outcomeStorage.putVariable(null, null);
+        outcomeStorage.putVariable(OutcomeController.MISTAKE_SUFIX, createOutcomes(5));
+        outcomeStorage.putVariable("id" + OutcomeController.MISTAKE_SUFIX, createOutcomes(10));
+        outcomeStorage.putVariable("id1", createOutcomes(15));
+        outcomeStorage.putVariable("id2" + OutcomeController.MISTAKE_SUFIX, createOutcomes("wrong"));
+        outcomeStorage.putVariable("id3" + OutcomeController.MISTAKE_SUFIX, null);
+        outcomeStorage.putVariable("id4" + OutcomeController.MISTAKE_SUFIX, createNullOutcome());
+        outcomeStorage.putVariable("id5" + OutcomeController.MISTAKE_SUFIX, createEmptyOutcome());
 
         // when
-        Map<String, Integer> result = testObj.getAllMistakes(outcomes);
+        Map<String, Integer> result = testObj.getAllMistakes(outcomeStorage);
 
         // then
         assertEquals(6, result.size());

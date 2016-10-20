@@ -1,9 +1,7 @@
 package eu.ydp.empiria.player.client.controller.session.sockets;
 
 import com.google.gwt.json.client.JSONArray;
-import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
-
-import java.util.Map;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 
 public interface ItemSessionSocket {
 
@@ -17,5 +15,5 @@ public interface ItemSessionSocket {
 
     public void endItemSession(int itemIndex);
 
-    public Map<String, Outcome> getOutcomeVariablesMap(int itemIndex);
+    public ItemOutcomeStorageImpl getOutcomeVariablesMap(int itemIndex);
 }
