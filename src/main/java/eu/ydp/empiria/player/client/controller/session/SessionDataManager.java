@@ -16,6 +16,7 @@ import eu.ydp.empiria.player.client.controller.session.sockets.SessionSocket;
 import eu.ydp.empiria.player.client.controller.variables.VariableProviderSocket;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.storage.assessment.AssessmentVariableStorage;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.core.flow.Stateful;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
@@ -86,11 +87,11 @@ public class SessionDataManager implements SessionSocket, Stateful, SessionDataS
     }
 
     @Override
-    public Map<String, Outcome> getOutcomeVariablesMap(int itemIndex) {
+    public ItemOutcomeStorageImpl getOutcomeVariablesMap(int itemIndex) {
         if (itemSessionDatas[itemIndex] != null) {
-            return itemSessionDatas[itemIndex].getOutcomeVariablesMap();
+            return itemSessionDatas[itemIndex].getOutcomeStorage();
         }
-        return new HashMap<>();
+        return new ItemOutcomeStorageImpl();
     }
 
     @Override

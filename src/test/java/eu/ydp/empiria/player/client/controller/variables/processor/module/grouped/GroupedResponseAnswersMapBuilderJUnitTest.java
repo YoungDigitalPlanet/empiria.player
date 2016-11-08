@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.module.group
 
 import static org.junit.Assert.*;
 
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.*;
 import java.util.Map;
 import org.junit.*;
@@ -24,9 +25,9 @@ public class GroupedResponseAnswersMapBuilderJUnitTest {
         Response firstResponseWithGroup2 = new ResponseBuilder().withIdentifier("id3").withCorrectAnswers("correct3").withGroups("group2").build();
         Response secondResponseWithGroup2 = new ResponseBuilder().withIdentifier("id4").withCorrectAnswers("correct4").withGroups("group2").build();
 
-        Map<String, Response> responses = responsesMapBuilder.buildResponsesMap(firstResponseWithGroup1, secondResponseWithGroup1, firstResponseWithGroup2,
+        ItemResponseManager responseManager = responsesMapBuilder.buildResponseManager(firstResponseWithGroup1, secondResponseWithGroup1, firstResponseWithGroup2,
                                                                                 secondResponseWithGroup2);
-        testObj.initialize(responses);
+        testObj.initialize(responseManager);
 
         Map<String, ResponseAnswerGrouper> groupToResponseGrouperMap = testObj.createResponseAnswerGroupersMap();
 

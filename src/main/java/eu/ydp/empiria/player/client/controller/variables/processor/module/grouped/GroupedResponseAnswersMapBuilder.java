@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.grouped;
 
 import com.google.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
 import java.util.HashMap;
@@ -21,13 +22,13 @@ public class GroupedResponseAnswersMapBuilder {
         return responseAnswerGrouperMap;
     }
 
-    public void initialize(Map<String, Response> responses) {
-        groupNameToGroupedAnswersMap = new HashMap<String, List<GroupedAnswer>>();
-        assignAnswersFromResponsesToCorrectGroup(responses);
+    public void initialize(ItemResponseManager responseManager) {
+        groupNameToGroupedAnswersMap = new HashMap<>();
+        assignAnswersFromResponsesToCorrectGroup(responseManager);
     }
 
-    private void assignAnswersFromResponsesToCorrectGroup(Map<String, Response> responses) {
-        for (Response response : responses.values()) {
+    private void assignAnswersFromResponsesToCorrectGroup(ItemResponseManager responseManager) {
+        for (Response response : responseManager.getResponses()) {
             List<String> allCorrectAnswers = response.correctAnswers.getAllAnswers();
             List<String> groups = response.groups;
 

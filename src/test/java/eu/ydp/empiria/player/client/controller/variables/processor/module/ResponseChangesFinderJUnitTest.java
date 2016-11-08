@@ -1,7 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
-import com.google.gwt.dev.util.collect.HashMap;
 import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.Cardinality;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.DtoProcessedResponse;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
@@ -19,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class ResponseChangesFinderJUnitTest {
 
     private ResponseChangesFinder responseChangesFinder;
-    private Map<String, Response> responses;
+    private ItemResponseManager responsesManager;
     private ModulesProcessingResults processingResults;
 
     @Mock
@@ -38,7 +37,6 @@ public class ResponseChangesFinderJUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        responses = new HashMap<String, Response>();
         processingResults = new ModulesProcessingResults(new InitialProcessingResultFactory());
         responseChangesFinder = new ResponseChangesFinder(responseDifferenceFinder, orderedResponseChangesFinder);
     }
@@ -52,12 +50,12 @@ public class ResponseChangesFinderJUnitTest {
         DtoModuleProcessingResult processingResult = createProcessingResultForIdAndWithPreviousAnswers(responseId, previousAnswers);
 
         Response response = new ResponseBuilder().withValues(currentAnswers).withIdentifier(responseId).build();
-        responses = new ResponsesMapBuilder().buildResponsesMap(response);
+        responsesManager = new ResponsesMapBuilder().buildResponseManager(response);
 
         LastAnswersChanges answerChanges = Mockito.mock(LastAnswersChanges.class);
         when(responseDifferenceFinder.findChangesOfAnswers(previousAnswers, currentAnswers)).thenReturn(answerChanges);
 
-        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responses);
+        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responsesManager);
 
         assertEquals(1, processedResponses.size());
         DtoProcessedResponse dtoProcessedResponse = processedResponses.get(0);
@@ -75,12 +73,12 @@ public class ResponseChangesFinderJUnitTest {
         DtoModuleProcessingResult processingResult = createProcessingResultForIdAndWithPreviousAnswers(responseId, previousAnswers);
 
         Response response = new ResponseBuilder().withValues(currentAnswers).withIdentifier(responseId).withCardinality(Cardinality.ORDERED).build();
-        responses = new ResponsesMapBuilder().buildResponsesMap(response);
+        responsesManager = new ResponsesMapBuilder().buildResponseManager(response);
 
         LastAnswersChanges answerChanges = Mockito.mock(LastAnswersChanges.class);
         when(orderedResponseChangesFinder.findChangesOfAnswers(previousAnswers, currentAnswers)).thenReturn(answerChanges);
 
-        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responses);
+        List<DtoProcessedResponse> processedResponses = responseChangesFinder.findChangesOfAnswers(processingResults, responsesManager);
 
         assertEquals(1, processedResponses.size());
         DtoProcessedResponse dtoProcessedResponse = processedResponses.get(0);

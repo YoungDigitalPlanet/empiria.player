@@ -1,36 +1,37 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
+import com.google.inject.Inject;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.OutcomeController;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class MistakesInitializerTest {
 
+    @InjectMocks
     private MistakesInitializer mistakesInitializer;
 
     @Mock
     private ModulesProcessingResults processingResults;
     @Mock
     private OutcomeController outcomeController;
-
-    @Before
-    public void before() {
-        MockitoAnnotations.initMocks(this);
-        mistakesInitializer = new MistakesInitializer(processingResults, outcomeController);
-    }
 
     @After
     public void after() {
@@ -40,7 +41,7 @@ public class MistakesInitializerTest {
     @Test
     public void initializeTest() {
         // given
-        Map<String, Outcome> outcomes = Maps.newHashMap();
+        ItemOutcomeStorageImpl outcomeStorage = new ItemOutcomeStorageImpl();
 
         Integer value1 = 1;
         Integer value2 = 2;
@@ -58,17 +59,17 @@ public class MistakesInitializerTest {
         DtoModuleProcessingResult dtoModuleProcessingResult2 = DtoModuleProcessingResult.fromDefaultVariables();
         DtoModuleProcessingResult dtoModuleProcessingResult3 = DtoModuleProcessingResult.fromDefaultVariables();
 
-        when(outcomeController.getAllMistakes(outcomes)).thenReturn(mistakeResponses);
+        when(outcomeController.getAllMistakes(outcomeStorage)).thenReturn(mistakeResponses);
         when(processingResults.getProcessingResultsForResponseId(id1)).thenReturn(dtoModuleProcessingResult1);
         when(processingResults.getProcessingResultsForResponseId(id2)).thenReturn(dtoModuleProcessingResult2);
         when(processingResults.getProcessingResultsForResponseId(id3)).thenReturn(dtoModuleProcessingResult3);
 
         // when
-        mistakesInitializer.initialize(outcomes);
+        mistakesInitializer.initialize(outcomeStorage);
 
         // then
         InOrder inOrder = inOrder(processingResults, outcomeController);
-        inOrder.verify(outcomeController).getAllMistakes(outcomes);
+        inOrder.verify(outcomeController).getAllMistakes(outcomeStorage);
         verify(processingResults).getProcessingResultsForResponseId(id1);
         verify(processingResults).getProcessingResultsForResponseId(id2);
         verify(processingResults).getProcessingResultsForResponseId(id3);

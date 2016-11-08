@@ -22,7 +22,7 @@ class FeedbackPropertiesCollectorTestHelper {
 
     private ISingleViewWithBodyModule container;
 
-    private Map<String, Variable> variables;
+    private Map<String, Outcome> variables;
 
     public FeedbackPropertiesCollectorTestHelper() {
         variables = Maps.newHashMap();
@@ -54,7 +54,7 @@ class FeedbackPropertiesCollectorTestHelper {
                 .put(creator.createLastMistakenOutcome(info.getLastMistaken())).getMap();
     }
 
-    public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, ? extends Variable> variables) {
+    public IUniqueModule createUniqueModuleMock(HasChildren parent, String id, Map<String, Outcome> variables) {
         IUniqueModule module = mock(IUniqueModule.class);
         when(module.getIdentifier()).thenReturn(id);
         when(module.getParentModule()).thenReturn(parent);
@@ -64,7 +64,7 @@ class FeedbackPropertiesCollectorTestHelper {
         return module;
     }
 
-    public Map<String, Variable> getVariables() {
+    public Map<String, Outcome> getVariables() {
         return variables;
     }
 

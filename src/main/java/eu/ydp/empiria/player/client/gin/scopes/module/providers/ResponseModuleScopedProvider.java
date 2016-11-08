@@ -28,8 +28,7 @@ public class ResponseModuleScopedProvider implements Provider<Response> {
     }
 
     private Response getResponseForId(String responseId) {
-        Map<String, Response> responses = responseManager.getVariablesMap();
-        Response response = responses.get(responseId);
+        Response response = responseManager.getVariable(responseId);
         return response;
     }
 

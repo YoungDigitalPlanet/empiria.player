@@ -2,6 +2,7 @@ package eu.ydp.empiria.player.client.module.expression;
 
 import com.google.inject.Inject;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionModuleJAXBParserFactory;
@@ -24,16 +25,16 @@ public class ExpressionListBuilder {
         this.expressionSetsFinder = expressionSetsFinder;
     }
 
-    public List<ExpressionBean> parseAndConnectExpressions(String expressionsXml, Map<String, Response> responses) {
+    public List<ExpressionBean> parseAndConnectExpressions(String expressionsXml, ItemResponseManager responseManager) {
         List<ExpressionBean> expressions = parseExpressions(expressionsXml);
-        connectResponsesToExpressions(expressions, responses);
+        connectResponsesToExpressions(expressions, responseManager);
 
         return expressions;
     }
 
-    private void connectResponsesToExpressions(List<ExpressionBean> expressions, Map<String, Response> responses) {
+    private void connectResponsesToExpressions(List<ExpressionBean> expressions, ItemResponseManager responseManager) {
         for (ExpressionBean expressionBean : expressions) {
-            expressionToResponseConnector.connectResponsesToExpression(expressionBean, responses);
+            expressionToResponseConnector.connectResponsesToExpression(expressionBean, responseManager);
 
             if (expressionBean.getMode() == ExpressionMode.COMMUTATION) {
                 expressionSetsFinder.updateResponsesSetsInExpression(expressionBean);

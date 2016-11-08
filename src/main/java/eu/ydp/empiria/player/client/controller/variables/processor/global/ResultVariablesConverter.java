@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.controller.variables.processor.global;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.filter.DefaultCheckModeFilter;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.filter.ExpressionCheckModeFilter;
@@ -37,8 +38,8 @@ public class ResultVariablesConverter {
     @Inject
     private IgnoredModules ignoredModules;
 
-    public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, Map<String, Response> responses) {
-        Map<Response, DtoModuleProcessingResult> combined = combineToResponseResultMap(modulesProcessingResults, responses);
+    public Iterable<ResultVariables> convertToResultVariables(Map<String, DtoModuleProcessingResult> modulesProcessingResults, VariableManager<Response> responseManager) {
+        Map<Response, DtoModuleProcessingResult> combined = combineToResponseResultMap(modulesProcessingResults, responseManager);
 
         Iterable<ResultVariables> defaultCheckModeResults = findResultVariablesForDefaultCheckModeResponses(combined);
         Iterable<ResultVariables> expressionCheckModeResults = findResultVariablesForExpressionCheckModeResponses(combined);
@@ -59,13 +60,12 @@ public class ResultVariablesConverter {
     }
 
     private Map<Response, DtoModuleProcessingResult> combineToResponseResultMap(Map<String, DtoModuleProcessingResult> modulesProcessingResults,
-                                                                                Map<String, Response> responses) {
+                                                                                VariableManager<Response> responseManager) {
         Map<Response, DtoModuleProcessingResult> combined = Maps.newHashMap();
 
-        for (Map.Entry<String, Response> entry : responses.entrySet()) {
-            String id = entry.getKey();
-            if (!ignoredModules.isIgnored(id)) {
-                Response responseValue = entry.getValue();
+        for (String id : responseManager.getVariableIdentifiers()) {
+            if(!ignoredModules.isIgnored(id)) {
+                Response responseValue = responseManager.getVariable(id);
                 combined.put(responseValue, modulesProcessingResults.get(id));
             }
         }

@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.common.collect.ImmutableMap;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.outcome.Outcome;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.module.ModulesVariablesProcessor;
@@ -8,6 +9,7 @@ import eu.ydp.empiria.player.client.controller.variables.processor.results.Modul
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ProcessingResultsToOutcomeMapConverterFacade;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.GlobalVariables;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,15 +39,15 @@ public class VariableProcessingAdapterTest {
     @Mock
     private ModulesProcessingResults modulesProcessingResults;
     @Mock
-    private Map<String, Response> responses;
+    private VariableManager<Response> responseManager;
     @Mock
-    private Map<String, Outcome> outcomes;
+    private ItemOutcomeStorageImpl outcomeStorage;
 
     private final ProcessingMode processingMode = ProcessingMode.USER_INTERACT;
 
     @Before
     public void setUp() throws Exception {
-        when(modulesVariablesProcessor.processVariablesForResponses(responses, processingMode)).thenReturn(modulesProcessingResults);
+        when(modulesVariablesProcessor.processVariablesForResponses(responseManager, processingMode)).thenReturn(modulesProcessingResults);
     }
 
     @Test
@@ -57,20 +59,20 @@ public class VariableProcessingAdapterTest {
         when(modulesProcessingResults.getMapOfProcessingResults()).thenReturn(processingResults);
 
         GlobalVariables globalVariables = mock(GlobalVariables.class);
-        when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responses)).thenReturn(globalVariables);
+        when(globalVariablesProvider.retrieveGlobalVariables(modulesProcessingResults, responseManager)).thenReturn(globalVariables);
 
         // when
-        testObj.processResponseVariables(responses, outcomes, processingMode);
+        testObj.processResponseVariables(responseManager, outcomeStorage, processingMode);
 
         // then
-        verify(modulesVariablesProcessor).processVariablesForResponses(responses, processingMode);
-        verify(resultsToOutcomeMapConverterFacade).convert(outcomes, modulesProcessingResults, globalVariables);
+        verify(modulesVariablesProcessor).processVariablesForResponses(responseManager, processingMode);
+        verify(resultsToOutcomeMapConverterFacade).convert(outcomeStorage, modulesProcessingResults, globalVariables);
     }
 
     @Test
     public void shouldUpdateAnswerEvaluationProvider() throws Exception {
         // when
-        testObj.processResponseVariables(responses, outcomes, processingMode);
+        testObj.processResponseVariables(responseManager, outcomeStorage, processingMode);
 
         // then
         verify(answerEvaluationProvider).updateModulesProcessingResults(modulesProcessingResults);

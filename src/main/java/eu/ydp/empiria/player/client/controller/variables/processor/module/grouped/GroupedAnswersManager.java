@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module.grouped;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 
 import java.util.Collection;
@@ -16,8 +17,8 @@ public class GroupedAnswersManager {
         this.responseAnswersMapBuilder = responseAnswersMapBuilder;
     }
 
-    public void initialize(Map<String, Response> responses) {
-        responseAnswersMapBuilder.initialize(responses);
+    public void initialize(ItemResponseManager responseManager) {
+        responseAnswersMapBuilder.initialize(responseManager);
         this.groupNameToResponseAnswerGrouperMap = responseAnswersMapBuilder.createResponseAnswerGroupersMap();
     }
 

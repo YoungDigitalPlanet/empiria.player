@@ -5,6 +5,7 @@ import eu.ydp.empiria.player.client.AbstractTestBase;
 import eu.ydp.empiria.player.client.controller.body.InlineBodyGeneratorSocket;
 import eu.ydp.empiria.player.client.controller.feedback.processor.FeedbackActionProcessor;
 import eu.ydp.empiria.player.client.controller.feedback.processor.SoundActionProcessor;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.module.core.base.HasChildren;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
@@ -72,7 +73,6 @@ public class ModuleFeedbackProcessorJUnitTest extends AbstractTestBase {
 
     @Test
     public void shouldCreateNewInstanceOfActionCollector() {
-
         when(feedbackRegistry.hasFeedbacks()).thenReturn(true);
 
         IUniqueModule module = mock(IUniqueModule.class);

@@ -91,6 +91,8 @@ dependencies {
     compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
     compile group: 'eu.ydp', name: 'jaxb4gwt', version: 'latest.integration'
     compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '0.0.10+'
+    compile group: 'de.knightsoft-net', name: 'gwt-lzma', version: '1.2'
+
 
     testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
     testCompile group: 'com.google.gwt.gwtmockito', name: 'gwtmockito', version: '1.1.5'

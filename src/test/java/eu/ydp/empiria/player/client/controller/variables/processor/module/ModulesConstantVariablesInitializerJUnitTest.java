@@ -1,5 +1,6 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponseBuilder;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.ResponsesMapBuilder;
@@ -37,7 +38,7 @@ public class ModulesConstantVariablesInitializerJUnitTest {
     public void shouldInitializeTodoRelatedToResponse() throws Exception {
 
         Response response = new ResponseBuilder().withIdentifier("responseId").build();
-        Map<String, Response> responses = new ResponsesMapBuilder().buildResponsesMap(response);
+        ItemResponseManager responses = new ResponsesMapBuilder().buildResponseManager(response);
 
         int todo = 123;
         when(moduleTodoCalculator.calculateTodoForResponse(response)).thenReturn(todo);

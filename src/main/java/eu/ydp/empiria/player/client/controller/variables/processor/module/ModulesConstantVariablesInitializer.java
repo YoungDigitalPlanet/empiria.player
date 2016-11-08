@@ -1,12 +1,11 @@
 package eu.ydp.empiria.player.client.controller.variables.processor.module;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.ConstantVariables;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.model.DtoModuleProcessingResult;
-
-import java.util.Map;
 
 public class ModulesConstantVariablesInitializer {
 
@@ -17,9 +16,9 @@ public class ModulesConstantVariablesInitializer {
         this.moduleTodoCalculator = moduleTodoCalculator;
     }
 
-    public void initializeTodoVariables(Map<String, Response> responses, ModulesProcessingResults modulesProcessingResults) {
-        for (String responseId : responses.keySet()) {
-            Response response = responses.get(responseId);
+    public void initializeTodoVariables(ItemResponseManager responseManager, ModulesProcessingResults modulesProcessingResults) {
+        for (String responseId : responseManager.getVariableIdentifiers()) {
+            Response response = responseManager.getVariable(responseId);
             DtoModuleProcessingResult moduleProcessingResult = modulesProcessingResults.getProcessingResultsForResponseId(responseId);
 
             initializeTodoCount(response, moduleProcessingResult);
