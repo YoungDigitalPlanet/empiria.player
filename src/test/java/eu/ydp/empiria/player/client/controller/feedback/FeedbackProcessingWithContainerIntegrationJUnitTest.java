@@ -11,10 +11,12 @@ import eu.ydp.empiria.player.client.controller.feedback.structure.Feedback;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ActionType;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.FeedbackAction;
 import eu.ydp.empiria.player.client.controller.feedback.structure.action.ShowUrlAction;
+import eu.ydp.empiria.player.client.controller.variables.storage.item.ItemOutcomeStorageImpl;
 import eu.ydp.empiria.player.client.gin.factory.FeedbackModuleFactory;
 import eu.ydp.empiria.player.client.module.core.base.IModule;
 import eu.ydp.empiria.player.client.module.core.base.IUniqueModule;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import org.fest.assertions.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -158,7 +160,9 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
         container = helper.getContainer();
 
         ModuleFeedbackProcessor processor = getProcessor();
-        processor.processFeedbacks(helper.getVariables(), (IUniqueModule) sender);
+        ItemOutcomeStorageImpl outcomeStorage = new ItemOutcomeStorageImpl();
+        outcomeStorage.importFromMap(helper.getVariables());
+        processor.processFeedbacks(outcomeStorage, (IUniqueModule) sender);
 
         verify(processor.soundProcessor, times(2)).processActions(captor.capture(), Matchers.isA(InlineBodyGeneratorSocket.class), Matchers.isA(FeedbackMark.class));
 
@@ -178,6 +182,7 @@ public class FeedbackProcessingWithContainerIntegrationJUnitTest extends Abstrac
             }
         }
 
+        Assertions.assertThat(totalSize).isEqualTo(expectedUrls.length);
         assertThat(totalSize, is(equalTo(expectedUrls.length)));
     }
 

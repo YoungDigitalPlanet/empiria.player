@@ -1,6 +1,7 @@
 package eu.ydp.empiria.player.client.controller.variables.processor;
 
 import com.google.inject.Inject;
+import eu.ydp.empiria.player.client.controller.variables.manager.VariableManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.controller.variables.processor.global.GlobalVariablesProcessor;
 import eu.ydp.empiria.player.client.controller.variables.processor.results.ModulesProcessingResults;
@@ -14,13 +15,13 @@ public class GlobalVariablesProvider {
     @Inject
     private GlobalVariablesProcessor globalVariablesProcessor;
 
-    public GlobalVariables retrieveGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses) {
+    public GlobalVariables retrieveGlobalVariables(ModulesProcessingResults modulesProcessingResults, VariableManager<Response> responseManager) {
 
-        return calculateGlobalVariables(modulesProcessingResults, responses);
+        return calculateGlobalVariables(modulesProcessingResults, responseManager);
     }
 
-    private GlobalVariables calculateGlobalVariables(ModulesProcessingResults modulesProcessingResults, Map<String, Response> responses) {
+    private GlobalVariables calculateGlobalVariables(ModulesProcessingResults modulesProcessingResults, VariableManager<Response> responseManager) {
         Map<String, DtoModuleProcessingResult> mapOfProcessingResults = modulesProcessingResults.getMapOfProcessingResults();
-        return globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responses);
+        return globalVariablesProcessor.calculateGlobalVariables(mapOfProcessingResults, responseManager);
     }
 }

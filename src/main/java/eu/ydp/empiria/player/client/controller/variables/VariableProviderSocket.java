@@ -6,8 +6,8 @@ import java.util.Set;
 
 public interface VariableProviderSocket {
 
-    public abstract Set<String> getVariableIdentifiers();
+    Set<String> getVariableIdentifiers();
 
-    public abstract Variable getVariableValue(String identifier);
+    Variable getVariableValue(String identifier);
 
 }

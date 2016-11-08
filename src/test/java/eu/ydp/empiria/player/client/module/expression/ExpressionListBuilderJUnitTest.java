@@ -3,6 +3,7 @@ package eu.ydp.empiria.player.client.module.expression;
 import com.google.common.collect.Lists;
 import com.google.gwt.dev.util.collect.HashMap;
 import com.peterfranza.gwt.jaxb.client.parser.JAXBParser;
+import eu.ydp.empiria.player.client.controller.item.ItemResponseManager;
 import eu.ydp.empiria.player.client.controller.variables.objects.response.Response;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionBean;
 import eu.ydp.empiria.player.client.module.expression.model.ExpressionModuleJAXBParserFactory;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +44,8 @@ public class ExpressionListBuilderJUnitTest {
     public void shouldParseXmlAndConnectResponses() throws Exception {
         // given
         String expressionsXml = "sampleXML";
-        Map<String, Response> responses = new HashMap<String, Response>();
+
+        ItemResponseManager givenItemResponseManager = mock(ItemResponseManager.class);
 
         @SuppressWarnings("unchecked")
         JAXBParser<ExpressionsBean> jaxbParser = Mockito.mock(JAXBParser.class);
@@ -56,13 +59,13 @@ public class ExpressionListBuilderJUnitTest {
         when(jaxbParser.parse(expressionsXml)).thenReturn(expressionsBean);
 
         // when
-        List<ExpressionBean> returnedExpressions = expressionListBuilder.parseAndConnectExpressions(expressionsXml, responses);
+        List<ExpressionBean> returnedExpressions = expressionListBuilder.parseAndConnectExpressions(expressionsXml, givenItemResponseManager);
 
         // then
         assertEquals(expressions, returnedExpressions);
         verify(jaxbParserFactory).create();
         verify(jaxbParser).parse(expressionsXml);
-        verify(expressionToResponseConnector).connectResponsesToExpression(expressionBean, responses);
+        verify(expressionToResponseConnector).connectResponsesToExpression(expressionBean, givenItemResponseManager);
         verify(expressionSetsFinder).updateResponsesSetsInExpression(expressionBean);
         Mockito.verifyNoMoreInteractions(jaxbParserFactory, expressionToResponseConnector, jaxbParser);
     }

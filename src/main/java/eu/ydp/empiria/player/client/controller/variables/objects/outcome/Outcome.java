@@ -14,16 +14,25 @@ import java.util.Vector;
 
 public class Outcome extends Variable {
 
+    public static final String OUTCOME = "O";
+    public static final String OLD_OUTCOME = "Outcome";
+
+    private String interpretation;
+    private double normalMaximum;
+
     public Outcome() {
         super();
+        this.interpretation = "";
+        this.normalMaximum = 0.0;
+
     }
 
     public Outcome(String identifier, Cardinality cardinality) {
         super();
         this.identifier = identifier;
         this.cardinality = cardinality;
-        interpretation = "";
-        normalMaximum = 0.0d;
+        this.interpretation = "";
+        this.normalMaximum = 0.0d;
     }
 
     public Outcome(String identifier, Cardinality cardinality, String value0) {
@@ -31,8 +40,8 @@ public class Outcome extends Variable {
         this.identifier = identifier;
         this.cardinality = cardinality;
         values.add(value0);
-        interpretation = "";
-        normalMaximum = 0.0d;
+        this.interpretation = "";
+        this.normalMaximum = 0.0d;
     }
 
     public Outcome(Node responseDeclarationNode) {
@@ -67,14 +76,14 @@ public class Outcome extends Variable {
 
     }
 
-    public String interpretation;
-
-    public Double normalMaximum;
+    public boolean isNotEmpty() {
+        return !(values.isEmpty() || values.get(0).equals("0"));
+    }
 
     @Override
     public JSONValue toJSON() {
         JSONArray jsonArr = new JSONArray();
-        jsonArr.set(0, new JSONString("Outcome"));
+        jsonArr.set(0, new JSONString(OUTCOME));
         jsonArr.set(1, new JSONString(identifier));
         jsonArr.set(2, new JSONString(cardinality.toString()));
         jsonArr.set(3, new JSONString(""));
@@ -107,7 +116,7 @@ public class Outcome extends Variable {
             }
 
             interpretation = jsonArr.get(5).isString().stringValue();
-            normalMaximum = Double.valueOf(jsonArr.get(6).isNumber().doubleValue());
+            normalMaximum = jsonArr.get(6).isNumber().doubleValue();
         }
     }
 

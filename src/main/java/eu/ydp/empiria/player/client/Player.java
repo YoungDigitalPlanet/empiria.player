@@ -67,7 +67,7 @@ public class Player {
     }
 
     private native void log(String message)/*-{
-        if (typeof console == 'object')
+      if (typeof console == 'object')
             console.log(message);
     }-*/;
 
