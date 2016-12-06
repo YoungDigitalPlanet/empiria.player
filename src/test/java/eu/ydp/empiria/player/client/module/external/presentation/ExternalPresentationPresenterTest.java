@@ -9,8 +9,14 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaAp
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -36,6 +42,10 @@ public class ExternalPresentationPresenterTest {
     private ExternalStateSaver stateSaver;
     @Mock
     private ExternalStateEncoder stateEncoder;
+    @Mock
+    private EventsBus eventsBus;
+    @Captor
+    private ArgumentCaptor<PlayerEventHandler> playerEventHandlerCaptor;
 
     private final static String EXPECTED_URL = "EXPECTED_URL";
 
@@ -110,5 +120,24 @@ public class ExternalPresentationPresenterTest {
 
         // then
         assertThat(array).isEqualTo(jsonArray);
+    }
+
+    @Test
+    public void shouldSetProperOnPageChangeHandler() throws Exception {
+        // GIVEN
+        String givenExternalPath = "given/extenal/path";
+        when(externalPaths.getExternalEntryPointPath()).thenReturn(givenExternalPath);
+
+        // WHEN
+        testObj.addHandlers();
+
+        // THEN
+        verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), playerEventHandlerCaptor.capture());
+
+        PlayerEventHandler addedHandler = playerEventHandlerCaptor.getValue();
+
+        addedHandler.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE));
+        verify(view).setIframeUrl(givenExternalPath);
+
     }
 }
