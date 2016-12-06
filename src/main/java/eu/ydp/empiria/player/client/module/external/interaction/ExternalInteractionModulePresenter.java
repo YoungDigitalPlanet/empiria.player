@@ -19,7 +19,13 @@ import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiP
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.interaction.structure.ExternalInteractionModuleBean;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import eu.ydp.gwtutil.client.gin.scopes.module.ModuleScoped;
+
+import javax.annotation.PostConstruct;
 
 public class ExternalInteractionModulePresenter
         implements ActivityPresenter<ExternalInteractionResponseModel, ExternalInteractionModuleBean>, ExternalFrameLoadHandler<ExternalInteractionApi> {
@@ -30,17 +36,34 @@ public class ExternalInteractionModulePresenter
     private final ExternalStateEncoder stateEncoder;
     private final ExternalPaths externalPaths;
     private final ExternalApiProvider externalApi;
+    private final EventsBus eventsBus;
+
+    private PlayerEventHandler updateFrameUrlForIE11Hack = new PlayerEventHandler() {
+        @Override
+        public void onPlayerEvent(PlayerEvent event) {
+            view.setIframeUrl(externalPaths.getExternalEntryPointPath());
+        }
+    };
 
     @Inject
     public ExternalInteractionModulePresenter(ExternalView<ExternalInteractionApi, ExternalInteractionEmpiriaApi> view,
                                               @ModuleScoped ExternalPaths externalPaths,
-                                              @ModuleScoped ExternalInteractionEmpiriaApi empiriaApi, @ModuleScoped ExternalStateSaver stateSaver, ExternalStateEncoder stateEncoder, @ModuleScoped ExternalApiProvider externalApi) {
+                                              @ModuleScoped ExternalInteractionEmpiriaApi empiriaApi,
+                                              @ModuleScoped ExternalStateSaver stateSaver,
+                                              ExternalStateEncoder stateEncoder,
+                                              @ModuleScoped ExternalApiProvider externalApi, EventsBus eventsBus) {
         this.externalPaths = externalPaths;
         this.view = view;
         this.empiriaApi = empiriaApi;
         this.stateSaver = stateSaver;
         this.stateEncoder = stateEncoder;
         this.externalApi = externalApi;
+        this.eventsBus = eventsBus;
+    }
+
+    @PostConstruct
+    public void addHandlers() {
+        eventsBus.addHandler(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE), updateFrameUrlForIE11Hack);
     }
 
     @Override

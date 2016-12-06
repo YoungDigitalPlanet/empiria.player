@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import eu.ydp.empiria.player.client.gin.factory.PageScopeFactory;
 import eu.ydp.empiria.player.client.module.draggap.math.MathDragGapModule;
+import eu.ydp.empiria.player.client.util.events.internal.EventType;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
@@ -50,9 +51,10 @@ public class SourcelistManagerImplTest {
     private PageScopeFactory pageScopeFactory;
     @Captor
     private ArgumentCaptor<PlayerEvent> playerEventCaptor;
+    @Captor
+    private ArgumentCaptor<EventType[]> argumentCaptor;
     @Mock
     private CurrentPageScope pageScope;
-
 
 
     private final String CLIENT_1_ID = "id1";
@@ -84,6 +86,19 @@ public class SourcelistManagerImplTest {
 
         // then
         verify(model).registerClient(client1);
+    }
+
+    @Test
+    public void shouldAddHandlers() {
+        //given
+        CurrentPageScope currentPageScope = mock(CurrentPageScope.class);
+        when(pageScopeFactory.getCurrentPageScope()).thenReturn(currentPageScope);
+        // when
+        manager.init();
+
+        // then
+        verify(eventsBus).addHandler(argumentCaptor.capture(), eq(manager), eq(currentPageScope));
+        assertThat(argumentCaptor.getAllValues()).containsOnly(PlayerEvent.getTypes(PlayerEventTypes.PAGE_CONTENT_GROWN, PlayerEventTypes.PAGE_CONTENT_DECREASED));
     }
 
     @Test

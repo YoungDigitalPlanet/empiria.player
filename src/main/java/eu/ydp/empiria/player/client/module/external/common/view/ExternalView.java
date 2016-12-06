@@ -7,4 +7,6 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaAp
 
 public interface ExternalView<T extends ExternalApi, K extends ExternalEmpiriaApi> extends IsWidget {
     void init(K api, ExternalFrameLoadHandler<T> onLoadHandler, String url);
+
+    void setIframeUrl(String url);
 }

@@ -34,4 +34,9 @@ public class ExternalPresentationViewImpl extends Composite implements ExternalV
         frame.init(api, onLoadHandler);
         frame.setUrl(url);
     }
+
+    @Override
+    public void setIframeUrl(String url) {
+        frame.setUrl(url);
+    }
 }
