@@ -34,4 +34,9 @@ public class ExternalInteractionViewImpl extends Composite implements ExternalVi
         frame.init(api, onLoadHandler);
         frame.setUrl(url);
     }
+
+    @Override
+    public void setIframeUrl(String url) {
+        frame.setUrl(url);
+    }
 }
