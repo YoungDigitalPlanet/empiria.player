@@ -13,9 +13,15 @@ import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiProvider;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionEmpiriaApi;
+import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventHandler;
+import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEventTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -42,6 +48,10 @@ public class ExternalInteractionModulePresenterTest {
     private ExternalStateSaver stateSaver;
     @Mock
     private ExternalApiProvider externalApiProvider;
+    @Mock
+    private EventsBus eventsBus;
+    @Captor
+    private ArgumentCaptor<PlayerEventHandler> playerEventHandlerCaptor;
 
     @Before
     public void init() {
@@ -124,6 +134,25 @@ public class ExternalInteractionModulePresenterTest {
 
         // then
         verify(externalApi).unlock();
+    }
+
+    @Test
+    public void shouldSetProperOnPageChangeHandler() throws Exception {
+        // GIVEN
+        String givenExternalPath = "given/interaction/path";
+        when(externalPaths.getExternalEntryPointPath()).thenReturn(givenExternalPath);
+
+        // WHEN
+        testObj.addHandlers();
+
+        // THEN
+        verify(eventsBus).addHandler(eq(PlayerEvent.getType(PlayerEventTypes.PAGE_CHANGE)), playerEventHandlerCaptor.capture());
+
+        PlayerEventHandler addedHandler = playerEventHandlerCaptor.getValue();
+
+        addedHandler.onPlayerEvent(new PlayerEvent(PlayerEventTypes.PAGE_CHANGE));
+        verify(view).setIframeUrl(givenExternalPath);
+
     }
 
     @Test
