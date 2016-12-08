@@ -149,8 +149,8 @@ task testJUnit(type: Test) {
     include "**/*Test.class"
 
 
-    maxHeapSize = '1024M'
-    jvmArgs(['-XX:MaxPermSize=512M', '-Xss2M'])
+    maxHeapSize = '512M'
+    jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
     reports.html.destination = file("$buildDir/reports/junit")
 }
 task testGWTUnit(type: Test) {
@@ -163,8 +163,8 @@ task testGWTUnit(type: Test) {
     include "**/PageSwitchAnimationGWTTestCase.*"
 
     forkEvery = 1
-    maxHeapSize = '1024M'
-    jvmArgs(['-XX:MaxPermSize=512M', '-Xss2M'])
+    maxHeapSize = '512M'
+    jvmArgs(['-XX:MaxPermSize=256M', '-Xss1M'])
     reports.html.destination = file("$buildDir/reports/gwt")
 }
 testGWTUnit.shouldRunAfter testJUnit
