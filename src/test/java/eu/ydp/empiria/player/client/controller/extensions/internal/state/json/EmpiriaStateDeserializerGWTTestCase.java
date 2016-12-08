@@ -6,7 +6,7 @@ import eu.ydp.empiria.player.client.EmpiriaPlayerGWTTestCase;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaState;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaStateType;
 
-public class EmpiriaStateDeserializerTest extends EmpiriaPlayerGWTTestCase{
+public class EmpiriaStateDeserializerGWTTestCase extends EmpiriaPlayerGWTTestCase {
 
     private EmpiriaStateDeserializer testObj = new EmpiriaStateDeserializer();
 
