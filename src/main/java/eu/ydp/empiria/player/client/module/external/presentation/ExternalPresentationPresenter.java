@@ -1,6 +1,5 @@
 package eu.ydp.empiria.player.client.module.external.presentation;
 
-import com.google.common.base.Optional;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,6 +11,7 @@ import eu.ydp.empiria.player.client.module.external.common.api.ExternalApiNullOb
 import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaApi;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSetter;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -29,6 +29,7 @@ public class ExternalPresentationPresenter implements ExternalFrameLoadHandler<E
     private final ExternalPaths externalPaths;
     private final ExternalEmpiriaApi empiriaApi;
     private final EventsBus eventsBus;
+    private final ExternalStateSetter externalStateSetter;
 
 
     private PlayerEventHandler updateFrameUrlForIE11Hack = new PlayerEventHandler() {
@@ -44,13 +45,15 @@ public class ExternalPresentationPresenter implements ExternalFrameLoadHandler<E
     public ExternalPresentationPresenter(ExternalStateEncoder stateEncoder, final ExternalView<ExternalApi, ExternalEmpiriaApi> view,
                                          @ModuleScoped ExternalStateSaver stateSaver,
                                          @ModuleScoped final ExternalPaths externalPaths,
-                                         ExternalEmpiriaApi empiriaApi, EventsBus eventsBus) {
+                                         ExternalEmpiriaApi empiriaApi, EventsBus eventsBus,
+                                         @ModuleScoped ExternalStateSetter externalStateSetter) {
         this.stateEncoder = stateEncoder;
         this.view = view;
         this.stateSaver = stateSaver;
         this.externalPaths = externalPaths;
         this.empiriaApi = empiriaApi;
         this.eventsBus = eventsBus;
+        this.externalStateSetter = externalStateSetter;
 
         externalApi = new ExternalApiNullObject();
     }
@@ -68,11 +71,7 @@ public class ExternalPresentationPresenter implements ExternalFrameLoadHandler<E
     @Override
     public void onExternalModuleLoaded(ExternalApi externalObject) {
         this.externalApi = externalObject;
-
-        Optional<JavaScriptObject> externalState = stateSaver.getExternalState();
-        if (externalState.isPresent()) {
-            externalObject.setStateOnExternal(externalState.get());
-        }
+        externalStateSetter.setSavedStateInExternal(externalObject);
     }
 
     public Widget getView() {

@@ -6,8 +6,10 @@ import com.google.gwt.json.client.JSONArray;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
 import eu.ydp.empiria.player.client.module.external.common.api.ExternalApi;
 import eu.ydp.empiria.player.client.module.external.common.api.ExternalEmpiriaApi;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalFrameObjectFixer;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSetter;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.util.events.internal.bus.EventsBus;
 import eu.ydp.empiria.player.client.util.events.internal.player.PlayerEvent;
@@ -44,6 +46,8 @@ public class ExternalPresentationPresenterTest {
     private ExternalStateEncoder stateEncoder;
     @Mock
     private EventsBus eventsBus;
+    @Mock
+    private ExternalStateSetter externalStateSetter;
     @Captor
     private ArgumentCaptor<PlayerEventHandler> playerEventHandlerCaptor;
 
@@ -62,30 +66,12 @@ public class ExternalPresentationPresenterTest {
     }
 
     @Test
-    public void shouldNotSetState_whenIsEmpty() {
-        // given
-        Optional<JavaScriptObject> jsoOptional = Optional.absent();
-        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-
-        // when
+    public void shouldSetStateOnModuleLoaded() throws Exception {
+        // WHEN
         testObj.onExternalModuleLoaded(externalApi);
 
-        // then
-        verify(externalApi, never()).setStateOnExternal(any(JavaScriptObject.class));
-    }
-
-    @Test
-    public void shouldSetStateOnExternal_whenIsPresent() {
-        // given
-        JavaScriptObject jso = mock(JavaScriptObject.class);
-        Optional<JavaScriptObject> jsoOptional = Optional.of(jso);
-        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-
-        // when
-        testObj.onExternalModuleLoaded(externalApi);
-
-        // then
-        verify(externalApi).setStateOnExternal(jso);
+        // THEN
+        verify(externalStateSetter).setSavedStateInExternal(externalApi);
     }
 
     @Test
