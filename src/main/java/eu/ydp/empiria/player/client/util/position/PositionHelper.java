@@ -20,7 +20,18 @@ public class PositionHelper {
     }
 
     private int getRelativeY(NativeEvent event, Element target) {
-        return event.getClientY() - target.getAbsoluteTop() + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
+        return event.getClientY() - getAbsoluteTop(target) + target.getScrollTop() + target.getOwnerDocument().getScrollTop();
+    }
+
+    private int getAbsoluteTop(Element target) {
+
+        int offsetTop = target.getOffsetTop();
+
+        if (offsetTop != 0) {
+            return offsetTop + getAbsoluteTop(target.getOffsetParent());
+        }
+
+        return target.getAbsoluteTop();
     }
 
     /**
