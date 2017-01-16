@@ -7,8 +7,10 @@ import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersMode;
 import eu.ydp.empiria.player.client.module.core.answer.MarkAnswersType;
 import eu.ydp.empiria.player.client.module.core.answer.ShowAnswersType;
 import eu.ydp.empiria.player.client.module.external.common.ExternalPaths;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalFrameObjectFixer;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateEncoder;
 import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSaver;
+import eu.ydp.empiria.player.client.module.external.common.state.ExternalStateSetter;
 import eu.ydp.empiria.player.client.module.external.common.view.ExternalView;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalApiProvider;
 import eu.ydp.empiria.player.client.module.external.interaction.api.ExternalInteractionApi;
@@ -50,6 +52,8 @@ public class ExternalInteractionModulePresenterTest {
     private ExternalApiProvider externalApiProvider;
     @Mock
     private EventsBus eventsBus;
+    @Mock
+    private ExternalStateSetter externalStateSetter;
     @Captor
     private ArgumentCaptor<PlayerEventHandler> playerEventHandlerCaptor;
 
@@ -58,34 +62,15 @@ public class ExternalInteractionModulePresenterTest {
         Optional<JavaScriptObject> jsoOptional = Optional.absent();
         when(stateSaver.getExternalState()).thenReturn(jsoOptional);
         when(externalApiProvider.getExternalApi()).thenReturn(externalApi);
-        testObj.onExternalModuleLoaded(externalApi);
     }
 
     @Test
-    public void shouldNotSetState_whenIsEmpty() {
-        // given
-        Optional<JavaScriptObject> jsoOptional = Optional.absent();
-        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-
-        // when
+    public void shouldSetStateOnModuleLoaded() throws Exception {
+        // WHEN
         testObj.onExternalModuleLoaded(externalApi);
 
-        // then
-        verify(externalApi, never()).setStateOnExternal(any(JavaScriptObject.class));
-    }
-
-    @Test
-    public void shouldSetStateOnExternal_whenIsPresent() {
-        // given
-        JavaScriptObject jso = mock(JavaScriptObject.class);
-        Optional<JavaScriptObject> jsoOptional = Optional.of(jso);
-        when(stateSaver.getExternalState()).thenReturn(jsoOptional);
-
-        // when
-        testObj.onExternalModuleLoaded(externalApi);
-
-        // then
-        verify(externalApi).setStateOnExternal(jso);
+        // THEN
+        verify(externalStateSetter).setSavedStateInExternal(externalApi);
     }
 
     @Test
