@@ -1,0 +1,13 @@
+jdk:
+  - oraclejdk8
+script:
+  ./gradlew dist
+deploy:
+  provider: releases
+  api_key: "$GIT_HUB"
+  file:
+    - "dist/empiriaplayer.zip"
+    - "dist/empiriaplayer_webkit.zip"
+  skip_cleanup: true
+  on:
+    tags: true

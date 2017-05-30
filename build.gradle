@@ -1,16 +1,12 @@
 buildscript {
     repositories {
-        ivy {
-            url "http://dev/ivyrep/public/"
-            layout 'pattern', {
-                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-            }
+        maven {
+            url 'https://dl.bintray.com/youngdigitalplanet/empiria'
         }
     }
 
     dependencies {
-        classpath group: 'eu.ydp', name: 'gradleGwtCompilerPlugin', version: 'latest.integration'
+        classpath group: 'eu.ydp', name: 'gradle-gwt-compiler-plugin', version: '2.0.0'
     }
 }
 
@@ -21,16 +17,10 @@ def empiriaBuildDir = new File(empiriaWar, "empiria.player")
 def empiriaWebkitWar = file("build/gwt")
 def empiriaWebkitBuildDir = new File(empiriaWebkitWar, "empiria.player")
 def versionFile = file("${projectDir}/src/main/java/eu/ydp/empiria/player/client/version/version.txt")
-def buildProfile = project.getProperties().get('buildProfile', 'develop')
-
-println "Picked build profile [$buildProfile]"
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'eclipse'
-apply plugin: 'sonar-runner'
-apply from: "gradle/profiles/${buildProfile}.gradle"
-apply plugin: 'ivy-publish'
 apply plugin: "groovy"
 
 sourceCompatibility = 1.7
@@ -44,24 +34,14 @@ ext {
 
 repositories {
     maven {
+            url 'https://dl.bintray.com/youngdigitalplanet/empiria'
+    }
+    maven {
         url "https://jitpack.io"
     }
+
     jcenter {
         url "http://jcenter.bintray.com/"
-    }
-    ivy {
-        url "http://dev/ivyrep/public/"
-        layout 'pattern', {
-            artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-            ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-        }
-    }
-    ivy {
-        url "http://dev/ivyrep/shared/"
-        layout 'pattern', {
-            artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-            ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-        }
     }
     mavenCentral()
     maven {
@@ -71,7 +51,7 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force group: 'eu.ydp', name: 'ydpgwtutils', version: ydp_gwt_utils_ver
+        force group: 'eu.ydp', name: 'ydpgwtutils', version: '2.0.0'
     }
 }
 
@@ -85,12 +65,12 @@ dependencies {
     compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
 
-    compile group: 'eu.ydp', name: 'mathPlayer', version: mathplayer_ver
-    compile group: 'eu.ydp', name: 'jsfilerequest', version: jsfilerequest_ver
-    compile group: 'eu.ydp', name: 'gwtFlashMedia', version: 'latest.integration'
-    compile group: 'eu.ydp', name: 'gwtCreateJs', version: gwt_createjs_ver
-    compile group: 'eu.ydp', name: 'jaxb4gwt', version: 'latest.integration'
-    compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '0.0.10+'
+    compile 'eu.ydp:mathplayer:2.0.0'
+   	compile 'eu.ydp:jsfilerequest:2.0.0'
+    compile 'eu.ydp:gwtFlashMedia:2.0.0'
+    compile 'eu.ydp:gwtcreatejs:2.0.0'  
+    compile group: 'eu.ydp', name: 'jaxb4gwt', version: '2.0.0'
+    compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '2.0.0'
     compile group: 'de.knightsoft-net', name: 'gwt-lzma', version: '1.2'
 
 
@@ -118,18 +98,6 @@ eclipse {
         containers 'com.google.gwt.eclipse.core.GWT_CONTAINER'
 
         defaultOutputDir file('/war/WEB-INF/classes')
-    }
-}
-
-sonarRunner {
-    sonarProperties {
-        property "sonar.host.url", sonar_host_url
-        property "sonar.jdbc.url", sonar_jdbc_url
-        property "sonar.jdbc.driverClassName", sonar_jdbc_driverClassName
-        property "sonar.jdbc.username", sonar_jdbc_username
-        property "sonar.jdbc.password", sonar_jdbc_password
-        property "sonar.projectName", sonar_project_name
-        property "sonar.core.codeCoveragePlugin", "jacoco"
     }
 }
 
@@ -220,7 +188,7 @@ task compileWebkit(dependsOn: [classes], type: GWTCompileTask) {
 
 def configCopyMetaInfoAndZip(playerDir, targetZip) {
     return {
-        def metadataProperties = [version: project.ext.version, tstamp: tstamp, buildnumber: buildnumber]
+        def metadataProperties = [version: version, tstamp: tstamp, buildnumber: buildnumber]
 
         archiveName targetZip
         destinationDir file("dist")
@@ -234,7 +202,7 @@ def configCopyMetaInfoAndZip(playerDir, targetZip) {
 
 task createVersion() {
     versionFile.createNewFile()
-    versionFile.write "${project.ext.version}-${buildnumber}"
+    versionFile.write "${version}"
 }
 
 task zipMain(dependsOn: [compileMain], type: Zip) {
@@ -258,45 +226,4 @@ task wrapper(type: Wrapper) {
 tasks.withType(JavaCompile) {
     options.compilerArgs = ["-implicit:none"]
     options.compilerArgs += ["-sourcepath", ""]
-}
-
-publishing {
-    publications {
-        ivy(IvyPublication) {
-            organisation 'eu.ydp'
-            module 'empiriaPlayer'
-            revision "${project.ext.version}-${buildnumber}"
-            descriptor.status = project.ext.status
-            configurations {
-                create("default")
-                create("webkit")
-            }
-            artifacts {
-                artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer.zip") {
-                    name 'empiriaplayer'
-                    classifier "source"
-                    extension "zip"
-                    conf "default"
-                    builtBy distMain
-                }
-
-                artifact("${projectDir}${File.separator}dist${File.separator}empiriaplayer_webkit.zip") {
-                    name 'empiriaplayer_webkit'
-                    classifier "source"
-                    extension "zip"
-                    conf "webkit"
-                    builtBy distWebkit
-                }
-            }
-        }
-    }
-    repositories {
-        ivy {
-            url 'http://dev/ivyrep/public'
-            layout 'pattern', {
-                artifact '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-                ivy '[organisation]/[module]/[revision]/[type]s/[artifact].[ext]'
-            }
-        }
-    }
 }
