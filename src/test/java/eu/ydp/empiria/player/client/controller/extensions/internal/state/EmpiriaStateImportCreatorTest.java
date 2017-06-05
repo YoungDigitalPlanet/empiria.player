@@ -5,6 +5,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 import eu.ydp.empiria.player.client.compressor.LzGwtWrapper;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.EmpiriaStateDeserializer;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.json.JsonParserWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,8 @@ public class EmpiriaStateImportCreatorTest {
     private LzGwtWrapper lzGwtWrapper;
     @Mock
     private JsonParserWrapper jsonParser;
+    @Mock
+    private EmpiriaStateVerifier empiriaStateVerifier;
 
     @Test
     public void shouldDecompressState_whileCreating() throws Exception {
@@ -38,7 +41,8 @@ public class EmpiriaStateImportCreatorTest {
         JSONObject parsedState = new JSONObject();
         when(jsonParser.parse(givenState)).thenReturn(parsedState);
 
-        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.LZ_GWT, givenState);
+        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.LZ_GWT, givenState, "id");
+        when(empiriaStateVerifier.verifyState(empiriaState)).thenReturn(empiriaState);
         when(empiriaStateDeserializer.deserialize(parsedState)).thenReturn(empiriaState);
 
         when(lzGwtWrapper.decompress(givenState)).thenReturn(expectedState);
@@ -58,7 +62,8 @@ public class EmpiriaStateImportCreatorTest {
         JSONObject parsedState = new JSONObject();
         when(jsonParser.parse(givenState)).thenReturn(parsedState);
 
-        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.UNKNOWN, givenState);
+        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.UNKNOWN, givenState, StringUtils.EMPTY);
+        when(empiriaStateVerifier.verifyState(empiriaState)).thenReturn(empiriaState);
         when(empiriaStateDeserializer.deserialize(parsedState)).thenReturn(empiriaState);
 
         // WHEN
@@ -76,7 +81,8 @@ public class EmpiriaStateImportCreatorTest {
         JSONObject parsedState = new JSONObject();
         when(jsonParser.parse(givenState)).thenReturn(parsedState);
 
-        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.OLD, givenState);
+        EmpiriaState empiriaState = new EmpiriaState(EmpiriaStateType.OLD, givenState, StringUtils.EMPTY);
+        when(empiriaStateVerifier.verifyState(empiriaState)).thenReturn(empiriaState);
         when(empiriaStateDeserializer.deserialize(parsedState)).thenReturn(empiriaState);
 
         // WHEN

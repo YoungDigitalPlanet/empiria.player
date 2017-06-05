@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmpiriaStateExportCreatorTest {
@@ -17,14 +17,18 @@ public class EmpiriaStateExportCreatorTest {
     private EmpiriaStateExportCreator testObj;
     @Mock
     private LzGwtWrapper lzGwtWrapper;
+    @Mock
+    private LessonIdentifierProvider lessonIdentifierProvider;
 
     @Test
     public void shouldCreateCompressedState() throws Exception {
         // GIVEN
         String givenState = "given state";
         String expectedState = "compressed";
+        String id = "id";
 
         when(lzGwtWrapper.compress(givenState)).thenReturn(expectedState);
+        when(lessonIdentifierProvider.getLessonIdentifier()).thenReturn(id);
 
         // WHEN
         EmpiriaState result = testObj.create(givenState);
@@ -32,5 +36,6 @@ public class EmpiriaStateExportCreatorTest {
         // THEN
         assertThat(result.getFormatType()).isEqualTo(EmpiriaStateType.LZ_GWT);
         assertThat(result.getState()).isEqualTo(expectedState);
+        assertThat(result.getLessonIdentifier()).isEqualTo(id);
     }
 }
