@@ -40,6 +40,22 @@ public class EmpiriaStateDeserializerGWTTestCase extends EmpiriaPlayerGWTTestCas
         assertEquals(result.getLessonIdentifier(), "");
     }
 
+    public void testShouldReturnUnknownStateType_whenStateHasNewFormat_butTypeDoesNotExist() {
+        // given
+        String givenState = "givenState";
+
+        JSONObject newStateObject = new JSONObject();
+        newStateObject.put(EmpiriaState.STATE, new JSONString(givenState));
+        newStateObject.put(EmpiriaState.TYPE, new JSONString("some unknown state type"));
+
+        // when
+        EmpiriaState result = testObj.deserialize(newStateObject);
+
+        // then
+        assertEquals(result.getFormatType(), EmpiriaStateType.UNKNOWN);
+        assertEquals(result.getState(), givenState);
+    }
+
     public void testShouldDeserializeStateWithDefaultType_whenStateHasNoTypeField() throws Exception {
         // given
         String givenState = "givenState";
