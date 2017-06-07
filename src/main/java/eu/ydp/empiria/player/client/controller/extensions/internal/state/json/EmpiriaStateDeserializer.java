@@ -4,9 +4,9 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaState;
 import eu.ydp.empiria.player.client.controller.extensions.internal.state.EmpiriaStateType;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Singleton;
-import java.util.EnumSet;
 
 @Singleton
 public class EmpiriaStateDeserializer {
@@ -19,10 +19,10 @@ public class EmpiriaStateDeserializer {
             EmpiriaStateType type = getStateType(stateObject);
             String state = stateObject.get(EmpiriaState.STATE).isString().stringValue();
 
-            return new EmpiriaState(type, state);
+            return new EmpiriaState(type, state, getSavedLessonIdentifier(stateObject));
         }
 
-        return new EmpiriaState(EmpiriaStateType.OLD, stateJson.toString());
+        return new EmpiriaState(EmpiriaStateType.OLD, stateJson.toString(), StringUtils.EMPTY);
     }
 
     private boolean isNewStateObject(JSONValue stateJson) {
@@ -34,10 +34,19 @@ public class EmpiriaStateDeserializer {
 
         for (EmpiriaStateType stateType : EmpiriaStateType.values()) {
             if (stateType.name().equals(typeValue)) {
-                return EmpiriaStateType.valueOf(typeValue);
+                return stateType;
             }
         }
 
         return EmpiriaStateType.UNKNOWN;
+    }
+
+    private String getSavedLessonIdentifier(JSONObject jsonObject) {
+        boolean hasIdentifier = jsonObject.containsKey(EmpiriaState.LESSON_IDENTIFIER);
+        if(hasIdentifier) {
+            return jsonObject.get(EmpiriaState.LESSON_IDENTIFIER).isString().stringValue();
+        }
+
+        return StringUtils.EMPTY;
     }
 }

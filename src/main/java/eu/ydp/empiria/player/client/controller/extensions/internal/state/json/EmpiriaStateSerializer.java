@@ -14,10 +14,12 @@ public class EmpiriaStateSerializer {
 
         String typeFormat = empiriaState.getFormatType().name();
         String state = empiriaState.getState();
+        String lessonIdentifier = empiriaState.getLessonIdentifier();
 
         JSONObject stateObject = new JSONObject();
         stateObject.put(EmpiriaState.TYPE, new JSONString(typeFormat));
         stateObject.put(EmpiriaState.STATE, new JSONString(state));
+        stateObject.put(EmpiriaState.LESSON_IDENTIFIER, new JSONString(lessonIdentifier));
 
         return stateObject;
     }

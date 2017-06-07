@@ -16,24 +16,28 @@ public class EmpiriaStateImportCreator {
     private final EmpiriaStateDeserializer empiriaStateDeserializer;
     private final LzGwtWrapper lzGwtWrapper;
     private final JsonParserWrapper jsonParser;
+    private final EmpiriaStateVerifier empiriaStateVerifier;
 
     @Inject
-    public EmpiriaStateImportCreator(EmpiriaStateDeserializer empiriaStateDeserializer, LzGwtWrapper lzGwtWrapper, JsonParserWrapper jsonParser) {
+    public EmpiriaStateImportCreator(EmpiriaStateDeserializer empiriaStateDeserializer, LzGwtWrapper lzGwtWrapper,
+                                     JsonParserWrapper jsonParser, EmpiriaStateVerifier empiriaStateVerifier) {
         this.empiriaStateDeserializer = empiriaStateDeserializer;
         this.lzGwtWrapper = lzGwtWrapper;
         this.jsonParser = jsonParser;
+        this.empiriaStateVerifier = empiriaStateVerifier;
     }
 
     public String createState(String state) {
         JSONValue jsonValue = jsonParser.parse(state);
         EmpiriaState empiriaState = empiriaStateDeserializer.deserialize(jsonValue);
+        EmpiriaState verifiedState = empiriaStateVerifier.verifyState(empiriaState);
 
-        if (empiriaState.hasType(EmpiriaStateType.OLD)) {
-            return empiriaState.getState();
-        } else if (empiriaState.hasType(EmpiriaStateType.UNKNOWN)) {
+        if (verifiedState.hasType(EmpiriaStateType.OLD)) {
+            return verifiedState.getState();
+        } else if (verifiedState.hasType(EmpiriaStateType.UNKNOWN)) {
             return EMPTY_STATE;
         } else {
-            String stateString = empiriaState.getState();
+            String stateString = verifiedState.getState();
             return lzGwtWrapper.decompress(stateString);
         }
     }
