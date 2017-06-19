@@ -16,6 +16,7 @@
 
 package eu.ydp.empiria.player.client.controller.delivery;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONParser;
@@ -209,7 +210,7 @@ public class DeliveryEngine implements DataLoaderEventListener, FlowProcessingEv
 
     private void initFlow() {
         JSONArray state = null;
-        if (stateAsync != null) {
+        if (!Strings.isNullOrEmpty(stateAsync)) {
             state = (JSONArray) JSONParser.parseLenient(stateAsync);
             assessmentController.reset();
             sessionDataManager.setState((JSONArray) state.get(1));
