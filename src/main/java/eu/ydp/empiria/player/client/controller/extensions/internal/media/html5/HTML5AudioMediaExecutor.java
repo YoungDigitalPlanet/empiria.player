@@ -16,6 +16,7 @@
 
 package eu.ydp.empiria.player.client.controller.extensions.internal.media.html5;
 
+import com.google.common.base.Strings;
 import com.google.gwt.dom.client.MediaElement;
 import com.google.gwt.media.client.Audio;
 import com.google.inject.Inject;
@@ -40,17 +41,21 @@ public class HTML5AudioMediaExecutor extends AbstractHTML5MediaExecutor<Audio> {
 
     @Override
     public void play() {
-        if (UserAgentChecker.isMobileUserAgent(UserAgentChecker.MobileUserAgent.SAFARI)) {
-            media.setSrc(baseMediaConfiguration.getSources().keySet().iterator().next());
-        }
+        applyIOS11Hack();
         super.play();
     }
 
     @Override
     public void playLooped() {
-        if (UserAgentChecker.isMobileUserAgent(UserAgentChecker.MobileUserAgent.SAFARI)) {
-            media.setSrc(baseMediaConfiguration.getSources().keySet().iterator().next());
-        }
+        applyIOS11Hack();
         super.playLooped();
+    }
+
+    private void applyIOS11Hack(){
+        if (UserAgentChecker.isMobileUserAgent(UserAgentChecker.MobileUserAgent.SAFARI)) {
+            if (Strings.isNullOrEmpty(media.getSrc())) {
+                media.setSrc(baseMediaConfiguration.getSources().keySet().iterator().next());
+            }
+        }
     }
 }
