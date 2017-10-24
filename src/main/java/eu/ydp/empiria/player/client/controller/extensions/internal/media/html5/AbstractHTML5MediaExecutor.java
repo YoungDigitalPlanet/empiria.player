@@ -28,6 +28,7 @@ import eu.ydp.empiria.player.client.module.media.BaseMediaConfiguration;
 import eu.ydp.empiria.player.client.module.media.MediaWrapper;
 import eu.ydp.empiria.player.client.module.media.html5.AbstractHTML5MediaWrapper;
 import eu.ydp.empiria.player.client.util.events.internal.html5.HTML5MediaEventsType;
+import eu.ydp.gwtutil.client.util.UserAgentChecker;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -124,6 +125,9 @@ public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements
 
     @Override
     public void play() {
+        if (UserAgentChecker.isMobileUserAgent(UserAgentChecker.MobileUserAgent.SAFARI)) {
+            media.setSrc(baseMediaConfiguration.getSources().keySet().iterator().next());
+        }
         media.setLoop(false);
         media.play();
     }
