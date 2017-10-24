@@ -34,10 +34,10 @@ import java.util.Map;
 
 public abstract class AbstractHTML5MediaExecutor<H extends MediaBase> implements MediaExecutor<MediaBase>, HTML5OnMediaEventHandler {
 
-    private H media;
+    protected H media;
     private MediaWrapper<MediaBase> mediaDescriptor;
     private SoundExecutorListener listener;
-    private BaseMediaConfiguration baseMediaConfiguration;
+    protected BaseMediaConfiguration baseMediaConfiguration;
 
     protected HTML5MediaEventMapper mediaEventMapper;
     protected final HTML5MediaNativeListeners html5MediaNativeListeners;
