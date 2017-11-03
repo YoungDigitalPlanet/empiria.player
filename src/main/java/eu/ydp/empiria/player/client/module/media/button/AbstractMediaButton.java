@@ -16,9 +16,13 @@
 
 package eu.ydp.empiria.player.client.module.media.button;
 
+import com.google.gwt.event.dom.client.*;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.inject.Inject;
+import eu.ydp.gwtutil.client.ui.button.CustomPushButtonEventHandler;
 import eu.ydp.gwtutil.client.util.UserAgentUtil;
 
 import static com.google.gwt.user.client.Event.*;
@@ -34,7 +38,7 @@ public abstract class AbstractMediaButton extends AbstractMediaController {
     private String originalStyleName;
     private boolean active = false;
     private final FlowPanel divElement = new FlowPanel();
-    private boolean singleClick = true;
+    private final CustomPushButtonEventHandler clickEventHandler;
 
     @Inject
     private UserAgentUtil userAgentUtil;
@@ -49,8 +53,8 @@ public abstract class AbstractMediaButton extends AbstractMediaController {
     public AbstractMediaButton(String baseStyleName, boolean singleClick) {
         this.originalStyleName = baseStyleName;
         setStyleNames();
-        this.singleClick = singleClick;
         initWidget(divElement);
+        clickEventHandler = new CustomPushButtonEventHandler(this);
     }
 
     public AbstractMediaButton(String baseStyleName) {
@@ -76,40 +80,31 @@ public abstract class AbstractMediaButton extends AbstractMediaController {
     }
 
     private void initEvents() {
-        if (userAgentUtil.isMobileUserAgent()) {
-            sinkEvents(ONTOUCHSTART | ONTOUCHEND);
-        } else {
-            sinkEvents(ONMOUSEOVER | ONMOUSEOUT | ONMOUSEDOWN | ONMOUSEUP);
-        }
+        addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                AbstractMediaButton.this.onClick();
+            }
+        });
+
+        addDomHandler(new MouseOverHandler() {
+            @Override
+            public void onMouseOver(MouseOverEvent event) {
+                AbstractMediaButton.this.onMouseOver();
+            }
+        },MouseOverEvent.getType());
+        addDomHandler(new MouseOutHandler() {
+            @Override
+            public void onMouseOut(MouseOutEvent event) {
+                AbstractMediaButton.this.onMouseOut();
+            }
+        },MouseOutEvent.getType());
     }
 
-    @Override
-    public void onBrowserEvent(Event event) {
-        event.preventDefault();
-        int eventType = event.getTypeInt();
-        switch (eventType) {
-            case ONMOUSEDOWN:
-            case ONTOUCHSTART:
-                onClick();
-                break;
-            case ONMOUSEUP:
-                if (!singleClick) {
-                    onClick();
-                }
-                break;
-            case ONMOUSEOVER:
-                onMouseOver();
-                break;
-            case ONTOUCHEND:
-            case ONMOUSEOUT:
-                onMouseOut();
-                break;
-        }
+    public HandlerRegistration addClickHandler(ClickHandler handler) {
+        return this.clickEventHandler.addClickHandler(handler);
     }
 
-    /**
-     * zdarzenie click
-     */
     protected abstract void onClick();
 
     protected boolean isActive() {

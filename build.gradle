@@ -67,7 +67,7 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force group: 'eu.ydp', name: 'ydpgwtutils', version: '2.0.0'
+        force group: 'eu.ydp', name: 'ydpgwtutils', version: '2.0.1'
     }
 }
 
@@ -81,9 +81,9 @@ dependencies {
     compile group: 'com.googlecode.gwtquery.bundles', name: 'gquery-dnd-bundle', version: '1.0.6'
     compile group: 'com.google.guava', name: 'guava-gwt', version: '18.0'
 
-    compile 'eu.ydp:mathplayer:2.0.0'
+    compile 'eu.ydp:mathplayer:2.0.1'
    	compile 'eu.ydp:jsfilerequest:2.0.0'
-    compile 'eu.ydp:gwtFlashMedia:2.0.0'
+    compile 'eu.ydp:gwtFlashMedia:2.0.1'
     compile 'eu.ydp:gwtcreatejs:2.0.0'  
     compile group: 'eu.ydp', name: 'jaxb4gwt', version: '2.0.0'
     compile group: 'eu.ydp', name: 'matheclipse-parser-gwt', version: '2.0.0'
